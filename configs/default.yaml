@@ -1,0 +1,40 @@
+run:
+  seed: 42
+  output_dir: runs/default
+
+dataset:
+  implementation: placeholder
+  config: {}
+
+models:
+  default:
+    backend: placeholder
+    model: placeholder
+  roles: {}
+
+modules:
+  retrieval:
+    implementation: vector
+    config:
+      top_l: 20
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 1
+  revision:
+    implementation: two_attempt_same_base
+    config:
+      max_attempts: 2
+  revision_credit:
+    implementation: operation_bound
+    config:
+      max_budget: 1.0
+  reliability:
+    implementation: beta
+    config: {}
+
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

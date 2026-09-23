@@ -24,14 +24,14 @@ Retrieval
 → Selection
 → Initial Rubric
 → Judge
-→ Existing Experience Credit
+→ Existing Experience Credit → 立即更新已有经验
 → 必要时 Revision Attempt 1 / 2
 → Reflection
 → Operation Contribution 与 Binding
 → Provisional Revision Credit
 → Admission
-→ Fusion
-→ Commit
+→ Fusion → 写入 ADD / MERGE
+→ 保存 Trajectory
 ```
 
 ## 必须覆盖的分支
@@ -44,22 +44,20 @@ Retrieval
 6. Candidate 无法绑定 operation；
 7. Admission FAIL；
 8. Fusion MERGE；
-9. Fusion ADD；
-10. 执行中断后恢复。
+9. Fusion ADD。
 
 ## 约束
 
 - `$R_1$` 和 `$R_2$` 都以 `$R_0$` 为 base；
 - failed revision 不生成经验；
 - Admission FAIL 不改变其他 candidate credit；
-- Memory 修改只在流程终态 Commit；
+- Runner 在初始信用计算后和 Fusion 时分别更新 Memory；后续阶段失败不撤销此前的下游信用；
 - Pipeline 不依赖具体 LLM 提供方。
 
 ## 完成标准
 
 - 使用 fake modules 跑通全部分支；
-- 每条 trajectory 包含完整阶段结果；
-- 每个 sample 最多 Commit 一次；
+- 每条 trajectory 包含完整阶段结果；每次修订尝试只保存一份补全后的操作列表；
 - 测试全部通过。
 
 ## 完成记录

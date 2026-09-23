@@ -17,8 +17,8 @@
 ## 2. 当前状态
 
 ```text
-当前阶段：基础工程准备完成，尚未开始功能实现
-下一个计划：01 — 领域模型
+当前阶段：01 — 领域模型已完成
+下一个计划：02 — 确定性计算
 当前阻塞：无
 ```
 
@@ -34,7 +34,7 @@
 
 按顺序执行以下计划：
 
-- [ ] [01 — 领域模型](docs/plans/01-领域模型.md)
+- [x] [01 — 领域模型](docs/plans/01-领域模型.md)
 - [ ] [02 — 确定性计算](docs/plans/02-确定性计算.md)
 - [ ] [03 — 配置与数据输入](docs/plans/03-配置与数据输入.md)
 - [ ] [04 — LLM 接口与 Fake Modules](docs/plans/04-LLM接口与Fake模块.md)
@@ -45,7 +45,7 @@
 
 ### 下一项计划
 
-> [01 — 领域模型](docs/plans/01-领域模型.md)
+> [02 — 确定性计算](docs/plans/02-确定性计算.md)
 
 完成后应更新本文件：勾选计划、修改“当前阶段”，并明确下一项计划。
 
@@ -56,20 +56,21 @@ V1 应实现：
 ```text
 读取 preference samples
 → 生成并判断 initial rubric
+→ 立即写入已有经验的下游信用
 → initial failure 时最多执行两次同基线修订
 → successful revision 后生成候选经验
 → 分配 revision credit 并执行 Admission
 → MERGE / ADD 到 Experience Memory
-→ 保存可恢复的完整 trajectory
+→ 保存包含主要阶段结果的 trajectory
 ```
 
 总体要求：
 
 - 单进程运行；
-- 可测试、可复算、可恢复；
+- 可测试、可复算；
 - 使用 fake modules 完成离线端到端测试；
 - 可替换为真实 LLM backend；
-- sample-level memory update 保持原子性和幂等性。
+- Memory 在下游信用计算和 Fusion 阶段分别写入，trajectory 保存阶段结果；V1 不处理跨阶段回滚、崩溃恢复、重复运行去重或跨文件原子性。
 
 ## 5. 后续方向
 

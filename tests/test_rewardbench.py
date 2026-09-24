@@ -1,0 +1,141 @@
+"""RewardBench Chat Hard 只用伪造行做离线 contract/integration 测试。"""
+
+from __future__ import annotations
+
+from collections import Counter
+import hashlib
+import json
+from pathlib import Path
+from types import SimpleNamespace
+
+import pyarrow as pa
+import pyarrow.parquet as pq
+import pytest
+import yaml
+
+from verge.cli import main
+from verge.dataset import (CHAT_HARD_SUBSETS, JsonlDataset,
+                           prepare_rewardbench_chat_hard, split_rewardbench_chat_hard)
+
+
+PROJECT = Path(__file__).resolve().parents[1]
+
+
+def synthetic_rows():
+    return [{"subset": subset, "id": section * 10 + number,
+             "prompt": f"unique prompt {subset} {number}", "chosen": "good answer",
+             "rejected": "bad answer", "chosen_model": "a", "rejected_model": "b"}
+            for section, subset in enumerate(CHAT_HARD_SUBSETS)
+            for number in range(4)]
+
+
+def test_chat_hard_split_is_deterministic_balanced_and_prompt_disjoint():
+    rows = synthetic_rows()
+    rows.append({**rows[0], "id": 999, "subset": "not-chat-hard"})
+    first = split_rewardbench_chat_hard(rows, seed=42)
+    assert first == split_rewardbench_chat_hard(list(reversed(rows)), seed=42)
+    assert len(first["train"]) == len(first["test"]) == len(CHAT_HARD_SUBSETS)
+    for name in ("train", "test"):
+        assert Counter(item["metadata"]["subset"] for item in first[name]) == {
+            subset: 1 for subset in CHAT_HARD_SUBSETS}
+    assert not ({item["task"] for item in first["train"]}
+                & {item["task"] for item in first["test"]})
+    assert len({item["sample_id"] for split in first.values() for item in split}) == 12
+    assert first["train"][0]["metadata"]["chosen_model"] == "a"
+
+
+def test_chat_hard_cross_subset_prompt_leakage_is_prevented():
+    rows = synthetic_rows()
+    # 除了共享题面，每个子集还有足够独立 prompt；顺序不影响拆分。
+    for row in rows:
+        if row["id"] % 10 == 0:
+            row["prompt"] = "same task across subsets"
+    selected = split_rewardbench_chat_hard(rows)
+    all_prompts = [item["task"] for split in selected.values() for item in split]
+    assert len(all_prompts) == len(set(all_prompts)) == 12
+
+
+def test_chat_hard_rejects_invalid_counts_rows_and_shortage():
+    for options in ({"per_subset": 1}, {"train_per_subset": 2}, {"seed": -1},
+                    {"per_subset": True}):
+        with pytest.raises(ValueError):
+            split_rewardbench_chat_hard(synthetic_rows(), **options)
+    with pytest.raises(ValueError, match="invalid id"):
+        split_rewardbench_chat_hard([{**synthetic_rows()[0], "id": "wrong"}])
+    with pytest.raises(ValueError, match="too few distinct prompts"):
+        split_rewardbench_chat_hard(synthetic_rows()[:1])
+
+
+def test_prepare_chat_hard_pins_revision_and_never_overwrites(tmp_path, monkeypatch):
+    revision = "a" * 40
+    observed = []
+    source = tmp_path / "filtered.parquet"
+    pq.write_table(pa.Table.from_pylist(synthetic_rows()), source)
+    monkeypatch.setattr("huggingface_hub.HfApi.dataset_info",
+                        lambda self, name, revision=None: SimpleNamespace(
+                            sha="a" * 40, siblings=[SimpleNamespace(
+                                rfilename="data/filtered-00000-of-00001.parquet")]))
+
+    def download(*args, **kwargs):
+        observed.append((args, kwargs))
+        return source
+
+    monkeypatch.setattr("huggingface_hub.hf_hub_download", download)
+    output = tmp_path / "data"
+    info = prepare_rewardbench_chat_hard(output)
+    assert observed == [(("allenai/reward-bench",),
+                         {"filename": "data/filtered-00000-of-00001.parquet",
+                          "repo_type": "dataset", "revision": revision})]
+    assert info["samples"] == {"train": 6, "test": 6}
+    assert json.loads((output / "provenance.json").read_text())["revision"] == revision
+    for split in ("train", "test"):
+        content = (output / f"{split}.jsonl").read_bytes()
+        assert info["sha256"][split] == hashlib.sha256(content).hexdigest()
+        samples = list(JsonlDataset({split: output / f"{split}.jsonl"}).load(split))
+        assert len(samples) == 6
+        assert all(item.metadata["revision"] == revision for item in samples)
+    with pytest.raises(ValueError, match="already exists"):
+        prepare_rewardbench_chat_hard(output, revision=revision)
+    with pytest.raises(ValueError, match="commit SHA"):
+        prepare_rewardbench_chat_hard(tmp_path / "other", revision="main")
+
+
+def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, capsys):
+    revision = "f" * 40
+    source = tmp_path / "filtered.parquet"
+    pq.write_table(pa.Table.from_pylist(synthetic_rows()), source)
+    monkeypatch.setattr("huggingface_hub.HfApi.dataset_info",
+                        lambda self, name, revision=None: SimpleNamespace(
+                            sha="f" * 40, siblings=[SimpleNamespace(
+                                rfilename="data/filtered-00000-of-00001.parquet")]))
+    monkeypatch.setattr("huggingface_hub.hf_hub_download", lambda *args, **kwargs: source)
+    data_dir = tmp_path / "data"
+    prepare_rewardbench_chat_hard(data_dir, revision=revision)
+    config = yaml.safe_load((PROJECT / "configs/rewardbench-chat-hard-qwen.yaml").read_text())
+    config["dataset"]["config"]["paths"] = {
+        split: str(data_dir / f"{split}.jsonl") for split in ("train", "test")}
+    config["run"]["output_dir"] = str(tmp_path / "experiment")
+    config["models"]["default"] = {"backend": "fake", "model": "initial_success"}
+    file = tmp_path / "config.yaml"
+    file.write_text(yaml.safe_dump(config), encoding="utf-8")
+    assert main(["run", "--config", str(file)]) == 0, capsys.readouterr().err
+    capsys.readouterr()
+    trajectories = (tmp_path / "experiment/artifacts/trajectories.jsonl").read_text().splitlines()
+    assert len(trajectories) == 12
+    assert all(json.loads(row)["initial_judgment"]["success"] for row in trajectories)
+    assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 0
+    summary = json.loads(capsys.readouterr().out)
+    assert summary["test_total"] == summary["test_correct"] == 6
+    assert summary["test_accuracy"] == 1.0
+    assert all(item["accuracy"] == 1.0 for item in summary["per_subset"].values())
+    test_file = data_dir / "test.jsonl"
+    test_file.write_bytes(test_file.read_bytes().splitlines(keepends=True)[0])
+    assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 1
+    assert "changed since run" in capsys.readouterr().err
+    manifest_file = tmp_path / "experiment/run_manifest.json"
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    assert manifest["dataset_sha256"]["test"] != hashlib.sha256(test_file.read_bytes()).hexdigest()
+    manifest["dataset_sha256"]["test"] = hashlib.sha256(test_file.read_bytes()).hexdigest()
+    manifest_file.write_text(json.dumps(manifest), encoding="utf-8")
+    assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 1
+    assert "all six Chat Hard subsets" in capsys.readouterr().err

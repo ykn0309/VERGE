@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from verge.config import load_config
-from verge.dataset import JsonlDataset
+from verge.dataset import CHAT_HARD_SUBSETS, JsonlDataset, prepare_rewardbench_chat_hard
 from verge.llm import FakeLLMBackend, LLMBackend, OpenAICompatibleBackend
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.modules import make_llm_modules
@@ -152,6 +152,14 @@ def _code_version() -> str:
     return f"{commit}+sha256:{digest.hexdigest()}"
 
 
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
                    seen_ids: set[str], request_context: dict[str, str] | None = None) -> int:
     count = 0
@@ -186,6 +194,8 @@ def run(config_path: str | Path) -> dict[str, Any]:
                          [config["models"]["default"], *config["models"].get("roles", {}).values()]}
         manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
                     "dataset_version": "jsonl/v1",
+                    "dataset_sha256": {split: _sha256_file(path)
+                                       for split, path in dataset.paths.items()},
                     "module_versions": {name: "v1" for name in _IMPLEMENTATIONS},
                     "backend_versions": {name: "v1" for name in sorted(backend_names)},
                     "prompt_versions": {role: PROMPT_VERSION for role in _ROLES}}
@@ -243,18 +253,70 @@ def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
     return record.to_dict()
 
 
+def summarize_rewardbench(run_dir: str | Path) -> dict[str, Any]:
+    """汇总本次 Chat Hard 内部分割的 test 初始判别率，不宣称官方榜单成绩。"""
+    directory = Path(run_dir)
+    manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
+    paths = manifest["config"]["dataset"]["config"]["paths"]
+    if "test" not in paths:
+        raise ValueError("RewardBench summary requires a test split")
+    test_hash = manifest.get("dataset_sha256", {}).get("test")
+    if not isinstance(test_hash, str) or _sha256_file(Path(paths["test"])) != test_hash:
+        raise ValueError("test dataset has changed since run or lacks a recorded SHA-256")
+    dataset = JsonlDataset({"test": paths["test"]})
+    expected = {sample.sample_id: sample.metadata.get("subset")
+                for sample in dataset.load("test")}
+    counts = {subset: list(expected.values()).count(subset) for subset in CHAT_HARD_SUBSETS}
+    if (not expected or any(subset not in CHAT_HARD_SUBSETS for subset in expected.values())
+            or len(set(counts.values())) != 1 or 0 in counts.values()):
+        raise ValueError("test split must cover all six Chat Hard subsets equally")
+    records = {record.sample_id: record for record in
+               TrajectoryLog(directory / manifest["config"]["store"]["config"]["root_dir"]).all()}
+    missing = expected.keys() - records.keys()
+    if missing:
+        raise ValueError(f"incomplete test evaluation: {len(missing)} sample(s) have no trajectory")
+    per_subset = {subset: {"total": 0, "correct": 0} for subset in CHAT_HARD_SUBSETS}
+    for sample_id, subset in expected.items():
+        judgment = records[sample_id].initial_judgment
+        if judgment is None:
+            raise ValueError(f"test sample {sample_id}: missing initial judgment")
+        per_subset[subset]["total"] += 1
+        per_subset[subset]["correct"] += int(judgment.success)
+    for counts in per_subset.values():
+        counts["accuracy"] = counts["correct"] / counts["total"] if counts["total"] else None
+    total = sum(item["total"] for item in per_subset.values())
+    correct = sum(item["correct"] for item in per_subset.values())
+    return {"run_dir": str(directory), "scope": "internal Chat Hard split (not official leaderboard)",
+            "test_total": total, "test_correct": correct, "test_accuracy": correct / total,
+            "per_subset": per_subset}
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="VERGE experiment CLI")
     commands = parser.add_subparsers(dest="command", required=True)
     run_command = commands.add_parser("run", help="run train and optional held-out test")
     run_command.add_argument("--config", required=True)
+    prepare_command = commands.add_parser("prepare-rewardbench", help="prepare Chat Hard train/test JSONL")
+    prepare_command.add_argument("--output-dir", required=True)
+    prepare_command.add_argument("--seed", type=int, default=42)
+    prepare_command.add_argument("--per-subset", type=int, default=2)
+    prepare_command.add_argument("--train-per-subset", type=int, default=1)
+    prepare_command.add_argument("--revision", help="optional pinned upstream commit SHA")
     inspect_command = commands.add_parser("inspect-sample", help="inspect a saved trajectory")
     inspect_command.add_argument("--run-dir", required=True)
     inspect_command.add_argument("--sample-id", required=True)
+    summary_command = commands.add_parser("summarize-rewardbench", help="summarize Chat Hard test judgments")
+    summary_command.add_argument("--run-dir", required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == "run":
             result = run(args.config)
+        elif args.command == "prepare-rewardbench":
+            result = prepare_rewardbench_chat_hard(
+                args.output_dir, seed=args.seed, per_subset=args.per_subset,
+                train_per_subset=args.train_per_subset, revision=args.revision)
+        elif args.command == "summarize-rewardbench":
+            result = summarize_rewardbench(args.run_dir)
         else:
             result = inspect_sample(args.run_dir, args.sample_id)
     except ConfigError as exc:

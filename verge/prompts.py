@@ -9,15 +9,15 @@ from typing import Any, Mapping, Sequence
 from verge.models import CandidateExperience, Criterion, Experience, RevisionAttempt, RevisionOperation, Rubric, RubricJudgment
 
 
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v3"
 
 # 各角色只接受其投影后的 payload；不把其他阶段/内部证据混入上下文。
 _ROLE_INSTRUCTIONS = {
     "selector": "按 task 选择真正适用且能帮助生成 rubric 的经验；检查 trigger、可执行性和互补性，不同时选冲突经验。适用性相近时参考 confidence 与 evidence_amount，不为凑数选无关经验。返回 {\"selected_experience_ids\":[候选 experience_id]}；最多 max_selected 条，不得虚构 ID；无适用经验返回空数组。",
     "initial_generator": "仅根据 task 与 selected_experiences 生成 R0，每条标准只判断一个问题、可用是/否评价回答，不引用特定响应。返回 {\"rubric\":{\"rubric_id\":唯一字符串,\"base_rubric_id\":null,\"criteria\":[{\"criterion_id\":唯一字符串,\"question\":可独立判定的问题,\"importance_score\":1到10的整数,\"source_experiences\":[所选经验ID]}]}}。生成4到8条标准；分数代表对 task 的重要性，不能预估区分当前回答的能力。仅引用实质影响标准的经验，未使用经验时 source_experiences 为空。",
-    "judge": "只回答 criteria 中每条标准对 chosen/rejected 是否满足；返回 {\"criterion_judgments\":[{\"criterion_id\":对应ID,\"chosen\":true或false,\"rejected\":true或false}]}。恰好覆盖待判断ID；不要计算权重、margin 或 success。",
+    "judge": "只回答输入 criteria 数组中每条标准对 chosen/rejected 是否满足；返回 {\"criterion_judgments\":[{\"criterion_id\":criteria中的对应ID,\"chosen\":true或false,\"rejected\":true或false}]}。只对列出的 ID 各返回一次，不得返回其他 ID；只有一条 criteria 时只返回一条判断。不要计算权重、margin 或 success。",
     "critic": "分析 initial_rubric 对当前偏好对失败的原因，必要时参考 failed_attempt；返回 {\"feedback\":非空的具体修订建议}，不要生成新的 rubric。",
-    "revision_generator": "从 initial_rubric（不是失败尝试）提出最小原子操作；返回 {\"operations\":[{\"operation_id\":唯一字符串,\"operation_type\":\"ADD\"或\"DELETE\"或\"MODIFY\",\"target_criterion_id\":已有ID或ADD时null,\"new_or_updated_criterion\":ADD/MODIFY时的完整criterion或DELETE时null,\"before_criterion\":null}]}。新标准包含 criterion_id、question、importance_score(1-10)、source_experiences:[]；执行后保持4到8条。",
+    "revision_generator": "从 initial_rubric（不是失败尝试）提出最小原子操作；返回 {\"operations\":[{\"operation_id\":唯一字符串,\"operation_type\":\"ADD\"或\"DELETE\"或\"MODIFY\",\"target_criterion_id\":已有ID或ADD时null,\"new_or_updated_criterion\":ADD/MODIFY时的完整criterion或DELETE时null}]}。新标准包含 criterion_id、question、importance_score(1-10)、source_experiences:[]；执行后保持4到8条。不要输出 before_criterion，旧标准由执行器自行确定。",
     "reflector": "只从 successful_attempt 中抽象可迁移到类似任务的 rubric 生成方法，不复述当前回答或偏好；返回 {\"candidates\":[{\"candidate_id\":唯一字符串,\"content\":单一、具体、可复用建议,\"trigger\":清晰的适用条件}]}，0到3条。不要输出 credit、operation 绑定或数值。",
     "revision_credit_assigner": "只把 candidates 与真正支撑它的 operations 绑定；返回 {\"bindings\":{候选candidate_id:[operation_id]}}，每个候选必须有键，无依据时使用空数组。不要计算 credit；无绑定是合法结果。",
     "admission_checker": "判断 candidate 是否有绑定操作的修改语义支撑，且是单一、可迁移的 rubric 生成方法、trigger 清楚、无当前回答细节或偏好泄漏；否则 FAIL。只返回 {\"decision\":\"PASS\"或\"FAIL\"}，不得改写候选、绑定、信用或其他数值。",
@@ -66,15 +66,10 @@ def generator_payload(task: str, selected: Sequence[ExperienceView]) -> dict[str
     return {"task": task, "selected_experiences": [item.to_dict() for item in selected]}
 
 
-def judge_payload(rubric: Rubric, pending: Sequence[Criterion],
-                  chosen: str, rejected: str) -> dict[str, Any]:
-    def criterion_fields(item: Criterion) -> dict[str, Any]:
-        return {"criterion_id": item.criterion_id, "question": item.question,
-                "importance_score": item.importance_score}
-
-    return {"rubric": [criterion_fields(item) for item in rubric.criteria],
-            "criteria": [criterion_fields(item) for item in pending],
-            "chosen": chosen, "rejected": rejected}
+def judge_payload(pending: Sequence[Criterion], chosen: str, rejected: str) -> dict[str, Any]:
+    # 修订时只传需要新判断的 criterion，避免模型把复用的旧 ID 也返回。
+    return {"criteria": [{"criterion_id": item.criterion_id, "question": item.question}
+                         for item in pending], "chosen": chosen, "rejected": rejected}
 
 
 def _criterion_fields(criterion: Criterion) -> dict[str, Any]:

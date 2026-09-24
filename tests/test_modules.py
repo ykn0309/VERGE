@@ -80,6 +80,11 @@ def test_attempt_one_success_credit_admission_and_fusion_privacy():
     assert not initial_judgment.success and initial_judgment.margin == pytest.approx(-2 / 12)
     attempt = revise(modules, initial, initial_judgment, 1)
     assert attempt.judgment.success and attempt.judgment.margin == pytest.approx(6 / 12)
+    judge_requests = [payload for role, payload in modules.backend.requests if role == "judge"]
+    assert len(judge_requests) == 2
+    assert set(judge_requests[1]) == {"criteria", "chosen", "rejected"}
+    assert [item["criterion_id"] for item in judge_requests[1]["criteria"]] == ["c2"]
+    assert set(judge_requests[1]["criteria"][0]) == {"criterion_id", "question"}
     before = next(item for item in initial_judgment.criterion_judgments if item.criterion_id == "c1")
     after = next(item for item in attempt.judgment.criterion_judgments if item.criterion_id == "c1")
     assert before == after  # 同一 question 不向 LLM 重复询问
@@ -211,9 +216,11 @@ def test_structured_response_and_domain_type_checks():
             TASK, initial, "feedback", 1)
     operation = modules.revision_generator.generate(TASK, initial, "feedback", 1)[0].to_dict()
     operation["new_or_updated_criterion"].pop("source_experiences")
+    operation["before_criterion"] = initial.criteria[1].to_dict()  # 模型来源不得覆盖 Executor 的 R0
     parsed = LLMRevisionGenerator(ConstantBackend({"operations": [operation]})).generate(
         TASK, initial, "feedback", 1)
     assert parsed[0].new_or_updated_criterion.source_experiences == []
+    assert parsed[0].before_criterion is None
     attempt = revise(modules, initial, judgment, 1)
     with pytest.raises(ValueError, match="only unbound candidate"):
         LLMReflector(ConstantBackend({"candidates": [{

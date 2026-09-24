@@ -210,14 +210,18 @@ class LLMJudge:
         pending = [item for item in rubric.criteria if item.criterion_id not in known]
         generated: list[CriterionJudgment] = []
         if pending:
-            raw = _output(self.backend, "judge", judge_payload(rubric, pending, chosen, rejected),
+            raw = _output(self.backend, "judge", judge_payload(pending, chosen, rejected),
                           "criterion_judgments")
             if not isinstance(raw, list):
                 raise ValueError("judge: criterion_judgments must be a list")
             generated = [CriterionJudgment.from_dict(item) for item in raw]
         answers = {item.criterion_id: item for item in generated}
-        if (len(answers) != len(generated) or set(answers) != {item.criterion_id for item in pending}):
-            raise ValueError("judge: judgments must cover exactly the requested criteria")
+        requested = {item.criterion_id for item in pending}
+        if len(answers) != len(generated) or set(answers) != requested:
+            raise ValueError("judge: judgments must cover exactly the requested criteria "
+                             f"(missing={len(requested - answers.keys())}, "
+                             f"extra={len(answers.keys() - requested)}, "
+                             f"duplicate={len(generated) - len(answers)})")
         return calculate_rubric_judgment(
             rubric, [known.get(item.criterion_id) or answers[item.criterion_id]
                      for item in rubric.criteria],
@@ -269,14 +273,15 @@ class LLMRevisionGenerator:
             raise ValueError("revision_generator: operations must be a list")
         result = []
         for item in raw:
-            if isinstance(item, dict) and isinstance(item.get("new_or_updated_criterion"), dict):
-                # 修订不读取来源：即使 Backend 输出了该字段也忽略，不向后续归因传递。
-                item = {**item, "new_or_updated_criterion": {
-                    **item["new_or_updated_criterion"], "source_experiences": [],
-                }}
+            if isinstance(item, dict):
+                # before_criterion 仅由 Executor 从 R0 补全，不能信任模型提供的旧标准。
+                item = {**item, "before_criterion": None}
+                if isinstance(item.get("new_or_updated_criterion"), dict):
+                    # 修订不读取来源：模型提供的 source_experiences 不参与归因。
+                    item["new_or_updated_criterion"] = {
+                        **item["new_or_updated_criterion"], "source_experiences": [],
+                    }
             result.append(RevisionOperation.from_dict(item))
-        if any(item.before_criterion is not None for item in result):
-            raise ValueError("revision_generator must leave before_criterion empty")
         for item in result:
             if item.new_or_updated_criterion is not None:
                 _text(item.new_or_updated_criterion.question, "revision criterion question")

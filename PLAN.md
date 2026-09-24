@@ -17,9 +17,9 @@
 ## 2. 当前状态
 
 ```text
-当前阶段：08 — 真实 LLM Backend 已完成（MockTransport 离线验证）
-下一个方向：V1 held-out evaluation 与指标汇总
-当前阻塞：真实服务在线验收需要用户提供 API 凭据与可用模型
+当前阶段：09 — RewardBench Chat Hard 内部分割与真实模型试运行已完成
+下一个方向：独立训练数据与完整 held-out evaluation
+当前阻塞：尚无独立于 RewardBench 的真实训练集与完整 held-out 验证
 ```
 
 已完成：
@@ -42,10 +42,11 @@
 - [x] [06 — Pipeline Runner](docs/plans/06-Pipeline-Runner.md)
 - [x] [07 — CLI](docs/plans/07-CLI.md)
 - [x] [08 — 真实 LLM Backend](docs/plans/08-真实LLM后端.md)
+- [x] [09 — RewardBench Chat Hard](docs/plans/09-RewardBench-Chat-Hard.md)
 
 ### 下一项方向
 
-> V1 held-out evaluation 与指标汇总（尚未拆分执行计划）；现有 CLI 已能运行 test split 并保持 Memory 只读，仍需汇总指标和真实服务验收。
+> Chat Hard 六子集每类 1 train + 1 test 的内部试运行已完成，测试初始判别 5/6，但训练用到了 benchmark，结果不可与官方榜单比较。下一步使用独立训练数据构建经验池，再规划完整 held-out evaluation。
 
 ## 4. V1 目标
 

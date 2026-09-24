@@ -17,9 +17,9 @@
 ## 2. 当前状态
 
 ```text
-当前阶段：07 — CLI 已完成
-下一个计划：08 — 真实 LLM Backend
-当前阻塞：无
+当前阶段：08 — 真实 LLM Backend 已完成（MockTransport 离线验证）
+下一个方向：V1 held-out evaluation 与指标汇总
+当前阻塞：真实服务在线验收需要用户提供 API 凭据与可用模型
 ```
 
 已完成：
@@ -41,13 +41,11 @@
 - [x] [05 — Experience Memory 与 Trajectory](docs/plans/05-经验记忆与轨迹.md)
 - [x] [06 — Pipeline Runner](docs/plans/06-Pipeline-Runner.md)
 - [x] [07 — CLI](docs/plans/07-CLI.md)
-- [ ] [08 — 真实 LLM Backend](docs/plans/08-真实LLM后端.md)
+- [x] [08 — 真实 LLM Backend](docs/plans/08-真实LLM后端.md)
 
-### 下一项计划
+### 下一项方向
 
-> [08 — 真实 LLM Backend](docs/plans/08-真实LLM后端.md)
-
-完成后应更新本文件：勾选计划、修改“当前阶段”，并明确下一项计划。
+> V1 held-out evaluation 与指标汇总（尚未拆分执行计划）；现有 CLI 已能运行 test split 并保持 Memory 只读，仍需汇总指标和真实服务验收。
 
 ## 4. V1 目标
 

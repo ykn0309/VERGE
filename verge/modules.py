@@ -396,10 +396,10 @@ class LLMFusionJudge:
 
 
 @dataclass
-class FakeModules:
-    """所有角色通过同一个离线 backend，供后续 Runner 按接口替换。"""
+class LLMModules:
+    """角色适配器共享一个 backend；可由配置为各角色覆盖。"""
 
-    backend: FakeLLMBackend
+    backend: LLMBackend
     retriever: FakeRetriever
     selector: LLMSelector
     initial_generator: LLMInitialRubricGenerator
@@ -412,11 +412,19 @@ class FakeModules:
     fusion_judge: LLMFusionJudge
 
 
-def make_fake_modules(scenario: FakeScenario = "attempt_1_success", **options: Any) -> FakeModules:
-    """组装共享同一固定场景后端的离线模块，便于后续 Runner 测试。"""
-    backend = FakeLLMBackend(scenario, **options)
-    return FakeModules(backend, FakeRetriever(), LLMSelector(backend),
-                       LLMInitialRubricGenerator(backend), LLMJudge(backend),
-                       LLMCritic(backend), LLMRevisionGenerator(backend),
-                       LLMReflector(backend), LLMRevisionCreditAssigner(backend),
-                       LLMAdmissionChecker(backend), LLMFusionJudge(backend))
+FakeModules = LLMModules  # 向后兼容原有离线装配类型名。
+
+
+def make_llm_modules(backend: LLMBackend, *, top_l: int = 20,
+                     max_selected: int = 5) -> LLMModules:
+    """只装配各角色和当前 V1 的检索实现，不修改 Pipeline。"""
+    return LLMModules(backend, FakeRetriever(top_l), LLMSelector(backend, max_selected=max_selected),
+                      LLMInitialRubricGenerator(backend), LLMJudge(backend),
+                      LLMCritic(backend), LLMRevisionGenerator(backend),
+                      LLMReflector(backend), LLMRevisionCreditAssigner(backend),
+                      LLMAdmissionChecker(backend), LLMFusionJudge(backend))
+
+
+def make_fake_modules(scenario: FakeScenario = "attempt_1_success", **options: Any) -> LLMModules:
+    """组装固定场景离线模块，保留原有测试/API。"""
+    return make_llm_modules(FakeLLMBackend(scenario, **options))

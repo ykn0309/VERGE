@@ -3,7 +3,17 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any, Literal, Mapping, Protocol
+import json
+import math
+import os
+import re
+import time
+from typing import Any, Callable, Literal, Mapping, Protocol
+from urllib.parse import urlsplit
+
+import httpx
+
+from verge.prompts import PROMPT_VERSION, llm_messages
 
 
 class LLMBackend(Protocol):
@@ -13,6 +23,212 @@ class LLMBackend(Protocol):
 
 
 FakeScenario = Literal["initial_success", "attempt_1_success", "attempt_2_success", "final_failure"]
+
+
+class LLMRequestError(RuntimeError):
+    """网络/API 调用失败；信息不包含 URL、请求正文或凭据。"""
+
+
+class LLMFormatError(ValueError):
+    """模型输出不是所需结构，已用尽格式重试。"""
+
+
+_OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
+    "selector": ("selected_experience_ids", list),
+    "initial_generator": ("rubric", dict),
+    "judge": ("criterion_judgments", list),
+    "critic": ("feedback", str),
+    "revision_generator": ("operations", list),
+    "reflector": ("candidates", list),
+    "revision_credit_assigner": ("bindings", dict),
+    "admission_checker": ("decision", str),
+    "fusion_judge": ("match_index", (int, type(None))),
+}
+
+
+def _reject_constant(_value: str) -> None:
+    raise ValueError("invalid JSON constant")
+
+
+def _criterion_shape(item: Any) -> bool:
+    return (isinstance(item, dict)
+            and set(item) == {"criterion_id", "question", "importance_score", "source_experiences"}
+            and isinstance(item["criterion_id"], str) and isinstance(item["question"], str)
+            and type(item["importance_score"]) is int and 1 <= item["importance_score"] <= 10
+            and isinstance(item["source_experiences"], list)
+            and all(isinstance(key, str) for key in item["source_experiences"]))
+
+
+def _valid_shape(role: str, value: Any) -> bool:
+    """缺字段/字段类型不对才重试；ID引用、绑定为空、准入FAIL等语义决策不重试。"""
+    field, expected = _OUTPUT_FIELDS[role]
+    if not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], expected):
+        return False
+    data = value[field]
+    if role == "selector":
+        return all(isinstance(key, str) for key in data)
+    if role == "initial_generator":
+        return (set(data) == {"rubric_id", "base_rubric_id", "criteria"}
+                and isinstance(data["rubric_id"], str)
+                and (data["base_rubric_id"] is None or isinstance(data["base_rubric_id"], str))
+                and isinstance(data["criteria"], list)
+                and all(_criterion_shape(item) for item in data["criteria"]))
+    if role == "judge":
+        return all(isinstance(item, dict) and set(item) == {"criterion_id", "chosen", "rejected"}
+                   and isinstance(item["criterion_id"], str)
+                   and type(item["chosen"]) is bool and type(item["rejected"]) is bool for item in data)
+    if role == "revision_generator":
+        return all(isinstance(item, dict) and
+                   {"operation_id", "operation_type", "target_criterion_id",
+                    "new_or_updated_criterion"} <= set(item) <=
+                   {"operation_id", "operation_type", "target_criterion_id",
+                    "new_or_updated_criterion", "before_criterion"}
+                   and isinstance(item["operation_id"], str)
+                   and item["operation_type"] in ("ADD", "DELETE", "MODIFY")
+                   and (item["target_criterion_id"] is None
+                        or isinstance(item["target_criterion_id"], str))
+                   and (item["new_or_updated_criterion"] is None
+                        or _criterion_shape(item["new_or_updated_criterion"])) for item in data)
+    if role == "reflector":
+        return all(isinstance(item, dict) and set(item) == {"candidate_id", "content", "trigger"}
+                   and all(isinstance(item[key], str) for key in ("candidate_id", "content", "trigger"))
+                   for item in data)
+    if role == "revision_credit_assigner":
+        return all(isinstance(key, str) and isinstance(ids, list)
+                   and all(isinstance(item, str) for item in ids) for key, ids in data.items())
+    if role == "admission_checker":
+        return data in ("PASS", "FAIL")
+    if role == "fusion_judge":
+        return data is None or type(data) is int
+    return True
+
+
+class OpenAICompatibleBackend:
+    """同步 Chat Completions JSON backend；只返回角色结构字段，绝不返回数值 credit。"""
+
+    def __init__(self, model: str, *, base_url: str = "https://api.openai.com/v1",
+                 api_key_env: str = "OPENAI_API_KEY", timeout_seconds: float = 30,
+                 max_retries: int = 2, client: httpx.Client | None = None,
+                 metadata_hook: Callable[[dict[str, Any]], None] | None = None,
+                 sleep: Callable[[float], None] = time.sleep) -> None:
+        if not isinstance(model, str) or not model.strip():
+            raise ValueError("model must be a non-empty string")
+        parsed = urlsplit(base_url)
+        if (not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment
+                or parsed.scheme not in ("https", "http")
+                or (parsed.scheme == "http" and parsed.hostname not in ("localhost", "127.0.0.1", "::1"))):
+            raise ValueError("base_url requires HTTPS (HTTP allowed only on localhost), without credentials or query")
+        if client is not None and (str(client.base_url).rstrip("/") != base_url.rstrip("/")
+                                   or client.follow_redirects):
+            raise ValueError("client must use the validated base_url without redirects")
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", api_key_env):
+            raise ValueError("api_key_env must name an environment variable")
+        key = os.environ.get(api_key_env)
+        if not key:
+            raise ValueError(f"api_key_env: environment variable {api_key_env} is missing")
+        if type(timeout_seconds) not in (int, float) or not 0 < timeout_seconds <= 300:
+            raise ValueError("timeout_seconds must be in (0, 300]")
+        if type(max_retries) is not int or not 0 <= max_retries <= 5:
+            raise ValueError("max_retries must be an integer in [0, 5]")
+        self.model = model
+        self._key = key
+        self.max_retries = max_retries
+        self.metadata_hook = metadata_hook
+        self._sleep = sleep
+        self._client = client if client is not None else httpx.Client(
+            base_url=base_url.rstrip("/") + "/", timeout=timeout_seconds, follow_redirects=False,
+        )
+        self._owns_client = client is None
+
+    def close(self) -> None:
+        if self._owns_client:
+            self._client.close()
+
+    def _metadata(self, role: str, attempt: int, *, status: int | None = None,
+                  response: httpx.Response | None = None, body: Any = None) -> None:
+        if self.metadata_hook is None:
+            return
+        event: dict[str, Any] = {"role": role, "model": self.model, "prompt_version": PROMPT_VERSION,
+                                 "attempt": attempt, "status": status}
+        if response is not None:
+            request_id = response.headers.get("x-request-id", "")
+            if (request_id and self._key not in request_id and len(request_id) <= 128
+                    and request_id.isascii() and request_id.isprintable()):
+                event["request_id"] = request_id
+        if isinstance(body, dict):
+            choices = body.get("choices")
+            if isinstance(choices, list) and choices and isinstance(choices[0], dict):
+                reason = choices[0].get("finish_reason")
+                if isinstance(reason, str) and self._key not in reason and len(reason) <= 32:
+                    event["finish_reason"] = reason
+            usage = body.get("usage")
+            if isinstance(usage, dict):
+                event["usage"] = {key: usage[key] for key in
+                                  ("prompt_tokens", "completion_tokens", "total_tokens")
+                                  if type(usage.get(key)) is int and usage[key] >= 0}
+        self.metadata_hook(event)
+
+    def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]:
+        if role not in _OUTPUT_FIELDS:
+            raise ValueError(f"unknown LLM role: {role}")
+        messages = llm_messages(role, payload)
+        for attempt in range(1, self.max_retries + 2):
+            try:
+                response = self._client.post(
+                    "chat/completions",
+                    headers={"Authorization": f"Bearer {self._key}"},
+                    json={"model": self.model, "messages": messages,
+                          "response_format": {"type": "json_object"}},
+                )
+            except (httpx.TimeoutException, httpx.TransportError) as exc:
+                self._metadata(role, attempt)
+                if attempt <= self.max_retries:
+                    self._sleep(min(2 ** (attempt - 1), 8))
+                    continue
+                raise LLMRequestError(f"{role}: request failed after {attempt} attempts ({type(exc).__name__})") from None
+            status = response.status_code
+            if status == 429 or 500 <= status < 600:
+                self._metadata(role, attempt, status=status, response=response)
+                if attempt <= self.max_retries:
+                    retry_after = response.headers.get("retry-after", "")
+                    try:
+                        delay = float(retry_after)
+                    except ValueError:
+                        delay = 2 ** (attempt - 1)
+                    if not math.isfinite(delay):
+                        delay = 2 ** (attempt - 1)
+                    self._sleep(min(max(delay, 0), 8))
+                    continue
+                raise LLMRequestError(f"{role}: HTTP {status} after {attempt} attempts")
+            if status < 200 or status >= 300:
+                self._metadata(role, attempt, status=status, response=response)
+                raise LLMRequestError(f"{role}: HTTP {status}")
+            try:
+                body = json.loads(response.text, parse_constant=_reject_constant)
+                choices = body["choices"]
+                choice = choices[0]
+                if choice.get("finish_reason") == "content_filter" or choice["message"].get("refusal"):
+                    self._metadata(role, attempt, status=status, response=response, body=body)
+                    raise LLMRequestError(f"{role}: model refused the request")
+                if choice.get("finish_reason") == "length":
+                    raise ValueError("truncated output")
+                content = choice["message"]["content"]
+                if not isinstance(content, str):
+                    raise ValueError("missing message content")
+                result = json.loads(content, parse_constant=_reject_constant)
+                if not _valid_shape(role, result):
+                    raise ValueError("unexpected response fields")
+            except LLMRequestError:
+                raise
+            except (ValueError, TypeError, KeyError, IndexError, AttributeError):
+                self._metadata(role, attempt, status=status, response=response)
+                if attempt <= self.max_retries:
+                    messages = [*messages, {"role": "user", "content": "上次输出格式无效；请严格只返回指定字段的 JSON 对象。"}]
+                    continue
+                raise LLMFormatError(f"{role}: invalid structured output after {attempt} attempts") from None
+            self._metadata(role, attempt, status=status, response=response, body=body)
+            return result
+        raise AssertionError("unreachable retry state")
 
 
 class FakeLLMBackend:

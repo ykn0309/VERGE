@@ -1,4 +1,4 @@
-"""最小命令行入口：运行离线实验，并按样本检查轨迹。"""
+"""命令行入口：按配置运行 Fake/真实 LLM 实验，并按样本检查轨迹。"""
 
 from __future__ import annotations
 
@@ -13,10 +13,11 @@ from typing import Any, Sequence
 
 from verge.config import load_config
 from verge.dataset import JsonlDataset
-from verge.llm import FakeLLMBackend
+from verge.llm import FakeLLMBackend, LLMBackend, OpenAICompatibleBackend
 from verge.memory import ExperienceMemory, TrajectoryLog
-from verge.modules import make_fake_modules
+from verge.modules import make_llm_modules
 from verge.pipeline import PipelineRunner
+from verge.prompts import PROMPT_VERSION
 
 
 _ROLES = (
@@ -40,11 +41,22 @@ def _only_keys(value: dict[str, Any], allowed: set[str], path: str) -> None:
         raise ValueError(f"{path}: unsupported fields: {', '.join(sorted(unknown))}")
 
 
-def _fake_backend(spec: dict[str, Any], path: str) -> FakeLLMBackend:
-    _only_keys(spec, {"backend", "model"}, path)
-    if spec["backend"] != "fake" or spec["model"] not in _FAKE_SCENARIOS:
-        raise ValueError(f"{path}: only fake backend with a supported scenario is available in stage 07")
-    return FakeLLMBackend(spec["model"])
+def _backend(spec: dict[str, Any], path: str) -> LLMBackend:
+    if spec["backend"] == "fake":
+        _only_keys(spec, {"backend", "model"}, path)
+        if spec["model"] not in _FAKE_SCENARIOS:
+            raise ValueError(f"{path}.model: unsupported fake scenario")
+        return FakeLLMBackend(spec["model"])
+    if spec["backend"] == "openai_compatible":
+        _only_keys(spec, {"backend", "model", "base_url", "api_key_env",
+                          "timeout_seconds", "max_retries"}, path)
+        options = {key: spec[key] for key in ("base_url", "api_key_env", "timeout_seconds", "max_retries")
+                   if key in spec}
+        try:
+            return OpenAICompatibleBackend(spec["model"], **options)
+        except (ValueError, TypeError) as exc:
+            raise ValueError(f"{path}: {exc}") from exc
+    raise ValueError(f"{path}.backend: supported backends are fake and openai_compatible")
 
 
 def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, int]:
@@ -54,7 +66,7 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     dataset_config = config["dataset"]
     _only_keys(dataset_config, {"implementation", "config"}, "dataset")
     if dataset_config["implementation"] != "jsonl":
-        raise ValueError("dataset.implementation: stage 07 supports only jsonl")
+        raise ValueError("dataset.implementation: V1 supports only jsonl")
     options = dataset_config["config"]
     if set(options) - {"paths", "field_map"} or "paths" not in options:
         raise ValueError("dataset.config: expected paths and optional field_map")
@@ -62,14 +74,13 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     if "train" not in dataset.paths:
         raise ValueError("dataset.config.paths.train: required for run")
     if set(dataset.paths) - {"train", "test"}:
-        raise ValueError("dataset.config.paths: stage 07 supports only train and optional test")
+        raise ValueError("dataset.config.paths: V1 supports only train and optional test")
     for split, path in dataset.paths.items():
         if not path.is_file():
             raise ValueError(f"dataset.config.paths.{split}: file not found: {path}")
 
     models = config["models"]
     _only_keys(models, {"default", "roles"}, "models")
-    backend = _fake_backend(models["default"], "models.default")
     if set(models.get("roles", {})) - set(_ROLES):
         raise ValueError("models.roles: unknown LLM role")
 
@@ -79,7 +90,7 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     for name, implementation in _IMPLEMENTATIONS.items():
         _only_keys(configured[name], {"implementation", "config"}, f"modules.{name}")
         if configured[name]["implementation"] != implementation:
-            raise ValueError(f"modules.{name}.implementation: stage 07 supports only {implementation}")
+            raise ValueError(f"modules.{name}.implementation: V1 supports only {implementation}")
     retrieval = configured["retrieval"]["config"]
     selection = configured["selection"]["config"]
     revision = configured["revision"]["config"]
@@ -87,31 +98,39 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     if (set(retrieval) - {"top_l"} or set(selection) - {"max_selected", "exploration_slots"}
             or set(revision) - {"max_attempts"} or set(credit) - {"max_budget"}
             or configured["reliability"]["config"]):
-        raise ValueError("modules: unsupported component options for stage 07")
+        raise ValueError("modules: unsupported V1 component options")
     if selection.get("exploration_slots", 0) != 0:
-        raise ValueError("modules.selection.config.exploration_slots: fake selector does not explore")
+        raise ValueError("modules.selection.config.exploration_slots: V1 selector does not explore")
     if credit.get("max_budget", 1.0) != 1.0:
-        raise ValueError("modules.revision_credit.config.max_budget: stage 07 requires 1.0")
-
-    modules = make_fake_modules(backend.scenario)
-    modules.backend = backend
-    for role in _ROLES:
-        getattr(modules, role).backend = backend
-    for role, spec in models.get("roles", {}).items():
-        getattr(modules, role).backend = _fake_backend(spec, f"models.roles.{role}")
-    modules.retriever.top_l = retrieval.get("top_l", 20)
-    modules.selector.max_selected = selection.get("max_selected", 5)
+        raise ValueError("modules.revision_credit.config.max_budget: V1 requires 1.0")
 
     store = config["store"]
     _only_keys(store, {"implementation", "config"}, "store")
     if store["implementation"] != "local" or set(store["config"]) - {"root_dir"}:
-        raise ValueError("store: stage 07 supports only local with root_dir")
+        raise ValueError("store: V1 supports only local with root_dir")
     relative_store = Path(store["config"].get("root_dir", "artifacts"))
     if relative_store.is_absolute() or ".." in relative_store.parts or relative_store == Path("."):
         raise ValueError("store.config.root_dir: must be a relative subdirectory of run.output_dir")
     run_dir = Path(config["run"]["output_dir"])
     if run_dir.exists():
         raise ValueError(f"run.output_dir: already exists: {run_dir}; use a fresh directory")
+
+    created: list[OpenAICompatibleBackend] = []
+    try:
+        backend = _backend(models["default"], "models.default")
+        if isinstance(backend, OpenAICompatibleBackend):
+            created.append(backend)
+        modules = make_llm_modules(backend, top_l=retrieval.get("top_l", 20),
+                                   max_selected=selection.get("max_selected", 5))
+        for role, spec in models.get("roles", {}).items():
+            role_backend = _backend(spec, f"models.roles.{role}")
+            if isinstance(role_backend, OpenAICompatibleBackend):
+                created.append(role_backend)
+            getattr(modules, role).backend = role_backend
+    except Exception:
+        for item in created:
+            item.close()
+        raise
     return dataset, modules, run_dir, relative_store, revision.get("max_attempts", 2)
 
 
@@ -133,7 +152,7 @@ def _code_version() -> str:
 
 
 def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
-                   seen_ids: set[str]) -> int:
+                   seen_ids: set[str], request_context: dict[str, str] | None = None) -> int:
     count = 0
     iterator = iter(dataset.load(split))
     while True:
@@ -146,6 +165,8 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
         if sample.sample_id in seen_ids:
             raise RuntimeError(f"sample {sample.sample_id!r}, stage dataset: duplicate ID across splits")
         seen_ids.add(sample.sample_id)
+        if request_context is not None:
+            request_context.update(sample_id=sample.sample_id, split=split)
         try:
             runner.run_sample(sample)
         except Exception as exc:
@@ -160,7 +181,13 @@ def run(config_path: str | Path) -> dict[str, Any]:
     try:
         config = load_config(config_path)
         dataset, modules, run_dir, store_root, max_attempts = _components(config)
-        manifest = {"format_version": 1, "config": config, "code_version": _code_version()}
+        backend_names = {spec["backend"] for spec in
+                         [config["models"]["default"], *config["models"].get("roles", {}).values()]}
+        manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
+                    "dataset_version": "jsonl/v1",
+                    "module_versions": {name: "v1" for name in _IMPLEMENTATIONS},
+                    "backend_versions": {name: "v1" for name in sorted(backend_names)},
+                    "prompt_versions": {role: PROMPT_VERSION for role in _ROLES}}
         serialized = json.dumps(manifest, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     except (ValueError, OSError, TypeError) as exc:
         raise ConfigError(str(exc)) from exc
@@ -171,16 +198,33 @@ def run(config_path: str | Path) -> dict[str, Any]:
     root = run_dir / store_root
     memory = ExperienceMemory(root)
     trajectories = TrajectoryLog(root)
-    runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts)
-    seen_ids: set[str] = set()
-    train_count = _process_split(runner, dataset, "train", seen_ids)
-    test_count = 0
-    if "test" in dataset.paths:
-        # 测试阶段复用训练后的 Memory，完全不写回信用或生成经验。
-        evaluation = PipelineRunner(modules, ExperienceMemory(root, read_only=True),
-                                    trajectories, training=False, max_attempts=max_attempts)
-        test_count = _process_split(evaluation, dataset, "test", seen_ids)
-    return {"run_dir": str(run_dir), "train_samples": train_count, "test_samples": test_count}
+    request_context: dict[str, str] = {}
+
+    def save_request(event: dict[str, Any]) -> None:
+        # 只记录白名单元数据；不记录消息、偏好文本或 API key。
+        with (root / "llm_requests.jsonl").open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps({**request_context, "backend": "openai_compatible", **event},
+                                    ensure_ascii=False, allow_nan=False) + "\n")
+
+    backends = {id(item): item for item in [modules.backend, *(
+        getattr(modules, role).backend for role in _ROLES)]
+        if isinstance(item, OpenAICompatibleBackend)}
+    for item in backends.values():
+        item.metadata_hook = save_request
+    try:
+        runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts)
+        seen_ids: set[str] = set()
+        train_count = _process_split(runner, dataset, "train", seen_ids, request_context)
+        test_count = 0
+        if "test" in dataset.paths:
+            # 测试阶段复用训练后的 Memory，完全不写回信用或生成经验。
+            evaluation = PipelineRunner(modules, ExperienceMemory(root, read_only=True),
+                                        trajectories, training=False, max_attempts=max_attempts)
+            test_count = _process_split(evaluation, dataset, "test", seen_ids, request_context)
+        return {"run_dir": str(run_dir), "train_samples": train_count, "test_samples": test_count}
+    finally:
+        for item in backends.values():
+            item.close()
 
 
 def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:

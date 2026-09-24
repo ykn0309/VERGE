@@ -1,0 +1,48 @@
+# 用自己的模型名和 OPENAI_API_KEY 环境变量运行；此示例不会保存密钥。
+run:
+  seed: 42
+  output_dir: runs/openai-example
+
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: configs/data/demo_train.jsonl
+      test: configs/data/demo_test.jsonl
+
+models:
+  default:
+    backend: openai_compatible
+    model: gpt-4.1-mini
+    base_url: https://api.openai.com/v1
+    api_key_env: OPENAI_API_KEY
+    timeout_seconds: 30
+    max_retries: 2
+  roles: {}
+
+modules:
+  retrieval:
+    implementation: fake  # 当前仅离线广召回；真实向量检索属于后续模块实现。
+    config:
+      top_l: 20
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 0
+  revision:
+    implementation: two_attempt_same_base
+    config:
+      max_attempts: 2
+  revision_credit:
+    implementation: operation_bound
+    config:
+      max_budget: 1.0
+  reliability:
+    implementation: beta
+    config: {}
+
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

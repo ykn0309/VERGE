@@ -17,8 +17,8 @@
 ## 2. 当前状态
 
 ```text
-当前阶段：03 — 配置与数据输入已完成
-下一个计划：04 — LLM 接口与 Fake Modules
+当前阶段：04 — LLM 接口与 Fake Modules 已完成
+下一个计划：05 — Experience Memory 与 Trajectory
 当前阻塞：无
 ```
 
@@ -37,7 +37,7 @@
 - [x] [01 — 领域模型](docs/plans/01-领域模型.md)
 - [x] [02 — 确定性计算](docs/plans/02-确定性计算.md)
 - [x] [03 — 配置与数据输入](docs/plans/03-配置与数据输入.md)
-- [ ] [04 — LLM 接口与 Fake Modules](docs/plans/04-LLM接口与Fake模块.md)
+- [x] [04 — LLM 接口与 Fake Modules](docs/plans/04-LLM接口与Fake模块.md)
 - [ ] [05 — Experience Memory 与 Trajectory](docs/plans/05-经验记忆与轨迹.md)
 - [ ] [06 — Pipeline Runner](docs/plans/06-Pipeline-Runner.md)
 - [ ] [07 — CLI](docs/plans/07-CLI.md)
@@ -45,7 +45,7 @@
 
 ### 下一项计划
 
-> [04 — LLM 接口与 Fake Modules](docs/plans/04-LLM接口与Fake模块.md)
+> [05 — Experience Memory 与 Trajectory](docs/plans/05-经验记忆与轨迹.md)
 
 完成后应更新本文件：勾选计划、修改“当前阶段”，并明确下一项计划。
 

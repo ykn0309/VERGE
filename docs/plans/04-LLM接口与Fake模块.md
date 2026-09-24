@@ -3,7 +3,7 @@
 ## 状态
 
 ```text
-状态：待开始
+状态：已完成
 前置计划：03 — 配置与数据输入
 后续计划：05 — Experience Memory 与 Trajectory
 ```
@@ -67,4 +67,4 @@ generate(role, payload) -> structured result
 
 ## 完成记录
 
-待完成后填写。
+`LLMBackend.generate(role, payload)` 定义统一 structured-output 边界；`FakeLLMBackend` 固定支持 initial success、attempt 1/2 success 和 final failure，并可配置空反思、无绑定或 Admission FAIL。`verge/modules.py` 提供十种模块 Protocol、离线 FakeRetriever 和九个复用同一 Backend 的角色模块；Judge 的 Boolean 结果由 Backend 给出，权重/margin 与 revision credit 只由 Calculator 计算。`ExperienceView` 隔离经验来源和证据；preference-blind 角色只接受 task 与经验投影；所有修订角色的 payload 不包含 criterion 来源，Revision Generator 的来源输出会被忽略；Fusion 只接收 content/trigger 文本（匹配位置由调用方映射成 ID）。Executor 和 Runner 留待计划 06，测试中仅对固定 MODIFY 使用轻量 fixture。`tests/test_modules.py` 覆盖分支、隔离、malformed structured output、修订尝试 ID 一致性及 Admission credit 边界。`python3 -m pytest -q`：67 passed。

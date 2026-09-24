@@ -2,26 +2,30 @@ run:
   seed: 42
   output_dir: runs/default
 
+# 离线可运行的 Fake 示例；替换数据路径/Backend 后可用于真实实验。
 dataset:
-  implementation: placeholder
-  config: {}
+  implementation: jsonl
+  config:
+    paths:
+      train: configs/data/demo_train.jsonl
+      test: configs/data/demo_test.jsonl
 
 models:
   default:
-    backend: placeholder
-    model: placeholder
+    backend: fake
+    model: attempt_1_success
   roles: {}
 
 modules:
   retrieval:
-    implementation: vector
+    implementation: fake
     config:
       top_l: 20
   selection:
     implementation: llm
     config:
       max_selected: 5
-      exploration_slots: 1
+      exploration_slots: 0
   revision:
     implementation: two_attempt_same_base
     config:

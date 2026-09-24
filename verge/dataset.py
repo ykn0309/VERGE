@@ -56,17 +56,20 @@ class JsonlDataset:
                     raise ValueError(f"{position}: invalid JSON: {exc}") from exc
                 if not isinstance(row, dict):
                     raise ValueError(f"{position}: expected a JSON object")
+                row_id = row.get(self.field_map["sample_id"])
+                location = (f"{position}: sample_id={row_id!r}"
+                            if isinstance(row_id, str) and row_id.strip() else position)
                 data: dict[str, Any] = {}
                 for field in _FIELDS:
                     column = self.field_map[field]
                     if column not in row:
-                        raise ValueError(f"{position}: missing {field} (column {column!r})")
+                        raise ValueError(f"{location}: missing {field} (column {column!r})")
                     data[field] = row[column]
                 data["metadata"] = row.get(self.field_map["metadata"], {})
                 try:
                     sample = PreferenceSample.from_dict(data)
                 except ValueError as exc:
-                    raise ValueError(f"{position}: {exc}") from exc
+                    raise ValueError(f"{location}: {exc}") from exc
                 if sample.sample_id in seen:
                     raise ValueError(f"{position}: duplicate sample_id {sample.sample_id!r}")
                 seen.add(sample.sample_id)

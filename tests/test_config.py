@@ -14,7 +14,8 @@ DEFAULT = Path(__file__).resolve().parents[1] / "configs" / "default.yaml"
 def test_default_config_loads_without_creating_output_dir():
     config = load_config(DEFAULT)
     assert config["run"] == {"seed": 42, "output_dir": "runs/default"}
-    assert config["dataset"]["implementation"] == "placeholder"
+    assert config["dataset"]["implementation"] == "jsonl"
+    assert config["models"]["default"]["backend"] == "fake"
     assert config["modules"]["revision"]["config"]["max_attempts"] == 2
     assert not Path("runs/default").exists()
 
@@ -82,6 +83,7 @@ def test_exploration_slots_cannot_exceed_selection_limit(tmp_path):
 
     data = load_config(DEFAULT)
     data["modules"]["selection"]["config"]["max_selected"] = 0
+    data["modules"]["selection"]["config"]["exploration_slots"] = 1
     file = tmp_path / "invalid.yaml"
     file.write_text(yaml.safe_dump(data), encoding="utf-8")
     with pytest.raises(ValueError, match="exploration_slots: cannot exceed max_selected"):

@@ -127,6 +127,7 @@ class PipelineRunner:
         self.evidence_weight = evidence_weight
         self.max_attempts = max_attempts
         self.executor = executor if executor is not None else RevisionExecutor()
+        self.current_stage = "not_started"
 
     def run(self, samples: Iterable[PreferenceSample]) -> list[TrajectoryRecord]:
         """按输入顺序处理，上一样本的 Memory 更新立即对下一样本可见。"""
@@ -138,18 +139,23 @@ class PipelineRunner:
             raise ValueError("runner requires PreferenceSample")
         modules = self.modules
         # 召回、筛选和初始生成只看 task；preference pair 从 Judge 阶段才可见。
+        self.current_stage = "retrieval"
         recalled = modules.retriever.retrieve(sample.task, self.memory.all())
         views = [ExperienceView.from_experience(item) for item in recalled]
+        self.current_stage = "selection"
         selected = modules.selector.select(sample.task, views, training=self.training)
         recalled_ids = {item.experience_id for item in views}
         if any(item.experience_id not in recalled_ids for item in selected):
             raise ValueError("selected experiences must be retrieved experiences")
+        self.current_stage = "initial_generator"
         initial = modules.initial_generator.generate(sample.task, selected)
         if initial.base_rubric_id is not None:
             raise ValueError("initial rubric must not have a revision base")
+        self.current_stage = "initial_judge"
         initial_judgment = modules.judge.judge(initial, sample.chosen, sample.rejected)
         # 已有经验的下游信用只由 R0 计算，立即写盘；后续修订失败也不回滚。
         if self.training:
+            self.current_stage = "existing_credit"
             credits = calculate_existing_experience_credit(initial, initial_judgment)
             self.memory.apply_downstream_credits(sample.sample_id, credits,
                                                  evidence_weight=self.evidence_weight)
@@ -160,12 +166,16 @@ class PipelineRunner:
         # 训练时仅对失败的 R0 修订；每次尝试都以 R0 为基线，而非接续上次结果。
         if self.training and not initial_judgment.success:
             for number in range(1, self.max_attempts + 1):
+                self.current_stage = f"revision_{number}.critic"
                 feedback = modules.critic.critique(
                     sample.task, sample.chosen, sample.rejected, initial, initial_judgment,
                     attempts[-1] if attempts else None,
                 )
+                self.current_stage = f"revision_{number}.generator"
                 operations = modules.revision_generator.generate(sample.task, initial, feedback, number)
+                self.current_stage = f"revision_{number}.executor"
                 revised, executed = self.executor.execute(initial, operations, number)
+                self.current_stage = f"revision_{number}.judge"
                 revised_judgment = modules.judge.judge(
                     revised, sample.chosen, sample.rejected,
                     previous=initial, previous_judgment=initial_judgment,
@@ -176,14 +186,18 @@ class PipelineRunner:
                 # 失败尝试仅留在轨迹；只对首次成功的操作反思、归因并生成候选。
                 if revised_judgment.success:
                     state = f"revision_success_{number}"
+                    self.current_stage = "reflection"
                     reflected = modules.reflector.reflect(sample.task, initial, initial_judgment,
                                                           attempt)
+                    self.current_stage = "operation_contribution"
                     contributions = calculate_operation_contributions(
                         initial, initial_judgment, revised, revised_judgment, executed,
                     )
+                    self.current_stage = "revision_budget"
                     budget = calculate_revision_budget(
                         initial, initial_judgment, revised, revised_judgment, self.evidence_weight,
                     )
+                    self.current_stage = "revision_credit"
                     candidates = modules.revision_credit_assigner.assign(
                         reflected, executed, contributions, budget,
                     )
@@ -191,14 +205,17 @@ class PipelineRunner:
                     for index, candidate in enumerate(candidates):
                         if candidate.credit is None or not candidate.linked_operation_ids:
                             continue  # CREDIT_FAIL：不得进入 Admission。
+                        self.current_stage = "admission"
                         reviewed = modules.admission_checker.check(
                             sample.task, candidate, attempt, contributions,
                         )
                         if reviewed.admission == "PASS":
                             # 每条候选的召回必须观察此前 ADD/MERGE 的最新经验池。
+                            self.current_stage = "fusion_retrieval"
                             pool = modules.retriever.retrieve(
                                 f"{reviewed.content} {reviewed.trigger}", self.memory.all(),
                             )
+                            self.current_stage = "fusion_judge"
                             match = modules.fusion_judge.find_match(
                                 reviewed.content, reviewed.trigger,
                                 [(item.content, item.trigger) for item in pool],
@@ -206,6 +223,7 @@ class PipelineRunner:
                             if match is not None and (type(match) is not int or
                                                       not 0 <= match < len(pool)):
                                 raise ValueError("fusion match must be a recalled experience index")
+                            self.current_stage = "fusion_write"
                             reviewed = self.memory.fuse(
                                 reviewed, sample.sample_id,
                                 pool[match].experience_id if match is not None else None,
@@ -215,6 +233,7 @@ class PipelineRunner:
         elif not self.training and not initial_judgment.success:
             state = "initial_failure"  # held-out evaluation 不 revision、不写入信用。
         # 汇总完整阶段结果；只有正常结束的样本才追加轨迹。
+        self.current_stage = "trajectory"
         record = TrajectoryRecord(sample.sample_id, state,
                                   [item.experience_id for item in recalled],
                                   [item.experience_id for item in selected],

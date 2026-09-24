@@ -3,7 +3,7 @@
 ## 状态
 
 ```text
-状态：待开始
+状态：已完成
 前置计划：05 — Experience Memory 与 Trajectory
 后续计划：07 — CLI
 ```
@@ -62,4 +62,8 @@ Retrieval
 
 ## 完成记录
 
-待完成后填写。
+- `verge/pipeline.py` 实现 `RevisionExecutor` 与 `PipelineRunner`：R1/R2 均基于 R0 执行，补齐原标准，只允许真正改变问题或 importance score 的 MODIFY；修订后 rubric 不携带旧经验来源。
+- 初始 Judge 后立即写入下游信用；修订成功后依次反思、绑定、计算候选信用、准入与 ADD/MERGE，并逐条立即写入 Memory。失败的修订不反思；评估模式只执行初始生成和 Judge，不写 Memory。
+- 对相同问题（含换 criterion ID）检查 Boolean judgment 复用，防止重新判断产生虚假修订收益。
+- `tests/test_pipeline.py` 覆盖全部九条指定分支、空操作后继续第二次修订、跨样本即时更新、Admission FAIL 后不重新分配信用、单条候选顺序 Fusion、无 preference 泄漏和只读评估。
+- `python3 -m pytest -q`：94 passed；`python3 -m compileall -q verge` 与 `git diff --check` 通过。

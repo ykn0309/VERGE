@@ -1,0 +1,49 @@
+# DashScope 北京地域的 OpenAI 兼容接口；仅保存环境变量名，不保存 API key。
+run:
+  seed: 42
+  output_dir: runs/qwen3.5-flash
+
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: configs/data/demo_train.jsonl
+      test: configs/data/demo_test.jsonl
+
+models:
+  default:
+    backend: openai_compatible
+    model: qwen3.5-flash
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY_2
+    enable_thinking: false  # JSON 模式建议关闭思考；仅对支持该参数的服务启用。
+    timeout_seconds: 30
+    max_retries: 2
+  roles: {}
+
+modules:
+  retrieval:
+    implementation: fake  # 目前真实模型仅替换 LLM；检索仍为 Fake。
+    config:
+      top_l: 20
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 0
+  revision:
+    implementation: two_attempt_same_base
+    config:
+      max_attempts: 2
+  revision_credit:
+    implementation: operation_bound
+    config:
+      max_budget: 1.0
+  reliability:
+    implementation: beta
+    config: {}
+
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

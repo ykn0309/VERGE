@@ -108,7 +108,8 @@ class OpenAICompatibleBackend:
 
     def __init__(self, model: str, *, base_url: str = "https://api.openai.com/v1",
                  api_key_env: str = "OPENAI_API_KEY", timeout_seconds: float = 30,
-                 max_retries: int = 2, client: httpx.Client | None = None,
+                 max_retries: int = 2, enable_thinking: bool | None = None,
+                 client: httpx.Client | None = None,
                  metadata_hook: Callable[[dict[str, Any]], None] | None = None,
                  sleep: Callable[[float], None] = time.sleep) -> None:
         if not isinstance(model, str) or not model.strip():
@@ -130,6 +131,9 @@ class OpenAICompatibleBackend:
             raise ValueError("timeout_seconds must be in (0, 300]")
         if type(max_retries) is not int or not 0 <= max_retries <= 5:
             raise ValueError("max_retries must be an integer in [0, 5]")
+        if enable_thinking is not None and type(enable_thinking) is not bool:
+            raise ValueError("enable_thinking must be Boolean when specified")
+        self.enable_thinking = enable_thinking
         self.model = model
         self._key = key
         self.max_retries = max_retries
@@ -174,11 +178,14 @@ class OpenAICompatibleBackend:
         messages = llm_messages(role, payload)
         for attempt in range(1, self.max_retries + 2):
             try:
+                request_body: dict[str, Any] = {"model": self.model, "messages": messages,
+                                                "response_format": {"type": "json_object"}}
+                if self.enable_thinking is not None:
+                    request_body["enable_thinking"] = self.enable_thinking
                 response = self._client.post(
                     "chat/completions",
                     headers={"Authorization": f"Bearer {self._key}"},
-                    json={"model": self.model, "messages": messages,
-                          "response_format": {"type": "json_object"}},
+                    json=request_body,
                 )
             except (httpx.TimeoutException, httpx.TransportError) as exc:
                 self._metadata(role, attempt)

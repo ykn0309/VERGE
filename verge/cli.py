@@ -49,8 +49,9 @@ def _backend(spec: dict[str, Any], path: str) -> LLMBackend:
         return FakeLLMBackend(spec["model"])
     if spec["backend"] == "openai_compatible":
         _only_keys(spec, {"backend", "model", "base_url", "api_key_env",
-                          "timeout_seconds", "max_retries"}, path)
-        options = {key: spec[key] for key in ("base_url", "api_key_env", "timeout_seconds", "max_retries")
+                          "timeout_seconds", "max_retries", "enable_thinking"}, path)
+        options = {key: spec[key] for key in ("base_url", "api_key_env", "timeout_seconds",
+                                             "max_retries", "enable_thinking")
                    if key in spec}
         try:
             return OpenAICompatibleBackend(spec["model"], **options)

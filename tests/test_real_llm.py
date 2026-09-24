@@ -164,6 +164,8 @@ def test_missing_key_and_unsafe_url_fail_before_network(monkeypatch):
     with httpx.Client(base_url="https://api.openai.com/v1", follow_redirects=True) as redirecting:
         with pytest.raises(ValueError, match="client must use"):
             OpenAICompatibleBackend("mock-model", client=redirecting)
+    with pytest.raises(ValueError, match="enable_thinking must be Boolean"):
+        backend(monkeypatch, lambda _: result({"feedback": "ok"}), enable_thinking="false")
 
 
 def test_role_prompts_are_isolated_and_versioned():
@@ -214,6 +216,38 @@ def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys
     assert trajectory["state"] == "initial_success"
     events = (tmp_path / "role-run/artifacts/llm_requests.jsonl").read_text(encoding="utf-8")
     assert {json.loads(line)["role"] for line in events.splitlines()} == {"judge"}
+
+
+def test_qwen_config_sends_non_thinking_dashscope_request(tmp_path, monkeypatch, capsys):
+    config_file = Path(__file__).resolve().parents[1] / "configs/qwen3.5-flash.yaml"
+    config = yaml.safe_load(config_file.read_text(encoding="utf-8"))
+    spec = config["models"]["default"]
+    assert spec["model"] == "qwen3.5-flash"
+    assert spec["api_key_env"] == "DASHSCOPE_API_KEY_2"
+    assert spec["enable_thinking"] is False
+    config["run"]["output_dir"] = str(tmp_path / "qwen-run")
+    config["dataset"]["config"]["paths"].pop("test")
+    file = tmp_path / "qwen.yaml"
+    file.write_text(yaml.safe_dump(config, allow_unicode=True), encoding="utf-8")
+
+    fake = FakeLLMBackend("initial_success")
+    sent = []
+
+    def handler(request):
+        body = json.loads(request.content)
+        sent.append((request.url, body))
+        role = body["messages"][0]["content"].split("当前角色：", 1)[1].split("。", 1)[0]
+        return result(fake.generate(role, json.loads(body["messages"][1]["content"])))
+
+    mock_client = httpx.Client(base_url=spec["base_url"] + "/",
+                               transport=httpx.MockTransport(handler))
+    monkeypatch.setattr("verge.llm.httpx.Client", lambda **kwargs: mock_client)
+    monkeypatch.setenv("DASHSCOPE_API_KEY_2", "test-secret-never-log")
+    assert main(["run", "--config", str(file)]) == 0, capsys.readouterr().err
+    assert sent and all(url.path == "/compatible-mode/v1/chat/completions" for url, _ in sent)
+    assert all(body["model"] == "qwen3.5-flash" and body["enable_thinking"] is False
+               and body["response_format"] == {"type": "json_object"} for _, body in sent)
+    assert "test-secret-never-log" not in (tmp_path / "qwen-run/run_manifest.json").read_text()
 
 
 def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(tmp_path, monkeypatch,

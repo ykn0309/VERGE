@@ -60,4 +60,4 @@
 - `OpenAICompatibleBackend` 使用 Chat Completions JSON 模式；角色共享 `generate(role, payload)` 接口，角色 prompt 独立且记录 `v1` 版本。请求按配置切换模型/后端，HTTP 超时、限流、5xx 和缺字段/非法 JSON 均有有限重试；绑定为空及 Admission FAIL 不重试。
 - API key 仅从 `api_key_env` 指定的环境变量读取；拒绝配置明文 `api_key` 与带凭据的 URL。Manifest 记录 backend/model 和 prompt/module 版本；`artifacts/llm_requests.jsonl` 仅保存 sample ID、角色、模型、请求 ID、状态、usage 等白名单元数据。
 - `configs/default.yaml` 保留无需网络的 Fake 演示；真实 API 示例见 `configs/openai.example.yaml`。使用前先设 `OPENAI_API_KEY`，再执行 `python -m verge.cli run --config configs/openai.example.yaml`；按服务商修改模型和 HTTPS `base_url`。若服务商不支持 Chat Completions 的 `response_format: json_object`，需适配其协议，不能假定所有兼容接口完全相同。
-- 不改 Pipeline：MockTransport 已覆盖完整修订成功 trajectory 以及按角色选用真实 Backend。未在本机使用外部凭据发送真实网络请求；真实服务验收需持有凭据另行执行。现有 `fake` retrieval 仍非向量检索，本阶段只替换 LLM Backend。
+- 不改 Pipeline：MockTransport 已覆盖完整修订成功 trajectory 以及按角色选用真实 Backend。另提供 `configs/qwen3.5-flash.yaml`：DashScope 兼容接口使用官方模型 ID `qwen3.5-flash`、`DASHSCOPE_API_KEY_2` 环境变量名和 `enable_thinking: false`（确保 JSON 模式工作在非思考模式）。未在本机使用外部凭据发送真实网络请求；真实服务验收需持有凭据另行执行。现有 `fake` retrieval 仍非向量检索，本阶段只替换 LLM Backend。

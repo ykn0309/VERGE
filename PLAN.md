@@ -17,9 +17,9 @@
 ## 2. 当前状态
 
 ```text
-当前阶段：09 — RewardBench Chat Hard 内部分割与真实模型试运行已完成
+当前阶段：10 — DashScope 向量召回已完成
 下一个方向：独立训练数据与完整 held-out evaluation
-当前阻塞：尚无独立于 RewardBench 的真实训练集与完整 held-out 验证
+当前阻塞：效果比较仍需构建独立训练集与更大的经验池
 ```
 
 已完成：
@@ -43,10 +43,11 @@
 - [x] [07 — CLI](docs/plans/07-CLI.md)
 - [x] [08 — 真实 LLM Backend](docs/plans/08-真实LLM后端.md)
 - [x] [09 — RewardBench Chat Hard](docs/plans/09-RewardBench-Chat-Hard.md)
+- [x] [10 — DashScope 向量召回](docs/plans/10-DashScope-向量召回.md)
 
 ### 下一项方向
 
-> Chat Hard 六子集每类 1 train + 1 test 的内部试运行已完成，测试初始判别 5/6，但训练用到了 benchmark，结果不可与官方榜单比较。下一步使用独立训练数据构建经验池，再规划完整 held-out evaluation。
+> Chat Hard 内部试运行已完成（初始判别 5/6，非官方成绩）。当前先把 FakeRetriever 换为真实语义召回；然后使用独立训练数据构建经验池，规划完整 held-out evaluation。
 
 ## 4. V1 目标
 

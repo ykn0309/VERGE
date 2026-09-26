@@ -238,6 +238,106 @@ class OpenAICompatibleBackend:
         raise AssertionError("unreachable retry state")
 
 
+class OpenAICompatibleEmbedding:
+    """同一 API key 的密集文本向量接口；错误消息不包含正文或凭据。"""
+
+    def __init__(self, model: str, *, base_url: str, api_key_env: str,
+                 dimensions: int = 1024, timeout_seconds: float = 30,
+                 max_retries: int = 2, client: httpx.Client | None = None,
+                 metadata_hook: Callable[[dict[str, Any]], None] | None = None,
+                 sleep: Callable[[float], None] = time.sleep) -> None:
+        parsed = urlsplit(base_url)
+        if (not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment
+                or parsed.scheme not in ("https", "http")
+                or (parsed.scheme == "http" and parsed.hostname not in ("localhost", "127.0.0.1", "::1"))):
+            raise ValueError("embedding base_url requires HTTPS without credentials or query")
+        if not isinstance(model, str) or not model.strip():
+            raise ValueError("embedding model must be non-empty")
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", api_key_env):
+            raise ValueError("embedding api_key_env must name an environment variable")
+        key = os.environ.get(api_key_env)
+        if not key:
+            raise ValueError(f"embedding api_key_env: environment variable {api_key_env} is missing")
+        if type(dimensions) is not int or dimensions not in (64, 128, 256, 512, 768, 1024, 1536, 2048):
+            raise ValueError("embedding dimensions must be a supported text-embedding-v4 dimension")
+        if type(timeout_seconds) not in (int, float) or not 0 < timeout_seconds <= 300:
+            raise ValueError("embedding timeout_seconds must be in (0, 300]")
+        if type(max_retries) is not int or not 0 <= max_retries <= 5:
+            raise ValueError("embedding max_retries must be in [0, 5]")
+        if client is not None and (str(client.base_url).rstrip("/") != base_url.rstrip("/")
+                                   or client.follow_redirects):
+            raise ValueError("embedding client must use the validated base_url without redirects")
+        self.model, self.dimensions, self._key = model, dimensions, key
+        self.max_retries, self.metadata_hook, self._sleep = max_retries, metadata_hook, sleep
+        self._client = client if client is not None else httpx.Client(
+            base_url=base_url.rstrip("/") + "/", timeout=timeout_seconds, follow_redirects=False,
+        )
+        self._owns_client = client is None
+
+    def close(self) -> None:
+        if self._owns_client:
+            self._client.close()
+
+    def embed(self, text: str) -> tuple[float, ...]:
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError("embedding input must be non-empty text")
+        for attempt in range(1, self.max_retries + 2):
+            status = None
+            usage: dict[str, int] = {}
+            try:
+                response = self._client.post(
+                    "embeddings", headers={"Authorization": f"Bearer {self._key}"},
+                    json={"model": self.model, "input": text, "dimensions": self.dimensions,
+                          "encoding_format": "float"},
+                )
+            except (httpx.TimeoutException, httpx.TransportError) as exc:
+                if attempt <= self.max_retries:
+                    self._sleep(min(2 ** (attempt - 1), 8))
+                    continue
+                raise LLMRequestError(f"embedding: request failed after {attempt} attempts ({type(exc).__name__})") from None
+            status = response.status_code
+            if status == 429 or 500 <= status < 600:
+                if attempt <= self.max_retries:
+                    retry_after = response.headers.get("retry-after", "")
+                    try:
+                        delay = float(retry_after)
+                    except ValueError:
+                        delay = 2 ** (attempt - 1)
+                    if not math.isfinite(delay):
+                        delay = 2 ** (attempt - 1)
+                    self._sleep(min(max(delay, 0), 8))
+                    continue
+                raise LLMRequestError(f"embedding: HTTP {status} after {attempt} attempts")
+            if not 200 <= status < 300:
+                raise LLMRequestError(f"embedding: HTTP {status}")
+            try:
+                body = json.loads(response.text, parse_constant=_reject_constant)
+                data = body["data"]
+                if not isinstance(data, list) or len(data) != 1 or data[0]["index"] != 0:
+                    raise ValueError("invalid embedding data")
+                vector = data[0]["embedding"]
+                if (not isinstance(vector, list) or len(vector) != self.dimensions
+                        or any(type(value) not in (int, float) or not math.isfinite(value)
+                               for value in vector)
+                        or not any(value != 0 for value in vector)):
+                    raise ValueError("invalid embedding vector")
+                if isinstance(body.get("usage"), dict):
+                    usage = {key: body["usage"][key] for key in ("prompt_tokens", "total_tokens")
+                             if type(body["usage"].get(key)) is int and body["usage"][key] >= 0}
+            except (ValueError, TypeError, KeyError, IndexError, AttributeError):
+                raise LLMFormatError("embedding: invalid vector response") from None
+            if self.metadata_hook is not None:
+                event: dict[str, Any] = {"role": "embedding", "model": self.model,
+                                         "attempt": attempt, "status": status, "usage": usage}
+                request_id = response.headers.get("x-request-id", "")
+                if (request_id and self._key not in request_id and len(request_id) <= 128
+                        and request_id.isascii() and request_id.isprintable()):
+                    event["request_id"] = request_id
+                self.metadata_hook(event)
+            return tuple(vector)
+        raise AssertionError("unreachable embedding retry state")
+
+
 class FakeLLMBackend:
     """用于无网络 contract/pipeline 测试；不是实际语义评价器。"""
 

@@ -10,12 +10,13 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Sequence
+from urllib.parse import urlsplit
 
 from verge.config import load_config
 from verge.dataset import CHAT_HARD_SUBSETS, JsonlDataset, prepare_rewardbench_chat_hard
-from verge.llm import FakeLLMBackend, LLMBackend, OpenAICompatibleBackend
+from verge.llm import FakeLLMBackend, LLMBackend, OpenAICompatibleBackend, OpenAICompatibleEmbedding
 from verge.memory import ExperienceMemory, TrajectoryLog
-from verge.modules import make_llm_modules
+from verge.modules import VectorRetriever, make_llm_modules
 from verge.pipeline import PipelineRunner
 from verge.prompts import PROMPT_VERSION
 
@@ -90,13 +91,32 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         raise ValueError(f"modules: expected exactly {', '.join(_IMPLEMENTATIONS)}")
     for name, implementation in _IMPLEMENTATIONS.items():
         _only_keys(configured[name], {"implementation", "config"}, f"modules.{name}")
-        if configured[name]["implementation"] != implementation:
-            raise ValueError(f"modules.{name}.implementation: V1 supports only {implementation}")
+        if (configured[name]["implementation"] != implementation
+                and not (name == "retrieval" and configured[name]["implementation"] == "vector")):
+            raise ValueError(f"modules.{name}.implementation: V1 supports only {implementation}"
+                             + (" or vector" if name == "retrieval" else ""))
     retrieval = configured["retrieval"]["config"]
+    vector_retrieval = configured["retrieval"]["implementation"] == "vector"
+    retrieval_keys = {"top_l", "embedding_model", "dimensions"} if vector_retrieval else {"top_l"}
+    if vector_retrieval:
+        if models["default"]["backend"] != "openai_compatible":
+            raise ValueError("modules.retrieval: vector requires an openai_compatible default model")
+        embedding_url = models["default"].get("base_url")
+        parsed = urlsplit(embedding_url) if isinstance(embedding_url, str) else None
+        if (parsed is None or parsed.hostname not in {
+                "dashscope.aliyuncs.com", "dashscope-intl.aliyuncs.com",
+                "dashscope-us.aliyuncs.com",
+            } or parsed.path.rstrip("/") != "/compatible-mode/v1"):
+            raise ValueError("modules.retrieval: vector requires a DashScope compatible-mode/v1 base_url")
+        if retrieval.get("embedding_model") != "text-embedding-v4":
+            raise ValueError("modules.retrieval.config.embedding_model: expected text-embedding-v4")
+        if (type(retrieval.get("dimensions", 1024)) is not int
+                or retrieval.get("dimensions", 1024) not in (64, 128, 256, 512, 768, 1024, 1536, 2048)):
+            raise ValueError("modules.retrieval.config.dimensions: unsupported text-embedding-v4 dimension")
     selection = configured["selection"]["config"]
     revision = configured["revision"]["config"]
     credit = configured["revision_credit"]["config"]
-    if (set(retrieval) - {"top_l"} or set(selection) - {"max_selected", "exploration_slots"}
+    if (set(retrieval) - retrieval_keys or set(selection) - {"max_selected", "exploration_slots"}
             or set(revision) - {"max_attempts"} or set(credit) - {"max_budget"}
             or configured["reliability"]["config"]):
         raise ValueError("modules: unsupported V1 component options")
@@ -116,13 +136,27 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     if run_dir.exists():
         raise ValueError(f"run.output_dir: already exists: {run_dir}; use a fresh directory")
 
-    created: list[OpenAICompatibleBackend] = []
+    created: list[OpenAICompatibleBackend | OpenAICompatibleEmbedding] = []
     try:
         backend = _backend(models["default"], "models.default")
         if isinstance(backend, OpenAICompatibleBackend):
             created.append(backend)
+        retriever = None
+        if vector_retrieval:
+            default = models["default"]
+            embedder = OpenAICompatibleEmbedding(
+                retrieval["embedding_model"],
+                base_url=default.get("base_url", "https://api.openai.com/v1"),
+                api_key_env=default.get("api_key_env", "OPENAI_API_KEY"),
+                dimensions=retrieval.get("dimensions", 1024),
+                timeout_seconds=default.get("timeout_seconds", 30),
+                max_retries=default.get("max_retries", 2),
+            )
+            created.append(embedder)
+            retriever = VectorRetriever(embedder, retrieval.get("top_l", 20))
         modules = make_llm_modules(backend, top_l=retrieval.get("top_l", 20),
-                                   max_selected=selection.get("max_selected", 5))
+                                   max_selected=selection.get("max_selected", 5),
+                                   retriever=retriever)
         for role, spec in models.get("roles", {}).items():
             role_backend = _backend(spec, f"models.roles.{role}")
             if isinstance(role_backend, OpenAICompatibleBackend):
@@ -222,6 +256,9 @@ def run(config_path: str | Path) -> dict[str, Any]:
         if isinstance(item, OpenAICompatibleBackend)}
     for item in backends.values():
         item.metadata_hook = save_request
+    embedder = modules.retriever.backend if isinstance(modules.retriever, VectorRetriever) else None
+    if isinstance(embedder, OpenAICompatibleEmbedding):
+        embedder.metadata_hook = save_request
     try:
         runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts)
         seen_ids: set[str] = set()
@@ -236,6 +273,8 @@ def run(config_path: str | Path) -> dict[str, Any]:
     finally:
         for item in backends.values():
             item.close()
+        if isinstance(embedder, OpenAICompatibleEmbedding):
+            embedder.close()
 
 
 def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:

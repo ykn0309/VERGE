@@ -91,6 +91,42 @@ def test_config_error_exits_2_without_creating_run_directory(tmp_path):
     assert not (tmp_path / "result").exists()
 
 
+def test_vector_retrieval_requires_real_backend_and_reuses_qwen_key(tmp_path, monkeypatch):
+    config, data = experiment(tmp_path, with_test=False)
+    data["modules"]["retrieval"] = {"implementation": "vector", "config": {
+        "top_l": 20, "embedding_model": "text-embedding-v4", "dimensions": 1024,
+    }}
+    config.write_text(yaml.safe_dump(data), encoding="utf-8")
+    result = command("run", "--config", str(config))
+    assert result.returncode == 2 and "vector requires" in result.stderr
+    assert not (tmp_path / "result").exists()
+    monkeypatch.setenv("DASHSCOPE_API_KEY_2", "private-test-key")
+    data["models"]["default"] = {
+        "backend": "openai_compatible", "model": "qwen3.5-flash",
+        "base_url": "https://api.openai.com/v1", "api_key_env": "DASHSCOPE_API_KEY_2",
+    }
+    config.write_text(yaml.safe_dump(data), encoding="utf-8")
+    result = command("run", "--config", str(config))
+    assert result.returncode == 2 and "requires a DashScope" in result.stderr
+    assert not (tmp_path / "result").exists()
+    data["models"]["default"]["base_url"] = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    from verge.cli import _components
+    from verge.modules import VectorRetriever
+    _, modules, _, _, _ = _components(data)
+    try:
+        assert isinstance(modules.retriever, VectorRetriever)
+        assert modules.retriever.backend._key == modules.backend._key == "private-test-key"
+        assert modules.retriever.retrieve("task", []) == []  # 无经验时不产生网络请求
+    finally:
+        modules.retriever.backend.close()
+        modules.backend.close()
+    data["modules"]["retrieval"]["config"]["dimensions"] = True
+    config.write_text(yaml.safe_dump(data), encoding="utf-8")
+    result = command("run", "--config", str(config))
+    assert result.returncode == 2 and "dimensions" in result.stderr
+    assert not (tmp_path / "result").exists()
+
+
 def test_unrecognized_secret_config_is_rejected_before_manifest_write(tmp_path):
     config, data = experiment(tmp_path, with_test=False)
     data["models"]["default"]["api_key"] = "should-never-be-persisted"

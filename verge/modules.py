@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+from math import isfinite, sqrt
 from typing import Any, Mapping, Protocol, Sequence
 
 from verge.calculator import allocate_revision_credit, calculate_rubric_judgment
@@ -127,6 +128,52 @@ class FakeRetriever:
     def retrieve(self, task: str, experiences: Sequence[Experience]) -> list[Experience]:
         _text(task, "task")
         return list(experiences[:self.top_l])
+
+
+class EmbeddingBackend(Protocol):
+    def embed(self, text: str) -> tuple[float, ...]: ...
+
+
+class VectorRetriever:
+    """进程内缓存经验文本向量，用余弦相似度从 Memory 广召回 Top 20。"""
+
+    def __init__(self, backend: EmbeddingBackend, top_l: int = 20) -> None:
+        if type(top_l) is not int or top_l != 20:
+            raise ValueError("V1 retrieval top_l must be 20")
+        self.backend, self.top_l = backend, top_l
+        self._vectors: dict[str, tuple[tuple[str, str], tuple[float, ...]]] = {}
+
+    @staticmethod
+    def _unit(vector: tuple[float, ...]) -> tuple[float, ...]:
+        if (not isinstance(vector, (list, tuple)) or not vector
+                or any(type(x) not in (int, float) or not isfinite(x) for x in vector)):
+            raise ValueError("retrieval requires a finite embedding vector")
+        norm = sqrt(sum(x * x for x in vector))
+        if not isfinite(norm) or norm == 0:
+            raise ValueError("retrieval requires a nonzero embedding vector")
+        return tuple(x / norm for x in vector)
+
+    def retrieve(self, task: str, experiences: Sequence[Experience]) -> list[Experience]:
+        _text(task, "task")
+        if not experiences:
+            return []
+        if len({item.experience_id for item in experiences}) != len(experiences):
+            raise ValueError("retrieval requires unique experience IDs")
+        query = self._unit(self.backend.embed(task))
+        scored: list[tuple[float, str, Experience]] = []
+        for item in experiences:
+            text = (item.content, item.trigger)
+            cached = self._vectors.get(item.experience_id)
+            if cached is None or cached[0] != text:
+                vector = self._unit(self.backend.embed(f"{item.content}\n{item.trigger}"))
+                self._vectors[item.experience_id] = (text, vector)
+            else:
+                vector = cached[1]
+            if len(query) != len(vector):
+                raise ValueError("retrieval embedding dimensions disagree")
+            scored.append((sum(a * b for a, b in zip(query, vector)), item.experience_id, item))
+        scored.sort(key=lambda row: (-row[0], row[1]))
+        return [row[2] for row in scored[:self.top_l]]
 
 
 class LLMSelector:
@@ -405,7 +452,7 @@ class LLMModules:
     """角色适配器共享一个 backend；可由配置为各角色覆盖。"""
 
     backend: LLMBackend
-    retriever: FakeRetriever
+    retriever: Retriever
     selector: LLMSelector
     initial_generator: LLMInitialRubricGenerator
     judge: LLMJudge
@@ -421,9 +468,10 @@ FakeModules = LLMModules  # 向后兼容原有离线装配类型名。
 
 
 def make_llm_modules(backend: LLMBackend, *, top_l: int = 20,
-                     max_selected: int = 5) -> LLMModules:
-    """只装配各角色和当前 V1 的检索实现，不修改 Pipeline。"""
-    return LLMModules(backend, FakeRetriever(top_l), LLMSelector(backend, max_selected=max_selected),
+                     max_selected: int = 5, retriever: Retriever | None = None) -> LLMModules:
+    """装配各角色与可替换检索实现，不修改 Pipeline。"""
+    return LLMModules(backend, retriever if retriever is not None else FakeRetriever(top_l),
+                      LLMSelector(backend, max_selected=max_selected),
                       LLMInitialRubricGenerator(backend), LLMJudge(backend),
                       LLMCritic(backend), LLMRevisionGenerator(backend),
                       LLMReflector(backend), LLMRevisionCreditAssigner(backend),

@@ -17,9 +17,9 @@
 ## 2. 当前状态
 
 ```text
-当前阶段：10 — DashScope 向量召回已完成
+当前阶段：11 — Chat Hard 144/60 同源内部试验（准备中）
 下一个方向：独立训练数据与完整 held-out evaluation
-当前阻塞：效果比较仍需构建独立训练集与更大的经验池
+当前阻塞：先验证新划分并完成计费模型运行；同源内部试验不替代独立训练集
 ```
 
 已完成：
@@ -44,10 +44,11 @@
 - [x] [08 — 真实 LLM Backend](docs/plans/08-真实LLM后端.md)
 - [x] [09 — RewardBench Chat Hard](docs/plans/09-RewardBench-Chat-Hard.md)
 - [x] [10 — DashScope 向量召回](docs/plans/10-DashScope-向量召回.md)
+- [ ] [11 — Chat Hard 扩大样本内部试验](docs/plans/11-Chat-Hard-扩大样本内部试验.md)
 
 ### 下一项方向
 
-> Chat Hard 内部试运行已完成（初始判别 5/6，非官方成绩）。当前先把 FakeRetriever 换为真实语义召回；然后使用独立训练数据构建经验池，规划完整 held-out evaluation。
+> 12 条 Chat Hard smoke 已完成（初始判别 5/6，非官方成绩）；真实向量召回已实现。当前先在 Chat Hard 同源内做 144 训练 + 60 测试的新试验，之后再用独立训练数据规划跨源 held-out evaluation。
 
 ## 4. V1 目标
 

@@ -89,14 +89,18 @@ def _invalid_constant(token: str) -> None:
 
 
 def split_rewardbench_chat_hard(rows: Iterable[Mapping[str, Any]], *, seed: int = 42,
-                                per_subset: int = 2, train_per_subset: int = 1
+                                per_subset: int = 2, train_per_subset: int = 1,
+                                fixed_splits: Mapping[tuple[str, int], str] | None = None
                                 ) -> dict[str, list[dict[str, Any]]]:
-    """按官方六个子集确定性采样；同一 prompt 不得跨训练/测试出现。"""
+    """按官方六个子集确定性采样；可保留先前的 split 归属，且题面不跨 split。"""
     if type(seed) is not int or seed < 0:
         raise ValueError("seed must be a non-negative integer")
     if (type(per_subset) is not int or type(train_per_subset) is not int
             or not 0 < train_per_subset < per_subset):
         raise ValueError("per_subset and train_per_subset must leave samples for both splits")
+    fixed = dict(fixed_splits or {})
+    if any(split not in ("train", "test") for split in fixed.values()):
+        raise ValueError("fixed_splits must assign each sample to train or test")
     grouped: dict[str, list[Mapping[str, Any]]] = {name: [] for name in CHAT_HARD_SUBSETS}
     for row in rows:
         subset = row.get("subset")
@@ -106,7 +110,24 @@ def split_rewardbench_chat_hard(rows: Iterable[Mapping[str, Any]], *, seed: int 
                 or any(not isinstance(row.get(field), str) or not row[field].strip()
                        for field in ("prompt", "chosen", "rejected"))):
             raise ValueError("RewardBench Chat Hard row has invalid id, prompt, chosen or rejected")
-        grouped[row["subset"]].append(row)
+        grouped[subset].append(row)
+
+    def prompt_key(row: Mapping[str, Any]) -> str:
+        return re.sub(r"\s+", " ", row["prompt"]).strip()
+
+    reserved_prompts: set[str] = set()
+    found_fixed: set[tuple[str, int]] = set()
+    for subset, candidates in grouped.items():
+        for row in candidates:
+            key = (subset, row["id"])
+            if key in fixed:
+                normalized = prompt_key(row)
+                if key in found_fixed or normalized in reserved_prompts:
+                    raise ValueError("fixed_splits contains duplicate ids or prompts")
+                found_fixed.add(key)
+                reserved_prompts.add(normalized)
+    if found_fixed != fixed.keys():
+        raise ValueError("fixed_splits contains samples absent from Chat Hard")
 
     selected: dict[str, list[dict[str, Any]]] = {"train": [], "test": []}
     used_prompts: set[str] = set()
@@ -115,14 +136,11 @@ def split_rewardbench_chat_hard(rows: Iterable[Mapping[str, Any]], *, seed: int 
         ordered = sorted(candidates, key=lambda row: (
             hashlib.sha256(f"{seed}:{subset}:{row['id']}".encode()).hexdigest(), row["id"]))
         counts = {"train": 0, "test": 0}
-        for row in ordered:
-            split = "train" if counts["train"] < train_per_subset else "test"
-            if counts["test"] >= per_subset - train_per_subset:
-                break
-            # 同一题即使来自不同 subset，也只允许一次被选择。
-            prompt_key = re.sub(r"\s+", " ", row["prompt"]).strip()
-            if prompt_key in used_prompts or row["id"] in used_ids:
-                continue
+
+        def append(row: Mapping[str, Any], split: str) -> None:
+            normalized = prompt_key(row)
+            if normalized in used_prompts or row["id"] in used_ids:
+                raise ValueError("fixed_splits conflicts with another selected sample")
             metadata = {"source": "allenai/reward-bench", "subset": subset,
                         "source_id": row["id"]}
             for field in ("chosen_model", "rejected_model"):
@@ -131,17 +149,82 @@ def split_rewardbench_chat_hard(rows: Iterable[Mapping[str, Any]], *, seed: int 
             selected[split].append({"sample_id": f"rewardbench:{subset}:{row['id']}",
                                     "task": row["prompt"], "chosen": row["chosen"],
                                     "rejected": row["rejected"], "metadata": metadata})
-            used_prompts.add(prompt_key)
+            used_prompts.add(normalized)
             used_ids.add(row["id"])
             counts[split] += 1
+
+        for split, quota in (("train", train_per_subset),
+                             ("test", per_subset - train_per_subset)):
+            pinned = [row for row in ordered if fixed.get((subset, row["id"])) == split]
+            if len(pinned) > quota:
+                raise ValueError(f"RewardBench subset {subset}: too many fixed {split} samples")
+            for row in pinned:
+                append(row, split)
+        for row in ordered:
+            if (counts["train"] >= train_per_subset
+                    and counts["test"] >= per_subset - train_per_subset):
+                break
+            if (subset, row["id"]) in fixed:
+                continue
+            normalized = prompt_key(row)
+            if normalized in reserved_prompts or normalized in used_prompts or row["id"] in used_ids:
+                continue
+            split = "train" if counts["train"] < train_per_subset else "test"
+            append(row, split)
         if counts != {"train": train_per_subset, "test": per_subset - train_per_subset}:
             raise ValueError(f"RewardBench subset {subset}: too few distinct prompts for requested split")
     return selected
 
 
+def _preserved_chat_hard_splits(directory: Path, revision: str
+                                ) -> tuple[dict[tuple[str, int], str], dict[str, str]]:
+    """从同一上游版本的已校验 JSONL 读取样本 split 归属。"""
+    provenance = json.loads((directory / "provenance.json").read_text(encoding="utf-8"))
+    if (not isinstance(provenance, dict)
+            or provenance.get("dataset") != "allenai/reward-bench"
+            or provenance.get("revision") != revision):
+        raise ValueError("preserved split must come from the same RewardBench revision")
+    original_hashes = provenance.get("sha256")
+    declared_samples = provenance.get("samples")
+    per_subset = provenance.get("per_subset")
+    train_per_subset = provenance.get("train_per_subset")
+    if (not isinstance(original_hashes, dict) or not isinstance(declared_samples, dict)
+            or type(per_subset) is not int or type(train_per_subset) is not int
+            or not 0 < train_per_subset < per_subset):
+        raise ValueError("preserved split has invalid provenance counts or hashes")
+    fixed: dict[tuple[str, int], str] = {}
+    hashes: dict[str, str] = {}
+    expected_counts = {"train": train_per_subset, "test": per_subset - train_per_subset}
+    for split in ("train", "test"):
+        path = directory / f"{split}.jsonl"
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        if digest != original_hashes.get(split):
+            raise ValueError(f"preserved split {split} does not match its provenance hash")
+        hashes[split] = digest
+        subset_counts = {subset: 0 for subset in CHAT_HARD_SUBSETS}
+        for sample in JsonlDataset({split: path}).load(split):
+            subset = sample.metadata.get("subset")
+            source_id = sample.metadata.get("source_id")
+            if (subset not in CHAT_HARD_SUBSETS or type(source_id) is not int
+                    or sample.sample_id != f"rewardbench:{subset}:{source_id}"
+                    or sample.metadata.get("revision") != revision):
+                raise ValueError("preserved split has invalid RewardBench sample metadata")
+            key = (subset, source_id)
+            if key in fixed:
+                raise ValueError("preserved splits have overlapping sample IDs")
+            fixed[key] = split
+            subset_counts[subset] += 1
+        if (any(count != expected_counts[split] for count in subset_counts.values())
+                or declared_samples.get(split) != sum(subset_counts.values())):
+            raise ValueError("preserved split does not match its provenance counts")
+    return fixed, hashes
+
+
 def prepare_rewardbench_chat_hard(output_dir: str | Path, *, seed: int = 42,
                                   per_subset: int = 2, train_per_subset: int = 1,
-                                  revision: str | None = None) -> dict[str, Any]:
+                                  revision: str | None = None,
+                                  preserve_splits_from: str | Path | None = None
+                                  ) -> dict[str, Any]:
     """固定上游 SHA 下载 filtered split；只把采样结果写入新目录的 JSONL。"""
     import pyarrow.parquet as parquet
     from huggingface_hub import HfApi, hf_hub_download
@@ -171,8 +254,11 @@ def prepare_rewardbench_chat_hard(output_dir: str | Path, *, seed: int = 42,
             for batch in parquet.ParquetFile(path).iter_batches(batch_size=1024):
                 yield from batch.to_pylist()
 
+    fixed, previous_hashes = ({}, {}) if preserve_splits_from is None else (
+        _preserved_chat_hard_splits(Path(preserve_splits_from), revision))
     selected = split_rewardbench_chat_hard(
-        filtered_rows(), seed=seed, per_subset=per_subset, train_per_subset=train_per_subset)
+        filtered_rows(), seed=seed, per_subset=per_subset,
+        train_per_subset=train_per_subset, fixed_splits=fixed)
     target.mkdir(parents=True, exist_ok=False)
     hashes: dict[str, str] = {}
     for split, samples in selected.items():
@@ -188,6 +274,12 @@ def prepare_rewardbench_chat_hard(output_dir: str | Path, *, seed: int = 42,
                   "train_per_subset": train_per_subset,
                   "samples": {split: len(samples) for split, samples in selected.items()},
                   "sha256": hashes}
+    if previous_hashes:
+        provenance["preserved_split_sha256"] = previous_hashes
+        provenance["fixed_assignments"] = {
+            split: [{"subset": subset, "source_id": source_id}
+                    for (subset, source_id), assigned in sorted(fixed.items()) if assigned == split]
+            for split in ("train", "test")}
     (target / "provenance.json").write_text(
         json.dumps(provenance, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return {"output_dir": str(target), **provenance}

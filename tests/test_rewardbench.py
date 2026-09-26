@@ -44,6 +44,26 @@ def test_chat_hard_split_is_deterministic_balanced_and_prompt_disjoint():
     assert first["train"][0]["metadata"]["chosen_model"] == "a"
 
 
+def test_chat_hard_preserves_previous_split_membership():
+    rows = synthetic_rows()
+    earlier = split_rewardbench_chat_hard(rows)
+    fixed = {(sample["metadata"]["subset"], sample["metadata"]["source_id"]): split
+             for split, samples in earlier.items() for sample in samples}
+    result = split_rewardbench_chat_hard(rows, per_subset=4, train_per_subset=3,
+                                         fixed_splits=fixed)
+    assert len(result["train"]) == 18 and len(result["test"]) == 6
+    for split, samples in earlier.items():
+        assert {sample["sample_id"] for sample in samples} <= {
+            sample["sample_id"] for sample in result[split]}
+    assert not ({sample["task"] for sample in result["train"]}
+                & {sample["task"] for sample in result["test"]})
+    with pytest.raises(ValueError, match="absent from Chat Hard"):
+        split_rewardbench_chat_hard(rows, fixed_splits={("mt-bench-hard", 999): "train"})
+    with pytest.raises(ValueError, match="too many fixed"):
+        split_rewardbench_chat_hard(rows, fixed_splits={
+            ("mt-bench-hard", number): "train" for number in range(2)})
+
+
 def test_chat_hard_cross_subset_prompt_leakage_is_prevented():
     rows = synthetic_rows()
     # 除了共享题面，每个子集还有足够独立 prompt；顺序不影响拆分。
@@ -98,6 +118,33 @@ def test_prepare_chat_hard_pins_revision_and_never_overwrites(tmp_path, monkeypa
         prepare_rewardbench_chat_hard(output, revision=revision)
     with pytest.raises(ValueError, match="commit SHA"):
         prepare_rewardbench_chat_hard(tmp_path / "other", revision="main")
+    expanded = tmp_path / "expanded"
+    expanded_info = prepare_rewardbench_chat_hard(
+        expanded, revision=revision, per_subset=4, train_per_subset=3,
+        preserve_splits_from=output)
+    assert expanded_info["samples"] == {"train": 18, "test": 6}
+    assert expanded_info["preserved_split_sha256"] == info["sha256"]
+    assert {split: len(samples) for split, samples in
+            expanded_info["fixed_assignments"].items()} == {"train": 6, "test": 6}
+    for split in ("train", "test"):
+        old_ids = {item.sample_id for item in JsonlDataset(
+            {split: output / f"{split}.jsonl"}).load(split)}
+        new_ids = {item.sample_id for item in JsonlDataset(
+            {split: expanded / f"{split}.jsonl"}).load(split)}
+        assert old_ids <= new_ids
+    (output / "test.jsonl").write_text("corrupted\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="provenance hash"):
+        prepare_rewardbench_chat_hard(tmp_path / "tampered", revision=revision,
+                                      preserve_splits_from=output)
+    (output / "test.jsonl").write_bytes((expanded / "test.jsonl").read_bytes())
+    info_file = output / "provenance.json"
+    older_info = json.loads(info_file.read_text(encoding="utf-8"))
+    older_info["sha256"]["test"] = hashlib.sha256((output / "test.jsonl").read_bytes()).hexdigest()
+    older_info["samples"]["test"] = 5
+    info_file.write_text(json.dumps(older_info), encoding="utf-8")
+    with pytest.raises(ValueError, match="provenance counts"):
+        prepare_rewardbench_chat_hard(tmp_path / "wrong-count", revision=revision,
+                                      preserve_splits_from=output)
 
 
 def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, capsys):
@@ -128,6 +175,12 @@ def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, 
     assert summary["test_total"] == summary["test_correct"] == 6
     assert summary["test_accuracy"] == 1.0
     assert all(item["accuracy"] == 1.0 for item in summary["per_subset"].values())
+    trajectory_file = tmp_path / "experiment/artifacts/trajectories.jsonl"
+    original_trajectories = trajectory_file.read_text(encoding="utf-8")
+    trajectory_file.write_text(original_trajectories + trajectories[-1] + "\n", encoding="utf-8")
+    assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 1
+    assert "duplicate trajectory sample_id" in capsys.readouterr().err
+    trajectory_file.write_text(original_trajectories, encoding="utf-8")
     test_file = data_dir / "test.jsonl"
     test_file.write_bytes(test_file.read_bytes().splitlines(keepends=True)[0])
     assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 1

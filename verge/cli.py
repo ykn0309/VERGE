@@ -309,8 +309,12 @@ def summarize_rewardbench(run_dir: str | Path) -> dict[str, Any]:
     if (not expected or any(subset not in CHAT_HARD_SUBSETS for subset in expected.values())
             or len(set(counts.values())) != 1 or 0 in counts.values()):
         raise ValueError("test split must cover all six Chat Hard subsets equally")
-    records = {record.sample_id: record for record in
-               TrajectoryLog(directory / manifest["config"]["store"]["config"]["root_dir"]).all()}
+    records = {}
+    for record in TrajectoryLog(
+            directory / manifest["config"]["store"]["config"]["root_dir"]).all():
+        if record.sample_id in records:
+            raise ValueError(f"duplicate trajectory sample_id {record.sample_id!r}")
+        records[record.sample_id] = record
     missing = expected.keys() - records.keys()
     if missing:
         raise ValueError(f"incomplete test evaluation: {len(missing)} sample(s) have no trajectory")
@@ -341,6 +345,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     prepare_command.add_argument("--per-subset", type=int, default=2)
     prepare_command.add_argument("--train-per-subset", type=int, default=1)
     prepare_command.add_argument("--revision", help="optional pinned upstream commit SHA")
+    prepare_command.add_argument("--preserve-splits-from",
+                                 help="existing prepared Chat Hard directory whose train/test membership stays fixed")
     inspect_command = commands.add_parser("inspect-sample", help="inspect a saved trajectory")
     inspect_command.add_argument("--run-dir", required=True)
     inspect_command.add_argument("--sample-id", required=True)
@@ -353,7 +359,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "prepare-rewardbench":
             result = prepare_rewardbench_chat_hard(
                 args.output_dir, seed=args.seed, per_subset=args.per_subset,
-                train_per_subset=args.train_per_subset, revision=args.revision)
+                train_per_subset=args.train_per_subset, revision=args.revision,
+                preserve_splits_from=args.preserve_splits_from)
         elif args.command == "summarize-rewardbench":
             result = summarize_rewardbench(args.run_dir)
         else:

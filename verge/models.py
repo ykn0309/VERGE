@@ -369,7 +369,8 @@ class RevisionAttempt(Model):
 
     attempt_number: 第 1 或第 2 次；feedback: Critic 的修订反馈；
     operations: Executor 补全后的操作列表（包含 Generator 的意图）；
-    rubric/judgment: 修订产生的完整 rubric 及其评价结果。
+    rubric/judgment: 修订产生的完整 rubric 及其评价结果；
+    validation_failures: 有效修订前的结构校验错误，便于审计纠错次数与上下文。
     """
 
     attempt_number: int
@@ -377,10 +378,14 @@ class RevisionAttempt(Model):
     operations: list[RevisionOperation]
     rubric: Rubric
     judgment: RubricJudgment
+    validation_failures: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         if type(self.attempt_number) is not int or self.attempt_number not in (1, 2):
             raise ValueError("attempt_number must be 1 or 2")
+        if not isinstance(self.validation_failures, list) or any(
+                type(item) is not str or not item for item in self.validation_failures):
+            raise ValueError("validation_failures must be non-empty error strings")
 
 
 @dataclass

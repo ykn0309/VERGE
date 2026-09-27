@@ -24,12 +24,13 @@ python3 -m verge.cli prepare-rewardbench \
 ```sh
 python3 -m verge.cli run --config configs/rewardbench-chat-hard-qwen-vector-144x60.yaml
 python3 -m verge.cli summarize-rewardbench \
-  --run-dir runs/rewardbench-chat-hard-qwen-vector-144x60
+  --run-dir runs/rewardbench-chat-hard-qwen-vector-144x60-restart1
 ```
 
 - 输入校验已通过：144/60、六子集 24/10、旧 6+6 split 归属、全体 204 条样本 ID 与归一化题面无重复、上游 revision 与 JSONL 哈希一致；新 split 已保存于被 Git 忽略的 `runs/` 中。
 - 统计仅取本轮冻结 test 的 initial judgment；汇总时拒绝缺失或重复的轨迹 ID，报告总体正确数/60 与六子集各正确数/10，并记录运行完整性、成本和失败情况。独立的上一轮 12 条 smoke 不与本轮合并。
 - 训练阶段写入 Memory 和 Beta；测试阶段不增加经验、不回写 credit。若实验中途失败，按 V1 约束不在原目录续跑，先保留报错及已完成进度再决定是否重跑。
+- 首次正式运行目录 `runs/rewardbench-chat-hard-qwen-vector-144x60` 已在第 28 条训练样本的 `revision_1.executor` 因修订后不足 4 条标准而停止；保留其 27 条完整训练轨迹、116 次 Qwen 请求、22 次 embedding 请求和 104430 个已记录 token（尚未开始测试），不参与新实验统计。按照 [原子操作修订](../设计方案/07-原子操作修订.md) 的结构错误策略，修订输出最多纠错重试 2 次，不占用两次有效 revision attempts，成功轨迹中的 `validation_failures` 保留校验错误用于审计；在全新目录 `runs/rewardbench-chat-hard-qwen-vector-144x60-restart1` 从空经验池重新运行。
 - 已在新输入校验后删除旧 6+6 smoke 的数据、成功运行目录和两次失败试运行目录；计划 09 中 5/6 仅作为历史记录，不与本轮统计合并。
 
 ## 注意

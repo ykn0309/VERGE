@@ -96,6 +96,61 @@ def test_empty_first_revision_is_a_failed_attempt_not_an_abort(tmp_path):
     assert log.get("sample") == record
 
 
+def test_invalid_revision_output_retries_without_consuming_an_attempt(tmp_path):
+    modules = make_fake_modules("attempt_1_success")
+    original = modules.backend.generate
+    calls = []
+
+    def invalid_once(role, payload):
+        if role == "revision_generator":
+            calls.append(payload)
+            if len(calls) == 1:
+                return {"operations": [{"operation_id": "bad", "operation_type": "DELETE",
+                                        "target_criterion_id": "c1",
+                                        "new_or_updated_criterion": None}]}
+        return original(role, payload)
+
+    modules.backend.generate = invalid_once
+    log = TrajectoryLog(tmp_path)
+    runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log,
+                            max_revision_output_retries=2)
+    record = runner.run_sample(sample())
+    assert record.state == "revision_success_1"
+    assert len(record.revision_attempts) == 1
+    assert [operation.operation_id for operation in record.revision_attempts[0].operations] == ["op1"]
+    assert len(calls) == 2
+    assert "revised rubric must contain 4..8 criteria" in calls[1]["feedback"]
+    assert record.revision_attempts[0].validation_failures == [
+        "revised rubric must contain 4..8 criteria"]
+    assert log.get("sample").revision_attempts[0].validation_failures == [
+        "revised rubric must contain 4..8 criteria"]
+    assert "优质回答" not in str(calls[1]) and "较差回答" not in str(calls[1])
+    assert log.get("sample") == record
+
+
+def test_invalid_revision_output_exhausts_retries_without_trajectory(tmp_path):
+    modules = make_fake_modules("attempt_1_success")
+    calls = []
+
+    def always_invalid(role, payload):
+        if role == "revision_generator":
+            calls.append(payload)
+            return {"operations": [{"operation_id": "bad", "operation_type": "DELETE",
+                                    "target_criterion_id": "c1",
+                                    "new_or_updated_criterion": None}]}
+        return original(role, payload)
+
+    original = modules.backend.generate
+    modules.backend.generate = always_invalid
+    log = TrajectoryLog(tmp_path)
+    runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log,
+                            max_revision_output_retries=2)
+    with pytest.raises(ValueError, match="revised rubric must contain 4..8 criteria"):
+        runner.run_sample(sample())
+    assert len(calls) == 3
+    assert log.get("sample") is None
+
+
 def test_final_failure_writes_trajectory_without_new_experience(tmp_path):
     runner, modules, memory, log = make_runner(tmp_path, "final_failure")
     record = runner.run_sample(sample())

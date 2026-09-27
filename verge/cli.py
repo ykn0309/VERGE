@@ -117,11 +117,14 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     revision = configured["revision"]["config"]
     credit = configured["revision_credit"]["config"]
     if (set(retrieval) - retrieval_keys or set(selection) - {"max_selected", "exploration_slots"}
-            or set(revision) - {"max_attempts"} or set(credit) - {"max_budget"}
+            or set(revision) - {"max_attempts", "invalid_output_retries"} or set(credit) - {"max_budget"}
             or configured["reliability"]["config"]):
         raise ValueError("modules: unsupported V1 component options")
     if selection.get("exploration_slots", 0) != 0:
         raise ValueError("modules.selection.config.exploration_slots: V1 selector does not explore")
+    retries = revision.get("invalid_output_retries", 0)
+    if type(retries) is not int or not 0 <= retries <= 3:
+        raise ValueError("modules.revision.config.invalid_output_retries: expected integer in [0, 3]")
     if credit.get("max_budget", 1.0) != 1.0:
         raise ValueError("modules.revision_credit.config.max_budget: V1 requires 1.0")
 
@@ -260,7 +263,9 @@ def run(config_path: str | Path) -> dict[str, Any]:
     if isinstance(embedder, OpenAICompatibleEmbedding):
         embedder.metadata_hook = save_request
     try:
-        runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts)
+        runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts,
+                                max_revision_output_retries=config["modules"]["revision"]["config"].get(
+                                    "invalid_output_retries", 0))
         seen_ids: set[str] = set()
         train_count = _process_split(runner, dataset, "train", seen_ids, request_context)
         test_count = 0

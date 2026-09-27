@@ -109,12 +109,14 @@ class PipelineRunner:
     def __init__(
         self, modules: PipelineModules, memory: ExperienceMemory, trajectories: TrajectoryLog,
         *, training: bool = True, evidence_weight: float = 1.0, max_attempts: int = 2,
-        executor: RevisionExecutor | None = None,
+        max_revision_output_retries: int = 0, executor: RevisionExecutor | None = None,
     ) -> None:
         if type(training) is not bool:
             raise ValueError("training must be Boolean")
         if type(max_attempts) is not int or max_attempts not in (1, 2):
             raise ValueError("max_attempts must be 1 or 2")
+        if type(max_revision_output_retries) is not int or not 0 <= max_revision_output_retries <= 3:
+            raise ValueError("max_revision_output_retries must be an integer in [0, 3]")
         if (type(evidence_weight) not in (int, float) or
                 not 0 <= evidence_weight <= 1):
             raise ValueError("evidence_weight must be in [0, 1]")
@@ -126,6 +128,7 @@ class PipelineRunner:
         self.training = training
         self.evidence_weight = evidence_weight
         self.max_attempts = max_attempts
+        self.max_revision_output_retries = max_revision_output_retries
         self.executor = executor if executor is not None else RevisionExecutor()
         self.current_stage = "not_started"
 
@@ -171,17 +174,36 @@ class PipelineRunner:
                     sample.task, sample.chosen, sample.rejected, initial, initial_judgment,
                     attempts[-1] if attempts else None,
                 )
-                self.current_stage = f"revision_{number}.generator"
-                operations = modules.revision_generator.generate(sample.task, initial, feedback, number)
-                self.current_stage = f"revision_{number}.executor"
-                revised, executed = self.executor.execute(initial, operations, number)
+                repair_feedback = feedback
+                validation_failures: list[str] = []
+                for retry in range(self.max_revision_output_retries + 1):
+                    try:
+                        self.current_stage = f"revision_{number}.generator"
+                        operations = modules.revision_generator.generate(
+                            sample.task, initial, repair_feedback, number,
+                        )
+                        self.current_stage = f"revision_{number}.executor"
+                        revised, executed = self.executor.execute(initial, operations, number)
+                        break
+                    except ValueError as exc:
+                        if retry == self.max_revision_output_retries:
+                            raise
+                        validation_failures.append(str(exc)[:160] or type(exc).__name__)
+                        # 无效输出不算一次修订 attempt；只有合法 rubric 才交给 Judge。
+                        # 使用校验错误纠错，不向 Generator 暴露 chosen/rejected。
+                        repair_feedback = (
+                            f"{feedback}\n上一版 operations 未通过结构校验：{validation_failures[-1]}。"
+                            f"R0 含 {len(initial.criteria)} 条标准；请从 R0 重新生成操作，"
+                            "保证执行后仍有 4 到 8 条，ID 合法且不冲突。"
+                        )
                 self.current_stage = f"revision_{number}.judge"
                 revised_judgment = modules.judge.judge(
                     revised, sample.chosen, sample.rejected,
                     previous=initial, previous_judgment=initial_judgment,
                 )
                 _check_reused_judgments(initial, initial_judgment, revised, revised_judgment)
-                attempt = RevisionAttempt(number, feedback, executed, revised, revised_judgment)
+                attempt = RevisionAttempt(number, feedback, executed, revised, revised_judgment,
+                                          validation_failures)
                 attempts.append(attempt)
                 # 失败尝试仅留在轨迹；只对首次成功的操作反思、归因并生成候选。
                 if revised_judgment.success:

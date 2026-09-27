@@ -91,6 +91,15 @@ def test_config_error_exits_2_without_creating_run_directory(tmp_path):
     assert not (tmp_path / "result").exists()
 
 
+def test_invalid_revision_retry_config_rejected_before_creating_run_directory(tmp_path):
+    config, data = experiment(tmp_path, with_test=False)
+    data["modules"]["revision"]["config"]["invalid_output_retries"] = True
+    config.write_text(yaml.safe_dump(data), encoding="utf-8")
+    result = command("run", "--config", str(config))
+    assert result.returncode == 2 and "invalid_output_retries" in result.stderr
+    assert not (tmp_path / "result").exists()
+
+
 def test_vector_retrieval_requires_real_backend_and_reuses_qwen_key(tmp_path, monkeypatch):
     config, data = experiment(tmp_path, with_test=False)
     data["modules"]["retrieval"] = {"implementation": "vector", "config": {

@@ -97,7 +97,8 @@ class ExperienceMemory:
             decision = "MERGE"
         result = CandidateExperience(candidate.candidate_id, candidate.content, candidate.trigger,
                                      list(candidate.linked_operation_ids), candidate.credit,
-                                     candidate.admission, decision, experience_id)
+                                     candidate.admission, decision, experience_id,
+                                     candidate.admission_reason)
         self._experiences[experience_id] = updated
         self._save()
         return result

@@ -262,12 +262,13 @@ def test_admission_fail_path_for_scripted_posthoc_trigger(tmp_path, trigger):
         if role == "admission_checker":
             assert payload["candidate"]["trigger"] == trigger
             # 只测试模型返回 FAIL 后的写盘路径；不把 mock 当作语义判别器。
-            return {"decision": "FAIL"}
+            return {"decision": "FAIL", "reason": "条件依赖修订后才能观察的信息。"}
         return response
 
     modules.backend.generate = reject_mixed_trigger
     record = runner.run_sample(sample())
     assert record.reflected_candidates[0].admission == "FAIL"
+    assert record.reflected_candidates[0].admission_reason == "条件依赖修订后才能观察的信息。"
     assert memory.all() == [] and log.get("sample") == record
     assert "fusion_judge" not in [role for role, _ in modules.backend.requests]
 

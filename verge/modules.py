@@ -437,12 +437,17 @@ class LLMAdmissionChecker:
                 or not set(candidate.linked_operation_ids) <= operation_ids
                 or set(operation_contributions) != operation_ids):
             raise ValueError("admission requires bound, credited candidate and successful revision")
-        decision = _output(self.backend, "admission_checker", admission_payload(
+        response = self.backend.generate("admission_checker", admission_payload(
             task, candidate, successful_attempt, dict(operation_contributions),
-        ), "decision")
-        if type(decision) is not str or decision not in ("PASS", "FAIL"):
-            raise ValueError("admission_checker: expected PASS or FAIL")
-        return replace(candidate, admission=decision)
+        ))
+        if (not isinstance(response, Mapping) or set(response) != {"decision", "reason"}
+                or type(response["decision"]) is not str
+                or response["decision"] not in ("PASS", "FAIL")
+                or not isinstance(response["reason"], str)
+                or not response["reason"].strip()):
+            raise ValueError("admission_checker: expected PASS or FAIL with a non-empty reason")
+        return replace(candidate, admission=response["decision"],
+                       admission_reason=response["reason"].strip())
 
 
 class LLMFusionJudge:

@@ -181,5 +181,15 @@ def test_invalid_result_values():
         replace(ready, experience_id="e")
     assert replace(ready, admission="FAIL").fusion is None
     assert replace(ready, admission="PASS", fusion="ADD", experience_id="e").credit == 0.2
+    with pytest.raises(ValueError, match="admission_reason"):
+        replace(ready, admission_reason="没有准入决定")
+    with pytest.raises(ValueError, match="admission_reason"):
+        replace(ready, admission="FAIL", admission_reason="  ")
+    reviewed = replace(ready, admission="FAIL", admission_reason="不满足可迁移性。")
+    assert CandidateExperience.from_dict(reviewed.to_dict()) == reviewed
+    # 旧实验轨迹没有理由字段；回放时保留判断，但不得伪造历史理由。
+    old = reviewed.to_dict()
+    old.pop("admission_reason")
+    assert CandidateExperience.from_dict(old).admission_reason is None
     with pytest.raises(ValueError, match="alpha"):
         Experience("e", "x", "t", 0, 1, [], [])

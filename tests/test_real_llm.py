@@ -111,10 +111,11 @@ def test_rate_limit_timeout_and_terminal_errors(monkeypatch):
             return httpx.Response(429, headers={"retry-after": "0"}, text="private error body")
         if len(attempts) == 2:
             raise httpx.ReadTimeout("private network details")
-        return result({"decision": "FAIL"})
+        return result({"decision": "FAIL", "reason": "触发条件依赖回答内容。"})
 
     llm = backend(monkeypatch, handler, max_retries=2, sleep=waits.append)
-    assert llm.generate("admission_checker", {"candidate": {}}) == {"decision": "FAIL"}
+    assert llm.generate("admission_checker", {"candidate": {}}) == {
+        "decision": "FAIL", "reason": "触发条件依赖回答内容。"}
     assert len(attempts) == 3 and waits == [0.0, 2]
     assert len(attempts) == 3  # FAIL 是语义决策，不重试。
 
@@ -133,6 +134,23 @@ def test_rate_limit_timeout_and_terminal_errors(monkeypatch):
     with pytest.raises(LLMRequestError, match="HTTP 503 after 2 attempts"):
         flaky.generate("critic", {"task": "x"})
     assert len(exhausted) == 2
+
+
+def test_admission_requires_nonempty_reason_and_retries_format(monkeypatch):
+    calls = []
+
+    def handler(request):
+        calls.append(request)
+        if len(calls) == 1:
+            return result({"decision": "PASS"})
+        if len(calls) == 2:
+            return result({"decision": "PASS", "reason": "  "})
+        return result({"decision": "PASS", "reason": "绑定操作支撑且触发条件可核验。"})
+
+    llm = backend(monkeypatch, handler, max_retries=2)
+    assert llm.generate("admission_checker", {"candidate": {}}) == {
+        "decision": "PASS", "reason": "绑定操作支撑且触发条件可核验。"}
+    assert len(calls) == 3
 
 
 def test_empty_binding_and_admission_fail_are_not_format_failures(monkeypatch):
@@ -183,7 +201,7 @@ def test_role_prompts_are_isolated_and_versioned():
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "v6"
+    assert PROMPT_VERSION == "v7"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
     assert all(text in selector for text in ("task 本身核验", "高信度不能覆盖不匹配", "可选零条"))
     reflector = llm_messages("reflector", {"task": "task"})[0]["content"]
@@ -191,6 +209,7 @@ def test_admission_selection_and_provenance_prompt_requirements():
     assert "无法写出明确的事前适用条件时不输出" in reflector
     assert "即使混有 task 条件也 FAIL" in admission
     assert "不改写 trigger" in admission
+    assert '"reason"' in admission
     generator = llm_messages("initial_generator", {"task": "task"})[0]["content"]
     assert "source_experiences 仍为 []" in generator
     assert "未使用的经验不得挂名" in generator
@@ -324,6 +343,7 @@ def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(t
     trajectory = json.loads(record_file.read_text(encoding="utf-8").strip())
     assert trajectory["state"] == "revision_success_1"
     assert trajectory["reflected_candidates"][0]["admission"] == "PASS"
+    assert trajectory["reflected_candidates"][0]["admission_reason"]
     assert trajectory["reflected_candidates"][0]["fusion"] == "ADD"
     metadata = (tmp_path / "run" / "artifacts" / "llm_requests.jsonl").read_text(encoding="utf-8")
     assert "test-secret-never-log" not in metadata

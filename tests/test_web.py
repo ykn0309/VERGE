@@ -45,13 +45,18 @@ def test_load_run_sample_trace_and_experience_evolution(tmp_path):
     assert a["split"] == "train" and c["split"] == "test"
     assert a["task"] == "<script>not code</script>"
     assert a["revision_attempts"] and a["reflected_candidates"][0]["fusion"] == "ADD"
+    assert a["reflected_candidates"][0]["admission_reason"] == "候选满足准入条件。"
     assert b["reflected_candidates"][0]["fusion"] == "MERGE"
+    assert b["reflected_candidates"][0]["admission_reason"] == "候选满足准入条件。"
     assert c["state"] == "initial_failure" and c["revision_attempts"] == []
     exp = payload["experiences"][0]
     assert [item["fusion"] for item in exp["evolution"][1:]] == ["ADD", "MERGE"]
     assert exp["evolution"][-1]["alpha"] == exp["alpha"]
     assert exp["evolution"][-1]["beta"] == exp["beta"]
     assert exp["evolution"][-1]["confidence"] == exp["confidence"]
+    js = (PROJECT / "verge/web_assets/app.js").read_text(encoding="utf-8")
+    assert '准入理由：' in js and '旧轨迹未记录判断理由' in js
+    assert 'h(c.admission_reason' in js  # HTML-escape model text before rendering.
 
 
 def test_missing_or_changed_dataset_never_displays_unverified_text(tmp_path):
@@ -108,8 +113,18 @@ def test_zero_credit_merge_keeps_origin_without_creating_evidence():
     warnings = []
     events = _evolution(exp, records, {"a": 0, "b": 1}, warnings)
     assert [ev["kind"] for ev in events] == ["prior", "revision_credit", "fusion"]
+    assert events[0]["sample_id"] == "a" and events[0]["origin_kind"] == "add"
+    assert events[0]["confidence"] == .5 and events[0]["has_trajectory"]
     assert events[-1]["fusion"] == "MERGE" and events[-1]["confidence"] == events[-2]["confidence"]
     assert not warnings
+
+
+def test_prior_uses_first_source_if_add_trajectory_is_unavailable():
+    exp = {"experience_id": "e", "alpha": 1., "beta": 1.,
+           "source_trajectories": ["original"], "evidence_history": []}
+    events = _evolution(exp, [], {}, [])
+    assert events == [{"kind": "prior", "alpha": 1., "beta": 1., "confidence": .5,
+                       "sample_id": "original", "origin_kind": "source", "has_trajectory": False}]
 
 
 def test_equal_credit_candidates_are_not_misattributed():

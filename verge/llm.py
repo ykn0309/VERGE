@@ -41,7 +41,7 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "revision_generator": ("operations", list),
     "reflector": ("candidates", list),
     "revision_credit_assigner": ("bindings", dict),
-    "admission_checker": ("decision", str),
+    "admission_checker": ("decision", str),  # 另需非空 reason；在 _valid_shape 中联合校验。
     "fusion_judge": ("match_index", (int, type(None))),
 }
 
@@ -61,6 +61,10 @@ def _criterion_shape(item: Any) -> bool:
 
 def _valid_shape(role: str, value: Any) -> bool:
     """缺字段/字段类型不对才重试；ID引用、绑定为空、准入FAIL等语义决策不重试。"""
+    if role == "admission_checker":
+        return (isinstance(value, dict) and set(value) == {"decision", "reason"}
+                and value["decision"] in ("PASS", "FAIL")
+                and isinstance(value["reason"], str) and bool(value["reason"].strip()))
     field, expected = _OUTPUT_FIELDS[role]
     if not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], expected):
         return False
@@ -96,8 +100,6 @@ def _valid_shape(role: str, value: Any) -> bool:
     if role == "revision_credit_assigner":
         return all(isinstance(key, str) and isinstance(ids, list)
                    and all(isinstance(item, str) for item in ids) for key, ids in data.items())
-    if role == "admission_checker":
-        return data in ("PASS", "FAIL")
     if role == "fusion_judge":
         return data is None or type(data) is int
     return True
@@ -410,7 +412,8 @@ class FakeLLMBackend:
             result = {"bindings": {item["candidate_id"]: ([first_op] if first_op and not self.unbound else [])
                                    for item in request["candidates"]}}
         elif role == "admission_checker":
-            result = {"decision": "PASS" if self.admission_pass else "FAIL"}
+            result = {"decision": "PASS" if self.admission_pass else "FAIL",
+                      "reason": "候选满足准入条件。" if self.admission_pass else "候选不满足准入条件。"}
         elif role == "fusion_judge":
             candidate = request["candidate"]
             match = next((index for index, item in enumerate(request["existing"])

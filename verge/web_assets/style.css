@@ -50,3 +50,17 @@
 @media(max-width:730px){.sidebar{width:100%;height:auto;padding:13px 15px}.brand{padding:0 5px 12px}.shell.sidebar-collapsed .sidebar{height:0}.top-left{gap:0}#sidebar-toggle{padding:7px 8px;font-size:10px}}
 
 .callout{overflow-wrap:anywhere}
+/* Five overview metrics: give the evidence card a full row on narrow layouts. */
+.metrics{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1100px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.metrics .metric:last-child{grid-column:span 2}}
+/* Inputs are visible by default. Translation is an explicit per-field action. */
+.input-card{border:1px solid var(--border);border-radius:7px;margin:12px 0;overflow:hidden;background:#fafcfc}
+.input-card.field-chosen{border-color:#d8eae3;background:#f9fcfa}
+.input-card.field-rejected{border-color:#efe6e0;background:#fdfbfa}
+.input-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 15px;border-bottom:1px solid #e8eeed}
+.input-heading strong{font:600 11px var(--mono);letter-spacing:.08em;color:#54717a}
+.translate-button{background:#fff;border:1px solid #cde4dc;border-radius:5px;padding:6px 10px;color:var(--teal);font-size:11px;font-weight:600;white-space:nowrap}
+.translate-button:hover{background:#e9f7f2}.translate-button:disabled{cursor:wait;opacity:.65}
+.translate-button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.input-content{padding:12px 16px;font-size:12px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;color:#405d69}
+.translation-feedback:not(:empty){padding:0 16px 12px;font-size:11px;color:var(--red);line-height:1.6}

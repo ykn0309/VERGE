@@ -7,13 +7,65 @@ from collections import Counter, defaultdict
 from hashlib import sha256
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import platform
 from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+from threading import Lock
 from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from verge.models import Experience, TrajectoryRecord
 
 ASSETS = Path(__file__).with_name("web_assets")
+_TRANSLATOR_SOURCE = Path(__file__).with_name("apple_translate.swift")
+_translator_lock = Lock()
+_translator_dir: tempfile.TemporaryDirectory[str] | None = None
+
+
+class TranslationUnavailable(RuntimeError):
+    """Displayable error from the on-device translator; never contains source text."""
+
+
+def _translate_apple(text: str) -> str:
+    """Compile the native bridge once, then translate via Apple without uploading text."""
+    global _translator_dir
+    version = platform.mac_ver()[0]
+    if sys.platform != "darwin" or not version or int(version.split(".")[0]) < 26:
+        raise TranslationUnavailable("苹果设备端翻译需要 macOS 26 或更新版本。")
+    if not shutil.which("swiftc"):
+        raise TranslationUnavailable("未找到 Swift 编译器；请安装 Xcode Command Line Tools。")
+    with _translator_lock:
+        if _translator_dir is None:
+            temporary = tempfile.TemporaryDirectory(prefix="verge-apple-translation-")
+            binary = Path(temporary.name) / "translate"
+            try:
+                result = subprocess.run(
+                    ["swiftc", "-parse-as-library", "-O", "-o", str(binary), str(_TRANSLATOR_SOURCE)],
+                    capture_output=True, timeout=120, check=False,
+                )
+                if result.returncode:
+                    raise TranslationUnavailable("苹果翻译组件编译失败，请检查 Swift/macOS SDK 版本。")
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                temporary.cleanup()
+                raise TranslationUnavailable("无法启动或编译苹果翻译组件。") from exc
+            except TranslationUnavailable:
+                temporary.cleanup()
+                raise
+            _translator_dir = temporary
+        binary = Path(_translator_dir.name) / "translate"
+    try:
+        result = subprocess.run([str(binary)], input=text, text=True,
+                                capture_output=True, timeout=90, check=False)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise TranslationUnavailable("苹果翻译服务未响应，请稍后重试。") from exc
+    if result.returncode:
+        if "LANGUAGE_PACK_NOT_INSTALLED" in result.stderr:
+            raise TranslationUnavailable("未安装所需语言包：请在系统设置 → 通用 → 语言与地区 → 翻译语言中下载英语和简体中文。")
+        raise TranslationUnavailable("苹果设备端翻译失败，请确认原文语言受支持并已安装相应语言包。")
+    return result.stdout.rstrip("\n")
 
 
 def _dataset_path(value: str, run_dir: Path) -> Path | None:
@@ -135,7 +187,14 @@ def _evolution(experience: dict[str, Any], records: list[dict[str, Any]],
                                    0 if event["kind"] == "downstream_credit" else 1,
                                    event["_sequence"]))
     alpha = beta = 1.0
-    timeline = [{"kind": "prior", "alpha": alpha, "beta": beta, "confidence": 0.5}]
+    # Beta(1,1) has no evidence yet, but is instantiated when the first ADD
+    # admits the experience. Prefer that explicit origin over the source list.
+    add_origin = next((item["sample_id"] for item in fusion_events if item["fusion"] == "ADD"), None)
+    source_origin = next(iter(experience.get("source_trajectories", [])), None)
+    origin = add_origin or source_origin
+    timeline = [{"kind": "prior", "alpha": alpha, "beta": beta, "confidence": 0.5,
+                 "sample_id": origin, "origin_kind": "add" if add_origin else "source" if origin else None,
+                 "has_trajectory": origin in order if origin else False}]
     for event in events:
         credit = event.get("credit", 0) or 0
         change = abs(credit) * event.get("evidence_weight", 1)
@@ -207,6 +266,62 @@ def discover_runs(root: Path) -> list[str]:
 class DashboardHandler(BaseHTTPRequestHandler):
     run_dir: Path
     runs_root: Path | None = None
+
+    def do_POST(self) -> None:
+        """Translate only a verified sample field; do not accept arbitrary text from the browser."""
+        host = self.headers.get("Host", "").split(":")[0]
+        origin = self.headers.get("Origin")
+        if host not in ("127.0.0.1", "localhost") or (origin and origin != f"http://{self.headers['Host']}"):
+            self.send_error(403, "invalid origin")
+            return
+        if urlsplit(self.path).path != "/api/translate" or urlsplit(self.path).query:
+            self.send_error(404)
+            return
+        try:
+            size = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            size = 0
+        if (self.headers.get("Content-Type", "").split(";")[0].strip().lower() != "application/json"
+                or not 0 < size <= 4096):
+            self._json_error(400, "请求格式无效。")
+            return
+        try:
+            request = json.loads(self.rfile.read(size))
+        except (UnicodeError, ValueError):
+            self._json_error(400, "请求 JSON 无效。")
+            return
+        if not isinstance(request, dict) or set(request) != {"run", "sample_id", "field"}:
+            self._json_error(400, "请求字段无效。")
+            return
+        name, sample_id, field = (request.get(key) for key in ("run", "sample_id", "field"))
+        root = self.runs_root or self.run_dir.parent
+        if (not isinstance(name, str) or name not in discover_runs(root)
+                or not isinstance(sample_id, str) or field not in ("task", "chosen", "rejected")):
+            self._json_error(404, "未找到运行或样本。")
+            return
+        try:
+            sample = next((item for item in load_run(root / name)["samples"]
+                           if item["sample_id"] == sample_id), None)
+            text = sample.get(field) if sample else None
+            if not isinstance(text, str) or not text.strip():
+                self._json_error(404, "该样本原文不可用或尚未验证。")
+                return
+            if len(text) > 20000:
+                self._json_error(413, "原文超过单次翻译的 20000 字符上限。")
+                return
+            translated = _translate_apple(text)
+        except TranslationUnavailable as exc:
+            self._json_error(503, str(exc))
+            return
+        except (OSError, ValueError, KeyError, TypeError):
+            self._json_error(500, "运行数据暂时无法读取。")
+            return
+        body = json.dumps({"translation": translated}, ensure_ascii=False).encode("utf-8")
+        self._send(200, "application/json; charset=utf-8", body)
+
+    def _json_error(self, status: int, message: str) -> None:
+        body = json.dumps({"error": message}, ensure_ascii=False).encode("utf-8")
+        self._send(status, "application/json; charset=utf-8", body)
 
     def do_GET(self) -> None:
         host = self.headers.get("Host", "").split(":")[0]

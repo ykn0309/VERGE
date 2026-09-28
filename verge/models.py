@@ -326,7 +326,8 @@ class CandidateExperience(Model):
     candidate_id: 候选唯一标识；content: 可迁移的生成原则；
     trigger: 原则适用的任务条件；linked_operation_ids: 信用分配阶段绑定的操作 ID；
     credit: 暂定修订信用，尚未计算时为空，准入失败时不进入记忆池；
-    admission: 准入判断；fusion/experience_id: 融合决策及最终经验 ID。
+    admission/admission_reason: 准入判断及模型给出的理由；
+    fusion/experience_id: 融合决策及最终经验 ID。
     """
 
     candidate_id: str
@@ -337,6 +338,7 @@ class CandidateExperience(Model):
     admission: AdmissionDecision | None = None
     fusion: FusionDecision | None = None
     experience_id: str | None = None
+    admission_reason: str | None = None
 
     def __post_init__(self) -> None:
         _id(self.candidate_id, "candidate_id")
@@ -352,6 +354,10 @@ class CandidateExperience(Model):
             raise ValueError("admission must be PASS or FAIL")
         if self.admission is not None and self.credit is None:
             raise ValueError("admission requires credit")
+        if self.admission_reason is not None:
+            if (self.admission is None or not isinstance(self.admission_reason, str)
+                    or not self.admission_reason.strip()):
+                raise ValueError("admission_reason requires a decision and non-empty text")
         if self.fusion not in (None, "MERGE", "ADD"):
             raise ValueError("fusion must be MERGE or ADD")
         if self.fusion is None:

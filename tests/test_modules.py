@@ -307,7 +307,7 @@ def test_invalid_binding_is_discarded_and_no_llm_numeric_output():
     result = assigner.assign([candidate], attempt.operations, {"op1": 0.5}, 0.5)
     assert result[0].credit is None and not result[0].linked_operation_ids
     with pytest.raises(ValueError, match="PASS or FAIL"):
-        LLMAdmissionChecker(ConstantBackend({"decision": "MAYBE"})).check(
+        LLMAdmissionChecker(ConstantBackend({"decision": "MAYBE", "reason": "不确定"})).check(
             TASK, replace(candidate, linked_operation_ids=["op1"], credit=0.2),
             attempt, {"op1": 0.5})
     roles = {role for role, _ in modules.backend.requests}

@@ -247,6 +247,31 @@ def test_admission_fail_keeps_provisional_credit_in_log_without_memory(tmp_path)
     assert not any(role == "fusion_judge" for role, _ in modules.backend.requests)
 
 
+@pytest.mark.parametrize("trigger", [
+    "任务要求解释，而且初始标准未能区分回答",
+    "初始标准未能区分回答",
+])
+def test_admission_fail_path_for_scripted_posthoc_trigger(tmp_path, trigger):
+    runner, modules, memory, log = make_runner(tmp_path)
+    original = modules.backend.generate
+
+    def reject_mixed_trigger(role, payload):
+        response = original(role, payload)
+        if role == "reflector":
+            response["candidates"][0]["trigger"] = trigger
+        if role == "admission_checker":
+            assert payload["candidate"]["trigger"] == trigger
+            # 只测试模型返回 FAIL 后的写盘路径；不把 mock 当作语义判别器。
+            return {"decision": "FAIL"}
+        return response
+
+    modules.backend.generate = reject_mixed_trigger
+    record = runner.run_sample(sample())
+    assert record.reflected_candidates[0].admission == "FAIL"
+    assert memory.all() == [] and log.get("sample") == record
+    assert "fusion_judge" not in [role for role, _ in modules.backend.requests]
+
+
 def test_multiple_candidates_share_operation_budget_and_fuse_add_then_merge(tmp_path):
     runner, modules, memory, log = make_runner(tmp_path, reflect_count=2)
     record = runner.run_sample(sample())
@@ -288,6 +313,43 @@ def test_downstream_persisted_before_later_revision_failure(tmp_path):
 def make_candidate() -> CandidateExperience:
     return CandidateExperience("seed", "参考经验", "任务包含明确的关键要求。", ["seed-op"],
                                0.2, "PASS")
+
+
+def test_unmatched_high_confidence_experience_can_be_left_unselected(tmp_path):
+    memory = ExperienceMemory(tmp_path)
+    unrelated = memory.fuse(CandidateExperience(
+        "seed", "辨别法律条文引用是否准确", "任务明确要求引用法律条文", ["seed-op"],
+        1.0, "PASS"), "origin")
+    runner = PipelineRunner(make_fake_modules("initial_success"), memory, TrajectoryLog(tmp_path))
+    record = runner.run_sample(sample())
+    assert memory.get(unrelated.experience_id).confidence > 0.5
+    assert record.retrieved_experience_ids == [unrelated.experience_id]
+    assert record.selected_experience_ids == []
+    assert all(not criterion.source_experiences for criterion in record.initial_rubric.criteria)
+    assert len(memory.get(unrelated.experience_id).evidence_history) == 1
+
+
+def test_selected_but_unused_experience_does_not_receive_downstream_credit(tmp_path):
+    memory = ExperienceMemory(tmp_path)
+    seeded = memory.fuse(make_candidate(), "origin")
+    modules = make_fake_modules("initial_success")
+    original = modules.backend.generate
+
+    def leave_selected_experience_unused(role, payload):
+        answer = original(role, payload)
+        if role == "initial_generator":
+            # 模拟 Generator 判断标准仅靠 task 就足够，无需虚构来源。
+            for criterion in answer["rubric"]["criteria"]:
+                criterion["source_experiences"] = []
+        return answer
+
+    modules.backend.generate = leave_selected_experience_unused
+    record = PipelineRunner(modules, memory, TrajectoryLog(tmp_path)).run_sample(sample())
+    assert record.selected_experience_ids == [seeded.experience_id]
+    assert all(not item.source_experiences for item in record.initial_rubric.criteria)
+    assert len(memory.get(seeded.experience_id).evidence_history) == 1
+    assert [item for role, payload in modules.backend.requests if role == "initial_generator"
+            for item in payload["selected_experiences"]][0]["experience_id"] == seeded.experience_id
 
 
 def test_downstream_credit_on_initial_success_and_sample_order(tmp_path):

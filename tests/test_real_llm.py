@@ -54,10 +54,10 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
 
     # 即使不可信服务把凭据反射进头部/元数据，也不能写入本地 sidecar。
     reflected = []
-    echo = backend(monkeypatch, lambda _: result({"feedback": "ok"},
+    echo = backend(monkeypatch, lambda _: result({"feedback": "好的"},
         reason="test-secret-never-log", headers={"x-request-id": "test-secret-never-log"}),
         metadata_hook=reflected.append)
-    assert echo.generate("critic", {"task": "x"}) == {"feedback": "ok"}
+    assert echo.generate("critic", {"task": "x"}) == {"feedback": "好的"}
     assert "test-secret-never-log" not in json.dumps(reflected)
 
 
@@ -169,13 +169,56 @@ def test_missing_key_and_unsafe_url_fail_before_network(monkeypatch):
 
 
 def test_role_prompts_are_isolated_and_versioned():
-    for role in ("selector", "initial_generator"):
+    for role in ("selector", "initial_generator", "judge", "critic", "revision_generator",
+                 "reflector", "revision_credit_assigner", "admission_checker", "fusion_judge"):
         messages = llm_messages(role, {"task": "hello"})
         assert len(messages) == 2
-        assert "chosen" not in json.dumps(messages) and "rejected" not in json.dumps(messages)
+        if role in ("selector", "initial_generator"):
+            assert "chosen" not in json.dumps(messages) and "rejected" not in json.dumps(messages)
         assert role in messages[0]["content"] and "JSON" in messages[0]["content"]
+        assert "必须以中文表达" in messages[0]["content"]
+        assert "机器协议值保持规定形式" in messages[0]["content"]
     with pytest.raises(ValueError, match="unknown LLM role"):
         llm_messages("not_a_role", {})
+
+
+def test_admission_selection_and_provenance_prompt_requirements():
+    assert PROMPT_VERSION == "v6"
+    selector = llm_messages("selector", {"task": "task"})[0]["content"]
+    assert all(text in selector for text in ("task 本身核验", "高信度不能覆盖不匹配", "可选零条"))
+    reflector = llm_messages("reflector", {"task": "task"})[0]["content"]
+    admission = llm_messages("admission_checker", {"task": "task"})[0]["content"]
+    assert "无法写出明确的事前适用条件时不输出" in reflector
+    assert "即使混有 task 条件也 FAIL" in admission
+    assert "不改写 trigger" in admission
+    generator = llm_messages("initial_generator", {"task": "task"})[0]["content"]
+    assert "source_experiences 仍为 []" in generator
+    assert "未使用的经验不得挂名" in generator
+
+
+@pytest.mark.parametrize("role,output", [
+    ("critic", {"feedback": "Change the rubric."}),
+    ("initial_generator", {"rubric": {"rubric_id": "r0", "base_rubric_id": None,
+        "criteria": [{"criterion_id": "c1", "question": "Be clear?", "importance_score": 4,
+                      "source_experiences": []}]}}),
+    ("revision_generator", {"operations": [{"operation_id": "o1", "operation_type": "ADD",
+        "target_criterion_id": None, "new_or_updated_criterion": {
+            "criterion_id": "c2", "question": "Be concise?", "importance_score": 6,
+            "source_experiences": []}}]}),
+    ("reflector", {"candidates": [{"candidate_id": "e1", "content": "Be clear",
+                                       "trigger": "Explanatory task"}]}),
+])
+def test_backend_does_not_gate_text_by_language(monkeypatch, role, output):
+    requests = []
+
+    def handler(request):
+        requests.append(json.loads(request.content))
+        return result(output)
+
+    llm = backend(monkeypatch, handler, max_retries=1)
+    assert llm.generate(role, {"task": "private task"}) == output
+    assert len(requests) == 1  # 提示词要求中文，但合法结构不会因文本语言触发重试。
+    assert "必须以中文表达" in requests[0]["messages"][0]["content"]
 
 
 def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys):

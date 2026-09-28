@@ -62,11 +62,13 @@ Generator 不计算 normalized weight。归一化由 [Rubric Judge](./04-Rubric-
 
 ## 5. Provenance
 
-`source_experiences` 只记录对 criterion 形成有实质作用的经验。
+先根据 task 的显式要求形成标准，再考虑所选经验能否真正补充或改变标准。`source_experiences` 只记录对 criterion 形成有实质作用的经验；来源 ID 合法不等于语义归因正确。
 
-- task 自身足以产生的 criterion：`[]`；
-- 经验确实改变或补充 criterion：记录相应 experience ID；
-- 不允许因为经验出现在上下文里就全部引用。
+- 仅根据 task 就足以提出该 criterion 的问题，即便某条经验也提出类似原则，仍标 `[]`；
+- 经验真正新增或实质改变该 criterion 的判断问题时，才记录对应 experience ID；多来源时逐个检查；
+- 一条经验可能因实质帮助另一条标准而被选中，不能因此把它附在本来仅凭 task 就能写出的标准上。已选但未实际使用的经验不得挂名；不得因为经验出现在上下文里就全部引用，也不得为避免误标而把真正有用的来源一律删除。
+
+Generator 不能看到 chosen/rejected。是否实质贡献属于语义判断，确定性校验只保证来源 ID 已选、无重复，不声称能证明该判断正确。
 
 ## 6. Criterion 约束
 

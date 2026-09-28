@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>VERGE · Run Observatory</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><strong>VERGE</strong><small>RUN OBSERVATORY</small></div>
+      <nav aria-label="主导航">
+        <button class="nav active" data-page="overview">运行概览</button>
+        <button class="nav" data-page="samples">样本流水线 <b id="nav-sample-count">—</b></button>
+        <button class="nav" data-page="memory">经验池 <b id="nav-exp-count">—</b></button>
+      </nav>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="top-left"><button id="sidebar-toggle" type="button" aria-controls="sidebar" aria-expanded="true">收起侧栏</button><div class="breadcrumbs">WORKSPACE <span>/</span> <span id="crumb">运行概览</span></div></div><div class="top-right"><label class="run-picker" for="run-select">运行日志 <select id="run-select" aria-label="切换运行日志" disabled><option>读取中…</option></select></label><span class="status-pill"><i></i> LOCAL RUN</span><button class="refresh" data-action="refresh" title="重新读取磁盘日志">↻ <span>刷新数据</span></button></div></header>
+      <div id="app" class="page"><div class="loading">正在读取运行日志…</div></div>
+      <footer>VERGE <span>·</span> EXPERIENCE-GUIDED RUBRIC GENERATION <span class="footer-right">只读诊断视图 · 数据来自本地运行文件</span></footer>
+    </main>
+  </div>
+  <div id="experience-preview" class="experience-preview" role="tooltip" hidden></div>
+</body>
+</html>

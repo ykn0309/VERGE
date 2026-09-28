@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from math import isfinite
+import re
 from pathlib import Path
 from typing import Any
 
@@ -64,7 +65,26 @@ def load_config(path: str | Path) -> dict[str, Any]:
     _integer(_required(run, "seed", "run"), "run.seed", 0)
     _text(_required(run, "output_dir", "run"), "run.output_dir")
 
-    _component(_required(root, "dataset", "config"), "dataset")
+    dataset = _component(_required(root, "dataset", "config"), "dataset")
+    if "prepare" in dataset["config"]:
+        prepare = _mapping(dataset["config"]["prepare"], "dataset.config.prepare")
+        expected = {"implementation", "output_dir", "revision", "seed", "per_subset",
+                    "train_per_subset", "preserve_splits_from"}
+        if set(prepare) - expected:
+            raise ValueError("dataset.config.prepare: unsupported fields")
+        if prepare.get("implementation") != "rewardbench_chat_hard":
+            raise ValueError("dataset.config.prepare.implementation: expected rewardbench_chat_hard")
+        for name in ("output_dir", "revision"):
+            _text(_required(prepare, name, "dataset.config.prepare"), f"dataset.config.prepare.{name}")
+        if not re.fullmatch(r"[0-9a-f]{40}", prepare["revision"]):
+            raise ValueError("dataset.config.prepare.revision: expected a 40-character commit SHA")
+        if "preserve_splits_from" in prepare:
+            _text(prepare["preserve_splits_from"], "dataset.config.prepare.preserve_splits_from")
+        for name, minimum in (("seed", 0), ("per_subset", 2), ("train_per_subset", 1)):
+            _integer(_required(prepare, name, "dataset.config.prepare"),
+                     f"dataset.config.prepare.{name}", minimum)
+        if prepare["train_per_subset"] >= prepare["per_subset"]:
+            raise ValueError("dataset.config.prepare.train_per_subset: must be less than per_subset")
     models = _mapping(_required(root, "models", "config"), "models")
     _model(_required(models, "default", "models"), "models.default")
     for role, value in _mapping(models.get("roles", {}), "models.roles").items():

@@ -26,7 +26,7 @@ critic feedback
 
 ## 3. 输出
 
-Generator 输出 4–8 条原子 Boolean criteria：
+Generator 输出 2–8 条原子 Boolean criteria：
 
 ```text
 Criterion {
@@ -78,3 +78,7 @@ Generator 不计算 normalized weight。归一化由 [Rubric Judge](./04-Rubric-
 - 不包含候选回答中特有信息；
 - 不引用 chosen/rejected；
 - 与其他 criteria 尽量不重复。
+
+## 7. 初始输出校验与有限重试
+
+生成结果须为无 base 的 R0、包含 2–8 条标准；每条 `source_experiences` 不得重复，且只能引用已选经验。输出未通过这些校验时，可有限次数重新生成完整 R0，仅反馈不含响应文本的校验原因，不把 chosen/rejected、Judge 结果或原始无效输出传给 Generator；重试仍失败则停止当前运行，不将无效 rubric 交给 Judge。实验 11 的严格检查点续跑默认允许 2 次额外尝试，记录在续跑 manifest 中；普通 `run` 的默认行为不变。

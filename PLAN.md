@@ -17,9 +17,9 @@
 ## 2. 当前状态
 
 ```text
-当前阶段：11 — Chat Hard 144/60 同源内部试验（准备中）
+当前阶段：11 — Chat Hard 144/60 同源内部试验已完成（冻结测试 43/60，71.67%，非官方成绩）
 下一个方向：独立训练数据与完整 held-out evaluation
-当前阻塞：先验证新划分并完成计费模型运行；同源内部试验不替代独立训练集
+当前阻塞：待选择独立数据集并规划跨源评估；同源内部试验不代表泛化能力
 ```
 
 已完成：
@@ -44,11 +44,11 @@
 - [x] [08 — 真实 LLM Backend](docs/plans/08-真实LLM后端.md)
 - [x] [09 — RewardBench Chat Hard](docs/plans/09-RewardBench-Chat-Hard.md)
 - [x] [10 — DashScope 向量召回](docs/plans/10-DashScope-向量召回.md)
-- [ ] [11 — Chat Hard 扩大样本内部试验](docs/plans/11-Chat-Hard-扩大样本内部试验.md)
+- [x] [11 — Chat Hard 扩大样本内部试验](docs/plans/11-Chat-Hard-扩大样本内部试验.md)
 
 ### 下一项方向
 
-> 12 条 Chat Hard smoke 已完成（初始判别 5/6，非官方成绩）；真实向量召回已实现。当前先在 Chat Hard 同源内做 144 训练 + 60 测试的新试验，之后再用独立训练数据规划跨源 held-out evaluation。
+> Chat Hard 同源内部 144 训练 + 60 冻结测试已完成（初始判别 43/60，非官方成绩）；真实向量召回已实现。下一步规划独立训练数据及跨源 held-out evaluation。
 
 ## 4. V1 目标
 
@@ -71,7 +71,7 @@ V1 应实现：
 - 可测试、可复算；
 - 使用 fake modules 完成离线端到端测试；
 - 可替换为真实 LLM backend；
-- Memory 在下游信用计算和 Fusion 阶段分别写入，trajectory 保存阶段结果；V1 不处理跨阶段回滚、崩溃恢复、重复运行去重或跨文件原子性。
+- Memory 在下游信用计算和 Fusion 阶段分别写入，trajectory 保存阶段结果；V1 不处理通用跨阶段回滚、崩溃恢复、重复运行去重或跨文件原子性。实验 11 仅允许对已核验未写入 Memory 的初始生成断点，将完整前缀复制到新目录续跑；详见工程设计。
 
 ## 5. 后续方向
 
@@ -91,7 +91,7 @@ V1 完成后再评估：
 
 当前不计划实现：
 
-- Web UI；
+- 面向运行与修改实验状态的 Web UI（本地只读日志诊断页面不在此限制内）；
 - 微服务；
 - 分布式队列或多机并行；
 - 外部插件发现；

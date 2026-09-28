@@ -207,24 +207,45 @@ class LLMSelector:
 
 
 class LLMInitialRubricGenerator:
-    """生成 R0，并检查条数及每条 criterion 的已有经验来源。"""
+    """生成 R0；可对输出校验失败进行有限次数的完整重新生成。"""
 
-    def __init__(self, backend: LLMBackend) -> None:
+    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 0) -> None:
+        if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
+            raise ValueError("invalid_output_retries must be an integer in [0, 3]")
         self.backend = backend
+        self.invalid_output_retries = invalid_output_retries
 
     def generate(self, task: str, selected: Sequence[ExperienceView]) -> Rubric:
         _text(task, "task")
         _views(selected)
-        raw = _output(self.backend, "initial_generator", generator_payload(task, selected), "rubric")
-        rubric = Rubric.from_dict(raw)
         allowed = {item.experience_id for item in selected}
-        if (rubric.base_rubric_id is not None or not 4 <= len(rubric.criteria) <= 8
-                or any(len(set(item.source_experiences)) != len(item.source_experiences)
-                       or set(item.source_experiences) - allowed for item in rubric.criteria)):
-            raise ValueError("initial_generator: invalid initial rubric or source_experiences")
-        for criterion in rubric.criteria:
-            _text(criterion.question, "criterion question")
-        return rubric
+        feedback = None
+        for retry in range(self.invalid_output_retries + 1):
+            raw = _output(self.backend, "initial_generator", generator_payload(
+                task, selected, validation_feedback=feedback,
+            ), "rubric")
+            try:
+                rubric = Rubric.from_dict(raw)
+                errors = []
+                if rubric.base_rubric_id is not None:
+                    errors.append("base_rubric_id must be null")
+                if not 2 <= len(rubric.criteria) <= 8:
+                    errors.append("criteria count must be in [2, 8]")
+                if any(len(set(item.source_experiences)) != len(item.source_experiences)
+                       or set(item.source_experiences) - allowed for item in rubric.criteria):
+                    errors.append("source_experiences must be distinct selected IDs")
+                for criterion in rubric.criteria:
+                    _text(criterion.question, "criterion question")
+                if errors:
+                    raise ValueError("initial_generator: invalid initial rubric or source_experiences: "
+                                     + "; ".join(errors))
+                return rubric
+            except ValueError as exc:
+                if retry == self.invalid_output_retries:
+                    raise
+                # 不回传原始生成文本或 preference pair，只告知验证约束。
+                feedback = f"上次完整 R0 未通过校验：{str(exc)[:160]}。请重新生成 2 到 8 条标准；base_rubric_id 为 null，source_experiences 只引用所选经验且不得重复。"
+        raise AssertionError("unreachable retry state")
 
 
 class LLMJudge:

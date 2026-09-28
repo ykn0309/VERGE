@@ -24,7 +24,8 @@
 
 ```sh
 python3 -m pip install -r requirements.txt
-python3 -m verge.cli prepare-rewardbench --output-dir runs/rewardbench-chat-hard-data --revision 168d848cdbbea9764fae4a544dc9ca1e6cca4931 --seed 42 --per-subset 2 --train-per-subset 1
+# 仅使用实验配置：新数据目录不存在时 run 自动准备，已存在时校验复用。
+# 原 6+6 数据已删除，此处为历史试验的执行命令；运行前须指定全新输出目录。
 # DASHSCOPE_API_KEY_2 从环境读取，不写入配置或输出目录。
 python3 -m verge.cli run --config configs/rewardbench-chat-hard-qwen.yaml
 python3 -m verge.cli summarize-rewardbench --run-dir runs/rewardbench-chat-hard-qwen

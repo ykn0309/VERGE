@@ -11,6 +11,7 @@ from verge.models import (
     CriterionJudgment,
     EvidenceRecord,
     Experience,
+    InvalidRevisionAttempt,
     PreferenceSample,
     RevisionAttempt,
     RevisionOperation,
@@ -65,6 +66,17 @@ def test_core_objects_json_round_trip():
     assert "normalized_weight" not in criterion().to_dict()
     assert "margin" not in criterion().to_dict()
     assert "credit" not in criterion().to_dict()
+
+
+def test_invalid_revision_audit_round_trip_and_legacy_trajectory_default():
+    failed = InvalidRevisionAttempt(1, "原始反馈", ["revised rubric must contain 2..8 criteria"])
+    trajectory = TrajectoryRecord("sample", "final_failure", [], [], None, None, [], [], {}, [failed])
+    assert TrajectoryRecord.from_json(trajectory.to_json()) == trajectory
+    legacy = trajectory.to_dict()
+    legacy.pop("invalid_revision_attempts")
+    assert TrajectoryRecord.from_dict(legacy).invalid_revision_attempts == []
+    with pytest.raises(ValueError, match="validation errors"):
+        InvalidRevisionAttempt(1, "反馈", [])
 
 
 @pytest.mark.parametrize("score", [0, 11, 1.5, True, "5", None])

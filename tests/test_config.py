@@ -90,6 +90,27 @@ def test_exploration_slots_cannot_exceed_selection_limit(tmp_path):
         load_config(file)
 
 
+def test_rewardbench_prepare_parameters_are_validated(tmp_path):
+    import yaml
+
+    source = Path(__file__).resolve().parents[1] / "configs/rewardbench-chat-hard-qwen.yaml"
+    valid = yaml.safe_load(source.read_text(encoding="utf-8"))
+    options = valid["dataset"]["config"]["prepare"]
+    for name, bad in (("seed", True), ("per_subset", 1), ("train_per_subset", 2),
+                      ("revision", ""), ("output_dir", ""),
+                      ("implementation", "unknown"), ("preserve_splits_from", "")):
+        data = deepcopy(valid)
+        data["dataset"]["config"]["prepare"][name] = bad
+        file = tmp_path / "invalid.yaml"
+        file.write_text(yaml.safe_dump(data), encoding="utf-8")
+        with pytest.raises(ValueError, match=f"dataset.config.prepare.{name}"):
+            load_config(file)
+    options["unsupported"] = 1
+    file.write_text(yaml.safe_dump(valid), encoding="utf-8")
+    with pytest.raises(ValueError, match="dataset.config.prepare: unsupported fields"):
+        load_config(file)
+
+
 def test_invalid_yaml_and_non_mapping_root(tmp_path):
     file = tmp_path / "config.yaml"
     file.write_text("run: [broken\n", encoding="utf-8")

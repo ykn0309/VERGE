@@ -147,6 +147,93 @@ def test_prepare_chat_hard_pins_revision_and_never_overwrites(tmp_path, monkeypa
                                       preserve_splits_from=output)
 
 
+def test_prepare_from_experiment_config_and_refuse_mismatch(tmp_path, monkeypatch, capsys):
+    revision = "b" * 40
+    source = tmp_path / "filtered.parquet"
+    pq.write_table(pa.Table.from_pylist(synthetic_rows()), source)
+    observed = []
+
+    def info(self, name, revision=None):
+        observed.append(revision)
+        return SimpleNamespace(sha="b" * 40, siblings=[SimpleNamespace(
+            rfilename="data/filtered-00000-of-00001.parquet")])
+
+    monkeypatch.setattr("huggingface_hub.HfApi.dataset_info", info)
+    monkeypatch.setattr("huggingface_hub.hf_hub_download", lambda *args, **kwargs: source)
+    output = tmp_path / "prepared"
+    config = yaml.safe_load((PROJECT / "configs/rewardbench-chat-hard-qwen.yaml").read_text())
+    config["dataset"]["config"]["prepare"].update(
+        output_dir=str(output), revision=revision, seed=7)
+    config["dataset"]["config"]["paths"] = {
+        split: str(output / f"{split}.jsonl") for split in ("train", "test")}
+    config["run"]["output_dir"] = str(tmp_path / "experiment")
+    config["models"]["default"] = {"backend": "fake", "model": "initial_success"}
+    file = tmp_path / "config.yaml"
+    file.write_text(yaml.safe_dump(config), encoding="utf-8")
+    wrong_paths = yaml.safe_load(file.read_text(encoding="utf-8"))
+    wrong_paths["dataset"]["config"]["paths"]["test"] = str(tmp_path / "wrong.jsonl")
+    file.write_text(yaml.safe_dump(wrong_paths), encoding="utf-8")
+    assert main(["run", "--config", str(file)]) == 2
+    assert "paths must point" in capsys.readouterr().err
+    assert not observed and not output.exists()
+    with pytest.raises(SystemExit, match="2"):
+        main(["prepare-rewardbench", "--config", str(file)])
+    assert not observed and not output.exists()
+    capsys.readouterr()
+    file.write_text(yaml.safe_dump(config), encoding="utf-8")
+    assert main(["run", "--config", str(file)]) == 0
+    assert observed == [revision]
+    capsys.readouterr()
+    result = json.loads((output / "provenance.json").read_text())
+    assert result["seed"] == 7 and result["samples"] == {"train": 6, "test": 6}
+    manifest = json.loads((tmp_path / "experiment/run_manifest.json").read_text())
+    assert manifest["dataset_provenance"]["sha256"] == result["sha256"]
+    # A second fresh run reuses the same verified bytes, without another download.
+    config["run"]["output_dir"] = str(tmp_path / "reused")
+    file.write_text(yaml.safe_dump(config), encoding="utf-8")
+    assert main(["run", "--config", str(file)]) == 0
+    assert observed == [revision]
+    capsys.readouterr()
+    # Mismatched preparation settings or tampered files fail before a run directory is created.
+    for change in ("seed", "hash", "path", "missing-provenance"):
+        config["run"]["output_dir"] = str(tmp_path / f"refused-{change}")
+        if change == "seed":
+            config["dataset"]["config"]["prepare"]["seed"] = 8
+        elif change == "hash":
+            (output / "test.jsonl").write_text("tampered\n", encoding="utf-8")
+        elif change == "path":
+            config["dataset"]["config"]["paths"]["test"] = str(tmp_path / "other.jsonl")
+        else:
+            (output / "provenance.json").unlink()
+        file.write_text(yaml.safe_dump(config), encoding="utf-8")
+        assert main(["run", "--config", str(file)]) == 2
+        error = capsys.readouterr().err
+        assert ("provenance" if change not in ("path", "missing-provenance") else
+                ("paths must point" if change == "path" else "incomplete")) in error
+        assert not (tmp_path / f"refused-{change}").exists()
+        config["dataset"]["config"]["prepare"]["seed"] = 7
+        config["dataset"]["config"]["paths"]["test"] = str(output / "test.jsonl")
+    # An existing but incomplete directory is never re-downloaded or repaired.
+    incomplete = tmp_path / "incomplete"
+    incomplete.mkdir()
+    config["dataset"]["config"]["prepare"]["output_dir"] = str(incomplete)
+    config["dataset"]["config"]["paths"] = {
+        split: str(incomplete / f"{split}.jsonl") for split in ("train", "test")}
+    config["run"]["output_dir"] = str(tmp_path / "no-partial-repair")
+    file.write_text(yaml.safe_dump(config), encoding="utf-8")
+    assert main(["run", "--config", str(file)]) == 2
+    assert "incomplete" in capsys.readouterr().err
+    assert list(incomplete.iterdir()) == [] and observed == [revision]
+    # A resume must never recreate absent data, even if the config can prepare it.
+    config["dataset"]["config"]["prepare"]["output_dir"] = str(tmp_path / "missing")
+    config["dataset"]["config"]["paths"] = {
+        split: str(tmp_path / "missing" / f"{split}.jsonl") for split in ("train", "test")}
+    file.write_text(yaml.safe_dump(config), encoding="utf-8")
+    assert main(["run", "--config", str(file), "--resume-from", str(tmp_path / "experiment")]) == 2
+    assert "resume requires the original prepared dataset" in capsys.readouterr().err
+    assert observed == [revision]
+
+
 def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, capsys):
     revision = "f" * 40
     source = tmp_path / "filtered.parquet"
@@ -161,6 +248,8 @@ def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, 
     config = yaml.safe_load((PROJECT / "configs/rewardbench-chat-hard-qwen.yaml").read_text())
     config["dataset"]["config"]["paths"] = {
         split: str(data_dir / f"{split}.jsonl") for split in ("train", "test")}
+    config["dataset"]["config"]["prepare"]["output_dir"] = str(data_dir)
+    config["dataset"]["config"]["prepare"]["revision"] = revision
     config["run"]["output_dir"] = str(tmp_path / "experiment")
     config["models"]["default"] = {"backend": "fake", "model": "initial_success"}
     file = tmp_path / "config.yaml"
@@ -174,9 +263,18 @@ def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, 
     summary = json.loads(capsys.readouterr().out)
     assert summary["test_total"] == summary["test_correct"] == 6
     assert summary["test_accuracy"] == 1.0
+    assert summary["invalid_revision_attempts"] == 0
     assert all(item["accuracy"] == 1.0 for item in summary["per_subset"].values())
     trajectory_file = tmp_path / "experiment/artifacts/trajectories.jsonl"
     original_trajectories = trajectory_file.read_text(encoding="utf-8")
+    audited = [json.loads(row) for row in trajectories]
+    audited[0]["invalid_revision_attempts"] = [{
+        "attempt_number": 1, "feedback": "missing criterion",
+        "validation_failures": ["revised rubric must contain 2..8 criteria"],
+    }]
+    trajectory_file.write_text("\n".join(json.dumps(row) for row in audited) + "\n", encoding="utf-8")
+    assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 0
+    assert json.loads(capsys.readouterr().out)["invalid_revision_attempts"] == 1
     trajectory_file.write_text(original_trajectories + trajectories[-1] + "\n", encoding="utf-8")
     assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 1
     assert "duplicate trajectory sample_id" in capsys.readouterr().err

@@ -11,7 +11,7 @@ from verge.calculator import (
 )
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import (
-    PreferenceSample, RevisionAttempt, RevisionOperation, Rubric, RubricJudgment,
+    InvalidRevisionAttempt, PreferenceSample, RevisionAttempt, RevisionOperation, Rubric, RubricJudgment,
     TrajectoryRecord,
 )
 from verge.modules import (
@@ -34,6 +34,10 @@ class PipelineModules(Protocol):
     revision_credit_assigner: RevisionCreditAssigner
     admission_checker: AdmissionChecker
     fusion_judge: FusionJudge
+
+
+class InvalidRubricSizeError(ValueError):
+    """修订输出的 rubric 标准条数不在允许范围内。"""
 
 
 class RevisionExecutor:
@@ -78,8 +82,8 @@ class RevisionExecutor:
                 executed.append(replace(operation, before_criterion=old[key]))
             else:
                 raise ValueError("unknown revision operation type")
-        if not 4 <= len(revised) <= 8:
-            raise ValueError("revised rubric must contain 4..8 criteria")
+        if not 2 <= len(revised) <= 8:
+            raise InvalidRubricSizeError("revised rubric must contain 2..8 criteria")
         rubric = Rubric(f"{initial.rubric_id}_revision_{attempt_number}", initial.rubric_id,
                         list(revised.values()))
         return rubric, executed
@@ -163,6 +167,7 @@ class PipelineRunner:
             self.memory.apply_downstream_credits(sample.sample_id, credits,
                                                  evidence_weight=self.evidence_weight)
         attempts: list[RevisionAttempt] = []
+        invalid_attempts: list[InvalidRevisionAttempt] = []
         candidates = []
         contributions: dict[str, float] = {}
         state = "initial_success" if initial_judgment.success else "final_failure"
@@ -186,16 +191,22 @@ class PipelineRunner:
                         revised, executed = self.executor.execute(initial, operations, number)
                         break
                     except ValueError as exc:
-                        if retry == self.max_revision_output_retries:
-                            raise
                         validation_failures.append(str(exc)[:160] or type(exc).__name__)
-                        # 无效输出不算一次修订 attempt；只有合法 rubric 才交给 Judge。
-                        # 使用校验错误纠错，不向 Generator 暴露 chosen/rejected。
+                        if retry == self.max_revision_output_retries:
+                            if isinstance(exc, InvalidRubricSizeError):
+                                invalid_attempts.append(InvalidRevisionAttempt(
+                                    number, feedback, validation_failures,
+                                ))
+                                break
+                            raise
+                        # 只有合法 rubric 才交给 Judge；错误反馈不能暴露 chosen/rejected。
                         repair_feedback = (
                             f"{feedback}\n上一版 operations 未通过结构校验：{validation_failures[-1]}。"
                             f"R0 含 {len(initial.criteria)} 条标准；请从 R0 重新生成操作，"
-                            "保证执行后仍有 4 到 8 条，ID 合法且不冲突。"
+                            "保证执行后仍有 2 到 8 条，ID 合法且不冲突。"
                         )
+                if invalid_attempts and invalid_attempts[-1].attempt_number == number:
+                    continue  # 本次修订失败；下一次仍基于 R0，不能凭空构造 Rk。
                 self.current_stage = f"revision_{number}.judge"
                 revised_judgment = modules.judge.judge(
                     revised, sample.chosen, sample.rejected,
@@ -259,6 +270,7 @@ class PipelineRunner:
         record = TrajectoryRecord(sample.sample_id, state,
                                   [item.experience_id for item in recalled],
                                   [item.experience_id for item in selected],
-                                  initial, initial_judgment, attempts, candidates, contributions)
+                                  initial, initial_judgment, attempts, candidates, contributions,
+                                  invalid_attempts)
         self.trajectories.append(record)
         return record

@@ -211,6 +211,115 @@ def test_failing_sample_reports_id_and_exact_stage_and_keeps_previous_write(tmp_
     assert not (tmp_path / "result" / "artifacts" / "trajectories.jsonl").exists()
 
 
+def test_resume_copies_verified_prefix_without_repeating_train_or_mutating_parent(tmp_path,
+                                                                                     monkeypatch, capsys):
+    config, data = experiment(tmp_path)
+    from verge.llm import FakeLLMBackend
+    from verge.memory import TrajectoryLog
+
+    original = FakeLLMBackend.generate
+    calls = 0
+
+    def fail_second_initial(self, role, payload):
+        nonlocal calls
+        if role == "initial_generator":
+            calls += 1
+            if calls == 2:
+                raise ValueError("invalid initial rubric")
+        return original(self, role, payload)
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_initial)
+    assert main(["run", "--config", str(config)]) == 1
+    assert "sample 'train-b', stage initial_generator" in capsys.readouterr().err
+    parent = tmp_path / "result"
+    old_trajectory = (parent / "artifacts" / "trajectories.jsonl").read_bytes()
+    old_memory = (parent / "artifacts" / "experience_memory.json").read_bytes()
+    monkeypatch.setattr(FakeLLMBackend, "generate", original)
+    data["run"]["output_dir"] = str(tmp_path / "continued")
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 0
+    summary = json.loads(capsys.readouterr().out)
+    assert summary["train_samples"] == 2 and summary["test_samples"] == 1
+    child = tmp_path / "continued"
+    records = list(TrajectoryLog(child / "artifacts").all())
+    assert [record.sample_id for record in records] == ["train-a", "train-b", "test-a"]
+    assert (parent / "artifacts" / "trajectories.jsonl").read_bytes() == old_trajectory
+    assert (parent / "artifacts" / "experience_memory.json").read_bytes() == old_memory
+    assert (child / "artifacts" / "trajectories.jsonl").read_bytes().startswith(old_trajectory)
+    lineage = json.loads((child / "run_manifest.json").read_text())["resumed_from"]
+    assert lineage["completed_train"] == 1 and lineage["completed_test"] == 0
+    assert lineage["initial_output_retries"] == 2
+    assert lineage["checkpoint_sha256"]["experience_memory.json"]
+    data["run"]["seed"] = 43
+    data["run"]["output_dir"] = str(tmp_path / "bad-config")
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 2
+    assert "config or dataset changed" in capsys.readouterr().err
+    assert not (tmp_path / "bad-config").exists()
+
+
+def test_resume_after_all_train_skips_training_and_keeps_frozen_memory(tmp_path,
+                                                                            monkeypatch, capsys):
+    config, data = experiment(tmp_path)
+    from verge.llm import FakeLLMBackend
+    from verge.memory import TrajectoryLog
+    original = FakeLLMBackend.generate
+    calls = 0
+
+    def fail_test_initial(self, role, payload):
+        nonlocal calls
+        if role == "initial_generator":
+            calls += 1
+            if calls == 3:
+                raise ValueError("bad test initial")
+        return original(self, role, payload)
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", fail_test_initial)
+    assert main(["run", "--config", str(config)]) == 1
+    capsys.readouterr()
+    parent = tmp_path / "result"
+    memory = (parent / "artifacts" / "experience_memory.json").read_bytes()
+    monkeypatch.setattr(FakeLLMBackend, "generate", original)
+    data["run"]["output_dir"] = str(tmp_path / "continued")
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 0
+    assert json.loads(capsys.readouterr().out)["test_samples"] == 1
+    assert [item.sample_id for item in TrajectoryLog(tmp_path / "continued" / "artifacts").all()] == [
+        "train-a", "train-b", "test-a",
+    ]
+    assert (tmp_path / "continued" / "artifacts" / "experience_memory.json").read_bytes() == memory
+
+
+def test_resume_rejects_memory_write_after_last_complete_trajectory(tmp_path,
+                                                                       monkeypatch, capsys):
+    config, data = experiment(tmp_path)
+    from verge.llm import FakeLLMBackend
+    from verge.memory import ExperienceMemory
+    original = FakeLLMBackend.generate
+    calls = 0
+
+    def fail_second_initial(self, role, payload):
+        nonlocal calls
+        if role == "initial_generator":
+            calls += 1
+            if calls == 2:
+                raise ValueError("invalid initial rubric")
+        return original(self, role, payload)
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_initial)
+    assert main(["run", "--config", str(config)]) == 1
+    capsys.readouterr()
+    parent = tmp_path / "result"
+    memory = ExperienceMemory(parent / "artifacts")
+    experience_id = memory.all()[0].experience_id
+    memory.apply_downstream_credits("train-b", {experience_id: 0.5})
+    data["run"]["output_dir"] = str(tmp_path / "continued")
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 2
+    assert "Memory contains evidence beyond completed train prefix" in capsys.readouterr().err
+    assert not (tmp_path / "continued").exists()
+
+
 def test_overlapping_train_test_ids_are_rejected_before_ambiguous_inspection(tmp_path):
     config, data = experiment(tmp_path)
     Path(data["dataset"]["config"]["paths"]["test"]).write_text(json.dumps({

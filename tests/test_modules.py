@@ -75,6 +75,53 @@ def test_initial_success_and_preference_blind_payloads():
         modules.critic.critique(TASK, CHOSEN, REJECTED, initial, judgment)
 
 
+def test_initial_generator_accepts_two_criteria_but_rejects_one_or_nine():
+    _, initial, _ = initial_case()
+    raw = initial.to_dict()
+    for criterion in raw["criteria"]:
+        criterion["source_experiences"] = []
+    two = {**raw, "criteria": raw["criteria"][:2]}
+    assert len(LLMInitialRubricGenerator(ConstantBackend({"rubric": two})).generate(TASK, []).criteria) == 2
+    one = {**raw, "criteria": raw["criteria"][:1]}
+    with pytest.raises(ValueError, match="invalid initial rubric"):
+        LLMInitialRubricGenerator(ConstantBackend({"rubric": one})).generate(TASK, [])
+    nine = {**raw, "criteria": raw["criteria"] + [
+        {**raw["criteria"][0], "criterion_id": f"extra{i}", "source_experiences": []}
+        for i in range(5)]}
+    with pytest.raises(ValueError, match="invalid initial rubric"):
+        LLMInitialRubricGenerator(ConstantBackend({"rubric": nine})).generate(TASK, [])
+
+
+def test_initial_generator_retries_semantic_failure_with_only_validation_feedback():
+    _, initial, _ = initial_case()
+    valid = initial.to_dict()
+    for item in valid["criteria"]:
+        item["source_experiences"] = []
+    invalid = {**valid, "criteria": valid["criteria"][:1]}
+
+    class SequenceBackend:
+        def __init__(self):
+            self.payloads = []
+
+        def generate(self, role, payload):
+            assert role == "initial_generator"
+            self.payloads.append(payload)
+            return {"rubric": invalid if len(self.payloads) == 1 else valid}
+
+    backend = SequenceBackend()
+    result = LLMInitialRubricGenerator(backend, invalid_output_retries=2).generate(TASK, [])
+    assert len(result.criteria) == len(valid["criteria"])
+    assert len(backend.payloads) == 2
+    assert "validation_feedback" not in backend.payloads[0]
+    assert "criteria count" in backend.payloads[1]["validation_feedback"]
+    assert CHOSEN not in json.dumps(backend.payloads) and REJECTED not in json.dumps(backend.payloads)
+    with pytest.raises(ValueError, match="criteria count"):
+        LLMInitialRubricGenerator(ConstantBackend({"rubric": invalid}),
+                                  invalid_output_retries=1).generate(TASK, [])
+    with pytest.raises(ValueError, match="invalid_output_retries"):
+        LLMInitialRubricGenerator(backend, invalid_output_retries=True)
+
+
 def test_attempt_one_success_credit_admission_and_fusion_privacy():
     modules, initial, initial_judgment = initial_case()
     assert not initial_judgment.success and initial_judgment.margin == pytest.approx(-2 / 12)

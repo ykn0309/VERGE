@@ -389,6 +389,22 @@ class RevisionAttempt(Model):
 
 
 @dataclass
+class InvalidRevisionAttempt(Model):
+    """修订输出在有限重试后仍违反 rubric 条数约束，未产生 Rk 或 Judge 结果。"""
+
+    attempt_number: int
+    feedback: str
+    validation_failures: list[str]
+
+    def __post_init__(self) -> None:
+        if type(self.attempt_number) is not int or self.attempt_number not in (1, 2):
+            raise ValueError("attempt_number must be 1 or 2")
+        if not self.validation_failures or any(
+                type(item) is not str or not item for item in self.validation_failures):
+            raise ValueError("invalid revision must have validation errors")
+
+
+@dataclass
 class TrajectoryRecord(Model):
     """单个样本的阶段结果；记忆更新在相应阶段直接写入。
 
@@ -397,7 +413,8 @@ class TrajectoryRecord(Model):
     initial_rubric/initial_judgment: 初始 rubric 及其判断，尚未生成时为空；
     revision_attempts: 最多两次同基线修订的操作及结果；
     reflected_candidates: 成功修订反思出的候选，后续直接补全绑定、信用和决策；
-    operation_contributions: 成功操作 ID 到直接收益的映射。
+    operation_contributions: 成功操作 ID 到直接收益的映射；
+    invalid_revision_attempts: 条数不合法、未进入 Judge 的修订尝试及校验记录。
     """
 
     sample_id: str
@@ -409,6 +426,7 @@ class TrajectoryRecord(Model):
     revision_attempts: list[RevisionAttempt]
     reflected_candidates: list[CandidateExperience]
     operation_contributions: dict[str, float]
+    invalid_revision_attempts: list[InvalidRevisionAttempt] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")

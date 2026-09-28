@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import random
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -70,8 +71,10 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     if dataset_config["implementation"] != "jsonl":
         raise ValueError("dataset.implementation: V1 supports only jsonl")
     options = dataset_config["config"]
-    if set(options) - {"paths", "field_map"} or "paths" not in options:
-        raise ValueError("dataset.config: expected paths and optional field_map")
+    if set(options) - {"paths", "field_map", "prepare"} or "paths" not in options:
+        raise ValueError("dataset.config: expected paths, optional field_map and prepare")
+    if "prepare" in options:
+        _check_preparation_paths(options)
     dataset = JsonlDataset(options["paths"], options.get("field_map"))
     if "train" not in dataset.paths:
         raise ValueError("dataset.config.paths.train: required for run")
@@ -197,8 +200,165 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _check_preparation_paths(options: dict[str, Any]) -> None:
+    """The prepared dataset must be precisely the files named by the experiment."""
+    prepare = options["prepare"]
+    directory = Path(prepare["output_dir"])
+    paths = options["paths"]
+    if (options.get("field_map") is not None or not isinstance(paths, dict)
+            or set(paths) != {"train", "test"} or any(
+                not isinstance(paths[split], str) or Path(paths[split]).resolve() !=
+                (directory / f"{split}.jsonl").resolve() for split in ("train", "test"))):
+        raise ValueError("dataset.config.prepare: paths must point to output_dir/train.jsonl "
+                         "and output_dir/test.jsonl with no field_map")
+
+
+def _verify_prepared_dataset(config: dict[str, Any], dataset: JsonlDataset) -> dict[str, Any] | None:
+    """Check provenance and exact bytes before any run directory or paid request is created."""
+    options = config["dataset"]["config"]
+    if "prepare" not in options:
+        return None
+    prepare = options["prepare"]
+    provenance_file = Path(prepare["output_dir"]) / "provenance.json"
+    provenance = json.loads(provenance_file.read_text(encoding="utf-8"))
+    if not isinstance(provenance, dict):
+        raise ValueError("prepared dataset provenance must be an object")
+    expected = {"dataset": "allenai/reward-bench", "source_split": "filtered",
+                "category": "Chat Hard", "revision": prepare["revision"],
+                "seed": prepare["seed"], "per_subset": prepare["per_subset"],
+                "train_per_subset": prepare["train_per_subset"]}
+    if any(type(provenance.get(key)) is not type(value) or provenance[key] != value
+           for key, value in expected.items()):
+        raise ValueError("prepared dataset provenance differs from dataset.config.prepare")
+    counts = {"train": 6 * prepare["train_per_subset"],
+              "test": 6 * (prepare["per_subset"] - prepare["train_per_subset"])}
+    if provenance.get("samples") != counts:
+        raise ValueError("prepared dataset provenance has inconsistent sample counts")
+    hashes = {split: _sha256_file(path) for split, path in dataset.paths.items()}
+    if provenance.get("sha256") != hashes:
+        raise ValueError("prepared dataset files differ from provenance SHA-256")
+    sample_ids: set[str] = set()
+    for split in ("train", "test"):
+        samples = list(dataset.load(split))
+        if len(samples) != counts[split]:
+            raise ValueError(f"prepared dataset {split} has inconsistent sample count")
+        subset_counts = {subset: 0 for subset in CHAT_HARD_SUBSETS}
+        for sample in samples:
+            subset = sample.metadata.get("subset")
+            source_id = sample.metadata.get("source_id")
+            if (subset not in subset_counts or type(source_id) is not int or
+                    sample.sample_id != f"rewardbench:{subset}:{source_id}" or
+                    sample.metadata.get("revision") != prepare["revision"]):
+                raise ValueError(f"prepared dataset {split} has invalid RewardBench metadata")
+            if sample.sample_id in sample_ids:
+                raise ValueError("prepared dataset has duplicate sample IDs across splits")
+            sample_ids.add(sample.sample_id)
+            subset_counts[subset] += 1
+        if any(n != counts[split] // 6 for n in subset_counts.values()):
+            raise ValueError(f"prepared dataset {split} is not balanced across Chat Hard subsets")
+    return provenance
+
+
+def _ensure_prepared_dataset(config: dict[str, Any], *, resuming: bool) -> None:
+    """Only a wholly absent prepared dataset may be created; never repair partial inputs."""
+    options = config["dataset"]["config"]
+    prepare = options.get("prepare")
+    if prepare is None:
+        return
+    if config["dataset"]["implementation"] != "jsonl":
+        raise ValueError("dataset.config.prepare requires a jsonl dataset")
+    _check_preparation_paths(options)
+    directory = Path(prepare["output_dir"])
+    if directory.exists():
+        if not directory.is_dir() or not all((directory / name).is_file() for name in
+                                              ("train.jsonl", "test.jsonl", "provenance.json")):
+            raise ValueError("prepared dataset directory is incomplete; refusing to overwrite or repair")
+        return  # _verify_prepared_dataset checks provenance and bytes before any model request.
+    if resuming:
+        raise ValueError("resume requires the original prepared dataset; refusing to recreate it")
+    prepare_rewardbench_chat_hard(
+        directory, seed=prepare["seed"], per_subset=prepare["per_subset"],
+        train_per_subset=prepare["train_per_subset"], revision=prepare["revision"],
+        preserve_splits_from=prepare.get("preserve_splits_from"),
+    )
+
+
+def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDataset,
+                       manifest: dict[str, Any]) -> tuple[Path, set[str], dict[str, Any]]:
+    """只接受有序完整轨迹前缀、且下一样本未改写 Memory 的旧运行。"""
+    old = json.loads((source / "run_manifest.json").read_text(encoding="utf-8"))
+    if (old.get("format_version") != 1 or old.get("dataset_version") != manifest["dataset_version"]
+            or not isinstance(old.get("code_version"), str)):
+        raise ValueError("resume: unsupported parent manifest")
+    old_config = old.get("config")
+    if not isinstance(old_config, dict) or not isinstance(old_config.get("run"), dict):
+        raise ValueError("resume: invalid parent config")
+    expected = {**old_config, "run": {**old_config["run"], "output_dir": config["run"]["output_dir"]}}
+    # Older runs predate the preparation declaration; the same bytes and verified
+    # provenance permit adding metadata without altering any executed parameter.
+    if ("prepare" in config["dataset"]["config"] and
+            "prepare" not in old_config["dataset"]["config"] and
+            "dataset_provenance" in manifest):
+        expected = {**expected, "dataset": {**old_config["dataset"], "config": {
+            **old_config["dataset"]["config"], "prepare": config["dataset"]["config"]["prepare"],
+        }}}
+    if expected != config or old.get("dataset_sha256") != manifest["dataset_sha256"]:
+        raise ValueError("resume: config or dataset changed (only run.output_dir may differ)")
+    if source.resolve() != Path(old_config["run"]["output_dir"]).resolve():
+        raise ValueError("resume: source does not match parent manifest output_dir")
+    root = source / config["store"]["config"].get("root_dir", "artifacts")
+    memory_file = root / "experience_memory.json"
+    trajectory_file = root / "trajectories.jsonl"
+    request_file = root / "llm_requests.jsonl"
+    if not memory_file.is_file() or not trajectory_file.is_file():
+        raise ValueError("resume: missing checkpoint memory or trajectories")
+    samples = [*dataset.load("train")]
+    train_ids = [sample.sample_id for sample in samples]
+    test_ids = [sample.sample_id for sample in dataset.load("test")] if "test" in dataset.paths else []
+    ordered = train_ids + test_ids
+    if len(ordered) != len(set(ordered)):
+        raise ValueError("resume: duplicate dataset sample IDs")
+    completed = [record.sample_id for record in TrajectoryLog(root).all()]
+    if not completed or len(completed) >= len(ordered) or completed != ordered[:len(completed)]:
+        raise ValueError("resume: trajectories must be a nonempty strict dataset prefix")
+    # 每条 train 完整轨迹先于下一条样本；测试不得写入 Beta evidence。
+    completed_train = set(train_ids[:min(len(completed), len(train_ids))])
+    memory = ExperienceMemory(root, read_only=True)
+    for item in memory.all():
+        if (any(key not in completed_train for key in item.source_trajectories)
+                or any(ev.sample_id not in completed_train for ev in item.evidence_history)):
+            raise ValueError("resume: Memory contains evidence beyond completed train prefix")
+    next_id = ordered[len(completed)]
+    parent_models = old_config["models"]
+    if (any(spec["backend"] == "openai_compatible" for spec in
+            [parent_models["default"], *parent_models.get("roles", {}).values()])
+            and not request_file.is_file()):
+        raise ValueError("resume: real backend requires request metadata to verify failed stage")
+    if request_file.exists():
+        with request_file.open(encoding="utf-8") as stream:
+            for number, line in enumerate(stream, 1):
+                event = json.loads(line)
+                if not isinstance(event, dict) or not isinstance(event.get("sample_id"), str):
+                    raise ValueError(f"resume: invalid request event at line {number}")
+                sample_id = event["sample_id"]
+                if (sample_id not in completed and
+                        (sample_id != next_id or event.get("role") not in
+                         ("embedding", "selector", "initial_generator"))):
+                    raise ValueError("resume: failed sample advanced beyond initial generation")
+    copied = {name: _sha256_file(path) for name, path in (
+        ("experience_memory.json", memory_file), ("trajectories.jsonl", trajectory_file),
+        ("llm_requests.jsonl", request_file),
+    ) if path.exists()}
+    lineage = {"source_run": str(source.resolve()), "source_code_version": old.get("code_version"),
+               "completed_train": min(len(completed), len(train_ids)),
+               "completed_test": max(0, len(completed) - len(train_ids)),
+               "checkpoint_sha256": copied}
+    return root, set(completed), lineage
+
+
 def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
-                   seen_ids: set[str], request_context: dict[str, str] | None = None) -> int:
+                   seen_ids: set[str], request_context: dict[str, str] | None = None,
+                   skip_ids: set[str] | None = None) -> int:
     count = 0
     iterator = iter(dataset.load(split))
     while True:
@@ -211,6 +371,9 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
         if sample.sample_id in seen_ids:
             raise RuntimeError(f"sample {sample.sample_id!r}, stage dataset: duplicate ID across splits")
         seen_ids.add(sample.sample_id)
+        if skip_ids is not None and sample.sample_id in skip_ids:
+            count += 1
+            continue
         if request_context is not None:
             request_context.update(sample_id=sample.sample_id, split=split)
         try:
@@ -223,10 +386,23 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
     return count
 
 
-def run(config_path: str | Path) -> dict[str, Any]:
+def run(config_path: str | Path, *, resume_from: str | Path | None = None,
+        initial_output_retries: int = 0) -> dict[str, Any]:
+    """Fresh run, or continue a certified prefix into a new immutable-lineage directory."""
+    if type(initial_output_retries) is not int or not 0 <= initial_output_retries <= 3:
+        raise ConfigError("initial_output_retries must be an integer in [0, 3]")
+    if resume_from is None and initial_output_retries:
+        raise ConfigError("initial_output_retries requires resume_from")
+    modules = None
     try:
         config = load_config(config_path)
+        # Reject an existing run directory before any optional network download.
+        run_dir = Path(config["run"]["output_dir"])
+        if run_dir.exists():
+            raise ValueError(f"run.output_dir: already exists: {run_dir}; use a fresh directory")
+        _ensure_prepared_dataset(config, resuming=resume_from is not None)
         dataset, modules, run_dir, store_root, max_attempts = _components(config)
+        provenance = _verify_prepared_dataset(config, dataset)
         backend_names = {spec["backend"] for spec in
                          [config["models"]["default"], *config["models"].get("roles", {}).values()]}
         manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
@@ -236,50 +412,76 @@ def run(config_path: str | Path) -> dict[str, Any]:
                     "module_versions": {name: "v1" for name in _IMPLEMENTATIONS},
                     "backend_versions": {name: "v1" for name in sorted(backend_names)},
                     "prompt_versions": {role: PROMPT_VERSION for role in _ROLES}}
+        if provenance is not None:
+            manifest["dataset_provenance"] = provenance
+        checkpoint = None
+        skipped: set[str] = set()
+        if resume_from is not None:
+            checkpoint, skipped, lineage = _resume_checkpoint(
+                Path(resume_from), config, dataset, manifest,
+            )
+            manifest["resumed_from"] = {**lineage, "initial_output_retries": initial_output_retries}
         serialized = json.dumps(manifest, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     except (ValueError, OSError, TypeError) as exc:
+        if modules is not None:
+            _close_modules(modules)
         raise ConfigError(str(exc)) from exc
     random.seed(config["run"]["seed"])
-    # 配置验证完成后才建目录；同一目录不会重复写入或覆盖已有实验。
-    run_dir.mkdir(parents=True, exist_ok=False)
-    (run_dir / "run_manifest.json").write_text(serialized, encoding="utf-8")
-    root = run_dir / store_root
-    memory = ExperienceMemory(root)
-    trajectories = TrajectoryLog(root)
-    request_context: dict[str, str] = {}
-
-    def save_request(event: dict[str, Any]) -> None:
-        # 只记录白名单元数据；不记录消息、偏好文本或 API key。
-        with (root / "llm_requests.jsonl").open("a", encoding="utf-8") as stream:
-            stream.write(json.dumps({**request_context, "backend": "openai_compatible", **event},
-                                    ensure_ascii=False, allow_nan=False) + "\n")
-
-    backends = {id(item): item for item in [modules.backend, *(
-        getattr(modules, role).backend for role in _ROLES)]
-        if isinstance(item, OpenAICompatibleBackend)}
-    for item in backends.values():
-        item.metadata_hook = save_request
-    embedder = modules.retriever.backend if isinstance(modules.retriever, VectorRetriever) else None
-    if isinstance(embedder, OpenAICompatibleEmbedding):
-        embedder.metadata_hook = save_request
+    # 旧目录只读；复制已审计的完整前缀和 Memory 到全新目录，绝不覆盖来源。
     try:
+        run_dir.mkdir(parents=True, exist_ok=False)
+        (run_dir / "run_manifest.json").write_text(serialized, encoding="utf-8")
+        root = run_dir / store_root
+        if checkpoint is not None:
+            root.mkdir(parents=True, exist_ok=False)
+            for name, digest in manifest["resumed_from"]["checkpoint_sha256"].items():
+                shutil.copyfile(checkpoint / name, root / name)
+                if _sha256_file(root / name) != digest:
+                    raise ValueError(f"resume: copied checkpoint changed: {name}")
+        memory = ExperienceMemory(root)
+        trajectories = TrajectoryLog(root)
+        modules.initial_generator.invalid_output_retries = initial_output_retries
+        request_context: dict[str, str] = {}
+
+        def save_request(event: dict[str, Any]) -> None:
+            # 只记录白名单元数据；不记录消息、偏好文本或 API key。
+            with (root / "llm_requests.jsonl").open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({**request_context, "backend": "openai_compatible", **event},
+                                        ensure_ascii=False, allow_nan=False) + "\n")
+
+        backends = {id(item): item for item in [modules.backend, *(
+            getattr(modules, role).backend for role in _ROLES)]
+            if isinstance(item, OpenAICompatibleBackend)}
+        for item in backends.values():
+            item.metadata_hook = save_request
+        embedder = modules.retriever.backend if isinstance(modules.retriever, VectorRetriever) else None
+        if isinstance(embedder, OpenAICompatibleEmbedding):
+            embedder.metadata_hook = save_request
         runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts,
                                 max_revision_output_retries=config["modules"]["revision"]["config"].get(
                                     "invalid_output_retries", 0))
         seen_ids: set[str] = set()
-        train_count = _process_split(runner, dataset, "train", seen_ids, request_context)
+        train_count = _process_split(runner, dataset, "train", seen_ids, request_context, skipped)
         test_count = 0
         if "test" in dataset.paths:
             # 测试阶段复用训练后的 Memory，完全不写回信用或生成经验。
             evaluation = PipelineRunner(modules, ExperienceMemory(root, read_only=True),
                                         trajectories, training=False, max_attempts=max_attempts)
-            test_count = _process_split(evaluation, dataset, "test", seen_ids, request_context)
+            test_count = _process_split(evaluation, dataset, "test", seen_ids, request_context, skipped)
         return {"run_dir": str(run_dir), "train_samples": train_count, "test_samples": test_count}
     finally:
-        for item in backends.values():
-            item.close()
-        if isinstance(embedder, OpenAICompatibleEmbedding):
-            embedder.close()
+        _close_modules(modules)
+
+
+def _close_modules(modules: Any) -> None:
+    backends = {id(item): item for item in [modules.backend, *(
+        getattr(modules, role).backend for role in _ROLES)]
+        if isinstance(item, OpenAICompatibleBackend)}
+    for item in backends.values():
+        item.close()
+    embedder = modules.retriever.backend if isinstance(modules.retriever, VectorRetriever) else None
+    if isinstance(embedder, OpenAICompatibleEmbedding):
+        embedder.close()
 
 
 def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
@@ -334,9 +536,10 @@ def summarize_rewardbench(run_dir: str | Path) -> dict[str, Any]:
         counts["accuracy"] = counts["correct"] / counts["total"] if counts["total"] else None
     total = sum(item["total"] for item in per_subset.values())
     correct = sum(item["correct"] for item in per_subset.values())
+    invalid_revisions = sum(len(record.invalid_revision_attempts) for record in records.values())
     return {"run_dir": str(directory), "scope": "internal Chat Hard split (not official leaderboard)",
             "test_total": total, "test_correct": correct, "test_accuracy": correct / total,
-            "per_subset": per_subset}
+            "per_subset": per_subset, "invalid_revision_attempts": invalid_revisions}
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -344,14 +547,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     run_command = commands.add_parser("run", help="run train and optional held-out test")
     run_command.add_argument("--config", required=True)
-    prepare_command = commands.add_parser("prepare-rewardbench", help="prepare Chat Hard train/test JSONL")
-    prepare_command.add_argument("--output-dir", required=True)
-    prepare_command.add_argument("--seed", type=int, default=42)
-    prepare_command.add_argument("--per-subset", type=int, default=2)
-    prepare_command.add_argument("--train-per-subset", type=int, default=1)
-    prepare_command.add_argument("--revision", help="optional pinned upstream commit SHA")
-    prepare_command.add_argument("--preserve-splits-from",
-                                 help="existing prepared Chat Hard directory whose train/test membership stays fixed")
+    run_command.add_argument("--resume-from", help="copy a certified incomplete run to a new output directory")
+    run_command.add_argument("--initial-output-retries", type=int,
+                             help="semantic R0 validation retries (default: 2 when resuming)")
     inspect_command = commands.add_parser("inspect-sample", help="inspect a saved trajectory")
     inspect_command.add_argument("--run-dir", required=True)
     inspect_command.add_argument("--sample-id", required=True)
@@ -360,12 +558,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         if args.command == "run":
-            result = run(args.config)
-        elif args.command == "prepare-rewardbench":
-            result = prepare_rewardbench_chat_hard(
-                args.output_dir, seed=args.seed, per_subset=args.per_subset,
-                train_per_subset=args.train_per_subset, revision=args.revision,
-                preserve_splits_from=args.preserve_splits_from)
+            result = run(args.config, resume_from=args.resume_from,
+                         initial_output_retries=(args.initial_output_retries if
+                                                 args.initial_output_retries is not None else
+                                                 (2 if args.resume_from else 0)))
         elif args.command == "summarize-rewardbench":
             result = summarize_rewardbench(args.run_dir)
         else:

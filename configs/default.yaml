@@ -1,6 +1,7 @@
 run:
   seed: 42
   output_dir: runs/default
+  test_workers: 4  # 测试阶段并行数；设为 1 可顺序测试，训练始终顺序执行。
 
 # 离线可运行的 Fake 示例；真实 API 配置见 configs/openai.example.yaml 或 configs/qwen3.5-flash.yaml。
 dataset:
@@ -27,9 +28,10 @@ modules:
       max_selected: 5
       exploration_slots: 0
   revision:
-    implementation: two_attempt_same_base
+    implementation: critic_atomic_same_base
     config:
       max_attempts: 2
+      invalid_output_retries: 2
   revision_credit:
     implementation: operation_bound
     config:

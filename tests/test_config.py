@@ -13,7 +13,7 @@ DEFAULT = Path(__file__).resolve().parents[1] / "configs" / "default.yaml"
 
 def test_default_config_loads_without_creating_output_dir():
     config = load_config(DEFAULT)
-    assert config["run"] == {"seed": 42, "output_dir": "runs/default"}
+    assert config["run"] == {"seed": 42, "output_dir": "runs/default", "test_workers": 4}
     assert config["dataset"]["implementation"] == "jsonl"
     assert config["models"]["default"]["backend"] == "fake"
     assert config["modules"]["revision"]["config"]["max_attempts"] == 2

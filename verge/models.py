@@ -288,7 +288,7 @@ class RevisionOperation(Model):
     operation_id: 当前修订尝试内的操作标识；operation_type: ADD、DELETE 或 MODIFY；
     target_criterion_id: DELETE/MODIFY 的目标 ID，ADD 时为空；
     new_or_updated_criterion: ADD 的新标准或 MODIFY 的更新后标准，DELETE 时为空；
-    before_criterion: Generator 留空；Executor 从初始 rubric 补全 DELETE/MODIFY 的旧标准。
+    before_criterion: Critic 留空；Executor 从初始 rubric 补全 DELETE/MODIFY 的旧标准。
     """
 
     operation_id: str
@@ -370,23 +370,42 @@ class CandidateExperience(Model):
 
 
 @dataclass
+class RevisionProposal(Model):
+    """Critic 单次调用的私有失败分析与独立的原子操作集。"""
+
+    analysis: str
+    operations: list[RevisionOperation]
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.analysis, str) or not self.analysis.strip():
+            raise ValueError("critic analysis must be non-empty")
+        if not isinstance(self.operations, list) or any(
+                not isinstance(item, RevisionOperation) for item in self.operations):
+            raise ValueError("critic operations must be a list of operations")
+
+
+@dataclass
 class RevisionAttempt(Model):
     """一次从初始 rubric 出发的修订尝试。
 
-    attempt_number: 第 1 或第 2 次；feedback: Critic 的修订反馈；
-    operations: Executor 补全后的操作列表（包含 Generator 的意图）；
+    attempt_number: 第 1 或第 2 次；analysis: 新流程的私有失败分析；
+    feedback: 仅用于读取旧轨迹，不将旧反馈当作新分析；
+    operations: Executor 补全后的操作列表（包含 Critic 的意图）；
     rubric/judgment: 修订产生的完整 rubric 及其评价结果；
     validation_failures: 有效修订前的结构校验错误，便于审计纠错次数与上下文。
     """
 
     attempt_number: int
-    feedback: str
+    feedback: str | None
     operations: list[RevisionOperation]
     rubric: Rubric
     judgment: RubricJudgment
     validation_failures: list[str] = field(default_factory=list)
+    analysis: str | None = None
 
     def __post_init__(self) -> None:
+        if self.analysis is not None and (not isinstance(self.analysis, str) or not self.analysis.strip()):
+            raise ValueError("revision analysis must be non-empty")
         if type(self.attempt_number) is not int or self.attempt_number not in (1, 2):
             raise ValueError("attempt_number must be 1 or 2")
         if not isinstance(self.validation_failures, list) or any(
@@ -396,13 +415,16 @@ class RevisionAttempt(Model):
 
 @dataclass
 class InvalidRevisionAttempt(Model):
-    """修订输出在有限重试后仍违反 rubric 条数约束，未产生 Rk 或 Judge 结果。"""
+    """操作经有限结构重试仍无效，未产生 Rk 或 Judge 结果。"""
 
     attempt_number: int
-    feedback: str
+    feedback: str | None
     validation_failures: list[str]
+    analysis: str | None = None
 
     def __post_init__(self) -> None:
+        if self.analysis is not None and (not isinstance(self.analysis, str) or not self.analysis.strip()):
+            raise ValueError("revision analysis must be non-empty")
         if type(self.attempt_number) is not int or self.attempt_number not in (1, 2):
             raise ValueError("attempt_number must be 1 or 2")
         if not self.validation_failures or any(

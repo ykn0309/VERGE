@@ -14,12 +14,11 @@ from verge.calculator import allocate_revision_credit, calculate_rubric_judgment
 from verge.llm import FakeLLMBackend, FakeScenario, LLMBackend, OpenAICompatibleBackend
 from verge.models import (
     CandidateExperience, CriterionJudgment, Experience, InvalidRevisionAttempt,
-    RevisionAttempt, RevisionOperation, Rubric, RubricJudgment,
+    RevisionAttempt, RevisionOperation, RevisionProposal, Rubric, RubricJudgment,
 )
 from verge.prompts import (
     ExperienceView, NumberedIDCodec, admission_payload, binding_payload, critic_payload,
-    fusion_payload, generator_payload, judge_payload, reflection_payload, revision_payload,
-    selector_payload,
+    fusion_payload, generator_payload, judge_payload, reflection_payload, selector_payload,
 )
 
 
@@ -53,22 +52,13 @@ class Judge(Protocol):
 
 
 class Critic(Protocol):
-    """失败诊断：基于 R0、Judge 结果及可选的失败尝试，输出修订反馈文本。"""
+    """一次调用输出私有分析和对 R0 可独立执行的原子操作。"""
 
     def critique(self, task: str, chosen: str, rejected: str, initial: Rubric,
-                 initial_judgment: RubricJudgment,
-                 failed_attempt: RevisionAttempt | None = None) -> str: ...
-
-
-class RevisionGenerator(Protocol):
-    """修订意图：第二次额外看到此前完整的修订相关轨迹，操作仍以 R0 为基线。"""
-
-    def generate(self, task: str, initial: Rubric, feedback: str,
-                 attempt_number: int, *, chosen: str | None = None,
-                 rejected: str | None = None,
-                 initial_judgment: RubricJudgment | None = None,
+                 initial_judgment: RubricJudgment, attempt_number: int, *,
                  previous_attempt: RevisionAttempt | None = None,
-                 previous_invalid_attempt: InvalidRevisionAttempt | None = None) -> list[RevisionOperation]: ...
+                 previous_invalid_attempt: InvalidRevisionAttempt | None = None,
+                 validation_feedback: str | None = None) -> RevisionProposal: ...
 
 
 class Reflector(Protocol):
@@ -113,17 +103,33 @@ def _views(items: Sequence[ExperienceView]) -> None:
         raise ValueError("selected/retrieved experiences must be ExperienceView projections")
 
 
+class RevisionOperationOutputError(ValueError):
+    """Critic 的 analysis 有效，但 operations 的编号或领域结构不可执行。"""
+
+    def __init__(self, message: str, analysis: str) -> None:
+        super().__init__(message)
+        self.analysis = analysis
+
+
 def _output(backend: LLMBackend, role: str, payload: dict[str, Any],
-            field: str) -> Any:
+            field: str | None) -> Any:
     """所有角色共享的结构校验；字段值仍由对应模块按领域模型校验。"""
     # Fake 后端沿用内部固定 ID；真实模型只接触本次调用的局部数字编号。
     codec = NumberedIDCodec(role, payload) if isinstance(backend, OpenAICompatibleBackend) else None
     response = backend.generate(role, codec.project(payload) if codec else payload)
-    if not isinstance(response, Mapping) or set(response) != {field}:
-        raise ValueError(f"{role}: expected a structured result containing only {field}")
+    expected = ({field} if field is not None else
+                {"decision", "reason"} if role == "admission_checker" else
+                {"analysis", "operations"})
+    if not isinstance(response, Mapping) or set(response) != expected:
+        raise ValueError(f"{role}: expected structured fields {sorted(expected)}")
     if codec:
-        response = codec.restore(response)
-    return response[field]
+        try:
+            response = codec.restore(response)
+        except ValueError as exc:
+            if role != "critic" or not isinstance(response.get("analysis"), str) or not response["analysis"].strip():
+                raise  # 无有效诊断的是输出契约错误，而非可重试的操作结构错误。
+            raise RevisionOperationOutputError(str(exc), response["analysis"]) from exc
+    return response[field] if field is not None else response
 
 
 class FakeRetriever:
@@ -151,6 +157,12 @@ class VectorRetriever:
             raise ValueError("V1 retrieval top_l must be 20")
         self.backend, self.top_l = backend, top_l
         self._vectors: dict[str, tuple[tuple[str, str], tuple[float, ...]]] = {}
+
+    def fork(self) -> VectorRetriever:
+        """为并发只读评估复制已缓存的经验向量，避免线程共享可变缓存。"""
+        result = VectorRetriever(self.backend, self.top_l)
+        result._vectors = self._vectors.copy()
+        return result
 
     @staticmethod
     def _unit(vector: tuple[float, ...]) -> tuple[float, ...]:
@@ -286,10 +298,20 @@ class LLMJudge:
             old_answers = {item.criterion_id: item for item in previous_judgment.criterion_judgments}
             if set(old_answers) != set(old) or len(old_answers) != len(previous_judgment.criterion_judgments):
                 raise ValueError("previous judgment does not cover the base rubric")
-            # 问题未变时沿用 R0 判断；即使重要性分数变化也不重新询问 Judge。
-            known = {item.criterion_id: old_answers[item.criterion_id]
-                     for item in rubric.criteria if item.criterion_id in old
-                     and item.question == old[item.criterion_id].question}
+            # 相同问题若 R0 判断一致，按文本复用 Boolean；包含 MODIFY 后撞名的情况。
+            # R0 同名问题判断不一致时，不猜测答案，只沿用 ID 与问题均未变的判断。
+            by_question: dict[str, set[tuple[bool, bool]]] = {}
+            for item in previous.criteria:
+                answer = old_answers[item.criterion_id]
+                by_question.setdefault(item.question, set()).add((answer.chosen, answer.rejected))
+            for item in rubric.criteria:
+                if item.criterion_id in old and item.question == old[item.criterion_id].question:
+                    known[item.criterion_id] = old_answers[item.criterion_id]
+                elif len(by_question.get(item.question, ())) == 1:
+                    chosen_answer, rejected_answer = next(iter(by_question[item.question]))
+                    known[item.criterion_id] = CriterionJudgment(
+                        item.criterion_id, chosen_answer, rejected_answer,
+                    )
         # 后端仅回答待判断标准，返回值必须恰好覆盖这些 ID。
         pending = [item for item in rubric.criteria if item.criterion_id not in known]
         generated: list[CriterionJudgment] = []
@@ -326,82 +348,61 @@ class LLMJudge:
 
 
 class LLMCritic:
-    """根据失败原因给修订器反馈；第二次尝试仍追溯同一个 R0。"""
+    """私有分析和操作同次生成；Executor 对 R0 执行并补全旧标准。"""
 
     def __init__(self, backend: LLMBackend) -> None:
         self.backend = backend
 
     def critique(self, task: str, chosen: str, rejected: str, initial: Rubric,
-                 initial_judgment: RubricJudgment,
-                 failed_attempt: RevisionAttempt | None = None) -> str:
+                 initial_judgment: RubricJudgment, attempt_number: int, *,
+                 previous_attempt: RevisionAttempt | None = None,
+                 previous_invalid_attempt: InvalidRevisionAttempt | None = None,
+                 validation_feedback: str | None = None) -> RevisionProposal:
         _text(task, "task")
         if type(chosen) is not str or type(rejected) is not str:
             raise ValueError("chosen and rejected must be strings")
-        if initial_judgment.rubric_id != initial.rubric_id or initial_judgment.success:
-            raise ValueError("critic requires a failed initial rubric")
-        if (failed_attempt is not None and
-                (failed_attempt.attempt_number != 1 or failed_attempt.judgment.success
-                 or failed_attempt.rubric.base_rubric_id != initial.rubric_id
-                 or failed_attempt.judgment.rubric_id != failed_attempt.rubric.rubric_id)):
-            raise ValueError("critic second attempt requires a failed revision from R0")
-        feedback = _output(self.backend, "critic", critic_payload(
-            task, chosen, rejected, initial, initial_judgment, failed_attempt,
-        ), "feedback")
-        _text(feedback, "critic feedback")
-        return feedback
-
-
-class LLMRevisionGenerator:
-    """只生成操作意图；before_criterion 和修订后 rubric 由 Executor 补全。"""
-
-    def __init__(self, backend: LLMBackend) -> None:
-        self.backend = backend
-
-    def generate(self, task: str, initial: Rubric, feedback: str,
-                 attempt_number: int, *, chosen: str | None = None,
-                 rejected: str | None = None,
-                 initial_judgment: RubricJudgment | None = None,
-                 previous_attempt: RevisionAttempt | None = None,
-                 previous_invalid_attempt: InvalidRevisionAttempt | None = None) -> list[RevisionOperation]:
-        _text(task, "task")
-        _text(feedback, "feedback")
-        if initial.base_rubric_id is not None or type(attempt_number) is not int or attempt_number not in (1, 2):
-            raise ValueError("revision_generator requires R0 and attempt 1 or 2")
-        history = (chosen, rejected, initial_judgment, previous_attempt, previous_invalid_attempt)
-        if attempt_number == 1 and any(value is not None for value in history):
-            raise ValueError("first revision must not receive preference or prior attempts")
-        if attempt_number == 2:
-            if (type(chosen) is not str or type(rejected) is not str
-                    or initial_judgment is None or initial_judgment.rubric_id != initial.rubric_id
-                    or initial_judgment.success
-                    or (previous_attempt is None) == (previous_invalid_attempt is None)
-                    or (previous_attempt is not None and
-                        (previous_attempt.attempt_number != 1 or previous_attempt.judgment.success
-                         or previous_attempt.rubric.base_rubric_id != initial.rubric_id))
-                    or (previous_invalid_attempt is not None and previous_invalid_attempt.attempt_number != 1)):
-                raise ValueError("second revision requires preference, failed R0 and one previous attempt")
-        raw = _output(self.backend, "revision_generator", revision_payload(
-            task, initial, feedback, attempt_number, chosen=chosen, rejected=rejected,
-            initial_judgment=initial_judgment, previous_attempt=previous_attempt,
-            previous_invalid_attempt=previous_invalid_attempt,
-        ), "operations")
-        if not isinstance(raw, list):
-            raise ValueError("revision_generator: operations must be a list")
-        result = []
-        for item in raw:
-            if isinstance(item, dict):
-                # before_criterion 仅由 Executor 从 R0 补全，不能信任模型提供的旧标准。
-                item = {**item, "before_criterion": None}
-                if isinstance(item.get("new_or_updated_criterion"), dict):
-                    # 修订不读取来源：模型提供的 source_experiences 不参与归因。
-                    item["new_or_updated_criterion"] = {
-                        **item["new_or_updated_criterion"], "source_experiences": [],
-                    }
-            result.append(RevisionOperation.from_dict(item))
-        for item in result:
-            if item.new_or_updated_criterion is not None:
-                _text(item.new_or_updated_criterion.question, "revision criterion question")
-        return result
+        if initial.base_rubric_id is not None or initial_judgment.rubric_id != initial.rubric_id or initial_judgment.success:
+            raise ValueError("critic requires a failed initial R0")
+        if type(attempt_number) is not int or attempt_number not in (1, 2):
+            raise ValueError("critic requires attempt 1 or 2")
+        if attempt_number == 1 and (previous_attempt is not None or previous_invalid_attempt is not None):
+            raise ValueError("first critic must not see a previous attempt")
+        if attempt_number == 2 and (
+                (previous_attempt is None) == (previous_invalid_attempt is None)
+                or (previous_attempt is not None and
+                    (previous_attempt.attempt_number != 1 or previous_attempt.analysis is None
+                     or previous_attempt.judgment.success
+                     or previous_attempt.rubric.base_rubric_id != initial.rubric_id
+                     or previous_attempt.judgment.rubric_id != previous_attempt.rubric.rubric_id))
+                or (previous_invalid_attempt is not None and
+                    (previous_invalid_attempt.attempt_number != 1
+                     or previous_invalid_attempt.analysis is None))):
+            raise ValueError("second critic requires one failed prior attempt with analysis")
+        raw = _output(self.backend, "critic", critic_payload(
+            task, chosen, rejected, initial, initial_judgment, attempt_number,
+            previous_attempt=previous_attempt, previous_invalid_attempt=previous_invalid_attempt,
+            validation_feedback=validation_feedback,
+        ), None)
+        _text(raw["analysis"], "critic analysis")
+        if not isinstance(raw["operations"], list):
+            raise ValueError("critic: operations must be a list")
+        try:
+            operations = []
+            for item in raw["operations"]:
+                if isinstance(item, dict):
+                    # 仅 Executor 决定旧标准；模型的来源不参与修订归因。
+                    item = {**item, "before_criterion": None}
+                    if isinstance(item.get("new_or_updated_criterion"), dict):
+                        item["new_or_updated_criterion"] = {
+                            **item["new_or_updated_criterion"], "source_experiences": [],
+                        }
+                operations.append(RevisionOperation.from_dict(item))
+            for item in operations:
+                if item.new_or_updated_criterion is not None:
+                    _text(item.new_or_updated_criterion.question, "revision criterion question")
+            return RevisionProposal(raw["analysis"], operations)
+        except ValueError as exc:
+            raise RevisionOperationOutputError(str(exc), raw["analysis"]) from exc
 
 
 class LLMReflector:
@@ -485,9 +486,9 @@ class LLMAdmissionChecker:
                 or not set(candidate.linked_operation_ids) <= operation_ids
                 or set(operation_contributions) != operation_ids):
             raise ValueError("admission requires bound, credited candidate and successful revision")
-        response = self.backend.generate("admission_checker", admission_payload(
+        response = _output(self.backend, "admission_checker", admission_payload(
             task, candidate, successful_attempt, dict(operation_contributions),
-        ))
+        ), None)
         if (not isinstance(response, Mapping) or set(response) != {"decision", "reason"}
                 or type(response["decision"]) is not str
                 or response["decision"] not in ("PASS", "FAIL")
@@ -531,7 +532,6 @@ class LLMModules:
     initial_generator: LLMInitialRubricGenerator
     judge: LLMJudge
     critic: LLMCritic
-    revision_generator: LLMRevisionGenerator
     reflector: LLMReflector
     revision_credit_assigner: LLMRevisionCreditAssigner
     admission_checker: LLMAdmissionChecker
@@ -547,7 +547,7 @@ def make_llm_modules(backend: LLMBackend, *, top_l: int = 20,
     return LLMModules(backend, retriever if retriever is not None else FakeRetriever(top_l),
                       LLMSelector(backend, max_selected=max_selected),
                       LLMInitialRubricGenerator(backend), LLMJudge(backend),
-                      LLMCritic(backend), LLMRevisionGenerator(backend),
+                      LLMCritic(backend),
                       LLMReflector(backend), LLMRevisionCreditAssigner(backend),
                       LLMAdmissionChecker(backend), LLMFusionJudge(backend))
 

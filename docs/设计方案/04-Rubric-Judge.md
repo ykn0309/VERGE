@@ -79,4 +79,4 @@ RubricJudgment {
 }
 ```
 
-同一 revision comparison 中，内容未变化的 criterion 应复用已有 Boolean judgment，避免 Judge 随机性制造虚假 operation contribution。模型只看到本次待判断标准的 `"1"`、`"2"`……短编号；内部 ID 由适配层还原。模型漏答、重复编号、返回未知编号或无效布尔值时有限重试；仍失败则写入显式 Judge 错误轨迹、跳过该样本后续信用与经验生成，不把未知结果计为失败或成功。网络/鉴权等后端错误仍中止运行。
+同一 revision comparison 中，问题文本与 R0 一致的 criterion 应复用已有 Boolean judgment，即使修改了重要性或换了 ID，避免 Judge 随机性制造虚假 operation contribution。若 R0 本身有相同问题却给出了相互矛盾的判断，不能凭文本猜测答案：只按未变的 ID 和问题复用，其余重新交给 Judge；此类冲突不应导致整条样本中止。模型只看到本次待判断标准的 `"1"`、`"2"`……短编号；内部 ID 由适配层还原。模型漏答、重复编号、返回未知编号或无效布尔值时有限重试；仍失败则写入显式 Judge 错误轨迹、跳过该样本后续信用与经验生成，不把未知结果计为失败或成功。网络/鉴权等后端错误仍中止运行。

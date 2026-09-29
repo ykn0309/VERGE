@@ -83,6 +83,7 @@ def test_attempt_one_success_adds_experience_and_full_trajectory(tmp_path):
     assert (attempt.attempt_number, attempt.rubric.base_rubric_id) == (1, record.initial_rubric.rubric_id)
     assert attempt.judgment.success
     assert len(attempt.operations) == 1
+    assert attempt.analysis and attempt.feedback is None
     assert attempt.operations[0].before_criterion == record.initial_rubric.criteria[1]
     assert attempt.operations[0].operation_id in record.operation_contributions
     result = record.reflected_candidates[0]
@@ -113,7 +114,7 @@ def test_attempt_two_uses_r0_not_failed_r1_and_only_successful_operations(tmp_pa
     assert [item.experience_id for item in memory.all()] == [record.reflected_candidates[0].experience_id]
     assert log.get("sample") == record
     assert [payload["initial_rubric"]["rubric_id"] for role, payload in
-            modules.backend.requests if role == "revision_generator"] == ["r0", "r0"]
+            modules.backend.requests if role == "critic"] == ["r0", "r0"]
 
 
 def test_empty_first_revision_is_a_failed_attempt_not_an_abort(tmp_path):
@@ -121,23 +122,26 @@ def test_empty_first_revision_is_a_failed_attempt_not_an_abort(tmp_path):
     generate = modules.backend.generate
 
     def empty_first_revision(role, payload):
-        if role == "revision_generator" and payload["attempt_number"] == 1:
-            return {"operations": []}
+        if role == "critic" and payload["attempt_number"] == 1:
+            return {"analysis": "需要重新设计关键标准。", "operations": []}
         return generate(role, payload)
 
     modules.backend.generate = empty_first_revision
     record = runner.run_sample(sample())
     assert record.state == "revision_success_2"
-    assert len(record.revision_attempts) == 2
-    first, second = record.revision_attempts
-    assert first.operations == [] and not first.judgment.success
-    assert first.rubric.base_rubric_id == second.rubric.base_rubric_id == record.initial_rubric.rubric_id
+    assert [attempt.attempt_number for attempt in record.revision_attempts] == [2]
+    assert [attempt.attempt_number for attempt in record.invalid_revision_attempts] == [1]
+    assert record.invalid_revision_attempts[0].analysis
+    assert record.invalid_revision_attempts[0].validation_failures == [
+        "revision operations must not be empty"] * 3
+    second = record.revision_attempts[0]
+    assert second.rubric.base_rubric_id == record.initial_rubric.rubric_id
     assert second.operations[0].operation_id in record.operation_contributions
     assert log.get("sample") == record
 
 
 def delete_to_one():
-    return {"operations": [{"operation_id": f"drop{i}", "operation_type": "DELETE",
+    return {"analysis": "部分标准未能区分候选回答。", "operations": [{"operation_id": f"drop{i}", "operation_type": "DELETE",
                             "target_criterion_id": f"c{i}", "new_or_updated_criterion": None}
                            for i in (1, 2, 3)]}
 
@@ -148,7 +152,7 @@ def test_invalid_revision_output_retries_without_consuming_an_attempt(tmp_path):
     calls = []
 
     def invalid_once(role, payload):
-        if role == "revision_generator":
+        if role == "critic":
             calls.append(payload)
             if len(calls) == 1:
                 return delete_to_one()
@@ -163,12 +167,42 @@ def test_invalid_revision_output_retries_without_consuming_an_attempt(tmp_path):
     assert len(record.revision_attempts) == 1 and record.invalid_revision_attempts == []
     assert [operation.operation_id for operation in record.revision_attempts[0].operations] == ["op1"]
     assert len(calls) == 2
-    assert "revised rubric must contain 2..8 criteria" in calls[1]["feedback"]
+    assert "revised rubric must contain 2..8 criteria" in calls[1]["validation_feedback"]
     assert record.revision_attempts[0].validation_failures == [
         "revised rubric must contain 2..8 criteria"]
     assert log.get("sample").revision_attempts[0].validation_failures == [
         "revised rubric must contain 2..8 criteria"]
-    assert "优质回答" not in str(calls[1]) and "较差回答" not in str(calls[1])
+    assert calls[1]["chosen"] == sample().chosen and calls[1]["rejected"] == sample().rejected
+    assert "优质回答" not in calls[1]["validation_feedback"]
+    assert "较差回答" not in calls[1]["validation_feedback"]
+    assert log.get("sample") == record
+
+
+def test_critic_operation_model_error_retries_without_aborting(tmp_path):
+    modules = make_fake_modules("attempt_1_success")
+    original = modules.backend.generate
+    requests = []
+
+    def wrong_modified_id(role, payload):
+        if role == "critic":
+            requests.append(payload)
+            if len(requests) == 1:
+                return {"analysis": "应重新检查标准。", "operations": [{
+                    "operation_id": "op1", "operation_type": "MODIFY", "target_criterion_id": "c2",
+                    "new_or_updated_criterion": {"criterion_id": "c3", "question": "新问题",
+                                                 "importance_score": 7, "source_experiences": []},
+                }]}
+        return original(role, payload)
+
+    modules.backend.generate = wrong_modified_id
+    log = TrajectoryLog(tmp_path)
+    runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log)
+    record = runner.run_sample(sample())
+    assert record.state == "revision_success_1"
+    assert len(requests) == 2
+    assert "MODIFY must preserve target_criterion_id" in requests[1]["validation_feedback"]
+    assert record.revision_attempts[0].validation_failures == [
+        "RevisionOperation: MODIFY must preserve target_criterion_id"]
     assert log.get("sample") == record
 
 
@@ -178,7 +212,7 @@ def test_invalid_size_first_attempt_can_succeed_on_second_from_r0(tmp_path):
     calls = []
 
     def invalid_first(role, payload):
-        if role == "revision_generator":
+        if role == "critic":
             calls.append(payload)
             if payload["attempt_number"] == 1:
                 return delete_to_one()
@@ -193,9 +227,11 @@ def test_invalid_size_first_attempt_can_succeed_on_second_from_r0(tmp_path):
     assert [attempt.attempt_number for attempt in record.revision_attempts] == [2]
     assert record.revision_attempts[0].rubric.base_rubric_id == record.initial_rubric.rubric_id
     assert [attempt.attempt_number for attempt in record.invalid_revision_attempts] == [1]
+    assert record.invalid_revision_attempts[0].analysis
+    assert record.invalid_revision_attempts[0].feedback is None
     assert len(record.invalid_revision_attempts[0].validation_failures) == 3
     assert [payload["attempt_number"] for payload in calls] == [1, 1, 1, 2]
-    assert "chosen" not in calls[0] and "previous_attempt" not in calls[0]
+    assert calls[0]["chosen"] == sample().chosen and "previous_attempt" not in calls[0]
     assert calls[-1]["chosen"] == sample().chosen
     assert calls[-1]["previous_attempt"] is None
     assert calls[-1]["previous_invalid_attempt"]["attempt_number"] == 1
@@ -209,7 +245,7 @@ def test_both_size_invalid_attempts_are_final_failure_without_judging(tmp_path):
     calls = []
 
     def always_invalid(role, payload):
-        if role == "revision_generator":
+        if role == "critic":
             calls.append(payload)
             return delete_to_one()
         return original(role, payload)
@@ -245,10 +281,10 @@ def test_invalid_executor_operations_exhaust_retries_without_aborting_run(tmp_pa
     calls = []
 
     def invalid_second(role, payload):
-        if role == "revision_generator":
+        if role == "critic":
             calls.append(payload)
             if payload["attempt_number"] == 2:
-                return operations
+                return {"analysis": "上次修订没有改善结果。", **operations}
         return original(role, payload)
 
     modules.backend.generate = invalid_second
@@ -262,7 +298,7 @@ def test_invalid_executor_operations_exhaust_retries_without_aborting_run(tmp_pa
     assert [item.attempt_number for item in record.invalid_revision_attempts] == [2]
     assert record.invalid_revision_attempts[0].validation_failures == [error] * 3
     assert [payload["attempt_number"] for payload in calls] == [1, 2, 2, 2]
-    assert error in calls[-1]["feedback"]
+    assert error in calls[-1]["validation_feedback"]
     assert len([role for role, _ in modules.backend.requests if role == "judge"]) == 2
     assert memory.all() == [] and log.get("sample") == record
 
@@ -273,10 +309,10 @@ def test_conflicting_first_revision_can_recover_on_second_from_r0(tmp_path):
     calls = []
 
     def conflicting_first(role, payload):
-        if role == "revision_generator":
+        if role == "critic":
             calls.append(payload)
             if payload["attempt_number"] == 1:
-                return {"operations": [{"operation_id": "dup", "operation_type": "DELETE",
+                return {"analysis": "需要校正操作目标。", "operations": [{"operation_id": "dup", "operation_type": "DELETE",
                                         "target_criterion_id": "c1", "new_or_updated_criterion": None},
                                        {"operation_id": "dup", "operation_type": "DELETE",
                                         "target_criterion_id": "c2", "new_or_updated_criterion": None}]}
@@ -297,44 +333,45 @@ def test_conflicting_first_revision_can_recover_on_second_from_r0(tmp_path):
     assert log.get("sample") == record
 
 
-def test_revision_generator_contract_error_still_aborts_after_retry_limit(tmp_path):
+def test_critic_contract_error_still_aborts_after_retry_limit(tmp_path):
     modules = make_fake_modules("attempt_1_success")
     original = modules.backend.generate
     calls = []
 
     def bad_generator(role, payload):
-        if role == "revision_generator":
+        if role == "critic":
             calls.append(payload)
-            return {"operations": "not a list"}
+            return {"analysis": "诊断", "operations": "not a list"}
         return original(role, payload)
 
     modules.backend.generate = bad_generator
     log = TrajectoryLog(tmp_path)
     runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log,
                             max_revision_output_retries=2)
-    with pytest.raises(ValueError, match="revision_generator: operations must be a list"):
+    with pytest.raises(ValueError, match="critic: operations must be a list"):
         runner.run_sample(sample())
-    assert len(calls) == 3 and log.get("sample") is None
+    assert len(calls) == 1 and log.get("sample") is None  # Critic 契约错误不作 Executor 重试。
 
 
 def test_second_revision_receives_full_failed_revision_history_but_starts_from_r0(tmp_path):
     runner, modules, _, _ = make_runner(tmp_path, "final_failure")
     record = runner.run_sample(sample())
     requests = [payload for role, payload in modules.backend.requests
-                if role == "revision_generator"]
+                if role == "critic"]
     first, second = requests
-    assert set(first) == {"task", "initial_rubric", "feedback", "attempt_number"}
+    assert set(first) == {"task", "chosen", "rejected", "initial_rubric", "initial_judgment", "attempt_number"}
     assert second["chosen"] == sample().chosen and second["rejected"] == sample().rejected
+    assert first["initial_judgment"] == record.initial_judgment.to_dict()
     assert second["initial_rubric"]["rubric_id"] == record.initial_rubric.rubric_id
     assert second["initial_judgment"] == record.initial_judgment.to_dict()
     prior = second["previous_attempt"]
-    assert prior["feedback"] == record.revision_attempts[0].feedback
+    assert prior["analysis"] == record.revision_attempts[0].analysis
     assert prior["operations"][0]["operation_id"] == record.revision_attempts[0].operations[0].operation_id
     assert prior["rubric"]["rubric_id"] == record.revision_attempts[0].rubric.rubric_id
     assert prior["judgment"] == record.revision_attempts[0].judgment.to_dict()
     assert prior["validation_failures"] == record.revision_attempts[0].validation_failures
     assert second["previous_invalid_attempt"] is None
-    assert second["feedback"] == record.revision_attempts[1].feedback
+    assert "validation_feedback" not in second and record.revision_attempts[1].analysis
     assert record.revision_attempts[1].rubric.base_rubric_id == record.initial_rubric.rubric_id
     assert "retrieved_experience_ids" not in second and "operation_contributions" not in second
 
@@ -514,7 +551,7 @@ def test_eval_only_initial_judgment_never_writes_memory(tmp_path, scenario):
     assert record.state == ("initial_success" if scenario == "initial_success" else "initial_failure")
     assert record.revision_attempts == [] and record.reflected_candidates == []
     assert (tmp_path / "experience_memory.json").read_bytes() == before
-    assert not any(role in ("critic", "revision_generator", "reflector")
+    assert not any(role in ("critic", "reflector")
                    for role, _ in modules.backend.requests)
     selector_payload = next(payload for role, payload in modules.backend.requests if role == "selector")
     assert selector_payload["training"] is False
@@ -561,8 +598,8 @@ def test_cross_id_identical_question_cannot_gain_credit_by_judge_drift(tmp_path)
     original_generate = modules.backend.generate
 
     def drifting_judge(role, payload):
-        if role == "revision_generator":
-            return {"operations": [
+        if role == "critic":
+            return {"analysis": "必须直接检验关键要求。", "operations": [
                 {"operation_id": "del", "operation_type": "DELETE", "target_criterion_id": "c2",
                  "new_or_updated_criterion": None},
                 {"operation_id": "add", "operation_type": "ADD", "target_criterion_id": None,
@@ -579,9 +616,17 @@ def test_cross_id_identical_question_cannot_gain_credit_by_judge_drift(tmp_path)
 
     modules.backend.generate = drifting_judge
     runner = PipelineRunner(modules, ExperienceMemory(tmp_path), TrajectoryLog(tmp_path))
-    with pytest.raises(ValueError, match="unchanged criterion question"):
-        runner.run_sample(sample())
-    assert ExperienceMemory(tmp_path).all() == []
+    record = runner.run_sample(sample())
+    previous = next(item for item in record.initial_rubric.criteria
+                    if item.question == "回答是否符合要求？")
+    base_answer = next(item for item in record.initial_judgment.criterion_judgments
+                       if item.criterion_id == previous.criterion_id)
+    revised_answer = next(item for item in record.revision_attempts[0].judgment.criterion_judgments
+                          if item.criterion_id == "c5")
+    assert (revised_answer.chosen, revised_answer.rejected) == (
+        base_answer.chosen, base_answer.rejected)
+    assert all("c5" not in [item["criterion_id"] for item in payload["criteria"]]
+               for role, payload in modules.backend.requests if role == "judge")
 
 
 def test_executor_validates_conflicts_and_populates_only_one_operation_list():
@@ -593,7 +638,7 @@ def test_executor_validates_conflicts_and_populates_only_one_operation_list():
     assert revised.base_rubric_id == "r0"
     assert revised.criteria[1].source_experiences == []
     assert executed[0].before_criterion == initial.criteria[1]
-    assert modified.before_criterion is None  # 未改变 Generator 输出。
+    assert modified.before_criterion is None  # 未改变 Critic 输出。
     with pytest.raises(ValueError, match="no-op MODIFY"):
         executor.execute(initial, [RevisionOperation("noop", "MODIFY", "c1",
                                                      Criterion("c1", "Q1", 2, []))], 1)

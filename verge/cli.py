@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 import argparse
+from collections import deque
+from concurrent.futures import Future, ThreadPoolExecutor
+from contextvars import ContextVar
+from dataclasses import replace
 import hashlib
 import json
 import random
@@ -10,6 +14,8 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from threading import Lock, local
+from time import monotonic
 from typing import Any, Sequence
 from urllib.parse import urlsplit
 
@@ -23,12 +29,12 @@ from verge.prompts import PROMPT_VERSION
 
 
 _ROLES = (
-    "selector", "initial_generator", "judge", "critic", "revision_generator",
+    "selector", "initial_generator", "judge", "critic",
     "reflector", "revision_credit_assigner", "admission_checker", "fusion_judge",
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
-    "retrieval": "fake", "selection": "llm", "revision": "two_attempt_same_base",
+    "retrieval": "fake", "selection": "llm", "revision": "critic_atomic_same_base",
     "revision_credit": "operation_bound", "reliability": "beta",
 }
 
@@ -65,7 +71,10 @@ def _backend(spec: dict[str, Any], path: str) -> LLMBackend:
 def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, int]:
     """运行前校验所有当前可装配的组件，不把未实现的配置静默降级。"""
     _only_keys(config, {"run", "dataset", "models", "modules", "store"}, "config")
-    _only_keys(config["run"], {"seed", "output_dir"}, "run")
+    _only_keys(config["run"], {"seed", "output_dir", "test_workers"}, "run")
+    workers = config["run"].get("test_workers", 4)
+    if type(workers) is not int or not 1 <= workers <= 16:
+        raise ValueError("run.test_workers: expected an integer in [1, 16]")
     dataset_config = config["dataset"]
     _only_keys(dataset_config, {"implementation", "config"}, "dataset")
     if dataset_config["implementation"] != "jsonl":
@@ -125,7 +134,7 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         raise ValueError("modules: unsupported V1 component options")
     if selection.get("exploration_slots", 0) != 0:
         raise ValueError("modules.selection.config.exploration_slots: V1 selector does not explore")
-    retries = revision.get("invalid_output_retries", 0)
+    retries = revision.get("invalid_output_retries", 2)
     if type(retries) is not int or not 0 <= retries <= 3:
         raise ValueError("modules.revision.config.invalid_output_retries: expected integer in [0, 3]")
     if credit.get("max_budget", 1.0) != 1.0:
@@ -290,6 +299,8 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
     if (old.get("format_version") != 1 or old.get("dataset_version") != manifest["dataset_version"]
             or not isinstance(old.get("code_version"), str)):
         raise ValueError("resume: unsupported parent manifest")
+    if old.get("prompt_versions") != manifest["prompt_versions"]:
+        raise ValueError("resume: prompt protocol changed; start a fresh run")
     old_config = old.get("config")
     if not isinstance(old_config, dict) or not isinstance(old_config.get("run"), dict):
         raise ValueError("resume: invalid parent config")
@@ -337,7 +348,8 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
         raise ValueError("resume: real backend requires request metadata to verify failed stage")
     # 前面的 Memory 检查已排除未完成样本的 credit / fusion 写盘；
     # 即使它已调用 Judge、Critic 或修订角色，也可从头重试这一整条样本。
-    # 不能接纳更后面的样本：那意味着轨迹前缀外存在无法解释的调用。
+    # 训练不得出现未来请求；只有 manifest 记载了并行测试时，才允许
+    # 轨迹前缀之外的测试请求（可能已发出但尚未按序提交）。
     if request_file.exists():
         with request_file.open(encoding="utf-8") as stream:
             for number, line in enumerate(stream, 1):
@@ -345,7 +357,11 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
                 if not isinstance(event, dict) or not isinstance(event.get("sample_id"), str):
                     raise ValueError(f"resume: invalid request event at line {number}")
                 if event["sample_id"] not in completed and event["sample_id"] != next_id:
-                    raise ValueError("resume: request event beyond next sample")
+                    # Only runs declaring parallel test execution may log beyond the prefix.
+                    if not (len(completed) >= len(train_ids) and
+                            old.get("execution", {}).get("test_workers", 1) > 1 and
+                            event["sample_id"] in test_ids):
+                        raise ValueError("resume: request event beyond next sample")
     if role_io_file.exists():
         with role_io_file.open(encoding="utf-8") as stream:
             for number, line in enumerate(stream, 1):
@@ -353,7 +369,10 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
                 if not isinstance(event, dict) or not isinstance(event.get("sample_id"), str):
                     raise ValueError(f"resume: invalid role IO event at line {number}")
                 if event["sample_id"] not in completed and event["sample_id"] != next_id:
-                    raise ValueError("resume: role IO event beyond next sample")
+                    if not (len(completed) >= len(train_ids) and
+                            old.get("execution", {}).get("test_workers", 1) > 1 and
+                            event["sample_id"] in test_ids):
+                        raise ValueError("resume: role IO event beyond next sample")
     copied = {name: _sha256_file(path) for name, path in (
         ("experience_memory.json", memory_file), ("trajectories.jsonl", trajectory_file),
         ("llm_requests.jsonl", request_file), ("role_io.jsonl", role_io_file),
@@ -365,9 +384,43 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
     return root, set(completed), lineage
 
 
+class _Progress:
+    """终端原地刷新；重定向时最多输出约 20 行，不污染 stdout JSON。"""
+
+    def __init__(self, split: str, total: int) -> None:
+        self.split, self.total, self.done = split, total, 0
+        self.terminal = sys.stderr.isatty()
+        self.started = monotonic()
+        self._show()
+
+    def _show(self) -> None:
+        width = 20
+        filled = round(width * self.done / self.total) if self.total else width
+        elapsed = int(monotonic() - self.started)
+        line = (f"{self.split}: [{'#' * filled}{'-' * (width - filled)}] "
+                f"{self.done}/{self.total} ({elapsed}s)")
+        if self.terminal:
+            print(f"\r{line}", file=sys.stderr, end="\n" if self.done == self.total else "", flush=True)
+        elif self.done == 0 or self.done == self.total or self.done % max(1, self.total // 20) == 0:
+            print(line, file=sys.stderr, flush=True)
+
+    def advance(self) -> None:
+        self.done += 1
+        self._show()
+
+    def close(self) -> None:
+        if self.terminal and self.done != self.total:
+            print(file=sys.stderr, flush=True)
+
+
+def _split_total(dataset: JsonlDataset, split: str) -> int:
+    with dataset.paths[split].open(encoding="utf-8") as stream:
+        return sum(bool(line.strip()) for line in stream)
+
+
 def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
-                   seen_ids: set[str], request_context: dict[str, str] | None = None,
-                   skip_ids: set[str] | None = None) -> int:
+                   seen_ids: set[str], request_context: ContextVar[dict[str, str]],
+                   progress: _Progress, skip_ids: set[str] | None = None) -> int:
     count = 0
     iterator = iter(dataset.load(split))
     while True:
@@ -382,16 +435,89 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
         seen_ids.add(sample.sample_id)
         if skip_ids is not None and sample.sample_id in skip_ids:
             count += 1
+            progress.advance()
             continue
-        if request_context is not None:
-            request_context.update(sample_id=sample.sample_id, split=split)
+        token = request_context.set({"sample_id": sample.sample_id, "split": split})
         try:
             runner.run_sample(sample)
         except Exception as exc:
             raise RuntimeError(
                 f"sample {sample.sample_id!r}, stage {runner.current_stage}: {exc}"
             ) from exc
+        finally:
+            request_context.reset(token)
         count += 1
+        progress.advance()
+    return count
+
+
+class _DeferredTrajectoryLog:
+    """Worker 不写共享轨迹；只由主线程按数据集顺序落盘。"""
+
+    def append(self, record: Any) -> None:
+        pass
+
+
+def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
+                           seen_ids: set[str], request_context: ContextVar[dict[str, str]],
+                           progress: _Progress, skip_ids: set[str], workers: int) -> int:
+    if runner.training or not runner.memory.read_only:
+        raise ValueError("parallel evaluation requires frozen read-only memory")
+    thread_state = local()
+    pending: deque[tuple[Any, Future[Any] | None]] = deque()
+    count = 0
+
+    def evaluate(sample: Any) -> Any:
+        worker = getattr(thread_state, "runner", None)
+        if worker is None:
+            retriever = runner.modules.retriever
+            if isinstance(retriever, VectorRetriever):
+                # Copy the frozen training cache once per worker; no shared mutation or
+                # re-embedding of already cached experiences.
+                retriever = retriever.fork()
+            modules = replace(runner.modules, retriever=retriever)
+            worker = PipelineRunner(modules, runner.memory, _DeferredTrajectoryLog(),
+                                    training=False, max_attempts=runner.max_attempts)
+            thread_state.runner = worker
+        token = request_context.set({"sample_id": sample.sample_id, "split": "test"})
+        try:
+            return worker.run_sample(sample)
+        except Exception as exc:
+            raise RuntimeError(f"sample {sample.sample_id!r}, stage {worker.current_stage}: {exc}") from exc
+        finally:
+            request_context.reset(token)
+
+    def commit_next() -> None:
+        nonlocal count
+        _, future = pending.popleft()
+        if future is not None:
+            runner.trajectories.append(future.result())
+        count += 1
+        progress.advance()
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        try:
+            iterator = iter(dataset.load("test"))
+            while True:
+                try:
+                    sample = next(iterator)
+                except StopIteration:
+                    break
+                except (ValueError, OSError) as exc:
+                    raise RuntimeError(f"split 'test', stage dataset: {exc}") from exc
+                if sample.sample_id in seen_ids:
+                    raise RuntimeError(f"sample {sample.sample_id!r}, stage dataset: duplicate ID across splits")
+                seen_ids.add(sample.sample_id)
+                if len(pending) >= workers:
+                    commit_next()
+                pending.append((sample, None if sample.sample_id in skip_ids
+                                else pool.submit(evaluate, sample)))
+            while pending:
+                commit_next()
+        finally:
+            for _, future in pending:
+                if future is not None:
+                    future.cancel()
     return count
 
 
@@ -415,6 +541,7 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         backend_names = {spec["backend"] for spec in
                          [config["models"]["default"], *config["models"].get("roles", {}).values()]}
         manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
+                    "execution": {"test_workers": config["run"].get("test_workers", 4)},
                     "dataset_version": "jsonl/v1",
                     "dataset_sha256": {split: _sha256_file(path)
                                        for split, path in dataset.paths.items()},
@@ -453,18 +580,19 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         role_io_file.touch(mode=0o600, exist_ok=True)
         role_io_file.chmod(0o600)
         modules.initial_generator.invalid_output_retries = initial_output_retries
-        request_context: dict[str, str] = {}
+        request_context: ContextVar[dict[str, str]] = ContextVar("sample_context", default={})
+        log_lock = Lock()
 
         def save_request(event: dict[str, Any]) -> None:
             # 只记录白名单元数据；不记录消息、偏好文本或 API key。
-            with (root / "llm_requests.jsonl").open("a", encoding="utf-8") as stream:
-                stream.write(json.dumps({**request_context, "backend": "openai_compatible", **event},
+            with log_lock, (root / "llm_requests.jsonl").open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({**request_context.get(), "backend": "openai_compatible", **event},
                                         ensure_ascii=False, allow_nan=False) + "\n")
 
         def save_role_io(event: dict[str, Any]) -> None:
             # Raw role inputs/outputs are sensitive research artifacts, never request headers or keys.
-            with role_io_file.open("a", encoding="utf-8") as stream:
-                stream.write(json.dumps({**request_context, **event},
+            with log_lock, role_io_file.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({**request_context.get(), **event},
                                         ensure_ascii=False, allow_nan=False) + "\n")
 
         backends = {id(item): item for item in [modules.backend, *(
@@ -479,15 +607,30 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
             embedder.metadata_hook = save_request
         runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts,
                                 max_revision_output_retries=config["modules"]["revision"]["config"].get(
-                                    "invalid_output_retries", 0))
+                                    "invalid_output_retries", 2))
         seen_ids: set[str] = set()
-        train_count = _process_split(runner, dataset, "train", seen_ids, request_context, skipped)
+        train_progress = _Progress("train", _split_total(dataset, "train"))
+        try:
+            train_count = _process_split(runner, dataset, "train", seen_ids,
+                                         request_context, train_progress, skipped)
+        finally:
+            train_progress.close()
         test_count = 0
         if "test" in dataset.paths:
             # 测试阶段复用训练后的 Memory，完全不写回信用或生成经验。
             evaluation = PipelineRunner(modules, ExperienceMemory(root, read_only=True),
                                         trajectories, training=False, max_attempts=max_attempts)
-            test_count = _process_split(evaluation, dataset, "test", seen_ids, request_context, skipped)
+            test_progress = _Progress("test", _split_total(dataset, "test"))
+            try:
+                workers = config["run"].get("test_workers", 4)
+                if workers == 1:
+                    test_count = _process_split(evaluation, dataset, "test", seen_ids,
+                                                request_context, test_progress, skipped)
+                else:
+                    test_count = _process_test_parallel(evaluation, dataset, seen_ids,
+                                                        request_context, test_progress, skipped, workers)
+            finally:
+                test_progress.close()
         return {"run_dir": str(run_dir), "train_samples": train_count, "test_samples": test_count}
     finally:
         _close_modules(modules)

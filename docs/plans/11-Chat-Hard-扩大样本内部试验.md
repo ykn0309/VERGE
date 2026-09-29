@@ -9,13 +9,10 @@
 
 ## 操作与验收
 
-历史制备参数：六子集各取 34 条（24 train / 10 test）、seed=42、固定上游 revision，并保留现已删除的旧 6+6 smoke 的 split 归属。现在这些参数记录在 `configs/rewardbench-chat-hard-qwen-vector-144x60.yaml` 的 `dataset.config.prepare`；新实验只执行 `run --config <实验配置>`，数据目录完全不存在时自动准备，已存在时校验复用。若需要另外生成同成员划分，在新配置中将 `preserve_splits_from` 指向现存的 `runs/rewardbench-chat-hard-data-144x60`，同时为 `output_dir`、train/test 路径和运行目录指定新的路径；现有数据不重制。以下为历史续跑命令，不应对已完成的目录重复执行：
+历史制备参数：六子集各取 34 条（24 train / 10 test）、seed=42、固定上游 revision，并保留现已删除的旧 6+6 smoke 的 split 归属。目前这些参数记录在 `configs/rewardbench-chat-hard-qwen-vector-144x60-stage14-parallel.yaml` 的 `dataset.config.prepare`；新实验只执行 `run --config <实验配置>`，数据目录完全不存在时自动准备，已存在时校验复用。若需要另外生成同成员划分，在新配置中将 `preserve_splits_from` 指向现存的 `runs/rewardbench-chat-hard-data-144x60`，同时为 `output_dir`、train/test 路径和运行目录指定新的路径；现有数据不重制。历史续跑配置及旧运行目录已按要求清理，仅保留固定的 144+60 数据和 provenance。当前阶段 14 使用全新目录运行：
 
 ```sh
-python3 -m verge.cli run --config configs/rewardbench-chat-hard-qwen-vector-144x60.yaml \
-  --resume-from runs/rewardbench-chat-hard-qwen-vector-144x60-restart2
-python3 -m verge.cli summarize-rewardbench \
-  --run-dir runs/rewardbench-chat-hard-qwen-vector-144x60-resume1
+python3 -m verge.cli run --config configs/rewardbench-chat-hard-qwen-vector-144x60-stage14-parallel.yaml
 ```
 
 - 输入校验已通过：144/60、六子集 24/10、旧 6+6 split 归属、全体 204 条样本 ID 与归一化题面无重复、上游 revision 与 JSONL 哈希一致；新 split 已保存于被 Git 忽略的 `runs/` 中。

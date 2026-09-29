@@ -16,7 +16,7 @@ from verge.models import (
 )
 from verge.modules import (
     AdmissionChecker, Critic, FusionJudge, InitialRubricGenerator, Judge, JudgeOutputError,
-    Reflector, Retriever, RevisionCreditAssigner, RevisionGenerator, Selector,
+    Reflector, Retriever, RevisionCreditAssigner, RevisionOperationOutputError, Selector,
 )
 from verge.prompts import ExperienceView
 
@@ -29,7 +29,6 @@ class PipelineModules(Protocol):
     initial_generator: InitialRubricGenerator
     judge: Judge
     critic: Critic
-    revision_generator: RevisionGenerator
     reflector: Reflector
     revision_credit_assigner: RevisionCreditAssigner
     admission_checker: AdmissionChecker
@@ -41,13 +40,15 @@ class InvalidRubricSizeError(ValueError):
 
 
 class RevisionExecutor:
-    """将 Generator 的操作应用到 R0，并为 DELETE/MODIFY 补全原标准。"""
+    """将 Critic 的操作应用到 R0，并为 DELETE/MODIFY 补全原标准。"""
 
     def execute(
         self, initial: Rubric, operations: Sequence[RevisionOperation], attempt_number: int,
     ) -> tuple[Rubric, list[RevisionOperation]]:
         if initial.base_rubric_id is not None or attempt_number not in (1, 2):
             raise ValueError("revision executor requires R0 and attempt 1/2")
+        if not operations:
+            raise ValueError("revision operations must not be empty")
         old = {criterion.criterion_id: criterion for criterion in initial.criteria}
         revised = {key: replace(value, source_experiences=[]) for key, value in old.items()}
         touched: set[str] = set()
@@ -93,17 +94,26 @@ def _check_reused_judgments(
     initial: Rubric, initial_judgment: RubricJudgment,
     revised: Rubric, revised_judgment: RubricJudgment,
 ) -> None:
-    """同一问题即使换了 ID，也不能因 Judge 重答而凭空取得修订收益。"""
-    old_questions = {item.question for item in initial.criteria}
-    new_questions = {item.question for item in revised.criteria}
+    """问题沿用时保持 R0 判断；R0 本身有相互矛盾的同名判断时不猜测答案。"""
     old_answers = {item.criterion_id: item for item in initial_judgment.criterion_judgments}
     new_answers = {item.criterion_id: item for item in revised_judgment.criterion_judgments}
-    for question in old_questions & new_questions:
-        before = {(old_answers[item.criterion_id].chosen, old_answers[item.criterion_id].rejected)
-                  for item in initial.criteria if item.question == question}
-        after = {(new_answers[item.criterion_id].chosen, new_answers[item.criterion_id].rejected)
-                 for item in revised.criteria if item.question == question}
-        if len(before) != 1 or before != after:
+    old_by_id = {item.criterion_id: item for item in initial.criteria}
+    old_by_question: dict[str, set[tuple[bool, bool]]] = {}
+    for item in initial.criteria:
+        answer = old_answers[item.criterion_id]
+        old_by_question.setdefault(item.question, set()).add((answer.chosen, answer.rejected))
+    for item in revised.criteria:
+        answer = new_answers[item.criterion_id]
+        actual = (answer.chosen, answer.rejected)
+        if (item.criterion_id in old_by_id
+                and item.question == old_by_id[item.criterion_id].question):
+            previous = old_answers[item.criterion_id]
+            expected = (previous.chosen, previous.rejected)
+        elif len(old_by_question.get(item.question, ())) == 1:
+            expected = next(iter(old_by_question[item.question]))
+        else:
+            continue
+        if actual != expected:
             raise ValueError("unchanged criterion question must reuse Boolean judgment")
 
 
@@ -113,7 +123,7 @@ class PipelineRunner:
     def __init__(
         self, modules: PipelineModules, memory: ExperienceMemory, trajectories: TrajectoryLog,
         *, training: bool = True, evidence_weight: float = 1.0, max_attempts: int = 2,
-        max_revision_output_retries: int = 0, executor: RevisionExecutor | None = None,
+        max_revision_output_retries: int = 2, executor: RevisionExecutor | None = None,
     ) -> None:
         if type(training) is not bool:
             raise ValueError("training must be Boolean")
@@ -183,43 +193,42 @@ class PipelineRunner:
         # 训练时仅对失败的 R0 修订；每次尝试都以 R0 为基线，而非接续上次结果。
         if self.training and not initial_judgment.success:
             for number in range(1, self.max_attempts + 1):
-                self.current_stage = f"revision_{number}.critic"
-                feedback = modules.critic.critique(
-                    sample.task, sample.chosen, sample.rejected, initial, initial_judgment,
-                    attempts[-1] if attempts else None,
-                )
-                repair_feedback = feedback
                 revision_history = ({} if number == 1 else {
-                    "chosen": sample.chosen, "rejected": sample.rejected,
-                    "initial_judgment": initial_judgment,
                     "previous_attempt": attempts[-1] if attempts else None,
                     "previous_invalid_attempt": invalid_attempts[-1] if invalid_attempts else None,
                 })
                 validation_failures: list[str] = []
+                validation_feedback: str | None = None
+                last_analysis: str | None = None
                 for retry in range(self.max_revision_output_retries + 1):
+                    self.current_stage = f"revision_{number}.critic"
                     try:
-                        self.current_stage = f"revision_{number}.generator"
-                        operations = modules.revision_generator.generate(
-                            sample.task, initial, repair_feedback, number, **revision_history,
+                        proposal = modules.critic.critique(
+                            sample.task, sample.chosen, sample.rejected, initial, initial_judgment,
+                            number, validation_feedback=validation_feedback, **revision_history,
                         )
-                        self.current_stage = f"revision_{number}.executor"
-                        revised, executed = self.executor.execute(initial, operations, number)
+                    except RevisionOperationOutputError as exc:
+                        failure = exc
+                        last_analysis = exc.analysis
+                    else:
+                        last_analysis = proposal.analysis
+                        try:
+                            self.current_stage = f"revision_{number}.executor"
+                            revised, executed = self.executor.execute(initial, proposal.operations, number)
+                            break
+                        except ValueError as exc:
+                            failure = exc
+                    validation_failures.append(str(failure)[:160] or type(failure).__name__)
+                    if retry == self.max_revision_output_retries:
+                        invalid_attempts.append(InvalidRevisionAttempt(
+                            number, None, validation_failures, analysis=last_analysis,
+                        ))
                         break
-                    except ValueError as exc:
-                        validation_failures.append(str(exc)[:160] or type(exc).__name__)
-                        if retry == self.max_revision_output_retries:
-                            if self.current_stage == f"revision_{number}.executor":
-                                invalid_attempts.append(InvalidRevisionAttempt(
-                                    number, feedback, validation_failures,
-                                ))
-                                break
-                            raise
-                        # 只有合法 rubric 才交给 Judge；错误反馈不能暴露 chosen/rejected。
-                        repair_feedback = (
-                            f"{feedback}\n上一版 operations 未通过结构校验：{validation_failures[-1]}。"
-                            f"R0 含 {len(initial.criteria)} 条标准；请从 R0 重新生成操作，"
-                            "保证执行后仍有 2 到 8 条，ID 合法且不冲突。"
-                        )
+                    validation_feedback = (
+                        f"上一版 operations 未通过结构校验：{validation_failures[-1]}。"
+                        f"R0 含 {len(initial.criteria)} 条标准；请从 R0 重新生成完整操作，"
+                        "保证执行后仍有 2 到 8 条，ID 合法且不冲突。"
+                    )
                 if invalid_attempts and invalid_attempts[-1].attempt_number == number:
                     continue  # 本次修订失败；下一次仍基于 R0，不能凭空构造 Rk。
                 self.current_stage = f"revision_{number}.judge"
@@ -238,8 +247,8 @@ class PipelineRunner:
                     self.trajectories.append(record)
                     return record
                 _check_reused_judgments(initial, initial_judgment, revised, revised_judgment)
-                attempt = RevisionAttempt(number, feedback, executed, revised, revised_judgment,
-                                          validation_failures)
+                attempt = RevisionAttempt(number, None, executed, revised, revised_judgment,
+                                          validation_failures, analysis=proposal.analysis)
                 attempts.append(attempt)
                 # 失败尝试仅留在轨迹；只对首次成功的操作反思、归因并生成候选。
                 if revised_judgment.success:

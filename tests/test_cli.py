@@ -6,11 +6,13 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+from threading import Event
 
 import yaml
 import pytest
 
 from verge.cli import main
+from verge.llm import FakeLLMBackend, OpenAICompatibleBackend
 
 
 PROJECT = Path(__file__).resolve().parents[1]
@@ -83,6 +85,167 @@ def test_run_trains_then_evaluates_frozen_memory_and_inspects_full_stages(tmp_pa
     assert eval_record["state"] == "initial_failure" and eval_record["revision_attempts"] == []
 
 
+def _test_rows(tmp_path, config, count=3):
+    path = tmp_path / "test.jsonl"
+    path.write_text("".join(json.dumps({
+        "sample_id": f"test-{index}", "task": f"测试任务 {index}",
+        "chosen": f"chosen-{index}", "rejected": f"rejected-{index}",
+    }, ensure_ascii=False) + "\n" for index in range(count)), encoding="utf-8")
+    config["dataset"]["config"]["paths"]["test"] = str(path)
+
+
+def test_test_workers_run_concurrently_commit_order_and_show_progress(tmp_path, monkeypatch, capsys):
+    path, config = experiment(tmp_path)
+    _test_rows(tmp_path, config)
+    config["run"]["test_workers"] = 2
+    path.write_text(yaml.safe_dump(config, allow_unicode=True), encoding="utf-8")
+    original = FakeLLMBackend.generate
+    second_started = Event()
+
+    def overlapping(self, role, payload):
+        if role == "initial_generator":
+            if payload["task"] == "测试任务 0":
+                assert second_started.wait(5), "test samples did not overlap"
+            elif payload["task"] == "测试任务 1":
+                second_started.set()
+        return original(self, role, payload)
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", overlapping)
+    assert main(["run", "--config", str(path)]) == 0
+    captured = capsys.readouterr()
+    assert json.loads(captured.out)["test_samples"] == 3
+    assert "train: [" in captured.err and "2/2" in captured.err
+    assert "test: [" in captured.err and "3/3" in captured.err
+    root = tmp_path / "result" / "artifacts"
+    records = [json.loads(line) for line in (root / "trajectories.jsonl").read_text().splitlines()]
+    assert [item["sample_id"] for item in records] == [
+        "train-a", "train-b", "test-0", "test-1", "test-2",
+    ]
+    role_events = [json.loads(line) for line in (root / "role_io.jsonl").read_text().splitlines()]
+    test_events = [event for event in role_events if event["split"] == "test"]
+    assert test_events
+    for event in test_events:
+        suffix = event["sample_id"].removeprefix("test-")
+        if "task" in event["input"]:
+            assert event["input"]["task"] == "测试任务 " + suffix
+        if "chosen" in event["input"]:
+            assert event["input"]["chosen"] == "chosen-" + suffix
+    memory = json.loads((root / "experience_memory.json").read_text())
+    assert all(evidence["sample_id"].startswith("train-") for item in memory["experiences"]
+               for evidence in item["evidence_history"])
+
+
+def test_parallel_real_backend_metadata_uses_worker_sample_context(tmp_path, monkeypatch, capsys):
+    path, config = experiment(tmp_path)
+    _test_rows(tmp_path, config, count=2)
+    config["run"]["test_workers"] = 2
+    monkeypatch.setenv("TEST_BACKEND_API_KEY", "secret-for-test")
+    config["models"]["default"] = {"backend": "openai_compatible", "model": "offline-stub",
+                                   "base_url": "http://localhost:12345/v1",
+                                   "api_key_env": "TEST_BACKEND_API_KEY"}
+    path.write_text(yaml.safe_dump(config, allow_unicode=True), encoding="utf-8")
+    other_started = Event()
+
+    def offline_generate(self, role, payload):
+        if role == "initial_generator":
+            if payload["task"] == "测试任务 0":
+                assert other_started.wait(5), "real-backend test requests did not overlap"
+            elif payload["task"] == "测试任务 1":
+                other_started.set()
+            result = {"rubric": {"rubric_id": "1", "base_rubric_id": None,
+                                 "criteria": [{"criterion_id": str(i), "question": f"问题{i}？",
+                                               "importance_score": 5, "source_experiences": []}
+                                              for i in range(1, 5)]}}
+        elif role == "judge":
+            result = {"criterion_judgments": [
+                {"criterion_id": item["criterion_id"], "chosen": True, "rejected": False}
+                for item in payload["criteria"]]}
+        else:
+            raise AssertionError(f"unexpected role: {role}")
+        self._trace(role, payload, [], 1, status=200, output=result)
+        self._metadata(role, 1, status=200)
+        return result
+
+    monkeypatch.setattr(OpenAICompatibleBackend, "generate", offline_generate)
+    assert main(["run", "--config", str(path)]) == 0
+    capsys.readouterr()
+    root = tmp_path / "result" / "artifacts"
+    events = [json.loads(line) for line in (root / "llm_requests.jsonl").read_text().splitlines()]
+    traces = [json.loads(line) for line in (root / "role_io.jsonl").read_text().splitlines()]
+    for sample_id in ("test-0", "test-1"):
+        assert [item["role"] for item in events if item["sample_id"] == sample_id] == [
+            "initial_generator", "judge"]
+        assert [item["role"] for item in traces if item["sample_id"] == sample_id] == [
+            "initial_generator", "judge"]
+        assert next(item for item in traces if item["sample_id"] == sample_id
+                    and item["role"] == "initial_generator")["input"]["task"] == (
+                        "测试任务 " + sample_id[-1])
+    assert [json.loads(line)["sample_id"] for line in
+            (root / "trajectories.jsonl").read_text().splitlines()] == [
+                "train-a", "train-b", "test-0", "test-1"]
+
+
+def test_sequential_and_parallel_test_trajectories_match(tmp_path, capsys):
+    path, config = experiment(tmp_path, scenario="initial_success")
+    _test_rows(tmp_path, config)
+    config["run"]["test_workers"] = 1
+    path.write_text(yaml.safe_dump(config, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(path)]) == 0
+    capsys.readouterr()
+    old = (tmp_path / "result" / "artifacts" / "trajectories.jsonl").read_bytes()
+    config["run"].update(test_workers=4, output_dir=str(tmp_path / "parallel"))
+    path.write_text(yaml.safe_dump(config, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(path)]) == 0
+    assert old == (tmp_path / "parallel" / "artifacts" / "trajectories.jsonl").read_bytes()
+
+
+@pytest.mark.parametrize("failed_index", [0, 1])
+def test_parallel_test_failure_keeps_prefix_and_can_resume_with_later_requests(
+        tmp_path, monkeypatch, capsys, failed_index):
+    path, config = experiment(tmp_path)
+    _test_rows(tmp_path, config, count=failed_index + 2)
+    config["run"]["test_workers"] = 2
+    path.write_text(yaml.safe_dump(config, allow_unicode=True), encoding="utf-8")
+    original = FakeLLMBackend.generate
+    second_finished = Event()
+
+    def fail_mid_test(self, role, payload):
+        if role == "initial_generator" and payload["task"] == f"测试任务 {failed_index}":
+            assert second_finished.wait(5), "later test did not finish first"
+            raise ValueError("simulated test failure")
+        result = original(self, role, payload)
+        if role == "judge" and payload["chosen"] == f"chosen-{failed_index + 1}":
+            second_finished.set()
+        return result
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", fail_mid_test)
+    assert main(["run", "--config", str(path)]) == 1
+    assert f"sample 'test-{failed_index}', stage initial_generator" in capsys.readouterr().err
+    root = tmp_path / "result" / "artifacts"
+    prefix = ["train-a", "train-b"] + [f"test-{i}" for i in range(failed_index)]
+    assert [json.loads(line)["sample_id"] for line in
+            (root / "trajectories.jsonl").read_text().splitlines()] == prefix
+    assert any(json.loads(line)["sample_id"] == f"test-{failed_index + 1}" for line in
+               (root / "role_io.jsonl").read_text().splitlines())
+    monkeypatch.setattr(FakeLLMBackend, "generate", original)
+    config["run"]["output_dir"] = str(tmp_path / "continued")
+    path.write_text(yaml.safe_dump(config, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(path), "--resume-from", str(tmp_path / "result")]) == 0
+    assert [json.loads(line)["sample_id"] for line in
+            (tmp_path / "continued" / "artifacts" / "trajectories.jsonl").read_text().splitlines()
+            ] == prefix + [f"test-{i}" for i in range(failed_index, failed_index + 2)]
+
+
+def test_test_workers_config_validation(tmp_path):
+    path, config = experiment(tmp_path)
+    for value in (True, 0, 17, 1.5):
+        config["run"]["test_workers"] = value
+        path.write_text(yaml.safe_dump(config), encoding="utf-8")
+        result = command("run", "--config", str(path))
+        assert result.returncode == 2 and "run.test_workers" in result.stderr
+        assert not (tmp_path / "result").exists()
+
+
 def test_config_error_exits_2_without_creating_run_directory(tmp_path):
     config, data = experiment(tmp_path, with_test=False)
     data["models"]["default"]["backend"] = "not-implemented"
@@ -90,6 +253,15 @@ def test_config_error_exits_2_without_creating_run_directory(tmp_path):
     result = command("run", "--config", str(config))
     assert result.returncode == 2 and "models.default" in result.stderr
     assert not (tmp_path / "result").exists()
+
+
+@pytest.mark.parametrize("name", [
+    "default.yaml", "openai.example.yaml", "qwen3.5-flash.yaml",
+    "rewardbench-chat-hard-qwen.yaml", "rewardbench-chat-hard-qwen-vector.yaml",
+])
+def test_active_configs_enable_revision_structure_retries(name):
+    config = yaml.safe_load((PROJECT / "configs" / name).read_text(encoding="utf-8"))
+    assert config["modules"]["revision"]["config"]["invalid_output_retries"] == 2
 
 
 def test_invalid_revision_retry_config_rejected_before_creating_run_directory(tmp_path):
@@ -168,7 +340,7 @@ def test_unsupported_dataset_is_not_silently_runnable(tmp_path):
 
 def test_role_specific_backend_overrides_default_scenario(tmp_path):
     config, data = experiment(tmp_path, with_test=False, scenario="final_failure")
-    data["models"]["roles"]["revision_generator"] = {
+    data["models"]["roles"]["critic"] = {
         "backend": "fake", "model": "attempt_1_success",
     }
     config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
@@ -177,6 +349,17 @@ def test_role_specific_backend_overrides_default_scenario(tmp_path):
     record = json.loads(command("inspect-sample", "--run-dir", str(tmp_path / "result"),
                                 "--sample-id", "train-a").stdout)
     assert record["state"] == "revision_success_1"
+
+
+def test_removed_generator_role_config_is_rejected(tmp_path):
+    config, data = experiment(tmp_path, with_test=False)
+    data["models"]["roles"]["revision_generator"] = {
+        "backend": "fake", "model": "attempt_1_success",
+    }
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    result = command("run", "--config", str(config))
+    assert result.returncode == 2 and "models.roles" in result.stderr
+    assert not (tmp_path / "result").exists()
 
 
 def test_missing_sample_and_usage_exit_codes(tmp_path):
@@ -264,6 +447,21 @@ def test_resume_copies_verified_prefix_without_repeating_train_or_mutating_paren
     assert not (tmp_path / "bad-config").exists()
 
 
+def test_resume_rejects_prior_prompt_protocol_before_any_model_call(tmp_path, capsys):
+    config, data = experiment(tmp_path)
+    assert main(["run", "--config", str(config)]) == 0, capsys.readouterr().err
+    parent = tmp_path / "result"
+    manifest_file = parent / "run_manifest.json"
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    manifest["prompt_versions"]["critic"] = "v9-numbered-ids"
+    manifest_file.write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
+    data["run"]["output_dir"] = str(tmp_path / "new-run")
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 2
+    assert "prompt protocol changed" in capsys.readouterr().err
+    assert not (tmp_path / "new-run").exists()
+
+
 def test_resume_after_failed_revision_without_memory_write(tmp_path, monkeypatch, capsys):
     config, data = experiment(tmp_path)
     from verge.llm import FakeLLMBackend
@@ -279,7 +477,7 @@ def test_resume_after_failed_revision_without_memory_write(tmp_path, monkeypatch
             selections += 1
             if selections == 1:  # 首条样本的池为空，首次 Selector 调用发生在 train-b。
                 return {"selected_experience_ids": []}
-        if role == "revision_generator":
+        if role == "critic":
             revisions += 1
             if revisions >= 2:
                 raise ValueError("simulated revision timeout")
@@ -287,14 +485,14 @@ def test_resume_after_failed_revision_without_memory_write(tmp_path, monkeypatch
 
     monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_revision)
     assert main(["run", "--config", str(config)]) == 1
-    assert "sample 'train-b', stage revision_1.generator" in capsys.readouterr().err
+    assert "sample 'train-b', stage revision_1.critic" in capsys.readouterr().err
     parent = tmp_path / "result"
     root = parent / "artifacts"
     assert [record.sample_id for record in TrajectoryLog(root).all()] == ["train-a"]
     # 模拟真实 LLM 在该修订角色超时后仍留下 request / role IO 诊断。
     for filename in ("llm_requests.jsonl", "role_io.jsonl"):
         with (root / filename).open("a", encoding="utf-8") as stream:
-            stream.write(json.dumps({"sample_id": "train-b", "role": "revision_generator"}) + "\n")
+            stream.write(json.dumps({"sample_id": "train-b", "role": "critic"}) + "\n")
     old_memory = (root / "experience_memory.json").read_bytes()
     assert all(ev["sample_id"] != "train-b" for exp in json.loads(old_memory)["experiences"]
                for ev in exp["evidence_history"])

@@ -11,7 +11,7 @@ from verge.models import (CandidateExperience, Criterion, Experience, InvalidRev
                           RevisionAttempt, RevisionOperation, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "v9-numbered-ids"
+PROMPT_VERSION = "v10-critic-atomic"
 
 # 各角色只接受其投影后的 payload；不把其他阶段/内部证据混入上下文。
 _ROLE_INSTRUCTIONS = {
@@ -44,21 +44,20 @@ _ROLE_INSTRUCTIONS = {
         '不要计算权重、margin 或 success。'
     ),
     "critic": (
-        '分析 initial_rubric 对当前偏好对失败的原因，必要时参考 failed_attempt；返回 {"feedback":非空的具体修订建议}，'
-        '不要生成新的 rubric。'
-    ),
-    "revision_generator": (
-        '从 initial_rubric（不是失败尝试）提出最小原子操作；'
-        '第二次修订时须检查完整的第一次失败轨迹：保留有效修改、舍弃无效方向。'
-        '第一次的操作不会自动继承；如果想保留某项修改，必须在本次 operations 中重新提出。'
-        '本次操作必须能单独从 R0 执行，不能依赖 R1 中新建的标准 ID。'
-        '即使看到了 chosen/rejected，也不得在通用 rubric 中写入当前回答特有事实。'
-        'operation_id 从 "1" 起依次编号；ADD 的新标准 ID 使用比 R0 最大编号更大的数字，'
-        'MODIFY 沿用目标数字编号；其他引用只用输入中的数字编号。'
-        '返回 {"operations":[{"operation_id":数字编号,"operation_type":"ADD"或"DELETE"或"MODIFY",'
-        '"target_criterion_id":已有ID或ADD时null,'
-        '"new_or_updated_criterion":ADD/MODIFY时的完整criterion或DELETE时null}]}。'
-        '新标准包含 criterion_id、question、importance_score(1-10)、source_experiences:[]；执行后保持2到8条。'
+        '目标是让给定偏好标签中的 chosen 得分高于 rejected。根据 task、两份回答、R0 每条标准的 Judge 布尔判断、'
+        '权重与 margin，在私有 analysis 中具体解释当前 R0 失败的原因；允许引用当前回答内容，'
+        '对可疑 Judge 判断或偏好标签可说明不确定性，不要捏造 chosen 优势。'
+        '第二次还须对照第一次的 analysis、已执行的操作、R1/Judge（如存在）和校验失败摘要，'
+        '解释第一次哪里没奏效；第一次操作不会自动继承，须针对 R0 重新提出可独立执行的完整操作集，'
+        '不能依赖 R1 的新标准。若第一次仅有无效操作，不得虚构 R1 或 Judge。'
+        'operations 中每条标准必须仅从 task 自身要求推导，适用于未来回答；'
+        '不要把 chosen 或 rejected 的特有事实/措辞变成通用标准，除非 task 本身明确要求。'
+        'operation_id 每次从 "1" 起重新编号（可与上次操作同号）；ADD 的新 criterion_id 大于 R0 最大编号，'
+        'MODIFY 沿用目标编号；只用输入中的短数字编号，不缩写。'
+        '返回 {"analysis":非空中文诊断,"operations":[{"operation_id":数字编号,'
+        '"operation_type":"ADD"或"DELETE"或"MODIFY","target_criterion_id":已有ID或ADD时null,'
+        '"new_or_updated_criterion":ADD/MODIFY时完整criterion或DELETE时null}]}。'
+        '新标准包含 criterion_id、question、importance_score(1-10)、source_experiences:[]；执行后须保持2到8条。'
         '不要输出 before_criterion，旧标准由执行器自行确定。'
     ),
     "reflector": (
@@ -98,7 +97,7 @@ def llm_messages(role: str, payload: Mapping[str, Any]) -> list[dict[str, str]]:
     return [
         {"role": "system", "content": (
             f"你是 VERGE 的结构化输出模块，当前角色：{role}。仅输出一个有效 JSON 对象，不加 Markdown 或额外文本。"
-            "所有供人阅读的生成文本（标准问题、critic 反馈、经验 content、trigger 等）必须以中文表达；"
+            "所有供人阅读的生成文本（标准问题、critic 私有分析、经验 content、trigger 等）必须以中文表达；"
             "英文输入需转述为中文，但可保留专有名词、代码、必要的原文引用。"
             "JSON 字段名、ID、操作枚举、PASS/FAIL 等机器协议值保持规定形式，不要翻译。"
             + _ROLE_INSTRUCTIONS[role]
@@ -171,36 +170,32 @@ def _operation_summary(operation: RevisionOperation) -> dict[str, Any]:
 
 
 def _attempt_semantics(attempt: RevisionAttempt) -> dict[str, Any]:
-    return {"attempt_number": attempt.attempt_number, "feedback": attempt.feedback,
+    return {"attempt_number": attempt.attempt_number,
             "operations": [_operation_summary(item) for item in attempt.operations],
             "rubric": _rubric_semantics(attempt.rubric), "judgment": attempt.judgment.to_dict()}
 
 
 def critic_payload(task: str, chosen: str, rejected: str, initial: Rubric,
-                   initial_judgment: RubricJudgment,
-                   failed_attempt: RevisionAttempt | None) -> dict[str, Any]:
-    return {"task": task, "chosen": chosen, "rejected": rejected,
-            "initial_rubric": _rubric_semantics(initial),
-            "initial_judgment": initial_judgment.to_dict(),
-            "failed_attempt": _attempt_semantics(failed_attempt) if failed_attempt else None}
-
-
-def revision_payload(task: str, initial: Rubric, feedback: str,
-                     attempt_number: int, *, chosen: str | None = None,
-                     rejected: str | None = None,
-                     initial_judgment: RubricJudgment | None = None,
-                     previous_attempt: RevisionAttempt | None = None,
-                     previous_invalid_attempt: InvalidRevisionAttempt | None = None) -> dict[str, Any]:
-    payload = {"task": task, "initial_rubric": _rubric_semantics(initial),
-               "feedback": feedback, "attempt_number": attempt_number}
+                   initial_judgment: RubricJudgment, attempt_number: int, *,
+                   previous_attempt: RevisionAttempt | None = None,
+                   previous_invalid_attempt: InvalidRevisionAttempt | None = None,
+                   validation_feedback: str | None = None) -> dict[str, Any]:
+    payload = {"task": task, "chosen": chosen, "rejected": rejected,
+               "initial_rubric": _rubric_semantics(initial),
+               "initial_judgment": initial_judgment.to_dict(),
+               "attempt_number": attempt_number}
     if attempt_number == 2:
-        payload.update({"chosen": chosen, "rejected": rejected,
-                        "initial_judgment": initial_judgment.to_dict(),
-                        "previous_attempt": ({**_attempt_semantics(previous_attempt),
-                                              "validation_failures": list(previous_attempt.validation_failures)}
-                                             if previous_attempt else None),
-                        "previous_invalid_attempt": (previous_invalid_attempt.to_dict()
-                                                     if previous_invalid_attempt else None)})
+        payload["previous_attempt"] = ({**_attempt_semantics(previous_attempt),
+                                        "analysis": previous_attempt.analysis,
+                                        "validation_failures": list(previous_attempt.validation_failures)}
+                                       if previous_attempt else None)
+        payload["previous_invalid_attempt"] = (
+            {"attempt_number": previous_invalid_attempt.attempt_number,
+             "analysis": previous_invalid_attempt.analysis,
+             "validation_failures": list(previous_invalid_attempt.validation_failures)}
+            if previous_invalid_attempt else None)
+    if validation_feedback is not None:
+        payload["validation_feedback"] = validation_feedback
     return payload
 
 
@@ -305,7 +300,7 @@ class NumberedIDCodec:
         if not isinstance(value, str) or not re.fullmatch(r"[1-9][0-9]*", value):
             raise ValueError(f"{self.role}: new {name} must be a numbered ID")
         if value in self.reverse[name] and not (
-                self.role == "revision_generator" and (
+                self.role == "critic" and (
                     name == "operation" or
                     (name == "criterion" and self.attempt_number == 2
                      and self.reverse[name][value] not in self.base_criteria))):
@@ -329,7 +324,7 @@ class NumberedIDCodec:
             result["criterion_judgments"] = [
                 {**item, "criterion_id": self._existing("criterion", item.get("criterion_id"))}
                 if isinstance(item, dict) else item for item in result["criterion_judgments"]]
-        elif self.role == "revision_generator" and isinstance(result.get("operations"), list):
+        elif self.role == "critic" and isinstance(result.get("operations"), list):
             operations = []
             for item in result["operations"]:
                 if not isinstance(item, dict):

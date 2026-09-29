@@ -40,9 +40,10 @@ modules:
       max_selected: 5
       exploration_slots: 0
   revision:
-    implementation: two_attempt_same_base
+    implementation: critic_atomic_same_base
     config:
       max_attempts: 2
+      invalid_output_retries: 2
   revision_credit:
     implementation: operation_bound
     config:

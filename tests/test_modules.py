@@ -13,7 +13,7 @@ from verge.models import (
 )
 from verge.modules import (
     LLMAdmissionChecker, LLMFusionJudge, LLMInitialRubricGenerator, LLMJudge,
-    LLMReflector, LLMRevisionCreditAssigner, LLMRevisionGenerator, LLMSelector,
+    LLMCritic, LLMReflector, LLMRevisionCreditAssigner, LLMSelector,
     make_fake_modules,
 )
 from verge.prompts import ExperienceView
@@ -41,14 +41,10 @@ def initial_case(scenario="attempt_1_success"):
 
 
 def revise(modules, initial, initial_judgment, attempt_number, failed_attempt=None):
-    feedback = modules.critic.critique(TASK, CHOSEN, REJECTED, initial,
-                                      initial_judgment, failed_attempt)
-    history = ({} if attempt_number == 1 else {
-        "chosen": CHOSEN, "rejected": REJECTED,
-        "initial_judgment": initial_judgment, "previous_attempt": failed_attempt,
-    })
-    intended = modules.revision_generator.generate(TASK, initial, feedback,
-                                                    attempt_number, **history)
+    proposal = modules.critic.critique(TASK, CHOSEN, REJECTED, initial,
+                                       initial_judgment, attempt_number,
+                                       previous_attempt=failed_attempt)
+    intended = proposal.operations
     assert all(item.before_criterion is None for item in intended)
     assert [item.target_criterion_id for item in intended] == ["c2"]
     # 阶段 06 实现真正的 Executor；当前 fixture 只补全这一条固定的 MODIFY。
@@ -59,7 +55,8 @@ def revise(modules, initial, initial_judgment, attempt_number, failed_attempt=No
                       for item in initial.criteria])
     judgment = modules.judge.judge(revised, CHOSEN, REJECTED,
                                    previous=initial, previous_judgment=initial_judgment)
-    return RevisionAttempt(attempt_number, feedback, [operation], revised, judgment)
+    return RevisionAttempt(attempt_number, None, [operation], revised, judgment,
+                           analysis=proposal.analysis)
 
 
 def test_initial_success_and_preference_blind_payloads():
@@ -76,8 +73,8 @@ def test_initial_success_and_preference_blind_payloads():
             assert set(views[0]) == {
                 "experience_id", "content", "trigger", "confidence", "evidence_amount",
             }
-    with pytest.raises(ValueError, match="failed initial rubric"):
-        modules.critic.critique(TASK, CHOSEN, REJECTED, initial, judgment)
+    with pytest.raises(ValueError, match="failed initial R0"):
+        modules.critic.critique(TASK, CHOSEN, REJECTED, initial, judgment, 1)
 
 
 def test_initial_generator_accepts_two_criteria_but_rejects_one_or_nine():
@@ -167,7 +164,7 @@ def test_attempt_one_success_credit_admission_and_fusion_privacy():
     assert set(payload) == {"candidate", "existing"}
     assert set(payload["existing"][0]) == {"content", "trigger"}
     for role, request in modules.backend.requests:
-        if role in ("critic", "revision_generator", "reflector",
+        if role in ("critic", "reflector",
                     "revision_credit_assigner", "admission_checker"):
             text = json.dumps(request, ensure_ascii=False)
             assert "source_experiences" not in text and "exp_1" not in text
@@ -248,7 +245,7 @@ class ConstantBackend:
 def test_structured_response_and_domain_type_checks():
     modules, initial, judgment = initial_case()
     view = ExperienceView.from_experience(selected_experience())
-    with pytest.raises(ValueError, match="structured result"):
+    with pytest.raises(ValueError, match="structured fields"):
         LLMSelector(ConstantBackend(["exp_1"])).select(TASK, [view])
     with pytest.raises(ValueError, match="list of strings"):
         LLMSelector(ConstantBackend({"selected_experience_ids": [1]})).select(TASK, [view])
@@ -264,15 +261,15 @@ def test_structured_response_and_domain_type_checks():
         LLMJudge(ConstantBackend({"criterion_judgments": answers})).judge(
             initial, CHOSEN, REJECTED)
     with pytest.raises(ValueError, match="operations must be a list"):
-        LLMRevisionGenerator(ConstantBackend({"operations": "bad"})).generate(
-            TASK, initial, "feedback", 1)
-    operation = modules.revision_generator.generate(TASK, initial, "feedback", 1)[0].to_dict()
+        LLMCritic(ConstantBackend({"analysis": "诊断", "operations": "bad"})).critique(
+            TASK, CHOSEN, REJECTED, initial, judgment, 1)
+    operation = modules.critic.critique(TASK, CHOSEN, REJECTED, initial, judgment, 1).operations[0].to_dict()
     operation["new_or_updated_criterion"].pop("source_experiences")
     operation["before_criterion"] = initial.criteria[1].to_dict()  # 模型来源不得覆盖 Executor 的 R0
-    parsed = LLMRevisionGenerator(ConstantBackend({"operations": [operation]})).generate(
-        TASK, initial, "feedback", 1)
-    assert parsed[0].new_or_updated_criterion.source_experiences == []
-    assert parsed[0].before_criterion is None
+    parsed = LLMCritic(ConstantBackend({"analysis": "诊断", "operations": [operation]})).critique(
+        TASK, CHOSEN, REJECTED, initial, judgment, 1)
+    assert parsed.operations[0].new_or_updated_criterion.source_experiences == []
+    assert parsed.operations[0].before_criterion is None
     attempt = revise(modules, initial, judgment, 1)
     with pytest.raises(ValueError, match="only unbound candidate"):
         LLMReflector(ConstantBackend({"candidates": [{
@@ -299,9 +296,9 @@ def test_revision_attempt_id_and_credit_range_checked_at_module_boundary():
     failed_attempt = revise(failed_modules, failed_initial, failed_judgment, 1)
     wrong_failed = replace(failed_attempt, judgment=replace(failed_attempt.judgment,
                                                              rubric_id="wrong-rubric"))
-    with pytest.raises(ValueError, match="failed revision from R0"):
+    with pytest.raises(ValueError, match="second critic requires one failed prior attempt"):
         failed_modules.critic.critique(TASK, CHOSEN, REJECTED,
-                                      failed_initial, failed_judgment, wrong_failed)
+                                      failed_initial, failed_judgment, 2, previous_attempt=wrong_failed)
 
 
 def test_invalid_binding_is_discarded_and_no_llm_numeric_output():
@@ -316,7 +313,9 @@ def test_invalid_binding_is_discarded_and_no_llm_numeric_output():
             TASK, replace(candidate, linked_operation_ids=["op1"], credit=0.2),
             attempt, {"op1": 0.5})
     roles = {role for role, _ in modules.backend.requests}
-    assert "judge" in roles and "revision_generator" in roles
+    assert "judge" in roles and "critic" in roles and "revision_generator" not in roles
     for role, payload in modules.backend.requests:
-        if role in ("judge", "revision_generator", "initial_generator"):
+        if role in ("judge", "initial_generator"):
             assert "normalized_weights" not in json.dumps(payload)
+        if role == "critic":
+            assert "normalized_weights" in json.dumps(payload)  # Critic 必须看逐项 Judge。

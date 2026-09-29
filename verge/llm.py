@@ -37,8 +37,7 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "selector": ("selected_experience_ids", list),
     "initial_generator": ("rubric", dict),
     "judge": ("criterion_judgments", list),
-    "critic": ("feedback", str),
-    "revision_generator": ("operations", list),
+    "critic": ("operations", list),
     "reflector": ("candidates", list),
     "revision_credit_assigner": ("bindings", dict),
     "admission_checker": ("decision", str),  # 另需非空 reason；在 _valid_shape 中联合校验。
@@ -59,16 +58,69 @@ def _criterion_shape(item: Any) -> bool:
             and all(isinstance(key, str) for key in item["source_experiences"]))
 
 
+_NUMERIC_ID_FIELDS = frozenset({"rubric_id", "base_rubric_id", "criterion_id",
+                                "target_criterion_id", "operation_id", "candidate_id"})
+_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences"})
+
+
+def _normalize_numeric_ids(role: str, value: Any) -> None:
+    """只在模型 ID 字段把正整数 1 规范化为 "1"；原始响应仍留在 trace 中。"""
+    if role not in {"selector", "initial_generator", "judge", "critic", "reflector",
+                    "revision_credit_assigner"}:
+        return
+
+    def numeric_id(item: Any) -> Any:
+        return str(item) if type(item) is int and item > 0 else item
+
+    def visit(item: Any) -> None:
+        if isinstance(item, list):
+            for child in item:
+                visit(child)
+        elif isinstance(item, dict):
+            for key, child in item.items():
+                if key in _NUMERIC_ID_FIELDS:
+                    item[key] = numeric_id(child)
+                elif key in _NUMERIC_ID_LIST_FIELDS and isinstance(child, list):
+                    item[key] = [numeric_id(value) for value in child]
+                elif key == "bindings" and isinstance(child, dict):
+                    for binding_key, ids in child.items():
+                        if isinstance(ids, list):
+                            child[binding_key] = [numeric_id(value) for value in ids]
+                else:
+                    visit(child)
+
+    visit(value)
+
+
 def _valid_shape(role: str, value: Any) -> bool:
     """缺字段/字段类型不对才重试；ID引用、绑定为空、准入FAIL等语义决策不重试。"""
     if role == "admission_checker":
         return (isinstance(value, dict) and set(value) == {"decision", "reason"}
                 and value["decision"] in ("PASS", "FAIL")
                 and isinstance(value["reason"], str) and bool(value["reason"].strip()))
-    field, expected = _OUTPUT_FIELDS[role]
-    if not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], expected):
-        return False
-    data = value[field]
+    if role == "critic":
+        if (not isinstance(value, dict) or set(value) != {"analysis", "operations"}
+                or not isinstance(value["analysis"], str) or not value["analysis"].strip()
+                or not isinstance(value["operations"], list)):
+            return False
+        data = value["operations"]
+    else:
+        field, expected = _OUTPUT_FIELDS[role]
+        if not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], expected):
+            return False
+        data = value[field]
+    if role == "critic":
+        return all(isinstance(item, dict) and
+                   {"operation_id", "operation_type", "target_criterion_id",
+                    "new_or_updated_criterion"} <= set(item) <=
+                   {"operation_id", "operation_type", "target_criterion_id",
+                    "new_or_updated_criterion", "before_criterion"}
+                   and isinstance(item["operation_id"], str)
+                   and item["operation_type"] in ("ADD", "DELETE", "MODIFY")
+                   and (item["target_criterion_id"] is None
+                        or isinstance(item["target_criterion_id"], str))
+                   and (item["new_or_updated_criterion"] is None
+                        or _criterion_shape(item["new_or_updated_criterion"])) for item in data)
     if role == "selector":
         return all(isinstance(key, str) for key in data)
     if role == "initial_generator":
@@ -81,18 +133,6 @@ def _valid_shape(role: str, value: Any) -> bool:
         return all(isinstance(item, dict) and set(item) == {"criterion_id", "chosen", "rejected"}
                    and isinstance(item["criterion_id"], str)
                    and type(item["chosen"]) is bool and type(item["rejected"]) is bool for item in data)
-    if role == "revision_generator":
-        return all(isinstance(item, dict) and
-                   {"operation_id", "operation_type", "target_criterion_id",
-                    "new_or_updated_criterion"} <= set(item) <=
-                   {"operation_id", "operation_type", "target_criterion_id",
-                    "new_or_updated_criterion", "before_criterion"}
-                   and isinstance(item["operation_id"], str)
-                   and item["operation_type"] in ("ADD", "DELETE", "MODIFY")
-                   and (item["target_criterion_id"] is None
-                        or isinstance(item["target_criterion_id"], str))
-                   and (item["new_or_updated_criterion"] is None
-                        or _criterion_shape(item["new_or_updated_criterion"])) for item in data)
     if role == "reflector":
         return all(isinstance(item, dict) and set(item) == {"candidate_id", "content", "trigger"}
                    and all(isinstance(item[key], str) for key in ("candidate_id", "content", "trigger"))
@@ -245,6 +285,7 @@ class OpenAICompatibleBackend:
                 if not isinstance(content, str):
                     raise ValueError("missing message content")
                 result = json.loads(content, parse_constant=_reject_constant)
+                _normalize_numeric_ids(role, result)
                 if not _valid_shape(role, result):
                     raise ValueError("unexpected response fields")
             except LLMRequestError:
@@ -414,14 +455,12 @@ class FakeLLMBackend:
                  "rejected": item["criterion_id"] == "c1" and not initial_success}
                 for item in request["criteria"]]}
         elif role == "critic":
-            result = {"feedback": "需要将关键任务要求写成可独立判定的标准。"}
-        elif role == "revision_generator":
             attempt = request["attempt_number"]
             success = (self.scenario == "attempt_1_success" and attempt == 1
                        or self.scenario == "attempt_2_success" and attempt == 2)
             question = ("是否逐项满足关键要求？" if success
                         else f"是否概述任务目标（第{attempt}次）？")
-            result = {"operations": [{
+            result = {"analysis": "R0 对关键要求的判别不足，需要针对任务要求调整标准。", "operations": [{
                 "operation_id": f"op{attempt}", "operation_type": "MODIFY",
                 "target_criterion_id": "c2",
                 "new_or_updated_criterion": {"criterion_id": "c2", "question": question,

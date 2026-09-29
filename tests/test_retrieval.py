@@ -49,6 +49,21 @@ def test_vector_top20_cache_add_and_text_change():
     assert not any("exp_00" in text or "confidence" in text for text in backend.calls)
 
 
+def test_vector_fork_copies_cache_without_sharing_mutations():
+    backend = StubEmbedding()
+    retriever = VectorRetriever(backend)
+    items = pool(2)
+    retriever.retrieve("task", items)
+    fork = retriever.fork()
+    assert fork is not retriever and fork.backend is backend
+    fork.retrieve("task", items)
+    assert backend.calls == ["task", "doc0\napplicable", "doc1\napplicable", "task"]
+    modified = Experience("exp_00", "doc42", "applicable", 2, 1, [], [])
+    fork.retrieve("task", [modified, items[1]])
+    retriever.retrieve("task", items)
+    assert backend.calls[-1] == "task"  # fork 的文本更新不影响原缓存。
+
+
 def test_vector_empty_pool_ties_and_invalid_vectors():
     class FixedEmbedding:
         def __init__(self, vector):

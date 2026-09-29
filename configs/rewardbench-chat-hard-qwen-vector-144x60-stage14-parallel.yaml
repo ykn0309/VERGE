@@ -1,9 +1,10 @@
-# 阶段 13 v8：相同的 144 train + 60 test，修订 Executor 输出失败重试耗尽后记录为无效修订。
-# 旧测试集已参与诊断和提示词改进，本次仅作同源回归，不是无偏终测。
-# Qwen 与 DashScope embedding 均使用 DASHSCOPE_API_KEY_2；旧运行目录不修改。
+# Stage 14: Critic 直接产出 analysis + operations；144 train + 60 test。
+# 同源 Chat Hard 测试集已用于诊断，仅作为回归观察，不是独立无偏终测。
+# 训练顺序执行，测试在冻结经验池下最多 4 条并行；使用现有固定划分。
 run:
   seed: 42
-  output_dir: runs/rewardbench-chat-hard-qwen-vector-144x60-v8-executor-recovery-resume3
+  output_dir: runs/rewardbench-chat-hard-qwen-vector-144x60-stage14-parallel
+  test_workers: 4
 
 dataset:
   implementation: jsonl
@@ -44,7 +45,7 @@ modules:
       max_selected: 5
       exploration_slots: 0
   revision:
-    implementation: two_attempt_same_base
+    implementation: critic_atomic_same_base
     config:
       max_attempts: 2
       invalid_output_retries: 2

@@ -22,6 +22,33 @@ def result(value, *, status=200, reason="stop", headers=None):
     })
 
 
+def numbered_fake_response(fake, role, payload):
+    """MockTransport 的模型桩遵循 v9 数字协议；Fake 本体仍用于内部 ID 测试。"""
+    if role == "judge":
+        internal = {**payload, "criteria": [
+            {**item, "criterion_id": ("c2" if item["question"] == "是否逐项满足关键要求？"
+                                      else "c" + item["criterion_id"])}
+            for item in payload["criteria"]]}
+        result_value = fake.generate(role, internal)
+        for answer, requested in zip(result_value["criterion_judgments"], payload["criteria"]):
+            answer["criterion_id"] = requested["criterion_id"]
+        return result_value
+    result_value = fake.generate(role, payload)
+    if role == "initial_generator":
+        result_value["rubric"]["rubric_id"] = "1"
+        for index, item in enumerate(result_value["rubric"]["criteria"], 1):
+            item["criterion_id"] = str(index)
+    elif role == "revision_generator":
+        for index, item in enumerate(result_value["operations"], 1):
+            item["operation_id"] = str(index)
+            item["target_criterion_id"] = "2"
+            item["new_or_updated_criterion"]["criterion_id"] = "2"
+    elif role == "reflector":
+        for index, item in enumerate(result_value["candidates"], 1):
+            item["candidate_id"] = str(index)
+    return result_value
+
+
 def backend(monkeypatch, handler, **options):
     monkeypatch.setenv("OPENAI_API_KEY", "test-secret-never-log")
     client = httpx.Client(base_url="https://api.openai.com/v1/",
@@ -201,7 +228,7 @@ def test_role_prompts_are_isolated_and_versioned():
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "v7"
+    assert PROMPT_VERSION == "v9-numbered-ids"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
     assert all(text in selector for text in ("task 本身核验", "高信度不能覆盖不匹配", "可选零条"))
     reflector = llm_messages("reflector", {"task": "task"})[0]["content"]
@@ -210,6 +237,9 @@ def test_admission_selection_and_provenance_prompt_requirements():
     assert "即使混有 task 条件也 FAIL" in admission
     assert "不改写 trigger" in admission
     assert '"reason"' in admission
+    revision = llm_messages("revision_generator", {"task": "task"})[0]["content"]
+    assert "第一次的操作不会自动继承" in revision
+    assert "本次 operations 中重新提出" in revision
     generator = llm_messages("initial_generator", {"task": "task"})[0]["content"]
     assert "source_experiences 仍为 []" in generator
     assert "未使用的经验不得挂名" in generator
@@ -263,7 +293,7 @@ def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys
     def handler(request):
         data = json.loads(request.content)
         assert data["model"] == "judge-model"
-        return result(fake.generate("judge", json.loads(data["messages"][1]["content"])))
+        return result(numbered_fake_response(fake, "judge", json.loads(data["messages"][1]["content"])))
 
     mock_client = httpx.Client(base_url="https://api.openai.com/v1/",
                                transport=httpx.MockTransport(handler))
@@ -299,7 +329,7 @@ def test_qwen_config_sends_non_thinking_dashscope_request(tmp_path, monkeypatch,
         body = json.loads(request.content)
         sent.append((request.url, body))
         role = body["messages"][0]["content"].split("当前角色：", 1)[1].split("。", 1)[0]
-        return result(fake.generate(role, json.loads(body["messages"][1]["content"])))
+        return result(numbered_fake_response(fake, role, json.loads(body["messages"][1]["content"])))
 
     mock_client = httpx.Client(base_url=spec["base_url"] + "/",
                                transport=httpx.MockTransport(handler))
@@ -324,7 +354,7 @@ def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(t
         role = body["messages"][0]["content"].split("当前角色：", 1)[1].split("。", 1)[0]
         payload = json.loads(body["messages"][1]["content"])
         sent.append((role, payload))
-        return result(fake.generate(role, payload), headers={"x-request-id": f"req-{len(sent)}"})
+        return result(numbered_fake_response(fake, role, payload), headers={"x-request-id": f"req-{len(sent)}"})
 
     mock_client = httpx.Client(base_url="https://api.openai.com/v1/",
                                transport=httpx.MockTransport(handler))
@@ -352,6 +382,49 @@ def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(t
     assert {row["role"] for row in requests} >= {"initial_generator", "judge", "critic",
                                                   "revision_generator", "reflector"}
     assert "test-secret-never-log" not in record_file.read_text(encoding="utf-8")
+    role_path = tmp_path / "run" / "artifacts" / "role_io.jsonl"
+    role_events = [json.loads(line) for line in role_path.read_text(encoding="utf-8").splitlines()]
+    assert role_events and all(event["sample_id"] == "demo-train-1" for event in role_events)
+    assert "test-secret-never-log" not in role_path.read_text(encoding="utf-8")
+    assert role_path.stat().st_mode & 0o077 == 0
+    assert role_events[0]["messages"][0]["role"] == "system"
+    assert role_events[0]["raw_output"] and role_events[0]["output"]
+    assert "chosen" not in role_events[0]["input"] and "rejected" not in role_events[0]["input"]
+    assert any("chosen" in event["input"] for event in role_events if event["role"] == "judge")
     manifest = json.loads((tmp_path / "run" / "run_manifest.json").read_text(encoding="utf-8"))
     assert manifest["prompt_versions"]["judge"] == PROMPT_VERSION
     assert "test-secret-never-log" not in json.dumps(manifest)
+
+
+def test_role_trace_preserves_actual_prompt_response_and_format_retry(monkeypatch):
+    trace = []
+    calls = []
+
+    def handler(request):
+        calls.append(json.loads(request.content))
+        if len(calls) == 1:
+            return httpx.Response(200, json={"choices": [{"message": {"content": "not JSON"},
+                                                          "finish_reason": "stop"}]})
+        return result({"feedback": "请调整判定标准"})
+
+    llm = backend(monkeypatch, handler, max_retries=1, trace_hook=trace.append)
+    assert llm.generate("critic", {"task": "private task"}) == {"feedback": "请调整判定标准"}
+    assert len(trace) == 2
+    assert trace[0]["input"] == {"task": "private task"}
+    assert trace[0]["messages"] == calls[0]["messages"]
+    assert trace[0]["raw_output"] == "not JSON" and trace[0]["error"] == "invalid structured output"
+    assert trace[1]["messages"] == calls[1]["messages"]
+    assert "上次输出格式无效" in trace[1]["messages"][-1]["content"]
+    assert trace[1]["raw_output"] == '{"feedback": "请调整判定标准"}'
+    assert trace[1]["output"] == {"feedback": "请调整判定标准"}
+    assert "test-secret-never-log" not in json.dumps(trace, ensure_ascii=False)
+
+
+def test_role_trace_does_not_save_http_error_bodies_or_headers(monkeypatch):
+    trace = []
+    llm = backend(monkeypatch, lambda _: httpx.Response(401, text="secret error body",
+                   headers={"x-request-id": "private-id"}), trace_hook=trace.append)
+    with pytest.raises(LLMRequestError, match="HTTP 401"):
+        llm.generate("critic", {"task": "x"})
+    assert trace[0]["raw_output"] is None and trace[0]["error"] == "HTTP 401"
+    assert "secret error body" not in json.dumps(trace) and "private-id" not in json.dumps(trace)

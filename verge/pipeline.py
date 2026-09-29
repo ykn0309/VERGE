@@ -15,8 +15,8 @@ from verge.models import (
     TrajectoryRecord,
 )
 from verge.modules import (
-    AdmissionChecker, Critic, FusionJudge, InitialRubricGenerator, Judge, Reflector,
-    Retriever, RevisionCreditAssigner, RevisionGenerator, Selector,
+    AdmissionChecker, Critic, FusionJudge, InitialRubricGenerator, Judge, JudgeOutputError,
+    Reflector, Retriever, RevisionCreditAssigner, RevisionGenerator, Selector,
 )
 from verge.prompts import ExperienceView
 
@@ -159,7 +159,16 @@ class PipelineRunner:
         if initial.base_rubric_id is not None:
             raise ValueError("initial rubric must not have a revision base")
         self.current_stage = "initial_judge"
-        initial_judgment = modules.judge.judge(initial, sample.chosen, sample.rejected)
+        try:
+            initial_judgment = modules.judge.judge(initial, sample.chosen, sample.rejected)
+        except JudgeOutputError as exc:
+            record = TrajectoryRecord(sample.sample_id, "judge_error_initial",
+                                      [item.experience_id for item in recalled],
+                                      [item.experience_id for item in selected],
+                                      initial, None, [], [], {}, judge_error=str(exc))
+            self.current_stage = "trajectory"
+            self.trajectories.append(record)
+            return record
         # 已有经验的下游信用只由 R0 计算，立即写盘；后续修订失败也不回滚。
         if self.training:
             self.current_stage = "existing_credit"
@@ -180,12 +189,18 @@ class PipelineRunner:
                     attempts[-1] if attempts else None,
                 )
                 repair_feedback = feedback
+                revision_history = ({} if number == 1 else {
+                    "chosen": sample.chosen, "rejected": sample.rejected,
+                    "initial_judgment": initial_judgment,
+                    "previous_attempt": attempts[-1] if attempts else None,
+                    "previous_invalid_attempt": invalid_attempts[-1] if invalid_attempts else None,
+                })
                 validation_failures: list[str] = []
                 for retry in range(self.max_revision_output_retries + 1):
                     try:
                         self.current_stage = f"revision_{number}.generator"
                         operations = modules.revision_generator.generate(
-                            sample.task, initial, repair_feedback, number,
+                            sample.task, initial, repair_feedback, number, **revision_history,
                         )
                         self.current_stage = f"revision_{number}.executor"
                         revised, executed = self.executor.execute(initial, operations, number)
@@ -193,7 +208,7 @@ class PipelineRunner:
                     except ValueError as exc:
                         validation_failures.append(str(exc)[:160] or type(exc).__name__)
                         if retry == self.max_revision_output_retries:
-                            if isinstance(exc, InvalidRubricSizeError):
+                            if self.current_stage == f"revision_{number}.executor":
                                 invalid_attempts.append(InvalidRevisionAttempt(
                                     number, feedback, validation_failures,
                                 ))
@@ -208,10 +223,20 @@ class PipelineRunner:
                 if invalid_attempts and invalid_attempts[-1].attempt_number == number:
                     continue  # 本次修订失败；下一次仍基于 R0，不能凭空构造 Rk。
                 self.current_stage = f"revision_{number}.judge"
-                revised_judgment = modules.judge.judge(
-                    revised, sample.chosen, sample.rejected,
-                    previous=initial, previous_judgment=initial_judgment,
-                )
+                try:
+                    revised_judgment = modules.judge.judge(
+                        revised, sample.chosen, sample.rejected,
+                        previous=initial, previous_judgment=initial_judgment,
+                    )
+                except JudgeOutputError as exc:
+                    record = TrajectoryRecord(sample.sample_id, "judge_error_revision",
+                                              [item.experience_id for item in recalled],
+                                              [item.experience_id for item in selected],
+                                              initial, initial_judgment, attempts, [], {},
+                                              invalid_attempts, str(exc))
+                    self.current_stage = "trajectory"
+                    self.trajectories.append(record)
+                    return record
                 _check_reused_judgments(initial, initial_judgment, revised, revised_judgment)
                 attempt = RevisionAttempt(number, feedback, executed, revised, revised_judgment,
                                           validation_failures)

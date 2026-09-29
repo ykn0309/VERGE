@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 import yaml
+import pytest
 
 from verge.cli import main
 
@@ -234,6 +235,7 @@ def test_resume_copies_verified_prefix_without_repeating_train_or_mutating_paren
     parent = tmp_path / "result"
     old_trajectory = (parent / "artifacts" / "trajectories.jsonl").read_bytes()
     old_memory = (parent / "artifacts" / "experience_memory.json").read_bytes()
+    old_role_io = (parent / "artifacts" / "role_io.jsonl").read_bytes()
     monkeypatch.setattr(FakeLLMBackend, "generate", original)
     data["run"]["output_dir"] = str(tmp_path / "continued")
     config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
@@ -245,17 +247,99 @@ def test_resume_copies_verified_prefix_without_repeating_train_or_mutating_paren
     assert [record.sample_id for record in records] == ["train-a", "train-b", "test-a"]
     assert (parent / "artifacts" / "trajectories.jsonl").read_bytes() == old_trajectory
     assert (parent / "artifacts" / "experience_memory.json").read_bytes() == old_memory
+    assert (parent / "artifacts" / "role_io.jsonl").read_bytes() == old_role_io
     assert (child / "artifacts" / "trajectories.jsonl").read_bytes().startswith(old_trajectory)
+    assert (child / "artifacts" / "role_io.jsonl").read_bytes().startswith(old_role_io)
+    assert (child / "artifacts" / "role_io.jsonl").stat().st_mode & 0o077 == 0
     lineage = json.loads((child / "run_manifest.json").read_text())["resumed_from"]
     assert lineage["completed_train"] == 1 and lineage["completed_test"] == 0
     assert lineage["initial_output_retries"] == 2
     assert lineage["checkpoint_sha256"]["experience_memory.json"]
+    assert lineage["checkpoint_sha256"]["role_io.jsonl"]
     data["run"]["seed"] = 43
     data["run"]["output_dir"] = str(tmp_path / "bad-config")
     config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
     assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 2
     assert "config or dataset changed" in capsys.readouterr().err
     assert not (tmp_path / "bad-config").exists()
+
+
+def test_resume_after_failed_revision_without_memory_write(tmp_path, monkeypatch, capsys):
+    config, data = experiment(tmp_path)
+    from verge.llm import FakeLLMBackend
+    from verge.memory import TrajectoryLog
+
+    original = FakeLLMBackend.generate
+    selections = 0
+    revisions = 0
+
+    def fail_second_revision(self, role, payload):
+        nonlocal selections, revisions
+        if role == "selector":
+            selections += 1
+            if selections == 1:  # 首条样本的池为空，首次 Selector 调用发生在 train-b。
+                return {"selected_experience_ids": []}
+        if role == "revision_generator":
+            revisions += 1
+            if revisions >= 2:
+                raise ValueError("simulated revision timeout")
+        return original(self, role, payload)
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_revision)
+    assert main(["run", "--config", str(config)]) == 1
+    assert "sample 'train-b', stage revision_1.generator" in capsys.readouterr().err
+    parent = tmp_path / "result"
+    root = parent / "artifacts"
+    assert [record.sample_id for record in TrajectoryLog(root).all()] == ["train-a"]
+    # 模拟真实 LLM 在该修订角色超时后仍留下 request / role IO 诊断。
+    for filename in ("llm_requests.jsonl", "role_io.jsonl"):
+        with (root / filename).open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps({"sample_id": "train-b", "role": "revision_generator"}) + "\n")
+    old_memory = (root / "experience_memory.json").read_bytes()
+    assert all(ev["sample_id"] != "train-b" for exp in json.loads(old_memory)["experiences"]
+               for ev in exp["evidence_history"])
+    monkeypatch.setattr(FakeLLMBackend, "generate", original)
+    data["run"]["output_dir"] = str(tmp_path / "continued")
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 0
+    assert json.loads(capsys.readouterr().out)["train_samples"] == 2
+    assert [record.sample_id for record in TrajectoryLog(tmp_path / "continued" / "artifacts").all()] == [
+        "train-a", "train-b", "test-a",
+    ]
+    assert (root / "experience_memory.json").read_bytes() == old_memory
+
+
+@pytest.mark.parametrize("log_file,error", [
+    ("llm_requests.jsonl", "request event beyond next sample"),
+    ("role_io.jsonl", "role IO event beyond next sample"),
+])
+def test_resume_rejects_request_or_role_io_beyond_next_sample(tmp_path, monkeypatch, capsys,
+                                                              log_file, error):
+    config, data = experiment(tmp_path)
+    from verge.llm import FakeLLMBackend
+    original = FakeLLMBackend.generate
+    calls = 0
+
+    def fail_second_initial(self, role, payload):
+        nonlocal calls
+        if role == "initial_generator":
+            calls += 1
+            if calls == 2:
+                raise ValueError("stop before second sample")
+        return original(self, role, payload)
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_initial)
+    assert main(["run", "--config", str(config)]) == 1
+    capsys.readouterr()
+    parent = tmp_path / "result"
+    with (parent / "artifacts" / log_file).open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps({"sample_id": "test-a", "role": "judge"}) + "\n")
+    monkeypatch.setattr(FakeLLMBackend, "generate", original)
+    data["run"]["output_dir"] = str(tmp_path / "continued")
+    config.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    assert main(["run", "--config", str(config), "--resume-from", str(parent)]) == 2
+    assert error in capsys.readouterr().err
+    assert not (tmp_path / "continued").exists()
 
 
 def test_resume_after_all_train_skips_training_and_keeps_frozen_memory(tmp_path,

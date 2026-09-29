@@ -202,3 +202,80 @@ def test_http_only_exposes_fixed_routes_and_rejects_foreign_host(tmp_path):
         finally:
             server.shutdown()
             thread.join()
+
+
+def test_role_io_records_real_fake_role_inputs_outputs_without_credentials(tmp_path):
+    from verge.web import load_role_io
+
+    directory, _ = _run(tmp_path)
+    root = directory / "artifacts"
+    assert (root / "role_io.jsonl").stat().st_mode & 0o077 == 0
+    a = load_role_io(directory, "a")
+    assert a["available"] and a["entries"]
+    assert [row["role"] for row in a["entries"]][:3] == ["initial_generator", "judge", "critic"]
+    initial = a["entries"][0]
+    assert initial["input"]["task"] == "<script>not code</script>"
+    assert "chosen" not in initial["input"] and "rejected" not in initial["input"]
+    assert initial["output"]["rubric"]["rubric_id"] == "r0"
+    assert initial["messages"] is None and initial["backend"] == "fake"
+    assert [row["role"] for row in load_role_io(directory, "c")["entries"]] == [
+        "selector", "initial_generator", "judge"] or [
+        "initial_generator", "judge"]
+
+
+def test_role_io_legacy_run_and_truncated_lines_are_distinguished(tmp_path):
+    from verge.web import load_role_io
+
+    directory, _ = _run(tmp_path)
+    sidecar = directory / "artifacts" / "role_io.jsonl"
+    sidecar.unlink()
+    assert load_role_io(directory, "a") == {"available": False, "entries": [], "warnings": []}
+    sidecar.write_text(json.dumps({"sample_id": "a", "role": "critic", "input": {"x": "y"},
+                                   "output": {"feedback": "ok"}, "Authorization": "Bearer secret"}) +
+                       "\n{" + "\n", encoding="utf-8")
+    result = load_role_io(directory, "a")
+    assert result["available"] and len(result["entries"]) == 1
+    assert "Authorization" not in result["entries"][0]
+    assert result["warnings"]
+
+
+def test_role_io_bounds_large_logs_and_truncates_sample_calls(tmp_path, monkeypatch):
+    from verge.web import load_role_io
+
+    directory, _ = _run(tmp_path)
+    monkeypatch.setattr("verge.web._MAX_ROLE_ENTRIES", 1)
+    truncated = load_role_io(directory, "a")
+    assert len(truncated["entries"]) == 1
+    assert any("仅展示前 1 次" in warning for warning in truncated["warnings"])
+    monkeypatch.setattr("verge.web._MAX_ROLE_IO_BYTES", 1)
+    oversized = load_role_io(directory, "a")
+    assert oversized["error"] and not oversized["entries"]
+
+
+def test_http_role_io_only_allows_selected_run_and_sample(tmp_path):
+    directory, _ = _run(tmp_path)
+    handler = type("RoleHandler", (DashboardHandler,), {"run_dir": directory})
+    with ThreadingHTTPServer(("127.0.0.1", 0), handler) as server:
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            client = HTTPConnection("127.0.0.1", server.server_port)
+            client.request("GET", f"/api/role-io?name={directory.name}&sample_id=a")
+            response = client.getresponse()
+            assert response.status == 200 and json.loads(response.read())["entries"]
+            client.request("GET", f"/api/role-io?name={directory.name}&sample_id=missing")
+            response = client.getresponse()
+            assert response.status == 404
+            response.read()
+            client.request("GET", "/api/role-io?name=..%2F..&sample_id=a")
+            response = client.getresponse()
+            assert response.status == 404
+            response.read()
+            client.request("GET", f"/api/role-io?name={directory.name}&sample_id=a&sample_id=b")
+            response = client.getresponse()
+            assert response.status == 400
+            response.read()
+            client.close()
+        finally:
+            server.shutdown()
+            thread.join()

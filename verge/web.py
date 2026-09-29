@@ -20,6 +20,10 @@ from urllib.parse import parse_qs, urlsplit
 from verge.models import Experience, TrajectoryRecord
 
 ASSETS = Path(__file__).with_name("web_assets")
+_MAX_ROLE_IO_BYTES = 1024 * 1024 * 1024  # Do not scan multi-gigabyte artifacts per HTTP request.
+_MAX_ROLE_LINE_BYTES = 4 * 1024 * 1024
+_MAX_ROLE_ENTRIES = 256
+_MAX_ROLE_WARNINGS = 12
 _TRANSLATOR_SOURCE = Path(__file__).with_name("apple_translate.swift")
 _translator_lock = Lock()
 _translator_dir: tempfile.TemporaryDirectory[str] | None = None
@@ -211,16 +215,72 @@ def _evolution(experience: dict[str, Any], records: list[dict[str, Any]],
     return timeline
 
 
-def load_run(run_dir: str | Path) -> dict[str, Any]:
-    """Load persisted artifacts without changing the run; tolerate truncated JSONL lines."""
-    directory = Path(run_dir).expanduser().resolve()
+def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
     if manifest.get("format_version") != 1:
         raise ValueError("unsupported run manifest format")
     root_name = Path(manifest["config"]["store"]["config"].get("root_dir", "artifacts"))
     if root_name.is_absolute() or ".." in root_name.parts or root_name == Path("."):
         raise ValueError("invalid store root_dir in manifest")
-    root = directory / root_name
+    return manifest, directory / root_name
+
+
+def load_role_io(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
+    """Lazy-load only the selected sample's original role calls, not the whole run into the page."""
+    directory = Path(run_dir).expanduser().resolve()
+    _, root = _run_artifacts(directory)
+    path = root / "role_io.jsonl"
+    if not path.is_file():
+        return {"available": False, "entries": [], "warnings": []}
+    if path.stat().st_size > _MAX_ROLE_IO_BYTES:
+        return {"available": True, "entries": [], "warnings": [],
+                "error": "角色原始日志超过 1 GiB，请在本机按样本筛选或归档后查看。"}
+    warnings: list[str] = []
+    entries: list[dict[str, Any]] = []
+    bad_lines = 0
+    skipped_entries = 0
+    with path.open("rb") as source:
+        number = 0
+        while line := source.readline(_MAX_ROLE_LINE_BYTES + 1):
+            number += 1
+            if len(line) > _MAX_ROLE_LINE_BYTES:
+                # Skip the rest of this single oversized JSONL record without reading it all.
+                while line and not line.endswith(b"\n"):
+                    line = source.readline(_MAX_ROLE_LINE_BYTES + 1)
+                bad_lines += 1
+                continue
+            if not line.strip():
+                continue
+            try:
+                item = json.loads(line)
+                if not isinstance(item, dict):
+                    raise ValueError("expected object")
+            except (ValueError, UnicodeDecodeError):
+                bad_lines += 1
+                if len(warnings) < _MAX_ROLE_WARNINGS:
+                    warnings.append(f"role_io.jsonl 第 {number} 行不完整或无效，已跳过。")
+                continue
+            if item.get("sample_id") == sample_id:
+                if len(entries) < _MAX_ROLE_ENTRIES:
+                    entries.append(item)
+                else:
+                    skipped_entries += 1
+    if bad_lines > len(warnings):
+        warnings.append(f"另有 {bad_lines-len(warnings)} 行超长或损坏，已跳过。")
+    if skipped_entries:
+        warnings.append(f"该样本仅展示前 {_MAX_ROLE_ENTRIES} 次调用，另有 {skipped_entries} 条未加载。")
+    # Do not forward unknown fields from external artifacts (e.g. accidentally saved headers).
+    allowed = ("role", "backend", "model", "prompt_version", "attempt", "status",
+               "input", "messages", "raw_output", "output", "error")
+    return {"available": True, "entries": [{key: item[key] for key in allowed if key in item}
+                                           for item in entries if isinstance(item.get("role"), str)],
+            "warnings": warnings}
+
+
+def load_run(run_dir: str | Path) -> dict[str, Any]:
+    """Load persisted artifacts without changing the run; tolerate truncated JSONL lines."""
+    directory = Path(run_dir).expanduser().resolve()
+    manifest, root = _run_artifacts(directory)
     warnings: list[str] = []
     context = _sample_context(manifest, directory, warnings)
     raw_records = _read_jsonl(root / "trajectories.jsonl", warnings)
@@ -331,7 +391,28 @@ class DashboardHandler(BaseHTTPRequestHandler):
         parsed = urlsplit(self.path)
         route = parsed.path
         root = self.runs_root or self.run_dir.parent
-        if route == "/api/runs":
+        if route == "/api/role-io":
+            values = parse_qs(parsed.query, keep_blank_values=True)
+            if (set(values) != {"name", "sample_id"}
+                    or any(len(values[key]) != 1 for key in values)):
+                self._json_error(400, "需要唯一的运行名称与样本 ID。")
+                return
+            name, sample_id = values["name"][0], values["sample_id"][0]
+            if name not in discover_runs(root) or not sample_id or len(sample_id) > 512:
+                self._json_error(404, "未找到运行或样本。")
+                return
+            try:
+                directory = root / name
+                if not any(item["sample_id"] == sample_id for item in load_run(directory)["samples"]):
+                    self._json_error(404, "未找到该样本。")
+                    return
+                result = load_role_io(directory, sample_id)
+            except (OSError, ValueError, KeyError, TypeError):
+                self._json_error(500, "运行数据暂时无法读取。")
+                return
+            self._send(200, "application/json; charset=utf-8",
+                       json.dumps(result, ensure_ascii=False, allow_nan=False).encode("utf-8"))
+        elif route == "/api/runs":
             names = discover_runs(root)
             self._send(200, "application/json; charset=utf-8",
                        json.dumps({"runs": names, "default": self.run_dir.name},

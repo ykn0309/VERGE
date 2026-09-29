@@ -11,14 +11,15 @@ from math import isfinite, sqrt
 from typing import Any, Mapping, Protocol, Sequence
 
 from verge.calculator import allocate_revision_credit, calculate_rubric_judgment
-from verge.llm import FakeLLMBackend, FakeScenario, LLMBackend
+from verge.llm import FakeLLMBackend, FakeScenario, LLMBackend, OpenAICompatibleBackend
 from verge.models import (
-    CandidateExperience, CriterionJudgment, Experience, RevisionAttempt,
-    RevisionOperation, Rubric, RubricJudgment,
+    CandidateExperience, CriterionJudgment, Experience, InvalidRevisionAttempt,
+    RevisionAttempt, RevisionOperation, Rubric, RubricJudgment,
 )
 from verge.prompts import (
-    ExperienceView, admission_payload, binding_payload, critic_payload, fusion_payload,
-    generator_payload, judge_payload, reflection_payload, revision_payload, selector_payload,
+    ExperienceView, NumberedIDCodec, admission_payload, binding_payload, critic_payload,
+    fusion_payload, generator_payload, judge_payload, reflection_payload, revision_payload,
+    selector_payload,
 )
 
 
@@ -60,10 +61,14 @@ class Critic(Protocol):
 
 
 class RevisionGenerator(Protocol):
-    """修订意图：基于 R0 和反馈提出 ADD/DELETE/MODIFY，不负责执行操作。"""
+    """修订意图：第二次额外看到此前完整的修订相关轨迹，操作仍以 R0 为基线。"""
 
     def generate(self, task: str, initial: Rubric, feedback: str,
-                 attempt_number: int) -> list[RevisionOperation]: ...
+                 attempt_number: int, *, chosen: str | None = None,
+                 rejected: str | None = None,
+                 initial_judgment: RubricJudgment | None = None,
+                 previous_attempt: RevisionAttempt | None = None,
+                 previous_invalid_attempt: InvalidRevisionAttempt | None = None) -> list[RevisionOperation]: ...
 
 
 class Reflector(Protocol):
@@ -111,9 +116,13 @@ def _views(items: Sequence[ExperienceView]) -> None:
 def _output(backend: LLMBackend, role: str, payload: dict[str, Any],
             field: str) -> Any:
     """所有角色共享的结构校验；字段值仍由对应模块按领域模型校验。"""
-    response = backend.generate(role, payload)
+    # Fake 后端沿用内部固定 ID；真实模型只接触本次调用的局部数字编号。
+    codec = NumberedIDCodec(role, payload) if isinstance(backend, OpenAICompatibleBackend) else None
+    response = backend.generate(role, codec.project(payload) if codec else payload)
     if not isinstance(response, Mapping) or set(response) != {field}:
         raise ValueError(f"{role}: expected a structured result containing only {field}")
+    if codec:
+        response = codec.restore(response)
     return response[field]
 
 
@@ -221,10 +230,10 @@ class LLMInitialRubricGenerator:
         allowed = {item.experience_id for item in selected}
         feedback = None
         for retry in range(self.invalid_output_retries + 1):
-            raw = _output(self.backend, "initial_generator", generator_payload(
-                task, selected, validation_feedback=feedback,
-            ), "rubric")
             try:
+                raw = _output(self.backend, "initial_generator", generator_payload(
+                    task, selected, validation_feedback=feedback,
+                ), "rubric")
                 rubric = Rubric.from_dict(raw)
                 errors = []
                 if rubric.base_rubric_id is not None:
@@ -248,11 +257,18 @@ class LLMInitialRubricGenerator:
         raise AssertionError("unreachable retry state")
 
 
-class LLMJudge:
-    """LLM 只判断 Boolean；权重、margin 和 success 均交给 Calculator。"""
+class JudgeOutputError(ValueError):
+    """模型 Judge 输出经有限纠错后仍不能对应待判断标准；不得写成有效判断。"""
 
-    def __init__(self, backend: LLMBackend) -> None:
+
+class LLMJudge:
+    """LLM 只判断 Boolean；错误输出有限重试，最终失败交由 Runner 记账并继续。"""
+
+    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 2) -> None:
+        if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
+            raise ValueError("invalid_output_retries must be an integer in [0, 3]")
         self.backend = backend
+        self.invalid_output_retries = invalid_output_retries
 
     def judge(self, rubric: Rubric, chosen: str, rejected: str, *,
               previous: Rubric | None = None,
@@ -277,19 +293,32 @@ class LLMJudge:
         # 后端仅回答待判断标准，返回值必须恰好覆盖这些 ID。
         pending = [item for item in rubric.criteria if item.criterion_id not in known]
         generated: list[CriterionJudgment] = []
-        if pending:
-            raw = _output(self.backend, "judge", judge_payload(pending, chosen, rejected),
-                          "criterion_judgments")
-            if not isinstance(raw, list):
-                raise ValueError("judge: criterion_judgments must be a list")
-            generated = [CriterionJudgment.from_dict(item) for item in raw]
-        answers = {item.criterion_id: item for item in generated}
         requested = {item.criterion_id for item in pending}
-        if len(answers) != len(generated) or set(answers) != requested:
-            raise ValueError("judge: judgments must cover exactly the requested criteria "
-                             f"(missing={len(requested - answers.keys())}, "
-                             f"extra={len(answers.keys() - requested)}, "
-                             f"duplicate={len(generated) - len(answers)})")
+        if pending:
+            feedback = None
+            for retry in range(self.invalid_output_retries + 1):
+                try:
+                    raw = _output(self.backend, "judge", judge_payload(
+                        pending, chosen, rejected, validation_feedback=feedback,
+                    ), "criterion_judgments")
+                    if not isinstance(raw, list):
+                        raise ValueError("judge: criterion_judgments must be a list")
+                    generated = [CriterionJudgment.from_dict(item) for item in raw]
+                    answers = {item.criterion_id: item for item in generated}
+                    if len(answers) != len(generated) or set(answers) != requested:
+                        raise ValueError("judge: judgments must cover exactly the requested criteria "
+                                         f"(missing={len(requested - answers.keys())}, "
+                                         f"extra={len(answers.keys() - requested)}, "
+                                         f"duplicate={len(generated) - len(answers)})")
+                    break
+                except ValueError as exc:
+                    if retry == self.invalid_output_retries:
+                        raise JudgeOutputError(f"judge: invalid output after {retry + 1} attempts: "
+                                               f"{str(exc)[:160]}") from exc
+                    feedback = ("上次 Judge 输出未通过校验：" + str(exc)[:160]
+                                + "。请只对本次列出的每条标准返回一次判断，严格复制其数字编号，"
+                                  "不添加或遗漏编号；chosen/rejected 必须为布尔值。")
+        answers = {item.criterion_id: item for item in generated}
         return calculate_rubric_judgment(
             rubric, [known.get(item.criterion_id) or answers[item.criterion_id]
                      for item in rubric.criteria],
@@ -329,13 +358,32 @@ class LLMRevisionGenerator:
         self.backend = backend
 
     def generate(self, task: str, initial: Rubric, feedback: str,
-                 attempt_number: int) -> list[RevisionOperation]:
+                 attempt_number: int, *, chosen: str | None = None,
+                 rejected: str | None = None,
+                 initial_judgment: RubricJudgment | None = None,
+                 previous_attempt: RevisionAttempt | None = None,
+                 previous_invalid_attempt: InvalidRevisionAttempt | None = None) -> list[RevisionOperation]:
         _text(task, "task")
         _text(feedback, "feedback")
         if initial.base_rubric_id is not None or type(attempt_number) is not int or attempt_number not in (1, 2):
             raise ValueError("revision_generator requires R0 and attempt 1 or 2")
+        history = (chosen, rejected, initial_judgment, previous_attempt, previous_invalid_attempt)
+        if attempt_number == 1 and any(value is not None for value in history):
+            raise ValueError("first revision must not receive preference or prior attempts")
+        if attempt_number == 2:
+            if (type(chosen) is not str or type(rejected) is not str
+                    or initial_judgment is None or initial_judgment.rubric_id != initial.rubric_id
+                    or initial_judgment.success
+                    or (previous_attempt is None) == (previous_invalid_attempt is None)
+                    or (previous_attempt is not None and
+                        (previous_attempt.attempt_number != 1 or previous_attempt.judgment.success
+                         or previous_attempt.rubric.base_rubric_id != initial.rubric_id))
+                    or (previous_invalid_attempt is not None and previous_invalid_attempt.attempt_number != 1)):
+                raise ValueError("second revision requires preference, failed R0 and one previous attempt")
         raw = _output(self.backend, "revision_generator", revision_payload(
-            task, initial, feedback, attempt_number,
+            task, initial, feedback, attempt_number, chosen=chosen, rejected=rejected,
+            initial_judgment=initial_judgment, previous_attempt=previous_attempt,
+            previous_invalid_attempt=previous_invalid_attempt,
         ), "operations")
         if not isinstance(raw, list):
             raise ValueError("revision_generator: operations must be a list")

@@ -310,6 +310,7 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
     memory_file = root / "experience_memory.json"
     trajectory_file = root / "trajectories.jsonl"
     request_file = root / "llm_requests.jsonl"
+    role_io_file = root / "role_io.jsonl"
     if not memory_file.is_file() or not trajectory_file.is_file():
         raise ValueError("resume: missing checkpoint memory or trajectories")
     samples = [*dataset.load("train")]
@@ -334,20 +335,28 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
             [parent_models["default"], *parent_models.get("roles", {}).values()])
             and not request_file.is_file()):
         raise ValueError("resume: real backend requires request metadata to verify failed stage")
+    # 前面的 Memory 检查已排除未完成样本的 credit / fusion 写盘；
+    # 即使它已调用 Judge、Critic 或修订角色，也可从头重试这一整条样本。
+    # 不能接纳更后面的样本：那意味着轨迹前缀外存在无法解释的调用。
     if request_file.exists():
         with request_file.open(encoding="utf-8") as stream:
             for number, line in enumerate(stream, 1):
                 event = json.loads(line)
                 if not isinstance(event, dict) or not isinstance(event.get("sample_id"), str):
                     raise ValueError(f"resume: invalid request event at line {number}")
-                sample_id = event["sample_id"]
-                if (sample_id not in completed and
-                        (sample_id != next_id or event.get("role") not in
-                         ("embedding", "selector", "initial_generator"))):
-                    raise ValueError("resume: failed sample advanced beyond initial generation")
+                if event["sample_id"] not in completed and event["sample_id"] != next_id:
+                    raise ValueError("resume: request event beyond next sample")
+    if role_io_file.exists():
+        with role_io_file.open(encoding="utf-8") as stream:
+            for number, line in enumerate(stream, 1):
+                event = json.loads(line)
+                if not isinstance(event, dict) or not isinstance(event.get("sample_id"), str):
+                    raise ValueError(f"resume: invalid role IO event at line {number}")
+                if event["sample_id"] not in completed and event["sample_id"] != next_id:
+                    raise ValueError("resume: role IO event beyond next sample")
     copied = {name: _sha256_file(path) for name, path in (
         ("experience_memory.json", memory_file), ("trajectories.jsonl", trajectory_file),
-        ("llm_requests.jsonl", request_file),
+        ("llm_requests.jsonl", request_file), ("role_io.jsonl", role_io_file),
     ) if path.exists()}
     lineage = {"source_run": str(source.resolve()), "source_code_version": old.get("code_version"),
                "completed_train": min(len(completed), len(train_ids)),
@@ -440,6 +449,9 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
                     raise ValueError(f"resume: copied checkpoint changed: {name}")
         memory = ExperienceMemory(root)
         trajectories = TrajectoryLog(root)
+        role_io_file = root / "role_io.jsonl"
+        role_io_file.touch(mode=0o600, exist_ok=True)
+        role_io_file.chmod(0o600)
         modules.initial_generator.invalid_output_retries = initial_output_retries
         request_context: dict[str, str] = {}
 
@@ -449,11 +461,19 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
                 stream.write(json.dumps({**request_context, "backend": "openai_compatible", **event},
                                         ensure_ascii=False, allow_nan=False) + "\n")
 
+        def save_role_io(event: dict[str, Any]) -> None:
+            # Raw role inputs/outputs are sensitive research artifacts, never request headers or keys.
+            with role_io_file.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps({**request_context, **event},
+                                        ensure_ascii=False, allow_nan=False) + "\n")
+
         backends = {id(item): item for item in [modules.backend, *(
             getattr(modules, role).backend for role in _ROLES)]
-            if isinstance(item, OpenAICompatibleBackend)}
+            if isinstance(item, (OpenAICompatibleBackend, FakeLLMBackend))}
         for item in backends.values():
-            item.metadata_hook = save_request
+            item.trace_hook = save_role_io
+            if isinstance(item, OpenAICompatibleBackend):
+                item.metadata_hook = save_request
         embedder = modules.retriever.backend if isinstance(modules.retriever, VectorRetriever) else None
         if isinstance(embedder, OpenAICompatibleEmbedding):
             embedder.metadata_hook = save_request
@@ -525,20 +545,32 @@ def summarize_rewardbench(run_dir: str | Path) -> dict[str, Any]:
     missing = expected.keys() - records.keys()
     if missing:
         raise ValueError(f"incomplete test evaluation: {len(missing)} sample(s) have no trajectory")
-    per_subset = {subset: {"total": 0, "correct": 0} for subset in CHAT_HARD_SUBSETS}
+    per_subset = {subset: {"total": 0, "correct": 0, "judge_errors": 0}
+                  for subset in CHAT_HARD_SUBSETS}
     for sample_id, subset in expected.items():
-        judgment = records[sample_id].initial_judgment
-        if judgment is None:
-            raise ValueError(f"test sample {sample_id}: missing initial judgment")
+        record = records[sample_id]
+        judgment = record.initial_judgment
         per_subset[subset]["total"] += 1
-        per_subset[subset]["correct"] += int(judgment.success)
+        if judgment is None:
+            if record.state != "judge_error_initial" or not record.judge_error:
+                raise ValueError(f"test sample {sample_id}: missing initial judgment")
+            per_subset[subset]["judge_errors"] += 1
+        else:
+            per_subset[subset]["correct"] += int(judgment.success)
     for counts in per_subset.values():
-        counts["accuracy"] = counts["correct"] / counts["total"] if counts["total"] else None
+        valid = counts["total"] - counts["judge_errors"]
+        counts["accuracy"] = (counts["correct"] / counts["total"]
+                              if counts["total"] and not counts["judge_errors"] else None)
+        counts["accuracy_on_valid"] = counts["correct"] / valid if valid else None
     total = sum(item["total"] for item in per_subset.values())
     correct = sum(item["correct"] for item in per_subset.values())
+    judge_errors = sum(item["judge_errors"] for item in per_subset.values())
     invalid_revisions = sum(len(record.invalid_revision_attempts) for record in records.values())
     return {"run_dir": str(directory), "scope": "internal Chat Hard split (not official leaderboard)",
-            "test_total": total, "test_correct": correct, "test_accuracy": correct / total,
+            "test_total": total, "test_correct": correct,
+            "test_judge_errors": judge_errors,
+            "test_accuracy": correct / total if not judge_errors else None,
+            "test_accuracy_on_valid": correct / (total - judge_errors) if total > judge_errors else None,
             "per_subset": per_subset, "invalid_revision_attempts": invalid_revisions}
 
 

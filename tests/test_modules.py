@@ -43,7 +43,12 @@ def initial_case(scenario="attempt_1_success"):
 def revise(modules, initial, initial_judgment, attempt_number, failed_attempt=None):
     feedback = modules.critic.critique(TASK, CHOSEN, REJECTED, initial,
                                       initial_judgment, failed_attempt)
-    intended = modules.revision_generator.generate(TASK, initial, feedback, attempt_number)
+    history = ({} if attempt_number == 1 else {
+        "chosen": CHOSEN, "rejected": REJECTED,
+        "initial_judgment": initial_judgment, "previous_attempt": failed_attempt,
+    })
+    intended = modules.revision_generator.generate(TASK, initial, feedback,
+                                                    attempt_number, **history)
     assert all(item.before_criterion is None for item in intended)
     assert [item.target_criterion_id for item in intended] == ["c2"]
     # 阶段 06 实现真正的 Executor；当前 fixture 只补全这一条固定的 MODIFY。

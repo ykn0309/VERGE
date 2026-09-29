@@ -7,7 +7,7 @@ import pytest
 from verge.models import CandidateExperience
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import Criterion, PreferenceSample, RevisionOperation, Rubric
-from verge.modules import make_fake_modules
+from verge.modules import JudgeOutputError, make_fake_modules
 from verge.pipeline import PipelineRunner, RevisionExecutor
 
 
@@ -30,6 +30,46 @@ def test_initial_success_stops_before_revision_and_writes_no_experience(tmp_path
     assert (record.revision_attempts, record.reflected_candidates, record.operation_contributions) == ([], [], {})
     assert memory.all() == []
     assert [role for role, _ in modules.backend.requests] == ["initial_generator", "judge"]
+    assert log.get("sample") == record
+
+
+def test_initial_judge_error_records_failure_and_continues_without_credit(tmp_path):
+    runner, modules, memory, log = make_runner(tmp_path, "initial_success")
+    original = modules.judge.judge
+    calls = 0
+
+    def fail_once(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            raise JudgeOutputError("invalid numbered criterion")
+        return original(*args, **kwargs)
+
+    modules.judge.judge = fail_once
+    first, second = runner.run([sample("first"), sample("second")])
+    assert first.state == "judge_error_initial" and first.initial_judgment is None
+    assert first.judge_error == "invalid numbered criterion" and log.get("first") == first
+    assert second.state == "initial_success" and log.get("second") == second
+    assert memory.all() == []
+
+
+def test_revision_judge_error_preserves_initial_credit_and_skips_reflection(tmp_path):
+    runner, modules, memory, log = make_runner(tmp_path)
+    original = modules.judge.judge
+    calls = 0
+
+    def fail_revision(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise JudgeOutputError("invalid numbered criterion")
+        return original(*args, **kwargs)
+
+    modules.judge.judge = fail_revision
+    record = runner.run_sample(sample())
+    assert record.state == "judge_error_revision" and record.initial_judgment is not None
+    assert record.judge_error and not record.revision_attempts
+    assert not record.reflected_candidates and not memory.all()
     assert log.get("sample") == record
 
 
@@ -155,6 +195,11 @@ def test_invalid_size_first_attempt_can_succeed_on_second_from_r0(tmp_path):
     assert [attempt.attempt_number for attempt in record.invalid_revision_attempts] == [1]
     assert len(record.invalid_revision_attempts[0].validation_failures) == 3
     assert [payload["attempt_number"] for payload in calls] == [1, 1, 1, 2]
+    assert "chosen" not in calls[0] and "previous_attempt" not in calls[0]
+    assert calls[-1]["chosen"] == sample().chosen
+    assert calls[-1]["previous_attempt"] is None
+    assert calls[-1]["previous_invalid_attempt"]["attempt_number"] == 1
+    assert len(calls[-1]["previous_invalid_attempt"]["validation_failures"]) == 3
     assert [role for role, _ in modules.backend.requests].count("judge") == 2
     assert log.get("sample") == record
 
@@ -184,26 +229,114 @@ def test_both_size_invalid_attempts_are_final_failure_without_judging(tmp_path):
     assert memory.all() == [] and log.get("sample") == record
 
 
-def test_other_revision_structure_errors_still_abort_after_retry_limit(tmp_path):
+@pytest.mark.parametrize("operations,error", [
+    ({"operations": [{"operation_id": "bad", "operation_type": "DELETE",
+                     "target_criterion_id": "missing", "new_or_updated_criterion": None}]},
+     "DELETE target must be in R0"),
+    ({"operations": [{"operation_id": "dup", "operation_type": "DELETE",
+                     "target_criterion_id": "c1", "new_or_updated_criterion": None},
+                    {"operation_id": "dup", "operation_type": "DELETE",
+                     "target_criterion_id": "c2", "new_or_updated_criterion": None}]},
+     "conflicting or already executed revision operations"),
+])
+def test_invalid_executor_operations_exhaust_retries_without_aborting_run(tmp_path, operations, error):
+    modules = make_fake_modules("final_failure")
+    original = modules.backend.generate
+    calls = []
+
+    def invalid_second(role, payload):
+        if role == "revision_generator":
+            calls.append(payload)
+            if payload["attempt_number"] == 2:
+                return operations
+        return original(role, payload)
+
+    modules.backend.generate = invalid_second
+    memory = ExperienceMemory(tmp_path)
+    log = TrajectoryLog(tmp_path)
+    runner = PipelineRunner(modules, memory, log, max_revision_output_retries=2)
+    record = runner.run_sample(sample())
+    assert record.state == "final_failure"
+    assert [item.attempt_number for item in record.revision_attempts] == [1]
+    assert not record.revision_attempts[0].judgment.success
+    assert [item.attempt_number for item in record.invalid_revision_attempts] == [2]
+    assert record.invalid_revision_attempts[0].validation_failures == [error] * 3
+    assert [payload["attempt_number"] for payload in calls] == [1, 2, 2, 2]
+    assert error in calls[-1]["feedback"]
+    assert len([role for role, _ in modules.backend.requests if role == "judge"]) == 2
+    assert memory.all() == [] and log.get("sample") == record
+
+
+def test_conflicting_first_revision_can_recover_on_second_from_r0(tmp_path):
+    modules = make_fake_modules("attempt_2_success")
+    original = modules.backend.generate
+    calls = []
+
+    def conflicting_first(role, payload):
+        if role == "revision_generator":
+            calls.append(payload)
+            if payload["attempt_number"] == 1:
+                return {"operations": [{"operation_id": "dup", "operation_type": "DELETE",
+                                        "target_criterion_id": "c1", "new_or_updated_criterion": None},
+                                       {"operation_id": "dup", "operation_type": "DELETE",
+                                        "target_criterion_id": "c2", "new_or_updated_criterion": None}]}
+        return original(role, payload)
+
+    modules.backend.generate = conflicting_first
+    log = TrajectoryLog(tmp_path)
+    runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log,
+                            max_revision_output_retries=2)
+    record = runner.run_sample(sample())
+    assert record.state == "revision_success_2"
+    assert [item.attempt_number for item in record.invalid_revision_attempts] == [1]
+    assert [item.attempt_number for item in record.revision_attempts] == [2]
+    assert [payload["attempt_number"] for payload in calls] == [1, 1, 1, 2]
+    assert calls[-1]["previous_attempt"] is None
+    assert len(calls[-1]["previous_invalid_attempt"]["validation_failures"]) == 3
+    assert record.revision_attempts[0].rubric.base_rubric_id == record.initial_rubric.rubric_id
+    assert log.get("sample") == record
+
+
+def test_revision_generator_contract_error_still_aborts_after_retry_limit(tmp_path):
     modules = make_fake_modules("attempt_1_success")
     original = modules.backend.generate
     calls = []
 
-    def invalid_target(role, payload):
+    def bad_generator(role, payload):
         if role == "revision_generator":
             calls.append(payload)
-            return {"operations": [{"operation_id": "bad", "operation_type": "DELETE",
-                                    "target_criterion_id": "missing",
-                                    "new_or_updated_criterion": None}]}
+            return {"operations": "not a list"}
         return original(role, payload)
 
-    modules.backend.generate = invalid_target
+    modules.backend.generate = bad_generator
     log = TrajectoryLog(tmp_path)
     runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log,
                             max_revision_output_retries=2)
-    with pytest.raises(ValueError, match="DELETE target must be in R0"):
+    with pytest.raises(ValueError, match="revision_generator: operations must be a list"):
         runner.run_sample(sample())
     assert len(calls) == 3 and log.get("sample") is None
+
+
+def test_second_revision_receives_full_failed_revision_history_but_starts_from_r0(tmp_path):
+    runner, modules, _, _ = make_runner(tmp_path, "final_failure")
+    record = runner.run_sample(sample())
+    requests = [payload for role, payload in modules.backend.requests
+                if role == "revision_generator"]
+    first, second = requests
+    assert set(first) == {"task", "initial_rubric", "feedback", "attempt_number"}
+    assert second["chosen"] == sample().chosen and second["rejected"] == sample().rejected
+    assert second["initial_rubric"]["rubric_id"] == record.initial_rubric.rubric_id
+    assert second["initial_judgment"] == record.initial_judgment.to_dict()
+    prior = second["previous_attempt"]
+    assert prior["feedback"] == record.revision_attempts[0].feedback
+    assert prior["operations"][0]["operation_id"] == record.revision_attempts[0].operations[0].operation_id
+    assert prior["rubric"]["rubric_id"] == record.revision_attempts[0].rubric.rubric_id
+    assert prior["judgment"] == record.revision_attempts[0].judgment.to_dict()
+    assert prior["validation_failures"] == record.revision_attempts[0].validation_failures
+    assert second["previous_invalid_attempt"] is None
+    assert second["feedback"] == record.revision_attempts[1].feedback
+    assert record.revision_attempts[1].rubric.base_rubric_id == record.initial_rubric.rubric_id
+    assert "retrieved_experience_ids" not in second and "operation_contributions" not in second
 
 
 def test_final_failure_writes_trajectory_without_new_experience(tmp_path):

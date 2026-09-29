@@ -113,6 +113,7 @@ class OpenAICompatibleBackend:
                  max_retries: int = 2, enable_thinking: bool | None = None,
                  client: httpx.Client | None = None,
                  metadata_hook: Callable[[dict[str, Any]], None] | None = None,
+                 trace_hook: Callable[[dict[str, Any]], None] | None = None,
                  sleep: Callable[[float], None] = time.sleep) -> None:
         if not isinstance(model, str) or not model.strip():
             raise ValueError("model must be a non-empty string")
@@ -140,6 +141,7 @@ class OpenAICompatibleBackend:
         self._key = key
         self.max_retries = max_retries
         self.metadata_hook = metadata_hook
+        self.trace_hook = trace_hook
         self._sleep = sleep
         self._client = client if client is not None else httpx.Client(
             base_url=base_url.rstrip("/") + "/", timeout=timeout_seconds, follow_redirects=False,
@@ -174,6 +176,15 @@ class OpenAICompatibleBackend:
                                   if type(usage.get(key)) is int and usage[key] >= 0}
         self.metadata_hook(event)
 
+    def _trace(self, role: str, payload: Mapping[str, Any], messages: list[dict[str, str]],
+               attempt: int, *, status: int | None = None, raw_output: str | None = None,
+               output: Mapping[str, Any] | None = None, error: str | None = None) -> None:
+        if self.trace_hook is not None:
+            self.trace_hook({"role": role, "backend": "openai_compatible", "model": self.model,
+                             "prompt_version": PROMPT_VERSION, "attempt": attempt,
+                             "status": status, "input": dict(payload), "messages": messages,
+                             "raw_output": raw_output, "output": output, "error": error})
+
     def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]:
         if role not in _OUTPUT_FIELDS:
             raise ValueError(f"unknown LLM role: {role}")
@@ -190,6 +201,7 @@ class OpenAICompatibleBackend:
                     json=request_body,
                 )
             except (httpx.TimeoutException, httpx.TransportError) as exc:
+                self._trace(role, payload, messages, attempt, error=type(exc).__name__)
                 self._metadata(role, attempt)
                 if attempt <= self.max_retries:
                     self._sleep(min(2 ** (attempt - 1), 8))
@@ -197,6 +209,7 @@ class OpenAICompatibleBackend:
                 raise LLMRequestError(f"{role}: request failed after {attempt} attempts ({type(exc).__name__})") from None
             status = response.status_code
             if status == 429 or 500 <= status < 600:
+                self._trace(role, payload, messages, attempt, status=status, error=f"HTTP {status}")
                 self._metadata(role, attempt, status=status, response=response)
                 if attempt <= self.max_retries:
                     retry_after = response.headers.get("retry-after", "")
@@ -210,13 +223,20 @@ class OpenAICompatibleBackend:
                     continue
                 raise LLMRequestError(f"{role}: HTTP {status} after {attempt} attempts")
             if status < 200 or status >= 300:
+                self._trace(role, payload, messages, attempt, status=status, error=f"HTTP {status}")
                 self._metadata(role, attempt, status=status, response=response)
                 raise LLMRequestError(f"{role}: HTTP {status}")
+            raw_output: str | None = None
             try:
                 body = json.loads(response.text, parse_constant=_reject_constant)
                 choices = body["choices"]
                 choice = choices[0]
+                raw_output = choice["message"].get("content")
+                if not isinstance(raw_output, str):
+                    raw_output = response.text
                 if choice.get("finish_reason") == "content_filter" or choice["message"].get("refusal"):
+                    self._trace(role, payload, messages, attempt, status=status,
+                                raw_output=raw_output, error="model refused the request")
                     self._metadata(role, attempt, status=status, response=response, body=body)
                     raise LLMRequestError(f"{role}: model refused the request")
                 if choice.get("finish_reason") == "length":
@@ -230,11 +250,16 @@ class OpenAICompatibleBackend:
             except LLMRequestError:
                 raise
             except (ValueError, TypeError, KeyError, IndexError, AttributeError):
+                self._trace(role, payload, messages, attempt, status=status,
+                            raw_output=raw_output if raw_output is not None else response.text,
+                            error="invalid structured output")
                 self._metadata(role, attempt, status=status, response=response)
                 if attempt <= self.max_retries:
                     messages = [*messages, {"role": "user", "content": "上次输出格式无效；请严格只返回指定字段的 JSON 对象。"}]
                     continue
                 raise LLMFormatError(f"{role}: invalid structured output after {attempt} attempts") from None
+            self._trace(role, payload, messages, attempt, status=status,
+                        raw_output=raw_output, output=result)
             self._metadata(role, attempt, status=status, response=response, body=body)
             return result
         raise AssertionError("unreachable retry state")
@@ -345,7 +370,8 @@ class FakeLLMBackend:
 
     def __init__(self, scenario: FakeScenario = "attempt_1_success", *,
                  reflect_count: int = 1, unbound: bool = False,
-                 admission_pass: bool = True) -> None:
+                 admission_pass: bool = True,
+                 trace_hook: Callable[[dict[str, Any]], None] | None = None) -> None:
         if scenario not in ("initial_success", "attempt_1_success", "attempt_2_success", "final_failure"):
             raise ValueError("unknown fake scenario")
         if type(reflect_count) is not int or not 0 <= reflect_count <= 3:
@@ -354,6 +380,7 @@ class FakeLLMBackend:
         self.reflect_count = reflect_count
         self.unbound = unbound
         self.admission_pass = admission_pass
+        self.trace_hook = trace_hook
         self.requests: list[tuple[str, dict[str, Any]]] = []
 
     def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]:
@@ -423,4 +450,8 @@ class FakeLLMBackend:
             result = {"match_index": match}
         else:
             raise ValueError(f"unknown LLM role: {role}")
+        if self.trace_hook is not None:
+            self.trace_hook({"role": role, "backend": "fake", "model": self.scenario,
+                             "attempt": 1, "status": None, "input": request,
+                             "messages": None, "raw_output": None, "output": result, "error": None})
         return deepcopy(result)

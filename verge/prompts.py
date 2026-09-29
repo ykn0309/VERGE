@@ -4,13 +4,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import re
 from typing import Any, Mapping, Sequence
 
-from verge.models import (CandidateExperience, Criterion, Experience, RevisionAttempt,
-                          RevisionOperation, Rubric, RubricJudgment)
+from verge.models import (CandidateExperience, Criterion, Experience, InvalidRevisionAttempt,
+                          RevisionAttempt, RevisionOperation, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "v7"
+PROMPT_VERSION = "v9-numbered-ids"
 
 # 各角色只接受其投影后的 payload；不把其他阶段/内部证据混入上下文。
 _ROLE_INSTRUCTIONS = {
@@ -19,14 +20,16 @@ _ROLE_INSTRUCTIONS = {
         '依赖回答内容、已生成 rubric、Judge 结果等事后信息的条件不可当作匹配，也不能只凭关键词相似选择。'
         '再判断经验能否为此任务新增具体、可执行的判断问题或实质改变判断方式；若只重复 task 已足以推出的标准且无其他增益则不选。排除冲突/重复经验；'
         '仅在适用性与帮助相近时参考 confidence 和 evidence_amount，高信度不能覆盖不匹配。不为凑数选经验，可选零条。'
+        '所有 ID 均使用输入中的短数字编号（字符串，如 "1"、"2"），不得拼接或缩写；'
         '返回 {"selected_experience_ids":[候选 experience_id]}；最多 max_selected 条，不得虚构 ID；'
         '无适用经验返回空数组。'
     ),
     "initial_generator": (
         '仅根据 task 与 selected_experiences 生成 R0：先根据 task 的显式要求拟定标准，再考虑适用经验能否真正新增或改变判断问题。'
         '每条标准只判断一个问题、可用是/否评价回答，不引用特定响应。'
-        '返回 {"rubric":{"rubric_id":唯一字符串,"base_rubric_id":null,'
-        '"criteria":[{"criterion_id":唯一字符串,"question":可独立判定的问题,'
+        'rubric_id 固定为 "1"；标准 criterion_id 依次使用 "1"、"2"、…，不得生成复杂 ID。'
+        '返回 {"rubric":{"rubric_id":"1","base_rubric_id":null,'
+        '"criteria":[{"criterion_id":标准数字编号,"question":可独立判定的问题,'
         '"importance_score":1到10的整数,"source_experiences":[所选经验ID]}]}}。'
         '生成2到8条标准；分数代表对 task 的重要性，不能预估区分当前回答的能力。'
         "若仅凭 task 就足以提出该标准（例如 task 要求直接回答时的'是否直接回答'），即使经验也有类似建议，source_experiences 仍为 []；"
@@ -37,7 +40,7 @@ _ROLE_INSTRUCTIONS = {
         '只回答输入 criteria 数组中每条标准对 chosen/rejected 是否满足；'
         '返回 {"criterion_judgments":[{"criterion_id":criteria中的对应ID,'
         '"chosen":true或false,"rejected":true或false}]}。'
-        '只对列出的 ID 各返回一次，不得返回其他 ID；只有一条 criteria 时只返回一条判断。'
+        '只对列出的数字编号各返回一次，严格复制，不得返回其他 ID；只有一条 criteria 时只返回一条判断。'
         '不要计算权重、margin 或 success。'
     ),
     "critic": (
@@ -46,7 +49,13 @@ _ROLE_INSTRUCTIONS = {
     ),
     "revision_generator": (
         '从 initial_rubric（不是失败尝试）提出最小原子操作；'
-        '返回 {"operations":[{"operation_id":唯一字符串,"operation_type":"ADD"或"DELETE"或"MODIFY",'
+        '第二次修订时须检查完整的第一次失败轨迹：保留有效修改、舍弃无效方向。'
+        '第一次的操作不会自动继承；如果想保留某项修改，必须在本次 operations 中重新提出。'
+        '本次操作必须能单独从 R0 执行，不能依赖 R1 中新建的标准 ID。'
+        '即使看到了 chosen/rejected，也不得在通用 rubric 中写入当前回答特有事实。'
+        'operation_id 从 "1" 起依次编号；ADD 的新标准 ID 使用比 R0 最大编号更大的数字，'
+        'MODIFY 沿用目标数字编号；其他引用只用输入中的数字编号。'
+        '返回 {"operations":[{"operation_id":数字编号,"operation_type":"ADD"或"DELETE"或"MODIFY",'
         '"target_criterion_id":已有ID或ADD时null,'
         '"new_or_updated_criterion":ADD/MODIFY时的完整criterion或DELETE时null}]}。'
         '新标准包含 criterion_id、question、importance_score(1-10)、source_experiences:[]；执行后保持2到8条。'
@@ -57,11 +66,13 @@ _ROLE_INSTRUCTIONS = {
         'trigger 只能描述未来筛选时仅凭当前 task 可核验的题型、显式要求或上下文；'
         "不要写'初始标准未区分回答'、'Judge 判断错误'、'生成的回答出现幻觉'等依赖回答、rubric 或判断结果的事后条件，也不要为凑数编造'所有任务'式空泛条件。"
         '无法写出明确的事前适用条件时不输出该候选。'
-        '返回 {"candidates":[{"candidate_id":唯一字符串,"content":单一、具体、可复用建议,'
+        'candidate_id 从 "1" 起依次编号。'
+        '返回 {"candidates":[{"candidate_id":数字编号,"content":单一、具体、可复用建议,'
         '"trigger":清晰的 task 可检验条件}]}，0到3条。不要输出 credit、operation 绑定或数值。'
     ),
     "revision_credit_assigner": (
         '只把 candidates 与真正支撑它的 operations 绑定；'
+        '候选与操作 ID 仅使用输入中的数字编号。'
         '返回 {"bindings":{候选candidate_id:[operation_id]}}，每个候选必须有键，无依据时使用空数组。不要计算 credit；'
         '无绑定是合法结果。'
     ),
@@ -131,10 +142,14 @@ def generator_payload(task: str, selected: Sequence[ExperienceView], *,
     return payload
 
 
-def judge_payload(pending: Sequence[Criterion], chosen: str, rejected: str) -> dict[str, Any]:
+def judge_payload(pending: Sequence[Criterion], chosen: str, rejected: str, *,
+                  validation_feedback: str | None = None) -> dict[str, Any]:
     # 修订时只传需要新判断的 criterion，避免模型把复用的旧 ID 也返回。
-    return {"criteria": [{"criterion_id": item.criterion_id, "question": item.question}
-                         for item in pending], "chosen": chosen, "rejected": rejected}
+    payload = {"criteria": [{"criterion_id": item.criterion_id, "question": item.question}
+                            for item in pending], "chosen": chosen, "rejected": rejected}
+    if validation_feedback is not None:
+        payload["validation_feedback"] = validation_feedback
+    return payload
 
 
 def _criterion_fields(criterion: Criterion) -> dict[str, Any]:
@@ -171,9 +186,22 @@ def critic_payload(task: str, chosen: str, rejected: str, initial: Rubric,
 
 
 def revision_payload(task: str, initial: Rubric, feedback: str,
-                     attempt_number: int) -> dict[str, Any]:
-    return {"task": task, "initial_rubric": _rubric_semantics(initial),
-            "feedback": feedback, "attempt_number": attempt_number}
+                     attempt_number: int, *, chosen: str | None = None,
+                     rejected: str | None = None,
+                     initial_judgment: RubricJudgment | None = None,
+                     previous_attempt: RevisionAttempt | None = None,
+                     previous_invalid_attempt: InvalidRevisionAttempt | None = None) -> dict[str, Any]:
+    payload = {"task": task, "initial_rubric": _rubric_semantics(initial),
+               "feedback": feedback, "attempt_number": attempt_number}
+    if attempt_number == 2:
+        payload.update({"chosen": chosen, "rejected": rejected,
+                        "initial_judgment": initial_judgment.to_dict(),
+                        "previous_attempt": ({**_attempt_semantics(previous_attempt),
+                                              "validation_failures": list(previous_attempt.validation_failures)}
+                                             if previous_attempt else None),
+                        "previous_invalid_attempt": (previous_invalid_attempt.to_dict()
+                                                     if previous_invalid_attempt else None)})
+    return payload
 
 
 def reflection_payload(task: str, initial: Rubric, initial_judgment: RubricJudgment,
@@ -204,3 +232,141 @@ def fusion_payload(content: str, trigger: str,
     return {"candidate": {"content": content, "trigger": trigger},
             "existing": [{"content": old_content, "trigger": old_trigger}
                          for old_content, old_trigger in existing]}
+
+
+_ID_FIELDS = {"criterion_id": "criterion", "target_criterion_id": "criterion",
+              "rubric_id": "rubric", "base_rubric_id": "rubric",
+              "experience_id": "experience", "operation_id": "operation",
+              "candidate_id": "candidate"}
+_ID_LISTS = {"source_experiences": "experience", "selected_experience_ids": "experience",
+             "linked_operation_ids": "operation"}
+_ID_DICTS = {"normalized_weights": "criterion", "operation_contributions": "operation"}
+
+
+class NumberedIDCodec:
+    """单次模型调用的局部 ID 表；真实内部 ID 从不进入结构化提示词。
+
+    不跨调用缓存：每次只根据本次白名单输入建立编号，再把模型输出还原到内部 ID。
+    不改写 task、chosen/rejected 或任意自然语言文本。
+    """
+
+    def __init__(self, role: str, payload: Mapping[str, Any]) -> None:
+        self.role = role
+        self.attempt_number = payload.get("attempt_number", 1)
+        self.base_criteria = {item["criterion_id"] for item in
+                              payload.get("initial_rubric", {}).get("criteria", [])
+                              if isinstance(item, dict) and isinstance(item.get("criterion_id"), str)}
+        self.forward: dict[str, dict[str, str]] = {name: {} for name in
+                                                     ("criterion", "rubric", "experience", "operation", "candidate")}
+        self.reverse: dict[str, dict[str, str]] = {name: {} for name in self.forward}
+
+    def _encode(self, name: str, value: str) -> str:
+        known = self.forward[name]
+        if value not in known:
+            number = str(len(known) + 1)
+            known[value] = number
+            self.reverse[name][number] = value
+        return known[value]
+
+    def project(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+        """递归编号字段及字典键，保持相同命名空间的重复引用一致。"""
+        def visit(value: Any) -> Any:
+            if isinstance(value, dict):
+                result: dict[str, Any] = {}
+                for key, item in value.items():
+                    if key in _ID_FIELDS and isinstance(item, str):
+                        result[key] = self._encode(_ID_FIELDS[key], item)
+                    elif key in _ID_LISTS and isinstance(item, list):
+                        result[key] = [self._encode(_ID_LISTS[key], entry)
+                                       if isinstance(entry, str) else entry for entry in item]
+                    elif key in _ID_DICTS and isinstance(item, dict):
+                        result[key] = {self._encode(_ID_DICTS[key], entry): visit(entry_value)
+                                       for entry, entry_value in item.items()}
+                    elif key == "bindings" and isinstance(item, dict):
+                        result[key] = {self._encode("candidate", entry):
+                                       [self._encode("operation", op) for op in operations]
+                                       for entry, operations in item.items()}
+                    else:
+                        result[key] = visit(item)
+                return result
+            if isinstance(value, list):
+                return [visit(item) for item in value]
+            return value
+        return visit(dict(payload))
+
+    def _existing(self, name: str, value: Any) -> str:
+        if not isinstance(value, str) or not re.fullmatch(r"[1-9][0-9]*", value):
+            raise ValueError(f"{self.role}: {name} must be a numbered ID")
+        if value not in self.reverse[name]:
+            raise ValueError(f"{self.role}: unknown numbered {name}")
+        return self.reverse[name][value]
+
+    def _new(self, name: str, value: Any, prefix: str) -> str:
+        if not isinstance(value, str) or not re.fullmatch(r"[1-9][0-9]*", value):
+            raise ValueError(f"{self.role}: new {name} must be a numbered ID")
+        if value in self.reverse[name] and not (
+                self.role == "revision_generator" and (
+                    name == "operation" or
+                    (name == "criterion" and self.attempt_number == 2
+                     and self.reverse[name][value] not in self.base_criteria))):
+            raise ValueError(f"{self.role}: new {name} must use an unused number")
+        return f"{prefix}{value}"
+
+    def restore(self, response: Mapping[str, Any]) -> dict[str, Any]:
+        """只反解角色协议字段；错误引用直接拒绝，不猜测或按位置悄悄匹配。"""
+        result = dict(response)
+        if self.role == "selector" and isinstance(result.get("selected_experience_ids"), list):
+            result["selected_experience_ids"] = [self._existing("experience", value)
+                                                 for value in result["selected_experience_ids"]]
+        elif self.role == "initial_generator" and isinstance(result.get("rubric"), dict):
+            rubric = dict(result["rubric"])
+            rubric["rubric_id"] = self._new("rubric", rubric.get("rubric_id"), "r")
+            if isinstance(rubric.get("criteria"), list):
+                rubric["criteria"] = [self._restore_criterion(item, new=True)
+                                      if isinstance(item, dict) else item for item in rubric["criteria"]]
+            result["rubric"] = rubric
+        elif self.role == "judge" and isinstance(result.get("criterion_judgments"), list):
+            result["criterion_judgments"] = [
+                {**item, "criterion_id": self._existing("criterion", item.get("criterion_id"))}
+                if isinstance(item, dict) else item for item in result["criterion_judgments"]]
+        elif self.role == "revision_generator" and isinstance(result.get("operations"), list):
+            operations = []
+            for item in result["operations"]:
+                if not isinstance(item, dict):
+                    operations.append(item)
+                    continue
+                operation = dict(item)
+                operation["operation_id"] = self._new("operation", item.get("operation_id"),
+                                                     f"op{self.attempt_number}_")
+                if item.get("target_criterion_id") is not None:
+                    operation["target_criterion_id"] = self._existing(
+                        "criterion", item["target_criterion_id"])
+                if isinstance(item.get("new_or_updated_criterion"), dict):
+                    operation["new_or_updated_criterion"] = self._restore_criterion(
+                        item["new_or_updated_criterion"], new=item.get("operation_type") == "ADD")
+                operations.append(operation)
+            result["operations"] = operations
+        elif self.role == "reflector" and isinstance(result.get("candidates"), list):
+            result["candidates"] = [
+                {**item, "candidate_id": self._new("candidate", item.get("candidate_id"), "candidate_")}
+                if isinstance(item, dict) else item for item in result["candidates"]]
+        elif self.role == "revision_credit_assigner" and isinstance(result.get("bindings"), dict):
+            result["bindings"] = {
+                self._existing("candidate", candidate):
+                [self._existing("operation", operation) for operation in operations]
+                if isinstance(operations, list) else operations
+                for candidate, operations in result["bindings"].items()
+            }
+        return result
+
+    def _restore_criterion(self, item: dict[str, Any], *, new: bool) -> dict[str, Any]:
+        criterion = dict(item)
+        value = item.get("criterion_id")
+        criterion["criterion_id"] = (self._new("criterion", value,
+                                                "c" if self.role == "initial_generator"
+                                                else f"added{self.attempt_number}_")
+                                     if new else self._existing("criterion", value))
+        if isinstance(item.get("source_experiences"), list):
+            criterion["source_experiences"] = [self._existing("experience", value)
+                                               for value in item["source_experiences"]]
+        return criterion

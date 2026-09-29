@@ -433,6 +433,10 @@ class TrajectoryRecord(Model):
     reflected_candidates: list[CandidateExperience]
     operation_contributions: dict[str, float]
     invalid_revision_attempts: list[InvalidRevisionAttempt] = field(default_factory=list)
+    judge_error: str | None = None
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
+        if self.judge_error is not None and (not isinstance(self.judge_error, str)
+                                             or not self.judge_error.strip()):
+            raise ValueError("judge_error must be a non-empty message")

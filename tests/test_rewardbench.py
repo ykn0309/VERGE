@@ -275,6 +275,16 @@ def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, 
     trajectory_file.write_text("\n".join(json.dumps(row) for row in audited) + "\n", encoding="utf-8")
     assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 0
     assert json.loads(capsys.readouterr().out)["invalid_revision_attempts"] == 1
+    audited = [json.loads(row) for row in trajectories]
+    audited[-1]["state"] = "judge_error_initial"
+    audited[-1]["initial_judgment"] = None
+    audited[-1]["judge_error"] = "numbered criterion mismatch"
+    trajectory_file.write_text("\n".join(json.dumps(row) for row in audited) + "\n", encoding="utf-8")
+    assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 0
+    partial = json.loads(capsys.readouterr().out)
+    assert partial["test_total"] == 6 and partial["test_correct"] == 5
+    assert partial["test_judge_errors"] == 1 and partial["test_accuracy"] is None
+    assert partial["test_accuracy_on_valid"] == 1.0
     trajectory_file.write_text(original_trajectories + trajectories[-1] + "\n", encoding="utf-8")
     assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 1
     assert "duplicate trajectory sample_id" in capsys.readouterr().err

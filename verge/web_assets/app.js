@@ -3,6 +3,14 @@ const app = document.getElementById('app');
 let data = null, page = 'overview', sampleIndex = 0, expIndex = 0, query = '', splitFilter = 'train', resultFilter = 'all', expQuery = '';
 let currentRun = null, requestSequence = 0;
 const translations = new Map(), translatedFields = new Set();
+const roleIoCache = new Map(), roleIoPending = new Map();
+let sampleTab = 'pipeline';
+const roleTabs = [
+  ['pipeline','流水线'],['selector','经验筛选'],['initial_generator','初始生成'],
+  ['judge','Judge'],['critic','Critic'],['revision_generator','修订器'],
+  ['reflector','候选经验生成'],['revision_credit_assigner','信用绑定'],
+  ['admission_checker','经验准入'],['fusion_judge','经验融合'],
+];
 const translationKey = (run, sampleId, field) => JSON.stringify([run, sampleId, field]);
 const h = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n = (value, digits = 3) => typeof value === 'number' ? value.toFixed(digits) : '—';
@@ -25,6 +33,7 @@ const expButton = id => {
 
 async function refresh(nextName = null) {
   const sequence = ++requestSequence;
+  roleIoPending.clear();
   const selector = document.getElementById('run-select');
   selector.disabled = true;
   try {
@@ -45,7 +54,7 @@ async function refresh(nextName = null) {
       sampleIndex = 0; expIndex = 0; query = ''; expQuery = ''; splitFilter = 'train'; resultFilter = 'all';
     }
     currentRun = name;
-    translations.clear(); translatedFields.clear();
+    translations.clear(); translatedFields.clear(); roleIoCache.clear();
     data = payload;
     if (!data.samples.some(s=>s.split===splitFilter)) {
       splitFilter = data.samples.some(s=>s.split==='train') ? 'train' : data.samples.some(s=>s.split==='test') ? 'test' : 'unknown';
@@ -99,7 +108,7 @@ function samplesPage() {
   const unknown = data.samples.length - splits[0][2] - splits[1][2];
   if (unknown) splits.push(['unknown','未标注',unknown]);
   const results = splitFilter === 'train' ? [['all','全部'],['initial_success','初始成功'],['revision','修订成功'],['failure','失败 / 中断']] : splitFilter === 'test' ? [['all','全部'],['initial_success','测试通过'],['failure','测试未通过 / 中断']] : [['all','全部'],['failure','失败 / 中断']];
-  return heading('TRACE / SAMPLE', '样本流水线', '训练与测试分开查看；训练可修订和更新经验，测试只进行初始判别。') + warnBlock() +
+  return warnBlock() +
     `<div class="sample-split-tabs" role="tablist" aria-label="样本阶段">${splits.map(([key,label,count])=>`<button role="tab" aria-selected="${splitFilter===key}" class="split-tab ${splitFilter===key?'active':''}" data-action="split-filter" data-split="${key}">${label}<span class="mono">${count}</span></button>`).join('')}</div>
     <div class="workbench"><section class="panel list-panel"><div class="list-head"><h2>${splitFilter==='train'?'训练':splitFilter==='test'?'测试':'未标注'}样本 <span class="muted mono">${visible.length} / ${group.length}</span></h2><input class="search" data-search="sample" placeholder="搜索 ID 或任务内容…" value="${h(query)}" aria-label="搜索样本"><div class="filters">${results.map(([key,label])=>`<button class="filter ${resultFilter===key?'active':''}" data-action="result-filter" data-filter="${key}">${label}</button>`).join('')}</div></div>
     <div class="list-scroll">${visible.map(({s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="sample" data-index="${i}"><span class="row-top"><strong title="${h(s.sample_id)}">${h(short(s.sample_id,36))}</strong>${badge(s.split==='test'&&s.state==='initial_success'?'测试通过':stateName[s.state]||s.state,statusClass(s.state))}</span><p>${h(short(s.task||s.split||'未提供任务文本',70))}</p></button>`).join('')||'<div class="empty">没有匹配的样本</div>'}</div></section>
@@ -110,9 +119,51 @@ function sampleInput(s, field, label) {
   const key = translationKey(currentRun, s.sample_id, field);
   const translated = translatedFields.has(key) && translations.has(key);
   const action = translated ? '显示原文' : '翻译成中文';
-  return `<div class="input-card field-${field}"><div class="input-heading"><strong>${h(label)}</strong><button class="translate-button" data-action="translate" data-index="${data.samples.indexOf(s)}" data-field="${field}" aria-label="${h(label)}：${action}">${action}</button></div><div class="input-content">${h(translated ? translations.get(key) : s[field])}</div><div class="translation-feedback" role="status" aria-live="polite"></div></div>`;
+  const scrollable = field !== 'task' ? `role="region" tabindex="0" aria-label="${h(label)} 回答，可滚动"` : '';
+  return `<div class="input-card field-${field}"><div class="input-heading"><strong>${h(label)}</strong><button class="translate-button" data-action="translate" data-index="${data.samples.indexOf(s)}" data-field="${field}" aria-label="${h(label)}：${action}">${action}</button></div><div class="input-content" ${scrollable}>${h(translated ? translations.get(key) : s[field])}</div><div class="translation-feedback" role="status" aria-live="polite"></div></div>`;
 }
 function sampleDetail(s) {
+  const tabs = `<div class="role-tab-strip" role="tablist" aria-label="样本流程与角色原始输入输出">${roleTabs.map(([key,label])=>`<button class="role-tab ${sampleTab===key?'active':''}" role="tab" aria-selected="${sampleTab===key}" data-action="sample-tab" data-tab="${key}">${label}</button>`).join('')}</div>`;
+  return tabs + (sampleTab === 'pipeline' ? pipelineDetail(s) : roleDetail(s, sampleTab));
+}
+function roleIoKey(run, sampleId) { return JSON.stringify([run, sampleId]); }
+async function fetchRoleIo(s) {
+  const run = currentRun, sequence = requestSequence, key = roleIoKey(run, s.sample_id);
+  if (roleIoPending.has(key)) return;
+  roleIoPending.set(key, sequence);
+  try {
+    const url = `/api/role-io?name=${encodeURIComponent(run)}&sample_id=${encodeURIComponent(s.sample_id)}`;
+    const response = await fetch(url, {cache:'no-store'});
+    const result = await response.json();
+    if (sequence !== requestSequence) return;
+    if (!response.ok) throw Error(result.error || '角色记录读取失败');
+    roleIoCache.set(key, result);
+  } catch (error) {
+    if (sequence === requestSequence) roleIoCache.set(key, {error:error.message});
+  } finally {
+    if (roleIoPending.get(key) === sequence) roleIoPending.delete(key);
+    if (sequence === requestSequence && page === 'samples' && sampleTab !== 'pipeline') render();
+  }
+}
+const pretty = value => typeof value === 'string' ? value : JSON.stringify(value, null, 2) ?? '—';
+function roleDetail(s, role) {
+  const key = roleIoKey(currentRun, s.sample_id);
+  if (!roleIoCache.has(key)) fetchRoleIo(s);
+  const log = roleIoCache.get(key);
+  const label = roleTabs.find(([id])=>id===role)?.[1] || role;
+  const head = `<div class="detail-header"><div><span class="section-kicker">ROLE I/O / ${h(role.toUpperCase())}</span><h2>${h(label)}</h2><p>样本 ${h(s.sample_id)} · 实际调用的原始输入与输出，按记录顺序展示</p></div></div>`;
+  if (!log) return head + '<p class="empty">正在读取角色调用记录…</p>';
+  if (log.error) return head + `<div class="warning">${h(log.error)}</div>`;
+  if (!log.available) return head + '<div class="role-empty">该运行未保存角色原始输入输出。旧轨迹只能展示流程结果，不能可靠还原当时的提示词与模型回复；重新运行后会生成 role_io.jsonl。</div>';
+  const entries = log.entries.filter(item => item.role === role);
+  const warnings = log.warnings?.length ? `<div class="warning">${log.warnings.map(h).join('<br>')}</div>` : '';
+  if (!entries.length) return head + warnings + '<div class="role-empty">这个样本未调用该角色。可能是流程在此前结束，或来自未记录原始 I/O 的续跑前缀。</div>';
+  return head + warnings + `<div class="role-call-count">${entries.length} 次调用记录 · 不同修订 / 候选 / 格式重试均独立保留。输入为角色实际看到的投影，不包含其他角色的私有上下文。</div>` +
+    entries.map((entry,index)=>`<section class="role-call"><div class="role-call-head"><strong>调用 ${index+1}${entry.attempt>1?` · HTTP 尝试 ${h(entry.attempt)}`:''}</strong>${badge(entry.error ? entry.error : entry.status ? `HTTP ${entry.status}` : entry.backend==='fake'?'Fake':'成功', entry.error?'bad':'ok')}</div>
+    <div class="io-grid"><div class="io-side"><h3>输入 <span>INPUT</span></h3>${Array.isArray(entry.messages)?entry.messages.map(m=>`<div class="io-message"><div class="io-label">${h(m.role||'消息')} · 实际发送</div><pre>${h(pretty(m.content))}</pre></div>`).join(''):`<div class="io-message"><div class="io-label">${entry.backend==='fake'?'Fake 角色输入':'角色参数'}</div><pre>${h(pretty(entry.input))}</pre></div>`}</div>
+    <div class="io-side"><h3>输出 <span>OUTPUT</span></h3>${entry.raw_output!=null?`<div class="io-message"><div class="io-label">模型原文</div><pre>${h(pretty(entry.raw_output))}</pre></div>`:entry.output!=null?`<div class="io-message"><div class="io-label">${entry.backend==='fake'?'Fake 返回':'结构化返回'}</div><pre>${h(pretty(entry.output))}</pre></div>`:'<div class="io-message"><div class="io-label">无输出</div><p>该尝试在获得有效模型文本前失败。</p></div>'}${entry.raw_output!=null&&entry.output!=null?`<details><summary>解析后的结构化输出</summary><pre>${h(pretty(entry.output))}</pre></details>`:''}</div></div></section>`).join('');
+}
+function pipelineDetail(s) {
   const initial = s.initial_judgment, attempts = s.revision_attempts || [], candidates = s.reflected_candidates || [], invalid = s.invalid_revision_attempts || [];
   return `<div class="detail-header"><div><span class="section-kicker">SAMPLE TRACE / ${h(s.split?.toUpperCase()||'UNKNOWN')}</span><h2>${h(s.sample_id)}</h2>${s.metadata?.subset?`<p>子集 ${h(s.metadata.subset)}</p>`:''}</div>${badge(stateName[s.state]||s.state,statusClass(s.state))}</div>
   ${['task','chosen','rejected'].some(field => typeof s[field] === 'string') ? `<div class="detail-section"><div class="section-kicker">01 / INPUT</div><h3>任务与偏好对</h3>${sampleInput(s,'task','TASK')}${sampleInput(s,'chosen','CHOSEN')}${sampleInput(s,'rejected','REJECTED')}</div>`:''}
@@ -126,7 +177,7 @@ function judgmentStats(j) {return j ? `<div class="mini-stats"><span class="mini
 function criteria(rubric, judgment) {return `<div class="rubric-list" role="region" tabindex="0" aria-label="Rubric 标准，可滚动">${rubric.criteria.map(c=>{const verdict=judgment?.criterion_judgments?.find(j=>j.criterion_id===c.criterion_id);return `<div class="criterion"><div class="criterion-head"><strong>${h(c.criterion_id)}</strong><span class="meta">重要性 ${c.importance_score} · 权重 ${pct(judgment?.normalized_weights?.[c.criterion_id])}</span></div><div class="criterion-body"><p>${h(c.question)}</p><div class="judgment-pills"><span class="truth ${verdict?.chosen?'yes':'no'}">Chosen ${verdict?.chosen?'✓':'✕'}</span><span class="truth ${verdict?.rejected?'yes':'no'}">Rejected ${verdict?.rejected?'✓':'✕'}</span></div>${c.source_experiences?.length?`<div class="sources">来源经验：${c.source_experiences.map(expButton).join(' · ')}</div>`:''}</div></div>`;}).join('')}</div>`;}
 function memoryPage() {
   const visible=data.experiences.map((e,i)=>({e,i})).filter(({e})=>!expQuery||`${e.experience_id} ${e.content} ${e.trigger}`.toLowerCase().includes(expQuery.toLowerCase()));
-  return heading('MEMORY / EXPERIENCE', '经验池', '查看当前可复用经验、来源与每次信用更新的演化轨迹。') + warnBlock() +
+  return warnBlock() +
     `<div class="workbench"><section class="panel list-panel memory-list"><div class="list-head"><h2>经验目录 <span class="muted mono">${visible.length} / ${data.experiences.length}</span></h2><input class="search" data-search="experience" placeholder="搜索经验内容或 ID…" value="${h(expQuery)}" aria-label="搜索经验"></div><div class="list-scroll">${visible.map(({e,i})=>`<button class="list-item ${i===expIndex?'active':''}" data-action="experience" data-index="${i}"><span class="row-top"><strong title="${h(experienceName(e))}">${h(experienceName(e))}</strong>${badge(pct(e.confidence),'ok')}</span><p>${h(short(e.content,74))}</p></button>`).join('')||'<div class="empty">没有匹配的经验</div>'}</div></section><section class="panel detail">${data.experiences[expIndex]?experienceDetail(data.experiences[expIndex]):'<div class="empty">经验池为空；成功修订并通过准入后才会出现经验。</div>'}</section></div>`;
 }
 function experienceDetail(e) {
@@ -215,6 +266,7 @@ async function translateSampleField(button) {
     const showTranslation = !translatedFields.has(key);
     if (showTranslation) translatedFields.add(key); else translatedFields.delete(key);
     content.textContent = showTranslation ? translations.get(key) : sample[field];
+    content.scrollTop = 0;
     button.textContent = showTranslation ? '显示原文' : '翻译成中文';
     button.setAttribute('aria-label', `${field.toUpperCase()}：${button.textContent}`);
     feedback.textContent = '';
@@ -236,6 +288,7 @@ async function translateSampleField(button) {
     translatedFields.add(key);
     if (button.isConnected && currentRun === run) {
       content.textContent = result.translation;
+      content.scrollTop = 0;
       button.textContent = '显示原文';
       button.setAttribute('aria-label', `${field.toUpperCase()}：显示原文`);
     }
@@ -255,6 +308,9 @@ document.addEventListener('click', event => {
   if(button.dataset.page){page=button.dataset.page;render();window.scrollTo(0,0);return;}
   const action=button.dataset.action;
   if(action==='translate'){translateSampleField(button);return;}
+  if(action==='sample-tab' && roleTabs.some(([key])=>key===button.dataset.tab)){
+    sampleTab=button.dataset.tab;render();return;
+  }
   if(action==='refresh'){refresh(currentRun);return;}
   if(action==='split-filter'){splitFilter=button.dataset.split;resultFilter='all';query='';sampleIndex=data.samples.findIndex(s=>splitFilter==='unknown'?s.split!=='train'&&s.split!=='test':s.split===splitFilter);render();return;}
   if(action==='result-filter'){resultFilter=button.dataset.filter;render();return;}

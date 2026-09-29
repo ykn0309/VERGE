@@ -29,7 +29,7 @@
 
 .overview-states{margin-bottom:24px}
 /* Train/test are separate sample workspaces, not a single mixed result filter. */
-.sample-split-tabs{display:flex;gap:10px;border-bottom:1px solid var(--border);margin:-10px 0 20px;overflow-x:auto}
+.sample-split-tabs{display:flex;gap:10px;border-bottom:1px solid var(--border);margin:0 0 20px;overflow-x:auto}
 .split-tab{display:flex;align-items:center;justify-content:center;gap:10px;min-width:134px;padding:13px 20px;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);font-weight:600;white-space:nowrap}
 .split-tab span{padding:3px 7px;border-radius:5px;background:#e9eeed;color:#627583;font-size:11px}
 .split-tab:hover{color:var(--ink);background:#edf3f1}.split-tab.active{color:var(--teal);border-bottom-color:var(--teal)}.split-tab.active span{background:#dbf1eb;color:#167d71}
@@ -64,3 +64,24 @@
 .translate-button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .input-content{padding:12px 16px;font-size:12px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;color:#405d69}
 .translation-feedback:not(:empty){padding:0 16px 12px;font-size:11px;color:var(--red);line-height:1.6}
+/* Long answers remain open, but no longer expand the entire sample page. */
+.field-chosen .input-content,.field-rejected .input-content{max-height:min(340px,45vh);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.input-content:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+/* The pipeline and each LLM role occupy separate sample-detail tabs. */
+.role-tab-strip{display:flex;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;border-bottom:1px solid var(--border);margin:-12px -12px 22px;padding:0 12px;scrollbar-width:thin}
+.role-tab{flex:none;background:transparent;border:0;border-bottom:2px solid transparent;padding:13px 11px;color:#6b8189;font-size:11px;font-weight:600;white-space:nowrap}
+.role-tab:hover{background:#f1f8f5;color:var(--teal)}.role-tab.active{border-bottom-color:var(--teal);color:var(--teal)}
+.role-tab:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+.role-empty{border:1px dashed #cbdeda;border-radius:8px;background:#f8fbfa;color:#607981;font-size:12px;line-height:1.8;padding:24px;margin-top:20px}
+.role-call-count{font-size:11px;color:var(--muted);margin:18px 0}
+.role-call{border:1px solid var(--border);border-radius:8px;margin:15px 0;overflow:hidden}
+.role-call-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border);background:#f9fbfa;font-size:12px}
+.io-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+.io-side{padding:15px;min-width:0}.io-side+.io-side{border-left:1px solid var(--border)}
+.io-side h3{font-size:12px;margin:0 0 12px}.io-side h3 span{color:#91a3aa;font:10px var(--mono);margin-left:6px}
+.io-message{border:1px solid #e6eeec;border-radius:6px;margin:10px 0;background:#fbfdfc;min-width:0}
+.io-label{padding:8px 12px;border-bottom:1px solid #e6eeec;color:var(--teal);font-size:10px;font-weight:600}
+.io-message pre,.io-side details pre{margin:0;padding:12px;font:11px/1.65 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;max-height:330px;overflow:auto;tab-size:2;color:#334f5a;scrollbar-gutter:stable}
+.io-message p{padding:12px;margin:0;font-size:11px;color:var(--muted)}
+.io-side details{margin-top:12px;color:var(--teal);font-size:11px}.io-side summary{cursor:pointer}
+@media(max-width:960px){.io-grid{grid-template-columns:1fr}.io-side+.io-side{border-left:0;border-top:1px solid var(--border)}}

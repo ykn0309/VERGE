@@ -277,6 +277,153 @@ def load_role_io(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
             "warnings": warnings}
 
 
+def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str, Any]],
+                      context: dict[str, dict[str, Any]], manifest: dict[str, Any],
+                      warnings: list[str]) -> dict[str, Any]:
+    """只读复算完整训练轨迹；使用前 Beta 不包含当前任务证据。"""
+    from verge.calculator import calculate_existing_experience_credit
+    from verge.models import Rubric, RubricJudgment
+
+    train = [s for s in samples if s.get("split") == "train" and s["state"] != "interrupted"]
+    ids = [s["sample_id"] for s in train]
+    known = set(ids)
+    pool: dict[str, list[float]] = {}
+    evidence: dict[str, list[tuple[str, dict[str, Any]]]] = defaultdict(list)
+    replay_ok = len(known) == len(ids)
+    adds = {c["experience_id"] for s in train for c in s.get("reflected_candidates", [])
+            if c.get("fusion") == "ADD"}
+    if adds != {e["experience_id"] for e in experiences}:
+        replay_ok = False
+    for e in experiences:
+        alpha = beta = 1.0
+        for ev in e["evidence_history"]:
+            if ev["sample_id"] not in known:
+                replay_ok = False
+            evidence[ev["sample_id"]].append((e["experience_id"], ev))
+            change = abs(ev["credit"]) * ev["evidence_weight"]
+            alpha += change if ev["credit"] > 0 else 0
+            beta += change if ev["credit"] < 0 else 0
+        if abs(alpha - e["alpha"]) > 1e-7 or abs(beta - e["beta"]) > 1e-7:
+            replay_ok = False
+    # 初始判断的缺失包括 initial Judge 错误；修订 Judge 错误仍有有效 R0。
+    def rate(rows):
+        valid = [r for r in rows if r.get("initial_judgment") is not None]
+        correct = sum(r["initial_judgment"]["success"] for r in valid)
+        return {"total": len(rows), "valid": len(valid), "correct": correct,
+                "errors": len(rows) - len(valid),
+                "accuracy": correct / len(valid) if valid else None}
+
+    usage = {e["experience_id"]: {"experience_id": e["experience_id"], "recalled": 0,
+        "selected": 0, "referenced": 0, "positive": 0, "negative": 0, "zero": 0}
+        for e in experiences}
+    bins = [{"label": f"{i / 10:.1f}–{(i + 1) / 10:.1f}", "uses": 0,
+             "positive": 0, "negative": 0, "zero": 0, "credit_sum": 0.0} for i in range(10)]
+    scale = [{"label": label, "tasks": 0, "recalled": 0, "selected": 0, "referenced": 0,
+              "requests": 0, "tokens": 0, "token_reports": 0}
+             for label in ("0", "1–20", "21–50", "51–100", "101+")]
+    curve, merges = [], []
+    add_count = merge_count = candidate_count = bound_count = passed = failed = 0
+    for index, s in enumerate(train):
+        before = len(pool)
+        recalled = set(s.get("retrieved_experience_ids", []))
+        selected = set(s.get("selected_experience_ids", []))
+        referenced = {eid for c in s["initial_rubric"]["criteria"] for eid in c["source_experiences"]}
+        for field, keys in (("recalled", recalled), ("selected", selected), ("referenced", referenced)):
+            for eid in keys:
+                if eid in usage:
+                    usage[eid][field] += 1
+        credits = (calculate_existing_experience_credit(Rubric.from_dict(s["initial_rubric"]),
+                    RubricJudgment.from_dict(s["initial_judgment"]))
+                   if s.get("initial_judgment") else {})
+        if replay_ok and s.get("initial_judgment"):
+            for eid in selected:
+                if eid not in pool:
+                    replay_ok = False
+                    break
+                alpha, beta = pool[eid]
+                bucket = bins[min(9, int(10 * alpha / (alpha + beta)))]
+                credit = credits.get(eid, 0.0)
+                kind = "positive" if credit > 0 else "negative" if credit < 0 else "zero"
+                bucket["uses"] += 1
+                bucket[kind] += 1
+                bucket["credit_sum"] += credit
+                if eid in usage:
+                    usage[eid][kind] += 1
+        bucket = scale[0 if before == 0 else 1 if before <= 20 else 2 if before <= 50
+                       else 3 if before <= 100 else 4]
+        bucket["tasks"] += 1
+        bucket["recalled"] += len(recalled)
+        bucket["selected"] += len(selected)
+        bucket["referenced"] += len(selected & referenced)
+        bucket["requests"] += len(s.get("requests", []))
+        for request in s.get("requests", []):
+            total = request.get("usage", {}).get("total_tokens")
+            if type(total) is int:
+                bucket["tokens"] += total
+                bucket["token_reports"] += 1
+        candidates = s.get("reflected_candidates", [])
+        candidate_count += len(candidates)
+        bound_count += sum(bool(c["linked_operation_ids"]) and c["credit"] is not None for c in candidates)
+        passed += sum(c["admission"] == "PASS" for c in candidates)
+        failed += sum(c["admission"] == "FAIL" for c in candidates)
+        added_here = set()
+        for c in candidates:
+            eid = c.get("experience_id")
+            if c.get("fusion") == "ADD":
+                pool[eid] = [1.0, 1.0]
+                added_here.add(eid)
+                add_count += 1
+            elif c.get("fusion") == "MERGE":
+                merge_count += 1
+                if eid not in pool:
+                    replay_ok = False
+                merges.append({"sample_id": s["sample_id"], "candidate_id": c["candidate_id"],
+                    "content": c["content"], "trigger": c["trigger"], "experience_id": eid,
+                    "credit": c["credit"], "same_task": eid in added_here})
+        for eid, ev in evidence[s["sample_id"]]:
+            if eid not in pool:
+                replay_ok = False
+                continue
+            change = abs(ev["credit"]) * ev["evidence_weight"]
+            pool[eid][0 if ev["credit"] > 0 else 1] += change
+        curve.append({"index": index + 1, "pool": len(pool), "adds": add_count, "merges": merge_count,
+                      "cumulative": rate(train[:index + 1]), "rolling": rate(train[max(0, index - 49):index + 1])})
+    if not replay_ok and train:
+        warnings.append("经验或证据无法与完整训练轨迹对齐：使用前置信度和池规模分桶不可用；池曲线仅累计已记录的融合事件。")
+    segments = [{"start": i + 1, "end": min(i + 50, len(train)), **rate(train[i:i + 50]),
+                 "subsets": dict(Counter(r.get("metadata", {}).get("subset", "unknown")
+                                         for r in train[i:i + 50]))} for i in range(0, len(train), 50)]
+    subsets = {name: rate([s for s in train if s.get("metadata", {}).get("subset", "unknown") == name])
+               for name in sorted({s.get("metadata", {}).get("subset", "unknown") for s in train})}
+    for b in bins:
+        b["mean_credit"] = b["credit_sum"] / b["uses"] if b["uses"] else None
+    for b in scale:
+        b["selection_rate"] = b["selected"] / b["recalled"] if b["recalled"] else None
+        b["reference_rate"] = b["referenced"] / b["selected"] if b["selected"] else None
+    initial_failures = sum(s.get("initial_judgment") is not None and
+                           not s["initial_judgment"]["success"] for s in train)
+    first = sum(s["state"] == "revision_success_1" for s in train)
+    second = sum(s["state"] == "revision_success_2" for s in train)
+    attempted_second = sum(any(a["attempt_number"] == 2 for a in
+                              s.get("revision_attempts", []) + s.get("invalid_revision_attempts", []))
+                           for s in train)
+    return {"mode": "train_test" if "test" in manifest["config"]["dataset"]["config"]["paths"] else "train_only",
+            "train_total": sum(c.get("split") == "train" for c in context.values()),
+            "train_completed": len(train), "initial": rate(train), "curve": curve,
+            "segments": segments, "subsets": subsets, "adds": add_count, "merges": merge_count,
+            "candidates": candidate_count, "bound": bound_count, "admission_pass": passed,
+            "admission_fail": failed, "merge_rate": merge_count / (add_count + merge_count)
+                if add_count + merge_count else None,
+            "merge_events": merges, "confidence_bins": bins if replay_ok else None,
+            "scale_bins": scale if replay_ok else None, "usage": list(usage.values()),
+            "replay_available": replay_ok, "initial_failures": initial_failures,
+            "repair_successes": first + second,
+            "repair_rate": (first + second) / initial_failures if initial_failures else None,
+            "first_rate": first / initial_failures if initial_failures else None,
+            "second_successes": second, "second_attempted": attempted_second,
+            "second_rate": second / attempted_second if attempted_second else None}
+
+
 def load_run(run_dir: str | Path) -> dict[str, Any]:
     """Load persisted artifacts without changing the run; tolerate truncated JSONL lines."""
     directory = Path(run_dir).expanduser().resolve()
@@ -308,11 +455,12 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
     experiences = [Experience.from_dict(item).to_dict() for item in memory["experiences"]]
     for item in experiences:
         item["evolution"] = _evolution(item, records, order, warnings)
+    overview = _overview_metrics(samples, experiences, context, manifest, warnings)
     counts = Counter(item["state"] for item in samples)
     return {"run_name": directory.name, "run_dir": str(directory), "code_version": manifest.get("code_version"),
             "resumed_from": manifest.get("resumed_from", {}).get("source_run"),
             "samples": samples, "experiences": experiences, "counts": dict(counts),
-            "warnings": warnings}
+            "warnings": warnings, "overview": overview}
 
 
 def discover_runs(root: Path) -> list[str]:

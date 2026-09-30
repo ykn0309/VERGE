@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from contextvars import ContextVar
 import json
 import math
 import os
@@ -14,6 +15,9 @@ from urllib.parse import urlsplit
 import httpx
 
 from verge.prompts import PROMPT_VERSION, llm_messages
+
+
+JUDGE_RESPONSE_SIDE: ContextVar[str | None] = ContextVar("judge_response_side", default=None)
 
 
 class LLMBackend(Protocol):
@@ -35,7 +39,7 @@ class LLMFormatError(ValueError):
 
 _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "selector": ("selected_experience_ids", list),
-    "initial_generator": ("rubric", dict),
+    "initial_generator": ("criteria", list),
     "judge": ("criterion_judgments", list),
     "critic": ("operations", list),
     "reflector": ("candidates", list),
@@ -47,15 +51,6 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
 
 def _reject_constant(_value: str) -> None:
     raise ValueError("invalid JSON constant")
-
-
-def _criterion_shape(item: Any) -> bool:
-    return (isinstance(item, dict)
-            and set(item) == {"criterion_id", "question", "importance_score", "source_experiences"}
-            and isinstance(item["criterion_id"], str) and isinstance(item["question"], str)
-            and type(item["importance_score"]) is int and 1 <= item["importance_score"] <= 10
-            and isinstance(item["source_experiences"], list)
-            and all(isinstance(key, str) for key in item["source_experiences"]))
 
 
 _NUMERIC_ID_FIELDS = frozenset({"rubric_id", "base_rubric_id", "criterion_id",
@@ -110,32 +105,35 @@ def _valid_shape(role: str, value: Any) -> bool:
             return False
         data = value[field]
     if role == "critic":
-        return all(isinstance(item, dict) and
-                   {"operation_id", "operation_type", "target_criterion_id",
-                    "new_or_updated_criterion"} <= set(item) <=
-                   {"operation_id", "operation_type", "target_criterion_id",
-                    "new_or_updated_criterion", "before_criterion"}
-                   and isinstance(item["operation_id"], str)
+        return all(isinstance(item, dict)
+                   and set(item) == {"operation_type", "target_criterion_id", "new_or_updated_criterion"}
                    and item["operation_type"] in ("ADD", "DELETE", "MODIFY")
-                   and (item["target_criterion_id"] is None
-                        or isinstance(item["target_criterion_id"], str))
+                   and (item["target_criterion_id"] is None or isinstance(item["target_criterion_id"], str))
                    and (item["new_or_updated_criterion"] is None
-                        or _criterion_shape(item["new_or_updated_criterion"])) for item in data)
+                        or (isinstance(item["new_or_updated_criterion"], dict)
+                            and set(item["new_or_updated_criterion"]) == {"question", "importance_score"}
+                            and isinstance(item["new_or_updated_criterion"]["question"], str)
+                            and type(item["new_or_updated_criterion"]["importance_score"]) is int
+                            and 1 <= item["new_or_updated_criterion"]["importance_score"] <= 10))
+                   for item in data)
     if role == "selector":
         return all(isinstance(key, str) for key in data)
     if role == "initial_generator":
-        return (set(data) == {"rubric_id", "base_rubric_id", "criteria"}
-                and isinstance(data["rubric_id"], str)
-                and (data["base_rubric_id"] is None or isinstance(data["base_rubric_id"], str))
-                and isinstance(data["criteria"], list)
-                and all(_criterion_shape(item) for item in data["criteria"]))
+        return all(isinstance(item, dict)
+                   and set(item) == {"question", "importance_score", "source_experiences"}
+                   and isinstance(item["question"], str)
+                   and type(item["importance_score"]) is int
+                   and 1 <= item["importance_score"] <= 10
+                   and isinstance(item["source_experiences"], list)
+                   and all(isinstance(key, str) for key in item["source_experiences"])
+                   for item in data)
     if role == "judge":
-        return all(isinstance(item, dict) and set(item) == {"criterion_id", "chosen", "rejected"}
+        return all(isinstance(item, dict) and set(item) == {"criterion_id", "satisfied"}
                    and isinstance(item["criterion_id"], str)
-                   and type(item["chosen"]) is bool and type(item["rejected"]) is bool for item in data)
+                   and type(item["satisfied"]) is bool for item in data)
     if role == "reflector":
-        return all(isinstance(item, dict) and set(item) == {"candidate_id", "content", "trigger"}
-                   and all(isinstance(item[key], str) for key in ("candidate_id", "content", "trigger"))
+        return all(isinstance(item, dict) and set(item) == {"content", "trigger"}
+                   and all(isinstance(item[key], str) for key in ("content", "trigger"))
                    for item in data)
     if role == "revision_credit_assigner":
         return all(isinstance(key, str) and isinstance(ids, list)
@@ -198,6 +196,8 @@ class OpenAICompatibleBackend:
             return
         event: dict[str, Any] = {"role": role, "model": self.model, "prompt_version": PROMPT_VERSION,
                                  "attempt": attempt, "status": status}
+        if role == "judge":
+            event["response_side"] = JUDGE_RESPONSE_SIDE.get()
         if response is not None:
             request_id = response.headers.get("x-request-id", "")
             if (request_id and self._key not in request_id and len(request_id) <= 128
@@ -222,6 +222,7 @@ class OpenAICompatibleBackend:
         if self.trace_hook is not None:
             self.trace_hook({"role": role, "backend": "openai_compatible", "model": self.model,
                              "prompt_version": PROMPT_VERSION, "attempt": attempt,
+                             **({"response_side": JUDGE_RESPONSE_SIDE.get()} if role == "judge" else {}),
                              "status": status, "input": dict(payload), "messages": messages,
                              "raw_output": raw_output, "output": output, "error": error})
 
@@ -448,11 +449,12 @@ class FakeLLMBackend:
                                  ]}}
         elif role == "judge":
             initial_success = self.scenario == "initial_success"
+            preferred = JUDGE_RESPONSE_SIDE.get() == "chosen"
             result = {"criterion_judgments": [
                 {"criterion_id": item["criterion_id"],
-                 "chosen": (True if item["criterion_id"] == "c1" and initial_success
-                            else item["question"] == "是否逐项满足关键要求？"),
-                 "rejected": item["criterion_id"] == "c1" and not initial_success}
+                 "satisfied": ((True if item["criterion_id"] == "c1" and initial_success
+                                else item["question"] == "是否逐项满足关键要求？")
+                               if preferred else item["criterion_id"] == "c1" and not initial_success)}
                 for item in request["criteria"]]}
         elif role == "critic":
             attempt = request["attempt_number"]
@@ -492,5 +494,6 @@ class FakeLLMBackend:
         if self.trace_hook is not None:
             self.trace_hook({"role": role, "backend": "fake", "model": self.scenario,
                              "attempt": 1, "status": None, "input": request,
+                             **({"response_side": JUDGE_RESPONSE_SIDE.get()} if role == "judge" else {}),
                              "messages": None, "raw_output": None, "output": result, "error": None})
         return deepcopy(result)

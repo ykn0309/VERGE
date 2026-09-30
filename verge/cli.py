@@ -214,12 +214,13 @@ def _check_preparation_paths(options: dict[str, Any]) -> None:
     prepare = options["prepare"]
     directory = Path(prepare["output_dir"])
     paths = options["paths"]
+    splits = ("train",) if prepare.get("mode") == "full_train" else ("train", "test")
     if (options.get("field_map") is not None or not isinstance(paths, dict)
-            or set(paths) != {"train", "test"} or any(
+            or set(paths) != set(splits) or any(
                 not isinstance(paths[split], str) or Path(paths[split]).resolve() !=
-                (directory / f"{split}.jsonl").resolve() for split in ("train", "test"))):
+                (directory / f"{split}.jsonl").resolve() for split in splits)):
         raise ValueError("dataset.config.prepare: paths must point to output_dir/train.jsonl "
-                         "and output_dir/test.jsonl with no field_map")
+                         "and, in split mode, output_dir/test.jsonl with no field_map")
 
 
 def _verify_prepared_dataset(config: dict[str, Any], dataset: JsonlDataset) -> dict[str, Any] | None:
@@ -234,20 +235,28 @@ def _verify_prepared_dataset(config: dict[str, Any], dataset: JsonlDataset) -> d
         raise ValueError("prepared dataset provenance must be an object")
     expected = {"dataset": "allenai/reward-bench", "source_split": "filtered",
                 "category": "Chat Hard", "revision": prepare["revision"],
-                "seed": prepare["seed"], "per_subset": prepare["per_subset"],
-                "train_per_subset": prepare["train_per_subset"]}
+                "seed": prepare["seed"], "per_subset": prepare.get("per_subset"),
+                "train_per_subset": prepare.get("train_per_subset")}
+    full = prepare.get("mode") == "full_train"
+    if full:
+        expected.pop("per_subset")
+        expected.pop("train_per_subset")
+        expected["mode"] = "full_train"
     if any(type(provenance.get(key)) is not type(value) or provenance[key] != value
            for key, value in expected.items()):
         raise ValueError("prepared dataset provenance differs from dataset.config.prepare")
-    counts = {"train": 6 * prepare["train_per_subset"],
-              "test": 6 * (prepare["per_subset"] - prepare["train_per_subset"])}
+    counts = (provenance.get("samples", {}) if full else
+              {"train": 6 * prepare["train_per_subset"],
+               "test": 6 * (prepare["per_subset"] - prepare["train_per_subset"])})
+    if full and (not isinstance(counts, dict) or set(counts) != {"train"} or type(counts["train"]) is not int or counts["train"] <= 0):
+        raise ValueError("invalid full_train sample count")
     if provenance.get("samples") != counts:
         raise ValueError("prepared dataset provenance has inconsistent sample counts")
     hashes = {split: _sha256_file(path) for split, path in dataset.paths.items()}
     if provenance.get("sha256") != hashes:
         raise ValueError("prepared dataset files differ from provenance SHA-256")
     sample_ids: set[str] = set()
-    for split in ("train", "test"):
+    for split in dataset.paths:
         samples = list(dataset.load(split))
         if len(samples) != counts[split]:
             raise ValueError(f"prepared dataset {split} has inconsistent sample count")
@@ -263,7 +272,10 @@ def _verify_prepared_dataset(config: dict[str, Any], dataset: JsonlDataset) -> d
                 raise ValueError("prepared dataset has duplicate sample IDs across splits")
             sample_ids.add(sample.sample_id)
             subset_counts[subset] += 1
-        if any(n != counts[split] // 6 for n in subset_counts.values()):
+        if full and (any(n <= 0 for n in subset_counts.values()) or
+                     provenance.get("subset_counts") != subset_counts):
+            raise ValueError("full_train subset counts differ from provenance")
+        if not full and any(n != counts[split] // 6 for n in subset_counts.values()):
             raise ValueError(f"prepared dataset {split} is not balanced across Chat Hard subsets")
     return provenance
 
@@ -280,14 +292,15 @@ def _ensure_prepared_dataset(config: dict[str, Any], *, resuming: bool) -> None:
     directory = Path(prepare["output_dir"])
     if directory.exists():
         if not directory.is_dir() or not all((directory / name).is_file() for name in
-                                              ("train.jsonl", "test.jsonl", "provenance.json")):
+                                              ([f"{split}.jsonl" for split in options["paths"]] + ["provenance.json"])):
             raise ValueError("prepared dataset directory is incomplete; refusing to overwrite or repair")
         return  # _verify_prepared_dataset checks provenance and bytes before any model request.
     if resuming:
         raise ValueError("resume requires the original prepared dataset; refusing to recreate it")
     prepare_rewardbench_chat_hard(
-        directory, seed=prepare["seed"], per_subset=prepare["per_subset"],
-        train_per_subset=prepare["train_per_subset"], revision=prepare["revision"],
+        directory, seed=prepare["seed"], per_subset=prepare.get("per_subset", 2),
+        train_per_subset=prepare.get("train_per_subset", 1), revision=prepare["revision"],
+        mode=prepare.get("mode", "split"),
         preserve_splits_from=prepare.get("preserve_splits_from"),
     )
 
@@ -420,10 +433,11 @@ def _split_total(dataset: JsonlDataset, split: str) -> int:
 
 def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
                    seen_ids: set[str], request_context: ContextVar[dict[str, str]],
-                   progress: _Progress, skip_ids: set[str] | None = None) -> int:
+                   progress: _Progress, skip_ids: set[str] | None = None,
+                   stop_after: int | None = None) -> int:
     count = 0
     iterator = iter(dataset.load(split))
-    while True:
+    while stop_after is None or count < stop_after:
         try:
             sample = next(iterator)
         except StopIteration:
@@ -522,12 +536,14 @@ def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
 
 
 def run(config_path: str | Path, *, resume_from: str | Path | None = None,
-        initial_output_retries: int = 0) -> dict[str, Any]:
+        initial_output_retries: int = 0, stop_after_train: int | None = None) -> dict[str, Any]:
     """Fresh run, or continue a certified prefix into a new immutable-lineage directory."""
     if type(initial_output_retries) is not int or not 0 <= initial_output_retries <= 3:
         raise ConfigError("initial_output_retries must be an integer in [0, 3]")
     if resume_from is None and initial_output_retries:
         raise ConfigError("initial_output_retries requires resume_from")
+    if stop_after_train is not None and (type(stop_after_train) is not int or stop_after_train < 1):
+        raise ConfigError("stop_after_train must be a positive integer")
     modules = None
     try:
         config = load_config(config_path)
@@ -541,13 +557,16 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         backend_names = {spec["backend"] for spec in
                          [config["models"]["default"], *config["models"].get("roles", {}).values()]}
         manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
-                    "execution": {"test_workers": config["run"].get("test_workers", 4)},
+                    "execution": {"test_workers": config["run"].get("test_workers", 4),
+                                  "mode": "train_test" if "test" in dataset.paths else "train_only"},
                     "dataset_version": "jsonl/v1",
                     "dataset_sha256": {split: _sha256_file(path)
                                        for split, path in dataset.paths.items()},
                     "module_versions": {name: "v1" for name in _IMPLEMENTATIONS},
                     "backend_versions": {name: "v1" for name in sorted(backend_names)},
                     "prompt_versions": {role: PROMPT_VERSION for role in _ROLES}}
+        if stop_after_train is not None:
+            manifest["execution"]["stop_after_train"] = stop_after_train
         if provenance is not None:
             manifest["dataset_provenance"] = provenance
         checkpoint = None
@@ -609,12 +628,16 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
                                 max_revision_output_retries=config["modules"]["revision"]["config"].get(
                                     "invalid_output_retries", 2))
         seen_ids: set[str] = set()
-        train_progress = _Progress("train", _split_total(dataset, "train"))
+        train_total = _split_total(dataset, "train")
+        train_progress = _Progress("train", train_total)
         try:
             train_count = _process_split(runner, dataset, "train", seen_ids,
-                                         request_context, train_progress, skipped)
+                                         request_context, train_progress, skipped, stop_after_train)
         finally:
             train_progress.close()
+        if train_count < train_total:
+            return {"run_dir": str(run_dir), "train_samples": train_count, "test_samples": 0,
+                    "train_total": train_total, "status": "paused_after_train_prefix"}
         test_count = 0
         if "test" in dataset.paths:
             # 测试阶段复用训练后的 Memory，完全不写回信用或生成经验。
@@ -725,6 +748,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     run_command.add_argument("--resume-from", help="copy a certified incomplete run to a new output directory")
     run_command.add_argument("--initial-output-retries", type=int,
                              help="semantic R0 validation retries (default: 2 when resuming)")
+    run_command.add_argument("--stop-after-train", type=int,
+                             help="cleanly stop at this absolute training-prefix length, before test")
     inspect_command = commands.add_parser("inspect-sample", help="inspect a saved trajectory")
     inspect_command.add_argument("--run-dir", required=True)
     inspect_command.add_argument("--sample-id", required=True)
@@ -733,7 +758,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         if args.command == "run":
-            result = run(args.config, resume_from=args.resume_from,
+            result = run(args.config, resume_from=args.resume_from, stop_after_train=args.stop_after_train,
                          initial_output_retries=(args.initial_output_retries if
                                                  args.initial_output_retries is not None else
                                                  (2 if args.resume_from else 0)))

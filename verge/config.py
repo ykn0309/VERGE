@@ -69,7 +69,7 @@ def load_config(path: str | Path) -> dict[str, Any]:
     if "prepare" in dataset["config"]:
         prepare = _mapping(dataset["config"]["prepare"], "dataset.config.prepare")
         expected = {"implementation", "output_dir", "revision", "seed", "per_subset",
-                    "train_per_subset", "preserve_splits_from"}
+                    "train_per_subset", "preserve_splits_from", "mode"}
         if set(prepare) - expected:
             raise ValueError("dataset.config.prepare: unsupported fields")
         if prepare.get("implementation") != "rewardbench_chat_hard":
@@ -80,11 +80,19 @@ def load_config(path: str | Path) -> dict[str, Any]:
             raise ValueError("dataset.config.prepare.revision: expected a 40-character commit SHA")
         if "preserve_splits_from" in prepare:
             _text(prepare["preserve_splits_from"], "dataset.config.prepare.preserve_splits_from")
-        for name, minimum in (("seed", 0), ("per_subset", 2), ("train_per_subset", 1)):
-            _integer(_required(prepare, name, "dataset.config.prepare"),
-                     f"dataset.config.prepare.{name}", minimum)
-        if prepare["train_per_subset"] >= prepare["per_subset"]:
-            raise ValueError("dataset.config.prepare.train_per_subset: must be less than per_subset")
+        mode = prepare.get("mode", "split")
+        if mode not in ("split", "full_train"):
+            raise ValueError("dataset.config.prepare.mode: expected split or full_train")
+        _integer(_required(prepare, "seed", "dataset.config.prepare"), "dataset.config.prepare.seed", 0)
+        if mode == "full_train":
+            if set(prepare) & {"per_subset", "train_per_subset", "preserve_splits_from"}:
+                raise ValueError("full_train does not accept split sampling fields")
+        else:
+            for name, minimum in (("per_subset", 2), ("train_per_subset", 1)):
+                _integer(_required(prepare, name, "dataset.config.prepare"),
+                         f"dataset.config.prepare.{name}", minimum)
+            if prepare["train_per_subset"] >= prepare["per_subset"]:
+                raise ValueError("dataset.config.prepare.train_per_subset: must be less than per_subset")
     models = _mapping(_required(root, "models", "config"), "models")
     _model(_required(models, "default", "models"), "models.default")
     for role, value in _mapping(models.get("roles", {}), "models.roles").items():

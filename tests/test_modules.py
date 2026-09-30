@@ -130,10 +130,10 @@ def test_attempt_one_success_credit_admission_and_fusion_privacy():
     attempt = revise(modules, initial, initial_judgment, 1)
     assert attempt.judgment.success and attempt.judgment.margin == pytest.approx(6 / 12)
     judge_requests = [payload for role, payload in modules.backend.requests if role == "judge"]
-    assert len(judge_requests) == 2
-    assert set(judge_requests[1]) == {"criteria", "chosen", "rejected"}
-    assert [item["criterion_id"] for item in judge_requests[1]["criteria"]] == ["c2"]
-    assert set(judge_requests[1]["criteria"][0]) == {"criterion_id", "question"}
+    assert len(judge_requests) == 4
+    assert set(judge_requests[2]) == {"criteria", "response"}
+    assert [item["criterion_id"] for item in judge_requests[2]["criteria"]] == ["c2"]
+    assert set(judge_requests[2]["criteria"][0]) == {"criterion_id", "question"}
     before = next(item for item in initial_judgment.criterion_judgments if item.criterion_id == "c1")
     after = next(item for item in attempt.judgment.criterion_judgments if item.criterion_id == "c1")
     assert before == after  # 同一 question 不向 LLM 重复询问
@@ -257,7 +257,7 @@ def test_structured_response_and_domain_type_checks():
         LLMInitialRubricGenerator(ConstantBackend({"rubric": bad_rubric})).generate(TASK, [view])
     answers = [{"criterion_id": item.criterion_id, "chosen": 1, "rejected": False}
                for item in initial.criteria]
-    with pytest.raises(ValueError, match="CriterionJudgment: expected"):
+    with pytest.raises(ValueError, match="judge: expected"):
         LLMJudge(ConstantBackend({"criterion_judgments": answers})).judge(
             initial, CHOSEN, REJECTED)
     with pytest.raises(ValueError, match="operations must be a list"):

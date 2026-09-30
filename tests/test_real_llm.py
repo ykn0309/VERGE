@@ -10,7 +10,7 @@ import pytest
 import yaml
 
 from verge.cli import main
-from verge.llm import FakeLLMBackend, LLMFormatError, LLMRequestError, OpenAICompatibleBackend
+from verge.llm import JUDGE_RESPONSE_SIDE, FakeLLMBackend, LLMFormatError, LLMRequestError, OpenAICompatibleBackend
 from verge.prompts import PROMPT_VERSION, llm_messages
 
 
@@ -35,17 +35,18 @@ def numbered_fake_response(fake, role, payload):
         return result_value
     result_value = fake.generate(role, payload)
     if role == "initial_generator":
-        result_value["rubric"]["rubric_id"] = "1"
-        for index, item in enumerate(result_value["rubric"]["criteria"], 1):
-            item["criterion_id"] = str(index)
+        result_value = {"criteria": [{k: v for k, v in item.items() if k != "criterion_id"}
+                                     for item in result_value["rubric"]["criteria"]]}
     elif role == "critic":
         for index, item in enumerate(result_value["operations"], 1):
-            item["operation_id"] = str(index)
+            item.pop("operation_id")
+            item.pop("before_criterion", None)
             item["target_criterion_id"] = "2"
-            item["new_or_updated_criterion"]["criterion_id"] = "2"
+            item["new_or_updated_criterion"].pop("criterion_id")
+            item["new_or_updated_criterion"].pop("source_experiences")
     elif role == "reflector":
-        for index, item in enumerate(result_value["candidates"], 1):
-            item["candidate_id"] = str(index)
+        for item in result_value["candidates"]:
+            item.pop("candidate_id")
     return result_value
 
 
@@ -72,7 +73,9 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
     sent = json.loads(observed[0].content)
     assert sent["model"] == "mock-model"
     assert sent["response_format"] == {"type": "json_object"}
-    assert len(sent["messages"]) == 2 and sent["messages"][1]["content"] == '{"task": "private task"}'
+    assert len(sent["messages"]) == 2
+    assert "task（当前任务" in sent["messages"][1]["content"]
+    assert "资料原值 | private task" in sent["messages"][1]["content"]
     assert events == [{"role": "critic", "model": "mock-model", "prompt_version": PROMPT_VERSION,
                        "attempt": 1, "status": 200, "request_id": "req-123",
                        "finish_reason": "stop", "usage": {
@@ -91,16 +94,14 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
 @pytest.mark.parametrize("role, output, expected", [
     ("selector", {"selected_experience_ids": [1, 2]},
      {"selected_experience_ids": ["1", "2"]}),
-    ("initial_generator", {"rubric": {"rubric_id": 1, "base_rubric_id": None,
-         "criteria": [{"criterion_id": 2, "question": "准则？", "importance_score": 8,
-                       "source_experiences": [3]}]}},
-     {"rubric": {"rubric_id": "1", "base_rubric_id": None,
-         "criteria": [{"criterion_id": "2", "question": "准则？", "importance_score": 8,
-                       "source_experiences": ["3"]}]}}),
-    ("judge", {"criterion_judgments": [{"criterion_id": 1, "chosen": True, "rejected": False}]},
-     {"criterion_judgments": [{"criterion_id": "1", "chosen": True, "rejected": False}]}),
-    ("reflector", {"candidates": [{"candidate_id": 1, "content": "经验", "trigger": "条件"}]},
-     {"candidates": [{"candidate_id": "1", "content": "经验", "trigger": "条件"}]}),
+    ("initial_generator", {"criteria": [{"question": "准则？", "importance_score": 8,
+                                        "source_experiences": [3]}]},
+     {"criteria": [{"question": "准则？", "importance_score": 8,
+                    "source_experiences": ["3"]}]}),
+    ("judge", {"criterion_judgments": [{"criterion_id": 1, "satisfied": True}]},
+     {"criterion_judgments": [{"criterion_id": "1", "satisfied": True}]}),
+    ("reflector", {"candidates": [{"content": "经验", "trigger": "条件"}]},
+     {"candidates": [{"content": "经验", "trigger": "条件"}]}),
     ("revision_credit_assigner", {"bindings": {"1": [2]}},
      {"bindings": {"1": ["2"]}}),
 ])
@@ -109,24 +110,19 @@ def test_model_can_return_positive_integer_ids_for_any_role(monkeypatch, role, o
     assert llm.generate(role, {"task": "x"}) == expected
 
 
-def test_critic_accepts_integer_operation_id_but_not_boolean_or_invalid_experience(monkeypatch):
-    operation = {
-        "operation_id": 1, "operation_type": "ADD", "target_criterion_id": None,
-        "new_or_updated_criterion": {
-            "criterion_id": "5", "question": "明确说明推导过程？",
-            "importance_score": 8, "source_experiences": [],
-        },
-    }
+def test_critic_content_only_schema_and_existing_numeric_reference(monkeypatch):
+    operation = {"operation_type": "MODIFY", "target_criterion_id": 1,
+                 "new_or_updated_criterion": {"question": "明确说明推导过程？", "importance_score": 8}}
     traces = []
     llm = backend(monkeypatch, lambda _: result({"analysis": "加强推导", "operations": [operation]}),
                   max_retries=0, trace_hook=traces.append)
     parsed = llm.generate("critic", {"task": "证明"})
-    assert parsed["operations"][0]["operation_id"] == "1"
-    assert json.loads(traces[0]["raw_output"])["operations"][0]["operation_id"] == 1
-
-    for broken in ({**operation, "operation_id": True},
+    assert parsed["operations"][0]["target_criterion_id"] == "1"
+    assert json.loads(traces[0]["raw_output"])["operations"][0]["target_criterion_id"] == 1
+    for broken in ({**operation, "operation_id": "1"},
+                   {**operation, "target_criterion_id": True},
                    {**operation, "new_or_updated_criterion": {
-                       **operation["new_or_updated_criterion"], "source_experiences": [False]}}):
+                       **operation["new_or_updated_criterion"], "criterion_id": "1"}}):
         invalid = backend(monkeypatch, lambda _: result({"analysis": "加强推导", "operations": [broken]}),
                           max_retries=0)
         with pytest.raises(LLMFormatError):
@@ -138,12 +134,12 @@ def test_format_retry_on_missing_nested_field_and_limit(monkeypatch):
 
     def handler(request):
         calls.append(json.loads(request.content))
-        value = {"criterion_judgments": [{"criterion_id": "c1", "chosen": True}]} if len(calls) == 1 else {
-            "criterion_judgments": [{"criterion_id": "c1", "chosen": True, "rejected": False}]}
+        value = {"criterion_judgments": [{"criterion_id": "c1"}]} if len(calls) == 1 else {
+            "criterion_judgments": [{"criterion_id": "c1", "satisfied": True}]}
         return result(value)
 
     llm = backend(monkeypatch, handler, max_retries=1)
-    assert llm.generate("judge", {"criteria": [{"criterion_id": "c1"}]})["criterion_judgments"][0]["rejected"] is False
+    assert llm.generate("judge", {"criteria": [{"criterion_id": "c1"}]})["criterion_judgments"][0]["satisfied"] is True
     assert len(calls) == 2 and "上次输出格式无效" in calls[1]["messages"][-1]["content"]
 
     bad = backend(monkeypatch, lambda _: result({"wrong": 1}), max_retries=1)
@@ -267,37 +263,36 @@ def test_role_prompts_are_isolated_and_versioned():
             assert "chosen" not in json.dumps(messages) and "rejected" not in json.dumps(messages)
         assert role in messages[0]["content"] and "JSON" in messages[0]["content"]
         assert "必须以中文表达" in messages[0]["content"]
-        assert "机器协议值保持规定形式" in messages[0]["content"]
+        assert "机器协议值使用规定形式" in messages[0]["content"]
     with pytest.raises(ValueError, match="unknown LLM role"):
         llm_messages("not_a_role", {})
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "v10-critic-atomic"
+    assert PROMPT_VERSION == "v16-system-critic-ids-independent-judge"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
-    assert all(text in selector for text in ("task 本身核验", "高信度不能覆盖不匹配", "可选零条"))
+    assert all(text in selector for text in ('task 本身核验', '选择数量为 0 到 max_selected',
+                                               '适用性与帮助相近时'))
     reflector = llm_messages("reflector", {"task": "task"})[0]["content"]
     admission = llm_messages("admission_checker", {"task": "task"})[0]["content"]
-    assert "无法写出明确的事前适用条件时不输出" in reflector
-    assert "即使混有 task 条件也 FAIL" in admission
-    assert "不改写 trigger" in admission
+    assert "明确的 task 可核验条件" in reflector
+    assert "全部条件可通过阅读和语义理解未来 task 核验" in admission
     assert '"reason"' in admission
     critic = llm_messages("critic", {"task": "task"})[0]["content"]
-    assert "第一次操作不会自动继承" in critic
-    assert "针对 R0 重新提出可独立执行的完整操作集" in critic
+    assert "两轮 operations 均以 R0 为共同起点" in critic
+    assert "各自构成可独立执行的完整操作集" in critic
     assert "analysis" in critic and "operations" in critic
     generator = llm_messages("initial_generator", {"task": "task"})[0]["content"]
-    assert "source_experiences 仍为 []" in generator
-    assert "未使用的经验不得挂名" in generator
+    assert "仅由 task 推导的标准使用空数组" in generator
+    assert "实质新增或改变该标准的所选经验 ID" in generator
 
 
 @pytest.mark.parametrize("role,output", [
     ("critic", {"analysis": "Identify missing criteria.", "operations": []}),
-    ("initial_generator", {"rubric": {"rubric_id": "r0", "base_rubric_id": None,
-        "criteria": [{"criterion_id": "c1", "question": "Be clear?", "importance_score": 4,
-                      "source_experiences": []}]}}),
+    ("initial_generator", {"criteria": [{"question": "Be clear?", "importance_score": 4,
+                                         "source_experiences": []}]}),
 
-    ("reflector", {"candidates": [{"candidate_id": "e1", "content": "Be clear",
+    ("reflector", {"candidates": [{"content": "Be clear",
                                        "trigger": "Explanatory task"}]}),
 ])
 def test_backend_does_not_gate_text_by_language(monkeypatch, role, output):
@@ -313,7 +308,7 @@ def test_backend_does_not_gate_text_by_language(monkeypatch, role, output):
     assert "必须以中文表达" in requests[0]["messages"][0]["content"]
 
 
-def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys):
+def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys, wire_payload):
     default = Path(__file__).resolve().parents[1] / "configs" / "default.yaml"
     config = yaml.safe_load(default.read_text(encoding="utf-8"))
     config["run"]["output_dir"] = str(tmp_path / "missing-key")
@@ -336,7 +331,7 @@ def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys
     def handler(request):
         data = json.loads(request.content)
         assert data["model"] == "judge-model"
-        return result(numbered_fake_response(fake, "judge", json.loads(data["messages"][1]["content"])))
+        return result(numbered_fake_response(fake, "judge", wire_payload(data)))
 
     mock_client = httpx.Client(base_url="https://api.openai.com/v1/",
                                transport=httpx.MockTransport(handler))
@@ -353,7 +348,7 @@ def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys
     assert {json.loads(line)["role"] for line in events.splitlines()} == {"judge"}
 
 
-def test_qwen_config_sends_non_thinking_dashscope_request(tmp_path, monkeypatch, capsys):
+def test_qwen_config_sends_non_thinking_dashscope_request(tmp_path, monkeypatch, capsys, wire_payload):
     config_file = Path(__file__).resolve().parents[1] / "configs/qwen3.5-flash.yaml"
     config = yaml.safe_load(config_file.read_text(encoding="utf-8"))
     spec = config["models"]["default"]
@@ -372,7 +367,7 @@ def test_qwen_config_sends_non_thinking_dashscope_request(tmp_path, monkeypatch,
         body = json.loads(request.content)
         sent.append((request.url, body))
         role = body["messages"][0]["content"].split("当前角色：", 1)[1].split("。", 1)[0]
-        return result(numbered_fake_response(fake, role, json.loads(body["messages"][1]["content"])))
+        return result(numbered_fake_response(fake, role, wire_payload(body)))
 
     mock_client = httpx.Client(base_url=spec["base_url"] + "/",
                                transport=httpx.MockTransport(handler))
@@ -386,7 +381,7 @@ def test_qwen_config_sends_non_thinking_dashscope_request(tmp_path, monkeypatch,
 
 
 def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(tmp_path, monkeypatch,
-                                                                                     capsys):
+                                                                                     capsys, wire_payload):
     # HTTP transport 模拟真实 Chat Completions JSON 接口，语义结果借用固定场景。
     fake = FakeLLMBackend("attempt_1_success")
     sent = []
@@ -395,7 +390,7 @@ def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(t
         assert request.headers["authorization"] == "Bearer test-secret-never-log"
         body = json.loads(request.content)
         role = body["messages"][0]["content"].split("当前角色：", 1)[1].split("。", 1)[0]
-        payload = json.loads(body["messages"][1]["content"])
+        payload = wire_payload(body)
         sent.append((role, payload))
         return result(numbered_fake_response(fake, role, payload), headers={"x-request-id": f"req-{len(sent)}"})
 
@@ -433,7 +428,9 @@ def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(t
     assert role_events[0]["messages"][0]["role"] == "system"
     assert role_events[0]["raw_output"] and role_events[0]["output"]
     assert "chosen" not in role_events[0]["input"] and "rejected" not in role_events[0]["input"]
-    assert any("chosen" in event["input"] for event in role_events if event["role"] == "judge")
+    assert all(set(event["input"]) == {"criteria", "response"}
+               for event in role_events if event["role"] == "judge")
+    assert {event["response_side"] for event in role_events if event["role"] == "judge"} == {"chosen", "rejected"}
     manifest = json.loads((tmp_path / "run" / "run_manifest.json").read_text(encoding="utf-8"))
     assert manifest["prompt_versions"]["judge"] == PROMPT_VERSION
     assert "test-secret-never-log" not in json.dumps(manifest)
@@ -471,3 +468,46 @@ def test_role_trace_does_not_save_http_error_bodies_or_headers(monkeypatch):
         llm.generate("critic", {"task": "x"})
     assert trace[0]["raw_output"] is None and trace[0]["error"] == "HTTP 401"
     assert "secret error body" not in json.dumps(trace) and "private-id" not in json.dumps(trace)
+
+
+def test_critic_before_after_schema_failure_is_logged_and_not_fatal(tmp_path, monkeypatch, wire_payload):
+    from verge.memory import ExperienceMemory, TrajectoryLog
+    from verge.models import PreferenceSample
+    from verge.modules import make_fake_modules
+    from verge.pipeline import PipelineRunner
+
+    calls = []
+
+    def handler(request):
+        payload = wire_payload(json.loads(request.content))
+        calls.append(payload)
+        # Reproduce the real failure: MODIFY using before/after instead of required schema.
+        return result({'analysis': '真实但结构无效的分析', 'operations': [{
+            'operation_id': '1', 'operation_type': 'MODIFY', 'target_criterion_id': '1',
+            'before': {'criterion_id': '1'}, 'after': {'criterion_id': '1'}}]})
+
+    critic_backend = backend(monkeypatch, handler)
+    modules = make_fake_modules('attempt_1_success')
+    modules.critic.backend = critic_backend
+    memory, log = ExperienceMemory(tmp_path), TrajectoryLog(tmp_path)
+    runner = PipelineRunner(modules, memory, log)
+    record = runner.run_sample(PreferenceSample('schema', '任务', 'chosen', 'rejected', {}))
+    assert record.state == 'final_failure' and len(record.invalid_revision_attempts) == 2
+    assert len(calls) == 6  # 每轮仅 backend 的首次 + 2 次重试。
+    assert calls[3]['previous_invalid_attempt']['analysis'] is None
+    assert not record.revision_attempts and not record.reflected_candidates
+    assert memory.all() == [] and log.get('schema') == record
+    critic_backend._client.close()
+
+
+@pytest.mark.parametrize('role, invalid, valid', [
+    ('initial_generator', {'criteria': [{'criterion_id': '1', 'question': '问题',
+                                         'importance_score': 5, 'source_experiences': []}]},
+     {'criteria': [{'question': '问题', 'importance_score': 5, 'source_experiences': []}]}),
+    ('reflector', {'candidates': [{'candidate_id': '1', 'content': '原则', 'trigger': '条件'}]},
+     {'candidates': [{'content': '原则', 'trigger': '条件'}]}),
+])
+def test_backend_retries_generated_id_fields_and_returns_content_only(monkeypatch, role, invalid, valid):
+    responses = iter([invalid, valid])
+    llm = backend(monkeypatch, lambda _: result(next(responses)), max_retries=1)
+    assert llm.generate(role, {'task': '任务'}) == valid

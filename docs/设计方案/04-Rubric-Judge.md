@@ -8,7 +8,7 @@
 
 归一化 rubric 的 importance scores，并分别评价 chosen 和 rejected response，输出 criterion-level Boolean judgments、加权分数和 margin。
 
-这是流程中第一次允许查看 preference pair 的阶段。
+这是流程中第一次处理 preference pair 的阶段。工程上对两份回答分别发起独立的 Judge 调用，并行执行；每次模型只接收待判断标准和单份 `response`，返回每条标准的 `satisfied` Boolean。chosen/rejected 的对应关系仅由系统维护，不进入 Judge 模型输入。两侧都校验成功后，程序合并判断并计算分数；一侧重试时保留另一侧成功结果。原有判断复用规则不变。
 
 ## 2. Weight Normalization
 

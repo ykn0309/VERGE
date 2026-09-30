@@ -300,3 +300,54 @@ def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, 
     manifest_file.write_text(json.dumps(manifest), encoding="utf-8")
     assert main(["summarize-rewardbench", "--run-dir", str(tmp_path / "experiment")]) == 1
     assert "all six Chat Hard subsets" in capsys.readouterr().err
+
+
+def test_full_train_keeps_same_prompt_and_globally_orders_all_rows():
+    from verge.dataset import full_rewardbench_chat_hard
+    rows = synthetic_rows()
+    for row in rows:
+        row['prompt'] = 'same prompt'
+    first = full_rewardbench_chat_hard(rows)
+    assert first == full_rewardbench_chat_hard(list(reversed(rows)))
+    assert set(first) == {'train'} and len(first['train']) == 24
+    assert len({s['sample_id'] for s in first['train']}) == 24
+    assert first != full_rewardbench_chat_hard(rows, seed=43)
+    with pytest.raises(ValueError, match='duplicate'):
+        full_rewardbench_chat_hard(rows + [rows[0]])
+    with pytest.raises(ValueError, match='all six'):
+        full_rewardbench_chat_hard(rows[:4])
+    with pytest.raises(ValueError, match='invalid'):
+        full_rewardbench_chat_hard([{**rows[0], 'chosen': ''}] + rows[1:])
+
+
+def test_full_train_prepare_and_cli_verification(tmp_path, monkeypatch):
+    from verge.cli import _verify_prepared_dataset, _ensure_prepared_dataset
+    from verge.config import load_config
+    import huggingface_hub
+    revision = 'a' * 40
+    parquet = tmp_path / 'filtered.parquet'
+    pq.write_table(pa.Table.from_pylist(synthetic_rows()), parquet)
+    monkeypatch.setattr(huggingface_hub.HfApi, 'dataset_info',
+                        lambda *a, **k: SimpleNamespace(sha=revision, siblings=[
+                            SimpleNamespace(rfilename='data/filtered-00000.parquet')]))
+    monkeypatch.setattr(huggingface_hub, 'hf_hub_download', lambda *a, **k: str(parquet))
+    directory = tmp_path / 'full'
+    provenance = prepare_rewardbench_chat_hard(directory, mode='full_train', revision=revision)
+    assert provenance['samples'] == {'train': 24}
+    assert not (directory / 'test.jsonl').exists()
+    config = yaml.safe_load((PROJECT / 'configs/default.yaml').read_text())
+    config['dataset']['config'] = {'paths': {'train': str(directory / 'train.jsonl')},
+        'prepare': {'implementation': 'rewardbench_chat_hard', 'mode': 'full_train',
+                    'output_dir': str(directory), 'revision': revision, 'seed': 42}}
+    path = tmp_path / 'full.yaml'
+    path.write_text(yaml.safe_dump(config))
+    checked = load_config(path)
+    _ensure_prepared_dataset(checked, resuming=False)
+    assert _verify_prepared_dataset(checked, JsonlDataset(checked['dataset']['config']['paths']))['mode'] == 'full_train'
+    config['dataset']['config']['prepare']['per_subset'] = 2
+    path.write_text(yaml.safe_dump(config))
+    with pytest.raises(ValueError, match='split sampling'):
+        load_config(path)
+    checked['dataset']['config']['prepare']['seed'] = 99
+    with pytest.raises(ValueError, match='differs'):
+        _verify_prepared_dataset(checked, JsonlDataset(checked['dataset']['config']['paths']))

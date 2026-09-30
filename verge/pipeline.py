@@ -9,6 +9,7 @@ from verge.calculator import (
     calculate_existing_experience_credit, calculate_operation_contributions,
     calculate_revision_budget,
 )
+from verge.llm import LLMFormatError
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import (
     InvalidRevisionAttempt, PreferenceSample, RevisionAttempt, RevisionOperation, Rubric, RubricJudgment,
@@ -207,6 +208,14 @@ class PipelineRunner:
                             sample.task, sample.chosen, sample.rejected, initial, initial_judgment,
                             number, validation_feedback=validation_feedback, **revision_history,
                         )
+                    except LLMFormatError as exc:
+                        # Backend 已耗尽格式重试：本轮终止，不叠加 Executor 重试。
+                        # 无合法响应则 analysis 为 None，不能伪造诊断或 Rk。
+                        validation_failures.append(str(exc)[:160] or type(exc).__name__)
+                        invalid_attempts.append(InvalidRevisionAttempt(
+                            number, None, validation_failures, analysis=last_analysis,
+                        ))
+                        break
                     except RevisionOperationOutputError as exc:
                         failure = exc
                         last_analysis = exc.analysis

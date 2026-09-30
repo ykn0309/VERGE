@@ -6,12 +6,15 @@
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from dataclasses import dataclass, replace
 from math import isfinite, sqrt
 from typing import Any, Mapping, Protocol, Sequence
 
 from verge.calculator import allocate_revision_credit, calculate_rubric_judgment
-from verge.llm import FakeLLMBackend, FakeScenario, LLMBackend, OpenAICompatibleBackend
+from verge.llm import (FakeLLMBackend, FakeScenario, JUDGE_RESPONSE_SIDE,
+                       LLMBackend, OpenAICompatibleBackend)
 from verge.models import (
     CandidateExperience, CriterionJudgment, Experience, InvalidRevisionAttempt,
     RevisionAttempt, RevisionOperation, RevisionProposal, Rubric, RubricJudgment,
@@ -117,7 +120,8 @@ def _output(backend: LLMBackend, role: str, payload: dict[str, Any],
     # Fake 后端沿用内部固定 ID；真实模型只接触本次调用的局部数字编号。
     codec = NumberedIDCodec(role, payload) if isinstance(backend, OpenAICompatibleBackend) else None
     response = backend.generate(role, codec.project(payload) if codec else payload)
-    expected = ({field} if field is not None else
+    expected = ({"criteria"} if codec and role == "initial_generator" else
+                {field} if field is not None else
                 {"decision", "reason"} if role == "admission_checker" else
                 {"analysis", "operations"})
     if not isinstance(response, Mapping) or set(response) != expected:
@@ -265,7 +269,7 @@ class LLMInitialRubricGenerator:
                 if retry == self.invalid_output_retries:
                     raise
                 # 不回传原始生成文本或 preference pair，只告知验证约束。
-                feedback = f"上次完整 R0 未通过校验：{str(exc)[:160]}。请重新生成 2 到 8 条标准；base_rubric_id 为 null，source_experiences 只引用所选经验且不得重复。"
+                feedback = f"上次完整 R0 未通过校验：{str(exc)[:160]}。请重新生成 2 到 8 条标准；source_experiences 使用所选经验的引用编号，每项来源唯一。"
         raise AssertionError("unreachable retry state")
 
 
@@ -317,29 +321,60 @@ class LLMJudge:
         generated: list[CriterionJudgment] = []
         requested = {item.criterion_id for item in pending}
         if pending:
-            feedback = None
-            for retry in range(self.invalid_output_retries + 1):
+            def score_response(response: str, side: str) -> dict[str, bool]:
+                token = JUDGE_RESPONSE_SIDE.set(side)
                 try:
-                    raw = _output(self.backend, "judge", judge_payload(
-                        pending, chosen, rejected, validation_feedback=feedback,
-                    ), "criterion_judgments")
-                    if not isinstance(raw, list):
-                        raise ValueError("judge: criterion_judgments must be a list")
-                    generated = [CriterionJudgment.from_dict(item) for item in raw]
-                    answers = {item.criterion_id: item for item in generated}
-                    if len(answers) != len(generated) or set(answers) != requested:
-                        raise ValueError("judge: judgments must cover exactly the requested criteria "
-                                         f"(missing={len(requested - answers.keys())}, "
-                                         f"extra={len(answers.keys() - requested)}, "
-                                         f"duplicate={len(generated) - len(answers)})")
-                    break
-                except ValueError as exc:
-                    if retry == self.invalid_output_retries:
-                        raise JudgeOutputError(f"judge: invalid output after {retry + 1} attempts: "
-                                               f"{str(exc)[:160]}") from exc
-                    feedback = ("上次 Judge 输出未通过校验：" + str(exc)[:160]
-                                + "。请只对本次列出的每条标准返回一次判断，严格复制其数字编号，"
-                                  "不添加或遗漏编号；chosen/rejected 必须为布尔值。")
+                    feedback = None
+                    for retry in range(self.invalid_output_retries + 1):
+                        try:
+                            raw = _output(self.backend, "judge", judge_payload(
+                                pending, response, validation_feedback=feedback,
+                            ), "criterion_judgments")
+                            if not isinstance(raw, list):
+                                raise ValueError("judge: criterion_judgments must be a list")
+                            answers = {}
+                            for item in raw:
+                                if (not isinstance(item, dict) or set(item) != {"criterion_id", "satisfied"}
+                                        or not isinstance(item["criterion_id"], str)
+                                        or type(item["satisfied"]) is not bool):
+                                    raise ValueError("judge: expected criterion_id and Boolean satisfied")
+                                if item["criterion_id"] in answers:
+                                    raise ValueError("judge: duplicate criterion_id")
+                                answers[item["criterion_id"]] = item["satisfied"]
+                            if set(answers) != requested:
+                                raise ValueError("judge: judgments must cover exactly the requested criteria "
+                                                 f"(missing={len(requested - answers.keys())}, "
+                                                 f"extra={len(answers.keys() - requested)})")
+                            return answers
+                        except ValueError as exc:
+                            if retry == self.invalid_output_retries:
+                                raise JudgeOutputError(f"judge ({side}): invalid output after {retry + 1} attempts: "
+                                                       f"{str(exc)[:160]}") from exc
+                            feedback = ("上次 Judge 输出校验信息：" + str(exc)[:160]
+                                        + "。请严格复制其数字编号，每条标准返回一次判断，"
+                                          "完整覆盖本次标准；satisfied 使用布尔值。")
+                    raise AssertionError("unreachable judge retry state")
+                finally:
+                    JUDGE_RESPONSE_SIDE.reset(token)
+
+            # Each worker inherits sample context, with its own answer-side label only in logs.
+            outcomes = []
+            errors = []
+            with ThreadPoolExecutor(max_workers=2, thread_name_prefix="verge-judge") as pool:
+                futures = [pool.submit(copy_context().run, score_response, response, side)
+                           for response, side in ((chosen, "chosen"), (rejected, "rejected"))]
+                for future in futures:
+                    try:
+                        outcomes.append(future.result())
+                    except Exception as exc:
+                        outcomes.append(None)
+                        errors.append(exc)
+            if errors:
+                # Transport/auth errors keep their abort semantics even if the other side is malformed.
+                raise next((exc for exc in errors if not isinstance(exc, JudgeOutputError)), errors[0])
+            chosen_answers, rejected_answers = outcomes
+            generated = [CriterionJudgment(item.criterion_id, chosen_answers[item.criterion_id],
+                                             rejected_answers[item.criterion_id]) for item in pending]
         answers = {item.criterion_id: item for item in generated}
         return calculate_rubric_judgment(
             rubric, [known.get(item.criterion_id) or answers[item.criterion_id]
@@ -375,9 +410,8 @@ class LLMCritic:
                      or previous_attempt.rubric.base_rubric_id != initial.rubric_id
                      or previous_attempt.judgment.rubric_id != previous_attempt.rubric.rubric_id))
                 or (previous_invalid_attempt is not None and
-                    (previous_invalid_attempt.attempt_number != 1
-                     or previous_invalid_attempt.analysis is None))):
-            raise ValueError("second critic requires one failed prior attempt with analysis")
+                    previous_invalid_attempt.attempt_number != 1)):
+            raise ValueError("second critic requires one failed prior attempt; analysis may be absent after format failure")
         raw = _output(self.backend, "critic", critic_payload(
             task, chosen, rejected, initial, initial_judgment, attempt_number,
             previous_attempt=previous_attempt, previous_invalid_attempt=previous_invalid_attempt,
@@ -487,7 +521,7 @@ class LLMAdmissionChecker:
                 or set(operation_contributions) != operation_ids):
             raise ValueError("admission requires bound, credited candidate and successful revision")
         response = _output(self.backend, "admission_checker", admission_payload(
-            task, candidate, successful_attempt, dict(operation_contributions),
+            task, candidate,
         ), None)
         if (not isinstance(response, Mapping) or set(response) != {"decision", "reason"}
                 or type(response["decision"]) is not str

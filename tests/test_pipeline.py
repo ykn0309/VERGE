@@ -29,7 +29,7 @@ def test_initial_success_stops_before_revision_and_writes_no_experience(tmp_path
     assert record.initial_judgment.success
     assert (record.revision_attempts, record.reflected_candidates, record.operation_contributions) == ([], [], {})
     assert memory.all() == []
-    assert [role for role, _ in modules.backend.requests] == ["initial_generator", "judge"]
+    assert [role for role, _ in modules.backend.requests] == ["initial_generator", "judge", "judge"]
     assert log.get("sample") == record
 
 
@@ -236,7 +236,7 @@ def test_invalid_size_first_attempt_can_succeed_on_second_from_r0(tmp_path):
     assert calls[-1]["previous_attempt"] is None
     assert calls[-1]["previous_invalid_attempt"]["attempt_number"] == 1
     assert len(calls[-1]["previous_invalid_attempt"]["validation_failures"]) == 3
-    assert [role for role, _ in modules.backend.requests].count("judge") == 2
+    assert [role for role, _ in modules.backend.requests].count("judge") == 4
     assert log.get("sample") == record
 
 
@@ -261,7 +261,7 @@ def test_both_size_invalid_attempts_are_final_failure_without_judging(tmp_path):
     assert [item.attempt_number for item in record.invalid_revision_attempts] == [1, 2]
     assert [len(item.validation_failures) for item in record.invalid_revision_attempts] == [3, 3]
     assert [payload["attempt_number"] for payload in calls] == [1, 1, 1, 2, 2, 2]
-    assert [role for role, _ in modules.backend.requests].count("judge") == 1
+    assert [role for role, _ in modules.backend.requests].count("judge") == 2
     assert memory.all() == [] and log.get("sample") == record
 
 
@@ -299,7 +299,7 @@ def test_invalid_executor_operations_exhaust_retries_without_aborting_run(tmp_pa
     assert record.invalid_revision_attempts[0].validation_failures == [error] * 3
     assert [payload["attempt_number"] for payload in calls] == [1, 2, 2, 2]
     assert error in calls[-1]["validation_feedback"]
-    assert len([role for role, _ in modules.backend.requests if role == "judge"]) == 2
+    assert len([role for role, _ in modules.backend.requests if role == "judge"]) == 4
     assert memory.all() == [] and log.get("sample") == record
 
 
@@ -657,3 +657,66 @@ def test_executor_validates_conflicts_and_populates_only_one_operation_list():
     with pytest.raises(ValueError, match="new criterion ID"):
         executor.execute(initial, [RevisionOperation("add", "ADD", None,
                                                      Criterion("c1", "new", 3, []))], 1)
+
+
+def test_critic_format_exhaustion_records_unknown_analysis_then_second_succeeds(tmp_path):
+    from verge.llm import LLMFormatError
+    runner, modules, memory, log = make_runner(tmp_path, 'attempt_2_success')
+    original = modules.backend.generate
+    calls = []
+
+    def generate(role, payload):
+        if role == 'critic':
+            calls.append(payload)
+            if payload['attempt_number'] == 1:
+                raise LLMFormatError('critic: invalid structured output after 3 attempts')
+        return original(role, payload)
+
+    modules.backend.generate = generate
+    record = runner.run_sample(sample())
+    assert record.state == 'revision_success_2'
+    assert len(calls) == 2  # 格式重试已经耗尽，不能再叠加 2 次操作重试。
+    failed = record.invalid_revision_attempts[0]
+    assert failed.analysis is None and failed.feedback is None
+    assert failed.validation_failures == ['critic: invalid structured output after 3 attempts']
+    assert calls[1]['previous_invalid_attempt']['analysis'] is None
+    assert calls[1]['previous_attempt'] is None
+    assert len(record.revision_attempts) == 1 and record.revision_attempts[0].attempt_number == 2
+    assert memory.all() and log.get('sample') == record
+
+
+def test_both_critic_format_failures_do_not_abort_next_sample(tmp_path):
+    from verge.llm import LLMFormatError
+    runner, modules, memory, log = make_runner(tmp_path)
+    original = modules.backend.generate
+    calls = []
+
+    def generate(role, payload):
+        if role == 'critic':
+            calls.append(payload['attempt_number'])
+            raise LLMFormatError('critic: invalid structured output after 3 attempts')
+        return original(role, payload)
+
+    modules.backend.generate = generate
+    records = runner.run([sample('a'), sample('b')])
+    assert calls == [1, 2, 1, 2]
+    assert all(r.state == 'final_failure' and len(r.invalid_revision_attempts) == 2 for r in records)
+    assert all(not r.revision_attempts and not r.reflected_candidates for r in records)
+    assert memory.all() == [] and len(list(log.all())) == 2
+    assert [r for r, _ in modules.backend.requests] == ['initial_generator', 'judge', 'judge'] * 2
+
+
+def test_critic_network_error_still_aborts(tmp_path):
+    from verge.llm import LLMRequestError
+    runner, modules, memory, log = make_runner(tmp_path)
+    original = modules.backend.generate
+
+    def generate(role, payload):
+        if role == 'critic':
+            raise LLMRequestError('critic: HTTP 401')
+        return original(role, payload)
+
+    modules.backend.generate = generate
+    with pytest.raises(LLMRequestError, match='HTTP 401'):
+        runner.run_sample(sample())
+    assert list(log.all()) == [] and memory.all() == []

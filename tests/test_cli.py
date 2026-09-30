@@ -147,18 +147,18 @@ def test_parallel_real_backend_metadata_uses_worker_sample_context(tmp_path, mon
     other_started = Event()
 
     def offline_generate(self, role, payload):
+        from verge.llm import JUDGE_RESPONSE_SIDE
         if role == "initial_generator":
             if payload["task"] == "测试任务 0":
                 assert other_started.wait(5), "real-backend test requests did not overlap"
             elif payload["task"] == "测试任务 1":
                 other_started.set()
-            result = {"rubric": {"rubric_id": "1", "base_rubric_id": None,
-                                 "criteria": [{"criterion_id": str(i), "question": f"问题{i}？",
+            result = {"criteria": [{"question": f"问题{i}？",
                                                "importance_score": 5, "source_experiences": []}
-                                              for i in range(1, 5)]}}
+                                              for i in range(1, 5)]}
         elif role == "judge":
             result = {"criterion_judgments": [
-                {"criterion_id": item["criterion_id"], "chosen": True, "rejected": False}
+                {"criterion_id": item["criterion_id"], "satisfied": JUDGE_RESPONSE_SIDE.get() == "chosen"}
                 for item in payload["criteria"]]}
         else:
             raise AssertionError(f"unexpected role: {role}")
@@ -174,9 +174,9 @@ def test_parallel_real_backend_metadata_uses_worker_sample_context(tmp_path, mon
     traces = [json.loads(line) for line in (root / "role_io.jsonl").read_text().splitlines()]
     for sample_id in ("test-0", "test-1"):
         assert [item["role"] for item in events if item["sample_id"] == sample_id] == [
-            "initial_generator", "judge"]
+            "initial_generator", "judge", "judge"]
         assert [item["role"] for item in traces if item["sample_id"] == sample_id] == [
-            "initial_generator", "judge"]
+            "initial_generator", "judge", "judge"]
         assert next(item for item in traces if item["sample_id"] == sample_id
                     and item["role"] == "initial_generator")["input"]["task"] == (
                         "测试任务 " + sample_id[-1])
@@ -214,7 +214,7 @@ def test_parallel_test_failure_keeps_prefix_and_can_resume_with_later_requests(
             assert second_finished.wait(5), "later test did not finish first"
             raise ValueError("simulated test failure")
         result = original(self, role, payload)
-        if role == "judge" and payload["chosen"] == f"chosen-{failed_index + 1}":
+        if role == "judge" and payload["response"] == f"chosen-{failed_index + 1}":
             second_finished.set()
         return result
 
@@ -627,3 +627,50 @@ def test_invalid_dataset_row_reports_file_stage_and_id_when_known(tmp_path):
     result = command("run", "--config", str(config))
     assert result.returncode == 1 and "stage dataset" in result.stderr
     assert "train.jsonl:1" in result.stderr
+
+
+def test_stop_at_committed_train_prefix_and_resume_with_full_dataset(tmp_path, capsys):
+    from verge.cli import run
+    file, config = experiment(tmp_path)
+    original_data = Path(config['dataset']['config']['paths']['train']).read_bytes()
+    result = run(file, stop_after_train=1)
+    assert result['status'] == 'paused_after_train_prefix'
+    assert result['train_samples'] == 1 and result['train_total'] == 2
+    assert result['test_samples'] == 0
+    parent = Path(result['run_dir'])
+    trajectory = parent / 'artifacts/trajectories.jsonl'
+    original_checkpoint = trajectory.read_bytes()
+    assert [json.loads(line)['sample_id'] for line in original_checkpoint.splitlines()] == ['train-a']
+    entries = [json.loads(line) for line in (parent / 'artifacts/role_io.jsonl').read_text().splitlines()]
+    assert {e['sample_id'] for e in entries} == {'train-a'}
+    manifest = json.loads((parent / 'run_manifest.json').read_text())
+    assert manifest['execution']['stop_after_train'] == 1
+    assert set(manifest['config']['dataset']['config']['paths']) == {'train', 'test'}
+    config['run']['output_dir'] = str(tmp_path / 'continued')
+    file.write_text(yaml.safe_dump(config, allow_unicode=True))
+    # Absolute prefix cap counts the copied task, not only new tasks.
+    continued = run(file, resume_from=parent, stop_after_train=2)
+    assert continued['train_samples'] == 2 and continued['test_samples'] == 1
+    assert 'status' not in continued
+    records = [json.loads(line) for line in
+               (Path(continued['run_dir']) / 'artifacts/trajectories.jsonl').read_text().splitlines()]
+    assert [r['sample_id'] for r in records] == ['train-a', 'train-b', 'test-a']
+    assert trajectory.read_bytes() == original_checkpoint
+    assert Path(config['dataset']['config']['paths']['train']).read_bytes() == original_data
+
+
+@pytest.mark.parametrize('limit', [0, -1, True, 1.5])
+def test_invalid_stop_after_train_rejected_before_creating_run(tmp_path, limit):
+    from verge.cli import ConfigError, run
+    file, config = experiment(tmp_path)
+    with pytest.raises(ConfigError, match='positive integer'):
+        run(file, stop_after_train=limit)
+    assert not Path(config['run']['output_dir']).exists()
+
+
+def test_stop_after_train_cli_and_train_only(tmp_path, capsys):
+    file, config = experiment(tmp_path, with_test=False)
+    assert main(['run', '--config', str(file), '--stop-after-train', '1']) == 0
+    output = json.loads(capsys.readouterr().out)
+    assert output['status'] == 'paused_after_train_prefix'
+    assert output['train_samples'] == 1 and output['test_samples'] == 0

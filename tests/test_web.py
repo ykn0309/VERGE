@@ -212,7 +212,7 @@ def test_role_io_records_real_fake_role_inputs_outputs_without_credentials(tmp_p
     assert (root / "role_io.jsonl").stat().st_mode & 0o077 == 0
     a = load_role_io(directory, "a")
     assert a["available"] and a["entries"]
-    assert [row["role"] for row in a["entries"]][:3] == ["initial_generator", "judge", "critic"]
+    assert [row["role"] for row in a["entries"]][:4] == ["initial_generator", "judge", "judge", "critic"]
     initial = a["entries"][0]
     assert initial["input"]["task"] == "<script>not code</script>"
     assert "chosen" not in initial["input"] and "rejected" not in initial["input"]
@@ -279,3 +279,95 @@ def test_http_role_io_only_allows_selected_run_and_sample(tmp_path):
         finally:
             server.shutdown()
             thread.join()
+
+
+def test_overview_replays_pool_without_new_log_and_uses_pre_task_confidence(tmp_path):
+    directory, paths = _run(tmp_path)
+    trajectory = directory / 'artifacts/trajectories.jsonl'
+    records = [json.loads(line) for line in trajectory.read_text().splitlines()]
+    eid = records[0]['reflected_candidates'][0]['experience_id']
+    records[1]['selected_experience_ids'] = [eid]  # 未引用仍是零信用的使用记录。
+    trajectory.write_text(''.join(json.dumps(r) + '\n' for r in records))
+    payload = load_run(directory)
+    o = payload['overview']
+    assert not (directory / 'artifacts/evolution.jsonl').exists()
+    assert o['train_completed'] == o['train_total'] == 2
+    assert o['initial']['valid'] == 2
+    assert o['adds'] == 1 and o['merges'] == 1 and o['merge_rate'] == .5
+    assert [p['pool'] for p in o['curve']] == [1, 1]
+    assert o['replay_available']
+    assert sum(b['uses'] for b in o['confidence_bins']) == 1
+    # task b 使用的是 a 写入后的状态，不能包含 b 的合并信用。
+    exp = payload['experiences'][0]
+    credit = exp['evidence_history'][0]['credit']
+    pre = (1 + max(credit, 0)) / (2 + abs(credit))
+    assert o['confidence_bins'][min(9, int(pre * 10))]['uses'] == 1
+    assert o['scale_bins'][0]['tasks'] == 1
+    assert o['scale_bins'][1]['tasks'] == 1
+    assert o['segments'][0]['total'] == 2
+    assert o['segments'][0]['errors'] == 0
+    # 数据丢失时不猜测训练身份或使用前状态。
+    Path(paths['train']).unlink()
+    missing = load_run(directory)['overview']
+    assert missing['train_completed'] == 0
+    assert missing['confidence_bins'] is None
+
+
+def test_overview_missing_evidence_prefix_suppresses_confidence(tmp_path):
+    directory, _ = _run(tmp_path)
+    path = directory / 'artifacts/experience_memory.json'
+    memory = json.loads(path.read_text())
+    memory['experiences'][0]['evidence_history'][0]['sample_id'] = 'unfinished'
+    path.write_text(json.dumps(memory))
+    result = load_run(directory)
+    assert result['overview']['confidence_bins'] is None
+    assert result['overview']['scale_bins'] is None
+    assert any('无法与完整训练轨迹对齐' in w for w in result['warnings'])
+
+
+def test_overview_judge_errors_and_zero_denominators():
+    from verge.web import _overview_metrics
+    sample = {'sample_id': 'a', 'split': 'train', 'state': 'judge_error_initial',
+              'initial_judgment': None, 'initial_rubric': {'criteria': []}}
+    manifest = {'config': {'dataset': {'config': {'paths': {'train': 'unused'}}}}}
+    o = _overview_metrics([sample], [], {'a': {'split': 'train'}}, manifest, [])
+    assert o['initial'] == {'total': 1, 'valid': 0, 'correct': 0, 'errors': 1, 'accuracy': None}
+    assert o['curve'][0]['rolling']['accuracy'] is None
+    assert o['repair_rate'] is None and o['merge_rate'] is None
+    assert o['mode'] == 'train_only'
+    assert o['scale_bins'][0]['selection_rate'] is None
+
+
+def test_train_only_empty_completed_and_resume(tmp_path):
+    from verge.cli import run
+    config = yaml.safe_load((PROJECT / 'configs/default.yaml').read_text())
+    dataset = tmp_path / 'train.jsonl'
+    dataset.write_text(''.join(json.dumps({'sample_id': key, 'task': 'test task',
+                                          'chosen': 'good', 'rejected': 'bad'}) + '\n'
+                               for key in ('a', 'b')))
+    config['dataset']['config']['paths'] = {'train': str(dataset)}
+    config['run']['output_dir'] = str(tmp_path / 'only')
+    config['models']['default'] = {'backend': 'fake', 'model': 'initial_success'}
+    config['modules']['retrieval']['implementation'] = 'fake'
+    path = tmp_path / 'only.yaml'
+    path.write_text(yaml.safe_dump(config))
+    run(path)
+    o = load_run(tmp_path / 'only')['overview']
+    assert o['mode'] == 'train_only' and o['train_completed'] == o['train_total'] == 2
+    # 构造首任务完整提交的前缀，无经验池写入；已完成运行本身不得续跑。
+    trajectory = tmp_path / 'only/artifacts/trajectories.jsonl'
+    trajectory.write_text(trajectory.read_text().splitlines()[0] + '\n')
+    role_io = tmp_path / 'only/artifacts/role_io.jsonl'
+    role_io.write_text(''.join(line + '\n' for line in role_io.read_text().splitlines()
+                               if json.loads(line).get('sample_id') == 'a'))
+    config['run']['output_dir'] = str(tmp_path / 'resume')
+    path.write_text(yaml.safe_dump(config))
+    run(path, resume_from=tmp_path / 'only')
+    assert load_run(tmp_path / 'resume')['overview']['curve'] == o['curve']
+    empty = tmp_path / 'empty'
+    shutil.copytree(tmp_path / 'only', empty)
+    (empty / 'artifacts/trajectories.jsonl').write_text('')
+    (empty / 'artifacts/experience_memory.json').write_text('{"experiences": []}')
+    result = load_run(empty)['overview']
+    assert result['train_completed'] == 0 and result['train_total'] == 2
+    assert result['initial']['accuracy'] is None and result['curve'] == []

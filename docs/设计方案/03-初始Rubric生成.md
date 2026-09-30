@@ -26,27 +26,7 @@ critic feedback
 
 ## 3. 输出
 
-Generator 输出 2–8 条原子 Boolean criteria：
-
-```text
-Criterion {
-    criterion_id
-    question
-    importance_score
-    source_experiences
-}
-```
-
-示例：
-
-```json
-{
-  "criterion_id": "c_1",
-  "question": "回答是否分别满足任务中的每个显式要求？",
-  "importance_score": 8,
-  "source_experiences": ["exp_001"]
-}
-```
+Generator 返回 `criteria` 列表，每项只包含 `question`、`importance_score` 和 `source_experiences`。系统按列表顺序自动分配 criterion ID，并创建 rubric ID 和空 base；后续 Judge/Critic 使用系统分配的编号。来源经验引用仍使用输入提供的局部数字 ID。
 
 ## 4. Importance Score
 

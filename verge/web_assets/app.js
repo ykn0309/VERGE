@@ -1,7 +1,7 @@
 /* VERGE run dashboard — no third-party runtime; every artifact string is escaped. */
 const app = document.getElementById('app');
 let data = null, page = 'overview', sampleIndex = 0, expIndex = 0, query = '', splitFilter = 'train', resultFilter = 'all', expQuery = '';
-let currentRun = null, requestSequence = 0;
+let currentRun = null, requestSequence = 0, memoryTab = 'pool', candidateIndex = 0, candidateQuery = '';
 const translations = new Map(), translatedFields = new Set();
 const roleIoCache = new Map(), roleIoPending = new Map();
 let sampleTab = 'pipeline';
@@ -30,6 +30,12 @@ const expButton = id => {
   return idx < 0 ? '<span class="muted">历史经验（当前快照无详情）</span>' :
     `<button class="experience-link" data-action="experience" data-index="${idx}" data-exp-preview="${idx}" aria-label="查看经验：${h(experienceName(data.experiences[idx]))}">${h(experienceName(data.experiences[idx]))}</button>`;
 };
+const candidateEntries = () => data.samples.flatMap((sample, sampleIndex) =>
+  (sample.reflected_candidates || []).map((candidate, localIndex) => ({sample, sampleIndex, localIndex, candidate})));
+const candidateButton = (sampleIndex, localIndex, id) => {
+  const idx = candidateEntries().findIndex(row => row.sampleIndex === sampleIndex && row.localIndex === localIndex);
+  return idx < 0 ? h(id) : `<button class="event-link" data-action="candidate" data-index="${idx}">${h(id)}</button>`;
+};
 
 async function refresh(nextName = null) {
   const sequence = ++requestSequence;
@@ -51,7 +57,7 @@ async function refresh(nextName = null) {
     if (sequence !== requestSequence) return;
     if (!response.ok) throw Error(payload.error || '无法读取运行结果');
     if (currentRun !== name) {
-      sampleIndex = 0; expIndex = 0; query = ''; expQuery = ''; splitFilter = 'train'; resultFilter = 'all';
+      sampleIndex = 0; expIndex = 0; candidateIndex = 0; memoryTab = 'pool'; query = ''; expQuery = ''; candidateQuery = ''; splitFilter = 'train'; resultFilter = 'all';
     }
     currentRun = name;
     translations.clear(); translatedFields.clear(); roleIoCache.clear();
@@ -63,6 +69,7 @@ async function refresh(nextName = null) {
     history.replaceState(null, '', `?run=${encodeURIComponent(name)}`);
     sampleIndex = Math.min(sampleIndex, Math.max(0, data.samples.length - 1));
     expIndex = Math.min(expIndex, Math.max(0, data.experiences.length - 1));
+    candidateIndex = Math.min(candidateIndex, Math.max(0, candidateEntries().length - 1));
     document.getElementById('nav-sample-count').textContent = data.samples.length;
     document.getElementById('nav-exp-count').textContent = data.experiences.length;
     render();
@@ -74,8 +81,39 @@ function render() {
   if (!data) return;
   hideExperiencePreview();
   document.querySelectorAll('.nav').forEach(button => button.classList.toggle('active', button.dataset.page === page));
-  document.getElementById('crumb').textContent = {overview:'运行概览',samples:'样本流水线',memory:'经验池'}[page];
+  document.getElementById('crumb').textContent = {overview:'运行概览',samples:'样本流水线',memory:'经验'}[page];
   app.innerHTML = page === 'overview' ? overview() : page === 'samples' ? samplesPage() : memoryPage();
+}
+function evolutionChart(title, rows, series, ceiling = null) {
+  if (!rows.length) return `<section class="panel"><h2>${h(title)}</h2><p class="muted">暂无已完成训练任务</p></section>`;
+  const ymax = ceiling || Math.max(1, ...rows.flatMap(r=>series.map(s=>s.value(r) ?? 0)));
+  const x = i => 48 + (rows.length === 1 ? 0 : i * 700 / (rows.length - 1));
+  const y = v => 160 - 130 * v / ymax;
+  const lines = series.map(s=>{
+    // 缺失值中断曲线，不将未知正确率画成 0。
+    let path='', previous=false;
+    rows.forEach((r,i)=>{const v=s.value(r); if(v==null){previous=false;return;}
+      path+=`${previous?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)} `;previous=true;});
+    return `<path d="${path}" fill="none" stroke="${s.color}" stroke-width="2"/><circle cx="${x(rows.length-1)}" cy="${y(s.value(rows.at(-1))??0)}" r="${s.value(rows.at(-1))==null?0:3}" fill="${s.color}"/>`;
+  }).join('');
+  return `<section class="panel evolution-chart"><h2>${h(title)}</h2><p class="legend">${series.map((s,i)=>`<span class="chart-legend-${i}">${h(s.label)}</span>`).join(' · ')} · 横轴：已完成训练任务序号</p><svg viewBox="0 0 780 190" role="img" aria-label="${h(title)}"><path d="M48,30 V160 H748" fill="none" stroke="#ccc"/><text x="4" y="35">${ceiling===1?'100%':ymax}</text><text x="10" y="164">0</text><text x="48" y="182">1</text><text x="715" y="182">${rows.length}</text>${lines}</svg></section>`;
+}
+function overviewTable(title, headers, rows, foot='') {
+  return `<section class="panel"><h2>${h(title)}</h2><div class="overview-table"><table><thead><tr>${headers.map(v=>`<th>${h(v)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map(v=>`<td>${v && typeof v==='object' ? (v.sample ? sampleButton(v.sample) : expButton(v.experience)) : h(v)}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${headers.length}">暂无数据</td></tr>`}</tbody></table></div>${foot?`<p class="legend">${h(foot)}</p>`:''}</section>`;
+}
+function onlineOverview() {
+  const o=data.overview;
+  if(!o) return '';
+  const latest=o.curve.at(-1);
+  let html=`<div class="metrics">${metric('训练进度',`${o.train_completed} / ${o.train_total}`,o.mode==='train_only'?'全量在线训练 · 无测试集':'训练与冻结测试')}${metric('首次正确率',pct(o.initial.accuracy),`${o.initial.correct}/${o.initial.valid} 有效 · ${o.initial.errors} 初始 Judge 错误`)}${metric('最近 50 条',pct(latest?.rolling.accuracy),latest?`${latest.rolling.correct}/${latest.rolling.valid} 有效 · ${latest.rolling.total<50?'不满窗口':'50 条窗口'}`:'暂无数据')}${metric('修订修复率',pct(o.repair_rate),`${o.repair_successes}/${o.initial_failures} 初始失败`)}${metric('合并率',pct(o.merge_rate),`ADD ${o.adds} · MERGE ${o.merges}`)}</div>`;
+  html+=evolutionChart('首次正确率趋势',o.curve,[{label:'累计',color:'#27664f',value:r=>r.cumulative.accuracy},{label:'最近 50 条（起始不足 50 条）',color:'#b47b36',value:r=>r.rolling.accuracy}],1);
+  html+=overviewTable('每 50 条分段与子集构成',['训练序号','首次正确率','有效/总数','初始 Judge 错误','子集构成'],o.segments.map(s=>[`${s.start}–${s.end}${s.total<50?'（不满段）':''}`,pct(s.accuracy),`${s.valid}/${s.total}`,s.errors,Object.entries(s.subsets).map(([k,v])=>`${k}: ${v}`).join(' · ')]));
+  html+=overviewTable('子集与修订',['子集','首次正确率','正确/有效','初始 Judge 错误'],Object.entries(o.subsets).map(([k,s])=>[k,pct(s.accuracy),`${s.correct}/${s.valid}`,s.errors]),`第一次修订成功率 ${pct(o.first_rate)}（分母：初始失败）；第二次补救率 ${pct(o.second_rate)}（${o.second_successes}/${o.second_attempted} 实际第二轮任务）。`);
+  html+=evolutionChart('经验积累：已记录的融合事件',o.curve,[{label:'canonical 池大小',color:'#27664f',value:r=>r.pool},{label:'累计 ADD',color:'#4a75aa',value:r=>r.adds},{label:'累计 MERGE',color:'#b47b36',value:r=>r.merges}]);
+  html+=overviewTable('候选与准入',['轨迹保留候选','已绑定且有信用','准入 PASS','准入 FAIL','ADD','MERGE'],[[o.candidates,o.bound,o.admission_pass,o.admission_fail,o.adds,o.merges]],'无绑定候选可能已由信用模块丢弃，此表不是 Reflector 原始输出总数；池曲线不包含未完成任务的部分写入。');
+  html+=overviewTable('使用前置信度与后续贡献',['confidence','使用数','正/负/零','平均 credit'],(o.confidence_bins||[]).filter(b=>b.uses).map(b=>[b.label,`${b.uses}${b.uses<10?'（小样本）':''}`,`${b.positive}/${b.negative}/${b.zero}`,n(b.mean_credit)]),o.replay_available?'按选中经验×有效 R0 计数；零值不等于无效。Beta 分数不是校准概率，代理反馈有内生性与选择偏差。':'日志不完整或证据不一致，无法可靠重建使用前置信度。');
+  html+=overviewTable('池规模与检索使用链路',['池大小','任务数','召回/选中/引用','选中率','引用率','请求数','已报告 token'],(o.scale_bins||[]).map(b=>[b.label,b.tasks,`${b.recalled}/${b.selected}/${b.referenced}`,pct(b.selection_rate),pct(b.reference_rate),b.requests,b.token_reports?`${b.tokens}（${b.token_reports} 份报告）`:'未记录']), '引用按选中经验中的不同 ID 计数，不是 criterion 数；这不是检索 precision/recall。成本为整条任务的全部角色，非单独检索成本；本轮不采集耗时/相似度。');
+  return html;
 }
 function overview() {
   const samples = data.samples, exps = data.experiences, count = key => data.counts[key] || 0;
@@ -86,12 +124,12 @@ function overview() {
   const added = candidates.filter(c => c.fusion === 'ADD').length;
   const merged = candidates.filter(c => c.fusion === 'MERGE').length;
   const max = Math.max(1, ...Object.values(data.counts));
-  return heading('EXPERIMENT / OVERVIEW', '运行概览', '从一次运行到每个样本，再到经验池的累积变化。') + warnBlock() + lineage() +
+  return heading('EXPERIMENT / OVERVIEW', '运行概览', '从一次运行到每个样本，再到经验池的累积变化。') + warnBlock() + lineage() + onlineOverview() +
     `<div class="metrics">
       ${metric('已记录样本',samples.length,`训练 ${trained} · 测试 ${tested}${trained + tested < samples.length ? ' · 未标注 ' + (samples.length - trained - tested) : ''}`)}
       ${metric('正向判别',success,`初始 ${count('initial_success')} · 修订 ${count('revision_success_1') + count('revision_success_2')}`)}
       ${metric('候选经验',candidates.length,`新增 ${added} · 合并 ${merged} · 未入池 ${candidates.length-added-merged}`)}
-      ${metric('当前经验',exps.length,'冻结测试阶段不更新经验池')}
+      ${metric('当前经验',exps.length,data.overview?.mode==='train_only'?'在线训练持续更新经验池':'冻结测试阶段不更新经验池')}
       ${metric('证据事件',exps.reduce((sum,e)=>sum+e.evidence_history.length,0),'revision + downstream credit')}
     </div><section class="panel overview-states"><div class="panel-title"><h2>结果分布</h2><small>SAMPLE STATES</small></div>${Object.entries(data.counts).map(([state,value])=>`<div class="bar-row ${state.includes('failure')?'fail':state==='initial_failure'?'test':''}"><span>${h(stateName[state]||state)}</span><div class="bar-track"><svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="bar-fill" width="${Math.round(100*value/max)}" height="8"/></svg></div><b>${value}</b></div>`).join('') || '<p class="muted">暂无样本轨迹</p>'}</section>`;
 }
@@ -166,26 +204,50 @@ function roleDetail(s, role) {
 function pipelineDetail(s) {
   const initial = s.initial_judgment, attempts = s.revision_attempts || [], candidates = s.reflected_candidates || [], invalid = s.invalid_revision_attempts || [];
   return `<div class="detail-header"><div><span class="section-kicker">SAMPLE TRACE / ${h(s.split?.toUpperCase()||'UNKNOWN')}</span><h2>${h(s.sample_id)}</h2>${s.metadata?.subset?`<p>子集 ${h(s.metadata.subset)}</p>`:''}</div>${badge(stateName[s.state]||s.state,statusClass(s.state))}</div>
-  ${['task','chosen','rejected'].some(field => typeof s[field] === 'string') ? `<div class="detail-section"><div class="section-kicker">01 / INPUT</div><h3>任务与偏好对</h3>${sampleInput(s,'task','TASK')}${sampleInput(s,'chosen','CHOSEN')}${sampleInput(s,'rejected','REJECTED')}</div>`:''}
+  ${['task','chosen','rejected'].some(field => typeof s[field] === 'string') ? `<div class="detail-section input-section"><div class="section-kicker">01 / INPUT</div><h3>任务与偏好对</h3>${sampleInput(s,'task','TASK')}${sampleInput(s,'chosen','CHOSEN')}${sampleInput(s,'rejected','REJECTED')}</div>`:''}
   <div class="detail-section"><div class="section-kicker">02 / EXPERIENCE RETRIEVAL</div><h3>召回与筛选</h3><div class="mini-stats"><span class="mini-stat">召回 <b>${s.retrieved_experience_ids?.length ?? 0}</b></span><span class="mini-stat">选中 <b>${s.selected_experience_ids?.length ?? 0}</b></span></div>${(s.retrieved_experience_ids||[]).length?`<div class="retrieval-list" aria-label="召回经验，可滚动">${s.retrieved_experience_ids.map(id=>`<div class="retrieval-item">${expButton(id)} ${s.selected_experience_ids?.includes(id)?badge('已选中','ok'):badge('未选中')}</div>`).join('')}</div><p class="legend">悬浮或聚焦经验名称可预览；点击查看完整演化。列表可独立滚动。</p>`:'<p class="muted body-text">经验池为空，或当前任务没有召回经验。</p>'}</div>
   ${s.initial_rubric ? `<div class="detail-section"><div class="section-kicker">03 / INITIAL RUBRIC & JUDGE</div><h3>初始标准 R0 ${badge(initial?.success?'判别成功':'判别失败',initial?.success?'ok':'warn')}</h3>${judgmentStats(initial)}${criteria(s.initial_rubric,initial)}</div>` : '<div class="detail-section"><div class="section-kicker">03 / INITIAL RUBRIC</div><p class="body-text muted">没有完整 R0 记录。模型请求可能已经发生，但该样本尚未写入轨迹。</p></div>'}
-  ${(attempts.length||invalid.length) ? `<div class="detail-section"><div class="section-kicker">04 / REVISION BRANCH</div><h3>同基线修订尝试</h3><p class="legend">每次修订都从 R0 出发，而不是以前一次失败修订为基线。</p>${[...attempts.map(a=>({number:a.attempt_number,attempt:a})),...invalid.map(a=>({number:a.attempt_number,invalid:a}))].sort((a,b)=>a.number-b.number).map(({number,attempt,invalid:bad})=>bad?`<div class="attempt"><div class="attempt-top"><strong>Attempt ${number} · 结构校验未通过</strong>${badge('未进入 Judge','bad')}</div><p class="body-text">${bad.analysis!=null?`Critic 私有分析：${h(bad.analysis)}`:`旧版 Critic 反馈：${h(bad.feedback||'未记录')}`}</p><div class="callout warn">${bad.validation_failures.map(h).join('<br>')}</div></div>`:`<div class="attempt"><div class="attempt-top"><strong>Attempt ${number} · ${h(attempt.rubric.rubric_id)}</strong>${badge(attempt.judgment.success?'成功':'失败',attempt.judgment.success?'ok':'warn')}</div><p class="body-text">${attempt.analysis!=null?`Critic 私有分析：${h(attempt.analysis)}`:`旧版 Critic 反馈：${h(attempt.feedback||'未记录')}`}</p>${attempt.validation_failures?.length?`<div class="callout warn">修复过程：${attempt.validation_failures.map(h).join('；')}</div>`:''}${attempt.operations.map(op=>`<div class="operation"><strong>${h(op.operation_type)} · ${h(op.operation_id)}</strong> ${op.operation_id in (s.operation_contributions||{})?`<span class="mono">δ ${n(s.operation_contributions[op.operation_id])}</span>`:''}<p>${op.before_criterion?`原：${h(op.before_criterion.question)}<br>`:''}${op.new_or_updated_criterion?`新：${h(op.new_or_updated_criterion.question)}`:'删除标准 '+h(op.target_criterion_id)}</p></div>`).join('')}${judgmentStats(attempt.judgment)}<details><summary class="inline-link">查看修订后完整 Rubric</summary>${criteria(attempt.rubric,attempt.judgment)}</details></div>`).join('')}</div>` : ''}
-  ${candidates.length ? `<div class="detail-section"><div class="section-kicker">05 / REFLECTION → CREDIT → ADMISSION → FUSION</div><h3>候选经验与入池决策</h3>${candidates.map(c=>`<div class="candidate"><div class="candidate-head"><strong class="mono">${h(c.candidate_id)}</strong>${badge(c.credit===null?'CREDIT_FAIL':c.admission==='FAIL'?'准入拒绝':c.fusion?c.fusion:'待处理',c.fusion?'ok':c.admission==='FAIL'?'bad':'warn')}</div><p>${h(c.content)}</p><small>触发条件：${h(c.trigger)}</small>${c.admission ? `<p class="admission-reason"><strong>准入理由：</strong>${h(c.admission_reason || '旧轨迹未记录判断理由')}</p>` : ''}<div class="mini-stats"><span class="mini-stat">绑定操作 <b>${h((c.linked_operation_ids||[]).join(', ')||'无')}</b></span><span class="mini-stat">暂定信用 <b>${n(c.credit)}</b></span></div>${c.experience_id?`<span class="sources">入池经验：${expButton(c.experience_id)}</span>`:''}</div>`).join('')}</div>` : ''}
+  ${(attempts.length||invalid.length) ? `<div class="detail-section"><div class="section-kicker">04 / REVISION BRANCH</div><h3>同基线修订尝试</h3><p class="legend">每次修订都从 R0 出发，而不是以前一次失败修订为基线。</p>${[...attempts.map(a=>({number:a.attempt_number,attempt:a})),...invalid.map(a=>({number:a.attempt_number,invalid:a}))].sort((a,b)=>a.number-b.number).map(({number,attempt,invalid:bad})=>bad?`<div class="attempt"><div class="attempt-top"><strong>Attempt ${number} · 结构校验未通过</strong>${badge('未进入 Judge','bad')}</div><p class="body-text">${bad.analysis!=null?`Critic 私有分析：${h(bad.analysis)}`:`旧版 Critic 反馈：${h(bad.feedback||'未记录')}`}</p><div class="callout warn">${bad.validation_failures.map(h).join('<br>')}</div></div>`:`<div class="attempt"><div class="attempt-top"><strong>Attempt ${number} · ${h(attempt.rubric.rubric_id)}</strong>${badge(attempt.judgment.success?'成功':'失败',attempt.judgment.success?'ok':'warn')}</div><p class="body-text">${attempt.analysis!=null?`Critic 私有分析：${h(attempt.analysis)}`:`旧版 Critic 反馈：${h(attempt.feedback||'未记录')}`}</p>${attempt.validation_failures?.length?`<div class="callout warn">修复过程：${attempt.validation_failures.map(h).join('；')}</div>`:''}${attempt.operations.map(op=>`<div class="operation"><strong>${h(op.operation_type)} · ${h(op.operation_id)}</strong> ${op.operation_id in (s.operation_contributions||{})?`<span class="mono">δ ${n(s.operation_contributions[op.operation_id])}</span>`:''}<p>${op.before_criterion?`原：${h(op.before_criterion.question)}<br>`:''}${op.new_or_updated_criterion?`新：${h(op.new_or_updated_criterion.question)}`:'删除标准 '+h(op.target_criterion_id)}</p></div>`).join('')}${judgmentStats(attempt.judgment)}${criteria(attempt.rubric,attempt.judgment)}</div>`).join('')}</div>` : ''}
+  ${candidates.length ? `<div class="detail-section"><div class="section-kicker">05 / REFLECTION → CREDIT → ADMISSION → FUSION</div><h3>候选经验与入池决策</h3>${candidates.map((c,i)=>`<div class="candidate"><div class="candidate-head"><strong class="mono">${candidateButton(data.samples.indexOf(s),i,c.candidate_id)}</strong>${badge(c.credit===null?'CREDIT_FAIL':c.admission==='FAIL'?'准入拒绝':c.fusion?c.fusion:'待处理',c.fusion?'ok':c.admission==='FAIL'?'bad':'warn')}</div><p>${h(c.content)}</p><small>触发条件：${h(c.trigger)}</small>${c.admission ? `<p class="admission-reason"><strong>准入理由：</strong>${h(c.admission_reason || '旧轨迹未记录判断理由')}</p>` : ''}<div class="mini-stats"><span class="mini-stat">绑定操作 <b>${h((c.linked_operation_ids||[]).join(', ')||'无')}</b></span><span class="mini-stat">暂定信用 <b>${n(c.credit)}</b></span></div>${c.experience_id?`<span class="sources">入池经验：${expButton(c.experience_id)}</span>`:''}</div>`).join('')}</div>` : ''}
   `;
 }
 function judgmentStats(j) {return j ? `<div class="mini-stats"><span class="mini-stat">MARGIN <b>${n(j.margin)}</b></span><span class="mini-stat">CHOSEN <b>${n(j.chosen_score)}</b></span><span class="mini-stat">REJECTED <b>${n(j.rejected_score)}</b></span></div>` : '';}
-function criteria(rubric, judgment) {return `<div class="rubric-list" role="region" tabindex="0" aria-label="Rubric 标准，可滚动">${rubric.criteria.map(c=>{const verdict=judgment?.criterion_judgments?.find(j=>j.criterion_id===c.criterion_id);return `<div class="criterion"><div class="criterion-head"><strong>${h(c.criterion_id)}</strong><span class="meta">重要性 ${c.importance_score} · 权重 ${pct(judgment?.normalized_weights?.[c.criterion_id])}</span></div><div class="criterion-body"><p>${h(c.question)}</p><div class="judgment-pills"><span class="truth ${verdict?.chosen?'yes':'no'}">Chosen ${verdict?.chosen?'✓':'✕'}</span><span class="truth ${verdict?.rejected?'yes':'no'}">Rejected ${verdict?.rejected?'✓':'✕'}</span></div>${c.source_experiences?.length?`<div class="sources">来源经验：${c.source_experiences.map(expButton).join(' · ')}</div>`:''}</div></div>`;}).join('')}</div>`;}
+function criteria(rubric, judgment) {return `<div class="rubric-list" role="region" tabindex="0" aria-label="Rubric 标准，可滚动">${rubric.criteria.map(c=>{const verdict=judgment?.criterion_judgments?.find(j=>j.criterion_id===c.criterion_id);return `<div class="criterion"><div class="criterion-head"><strong>${h(c.criterion_id)}</strong><span class="criterion-meta">重要性 ${h(c.importance_score)} · 权重 ${pct(judgment?.normalized_weights?.[c.criterion_id])}</span>${verdict?`<span class="judgment-pills"><span class="truth ${verdict.chosen?'yes':'no'}">Chosen ${verdict.chosen?'✓':'✕'}</span><span class="truth ${verdict.rejected?'yes':'no'}">Rejected ${verdict.rejected?'✓':'✕'}</span></span>`:''}</div><div class="criterion-body"><p>${h(c.question)}</p>${c.source_experiences?.length?`<div class="sources">来源经验：${c.source_experiences.map(expButton).join(' · ')}</div>`:''}</div></div>`;}).join('')}</div>`;}
+function experienceUsage(e) {
+  // Count distinct samples whose R0 cites this experience, not merely selector choices.
+  return new Set(data.samples.filter(s => s.initial_rubric?.criteria?.some(c =>
+    c.source_experiences?.includes(e.experience_id))).map(s => s.sample_id)).size;
+}
+function experienceMerges(e) {return e.evolution.filter(event => event.fusion === 'MERGE').length;}
+function candidateStatus(c) {
+  return c.fusion === 'ADD' ? badge('已新增','ok') : c.fusion === 'MERGE' ? badge('已合并','ok') :
+    c.admission === 'FAIL' ? badge('准入拒绝','bad') : c.credit == null ? badge('信用未绑定','warn') : badge('未入池','neutral');
+}
 function memoryPage() {
-  const visible=data.experiences.map((e,i)=>({e,i})).filter(({e})=>!expQuery||`${e.experience_id} ${e.content} ${e.trigger}`.toLowerCase().includes(expQuery.toLowerCase()));
-  return warnBlock() +
-    `<div class="workbench"><section class="panel list-panel memory-list"><div class="list-head"><h2>经验目录 <span class="muted mono">${visible.length} / ${data.experiences.length}</span></h2><input class="search" data-search="experience" placeholder="搜索经验内容或 ID…" value="${h(expQuery)}" aria-label="搜索经验"></div><div class="list-scroll">${visible.map(({e,i})=>`<button class="list-item ${i===expIndex?'active':''}" data-action="experience" data-index="${i}"><span class="row-top"><strong title="${h(experienceName(e))}">${h(experienceName(e))}</strong>${badge(pct(e.confidence),'ok')}</span><p>${h(short(e.content,74))}</p></button>`).join('')||'<div class="empty">没有匹配的经验</div>'}</div></section><section class="panel detail">${data.experiences[expIndex]?experienceDetail(data.experiences[expIndex]):'<div class="empty">经验池为空；成功修订并通过准入后才会出现经验。</div>'}</section></div>`;
+  const rows = candidateEntries();
+  const pool = memoryTab === 'pool';
+  const visible = pool ? data.experiences.map((e,i)=>({e,i})).filter(({e})=>!expQuery||`${e.experience_id} ${e.content} ${e.trigger}`.toLowerCase().includes(expQuery.toLowerCase())) :
+    rows.map((entry,i)=>({...entry,i})).filter(({candidate:c,sample:s})=>!candidateQuery||`${c.candidate_id} ${c.content} ${c.trigger} ${s.sample_id}`.toLowerCase().includes(candidateQuery.toLowerCase()));
+  const current = visible.find(({i})=>i===(pool?expIndex:candidateIndex)) || visible[0];
+  return warnBlock() + `<div class="sample-split-tabs" role="tablist" aria-label="经验分类">
+    <button role="tab" aria-selected="${pool}" class="split-tab ${pool?'active':''}" data-action="memory-tab" data-tab="pool">经验池 <span class="mono">${data.experiences.length}</span></button>
+    <button role="tab" aria-selected="${!pool}" class="split-tab ${pool?'':'active'}" data-action="memory-tab" data-tab="candidates">候选经验 <span class="mono">${rows.length}</span></button></div>
+    <div class="workbench"><section class="panel list-panel memory-list"><div class="list-head"><h2>${pool?'经验池':'候选经验'} <span class="muted mono">${visible.length} / ${pool?data.experiences.length:rows.length}</span></h2><input class="search" data-search="${pool?'experience':'candidate'}" placeholder="搜索内容、ID 或来源样本…" value="${h(pool?expQuery:candidateQuery)}" aria-label="搜索${pool?'经验池':'候选经验'}"></div>
+    <div class="list-scroll">${pool ? visible.map(({e,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="experience" data-index="${i}"><span class="row-top"><strong title="${h(experienceName(e))}">${h(experienceName(e))}</strong>${badge(pct(e.confidence),'ok')}</span><p class="mono">${h(e.experience_id)}</p><div class="list-metrics"><span title="训练及测试样本 R0 中引用该经验的次数（每个样本最多计一次）">使用 ${experienceUsage(e)} 次</span><span title="该经验接收 MERGE 候选的次数">合并 ${experienceMerges(e)} 次</span></div></button>`).join('') : visible.map(({candidate:c,sample:s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="candidate" data-index="${i}"><span class="row-top"><strong title="${h(c.candidate_id)}">${h(short(c.candidate_id,30))}</strong>${candidateStatus(c)}</span><p>${h(short(c.content,74))}</p><span class="candidate-origin">${h(short(s.sample_id,36))}</span></button>`).join('')}${visible.length?'':'<div class="empty">没有匹配的经验</div>'}</div></section>
+    <section class="panel detail">${current ? pool?experienceDetail(current.e):candidateDetail(current) : `<div class="empty">${pool?'经验池为空；修订成功且通过准入后才会出现经验。':'当前轨迹没有保留候选经验。'}</div>`}</section></div>`;
+}
+function candidateDetail({candidate:c,sample:s}) {
+  return `<div class="detail-header"><div><span class="section-kicker">REFLECTION / CANDIDATE</span><h2>${h(c.candidate_id)}</h2><p>来源样本：${sampleButton(s.sample_id)} · ${h(s.split || '未标注')}</p></div>${candidateStatus(c)}</div>
+    <div class="detail-section"><div class="section-kicker">01 / CANDIDATE</div><h3>候选内容</h3><p class="exp-intro">${h(c.content)}</p><div class="exp-trigger"><strong>TRIGGER · 适用条件</strong><br>${h(c.trigger)}</div></div>
+    <div class="detail-section"><div class="section-kicker">02 / DECISION</div><h3>信用与准入</h3><div class="mini-stats"><span class="mini-stat">绑定操作 <b>${h((c.linked_operation_ids||[]).join(', ')||'无')}</b></span><span class="mini-stat">暂定信用 <b>${n(c.credit)}</b></span><span class="mini-stat">准入 <b>${h(c.admission||'未记录')}</b></span><span class="mini-stat">融合 <b>${h(c.fusion||'未发生')}</b></span></div>${c.admission_reason?`<div class="callout">准入理由：${h(c.admission_reason)}</div>`:''}${c.experience_id?`<p class="body-text">目标经验：${expButton(c.experience_id)}</p>`:''}</div>
+    <div class="detail-section"><div class="section-kicker">03 / SOURCE</div><h3>来源轨迹</h3><p class="body-text">${sampleButton(s.sample_id)}</p><p class="legend">这里只列出完整轨迹中保留的候选；不能从旧日志可靠重建未保存的 Reflector 原始输出。</p></div>`;
 }
 function experienceDetail(e) {
   const t=e.evolution;
   const sourceCount=e.source_trajectories.length;
-  return `<div class="detail-header"><div><span class="section-kicker">CANONICAL EXPERIENCE / ${String(expIndex+1).padStart(2,'0')}</span><h2>${h(experienceName(e))}</h2><p>名称由正文摘要生成 · 合并时保留原始内容和触发条件</p></div>${badge(pct(e.confidence),'ok')}</div>
+  return `<div class="detail-header"><div><span class="section-kicker">CANONICAL EXPERIENCE / ${String(data.experiences.indexOf(e)+1).padStart(2,'0')}</span><h2>${h(experienceName(e))}</h2><p>名称由正文摘要生成 · 合并时保留原始内容和触发条件</p></div>${badge(pct(e.confidence),'ok')}</div>
     <div class="detail-section"><div class="section-kicker">01 / PRINCIPLE</div><h3>经验内容</h3><p class="exp-intro">${h(e.content)}</p><div class="exp-trigger"><strong>TRIGGER · 适用条件</strong><br>${h(e.trigger)}</div></div>
-    <div class="detail-section"><div class="section-kicker">02 / RELIABILITY</div><h3>可靠性与证据</h3><div class="mini-stats"><span class="mini-stat">α <b>${n(e.alpha)}</b></span><span class="mini-stat">β <b>${n(e.beta)}</b></span><span class="mini-stat">CONFIDENCE <b>${pct(e.confidence)}</b></span><span class="mini-stat">证据量 <b>${n(e.alpha+e.beta-2)}</b></span></div>${lineChart(t)}<p class="legend">从 Beta(1,1) 先验开始，正信用增加 α、负信用增加 β。置信度是 α/(α+β)，并非校准后的成功概率。</p></div>
+    <div class="detail-section"><div class="section-kicker">02 / RELIABILITY</div><h3>可靠性与证据</h3><div class="mini-stats"><span class="mini-stat">使用 <b>${experienceUsage(e)} 次</b></span><span class="mini-stat">合并 <b>${experienceMerges(e)} 次</b></span><span class="mini-stat">α <b>${n(e.alpha)}</b></span><span class="mini-stat">β <b>${n(e.beta)}</b></span><span class="mini-stat">CONFIDENCE <b>${pct(e.confidence)}</b></span><span class="mini-stat">证据量 <b>${n(e.alpha+e.beta-2)}</b></span></div>${lineChart(t)}<p class="legend">从 Beta(1,1) 先验开始，正信用增加 α、负信用增加 β。置信度是 α/(α+β)，并非校准后的成功概率。</p></div>
     <div class="detail-section"><div class="section-kicker">03 / ORIGIN & EVOLUTION</div><h3>演化时间线 · ${t.length-1} 个事件</h3><p class="legend">按记录顺序重建，非真实时间戳。${sourceCount} 条来源轨迹 · ${e.evidence_history.length} 条有效证据；无法唯一匹配的候选融合单独标记，不重复计入信用。无完整轨迹的证据可能来自中断样本。</p><div class="timeline">${t.map((ev,i)=>`<div class="event ${i===0?'prior':''}"><div class="event-top"><strong>${i===0?'初始先验':ev.kind==='fusion'?ev.fusion+' · 候选融合（无独立证据）':ev.kind==='revision_credit'?`${ev.fusion||'修订'} · 修订信用`:'下游信用'}</strong><span class="mono">${pct(ev.confidence)}</span></div>${i ? `<p>${sampleButton(ev.sample_id)} ${ev.has_trajectory?'':'· 无完整轨迹'}<br>credit ${n(ev.credit)} × weight ${n(ev.evidence_weight)} · α ${n(ev.alpha)} / β ${n(ev.beta)}${ev.candidate_id?`<br>候选 ${h(ev.candidate_id)}`:''}${ev.fusion==='MERGE'&&ev.candidate_content&&ev.candidate_content!==e.content?`<br>合并候选：${h(ev.candidate_content)}`:''}</p>`:`<p>${ev.sample_id?`${ev.origin_kind==='add'?'入池样本':'首条来源样本'}：${sampleButton(ev.sample_id)}${ev.has_trajectory?'':' · 无完整轨迹'}<br>`:'来源样本未记录<br>'}α 1.000 / β 1.000 · 尚无样本信用</p>`}</div>`).join('')}</div></div>
     <div class="detail-section"><div class="section-kicker">04 / SOURCE TRAJECTORIES</div><h3>产生或再次发现它的样本</h3><p class="body-text">${e.source_trajectories.map(id=>sampleButton(id)).join(' · ')||'没有记录来源样本'}</p></div>`;
 }
@@ -311,11 +373,15 @@ document.addEventListener('click', event => {
   if(action==='sample-tab' && roleTabs.some(([key])=>key===button.dataset.tab)){
     sampleTab=button.dataset.tab;render();return;
   }
+  if(action==='memory-tab' && ['pool','candidates'].includes(button.dataset.tab)){
+    memoryTab=button.dataset.tab;render();return;
+  }
   if(action==='refresh'){refresh(currentRun);return;}
   if(action==='split-filter'){splitFilter=button.dataset.split;resultFilter='all';query='';sampleIndex=data.samples.findIndex(s=>splitFilter==='unknown'?s.split!=='train'&&s.split!=='test':s.split===splitFilter);render();return;}
   if(action==='result-filter'){resultFilter=button.dataset.filter;render();return;}
   if(action==='sample'){sampleIndex=Number(button.dataset.index);const sample=data.samples[sampleIndex];const nextSplit=sample?.split==='train'||sample?.split==='test'?sample.split:'unknown';if(page!=='samples'||splitFilter!==nextSplit){resultFilter='all';query='';}splitFilter=nextSplit;page='samples';render();window.scrollTo(0,0);return;}
-  if(action==='experience'){expIndex=Number(button.dataset.index);page='memory';render();window.scrollTo(0,0);}
+  if(action==='experience'){if(page!=='memory'||memoryTab!=='pool') expQuery='';expIndex=Number(button.dataset.index);memoryTab='pool';page='memory';render();window.scrollTo(0,0);return;}
+  if(action==='candidate'){if(page!=='memory'||memoryTab!=='candidates') candidateQuery='';candidateIndex=Number(button.dataset.index);memoryTab='candidates';page='memory';render();window.scrollTo(0,0);}
 });
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -333,7 +399,9 @@ document.getElementById('run-select').addEventListener('change', event => refres
 document.addEventListener('input', event=>{
   if(!event.target.dataset.search) return;
   const focus=event.target.dataset.search;
-  if(focus==='sample') query=event.target.value; else expQuery=event.target.value;
+  if(focus==='sample') query=event.target.value;
+  else if(focus==='candidate') candidateQuery=event.target.value;
+  else expQuery=event.target.value;
   const position=event.target.selectionStart;
   render();
   const replacement=document.querySelector(`[data-search="${focus}"]`);

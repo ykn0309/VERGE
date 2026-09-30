@@ -176,6 +176,36 @@ def split_rewardbench_chat_hard(rows: Iterable[Mapping[str, Any]], *, seed: int 
     return selected
 
 
+def full_rewardbench_chat_hard(rows: Iterable[Mapping[str, Any]], *, seed: int = 42
+                               ) -> dict[str, list[dict[str, Any]]]:
+    """全部合法 Chat Hard 记录；全局哈希打散，不按题面去重。"""
+    if type(seed) is not int or seed < 0:
+        raise ValueError("seed must be a non-negative integer")
+    samples = []
+    seen: set[int] = set()
+    for row in rows:
+        subset = row.get("subset")
+        if subset not in CHAT_HARD_SUBSETS:
+            continue
+        if (type(row.get("id")) is not int or row["id"] in seen or
+                any(not isinstance(row.get(key), str) or not row[key].strip()
+                    for key in ("prompt", "chosen", "rejected"))):
+            raise ValueError("RewardBench full train has invalid fields or duplicate source ID")
+        seen.add(row["id"])
+        metadata = {"source": "allenai/reward-bench", "subset": subset, "source_id": row["id"]}
+        for key in ("chosen_model", "rejected_model"):
+            if isinstance(row.get(key), str):
+                metadata[key] = row[key]
+        samples.append({"sample_id": f"rewardbench:{subset}:{row['id']}",
+                        "task": row["prompt"], "chosen": row["chosen"],
+                        "rejected": row["rejected"], "metadata": metadata})
+    if {item["metadata"]["subset"] for item in samples} != set(CHAT_HARD_SUBSETS):
+        raise ValueError("RewardBench full train requires all six Chat Hard subsets")
+    samples.sort(key=lambda item: (hashlib.sha256(
+        f"{seed}:{item['sample_id']}".encode()).hexdigest(), item["sample_id"]))
+    return {"train": samples}
+
+
 def _preserved_chat_hard_splits(directory: Path, revision: str
                                 ) -> tuple[dict[tuple[str, int], str], dict[str, str]]:
     """从同一上游版本的已校验 JSONL 读取样本 split 归属。"""
@@ -223,12 +253,15 @@ def _preserved_chat_hard_splits(directory: Path, revision: str
 def prepare_rewardbench_chat_hard(output_dir: str | Path, *, seed: int = 42,
                                   per_subset: int = 2, train_per_subset: int = 1,
                                   revision: str | None = None,
-                                  preserve_splits_from: str | Path | None = None
+                                  preserve_splits_from: str | Path | None = None,
+                                  mode: str = "split"
                                   ) -> dict[str, Any]:
-    """固定上游 SHA 下载 filtered split；只把采样结果写入新目录的 JSONL。"""
+    """固定上游 SHA 下载 filtered split；按模式采样或全量训练，写入新目录。"""
     import pyarrow.parquet as parquet
     from huggingface_hub import HfApi, hf_hub_download
 
+    if mode not in ("split", "full_train") or (mode == "full_train" and preserve_splits_from is not None):
+        raise ValueError("invalid preparation mode or full_train preserve_splits_from")
     dataset_id = "allenai/reward-bench"
     if revision is not None and (not isinstance(revision, str)
                                  or not re.fullmatch(r"[0-9a-f]{40}", revision)):
@@ -256,9 +289,9 @@ def prepare_rewardbench_chat_hard(output_dir: str | Path, *, seed: int = 42,
 
     fixed, previous_hashes = ({}, {}) if preserve_splits_from is None else (
         _preserved_chat_hard_splits(Path(preserve_splits_from), revision))
-    selected = split_rewardbench_chat_hard(
-        filtered_rows(), seed=seed, per_subset=per_subset,
-        train_per_subset=train_per_subset, fixed_splits=fixed)
+    selected = (full_rewardbench_chat_hard(filtered_rows(), seed=seed) if mode == "full_train"
+                else split_rewardbench_chat_hard(filtered_rows(), seed=seed, per_subset=per_subset,
+                                                train_per_subset=train_per_subset, fixed_splits=fixed))
     target.mkdir(parents=True, exist_ok=False)
     hashes: dict[str, str] = {}
     for split, samples in selected.items():
@@ -274,6 +307,12 @@ def prepare_rewardbench_chat_hard(output_dir: str | Path, *, seed: int = 42,
                   "train_per_subset": train_per_subset,
                   "samples": {split: len(samples) for split, samples in selected.items()},
                   "sha256": hashes}
+    if mode == "full_train":
+        provenance.pop("per_subset")
+        provenance.pop("train_per_subset")
+        provenance["mode"] = mode
+        provenance["subset_counts"] = {subset: sum(item["metadata"]["subset"] == subset
+            for item in selected["train"]) for subset in CHAT_HARD_SUBSETS}
     if previous_hashes:
         provenance["preserved_split_sha256"] = previous_hashes
         provenance["fixed_assignments"] = {

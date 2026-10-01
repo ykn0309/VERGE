@@ -192,3 +192,25 @@ def test_critic_system_new_id_avoids_existing_base_id():
     restored = codec.restore({'operations': [{'operation_type': 'ADD', 'target_criterion_id': None,
         'new_or_updated_criterion': {'question': '新问题？', 'importance_score': 5}}]})
     assert restored['operations'][0]['new_or_updated_criterion']['criterion_id'] == 'added1_1_new_new'
+
+
+def test_judge_can_copy_numeric_labels_without_format_retry(monkeypatch):
+    import re
+    monkeypatch.setenv("JUDGE_KEY", "test-key")
+    calls = []
+    def handler(request):
+        body = json.loads(request.content)
+        text = body["messages"][1]["content"]
+        copied_ids = re.findall(r"^\s*- (\d+)：", text, re.MULTILINE)
+        assert copied_ids == ["1", "2"]
+        assert "标准 1" not in text and "标准 2" not in text
+        calls.append(text)
+        return response({"criterion_judgments": [
+            {"criterion_id": cid, "satisfied": True} for cid in copied_ids]})
+    with httpx.Client(base_url="https://judge.invalid/v1/",
+                      transport=httpx.MockTransport(handler)) as client:
+        backend = OpenAICompatibleBackend("test", base_url="https://judge.invalid/v1/",
+                                          client=client, api_key_env="JUDGE_KEY", max_retries=0)
+        result = LLMJudge(backend).judge(rubric(), "A", "B", task="核验任务")
+    assert len(calls) == 2  # Each side succeeds immediately.
+    assert result.chosen_score == result.rejected_score == 1

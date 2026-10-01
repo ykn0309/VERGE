@@ -17,7 +17,7 @@ from typing import Any
 
 from verge.cli import _backend, _code_version, _Progress
 from verge.dataset import JsonlDataset
-from verge.llm import OpenAICompatibleBackend
+from verge.llm import OpenAICompatibleBackend, LLMRefusalError
 from verge.memory import TrajectoryLog
 from verge.models import TrajectoryRecord
 from verge.modules import JudgeOutputError, LLMInitialRubricGenerator, LLMJudge
@@ -131,19 +131,28 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
                 backend.metadata_hook = save_request
         random.seed(config["run"]["seed"])
         log = TrajectoryLog(root)
-        correct = valid = errors = 0
+        correct = valid = errors = sample_errors = 0
         progress = _Progress("baseline", len(samples))
         try:
             for sample in samples:
                 context.update(sample_id=sample.sample_id, split="train")
-                rubric = generator.generate(sample.task, [])
-                record = TrajectoryRecord(sample.sample_id, "judge_error_initial", [], [],
-                                          rubric, None, [], [], {})
+                record = TrajectoryRecord(sample.sample_id, "in_progress", [], [],
+                                          None, None, [], [], {})
+                stage = "initial_generator"
                 try:
-                    record.initial_judgment = judge.judge(rubric, sample.chosen, sample.rejected, task=sample.task)
+                    record.initial_rubric = generator.generate(sample.task, [])
+                    stage = "initial_judge"
+                    record.initial_judgment = judge.judge(record.initial_rubric, sample.chosen,
+                                                         sample.rejected, task=sample.task)
                 except JudgeOutputError as exc:
+                    record.state = "judge_error_initial"
                     record.judge_error = str(exc)
                     errors += 1
+                except (ValueError, LLMRefusalError) as exc:
+                    record.state = "sample_error"
+                    record.sample_error = {"stage": stage, "type": type(exc).__name__,
+                                           "message": str(exc)[:500] or type(exc).__name__}
+                    sample_errors += 1
                 else:
                     valid += 1
                     correct += int(record.initial_judgment.success)
@@ -153,9 +162,9 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
         finally:
             progress.close()
         result = {"run_dir": str(output), "samples": len(samples), "valid": valid,
-                  "correct": correct, "judge_errors": errors,
+                  "correct": correct, "judge_errors": errors, "sample_errors": sample_errors,
                   "valid_accuracy": correct / valid if valid else None,
-                  "accuracy": correct / len(samples) if samples and not errors else None}
+                  "accuracy": correct / len(samples) if samples and not (errors + sample_errors) else None}
         (output / "baseline_summary.json").write_text(
             json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         return result

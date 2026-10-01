@@ -63,4 +63,4 @@ Generator 不能看到 chosen/rejected。是否实质贡献属于语义判断，
 
 ## 7. 初始输出校验与有限重试
 
-生成结果须为无 base 的 R0、包含 2–8 条标准；每条 `source_experiences` 不得重复，且只能引用已选经验。输出未通过这些校验时，可有限次数重新生成完整 R0，仅反馈不含响应文本的校验原因，不把 chosen/rejected、Judge 结果或原始无效输出传给 Generator；重试仍失败则停止当前运行，不将无效 rubric 交给 Judge。实验 11 的严格检查点续跑默认允许 2 次额外尝试，记录在续跑 manifest 中；普通 `run` 的默认行为不变。
+生成结果须为无 base 的 R0、包含 2–8 条标准；每条 `source_experiences` 不得重复，且只能引用已选经验。普通运行与续跑默认均允许 2 次额外语义纠错，仅反馈不含响应文本的校验原因。Backend 的格式重试耗尽后不叠加语义重试。仍无合法输出时记录 `sample_error`（stage/type/message），不构造 R0/Judge，不计为正确或错误判别，继续下一样本。Generator 不获得 chosen/rejected 或 Judge 结果。

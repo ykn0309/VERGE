@@ -33,6 +33,10 @@ class LLMRequestError(RuntimeError):
     """网络/API 调用失败；信息不包含 URL、请求正文或凭据。"""
 
 
+class LLMRefusalError(LLMRequestError):
+    """当前样本遭模型拒答；可记录并跳过，区别于鉴权和服务故障。"""
+
+
 class LLMFormatError(ValueError):
     """模型输出不是所需结构，已用尽格式重试。"""
 
@@ -43,7 +47,6 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "judge": ("criterion_judgments", list),
     "critic": ("operations", list),
     "reflector": ("candidates", list),
-    "revision_credit_assigner": ("bindings", dict),
     "admission_checker": ("decision", str),  # 另需非空 reason；在 _valid_shape 中联合校验。
     "fusion_judge": ("match_index", (int, type(None))),
 }
@@ -55,13 +58,12 @@ def _reject_constant(_value: str) -> None:
 
 _NUMERIC_ID_FIELDS = frozenset({"rubric_id", "base_rubric_id", "criterion_id",
                                 "target_criterion_id", "operation_id", "candidate_id"})
-_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences"})
+_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences", "linked_operation_ids"})
 
 
 def _normalize_numeric_ids(role: str, value: Any) -> None:
     """只在模型 ID 字段把正整数 1 规范化为 "1"；原始响应仍留在 trace 中。"""
-    if role not in {"selector", "initial_generator", "judge", "critic", "reflector",
-                    "revision_credit_assigner"}:
+    if role not in {"selector", "initial_generator", "judge", "critic", "reflector"}:
         return
 
     def numeric_id(item: Any) -> Any:
@@ -77,10 +79,6 @@ def _normalize_numeric_ids(role: str, value: Any) -> None:
                     item[key] = numeric_id(child)
                 elif key in _NUMERIC_ID_LIST_FIELDS and isinstance(child, list):
                     item[key] = [numeric_id(value) for value in child]
-                elif key == "bindings" and isinstance(child, dict):
-                    for binding_key, ids in child.items():
-                        if isinstance(ids, list):
-                            child[binding_key] = [numeric_id(value) for value in ids]
                 else:
                     visit(child)
 
@@ -133,12 +131,11 @@ def _valid_shape(role: str, value: Any) -> bool:
                    and isinstance(item["criterion_id"], str)
                    and type(item["satisfied"]) is bool for item in data)
     if role == "reflector":
-        return all(isinstance(item, dict) and set(item) == {"content", "trigger"}
+        return all(isinstance(item, dict) and set(item) == {"content", "trigger", "linked_operation_ids"}
                    and all(isinstance(item[key], str) for key in ("content", "trigger"))
+                   and isinstance(item["linked_operation_ids"], list)
+                   and all(isinstance(key, str) for key in item["linked_operation_ids"])
                    for item in data)
-    if role == "revision_credit_assigner":
-        return all(isinstance(key, str) and isinstance(ids, list)
-                   and all(isinstance(item, str) for item in ids) for key, ids in data.items())
     if role == "fusion_judge":
         return data is None or type(data) is int
     return True
@@ -280,7 +277,7 @@ class OpenAICompatibleBackend:
                     self._trace(role, payload, messages, attempt, status=status,
                                 raw_output=raw_output, error="model refused the request")
                     self._metadata(role, attempt, status=status, response=response, body=body)
-                    raise LLMRequestError(f"{role}: model refused the request")
+                    raise LLMRefusalError(f"{role}: model refused the request")
                 if choice.get("finish_reason") == "length":
                     raise ValueError("truncated output")
                 content = choice["message"]["content"]
@@ -471,15 +468,14 @@ class FakeLLMBackend:
                 "before_criterion": None,
             }]}
         elif role == "reflector":
+            operations = request["successful_attempt"]["operations"]
+            first_op = operations[0]["operation_id"] if operations else None
             result = {"candidates": [
                 {"candidate_id": f"candidate_{i}",
                  "content": "为关键任务要求设置单独的可判定标准。",
-                 "trigger": "任务包含明确的关键要求。"}
+                 "trigger": "任务包含明确的关键要求。",
+                 "linked_operation_ids": ([] if self.unbound or first_op is None else [first_op])}
                 for i in range(self.reflect_count)]}
-        elif role == "revision_credit_assigner":
-            first_op = request["operations"][0]["operation_id"] if request["operations"] else None
-            result = {"bindings": {item["candidate_id"]: ([first_op] if first_op and not self.unbound else [])
-                                   for item in request["candidates"]}}
         elif role == "admission_checker":
             result = {"decision": "PASS" if self.admission_pass else "FAIL",
                       "reason": "候选满足准入条件。" if self.admission_pass else "候选不满足准入条件。"}

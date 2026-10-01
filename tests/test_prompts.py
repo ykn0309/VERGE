@@ -17,13 +17,13 @@ def test_dedicated_system_and_explained_natural_input(role):
                                  'validation_feedback': '需修正格式'})
     system, user = messages
     assert system['content'].startswith(_ROLE_GUIDANCE[role])
-    assert len(set(_ROLE_GUIDANCE.values())) == 8
+    assert len(set(_ROLE_GUIDANCE.values())) == 7
     assert '待分析资料' in system['content']
     assert '有效 JSON 对象' in system['content']
     text = user['content']
-    assert 'task（当前任务' in text and 'validation_feedback（' in text
-    assert '资料原值 | 用户原始任务' in text
-    assert '资料原值 | 第二行：包含 "quoted" 和 {文本}' in text
+    assert '任务：' in text and '本次需修正的问题' in text
+    assert '用户原始任务\n第二行：包含' in text
+    assert '第二行：包含 "quoted" 和 {文本}' in text
     with pytest.raises(json.JSONDecodeError):
         json.loads(text)
 
@@ -32,13 +32,13 @@ def test_judge_labels_do_not_assume_preference_and_no_new_task_is_invented():
     payload = judge_payload([Criterion('1', '是否准确？', 5, [])], '回答 A', task="测试任务")
     system, user = llm_messages('judge', payload)
     assert '独立判断这份回答' in system['content']
-    assert 'response（本次独立核验的单份回答原文' in user['content']
+    assert '待评价回答：' in user['content']
     assert 'chosen' not in system['content'] + user['content']
     assert 'rejected' not in system['content'] + user['content']
-    assert '资料原值 | 回答 A' in user['content']
-    assert 'criterion_id（' in user['content'] and '资料原值 | 1' in user['content']
-    assert 'task（当前任务' in user['content']
-    assert '资料原值 | 测试任务' in user['content']
+    assert '回答 A' in user['content']
+    assert '1：' in user['content']
+    assert '任务：' in user['content']
+    assert '测试任务' in user['content']
 
 
 def test_nested_evidence_is_explained_with_zero_false_and_missing_values():
@@ -52,10 +52,8 @@ def test_nested_evidence_is_explained_with_zero_false_and_missing_values():
             'candidate_id': '1', 'content': '原则', 'trigger': '任务的条件',
             'linked_operation_ids': ['1'], 'credit': 0.0, 'admission': None}}
     text = llm_messages('admission_checker', payload)[1]['content']
-    for fragment in ('before（操作前', 'after（操作后', '无（未提供',
-                     'chosen（这份回答是否满足', 'false（否）', 'true（是）',
-                     '2（该标准的归一化权重）', '1（该操作的程序计算收益）',
-                     '资料原值 | 0.0', 'credit（程序计算的暂定修订信用'):
+    for fragment in ('修改前', '修改后', '未提供', '优选回答：未满足', '非优选回答：满足',
+                     '2：0.5', '1：0.0', '修订信用：0.0'):
         assert fragment in text
 
 
@@ -66,9 +64,9 @@ def test_task_only_projections_and_empty_experience_lists():
     ):
         text = llm_messages(role, payload)[1]['content']
         assert 'chosen' not in text and 'rejected' not in text
-        assert '空列表' in text
+        assert '暂无' in text
     fusion = llm_messages('fusion_judge', fusion_payload('原则', '条件', [('旧原则', '旧条件')]))[1]['content']
-    assert 'match_index=0' in fusion and 'match_index=1' not in fusion
+    assert '- 0：' in fusion and '- 1：' not in fusion
     assert 'confidence' not in fusion and 'task（' not in fusion
 
 
@@ -79,8 +77,8 @@ def test_critic_history_has_independent_scopes_without_fabricated_judgment():
     system, user = llm_messages('critic', payload)
     assert '操作及新增标准的编号由系统分配' in system['content']
     assert '缺失历史按实际缺失状态处理' in system['content']
-    assert 'previous_invalid_attempt（上一次无效修订的分析及失败摘要' in user['content']
-    assert '资料原值 | 格式耗尽' in user['content']
+    assert '上次无效修订' in user['content']
+    assert '格式耗尽' in user['content']
     assert 'criterion_judgments' not in user['content']
 
 
@@ -130,3 +128,126 @@ def test_content_generation_prompts_request_no_generated_ids(role, fields):
     system = llm_messages(role, {'task': '任务'})[0]['content']
     for field in fields:
         assert field not in system
+
+
+@pytest.mark.parametrize('role', list(_ROLE_GUIDANCE))
+def test_natural_inputs_have_no_repeated_role_or_field_explanations(role):
+    system, user = llm_messages(role, {'task': '原始任务\n保留第二行',
+                                     'chosen': '回答原文', 'criteria': [
+        {'criterion_id': '1', 'question': '核验问题', 'source_experiences': ['2']}]})
+    for marker in ('角色标识', '当前角色：', '资料原值', '字段说明', '（当前任务',
+                   '这份回答是否满足该标准的已记录判断'):
+        assert marker not in system['content'] + user['content']
+    assert '原始任务\n保留第二行' in user['content']
+    assert '1：' in user['content'] and '来源经验：2' in user['content']
+
+
+def test_technical_explanations_appear_once_for_multiple_experiences():
+    experience = {'experience_id': '1', 'content': '原则', 'trigger': '适用条件',
+                  'confidence': 0.5, 'evidence_amount': 0}
+    text = llm_messages('selector', {'task': '任务', 'candidates': [experience, experience]})[1]['content']
+    assert text.count('历史信用的 Beta 证据分数') == 1
+    assert text.count('置信度：0.5') == 2
+
+
+@pytest.mark.parametrize('role', list(_ROLE_GUIDANCE))
+def test_input_objects_use_compact_lists_without_generated_markdown_headings(role):
+    payload = {'task': '原始任务', 'criteria': [
+        {'criterion_id': '1', 'question': '第一项要求？', 'importance_score': 5,
+         'source_experiences': ['2']},
+        {'criterion_id': '2', 'question': '第二项要求？', 'importance_score': 0,
+         'source_experiences': []}],
+        'selected_experiences': [{'experience_id': '2', 'content': '经验原则',
+                                  'trigger': '明确条件', 'confidence': 0.0, 'evidence_amount': 0}],
+        'previous_attempt': {'analysis': '私有分析', 'operations': [
+            {'operation_id': '1', 'operation_type': 'MODIFY', 'target_criterion_id': '2',
+             'before': {'criterion_id': '2', 'question': '旧问题', 'importance_score': 3},
+             'after': {'criterion_id': '2', 'question': '新问题', 'importance_score': 5}}],
+            'judgment': {'criterion_judgments': [
+                {'criterion_id': '2', 'chosen': False, 'rejected': True}], 'margin': 0.0}},
+        'previous_invalid_attempt': None}
+    text = llm_messages(role, payload)[1]['content']
+    assert all(not line.lstrip().startswith('#') for line in text.splitlines())
+    assert '- 1：第一项要求？' in text
+    assert '- 2：第二项要求？' in text
+    assert '重要性：5；来源经验：2' in text
+    assert '重要性：0；来源经验：暂无' in text
+    assert '- 2：经验原则' in text
+    assert '置信度：0.0；证据量：0' in text
+    assert '- 1（MODIFY），目标标准：2' in text
+    assert '修改前：' in text and '2：旧问题' in text
+    assert '修改后：' in text and '2：新问题' in text
+    assert '优选回答：未满足；非优选回答：满足' in text
+    assert '上次无效修订：未提供' in text
+
+
+def test_raw_markdown_and_multiline_text_remain_unmodified():
+    raw = '# 原始资料标题\n\n- 用户提供的列表\n  原始缩进\n```python\nx = 1\n```'
+    text = llm_messages('judge', {'task': raw, 'response': raw, 'criteria': []})[1]['content']
+    assert text.count(raw) == 2
+    assert text.startswith('任务：\n' + raw)
+
+
+def test_fusion_list_keeps_zero_based_positions_without_item_headings():
+    text = llm_messages('fusion_judge', fusion_payload(
+        '新原则', '新条件', [('第一原则', '第一条件'), ('第二原则', '第二条件')]))[1]['content']
+    assert '- 0：' in text
+    assert '- 1：' in text
+    assert text.index('第一原则') < text.index('第二原则')
+    assert '第一条件' in text and '第二条件' in text
+    assert all(not line.lstrip().startswith('#') for line in text.splitlines())
+
+
+def test_critic_targets_are_explicitly_scoped_to_r0_not_history():
+    payload = {"initial_rubric": {"criteria": [
+        {"criterion_id": "1", "question": "当前问题", "importance_score": 5}]},
+        "previous_attempt": {"rubric": {"criteria": [
+            {"criterion_id": "2", "question": "历史新增标准", "importance_score": 5}]}}}
+    text = llm_messages("critic", payload)[1]["content"]
+    assert text.startswith("本轮从初始标准 R0 重新修订，目标编号取自 R0：1。")
+    assert "- 2：历史新增标准" in text
+
+
+def test_judge_criterion_references_have_numeric_only_labels():
+    text = llm_messages("judge", judge_payload([
+        Criterion("1", "核验要求甲？", 5, []),
+        Criterion("2", "核验要求乙？", 5, [])], "回答", task="任务"))[1]["content"]
+    assert "- 1：核验要求甲？" in text and "- 2：核验要求乙？" in text
+    assert "标准 1" not in text and "标准 2" not in text
+
+
+@pytest.mark.parametrize('role,history_key', [('critic', 'previous_attempt'),
+                                           ('reflector', 'successful_attempt')])
+def test_revision_evidence_is_joined_by_id_and_displayed_once(role, history_key):
+    from copy import deepcopy
+    rubric = {'rubric_id': 'private-r', 'base_rubric_id': 'private-base', 'criteria': [
+        {'criterion_id': '1', 'question': '要求甲？', 'importance_score': 8},
+        {'criterion_id': '2', 'question': '要求乙？', 'importance_score': 3}]}
+    judgment = {'rubric_id': 'private-r', 'normalized_weights': {'1': 0.72, '2': 0.28},
+                'criterion_judgments': [
+                    {'criterion_id': '2', 'chosen': False, 'rejected': True},
+                    {'criterion_id': '1', 'chosen': True, 'rejected': False}],
+                'chosen_score': 0.72, 'rejected_score': 0.28, 'margin': 0.44, 'success': True}
+    payload = {'task': '原始任务', 'initial_rubric': rubric, 'initial_judgment': judgment,
+               history_key: {'rubric': rubric, 'judgment': judgment, 'operations': []}}
+    original = deepcopy(payload)
+    text = llm_messages(role, payload)[1]['content']
+    assert text.count('- 1：要求甲？\n      重要性：8；优选回答：满足；非优选回答：未满足') == 1
+    # The history rubric has deeper indentation but the same correct ID-based association.
+    assert text.count('重要性：8；优选回答：满足；非优选回答：未满足') == 2
+    assert text.count('重要性：3；优选回答：未满足；非优选回答：满足') == 2
+    for redundant in ('标准集编号', '起点标准集', 'private-r', 'private-base', '标准权重',
+                      'normalized_weights', '逐项判断', '补充说明'):
+        assert redundant not in text
+    assert text.count('得分差：0.44') == 2
+    assert payload == original
+
+
+@pytest.mark.parametrize('role', ['critic', 'reflector'])
+def test_missing_judgment_remains_missing_not_fabricated(role):
+    text = llm_messages(role, {'initial_rubric': {'criteria': [
+        {'criterion_id': '1', 'question': '要求？', 'importance_score': 5}]},
+        'initial_judgment': None})[1]['content']
+    assert '- 1：要求？' in text
+    assert '初始评价结果：未提供' in text
+    assert '优选回答：满足' not in text and '非优选回答：未满足' not in text

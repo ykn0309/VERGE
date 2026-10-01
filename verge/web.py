@@ -18,6 +18,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from verge.models import Experience, TrajectoryRecord
+from verge.prompts import PROMPT_VERSION
 
 ASSETS = Path(__file__).with_name("web_assets")
 _MAX_ROLE_IO_BYTES = 1024 * 1024 * 1024  # Do not scan multi-gigabyte artifacts per HTTP request.
@@ -219,7 +220,10 @@ def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
     if manifest.get("format_version") != 1:
         raise ValueError("unsupported run manifest format")
-    root_name = Path(manifest["config"]["store"]["config"].get("root_dir", "artifacts"))
+    versions = manifest.get("prompt_versions")
+    if not isinstance(versions, dict) or not versions or set(versions.values()) != {PROMPT_VERSION}:
+        raise ValueError("Web only supports runs using the current prompt version")
+    root_name = Path(manifest["config"]["store"]["config"]["root_dir"])
     if root_name.is_absolute() or ".." in root_name.parts or root_name == Path("."):
         raise ValueError("invalid store root_dir in manifest")
     return manifest, directory / root_name
@@ -327,7 +331,7 @@ def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str,
         before = len(pool)
         recalled = set(s.get("retrieved_experience_ids", []))
         selected = set(s.get("selected_experience_ids", []))
-        referenced = {eid for c in s["initial_rubric"]["criteria"] for eid in c["source_experiences"]}
+        referenced = {eid for c in (s.get("initial_rubric") or {}).get("criteria", []) for eid in c["source_experiences"]}
         for field, keys in (("recalled", recalled), ("selected", selected), ("referenced", referenced)):
             for eid in keys:
                 if eid in usage:
@@ -402,14 +406,17 @@ def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str,
         b["reference_rate"] = b["referenced"] / b["selected"] if b["selected"] else None
     initial_failures = sum(s.get("initial_judgment") is not None and
                            not s["initial_judgment"]["success"] for s in train)
-    first = sum(s["state"] == "revision_success_1" for s in train)
-    second = sum(s["state"] == "revision_success_2" for s in train)
+    first = sum(any(a["attempt_number"] == 1 and a["judgment"]["success"]
+                    for a in s.get("revision_attempts", [])) for s in train)
+    second = sum(any(a["attempt_number"] == 2 and a["judgment"]["success"]
+                     for a in s.get("revision_attempts", [])) for s in train)
     attempted_second = sum(any(a["attempt_number"] == 2 for a in
                               s.get("revision_attempts", []) + s.get("invalid_revision_attempts", []))
                            for s in train)
     return {"mode": "train_test" if "test" in manifest["config"]["dataset"]["config"]["paths"] else "train_only",
             "train_total": sum(c.get("split") == "train" for c in context.values()),
-            "train_completed": len(train), "initial": rate(train), "curve": curve,
+            "train_completed": len(train), "sample_errors": sum(bool(s.get("sample_error")) for s in train),
+            "initial": rate(train), "curve": curve,
             "segments": segments, "subsets": subsets, "adds": add_count, "merges": merge_count,
             "candidates": candidate_count, "bound": bound_count, "admission_pass": passed,
             "admission_fail": failed, "merge_rate": merge_count / (add_count + merge_count)
@@ -468,16 +475,16 @@ def _generation_summaries(root: Path, warnings: list[str]) -> dict[str, dict[str
 
 def _sample_experience_status(sample: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
     candidates = sample.get("reflected_candidates", [])
-    referenced = {eid for c in sample.get("initial_rubric", {}).get("criteria", [])
+    referenced = {eid for c in (sample.get("initial_rubric") or {}).get("criteria", [])
                   for eid in c.get("source_experiences", [])}
     generated = summary.get("generated_candidates")
     if generated is None and sample.get("state") in ("initial_success", "initial_failure"):
         generated = 0  # Completed without the reflection branch.
-    return {"generated_candidates": generated, "retained_candidates": len(candidates),
+    return {"generated_candidates": generated,
             "added": sum(c.get("fusion") == "ADD" for c in candidates),
             "merged": sum(c.get("fusion") == "MERGE" for c in candidates),
             "selected": len(set(sample.get("selected_experience_ids", []))),
-            "referenced": len(referenced) if "initial_rubric" in sample else None}
+            "referenced": len(referenced) if sample.get("initial_rubric") else None}
 
 
 def load_run(run_dir: str | Path) -> dict[str, Any]:
@@ -674,13 +681,13 @@ def main() -> None:
     if not root.is_dir():
         parser.error(f"runs directory does not exist: {root}")
     names = discover_runs(root)
-    if not names:
-        parser.error(f"no runs with run_manifest.json found in {root}")
-    directory = Path(args.run_dir).expanduser().resolve() if args.run_dir else root / names[0]
+    directory = (Path(args.run_dir).expanduser().resolve() if args.run_dir
+                 else root / (names[0] if names else "__pending__"))
     # Fail early, before accepting requests; --run-dir must be a direct child.
-    if directory.parent != root or directory.name not in names:
+    if args.run_dir and (directory.parent != root or directory.name not in names):
         parser.error("--run-dir must contain a manifest and be an immediate child of the runs directory")
-    load_run(directory)
+    if names:
+        load_run(directory)
     handler = type("RunDashboardHandler", (DashboardHandler,), {"run_dir": directory, "runs_root": root})
     with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as server:
         print(f"VERGE dashboard: http://127.0.0.1:{server.server_port}/", flush=True)

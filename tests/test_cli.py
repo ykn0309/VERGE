@@ -212,7 +212,7 @@ def test_parallel_test_failure_keeps_prefix_and_can_resume_with_later_requests(
     def fail_mid_test(self, role, payload):
         if role == "initial_generator" and payload["task"] == f"测试任务 {failed_index}":
             assert second_finished.wait(5), "later test did not finish first"
-            raise ValueError("simulated test failure")
+            raise RuntimeError("simulated test failure")
         result = original(self, role, payload)
         if role == "judge" and payload["response"] == f"chosen-{failed_index + 1}":
             second_finished.set()
@@ -386,13 +386,13 @@ def test_failing_sample_reports_id_and_exact_stage_and_keeps_previous_write(tmp_
         return original(self, role, payload)
 
     monkeypatch.setattr(FakeLLMBackend, "generate", broken_critic)
-    assert main(["run", "--config", str(config)]) == 1
-    error = capsys.readouterr().err
-    assert "sample 'train-a'" in error and "stage revision_1.critic" in error
-    assert "deliberate critic failure" in error
-    assert (tmp_path / "result" / "artifacts" / "experience_memory.json").exists()
-    # 非事务性写盘；失败样本的 trajectory 不会假装已完成。
-    assert not (tmp_path / "result" / "artifacts" / "trajectories.jsonl").exists()
+    assert main(["run", "--config", str(config)]) == 0
+    records = [json.loads(line) for line in (tmp_path / "result/artifacts/trajectories.jsonl").read_text().splitlines()]
+    assert [r["sample_id"] for r in records] == ["train-a", "train-b"]
+    assert all(r["state"] == "sample_error" for r in records)
+    assert records[0]["sample_error"]["stage"] == "revision_1.critic"
+    assert "deliberate critic failure" in records[0]["sample_error"]["message"]
+    assert (tmp_path / "result/artifacts/experience_memory.json").exists()
 
 
 def test_resume_copies_verified_prefix_without_repeating_train_or_mutating_parent(tmp_path,
@@ -409,7 +409,7 @@ def test_resume_copies_verified_prefix_without_repeating_train_or_mutating_paren
         if role == "initial_generator":
             calls += 1
             if calls == 2:
-                raise ValueError("invalid initial rubric")
+                raise RuntimeError("invalid initial rubric")
         return original(self, role, payload)
 
     monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_initial)
@@ -480,7 +480,7 @@ def test_resume_after_failed_revision_without_memory_write(tmp_path, monkeypatch
         if role == "critic":
             revisions += 1
             if revisions >= 2:
-                raise ValueError("simulated revision timeout")
+                raise RuntimeError("simulated revision timeout")
         return original(self, role, payload)
 
     monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_revision)
@@ -523,7 +523,7 @@ def test_resume_rejects_request_or_role_io_beyond_next_sample(tmp_path, monkeypa
         if role == "initial_generator":
             calls += 1
             if calls == 2:
-                raise ValueError("stop before second sample")
+                raise RuntimeError("stop before second sample")
         return original(self, role, payload)
 
     monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_initial)
@@ -553,7 +553,7 @@ def test_resume_after_all_train_skips_training_and_keeps_frozen_memory(tmp_path,
         if role == "initial_generator":
             calls += 1
             if calls == 3:
-                raise ValueError("bad test initial")
+                raise RuntimeError("bad test initial")
         return original(self, role, payload)
 
     monkeypatch.setattr(FakeLLMBackend, "generate", fail_test_initial)
@@ -585,7 +585,7 @@ def test_resume_rejects_memory_write_after_last_complete_trajectory(tmp_path,
         if role == "initial_generator":
             calls += 1
             if calls == 2:
-                raise ValueError("invalid initial rubric")
+                raise RuntimeError("invalid initial rubric")
         return original(self, role, payload)
 
     monkeypatch.setattr(FakeLLMBackend, "generate", fail_second_initial)
@@ -674,3 +674,43 @@ def test_stop_after_train_cli_and_train_only(tmp_path, capsys):
     output = json.loads(capsys.readouterr().out)
     assert output['status'] == 'paused_after_train_prefix'
     assert output['train_samples'] == 1 and output['test_samples'] == 0
+
+
+def test_parallel_test_sample_contract_error_is_committed_and_other_tests_continue(tmp_path, monkeypatch, capsys):
+    path, config = experiment(tmp_path, scenario='initial_success')
+    _test_rows(tmp_path, config, count=3)
+    config['run']['test_workers'] = 2
+    path.write_text(yaml.safe_dump(config, allow_unicode=True))
+    original = FakeLLMBackend.generate
+    def invalid(self, role, payload):
+        if role == 'initial_generator' and payload['task'] == '测试任务 0':
+            raise ValueError('invalid response')
+        return original(self, role, payload)
+    monkeypatch.setattr(FakeLLMBackend, 'generate', invalid)
+    assert main(['run', '--config', str(path)]) == 0
+    assert 'recorded, continuing' in capsys.readouterr().err
+    from verge.memory import TrajectoryLog
+    records = list(TrajectoryLog(tmp_path/'result/artifacts').all())
+    assert [r.sample_id for r in records] == ['train-a','train-b','test-0','test-1','test-2']
+    assert records[2].state == 'sample_error' and records[2].initial_judgment is None
+    assert all(r.initial_judgment.success for r in records[3:])
+
+
+def test_error_record_is_completed_prefix_and_not_retried_on_resume(tmp_path, monkeypatch, capsys):
+    path, config = experiment(tmp_path, with_test=False, scenario='initial_success')
+    original = FakeLLMBackend.generate
+    def invalid(self, role, payload):
+        if role == 'initial_generator':
+            raise ValueError('bad R0')
+        return original(self, role, payload)
+    monkeypatch.setattr(FakeLLMBackend, 'generate', invalid)
+    assert main(['run','--config',str(path),'--stop-after-train','1']) == 0
+    assert json.loads(capsys.readouterr().out)['train_samples'] == 1
+    monkeypatch.setattr(FakeLLMBackend, 'generate', original)
+    config['run']['output_dir'] = str(tmp_path/'resumed')
+    path.write_text(yaml.safe_dump(config,allow_unicode=True))
+    assert main(['run','--config',str(path),'--resume-from',str(tmp_path/'result')]) == 0
+    from verge.memory import TrajectoryLog
+    records = list(TrajectoryLog(tmp_path/'resumed/artifacts').all())
+    assert records[0].state == 'sample_error' and records[1].state == 'initial_success'
+    assert [r.sample_id for r in records] == ['train-a','train-b']

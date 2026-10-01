@@ -13,7 +13,7 @@ from verge.models import (
 )
 from verge.modules import (
     LLMAdmissionChecker, LLMFusionJudge, LLMInitialRubricGenerator, LLMJudge,
-    LLMCritic, LLMReflector, LLMRevisionCreditAssigner, LLMSelector,
+    LLMCritic, LLMReflector, RevisionCreditAllocator, LLMSelector,
     make_fake_modules,
 )
 from verge.prompts import ExperienceView
@@ -142,7 +142,7 @@ def test_attempt_one_success_credit_admission_and_fusion_privacy():
     )
     budget = calculate_revision_budget(initial, initial_judgment,
                                        attempt.rubric, attempt.judgment)
-    candidates = modules.reflector.reflect(TASK, initial, initial_judgment, attempt)
+    candidates = modules.reflector.reflect(TASK, initial, initial_judgment, attempt, chosen='preferred response', rejected='less preferred response')
     assert len(candidates) == 1 and candidates[0].credit is None
     credited = modules.revision_credit_assigner.assign(candidates, attempt.operations,
                                                         contributions, budget)
@@ -179,9 +179,9 @@ def test_attempt_two_still_uses_initial_rubric_and_failed_attempt_has_no_credit(
     assert first.rubric.base_rubric_id == second.rubric.base_rubric_id == initial.rubric_id
     assert second.operations[0].before_criterion == initial.criteria[1]
     assert second.operations[0].new_or_updated_criterion != first.operations[0].new_or_updated_criterion
-    assert len(modules.reflector.reflect(TASK, initial, judgment, second)) == 1
+    assert len(modules.reflector.reflect(TASK, initial, judgment, second, chosen='preferred response', rejected='less preferred response')) == 1
     with pytest.raises(ValueError, match="successful revision"):
-        modules.reflector.reflect(TASK, initial, judgment, first)
+        modules.reflector.reflect(TASK, initial, judgment, first, chosen='preferred response', rejected='less preferred response')
 
 
 def test_final_failure_does_not_reflect():
@@ -191,7 +191,7 @@ def test_final_failure_does_not_reflect():
     assert not first.judgment.success and not second.judgment.success
     assert all(role != "reflector" for role, _ in modules.backend.requests)
     with pytest.raises(ValueError, match="successful revision"):
-        modules.reflector.reflect(TASK, initial, judgment, second)
+        modules.reflector.reflect(TASK, initial, judgment, second, chosen='preferred response', rejected='less preferred response')
 
 
 def test_multiple_fake_candidates_share_one_operation_budget():
@@ -201,7 +201,7 @@ def test_multiple_fake_candidates_share_one_operation_budget():
         initial, judgment, attempt.rubric, attempt.judgment, attempt.operations)
     budget = calculate_revision_budget(initial, judgment, attempt.rubric, attempt.judgment)
     multiple = make_fake_modules(reflect_count=2)
-    reflected = multiple.reflector.reflect(TASK, initial, judgment, attempt)
+    reflected = multiple.reflector.reflect(TASK, initial, judgment, attempt, chosen='preferred response', rejected='less preferred response')
     credited = multiple.revision_credit_assigner.assign(
         reflected, attempt.operations, contributions, budget)
     assert len(credited) == 2
@@ -216,17 +216,17 @@ def test_zero_candidates_unbound_and_failed_admission():
         initial, judgment, attempt.rubric, attempt.judgment, attempt.operations)
     budget = calculate_revision_budget(initial, judgment, attempt.rubric, attempt.judgment)
     empty_modules = make_fake_modules(reflect_count=0)
-    assert empty_modules.reflector.reflect(TASK, initial, judgment, attempt) == []
+    assert empty_modules.reflector.reflect(TASK, initial, judgment, attempt, chosen='preferred response', rejected='less preferred response') == []
     assert empty_modules.revision_credit_assigner.assign([], attempt.operations, contributions, budget) == []
     unbound_modules = make_fake_modules(unbound=True)
-    candidate = unbound_modules.reflector.reflect(TASK, initial, judgment, attempt)
+    candidate = unbound_modules.reflector.reflect(TASK, initial, judgment, attempt, chosen='preferred response', rejected='less preferred response')
     failed = unbound_modules.revision_credit_assigner.assign(candidate, attempt.operations,
                                                              contributions, budget)
     assert failed[0].linked_operation_ids == [] and failed[0].credit is None
     with pytest.raises(ValueError, match="bound, credited"):
         unbound_modules.admission_checker.check(TASK, failed[0], attempt, contributions)
     rejected_modules = make_fake_modules(admission_pass=False)
-    candidate = rejected_modules.reflector.reflect(TASK, initial, judgment, attempt)
+    candidate = rejected_modules.reflector.reflect(TASK, initial, judgment, attempt, chosen='preferred response', rejected='less preferred response')
     credited = rejected_modules.revision_credit_assigner.assign(candidate, attempt.operations,
                                                                  contributions, budget)
     refused = rejected_modules.admission_checker.check(TASK, credited[0], attempt, contributions)
@@ -271,11 +271,11 @@ def test_structured_response_and_domain_type_checks():
     assert parsed.operations[0].new_or_updated_criterion.source_experiences == []
     assert parsed.operations[0].before_criterion is None
     attempt = revise(modules, initial, judgment, 1)
-    with pytest.raises(ValueError, match="only unbound candidate"):
+    with pytest.raises(ValueError, match="only candidate content"):
         LLMReflector(ConstantBackend({"candidates": [{
             "candidate_id": "x", "content": "c", "trigger": "t",
-            "linked_operation_ids": ["op1"],
-        }]})).reflect(TASK, initial, judgment, attempt)
+            "linked_operation_ids": ["op1"], "credit": 0.2,
+        }]})).reflect(TASK, initial, judgment, attempt, chosen='preferred response', rejected='less preferred response')
     with pytest.raises(ValueError, match="match_index"):
         LLMFusionJudge(ConstantBackend({"match_index": True})).find_match("c", "t", [("c", "t")])
 
@@ -285,7 +285,7 @@ def test_revision_attempt_id_and_credit_range_checked_at_module_boundary():
     attempt = revise(modules, initial, judgment, 1)
     wrong_id = replace(attempt, judgment=replace(attempt.judgment, rubric_id="wrong-rubric"))
     with pytest.raises(ValueError, match="successful revision"):
-        modules.reflector.reflect(TASK, initial, judgment, wrong_id)
+        modules.reflector.reflect(TASK, initial, judgment, wrong_id, chosen='preferred response', rejected='less preferred response')
     candidate = CandidateExperience("x", "principle", "trigger", ["op1"], 0.2)
     with pytest.raises(ValueError, match="bound, credited"):
         modules.admission_checker.check(TASK, candidate, wrong_id, {"op1": 0.5})
@@ -305,7 +305,7 @@ def test_invalid_binding_is_discarded_and_no_llm_numeric_output():
     modules, initial, judgment = initial_case()
     attempt = revise(modules, initial, judgment, 1)
     candidate = CandidateExperience("x", "principle", "trigger")
-    assigner = LLMRevisionCreditAssigner(ConstantBackend({"bindings": {"x": ["not-an-operation"]}}))
+    assigner = RevisionCreditAllocator()
     result = assigner.assign([candidate], attempt.operations, {"op1": 0.5}, 0.5)
     assert result[0].credit is None and not result[0].linked_operation_ids
     with pytest.raises(ValueError, match="PASS or FAIL"):
@@ -319,3 +319,71 @@ def test_invalid_binding_is_discarded_and_no_llm_numeric_output():
             assert "normalized_weights" not in json.dumps(payload)
         if role == "critic":
             assert "normalized_weights" in json.dumps(payload)  # Critic 必须看逐项 Judge。
+
+
+def test_response_context_in_real_reflection_binding_messages(monkeypatch):
+    import json
+    import httpx
+    from verge.llm import OpenAICompatibleBackend
+    from verge.modules import LLMReflector, RevisionCreditAllocator
+    modules, initial, j0 = initial_case()
+    attempt = revise(modules, initial, j0, 1)
+    monkeypatch.setenv('CONTEXT_KEY', 'fake-key')
+    captured = []
+    outputs = iter([{'candidates': [{'content': '按关键要求设计标准', 'trigger': '任务明确列出关键要求', "linked_operation_ids": ["1"]}]},
+                    ])
+    def handler(request):
+        captured.append(json.loads(request.content)['messages'])
+        return httpx.Response(200, json={'choices': [{'message': {'content': json.dumps(next(outputs))},
+                                                    'finish_reason': 'stop'}]})
+    backend = OpenAICompatibleBackend(model='fake', base_url='https://test.invalid/v1',
+        api_key_env='CONTEXT_KEY', client=httpx.Client(base_url='https://test.invalid/v1',
+            transport=httpx.MockTransport(handler)))
+    chosen = '原始优选回答：甲\n  完整缩进'
+    rejected = '原始非优选回答：乙\n另一行'
+    candidates = LLMReflector(backend).reflect(TASK, initial, j0, attempt,
+                                               chosen=chosen, rejected=rejected)
+    assigned = RevisionCreditAllocator().assign(candidates, attempt.operations,
+        {attempt.operations[0].operation_id: 0.5}, 0.4)
+    assert assigned[0].credit == pytest.approx(0.4)
+    assert len(captured) == 1
+    for messages in captured:
+        text = messages[-1]['content']
+        assert TASK in text and chosen in text and rejected in text
+        assert '资料原值' not in text and '【角色标识】' not in text
+
+
+@pytest.mark.parametrize('field', ['chosen', 'rejected'])
+def test_reflector_requires_nonempty_answers(field):
+    modules, initial, j0 = initial_case()
+    attempt = revise(modules, initial, j0, 1)
+    context = {'chosen': '优选回答', 'rejected': '非优选回答'}
+    context[field] = ''
+    with pytest.raises(ValueError, match=field):
+        modules.reflector.reflect(TASK, initial, j0, attempt, **context)
+
+
+@pytest.mark.parametrize('links', [['missing'], ['op1', 'op1']])
+def test_reflector_rejects_invalid_successful_operation_links(links):
+    modules, initial, j0 = initial_case()
+    attempt = revise(modules, initial, j0, 1)
+    output = {'candidates': [{'candidate_id': 'x', 'content': '原则', 'trigger': '条件',
+                              'linked_operation_ids': links}]}
+    with pytest.raises(ValueError):
+        LLMReflector(ConstantBackend(output)).reflect(TASK, initial, j0, attempt,
+                                                     chosen=CHOSEN, rejected=REJECTED)
+
+
+def test_credit_allocation_is_deterministic_and_has_no_backend():
+    from verge.models import RevisionOperation
+    allocator = RevisionCreditAllocator()
+    op = RevisionOperation('operation', 'DELETE', 'criterion', None)
+    candidates = [CandidateExperience('a', '原则甲', '条件', ['operation']),
+                  CandidateExperience('b', '原则乙', '条件', ['operation']),
+                  CandidateExperience('c', '原则丙', '条件', [])]
+    result = allocator.assign(candidates, [op], {'operation': 0.5}, 0.4)
+    assert [c.credit for c in result] == [0.2, 0.2, None]
+    assert all(c.credit is None for c in candidates)
+    with pytest.raises(ValueError, match='invalid operation links'):
+        allocator.assign([CandidateExperience('x', '原则', '条件', ['unknown'])],
+                         [op], {'operation': 0.5}, 0.4)

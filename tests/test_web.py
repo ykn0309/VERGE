@@ -55,7 +55,7 @@ def test_load_run_sample_trace_and_experience_evolution(tmp_path):
     assert exp["evolution"][-1]["beta"] == exp["beta"]
     assert exp["evolution"][-1]["confidence"] == exp["confidence"]
     js = (PROJECT / "verge/web_assets/app.js").read_text(encoding="utf-8")
-    assert '准入理由：' in js and '旧轨迹未记录判断理由' in js
+    assert '准入理由：' in js and '旧轨迹未记录判断理由' not in js
     assert 'h(c.admission_reason' in js  # HTML-escape model text before rendering.
 
 
@@ -223,7 +223,7 @@ def test_role_io_records_real_fake_role_inputs_outputs_without_credentials(tmp_p
         "initial_generator", "judge"]
 
 
-def test_role_io_legacy_run_and_truncated_lines_are_distinguished(tmp_path):
+def test_role_io_not_yet_written_and_truncated_lines_are_distinguished(tmp_path):
     from verge.web import load_role_io
 
     directory, _ = _run(tmp_path)
@@ -231,7 +231,7 @@ def test_role_io_legacy_run_and_truncated_lines_are_distinguished(tmp_path):
     sidecar.unlink()
     assert load_role_io(directory, "a") == {"available": False, "entries": [], "warnings": []}
     sidecar.write_text(json.dumps({"sample_id": "a", "role": "critic", "input": {"x": "y"},
-                                   "output": {"feedback": "ok"}, "Authorization": "Bearer secret"}) +
+                                   "output": {"analysis": "诊断", "operations": []}, "Authorization": "Bearer secret"}) +
                        "\n{" + "\n", encoding="utf-8")
     result = load_role_io(directory, "a")
     assert result["available"] and len(result["entries"]) == 1
@@ -392,7 +392,6 @@ def test_generator_analysis_and_experience_status_from_existing_logs(tmp_path):
     a = load_run(directory)['samples'][0]
     assert a['generator_analysis'] is None
     assert a['experience_status']['generated_candidates'] is None
-    assert a['experience_status']['retained_candidates'] == 1
 
 
 def test_experience_status_distinguishes_selected_referenced_and_admitted():
@@ -401,7 +400,7 @@ def test_experience_status_distinguishes_selected_referenced_and_admitted():
               'initial_rubric': {'criteria': [{'source_experiences': ['e1', 'e1']}]},
               'reflected_candidates': [{'fusion': 'FAIL'}]}
     status = _sample_experience_status(sample, {'generated_candidates': 3})
-    assert status == {'generated_candidates': 3, 'retained_candidates': 1,
+    assert status == {'generated_candidates': 3,
                       'added': 0, 'merged': 0, 'selected': 2, 'referenced': 1}
     assert _sample_experience_status({'state': 'interrupted'}, {})['referenced'] is None
 
@@ -424,3 +423,54 @@ def test_generation_summary_latest_retry_empty_and_corrupt_records(tmp_path, mon
     assert warnings
     monkeypatch.setattr('verge.web._MAX_ROLE_IO_BYTES', 1)
     assert _generation_summaries(tmp_path, []) == {}
+
+
+def test_web_rejects_previous_prompt_version(tmp_path):
+    import pytest
+    directory, _ = _run(tmp_path)
+    path = directory / 'run_manifest.json'
+    manifest = json.loads(path.read_text())
+    manifest['prompt_versions'] = {role: 'v16' for role in manifest['prompt_versions']}
+    path.write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match='current prompt version'):
+        load_run(directory)
+    js = (PROJECT / 'verge/web_assets/app.js').read_text()
+    assert 'revision_generator' not in js
+    assert 'bad.feedback' not in js and 'attempt.feedback' not in js
+
+
+def test_empty_runs_http_still_serves_dashboard(tmp_path):
+    handler = type('EmptyDashboard', (DashboardHandler,),
+                   {'run_dir': tmp_path / '__pending__', 'runs_root': tmp_path})
+    with ThreadingHTTPServer(('127.0.0.1', 0), handler) as server:
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            connection = HTTPConnection('127.0.0.1', server.server_port)
+            connection.request('GET', '/api/runs')
+            result = connection.getresponse()
+            assert result.status == 200 and json.loads(result.read())['runs'] == []
+            connection.request('GET', '/')
+            result = connection.getresponse()
+            assert result.status == 200 and b'app.js' in result.read()
+            connection.close()
+        finally:
+            server.shutdown()
+            thread.join()
+
+
+def test_sample_error_before_r0_is_visible_and_excluded_from_initial_accuracy(tmp_path):
+    directory, _ = _run(tmp_path)
+    path = directory / 'artifacts/trajectories.jsonl'
+    rows = [json.loads(line) for line in path.read_text().splitlines()]
+    rows[1].update(state='sample_error', initial_rubric=None, initial_judgment=None,
+                   revision_attempts=[], reflected_candidates=[], operation_contributions={},
+                   sample_error={'stage':'initial_generator', 'type':'ValueError',
+                                 'message':'criteria count must be in [2, 8]'})
+    path.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    result = load_run(directory)
+    assert result['overview']['sample_errors'] == 1
+    assert result['overview']['initial']['valid'] == 1
+    assert result['overview']['initial']['errors'] == 1
+    assert result['samples'][1]['sample_error']['stage'] == 'initial_generator'
+    assert result['samples'][1]['experience_status']['referenced'] is None

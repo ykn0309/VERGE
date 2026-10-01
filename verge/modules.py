@@ -14,13 +14,13 @@ from typing import Any, Mapping, Protocol, Sequence
 
 from verge.calculator import allocate_revision_credit, calculate_rubric_judgment
 from verge.llm import (FakeLLMBackend, FakeScenario, JUDGE_RESPONSE_SIDE,
-                       LLMBackend, OpenAICompatibleBackend)
+                       LLMBackend, LLMFormatError, OpenAICompatibleBackend)
 from verge.models import (
     CandidateExperience, CriterionJudgment, Experience, InvalidRevisionAttempt,
     RevisionAttempt, RevisionOperation, RevisionProposal, Rubric, RubricJudgment,
 )
 from verge.prompts import (
-    ExperienceView, NumberedIDCodec, admission_payload, binding_payload, critic_payload,
+    ExperienceView, NumberedIDCodec, admission_payload, critic_payload,
     fusion_payload, generator_payload, judge_payload, reflection_payload, selector_payload,
 )
 
@@ -65,14 +65,15 @@ class Critic(Protocol):
 
 
 class Reflector(Protocol):
-    """经验反思：仅从成功修订提炼 0–3 条候选，不做绑定或信用计算。"""
+    """经验反思：从成功修订提炼候选并关联支撑操作，信用由程序计算。"""
 
     def reflect(self, task: str, initial: Rubric, initial_judgment: RubricJudgment,
-                successful_attempt: RevisionAttempt) -> list[CandidateExperience]: ...
+                successful_attempt: RevisionAttempt, *,
+                chosen: str, rejected: str) -> list[CandidateExperience]: ...
 
 
 class RevisionCreditAssigner(Protocol):
-    """修订信用：将候选绑定到已执行操作，再按收益和预算分配暂定信用。"""
+    """修订信用：校验已有操作关联，按收益和预算分配暂定信用。"""
 
     def assign(self, candidates: Sequence[CandidateExperience],
                operations: Sequence[RevisionOperation],
@@ -234,7 +235,7 @@ class LLMSelector:
 class LLMInitialRubricGenerator:
     """生成 R0；可对输出校验失败进行有限次数的完整重新生成。"""
 
-    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 0) -> None:
+    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 2) -> None:
         if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
             raise ValueError("invalid_output_retries must be an integer in [0, 3]")
         self.backend = backend
@@ -265,6 +266,8 @@ class LLMInitialRubricGenerator:
                     raise ValueError("initial_generator: invalid initial rubric or source_experiences: "
                                      + "; ".join(errors))
                 return rubric
+            except LLMFormatError:
+                raise  # 后端已经完成格式重试，外围不叠加语义重试。
             except ValueError as exc:
                 if retry == self.invalid_output_retries:
                     raise
@@ -442,66 +445,58 @@ class LLMCritic:
 
 
 class LLMReflector:
-    """只从成功修订提取未绑定、未计算信用的候选经验。"""
+    """从成功修订提取带操作关联、尚未计算信用的候选经验。"""
 
     def __init__(self, backend: LLMBackend) -> None:
         self.backend = backend
 
     def reflect(self, task: str, initial: Rubric, initial_judgment: RubricJudgment,
-                successful_attempt: RevisionAttempt) -> list[CandidateExperience]:
+                successful_attempt: RevisionAttempt, *,
+                chosen: str, rejected: str) -> list[CandidateExperience]:
         _text(task, "task")
+        _text(chosen, "chosen")
+        _text(rejected, "rejected")
         if (initial_judgment.rubric_id != initial.rubric_id or initial_judgment.success
                 or not successful_attempt.judgment.success
                 or successful_attempt.rubric.base_rubric_id != initial.rubric_id
                 or successful_attempt.judgment.rubric_id != successful_attempt.rubric.rubric_id):
             raise ValueError("reflector requires a successful revision of a failed initial rubric")
         raw = _output(self.backend, "reflector", reflection_payload(
-            task, initial, initial_judgment, successful_attempt,
+            task, initial, initial_judgment, successful_attempt, chosen=chosen, rejected=rejected,
         ), "candidates")
         if not isinstance(raw, list) or len(raw) > 3:
             raise ValueError("reflector: expected 0..3 candidates")
         result = [CandidateExperience.from_dict(item) for item in raw]
         if (len({item.candidate_id for item in result}) != len(result)
-                or any(item.linked_operation_ids or item.credit is not None
+                or any(item.credit is not None
                        or item.admission is not None or item.fusion is not None
                        or item.experience_id is not None for item in result)):
-            raise ValueError("reflector must output only unbound candidate content and trigger")
+            raise ValueError("reflector must output only candidate content, trigger and operation links")
+        operation_ids = {op.operation_id for op in successful_attempt.operations}
         for item in result:
+            if (len(set(item.linked_operation_ids)) != len(item.linked_operation_ids)
+                    or not set(item.linked_operation_ids) <= operation_ids):
+                raise ValueError("reflector: operation links must be unique successful operation IDs")
             _text(item.content, "candidate content")
             _text(item.trigger, "candidate trigger")
         return result
 
 
-class LLMRevisionCreditAssigner:
-    """LLM 只绑定语义；Calculator 计算并写入暂定信用。"""
-
-    def __init__(self, backend: LLMBackend) -> None:
-        self.backend = backend
+class RevisionCreditAllocator:
+    """纯程序校验已有绑定并计算暂定信用，不调用模型。"""
 
     def assign(self, candidates: Sequence[CandidateExperience],
                operations: Sequence[RevisionOperation],
                operation_contributions: Mapping[str, float],
                budget: float) -> list[CandidateExperience]:
-        keys = [item.operation_id for item in operations]
+        keys = [op.operation_id for op in operations]
         if len(set(keys)) != len(keys) or set(keys) != set(operation_contributions):
             raise ValueError("credit assigner requires contributions for exactly these operations")
-        if not candidates:
-            return []
-        bindings = _output(self.backend, "revision_credit_assigner", binding_payload(
-            candidates, operations,
-        ), "bindings")
-        if not isinstance(bindings, dict) or set(bindings) != {item.candidate_id for item in candidates}:
-            raise ValueError("revision_credit_assigner: bindings must cover all candidate IDs")
-        bound: list[CandidateExperience] = []
-        for item in candidates:
-            ids = bindings[item.candidate_id]
-            if not isinstance(ids, list) or any(type(key) is not str for key in ids):
-                raise ValueError("revision_credit_assigner: operation IDs must be strings")
-            # 无效引用视为该 candidate 无法绑定；绝不凭空归因。
-            selected = ids if len(set(ids)) == len(ids) and set(ids) <= set(keys) else []
-            bound.append(replace(item, linked_operation_ids=selected))
-        # 绑定失败的候选保留空绑定；其预算不会重新分配给其他候选。
-        return allocate_revision_credit(bound, dict(operation_contributions), budget)
+        for candidate in candidates:
+            links = candidate.linked_operation_ids
+            if len(set(links)) != len(links) or not set(links) <= set(keys):
+                raise ValueError("credit allocator: invalid operation links")
+        return allocate_revision_credit(list(candidates), dict(operation_contributions), budget)
 
 
 class LLMAdmissionChecker:
@@ -569,7 +564,7 @@ class LLMModules:
     judge: LLMJudge
     critic: LLMCritic
     reflector: LLMReflector
-    revision_credit_assigner: LLMRevisionCreditAssigner
+    revision_credit_assigner: RevisionCreditAllocator
     admission_checker: LLMAdmissionChecker
     fusion_judge: LLMFusionJudge
 
@@ -584,7 +579,7 @@ def make_llm_modules(backend: LLMBackend, *, top_l: int = 20,
                       LLMSelector(backend, max_selected=max_selected),
                       LLMInitialRubricGenerator(backend), LLMJudge(backend),
                       LLMCritic(backend),
-                      LLMReflector(backend), LLMRevisionCreditAssigner(backend),
+                      LLMReflector(backend), RevisionCreditAllocator(),
                       LLMAdmissionChecker(backend), LLMFusionJudge(backend))
 
 

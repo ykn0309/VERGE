@@ -30,7 +30,7 @@ from verge.prompts import PROMPT_VERSION
 
 _ROLES = (
     "selector", "initial_generator", "judge", "critic",
-    "reflector", "revision_credit_assigner", "admission_checker", "fusion_judge",
+    "reflector", "admission_checker", "fusion_judge",
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
@@ -431,6 +431,13 @@ def _split_total(dataset: JsonlDataset, split: str) -> int:
         return sum(bool(line.strip()) for line in stream)
 
 
+def _report_sample_error(record: Any) -> None:
+    if record.sample_error:
+        error = record.sample_error
+        print(f"warning: sample {record.sample_id!r}, stage {error['stage']}: "
+              f"{error['type']}: {error['message']}; recorded, continuing", file=sys.stderr)
+
+
 def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
                    seen_ids: set[str], request_context: ContextVar[dict[str, str]],
                    progress: _Progress, skip_ids: set[str] | None = None,
@@ -453,7 +460,8 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
             continue
         token = request_context.set({"sample_id": sample.sample_id, "split": split})
         try:
-            runner.run_sample(sample)
+            record = runner.run_sample(sample)
+            _report_sample_error(record)
         except Exception as exc:
             raise RuntimeError(
                 f"sample {sample.sample_id!r}, stage {runner.current_stage}: {exc}"
@@ -505,7 +513,9 @@ def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
         nonlocal count
         _, future = pending.popleft()
         if future is not None:
-            runner.trajectories.append(future.result())
+            record = future.result()
+            runner.trajectories.append(record)
+            _report_sample_error(record)
         count += 1
         progress.advance()
 
@@ -536,12 +546,10 @@ def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
 
 
 def run(config_path: str | Path, *, resume_from: str | Path | None = None,
-        initial_output_retries: int = 0, stop_after_train: int | None = None) -> dict[str, Any]:
+        initial_output_retries: int = 2, stop_after_train: int | None = None) -> dict[str, Any]:
     """Fresh run, or continue a certified prefix into a new immutable-lineage directory."""
     if type(initial_output_retries) is not int or not 0 <= initial_output_retries <= 3:
         raise ConfigError("initial_output_retries must be an integer in [0, 3]")
-    if resume_from is None and initial_output_retries:
-        raise ConfigError("initial_output_retries requires resume_from")
     if stop_after_train is not None and (type(stop_after_train) is not int or stop_after_train < 1):
         raise ConfigError("stop_after_train must be a positive integer")
     modules = None
@@ -558,7 +566,9 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
                          [config["models"]["default"], *config["models"].get("roles", {}).values()]}
         manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
                     "execution": {"test_workers": config["run"].get("test_workers", 4),
-                                  "mode": "train_test" if "test" in dataset.paths else "train_only"},
+                                  "mode": "train_test" if "test" in dataset.paths else "train_only",
+                                  "initial_output_retries": initial_output_retries,
+                                  "sample_error_policy": "record_and_continue"},
                     "dataset_version": "jsonl/v1",
                     "dataset_sha256": {split: _sha256_file(path)
                                        for split, path in dataset.paths.items()},
@@ -711,32 +721,36 @@ def summarize_rewardbench(run_dir: str | Path) -> dict[str, Any]:
     missing = expected.keys() - records.keys()
     if missing:
         raise ValueError(f"incomplete test evaluation: {len(missing)} sample(s) have no trajectory")
-    per_subset = {subset: {"total": 0, "correct": 0, "judge_errors": 0}
+    per_subset = {subset: {"total": 0, "correct": 0, "judge_errors": 0, "sample_errors": 0}
                   for subset in CHAT_HARD_SUBSETS}
     for sample_id, subset in expected.items():
         record = records[sample_id]
         judgment = record.initial_judgment
         per_subset[subset]["total"] += 1
         if judgment is None:
-            if record.state != "judge_error_initial" or not record.judge_error:
+            if record.state == "sample_error" and record.sample_error:
+                per_subset[subset]["sample_errors"] += 1
+            elif record.state == "judge_error_initial" and record.judge_error:
+                per_subset[subset]["judge_errors"] += 1
+            else:
                 raise ValueError(f"test sample {sample_id}: missing initial judgment")
-            per_subset[subset]["judge_errors"] += 1
         else:
             per_subset[subset]["correct"] += int(judgment.success)
     for counts in per_subset.values():
-        valid = counts["total"] - counts["judge_errors"]
+        valid = counts["total"] - counts["judge_errors"] - counts["sample_errors"]
         counts["accuracy"] = (counts["correct"] / counts["total"]
-                              if counts["total"] and not counts["judge_errors"] else None)
+                              if counts["total"] and not counts["judge_errors"] and not counts["sample_errors"] else None)
         counts["accuracy_on_valid"] = counts["correct"] / valid if valid else None
     total = sum(item["total"] for item in per_subset.values())
     correct = sum(item["correct"] for item in per_subset.values())
     judge_errors = sum(item["judge_errors"] for item in per_subset.values())
+    sample_errors = sum(item["sample_errors"] for item in per_subset.values())
     invalid_revisions = sum(len(record.invalid_revision_attempts) for record in records.values())
     return {"run_dir": str(directory), "scope": "internal Chat Hard split (not official leaderboard)",
             "test_total": total, "test_correct": correct,
-            "test_judge_errors": judge_errors,
-            "test_accuracy": correct / total if not judge_errors else None,
-            "test_accuracy_on_valid": correct / (total - judge_errors) if total > judge_errors else None,
+            "test_judge_errors": judge_errors, "test_sample_errors": sample_errors,
+            "test_accuracy": correct / total if not (judge_errors + sample_errors) else None,
+            "test_accuracy_on_valid": correct / (total - judge_errors - sample_errors) if total > judge_errors + sample_errors else None,
             "per_subset": per_subset, "invalid_revision_attempts": invalid_revisions}
 
 
@@ -747,7 +761,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     run_command.add_argument("--config", required=True)
     run_command.add_argument("--resume-from", help="copy a certified incomplete run to a new output directory")
     run_command.add_argument("--initial-output-retries", type=int,
-                             help="semantic R0 validation retries (default: 2 when resuming)")
+                             help="semantic R0 validation retries (default: 2)")
     run_command.add_argument("--stop-after-train", type=int,
                              help="cleanly stop at this absolute training-prefix length, before test")
     inspect_command = commands.add_parser("inspect-sample", help="inspect a saved trajectory")
@@ -761,7 +775,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             result = run(args.config, resume_from=args.resume_from, stop_after_train=args.stop_after_train,
                          initial_output_retries=(args.initial_output_retries if
                                                  args.initial_output_retries is not None else
-                                                 (2 if args.resume_from else 0)))
+                                                 2))
         elif args.command == "summarize-rewardbench":
             result = summarize_rewardbench(args.run_dir)
         else:

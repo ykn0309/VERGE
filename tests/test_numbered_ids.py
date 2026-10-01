@@ -13,7 +13,7 @@ from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import PreferenceSample
 from verge.pipeline import PipelineRunner, _check_reused_judgments
 from verge.prompts import (ExperienceView, NumberedIDCodec, admission_payload,
-                           binding_payload, critic_payload, reflection_payload)
+                           critic_payload, reflection_payload)
 from verge.models import CandidateExperience, RevisionAttempt, RevisionOperation
 from verge.calculator import calculate_rubric_judgment
 
@@ -127,8 +127,7 @@ def test_nested_projections_and_generated_revision_ids_are_numbered():
     assert second_op["operation_id"] == "op2_1"  # 上次操作也编号 1，本次独立重编。
     projections = [
         ("critic", second_payload),
-        ("reflector", reflection_payload("任务", r0, j0, attempt)),
-        ("revision_credit_assigner", binding_payload([candidate], [op])),
+        ("reflector", reflection_payload("任务", r0, j0, attempt, chosen='preferred response', rejected='less preferred response')),
         ("admission_checker", admission_payload("任务", candidate)),
     ]
     for role, payload in projections:
@@ -136,12 +135,12 @@ def test_nested_projections_and_generated_revision_ids_are_numbered():
         for forbidden in ("rubric_extremely_long", "criterion_12345678", "criterion_abcdefgh",
                           "long_revision_id", "operation_long_hash", "candidate_long_hash"):
             assert forbidden not in text, (role, forbidden)
-    credit_payload = projections[-2][1]
-    credit_codec = NumberedIDCodec("revision_credit_assigner", credit_payload)
-    projected_credit = credit_codec.project(credit_payload)
-    assert projected_credit["candidates"][0]["candidate_id"] == "1"
-    assert credit_codec.restore({"bindings": {"1": ["1"]}})["bindings"] == {
-        "candidate_long_hash": ["operation_long_hash"]}
+    reflection = projections[-2][1]
+    codec = NumberedIDCodec("reflector", reflection)
+    codec.project(reflection)
+    restored = codec.restore({"candidates": [{"content": "方法", "trigger": "条件",
+                                             "linked_operation_ids": ["1"]}]})
+    assert restored["candidates"][0]["linked_operation_ids"] == ["operation_long_hash"]
 
 
 def test_critic_unknown_number_is_retryable_operation_error():
@@ -295,7 +294,7 @@ def test_judge_retries_mismatched_id_with_feedback_and_reuses_valid_result():
 
 
 def test_reflector_system_ids_are_unique_and_reused_by_binding():
-    from verge.modules import LLMReflector, LLMRevisionCreditAssigner
+    from verge.modules import LLMReflector, RevisionCreditAllocator
 
     initial = Rubric('base', None, [Criterion('old', '原问题', 5, []),
                                   Criterion('unchanged', '其它要求', 5, [])])
@@ -308,13 +307,13 @@ def test_reflector_system_ids_are_unique_and_reused_by_binding():
     op = RevisionOperation('internal_op', 'MODIFY', 'old', revised.criteria[0], initial.criteria[0])
     attempt = RevisionAttempt(1, '诊断', [op], revised, j1)
     # 重复文本也按列表位置分别编号，系统不擅自去重。
-    raw = {'candidates': [{'content': '方法', 'trigger': '条件'},
-                          {'content': '方法', 'trigger': '条件'}]}
-    backend = ScriptedRealBackend([raw, {'bindings': {'1': ['1'], '2': ['1']}}])
-    candidates = LLMReflector(backend).reflect('任务', initial, j0, attempt)
+    raw = {'candidates': [{'content': '方法', 'trigger': '条件', "linked_operation_ids": ["1"]},
+                          {'content': '方法', 'trigger': '条件', "linked_operation_ids": ["1"]}]}
+    backend = ScriptedRealBackend([raw])
+    candidates = LLMReflector(backend).reflect('任务', initial, j0, attempt, chosen='preferred response', rejected='less preferred response')
     assert [c.candidate_id for c in candidates] == ['candidate_1', 'candidate_2']
-    assert all(c.credit is None and c.linked_operation_ids == [] for c in candidates)
-    assigned = LLMRevisionCreditAssigner(backend).assign(candidates, [op], {'internal_op': 0.5}, 0.4)
+    assert all(c.credit is None and c.linked_operation_ids == ['internal_op'] for c in candidates)
+    assigned = RevisionCreditAllocator().assign(candidates, [op], {'internal_op': 0.5}, 0.4)
     assert all(c.linked_operation_ids == ['internal_op'] for c in assigned)
     assert [c.credit for c in assigned] == pytest.approx([0.2, 0.2])
     assert all('candidate_id' not in c for c in raw['candidates'])  # 原始模型结果未被改写。

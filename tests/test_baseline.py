@@ -230,3 +230,23 @@ def test_mock_http_logs_numeric_ids_and_no_secrets(tmp_path, monkeypatch, wire_p
     assert all(r['sample_id'] == 's0' and r['usage']['total_tokens'] == 30 for r in requests)
     assert all(c.is_closed for c in clients)
     assert all(b'secret-not-in-artifacts' not in content for content in snapshot(output).values())
+
+
+def test_generator_exhaustion_records_unknown_and_continues(tmp_path, monkeypatch):
+    source, output, _ = source_run(tmp_path)
+    original = baseline.LLMInitialRubricGenerator.generate
+    calls = 0
+    def invalid_first(self, *args):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            raise ValueError('criteria count must be in [2, 8]')
+        return original(self, *args)
+    monkeypatch.setattr(baseline.LLMInitialRubricGenerator, 'generate', invalid_first)
+    result = baseline.run_baseline(source, output)
+    from verge.memory import TrajectoryLog
+    records = list(TrajectoryLog(output / 'artifacts').all())
+    assert result['samples'] == 3 and result['sample_errors'] == 1 and result['valid'] == 2
+    assert result['accuracy'] is None
+    assert records[0].state == 'sample_error' and records[0].initial_rubric is None
+    assert records[0].sample_error['stage'] == 'initial_generator'

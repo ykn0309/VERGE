@@ -324,7 +324,7 @@ class CandidateExperience(Model):
     """从成功修订中反思出的待准入经验。
 
     candidate_id: 候选唯一标识；content: 可迁移的生成原则；
-    trigger: 原则适用的任务条件；linked_operation_ids: 信用分配阶段绑定的操作 ID；
+    trigger: 原则适用的任务条件；linked_operation_ids: Reflector 同次返回的支撑操作 ID；
     credit: 暂定修订信用，尚未计算时为空，准入失败时不进入记忆池；
     admission/admission_reason: 准入判断及模型给出的理由；
     fusion/experience_id: 融合决策及最终经验 ID。
@@ -456,9 +456,14 @@ class TrajectoryRecord(Model):
     operation_contributions: dict[str, float]
     invalid_revision_attempts: list[InvalidRevisionAttempt] = field(default_factory=list)
     judge_error: str | None = None
+    sample_error: dict[str, str] | None = None
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
+        if self.sample_error is not None:
+            if (self.state != "sample_error" or set(self.sample_error) != {"stage", "type", "message"}
+                    or any(not isinstance(v, str) or not v.strip() for v in self.sample_error.values())):
+                raise ValueError("sample_error requires stage, type, message and sample_error state")
         if self.judge_error is not None and (not isinstance(self.judge_error, str)
                                              or not self.judge_error.strip()):
             raise ValueError("judge_error must be a non-empty message")

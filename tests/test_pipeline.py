@@ -96,7 +96,7 @@ def test_attempt_one_success_adds_experience_and_full_trajectory(tmp_path):
     assert log.get("sample") == record
     # pool 为空，无需调用 fusion_judge 后端。
     assert [role for role, _ in modules.backend.requests][-2:] == [
-        "revision_credit_assigner", "admission_checker",
+        "reflector", "admission_checker",
     ]
 
 
@@ -333,7 +333,7 @@ def test_conflicting_first_revision_can_recover_on_second_from_r0(tmp_path):
     assert log.get("sample") == record
 
 
-def test_critic_contract_error_still_aborts_after_retry_limit(tmp_path):
+def test_critic_contract_error_is_recorded_without_executor_retries(tmp_path):
     modules = make_fake_modules("attempt_1_success")
     original = modules.backend.generate
     calls = []
@@ -348,9 +348,11 @@ def test_critic_contract_error_still_aborts_after_retry_limit(tmp_path):
     log = TrajectoryLog(tmp_path)
     runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log,
                             max_revision_output_retries=2)
-    with pytest.raises(ValueError, match="critic: operations must be a list"):
-        runner.run_sample(sample())
-    assert len(calls) == 1 and log.get("sample") is None  # Critic 契约错误不作 Executor 重试。
+    record = runner.run_sample(sample())
+    assert record.state == "sample_error"
+    assert record.sample_error["stage"] == "revision_1.critic"
+    assert "operations must be a list" in record.sample_error["message"]
+    assert len(calls) == 1 and log.get("sample") == record  # 不叠加 Executor 重试。
 
 
 def test_second_revision_receives_full_failed_revision_history_but_starts_from_r0(tmp_path):
@@ -389,7 +391,7 @@ def test_final_failure_writes_trajectory_without_new_experience(tmp_path):
 
 @pytest.mark.parametrize("options,expected_roles", [
     ({"reflect_count": 0}, {"reflector"}),
-    ({"unbound": True}, {"reflector", "revision_credit_assigner"}),
+    ({"unbound": True}, {"reflector"}),
 ])
 def test_no_candidates_or_unbound_skips_admission_and_fusion(tmp_path, options, expected_roles):
     runner, modules, memory, log = make_runner(tmp_path, **options)

@@ -200,7 +200,7 @@ def test_mock_http_logs_numeric_ids_and_no_secrets(tmp_path, monkeypatch, wire_p
         calls.append((body['model'], payload))
         if body['model'] == 'generator-model':
             assert payload['selected_experiences'] == []
-            response = {'criteria': [
+            response = {'analysis': '按任务要求组织评价标准。', 'criteria': [
                 {'question': f'是否满足要求{i}？',
                  'importance_score': 5, 'source_experiences': []} for i in (1, 2)]}
         else:

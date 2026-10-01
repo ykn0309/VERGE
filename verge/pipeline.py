@@ -171,7 +171,7 @@ class PipelineRunner:
             raise ValueError("initial rubric must not have a revision base")
         self.current_stage = "initial_judge"
         try:
-            initial_judgment = modules.judge.judge(initial, sample.chosen, sample.rejected)
+            initial_judgment = modules.judge.judge(initial, sample.chosen, sample.rejected, task=sample.task)
         except JudgeOutputError as exc:
             record = TrajectoryRecord(sample.sample_id, "judge_error_initial",
                                       [item.experience_id for item in recalled],
@@ -243,7 +243,7 @@ class PipelineRunner:
                 self.current_stage = f"revision_{number}.judge"
                 try:
                     revised_judgment = modules.judge.judge(
-                        revised, sample.chosen, sample.rejected,
+                        revised, sample.chosen, sample.rejected, task=sample.task,
                         previous=initial, previous_judgment=initial_judgment,
                     )
                 except JudgeOutputError as exc:

@@ -153,7 +153,7 @@ def test_parallel_real_backend_metadata_uses_worker_sample_context(tmp_path, mon
                 assert other_started.wait(5), "real-backend test requests did not overlap"
             elif payload["task"] == "测试任务 1":
                 other_started.set()
-            result = {"criteria": [{"question": f"问题{i}？",
+            result = {"analysis": "根据任务分析评价要求。", "criteria": [{"question": f"问题{i}？",
                                                "importance_score": 5, "source_experiences": []}
                                               for i in range(1, 5)]}
         elif role == "judge":

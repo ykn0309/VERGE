@@ -140,7 +140,7 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
                 record = TrajectoryRecord(sample.sample_id, "judge_error_initial", [], [],
                                           rubric, None, [], [], {})
                 try:
-                    record.initial_judgment = judge.judge(rubric, sample.chosen, sample.rejected)
+                    record.initial_judgment = judge.judge(rubric, sample.chosen, sample.rejected, task=sample.task)
                 except JudgeOutputError as exc:
                     record.judge_error = str(exc)
                     errors += 1

@@ -34,7 +34,8 @@ def test_real_http_judge_concurrent_private_answers_and_copied_context(monkeypat
     def handler(request):
         body = json.loads(request.content)
         payload = wire_payload(body)
-        assert set(payload) == {'criteria', 'response'}
+        assert set(payload) == {'task', 'criteria', 'response'}
+        assert payload['task'] == '测试任务'
         assert [c['criterion_id'] for c in payload['criteria']] == ['1', '2']
         assert all(set(c) == {'criterion_id', 'question'} for c in payload['criteria'])
         assert 'chosen' not in body['messages'][0]['content']
@@ -55,7 +56,7 @@ def test_real_http_judge_concurrent_private_answers_and_copied_context(monkeypat
                                      max_retries=0, metadata_hook=log, trace_hook=log)
     token = context.set('task-private')
     try:
-        result = LLMJudge(backend).judge(rubric(), 'answer A', 'answer B')
+        result = LLMJudge(backend).judge(rubric(), 'answer A', 'answer B', task="测试任务")
     finally:
         context.reset(token)
         client.close()
@@ -85,7 +86,7 @@ def test_retry_only_invalid_side_retains_other_result(monkeypatch, wire_payload)
 
     with httpx.Client(base_url='https://judge.invalid/v1/', transport=httpx.MockTransport(handler)) as client:
         backend = OpenAICompatibleBackend('test', base_url='https://judge.invalid/v1/', client=client, api_key_env='JUDGE_KEY', max_retries=0)
-        result = LLMJudge(backend, invalid_output_retries=1).judge(rubric(), 'A', 'B')
+        result = LLMJudge(backend, invalid_output_retries=1).judge(rubric(), 'A', 'B', task="测试任务")
     assert result.success
     assert len(calls['A']) == 2 and len(calls['B']) == 1
     assert 'validation_feedback' in calls['A'][1]
@@ -114,7 +115,7 @@ def test_exhaustion_is_unknown_and_transport_error_takes_precedence(monkeypatch,
         backend = OpenAICompatibleBackend('test', base_url='https://judge.invalid/v1/', client=client, api_key_env='JUDGE_KEY', max_retries=0)
         expected = LLMRequestError if fatal_other_side else JudgeOutputError
         with pytest.raises(expected):
-            LLMJudge(backend, invalid_output_retries=1).judge(rubric(), 'A', 'B')
+            LLMJudge(backend, invalid_output_retries=1).judge(rubric(), 'A', 'B', task="测试任务")
     assert calls == {'A': 2, 'B': 1}
 
 
@@ -127,7 +128,7 @@ def test_all_reused_judgments_require_zero_calls():
     judgment = calculate_rubric_judgment(base, [CriterionJudgment(c.criterion_id, True, False)
                                                for c in base.criteria])
     revised = Rubric('revised', base.rubric_id, base.criteria)
-    result = LLMJudge(Unused()).judge(revised, 'A', 'B', previous=base, previous_judgment=judgment)
+    result = LLMJudge(Unused()).judge(revised, 'A', 'B', previous=base, previous_judgment=judgment, task="测试任务")
     assert result.criterion_judgments == judgment.criterion_judgments
 
 
@@ -143,7 +144,7 @@ def test_same_response_is_independent_and_can_tie(monkeypatch, wire_payload):
 
     with httpx.Client(base_url='https://judge.invalid/v1/', transport=httpx.MockTransport(handler)) as client:
         backend = OpenAICompatibleBackend('test', base_url='https://judge.invalid/v1/', client=client, api_key_env='JUDGE_KEY', max_retries=0)
-        result = LLMJudge(backend).judge(rubric(), 'same answer', 'same answer')
+        result = LLMJudge(backend).judge(rubric(), 'same answer', 'same answer', task="测试任务")
     assert len(calls) == 2 and calls[0] == calls[1]
     assert result.margin == 0 and not result.success
 

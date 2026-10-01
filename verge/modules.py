@@ -49,7 +49,7 @@ class InitialRubricGenerator(Protocol):
 class Judge(Protocol):
     """标准评价：读取偏好对，逐项产生 Boolean 判断并计算完整 RubricJudgment。"""
 
-    def judge(self, rubric: Rubric, chosen: str, rejected: str, *,
+    def judge(self, rubric: Rubric, chosen: str, rejected: str, *, task: str,
               previous: Rubric | None = None,
               previous_judgment: RubricJudgment | None = None) -> RubricJudgment: ...
 
@@ -120,7 +120,7 @@ def _output(backend: LLMBackend, role: str, payload: dict[str, Any],
     # Fake 后端沿用内部固定 ID；真实模型只接触本次调用的局部数字编号。
     codec = NumberedIDCodec(role, payload) if isinstance(backend, OpenAICompatibleBackend) else None
     response = backend.generate(role, codec.project(payload) if codec else payload)
-    expected = ({"criteria"} if codec and role == "initial_generator" else
+    expected = ({"analysis", "criteria"} if codec and role == "initial_generator" else
                 {field} if field is not None else
                 {"decision", "reason"} if role == "admission_checker" else
                 {"analysis", "operations"})
@@ -286,9 +286,10 @@ class LLMJudge:
         self.backend = backend
         self.invalid_output_retries = invalid_output_retries
 
-    def judge(self, rubric: Rubric, chosen: str, rejected: str, *,
+    def judge(self, rubric: Rubric, chosen: str, rejected: str, *, task: str,
               previous: Rubric | None = None,
               previous_judgment: RubricJudgment | None = None) -> RubricJudgment:
+        _text(task, "task")
         if type(chosen) is not str or type(rejected) is not str:
             raise ValueError("chosen and rejected must be strings")
         if (previous is None) != (previous_judgment is None):
@@ -328,7 +329,7 @@ class LLMJudge:
                     for retry in range(self.invalid_output_retries + 1):
                         try:
                             raw = _output(self.backend, "judge", judge_payload(
-                                pending, response, validation_feedback=feedback,
+                                pending, response, task=task, validation_feedback=feedback,
                             ), "criterion_judgments")
                             if not isinstance(raw, list):
                                 raise ValueError("judge: criterion_judgments must be a list")
@@ -393,6 +394,7 @@ class LLMCritic:
                  previous_attempt: RevisionAttempt | None = None,
                  previous_invalid_attempt: InvalidRevisionAttempt | None = None,
                  validation_feedback: str | None = None) -> RevisionProposal:
+        _text(task, "task")
         _text(task, "task")
         if type(chosen) is not str or type(rejected) is not str:
             raise ValueError("chosen and rejected must be strings")

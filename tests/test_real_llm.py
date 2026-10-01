@@ -35,7 +35,7 @@ def numbered_fake_response(fake, role, payload):
         return result_value
     result_value = fake.generate(role, payload)
     if role == "initial_generator":
-        result_value = {"criteria": [{k: v for k, v in item.items() if k != "criterion_id"}
+        result_value = {"analysis": "根据任务拆解核心要求。", "criteria": [{k: v for k, v in item.items() if k != "criterion_id"}
                                      for item in result_value["rubric"]["criteria"]]}
     elif role == "critic":
         for index, item in enumerate(result_value["operations"], 1):
@@ -94,9 +94,9 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
 @pytest.mark.parametrize("role, output, expected", [
     ("selector", {"selected_experience_ids": [1, 2]},
      {"selected_experience_ids": ["1", "2"]}),
-    ("initial_generator", {"criteria": [{"question": "准则？", "importance_score": 8,
+    ("initial_generator", {"analysis": "任务分析", "criteria": [{"question": "准则？", "importance_score": 8,
                                         "source_experiences": [3]}]},
-     {"criteria": [{"question": "准则？", "importance_score": 8,
+     {"analysis": "任务分析", "criteria": [{"question": "准则？", "importance_score": 8,
                     "source_experiences": ["3"]}]}),
     ("judge", {"criterion_judgments": [{"criterion_id": 1, "satisfied": True}]},
      {"criterion_judgments": [{"criterion_id": "1", "satisfied": True}]}),
@@ -269,7 +269,7 @@ def test_role_prompts_are_isolated_and_versioned():
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "v16-system-critic-ids-independent-judge"
+    assert PROMPT_VERSION == "v17-task-aware-judge-analyzed-generator"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
     assert all(text in selector for text in ('task 本身核验', '选择数量为 0 到 max_selected',
                                                '适用性与帮助相近时'))
@@ -289,7 +289,7 @@ def test_admission_selection_and_provenance_prompt_requirements():
 
 @pytest.mark.parametrize("role,output", [
     ("critic", {"analysis": "Identify missing criteria.", "operations": []}),
-    ("initial_generator", {"criteria": [{"question": "Be clear?", "importance_score": 4,
+    ("initial_generator", {"analysis": "任务分析", "criteria": [{"question": "Be clear?", "importance_score": 4,
                                          "source_experiences": []}]}),
 
     ("reflector", {"candidates": [{"content": "Be clear",
@@ -428,7 +428,7 @@ def test_mocked_real_backend_completes_cli_trajectory_without_pipeline_changes(t
     assert role_events[0]["messages"][0]["role"] == "system"
     assert role_events[0]["raw_output"] and role_events[0]["output"]
     assert "chosen" not in role_events[0]["input"] and "rejected" not in role_events[0]["input"]
-    assert all(set(event["input"]) == {"criteria", "response"}
+    assert all(set(event["input"]) == {"task", "criteria", "response"}
                for event in role_events if event["role"] == "judge")
     assert {event["response_side"] for event in role_events if event["role"] == "judge"} == {"chosen", "rejected"}
     manifest = json.loads((tmp_path / "run" / "run_manifest.json").read_text(encoding="utf-8"))
@@ -501,9 +501,9 @@ def test_critic_before_after_schema_failure_is_logged_and_not_fatal(tmp_path, mo
 
 
 @pytest.mark.parametrize('role, invalid, valid', [
-    ('initial_generator', {'criteria': [{'criterion_id': '1', 'question': '问题',
+    ('initial_generator', {"analysis": "任务分析", 'criteria': [{'criterion_id': '1', 'question': '问题',
                                          'importance_score': 5, 'source_experiences': []}]},
-     {'criteria': [{'question': '问题', 'importance_score': 5, 'source_experiences': []}]}),
+     {"analysis": "任务分析", 'criteria': [{'question': '问题', 'importance_score': 5, 'source_experiences': []}]}),
     ('reflector', {'candidates': [{'candidate_id': '1', 'content': '原则', 'trigger': '条件'}]},
      {'candidates': [{'content': '原则', 'trigger': '条件'}]}),
 ])

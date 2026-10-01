@@ -371,3 +371,56 @@ def test_train_only_empty_completed_and_resume(tmp_path):
     result = load_run(empty)['overview']
     assert result['train_completed'] == 0 and result['train_total'] == 2
     assert result['initial']['accuracy'] is None and result['curve'] == []
+
+
+def test_generator_analysis_and_experience_status_from_existing_logs(tmp_path):
+    directory, _ = _run(tmp_path)
+    sidecar = directory / 'artifacts/role_io.jsonl'
+    entries = [json.loads(line) for line in sidecar.read_text().splitlines()]
+    for entry in entries:
+        if entry.get('sample_id') == 'a' and entry.get('role') == 'initial_generator':
+            entry['output']['analysis'] = '<script>分析原文</script>'
+    sidecar.write_text(''.join(json.dumps(e) + '\n' for e in entries))
+    a, b, c = load_run(directory)['samples']
+    assert a['generator_analysis'] == '<script>分析原文</script>'
+    assert a['experience_status']['generated_candidates'] == 1
+    assert a['experience_status']['added'] == 1
+    assert b['experience_status']['merged'] == 1
+    assert c['generator_analysis'] is None
+    # Empty candidate output differs from missing older role logs.
+    sidecar.unlink()
+    a = load_run(directory)['samples'][0]
+    assert a['generator_analysis'] is None
+    assert a['experience_status']['generated_candidates'] is None
+    assert a['experience_status']['retained_candidates'] == 1
+
+
+def test_experience_status_distinguishes_selected_referenced_and_admitted():
+    from verge.web import _sample_experience_status
+    sample = {'state': 'revision_success_1', 'selected_experience_ids': ['e1', 'e2'],
+              'initial_rubric': {'criteria': [{'source_experiences': ['e1', 'e1']}]},
+              'reflected_candidates': [{'fusion': 'FAIL'}]}
+    status = _sample_experience_status(sample, {'generated_candidates': 3})
+    assert status == {'generated_candidates': 3, 'retained_candidates': 1,
+                      'added': 0, 'merged': 0, 'selected': 2, 'referenced': 1}
+    assert _sample_experience_status({'state': 'interrupted'}, {})['referenced'] is None
+
+
+def test_generation_summary_latest_retry_empty_and_corrupt_records(tmp_path, monkeypatch):
+    from verge.web import _generation_summaries
+    sidecar = tmp_path / 'role_io.jsonl'
+    entries = [
+        {'sample_id': 'a', 'role': 'initial_generator', 'output': {'analysis': '第一次'}},
+        {'sample_id': 'a', 'role': 'initial_generator', 'error': 'format', 'output': {'analysis': '错误'}},
+        {'sample_id': 'a', 'role': 'initial_generator', 'output': {'analysis': '最终分析'}},
+        {'sample_id': 'a', 'role': 'reflector', 'output': {'candidates': []}},
+        {'sample_id': 'b', 'role': 'initial_generator', 'output': {'analysis': 123}},
+    ]
+    sidecar.write_text(''.join(json.dumps(e) + '\n' for e in entries) + '{truncated\n')
+    warnings = []
+    summaries = _generation_summaries(tmp_path, warnings)
+    assert summaries['a'] == {'generator_analysis': '最终分析', 'generated_candidates': 0}
+    assert summaries['b']['generator_analysis'] is None
+    assert warnings
+    monkeypatch.setattr('verge.web._MAX_ROLE_IO_BYTES', 1)
+    assert _generation_summaries(tmp_path, []) == {}

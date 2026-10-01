@@ -29,7 +29,7 @@ def test_dedicated_system_and_explained_natural_input(role):
 
 
 def test_judge_labels_do_not_assume_preference_and_no_new_task_is_invented():
-    payload = judge_payload([Criterion('1', '是否准确？', 5, [])], '回答 A')
+    payload = judge_payload([Criterion('1', '是否准确？', 5, [])], '回答 A', task="测试任务")
     system, user = llm_messages('judge', payload)
     assert '独立判断这份回答' in system['content']
     assert 'response（本次独立核验的单份回答原文' in user['content']
@@ -37,7 +37,8 @@ def test_judge_labels_do_not_assume_preference_and_no_new_task_is_invented():
     assert 'rejected' not in system['content'] + user['content']
     assert '资料原值 | 回答 A' in user['content']
     assert 'criterion_id（' in user['content'] and '资料原值 | 1' in user['content']
-    assert 'task（' not in user['content']
+    assert 'task（当前任务' in user['content']
+    assert '资料原值 | 测试任务' in user['content']
 
 
 def test_nested_evidence_is_explained_with_zero_false_and_missing_values():

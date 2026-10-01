@@ -424,6 +424,62 @@ def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str,
             "second_rate": second / attempted_second if attempted_second else None}
 
 
+def _generation_summaries(root: Path, warnings: list[str]) -> dict[str, dict[str, Any]]:
+    """Stream only Generator analysis and Reflector counts; keep full calls lazy-loaded."""
+    path = root / "role_io.jsonl"
+    summaries: dict[str, dict[str, Any]] = {}
+    if not path.is_file():
+        return summaries
+    if path.stat().st_size > _MAX_ROLE_IO_BYTES:
+        warnings.append("角色日志超过 1 GiB，生成分析与原始候选数未加载。")
+        return summaries
+    bad = 0
+    with path.open("rb") as source:
+        while line := source.readline(_MAX_ROLE_LINE_BYTES + 1):
+            if len(line) > _MAX_ROLE_LINE_BYTES:
+                while line and not line.endswith(b"\n"):
+                    line = source.readline(_MAX_ROLE_LINE_BYTES + 1)
+                bad += 1
+                continue
+            if not line.strip():
+                continue
+            try:
+                entry = json.loads(line)
+            except (ValueError, UnicodeDecodeError):
+                bad += 1
+                continue
+            if not isinstance(entry, dict):
+                bad += 1
+                continue
+            sid, output = entry.get("sample_id"), entry.get("output")
+            if not isinstance(sid, str) or not isinstance(output, dict) or entry.get("error"):
+                continue
+            if entry.get("role") == "initial_generator":
+                analysis = output.get("analysis")
+                # The latest structured generation supersedes any previous retry's analysis.
+                summaries.setdefault(sid, {})["generator_analysis"] = (
+                    analysis if isinstance(analysis, str) and analysis.strip() else None)
+            elif entry.get("role") == "reflector" and isinstance(output.get("candidates"), list):
+                summaries.setdefault(sid, {})["generated_candidates"] = len(output["candidates"])
+    if bad:
+        warnings.append(f"角色摘要跳过 {bad} 条损坏或超长记录；部分生成状态可能不可确认。")
+    return summaries
+
+
+def _sample_experience_status(sample: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
+    candidates = sample.get("reflected_candidates", [])
+    referenced = {eid for c in sample.get("initial_rubric", {}).get("criteria", [])
+                  for eid in c.get("source_experiences", [])}
+    generated = summary.get("generated_candidates")
+    if generated is None and sample.get("state") in ("initial_success", "initial_failure"):
+        generated = 0  # Completed without the reflection branch.
+    return {"generated_candidates": generated, "retained_candidates": len(candidates),
+            "added": sum(c.get("fusion") == "ADD" for c in candidates),
+            "merged": sum(c.get("fusion") == "MERGE" for c in candidates),
+            "selected": len(set(sample.get("selected_experience_ids", []))),
+            "referenced": len(referenced) if "initial_rubric" in sample else None}
+
+
 def load_run(run_dir: str | Path) -> dict[str, Any]:
     """Load persisted artifacts without changing the run; tolerate truncated JSONL lines."""
     directory = Path(run_dir).expanduser().resolve()
@@ -443,6 +499,7 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
             requests[sample_id].append({key: item[key] for key in (
                 "role", "model", "status", "attempt", "finish_reason", "usage", "split",
             ) if key in item})
+    summaries = _generation_summaries(root, warnings)
     samples = []
     for item in records:
         sample_id = item["sample_id"]
@@ -451,6 +508,10 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
         if sample_id not in order:
             samples.append({"sample_id": sample_id, "state": "interrupted",
                             **context.get(sample_id, {}), "requests": calls})
+    for sample in samples:
+        summary = summaries.get(sample["sample_id"], {})
+        sample["generator_analysis"] = summary.get("generator_analysis")
+        sample["experience_status"] = _sample_experience_status(sample, summary)
     memory = json.loads((root / "experience_memory.json").read_text(encoding="utf-8"))
     experiences = [Experience.from_dict(item).to_dict() for item in memory["experiences"]]
     for item in experiences:

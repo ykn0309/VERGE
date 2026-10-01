@@ -93,12 +93,13 @@ def _valid_shape(role: str, value: Any) -> bool:
         return (isinstance(value, dict) and set(value) == {"decision", "reason"}
                 and value["decision"] in ("PASS", "FAIL")
                 and isinstance(value["reason"], str) and bool(value["reason"].strip()))
-    if role == "critic":
-        if (not isinstance(value, dict) or set(value) != {"analysis", "operations"}
+    if role in ("critic", "initial_generator"):
+        data_field = "operations" if role == "critic" else "criteria"
+        if (not isinstance(value, dict) or set(value) != {"analysis", data_field}
                 or not isinstance(value["analysis"], str) or not value["analysis"].strip()
-                or not isinstance(value["operations"], list)):
+                or not isinstance(value[data_field], list)):
             return False
-        data = value["operations"]
+        data = value[data_field]
     else:
         field, expected = _OUTPUT_FIELDS[role]
         if not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], expected):

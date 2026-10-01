@@ -47,6 +47,8 @@ class ScriptedRealBackend(OpenAICompatibleBackend):
                 if isinstance(criterion, dict):
                     op["new_or_updated_criterion"] = {k: v for k, v in criterion.items()
                                                       if k not in ("criterion_id", "source_experiences")}
+        if role == "initial_generator" and "criteria" in result:
+            result = {"analysis": "根据任务分析核心要求。", **result}
         return result
 
 
@@ -65,7 +67,7 @@ def test_real_roles_only_send_numbers_and_restore_internal_ids():
     ])
     selected = LLMSelector(backend).select("任务", [view])
     rubric = LLMInitialRubricGenerator(backend).generate("任务", selected)
-    judgment = LLMJudge(backend).judge(rubric, "答案 A", "答案 B")
+    judgment = LLMJudge(backend).judge(rubric, "答案 A", "答案 B", task="测试任务")
     assert rubric.rubric_id == "r1" and [item.criterion_id for item in rubric.criteria] == ["c1", "c2"]
     assert rubric.criteria[0].source_experiences == ["exp_long_hash_123"]
     assert judgment.success
@@ -240,7 +242,7 @@ def test_revision_judge_only_numbers_pending_criteria_and_reuses_old_judgment():
     backend = ScriptedRealBackend([{"criterion_judgments": [
         {"criterion_id": "1", "chosen": True, "rejected": False}]}])
     result = LLMJudge(backend).judge(revised, "好", "坏", previous=initial,
-                                      previous_judgment=old)
+                                      previous_judgment=old, task="测试任务")
     assert result.success
     assert len(backend.requests[0][1]["criteria"]) == 1
     assert backend.requests[0][1]["criteria"][0]["criterion_id"] == "1"
@@ -261,7 +263,7 @@ def test_duplicate_base_question_with_conflicting_old_judgments_does_not_abort()
     backend = ScriptedRealBackend([{"criterion_judgments": [
         {"criterion_id": "1", "chosen": False, "rejected": False},
     ]}])
-    new = LLMJudge(backend).judge(revised, "好", "坏", previous=initial, previous_judgment=old)
+    new = LLMJudge(backend).judge(revised, "好", "坏", previous=initial, previous_judgment=old, task="测试任务")
     assert [item.criterion_id for item in new.criterion_judgments] == ["c1", "c2", "c3"]
     assert len(backend.requests) == 2  # 双侧独立核验；同名旧判断矛盾，只对新增同名的 c3 请求。
     _check_reused_judgments(initial, old, revised, new)
@@ -280,7 +282,7 @@ def test_judge_retries_mismatched_id_with_feedback_and_reuses_valid_result():
         {"criterion_judgments": [{"criterion_id": "1", "chosen": True, "rejected": False},
                                  {"criterion_id": "2", "chosen": True, "rejected": False}]},
     ])
-    result = LLMJudge(backend, invalid_output_retries=1).judge(rubric, "好", "坏")
+    result = LLMJudge(backend, invalid_output_retries=1).judge(rubric, "好", "坏", task="测试任务")
     assert result.success and len(backend.requests) == 4
     assert sum("validation_feedback" in p for _, p in backend.requests) == 2
     assert all("严格复制其数字编号" in p["validation_feedback"]
@@ -288,7 +290,7 @@ def test_judge_retries_mismatched_id_with_feedback_and_reuses_valid_result():
     assert "complex_aaa" not in json.dumps(backend.requests)
     bad_backend = ScriptedRealBackend([{"criterion_judgments": [{"criterion_id": "9"}]}] * 3)
     with pytest.raises(JudgeOutputError, match="after 3 attempts"):
-        LLMJudge(bad_backend).judge(rubric, "好", "坏")
+        LLMJudge(bad_backend).judge(rubric, "好", "坏", task="测试任务")
     assert len(bad_backend.requests) == 6
 
 
@@ -319,7 +321,7 @@ def test_reflector_system_ids_are_unique_and_reused_by_binding():
 
 
 @pytest.mark.parametrize('role, response', [
-    ('initial_generator', {'criteria': [{'criterion_id': '1', 'question': '问题',
+    ('initial_generator', {"analysis": "任务分析", 'criteria': [{'criterion_id': '1', 'question': '问题',
                                          'importance_score': 5, 'source_experiences': []}]}),
     ('reflector', {'candidates': [{'candidate_id': '1', 'content': '方法', 'trigger': '条件'}]}),
 ])

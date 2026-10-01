@@ -36,7 +36,7 @@ def initial_case(scenario="attempt_1_success"):
     candidates = [ExperienceView.from_experience(item) for item in retrieved]
     selected = modules.selector.select(TASK, candidates)
     initial = modules.initial_generator.generate(TASK, selected)
-    judgment = modules.judge.judge(initial, CHOSEN, REJECTED)
+    judgment = modules.judge.judge(initial, CHOSEN, REJECTED, task="测试任务")
     return modules, initial, judgment
 
 
@@ -54,7 +54,7 @@ def revise(modules, initial, initial_judgment, attempt_number, failed_attempt=No
                      [operation.new_or_updated_criterion if item.criterion_id == "c2" else item
                       for item in initial.criteria])
     judgment = modules.judge.judge(revised, CHOSEN, REJECTED,
-                                   previous=initial, previous_judgment=initial_judgment)
+                                   previous=initial, previous_judgment=initial_judgment, task="测试任务")
     return RevisionAttempt(attempt_number, None, [operation], revised, judgment,
                            analysis=proposal.analysis)
 
@@ -131,7 +131,7 @@ def test_attempt_one_success_credit_admission_and_fusion_privacy():
     assert attempt.judgment.success and attempt.judgment.margin == pytest.approx(6 / 12)
     judge_requests = [payload for role, payload in modules.backend.requests if role == "judge"]
     assert len(judge_requests) == 4
-    assert set(judge_requests[2]) == {"criteria", "response"}
+    assert set(judge_requests[2]) == {"task", "criteria", "response"}
     assert [item["criterion_id"] for item in judge_requests[2]["criteria"]] == ["c2"]
     assert set(judge_requests[2]["criteria"][0]) == {"criterion_id", "question"}
     before = next(item for item in initial_judgment.criterion_judgments if item.criterion_id == "c1")
@@ -259,7 +259,7 @@ def test_structured_response_and_domain_type_checks():
                for item in initial.criteria]
     with pytest.raises(ValueError, match="judge: expected"):
         LLMJudge(ConstantBackend({"criterion_judgments": answers})).judge(
-            initial, CHOSEN, REJECTED)
+            initial, CHOSEN, REJECTED, task="测试任务")
     with pytest.raises(ValueError, match="operations must be a list"):
         LLMCritic(ConstantBackend({"analysis": "诊断", "operations": "bad"})).critique(
             TASK, CHOSEN, REJECTED, initial, judgment, 1)

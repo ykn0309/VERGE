@@ -11,15 +11,16 @@ from verge.models import (CandidateExperience, Criterion, Experience, InvalidRev
                           RevisionAttempt, RevisionOperation, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "v16-system-critic-ids-independent-judge"
+PROMPT_VERSION = "v17-task-aware-judge-analyzed-generator"
 
 # 专属身份和任务说明；Generator/Reflector 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
     "selector": """你是经验适用性筛选员。你的任务是根据当前 task，为初始 rubric 选择适用且有实质帮助的经验。
 理解任务目标、输入和要求，逐条核验 trigger，并判断经验能提供哪些评价设计增益。选择适用范围匹配、指导一致且互补的经验；适用性与帮助相近时，参考 confidence 和 evidence_amount。""",
     "initial_generator": """你是初始 rubric 设计者。你的任务是依据 task 和所选经验，设计用于评价未来回答的 Boolean 判断标准。
-先建立任务要求对应的核心标准，再吸收经验带来的评价设计增益。每条标准表达一个可独立核验的问题；importance_score 表达任务重要性，source_experiences 表达实际影响该标准的经验来源。""",
-    "judge": """你是逐标准回答核验员。你的任务是依据每条提供的标准和当前 response 的实际证据，独立判断这份回答是否满足要求。
+先输出 analysis：分析任务目标、实际提供的输入与上下文、明确要求、合理的领域要求，以及当前输入条件下成功回答应具备的关键性质。分析输入完整性，确定直接回答或请求补充信息等与当前条件匹配的合理行为。
+再依据分析输出 criteria：全面覆盖直接相关的核心要求，保持简洁；每条标准表达一个准确具体、可独立核验的 Boolean 问题，肯定判断表示满足要求。标准数量由任务覆盖需要确定。最后吸收所选经验带来的评价设计增益。importance_score 表达任务重要性，source_experiences 表达实际影响该标准的经验来源。""",
+    "judge": """你是逐标准回答核验员。你的任务是结合原始 task 的指令、输入和上下文，依据每条提供的标准和当前 response 的实际证据，独立判断这份回答是否满足要求。
 每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
     "critic": """你是失败 rubric 的诊断与原子修订者。你的任务是结合 task、偏好对、R0 和逐项 Judge 结果，产出私有 analysis 和可执行 operations，使 chosen 的加权得分高于 rejected。
 analysis 根据已有证据解释失败原因及判断的不确定性；operations 根据 task 的要求构造可评价未来回答的标准。每轮均针对 R0 提出完整操作集；第二轮结合第一轮实际保存的历史进行诊断。""",
@@ -42,9 +43,9 @@ _ROLE_INSTRUCTIONS = {
         '返回 {"selected_experience_ids":[候选 experience_id]}。'
     ),
     "initial_generator": (
-        '生成 2 到 8 条标准，importance_score 为 1 到 10 的整数。'
+        '先生成非空中文 analysis，再生成 2 到 8 条标准，importance_score 为 1 到 10 的整数。'
         'source_experiences 填写实质新增或改变该标准的所选经验 ID；仅由 task 推导的标准使用空数组。'
-        '返回 {"criteria":[{"question":可独立判定的问题,'
+        '返回 {"analysis":非空中文任务分析,"criteria":[{"question":可独立判定的问题,'
         '"importance_score":任务重要性整数,"source_experiences":[实际来源经验ID]}]}。'
     ),
     "judge": (
@@ -234,10 +235,10 @@ def generator_payload(task: str, selected: Sequence[ExperienceView], *,
     return payload
 
 
-def judge_payload(pending: Sequence[Criterion], response: str, *,
+def judge_payload(pending: Sequence[Criterion], response: str, *, task: str,
                   validation_feedback: str | None = None) -> dict[str, Any]:
     # 修订时只传需要新判断的 criterion，避免模型把复用的旧 ID 也返回。
-    payload = {"criteria": [{"criterion_id": item.criterion_id, "question": item.question}
+    payload = {"task": task, "criteria": [{"criterion_id": item.criterion_id, "question": item.question}
                             for item in pending], "response": response}
     if validation_feedback is not None:
         payload["validation_feedback"] = validation_feedback
@@ -394,8 +395,10 @@ class NumberedIDCodec:
             result["selected_experience_ids"] = [self._existing("experience", value)
                                                  for value in result["selected_experience_ids"]]
         elif self.role == "initial_generator":
-            if set(result) != {"criteria"} or not isinstance(result["criteria"], list):
-                raise ValueError("initial_generator: expected criteria list")
+            if (set(result) != {"analysis", "criteria"}
+                    or not isinstance(result.get("analysis"), str) or not result["analysis"].strip()
+                    or not isinstance(result["criteria"], list)):
+                raise ValueError("initial_generator: expected non-empty analysis and criteria list")
             criteria = []
             for index, item in enumerate(result["criteria"], 1):
                 if not isinstance(item, dict) or set(item) != {

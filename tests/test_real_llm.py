@@ -37,13 +37,6 @@ def numbered_fake_response(fake, role, payload):
     if role == "initial_generator":
         result_value = {"analysis": "根据任务拆解核心要求。", "criteria": [{k: v for k, v in item.items() if k != "criterion_id"}
                                      for item in result_value["rubric"]["criteria"]]}
-    elif role == "critic":
-        for index, item in enumerate(result_value["operations"], 1):
-            item.pop("operation_id")
-            item.pop("before_criterion", None)
-            item["target_criterion_id"] = "2"
-            item["new_or_updated_criterion"].pop("criterion_id")
-            item["new_or_updated_criterion"].pop("source_experiences")
     elif role == "reflector":
         for item in result_value["candidates"]:
             item.pop("candidate_id")
@@ -64,10 +57,10 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
 
     def handler(request):
         observed.append(request)
-        return result({"analysis": "具体修订建议", "operations": []}, headers={"x-request-id": "req-123"})
+        return result({"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}, headers={"x-request-id": "req-123"})
 
     llm = backend(monkeypatch, handler, metadata_hook=events.append)
-    assert llm.generate("critic", {"task": "private task"}) == {"analysis": "具体修订建议", "operations": []}
+    assert llm.generate("critic", {"task": "private task"}) == {"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}
     assert observed[0].url.path == "/v1/chat/completions"
     assert observed[0].headers["authorization"] == "Bearer test-secret-never-log"
     sent = json.loads(observed[0].content)
@@ -84,10 +77,10 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
 
     # 即使不可信服务把凭据反射进头部/元数据，也不能写入本地 sidecar。
     reflected = []
-    echo = backend(monkeypatch, lambda _: result({"analysis": "好的", "operations": []},
+    echo = backend(monkeypatch, lambda _: result({"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"},
         reason="test-secret-never-log", headers={"x-request-id": "test-secret-never-log"}),
         metadata_hook=reflected.append)
-    assert echo.generate("critic", {"task": "x"}) == {"analysis": "好的", "operations": []}
+    assert echo.generate("critic", {"task": "x"}) == {"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}
     assert "test-secret-never-log" not in json.dumps(reflected)
 
 
@@ -100,31 +93,14 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
                     "source_experiences": ["3"]}]}),
     ("judge", {"criterion_judgments": [{"criterion_id": 1, "satisfied": True}]},
      {"criterion_judgments": [{"criterion_id": "1", "satisfied": True}]}),
-    ("reflector", {"candidates": [{"content": "经验", "trigger": "条件", "linked_operation_ids": [1]}]},
-     {"candidates": [{"content": "经验", "trigger": "条件", "linked_operation_ids": ["1"]}]}),
+    ("reflector", {"candidates": [{"content": "经验", "trigger": "条件"}]},
+     {"candidates": [{"content": "经验", "trigger": "条件"}]}),
 ])
 def test_model_can_return_positive_integer_ids_for_any_role(monkeypatch, role, output, expected):
     llm = backend(monkeypatch, lambda _: result(output), max_retries=0)
     assert llm.generate(role, {"task": "x"}) == expected
 
 
-def test_critic_content_only_schema_and_existing_numeric_reference(monkeypatch):
-    operation = {"operation_type": "MODIFY", "target_criterion_id": 1,
-                 "new_or_updated_criterion": {"question": "明确说明推导过程？", "importance_score": 8}}
-    traces = []
-    llm = backend(monkeypatch, lambda _: result({"analysis": "加强推导", "operations": [operation]}),
-                  max_retries=0, trace_hook=traces.append)
-    parsed = llm.generate("critic", {"task": "证明"})
-    assert parsed["operations"][0]["target_criterion_id"] == "1"
-    assert json.loads(traces[0]["raw_output"])["operations"][0]["target_criterion_id"] == 1
-    for broken in ({**operation, "operation_id": "1"},
-                   {**operation, "target_criterion_id": True},
-                   {**operation, "new_or_updated_criterion": {
-                       **operation["new_or_updated_criterion"], "criterion_id": "1"}}):
-        invalid = backend(monkeypatch, lambda _: result({"analysis": "加强推导", "operations": [broken]}),
-                          max_retries=0)
-        with pytest.raises(LLMFormatError):
-            invalid.generate("critic", {"task": "证明"})
 
 
 def test_format_retry_on_missing_nested_field_and_limit(monkeypatch):
@@ -160,10 +136,10 @@ def test_invalid_json_retries_then_succeeds(monkeypatch):
         if len(calls) == 1:
             return httpx.Response(200, json={"choices": [{"message": {"content": "not JSON"},
                                                         "finish_reason": "stop"}]})
-        return result({"analysis": "修正后的建议", "operations": []})
+        return result({"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"})
 
     llm = backend(monkeypatch, handler, max_retries=1)
-    assert llm.generate("critic", {"task": "x"}) == {"analysis": "修正后的建议", "operations": []}
+    assert llm.generate("critic", {"task": "x"}) == {"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}
     assert len(calls) == 2
 
 
@@ -224,11 +200,11 @@ def test_empty_binding_and_admission_fail_are_not_format_failures(monkeypatch):
 
     def handler(request):
         calls.append(request)
-        return result({"candidates": [{"content": "方法", "trigger": "条件", "linked_operation_ids": []}]})
+        return result({"candidates": [{"content": "方法", "trigger": "条件"}]})
 
     llm = backend(monkeypatch, handler)
     assert llm.generate("reflector", {"task": "任务"}) == {
-        "candidates": [{"content": "方法", "trigger": "条件", "linked_operation_ids": []}]}
+        "candidates": [{"content": "方法", "trigger": "条件"}]}
     assert len(calls) == 1
 
 
@@ -249,7 +225,7 @@ def test_missing_key_and_unsafe_url_fail_before_network(monkeypatch):
         with pytest.raises(ValueError, match="client must use"):
             OpenAICompatibleBackend("mock-model", client=redirecting)
     with pytest.raises(ValueError, match="enable_thinking must be Boolean"):
-        backend(monkeypatch, lambda _: result({"analysis": "ok", "operations": []}), enable_thinking="false")
+        backend(monkeypatch, lambda _: result({"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}), enable_thinking="false")
 
 
 def test_role_prompts_are_isolated_and_versioned():
@@ -267,7 +243,7 @@ def test_role_prompts_are_isolated_and_versioned():
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "abstract-transferable-reflection"
+    assert PROMPT_VERSION == "generator-dialogue-critic-feedback"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
     assert all(text in selector for text in ('task 本身核验', '选择数量为 0 到 max_selected',
                                                '适用性与帮助相近时'))
@@ -277,21 +253,21 @@ def test_admission_selection_and_provenance_prompt_requirements():
     assert "全部条件可通过阅读和语义理解未来 task 核验" in admission
     assert '"reason"' in admission
     critic = llm_messages("critic", {"task": "task"})[0]["content"]
-    assert "两轮 operations 均以 R0 为共同起点" in critic
-    assert "各自构成可独立执行的完整操作集" in critic
-    assert "analysis" in critic and "operations" in critic
+    assert "improvement_advice" in critic
+    assert "不要求从 R0 重做" in critic
+    assert "analysis" in critic and "严禁引用" in critic
     generator = llm_messages("initial_generator", {"task": "task"})[0]["content"]
     assert "仅由 task 推导的标准使用空数组" in generator
     assert "实质新增或改变该标准的所选经验 ID" in generator
 
 
 @pytest.mark.parametrize("role,output", [
-    ("critic", {"analysis": "Identify missing criteria.", "operations": []}),
+    ("critic", {"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}),
     ("initial_generator", {"analysis": "任务分析", "criteria": [{"question": "Be clear?", "importance_score": 4,
                                          "source_experiences": []}]}),
 
     ("reflector", {"candidates": [{"content": "Be clear",
-                                       "trigger": "Explanatory task", "linked_operation_ids": ["1"]}]}),
+                                       "trigger": "Explanatory task"}]}),
 ])
 def test_backend_does_not_gate_text_by_language(monkeypatch, role, output):
     requests = []
@@ -445,18 +421,18 @@ def test_role_trace_preserves_actual_prompt_response_and_format_retry(monkeypatc
         if len(calls) == 1:
             return httpx.Response(200, json={"choices": [{"message": {"content": "not JSON"},
                                                           "finish_reason": "stop"}]})
-        return result({"analysis": "请调整判定标准", "operations": []})
+        return result({"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"})
 
     llm = backend(monkeypatch, handler, max_retries=1, trace_hook=trace.append)
-    assert llm.generate("critic", {"task": "private task"}) == {"analysis": "请调整判定标准", "operations": []}
+    assert llm.generate("critic", {"task": "private task"}) == {"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}
     assert len(trace) == 2
     assert trace[0]["input"] == {"task": "private task"}
     assert trace[0]["messages"] == calls[0]["messages"]
     assert trace[0]["raw_output"] == "not JSON" and trace[0]["error"] == "invalid structured output"
     assert trace[1]["messages"] == calls[1]["messages"]
     assert "上次输出格式无效" in trace[1]["messages"][-1]["content"]
-    assert trace[1]["raw_output"] == '{"analysis": "请调整判定标准", "operations": []}'
-    assert trace[1]["output"] == {"analysis": "请调整判定标准", "operations": []}
+    assert json.loads(trace[1]['raw_output']) == trace[1]['output']
+    assert trace[1]["output"] == {"analysis": "诊断覆盖不足", "improvement_advice": "按任务要求完善标准"}
     assert "test-secret-never-log" not in json.dumps(trace, ensure_ascii=False)
 
 
@@ -482,9 +458,7 @@ def test_critic_before_after_schema_failure_is_logged_and_not_fatal(tmp_path, mo
         payload = wire_payload(json.loads(request.content))
         calls.append(payload)
         # Reproduce the real failure: MODIFY using before/after instead of required schema.
-        return result({'analysis': '真实但结构无效的分析', 'operations': [{
-            'operation_id': '1', 'operation_type': 'MODIFY', 'target_criterion_id': '1',
-            'before': {'criterion_id': '1'}, 'after': {'criterion_id': '1'}}]})
+        return result({"analysis": "诊断", "operations": []})
 
     critic_backend = backend(monkeypatch, handler)
     modules = make_fake_modules('attempt_1_success')
@@ -505,7 +479,7 @@ def test_critic_before_after_schema_failure_is_logged_and_not_fatal(tmp_path, mo
                                          'importance_score': 5, 'source_experiences': []}]},
      {"analysis": "任务分析", 'criteria': [{'question': '问题', 'importance_score': 5, 'source_experiences': []}]}),
     ('reflector', {'candidates': [{'candidate_id': '1', 'content': '原则', 'trigger': '条件'}]},
-     {'candidates': [{'content': '原则', 'trigger': '条件', "linked_operation_ids": ["1"]}]}),
+     {'candidates': [{'content': '原则', 'trigger': '条件'}]}),
 ])
 def test_backend_retries_generated_id_fields_and_returns_content_only(monkeypatch, role, invalid, valid):
     responses = iter([invalid, valid])

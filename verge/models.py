@@ -324,8 +324,8 @@ class CandidateExperience(Model):
     """从成功修订中反思出的待准入经验。
 
     candidate_id: 候选唯一标识；content: 可迁移的生成原则；
-    trigger: 原则适用的任务条件；linked_operation_ids: Reflector 同次返回的支撑操作 ID；
-    credit: 暂定修订信用，尚未计算时为空，准入失败时不进入记忆池；
+    trigger: 原则适用的任务条件；linked_operation_ids/credit: 历史记录解码字段；
+    当前方法不赋值，分别固定为空列表/null；
     admission/admission_reason: 准入判断及模型给出的理由；
     fusion/experience_id: 融合决策及最终经验 ID。
     """
@@ -352,8 +352,6 @@ class CandidateExperience(Model):
                 raise ValueError("credit requires linked_operation_ids")
         if self.admission not in (None, "PASS", "FAIL"):
             raise ValueError("admission must be PASS or FAIL")
-        if self.admission is not None and self.credit is None:
-            raise ValueError("admission requires credit")
         if self.admission_reason is not None:
             if (self.admission is None or not isinstance(self.admission_reason, str)
                     or not self.admission_reason.strip()):
@@ -370,27 +368,24 @@ class CandidateExperience(Model):
 
 
 @dataclass
-class RevisionProposal(Model):
-    """Critic 单次调用的私有失败分析与独立的原子操作集。"""
-
+class CriticFeedback(Model):
+    """私有诊断与唯一交给 Generator 的公开建议。"""
     analysis: str
-    operations: list[RevisionOperation]
+    improvement_advice: str
 
     def __post_init__(self) -> None:
-        if not isinstance(self.analysis, str) or not self.analysis.strip():
-            raise ValueError("critic analysis must be non-empty")
-        if not isinstance(self.operations, list) or any(
-                not isinstance(item, RevisionOperation) for item in self.operations):
-            raise ValueError("critic operations must be a list of operations")
+        for name in ("analysis", "improvement_advice"):
+            if not isinstance(getattr(self, name), str) or not getattr(self, name).strip():
+                raise ValueError(f"critic {name} must be non-empty")
 
 
 @dataclass
 class RevisionAttempt(Model):
-    """一次从初始 rubric 出发的修订尝试。
+    """一次接续当前 rubric 的 Generator 对话修订。
 
     attempt_number: 第 1 或第 2 次；analysis: 新流程的私有失败分析；
-    feedback: 仅用于读取旧轨迹，不将旧反馈当作新分析；
-    operations: Executor 补全后的操作列表（包含 Critic 的意图）；
+    feedback: Critic 的公开 improvement_advice；
+    operations: 历史字段，当前固定空列表；
     rubric/judgment: 修订产生的完整 rubric 及其评价结果；
     validation_failures: 有效修订前的结构校验错误，便于审计纠错次数与上下文。
     """
@@ -402,6 +397,8 @@ class RevisionAttempt(Model):
     judgment: RubricJudgment
     validation_failures: list[str] = field(default_factory=list)
     analysis: str | None = None
+    previous_rubric: Rubric | None = None
+    previous_judgment: RubricJudgment | None = None
 
     def __post_init__(self) -> None:
         if self.analysis is not None and (not isinstance(self.analysis, str) or not self.analysis.strip()):
@@ -415,7 +412,7 @@ class RevisionAttempt(Model):
 
 @dataclass
 class InvalidRevisionAttempt(Model):
-    """操作经有限结构重试仍无效，未产生 Rk 或 Judge 结果。"""
+    """Critic 格式错误或 Generator 完整修订校验耗尽，无有效新 rubric/Judge。"""
 
     attempt_number: int
     feedback: str | None

@@ -8,7 +8,7 @@ from verge.llm import JUDGE_RESPONSE_SIDE, OpenAICompatibleBackend
 from verge.models import Criterion, CriterionJudgment, Rubric
 from verge.modules import (JudgeOutputError, LLMAdmissionChecker, LLMCritic,
                            LLMInitialRubricGenerator, LLMJudge, LLMSelector,
-                           RevisionOperationOutputError, make_fake_modules)
+                           make_fake_modules)
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import PreferenceSample
 from verge.pipeline import PipelineRunner, _check_reused_judgments
@@ -77,126 +77,10 @@ def test_real_roles_only_send_numbers_and_restore_internal_ids():
     assert backend.requests[2][1]["criteria"][0]["criterion_id"] == "1"
 
 
-def test_nested_projections_and_generated_revision_ids_are_numbered():
-    r0 = Rubric("rubric_extremely_long", None, [
-        Criterion("criterion_12345678", "问题一", 4, []),
-        Criterion("criterion_abcdefgh", "问题二", 6, []),
-    ])
-    j0 = calculate_rubric_judgment(r0, [
-        CriterionJudgment("criterion_12345678", False, True),
-        CriterionJudgment("criterion_abcdefgh", True, True),
-    ])
-    first_payload = critic_payload("任务", "答案 A", "答案 B", r0, j0, 1)
-    codec = NumberedIDCodec("critic", first_payload)
-    projected = codec.project(first_payload)
-    assert [c["criterion_id"] for c in projected["initial_rubric"]["criteria"]] == ["1", "2"]
-    restored_response = codec.restore({"analysis": "只对这道题的偏好做私有诊断。", "operations": [
-        {"operation_type": "MODIFY", "target_criterion_id": "1",
-         "new_or_updated_criterion": {"question": "改善", "importance_score": 8}},
-        {"operation_type": "ADD", "target_criterion_id": None,
-         "new_or_updated_criterion": {"question": "新增", "importance_score": 5}},
-    ]})
-    assert restored_response["analysis"] == "只对这道题的偏好做私有诊断。"
-    restored = restored_response["operations"]
-    assert restored[0]["operation_id"] == "op1_1"
-    assert restored[0]["target_criterion_id"] == "criterion_12345678"
-    assert restored[1]["new_or_updated_criterion"]["criterion_id"] == "added1_2"
-    with pytest.raises(ValueError, match="unknown numbered criterion"):
-        codec.restore({"operations": [{"operation_type": "DELETE",
-                                       "target_criterion_id": "9", "new_or_updated_criterion": None}]})
-    revised = Rubric("long_revision_id", r0.rubric_id, [
-        Criterion("criterion_12345678", "改善", 8, []), r0.criteria[1],
-    ])
-    j1 = calculate_rubric_judgment(revised, [
-        CriterionJudgment("criterion_12345678", True, False),
-        CriterionJudgment("criterion_abcdefgh", True, True),
-    ])
-    op = RevisionOperation("operation_long_hash", "MODIFY", r0.criteria[0].criterion_id,
-                           revised.criteria[0], r0.criteria[0])
-    attempt = RevisionAttempt(1, "改进", [op], revised, j1, analysis="诊断核心要求覆盖不足")
-    candidate = CandidateExperience("candidate_long_hash", "原则", "条件", [op.operation_id], 0.3)
-    second_payload = critic_payload("任务", "答案 A", "答案 B", r0, j0, 2,
-                                    previous_attempt=attempt)
-    second_codec = NumberedIDCodec("critic", second_payload)
-    second_projected = second_codec.project(second_payload)
-    assert second_projected["previous_attempt"]["operations"][0]["operation_id"] == "1"
-    second_op = second_codec.restore({"operations": [{
-        "operation_type": "MODIFY", "target_criterion_id": "1",
-        "new_or_updated_criterion": {"question": "再次改进", "importance_score": 8},
-    }]})["operations"][0]
-    assert second_op["operation_id"] == "op2_1"  # 上次操作也编号 1，本次独立重编。
-    projections = [
-        ("critic", second_payload),
-        ("reflector", reflection_payload("任务", r0, j0, attempt, chosen='preferred response', rejected='less preferred response')),
-        ("admission_checker", admission_payload("任务", candidate)),
-    ]
-    for role, payload in projections:
-        text = json.dumps(NumberedIDCodec(role, payload).project(payload), ensure_ascii=False)
-        for forbidden in ("rubric_extremely_long", "criterion_12345678", "criterion_abcdefgh",
-                          "long_revision_id", "operation_long_hash", "candidate_long_hash"):
-            assert forbidden not in text, (role, forbidden)
-    reflection = projections[-2][1]
-    assert reflection["successful_attempt"]["analysis"] == attempt.analysis
-    from verge.prompts import llm_messages
-    assert attempt.analysis in llm_messages("reflector", reflection)[1]["content"]
-    codec = NumberedIDCodec("reflector", reflection)
-    codec.project(reflection)
-    restored = codec.restore({"candidates": [{"content": "方法", "trigger": "条件",
-                                             "linked_operation_ids": ["op1"]}]})
-    assert restored["candidates"][0]["linked_operation_ids"] == ["operation_long_hash"]
 
 
-def test_critic_unknown_number_is_retryable_operation_error():
-    initial = Rubric("r_original", None, [Criterion("c_old_1", "Q1", 5, []),
-                                          Criterion("c_old_2", "Q2", 5, [])])
-    judgment = calculate_rubric_judgment(initial, [
-        CriterionJudgment("c_old_1", False, True),
-        CriterionJudgment("c_old_2", False, True),
-    ])
-    backend = ScriptedRealBackend([{"analysis": "编号写错了。", "operations": [{
-        "operation_id": "1", "operation_type": "DELETE", "target_criterion_id": "9",
-        "new_or_updated_criterion": None,
-    }]}])
-    with pytest.raises(RevisionOperationOutputError, match="unknown numbered criterion") as error:
-        LLMCritic(backend).critique("任务", "好", "坏", initial, judgment, 1)
-    assert error.value.analysis == "编号写错了。"
-    assert backend.requests[0][1]["initial_rubric"]["criteria"][0]["criterion_id"] == "1"
 
 
-def test_runner_retries_real_critic_number_error_and_records_failure(tmp_path):
-    good = {"analysis": "重新检查关键要求。", "operations": [{
-        "operation_id": "1", "operation_type": "MODIFY", "target_criterion_id": "2",
-        "new_or_updated_criterion": {"criterion_id": "2", "question": "是否逐项满足关键要求？",
-                                     "importance_score": 8, "source_experiences": []},
-    }]}
-    bad = {"analysis": "上次操作目标引用有误。", "operations": [{
-        "operation_id": "1", "operation_type": "DELETE", "target_criterion_id": "9",
-        "new_or_updated_criterion": None,
-    }]}
-    item = PreferenceSample("sample", "任务包含明确的关键要求。", "优质回答", "较差回答", {})
-    modules = make_fake_modules("attempt_1_success")
-    backend = ScriptedRealBackend([bad, good])
-    modules.critic = LLMCritic(backend)
-    record = PipelineRunner(modules, ExperienceMemory(tmp_path), TrajectoryLog(tmp_path)).run_sample(item)
-    assert record.state == "revision_success_1"
-    assert len(backend.requests) == 2
-    assert "unknown numbered criterion" in backend.requests[1][1]["validation_feedback"]
-    assert record.revision_attempts[0].validation_failures == ["critic: unknown numbered criterion"]
-    assert record.revision_attempts[0].operations[0].target_criterion_id == "c2"
-    assert "c2" not in json.dumps(backend.requests)
-
-    failed_dir = tmp_path / "failed"
-    modules = make_fake_modules("attempt_1_success")
-    backend = ScriptedRealBackend([bad] * 6)
-    modules.critic = LLMCritic(backend)
-    log = TrajectoryLog(failed_dir)
-    record = PipelineRunner(modules, ExperienceMemory(failed_dir), log).run_sample(item)
-    assert record.state == "final_failure"
-    assert len(backend.requests) == 6
-    assert [len(attempt.validation_failures) for attempt in record.invalid_revision_attempts] == [3, 3]
-    assert record.invalid_revision_attempts[0].analysis == bad["analysis"]
-    assert backend.requests[3][1]["previous_invalid_attempt"]["analysis"] == bad["analysis"]
-    assert log.get("sample") == record
 
 
 def test_admission_checker_executes_numbered_projection():
@@ -212,10 +96,9 @@ def test_admission_checker_executes_numbered_projection():
                                   revised.criteria[0], initial.criteria[0])
     attempt = RevisionAttempt(1, "诊断", [operation], revised, judgment)
     candidate = CandidateExperience("candidate_internal_long", "原则", "条件",
-                                    [operation.operation_id], 0.3)
+                                    [], None)
     backend = ScriptedRealBackend([{"decision": "PASS", "reason": "操作支撑该原则。"}])
-    checked = LLMAdmissionChecker(backend).check("任务", candidate, attempt,
-                                                  {operation.operation_id: 0.5})
+    checked = LLMAdmissionChecker(backend).check("任务", candidate, attempt)
     assert checked.admission == "PASS" and checked.admission_reason == "操作支撑该原则。"
     payload = backend.requests[0][1]
     assert payload["candidate"]["candidate_id"] == "1"
@@ -296,30 +179,6 @@ def test_judge_retries_mismatched_id_with_feedback_and_reuses_valid_result():
     assert len(bad_backend.requests) == 6
 
 
-def test_reflector_system_ids_are_unique_and_reused_by_binding():
-    from verge.modules import LLMReflector, RevisionCreditAllocator
-
-    initial = Rubric('base', None, [Criterion('old', '原问题', 5, []),
-                                  Criterion('unchanged', '其它要求', 5, [])])
-    j0 = calculate_rubric_judgment(initial, [CriterionJudgment('old', False, True),
-                                           CriterionJudgment('unchanged', True, True)])
-    revised = Rubric('revised', initial.rubric_id,
-                     [Criterion('old', '改进的问题', 5, []), initial.criteria[1]])
-    j1 = calculate_rubric_judgment(revised, [CriterionJudgment('old', True, False),
-                                           CriterionJudgment('unchanged', True, True)])
-    op = RevisionOperation('internal_op', 'MODIFY', 'old', revised.criteria[0], initial.criteria[0])
-    attempt = RevisionAttempt(1, '诊断', [op], revised, j1)
-    # 重复文本也按列表位置分别编号，系统不擅自去重。
-    raw = {'candidates': [{'content': '方法', 'trigger': '条件', "linked_operation_ids": ["op1"]},
-                          {'content': '方法', 'trigger': '条件', "linked_operation_ids": ["op1"]}]}
-    backend = ScriptedRealBackend([raw])
-    candidates = LLMReflector(backend).reflect('任务', initial, j0, attempt, chosen='preferred response', rejected='less preferred response')
-    assert [c.candidate_id for c in candidates] == ['candidate_1', 'candidate_2']
-    assert all(c.credit is None and c.linked_operation_ids == ['internal_op'] for c in candidates)
-    assigned = RevisionCreditAllocator().assign(candidates, [op], {'internal_op': 0.5}, 0.4)
-    assert all(c.linked_operation_ids == ['internal_op'] for c in assigned)
-    assert [c.credit for c in assigned] == pytest.approx([0.2, 0.2])
-    assert all('candidate_id' not in c for c in raw['candidates'])  # 原始模型结果未被改写。
 
 
 @pytest.mark.parametrize('role, response', [

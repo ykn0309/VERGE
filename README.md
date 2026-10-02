@@ -71,4 +71,8 @@ baseline 保存独立 manifest、轨迹、请求元数据、0600 原始角色 IO
 
 `python3 -m verge.cli run --config <配置> --stop-after-train 100` 在第 100 条训练任务完整写入后正常退出，保留全量数据与顺序，不进入测试；`run_manifest.json` 记录该前缀上限，返回状态 `paused_after_train_prefix`。这不是完整实验结束。随后以新输出目录使用 `--resume-from <原目录>` 继续；恢复仍核验数据、配置、提示词版本、经验池及完整轨迹前缀，上限包括已复制的样本。
 
-候选经验生成与操作绑定由 Reflector 在一次模型调用中完成：每条候选返回 content、trigger 和 linked_operation_ids，系统自动分配候选编号并校验成功操作引用。修订信用分配是纯程序计算，不再设置独立的绑定模型角色或 Web 角色页签；贡献、预算、共享分摊和空关联处理规则不变。
+Reflector 在成功修订后生成 0–1 条候选，只返回 content、trigger。取消操作绑定及修订信用分配；通过准入的新经验从 Beta(1,1) 开始，MERGE 只追加来源。置信度仅由后续训练任务的 downstream credit 更新。
+
+### Generator 对话修订
+
+训练初始失败后，Critic 只输出私有分析和公开建议；公开建议追加到同一 Generator 的样本内会话。Generator 输出完整 rubric，第二轮接续上一轮有效结果。无独立 Refiner、原子操作或 Executor。Web 的 Generator 页签包含初始及修订真实消息，Critic 页签显示分析与建议。Reflector 0–1 条经验，中性先验，仅下游任务验证。旧检查点不能跨方法续跑。

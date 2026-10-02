@@ -1,0 +1,51 @@
+# Generator 多轮对话修订：空池全量训练 456 条，Critic 仅反馈，0–1 条经验仅由下游验证。
+# 全量 Chat Hard 在线训练；无测试集，无 baseline。
+run:
+  seed: 42
+  output_dir: runs/rewardbench-chat-hard-qwen-vector-generator-dialogue
+  test_workers: 1
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: runs/rewardbench-chat-hard-data-full/train.jsonl
+    prepare:
+      implementation: rewardbench_chat_hard
+      mode: full_train
+      output_dir: runs/rewardbench-chat-hard-data-full
+      revision: 168d848cdbbea9764fae4a544dc9ca1e6cca4931
+      seed: 42
+models:
+  default:
+    backend: openai_compatible
+    model: qwen3.5-flash
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY_2
+    enable_thinking: false
+    timeout_seconds: 30
+    max_retries: 2
+  roles: {}
+modules:
+  retrieval:
+    implementation: vector
+    config:
+      top_l: 20
+      embedding_model: text-embedding-v4
+      dimensions: 1024
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 0
+  revision:
+    implementation: critic_generator_dialogue
+    config:
+      max_attempts: 2
+      invalid_output_retries: 2
+  reliability:
+    implementation: beta
+    config: {}
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

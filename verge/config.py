@@ -118,8 +118,6 @@ def load_config(path: str | Path) -> dict[str, Any]:
                     raise ValueError("modules.selection.config.exploration_slots: cannot exceed max_selected")
         elif name == "revision" and "max_attempts" in options:
             _integer(options["max_attempts"], "modules.revision.config.max_attempts", 1, 2)
-        elif name == "revision_credit" and "max_budget" in options:
-            _unit(options["max_budget"], "modules.revision_credit.config.max_budget")
     _component(_required(root, "store", "config"), "store")
     store_config = root["store"]["config"]
     if "root_dir" in store_config:

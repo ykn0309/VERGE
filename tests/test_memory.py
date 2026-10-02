@@ -11,7 +11,7 @@ from verge.calculator import calculate_rubric_judgment
 
 
 def candidate(name: str, credit: float = 0.25) -> CandidateExperience:
-    return CandidateExperience(name, f"原则 {name}", "可迁移条件", ["op1"], credit, "PASS")
+    return CandidateExperience(name, f"原则 {name}", "可迁移条件", [], None, "PASS")
 
 
 def test_empty_memory_creation_loading_and_snapshot(tmp_path):
@@ -23,30 +23,6 @@ def test_empty_memory_creation_loading_and_snapshot(tmp_path):
         memory.get("unknown")
 
 
-def test_add_merge_preserves_canonical_text_prior_and_sources(tmp_path):
-    memory = ExperienceMemory(tmp_path)
-    added = memory.fuse(candidate("first", 0.4), "sample-1")
-    assert added.fusion == "ADD"
-    assert added.experience_id is not None
-    first = memory.get(added.experience_id)
-    assert (first.alpha, first.beta) == pytest.approx((1.4, 1.0))
-    assert first.source_trajectories == ["sample-1"]
-    assert len(first.evidence_history) == 1
-    assert first.evidence_history[0].to_dict() == {
-        "sample_id": "sample-1", "evidence_type": "revision_credit",
-        "credit": 0.4, "evidence_weight": 1.0,
-    }
-    merged = memory.fuse(candidate("different text", -0.2), "sample-2", added.experience_id)
-    assert (merged.fusion, merged.experience_id) == ("MERGE", added.experience_id)
-    stored = ExperienceMemory(tmp_path).get(added.experience_id)
-    assert (stored.content, stored.trigger) == (first.content, first.trigger)
-    assert stored.source_trajectories == ["sample-1", "sample-2"]
-    assert (stored.alpha, stored.beta, stored.confidence, stored.evidence_amount) == pytest.approx(
-        (1.4, 1.2, 1.4 / 2.6, 0.6))
-    assert [item.sample_id for item in stored.evidence_history] == ["sample-1", "sample-2"]
-    assert len(memory.all()) == 1
-    assert merged.credit == -0.2  # 不改变原候选信用，也不重复加先验。
-    assert candidate("first").fusion is None
 
 
 def test_zero_credit_add_merge_preserves_sources_without_zero_evidence(tmp_path):
@@ -68,17 +44,17 @@ def test_downstream_update_persists_at_initial_stage_even_if_revision_fails(tmp_
     # 尚未写入 trajectory；后续修订失败不会回滚已经落盘的下游信用。
     assert not (tmp_path / "trajectories.jsonl").exists()
     loaded = ExperienceMemory(tmp_path).get(added.experience_id)
-    assert (loaded.alpha, loaded.beta) == pytest.approx((1.2, 1.25))
+    assert (loaded.alpha, loaded.beta) == pytest.approx((1, 1.25))
     assert loaded.source_trajectories == ["origin"]
     assert [item.evidence_type for item in loaded.evidence_history] == [
-        "revision_credit", "downstream_credit"]
+        "downstream_credit"]
     assert loaded.evidence_history[-1].to_dict() == {
         "sample_id": "training-1", "evidence_type": "downstream_credit",
         "credit": -0.5, "evidence_weight": 0.5,
     }
     memory.apply_downstream_credits("training-2", {added.experience_id: 0.3})
     latest = ExperienceMemory(tmp_path).get(added.experience_id)
-    assert (latest.alpha, latest.beta) == pytest.approx((1.5, 1.25))
+    assert (latest.alpha, latest.beta) == pytest.approx((1.3, 1.25))
     assert latest.evidence_history[-1].sample_id == "training-2"
 
 
@@ -88,8 +64,8 @@ def test_add_merges_within_same_trajectory_without_dedup(tmp_path):
     memory.fuse(candidate("b", 0.2), "same-sample", added.experience_id)
     stored = memory.get(added.experience_id)
     assert stored.source_trajectories == ["same-sample", "same-sample"]
-    assert stored.alpha == pytest.approx(1.5)
-    assert len(stored.evidence_history) == 2
+    assert stored.alpha == pytest.approx(1)
+    assert len(stored.evidence_history) == 0
 
 
 def test_fusion_rejects_invalid_input_without_mutation(tmp_path):
@@ -101,8 +77,8 @@ def test_fusion_rejects_invalid_input_without_mutation(tmp_path):
         memory.fuse(bad, "sample")
     with pytest.raises(ValueError, match="admitted"):
         memory.fuse(added, "sample")
-    with pytest.raises(ValueError, match="credit must be"):
-        memory.fuse(candidate("out-of-range", 2), "sample")
+    with pytest.raises(ValueError, match="uncredited"):
+        memory.fuse(replace(candidate("invalid"), linked_operation_ids=["op"], credit=0.2), "sample")
     with pytest.raises(KeyError):
         memory.fuse(candidate("unknown"), "sample", "not-in-memory")
     assert (tmp_path / "experience_memory.json").read_bytes() == original
@@ -115,13 +91,13 @@ def test_downstream_invalid_or_zero_evidence_has_no_partial_update(tmp_path):
     key = added.experience_id
     with pytest.raises(KeyError):
         memory.apply_downstream_credits("sample", {key: 0.2, "missing": -0.1})
-    assert ExperienceMemory(tmp_path).get(key).alpha == 1.25
+    assert ExperienceMemory(tmp_path).get(key).alpha == 1
     memory.apply_downstream_credits("sample", {key: 0})
     memory.apply_downstream_credits("sample", {key: -0.1}, evidence_weight=0)
-    assert len(ExperienceMemory(tmp_path).get(key).evidence_history) == 1
+    assert len(ExperienceMemory(tmp_path).get(key).evidence_history) == 0
     with pytest.raises(ValueError, match="evidence_weight"):
         memory.apply_downstream_credits("sample", {key: 0.3}, evidence_weight=2)
-    assert ExperienceMemory(tmp_path).get(key).alpha == 1.25
+    assert ExperienceMemory(tmp_path).get(key).alpha == 1
 
 
 def test_read_only_memory_is_frozen_and_returns_copies(tmp_path):
@@ -133,7 +109,7 @@ def test_read_only_memory_is_frozen_and_returns_copies(tmp_path):
     snapshot = frozen.get(added.experience_id)
     snapshot.alpha = 999
     snapshot.source_trajectories.append("not-stored")
-    assert frozen.get(added.experience_id).alpha == 1.25
+    assert frozen.get(added.experience_id).alpha == 1
     assert frozen.get(added.experience_id).source_trajectories == ["sample"]
     for operation in (
         lambda: frozen.fuse(candidate("new"), "sample"),
@@ -141,7 +117,7 @@ def test_read_only_memory_is_frozen_and_returns_copies(tmp_path):
     ):
         with pytest.raises(ValueError, match="read-only"):
             operation()
-    assert ExperienceMemory(tmp_path).get(added.experience_id).alpha == 1.25
+    assert ExperienceMemory(tmp_path).get(added.experience_id).alpha == 1
 
 
 def test_jsonl_trajectory_round_trip_and_inspect_last_sample(tmp_path):

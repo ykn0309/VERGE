@@ -2,22 +2,20 @@
 
 from __future__ import annotations
 
-from dataclasses import replace
-from typing import Iterable, Protocol, Sequence
+from typing import Iterable, Protocol
 
 from verge.calculator import (
-    calculate_existing_experience_credit, calculate_operation_contributions,
-    calculate_revision_budget,
+    calculate_existing_experience_credit,
 )
 from verge.llm import LLMFormatError, LLMRefusalError
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import (
-    InvalidRevisionAttempt, PreferenceSample, RevisionAttempt, RevisionOperation, Rubric, RubricJudgment,
+    InvalidRevisionAttempt, PreferenceSample, RevisionAttempt, Rubric, RubricJudgment,
     TrajectoryRecord,
 )
 from verge.modules import (
     AdmissionChecker, Critic, FusionJudge, InitialRubricGenerator, Judge, JudgeOutputError,
-    Reflector, Retriever, RevisionCreditAssigner, RevisionOperationOutputError, Selector,
+    Reflector, Retriever, Selector,
 )
 from verge.prompts import ExperienceView
 
@@ -31,64 +29,8 @@ class PipelineModules(Protocol):
     judge: Judge
     critic: Critic
     reflector: Reflector
-    revision_credit_assigner: RevisionCreditAssigner
     admission_checker: AdmissionChecker
     fusion_judge: FusionJudge
-
-
-class InvalidRubricSizeError(ValueError):
-    """修订输出的 rubric 标准条数不在允许范围内。"""
-
-
-class RevisionExecutor:
-    """将 Critic 的操作应用到 R0，并为 DELETE/MODIFY 补全原标准。"""
-
-    def execute(
-        self, initial: Rubric, operations: Sequence[RevisionOperation], attempt_number: int,
-    ) -> tuple[Rubric, list[RevisionOperation]]:
-        if initial.base_rubric_id is not None or attempt_number not in (1, 2):
-            raise ValueError("revision executor requires R0 and attempt 1/2")
-        if not operations:
-            raise ValueError("revision operations must not be empty")
-        old = {criterion.criterion_id: criterion for criterion in initial.criteria}
-        revised = {key: replace(value, source_experiences=[]) for key, value in old.items()}
-        touched: set[str] = set()
-        operation_ids: set[str] = set()
-        executed = []
-        for operation in operations:
-            key = (operation.new_or_updated_criterion.criterion_id
-                   if operation.operation_type == "ADD" else operation.target_criterion_id)
-            if (operation.operation_id in operation_ids or key in touched
-                    or operation.before_criterion is not None):
-                raise ValueError("conflicting or already executed revision operations")
-            operation_ids.add(operation.operation_id)
-            touched.add(key)
-            if operation.operation_type == "ADD":
-                if key in old:
-                    raise ValueError("ADD requires a new criterion ID")
-                revised[key] = replace(operation.new_or_updated_criterion, source_experiences=[])
-                executed.append(operation)
-            elif operation.operation_type == "DELETE":
-                if key not in old:
-                    raise ValueError("DELETE target must be in R0")
-                del revised[key]
-                executed.append(replace(operation, before_criterion=old[key]))
-            elif operation.operation_type == "MODIFY":
-                if key not in old:
-                    raise ValueError("MODIFY target must be in R0")
-                updated = operation.new_or_updated_criterion
-                if (updated.question == old[key].question
-                        and updated.importance_score == old[key].importance_score):
-                    raise ValueError("no-op MODIFY does not change a criterion")
-                revised[key] = replace(updated, source_experiences=[])
-                executed.append(replace(operation, before_criterion=old[key]))
-            else:
-                raise ValueError("unknown revision operation type")
-        if not 2 <= len(revised) <= 8:
-            raise InvalidRubricSizeError("revised rubric must contain 2..8 criteria")
-        rubric = Rubric(f"{initial.rubric_id}_revision_{attempt_number}", initial.rubric_id,
-                        list(revised.values()))
-        return rubric, executed
 
 
 def _check_reused_judgments(
@@ -124,7 +66,7 @@ class PipelineRunner:
     def __init__(
         self, modules: PipelineModules, memory: ExperienceMemory, trajectories: TrajectoryLog,
         *, training: bool = True, evidence_weight: float = 1.0, max_attempts: int = 2,
-        max_revision_output_retries: int = 2, executor: RevisionExecutor | None = None,
+        max_revision_output_retries: int = 2,
     ) -> None:
         if type(training) is not bool:
             raise ValueError("training must be Boolean")
@@ -144,7 +86,6 @@ class PipelineRunner:
         self.evidence_weight = evidence_weight
         self.max_attempts = max_attempts
         self.max_revision_output_retries = max_revision_output_retries
-        self.executor = executor if executor is not None else RevisionExecutor()
         self.current_stage = "not_started"
 
     def run(self, samples: Iterable[PreferenceSample]) -> list[TrajectoryRecord]:
@@ -161,9 +102,9 @@ class PipelineRunner:
         except (ValueError, LLMRefusalError) as exc:
             # 仅隔离角色输出/样本契约错误；计算、存储、程序错误及全局 API 故障仍上抛。
             role_stages = {"selection", "initial_generator", "initial_judge", "reflection",
-                           "revision_credit", "admission", "fusion_judge"}
+                           "admission", "fusion_judge"}
             if (self.current_stage not in role_stages and
-                    not self.current_stage.endswith((".critic", ".judge"))):
+                    not self.current_stage.endswith((".critic", ".generator", ".judge"))):
                 raise
             record.state = "sample_error"
             record.sample_error = {"stage": self.current_stage, "type": type(exc).__name__,
@@ -213,75 +154,66 @@ class PipelineRunner:
         candidates = []
         contributions: dict[str, float] = {}
         state = "initial_success" if initial_judgment.success else "final_failure"
-        # 训练时仅对失败的 R0 修订；每次尝试都以 R0 为基线，而非接续上次结果。
+        # Generator 会话限于单个样本；第二轮接续最近的有效 rubric。
+        current, current_judgment = initial, initial_judgment
         if self.training and not initial_judgment.success:
             for number in range(1, self.max_attempts + 1):
                 revision_history = ({} if number == 1 else {
                     "previous_attempt": attempts[-1] if attempts else None,
                     "previous_invalid_attempt": invalid_attempts[-1] if invalid_attempts else None,
                 })
-                validation_failures: list[str] = []
-                validation_feedback: str | None = None
-                last_analysis: str | None = None
-                for retry in range(self.max_revision_output_retries + 1):
-                    self.current_stage = f"revision_{number}.critic"
-                    try:
-                        proposal = modules.critic.critique(
-                            sample.task, sample.chosen, sample.rejected, initial, initial_judgment,
-                            number, validation_feedback=validation_feedback, **revision_history,
-                        )
-                    except LLMFormatError as exc:
-                        # Backend 已耗尽格式重试：本轮终止，不叠加 Executor 重试。
-                        # 无合法响应则 analysis 为 None，不能伪造诊断或 Rk。
-                        validation_failures.append(str(exc)[:160] or type(exc).__name__)
-                        invalid_attempts.append(InvalidRevisionAttempt(
-                            number, None, validation_failures, analysis=last_analysis,
-                        ))
-                        break
-                    except RevisionOperationOutputError as exc:
-                        failure = exc
-                        last_analysis = exc.analysis
-                    else:
-                        last_analysis = proposal.analysis
-                        try:
-                            self.current_stage = f"revision_{number}.executor"
-                            revised, executed = self.executor.execute(initial, proposal.operations, number)
-                            break
-                        except ValueError as exc:
-                            failure = exc
-                    validation_failures.append(str(failure)[:160] or type(failure).__name__)
-                    if retry == self.max_revision_output_retries:
-                        invalid_attempts.append(InvalidRevisionAttempt(
-                            number, None, validation_failures, analysis=last_analysis,
-                        ))
-                        break
-                    validation_feedback = (
-                        f"上一版 operations 未通过结构校验：{validation_failures[-1]}。"
-                        f"R0 含 {len(initial.criteria)} 条标准；请从 R0 重新生成完整操作，"
-                        "保证执行后仍有 2 到 8 条，ID 合法且不冲突。"
+                self.current_stage = f"revision_{number}.critic"
+                try:
+                    proposal = modules.critic.critique(
+                        sample.task, sample.chosen, sample.rejected, current, current_judgment,
+                        number, **revision_history,
                     )
-                if invalid_attempts and invalid_attempts[-1].attempt_number == number:
-                    continue  # 本次修订失败；下一次仍基于 R0，不能凭空构造 Rk。
+                except LLMFormatError as exc:
+                    invalid_attempts.append(InvalidRevisionAttempt(number, None, [str(exc)], analysis=None))
+                    continue
+                validation_failures = []
+                revised = None
+                for retry in range(self.max_revision_output_retries + 1):
+                    self.current_stage = f"revision_{number}.generator"
+                    try:
+                        revised = modules.initial_generator.revise(
+                            current, proposal.improvement_advice, number,
+                            validation_feedback=validation_failures[-1] if validation_failures else None,
+                        )
+                        if (revised.base_rubric_id != current.rubric_id
+                                or not 2 <= len(revised.criteria) <= 8
+                                or any(c.source_experiences or not c.question.strip() for c in revised.criteria)):
+                            revised = None
+                            raise ValueError("invalid full revised rubric or revision base")
+                        break
+                    except LLMFormatError as exc:
+                        validation_failures.append(str(exc))
+                        break  # 后端已耗尽格式纠错，不叠加语义重试。
+                    except ValueError as exc:
+                        revised = None
+                        validation_failures.append(str(exc)[:160])
+                if revised is None:
+                    invalid_attempts.append(InvalidRevisionAttempt(
+                        number, proposal.improvement_advice, validation_failures, analysis=proposal.analysis))
+                    continue
                 self.current_stage = f"revision_{number}.judge"
                 try:
                     revised_judgment = modules.judge.judge(
                         revised, sample.chosen, sample.rejected, task=sample.task,
-                        previous=initial, previous_judgment=initial_judgment,
+                        previous=current, previous_judgment=current_judgment,
                     )
                 except JudgeOutputError as exc:
-                    record = TrajectoryRecord(sample.sample_id, "judge_error_revision",
-                                              [item.experience_id for item in recalled],
-                                              [item.experience_id for item in selected],
-                                              initial, initial_judgment, attempts, [], {},
-                                              invalid_attempts, str(exc))
+                    record.state = "judge_error_revision"
+                    record.judge_error = str(exc)
                     self.current_stage = "trajectory"
                     self.trajectories.append(record)
                     return record
-                _check_reused_judgments(initial, initial_judgment, revised, revised_judgment)
-                attempt = RevisionAttempt(number, None, executed, revised, revised_judgment,
-                                          validation_failures, analysis=proposal.analysis)
+                _check_reused_judgments(current, current_judgment, revised, revised_judgment)
+                attempt = RevisionAttempt(number, proposal.improvement_advice, [], revised, revised_judgment,
+                                          validation_failures, analysis=proposal.analysis,
+                                          previous_rubric=current, previous_judgment=current_judgment)
                 attempts.append(attempt)
-                # 失败尝试仅留在轨迹；只对首次成功的操作反思、归因并生成候选。
+                current, current_judgment = revised, revised_judgment
                 if revised_judgment.success:
                     state = f"revision_success_{number}"
                     self.current_stage = "reflection"
@@ -289,27 +221,12 @@ class PipelineRunner:
                                                           attempt, chosen=sample.chosen,
                                                           rejected=sample.rejected)
                     record.reflected_candidates = reflected
-                    self.current_stage = "operation_contribution"
-                    contributions = calculate_operation_contributions(
-                        initial, initial_judgment, revised, revised_judgment, executed,
-                    )
-                    record.operation_contributions = contributions
-                    self.current_stage = "revision_budget"
-                    budget = calculate_revision_budget(
-                        initial, initial_judgment, revised, revised_judgment, self.evidence_weight,
-                    )
-                    self.current_stage = "revision_credit"
-                    candidates = modules.revision_credit_assigner.assign(
-                        reflected, executed, contributions, budget,
-                    )
+                    candidates = reflected
                     record.reflected_candidates = candidates
-                    # 信用先分配，再逐条准入和融合；拒绝项的信用不转给其他候选。
                     for index, candidate in enumerate(candidates):
-                        if candidate.credit is None or not candidate.linked_operation_ids:
-                            continue  # CREDIT_FAIL：不得进入 Admission。
                         self.current_stage = "admission"
                         reviewed = modules.admission_checker.check(
-                            sample.task, candidate, attempt, contributions,
+                            sample.task, candidate, attempt,
                         )
                         candidates[index] = reviewed  # 准入已完成；后续 Fusion 错误仍保留此结果。
                         if reviewed.admission == "PASS":

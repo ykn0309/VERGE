@@ -149,49 +149,8 @@ def test_same_response_is_independent_and_can_tie(monkeypatch, wire_payload):
     assert result.margin == 0 and not result.success
 
 
-def test_critic_http_returns_content_system_assigns_ids_across_rounds(monkeypatch):
-    monkeypatch.setenv('JUDGE_KEY', 'test-key')
-    output = {'analysis': '根据任务调整标准。', 'operations': [
-        {'operation_type': 'MODIFY', 'target_criterion_id': 1,
-         'new_or_updated_criterion': {'question': '修订后的要求？', 'importance_score': 8}},
-        {'operation_type': 'ADD', 'target_criterion_id': None,
-         'new_or_updated_criterion': {'question': '新增的要求？', 'importance_score': 5}},
-        {'operation_type': 'DELETE', 'target_criterion_id': 2, 'new_or_updated_criterion': None}]}
-    base = rubric()
-    judgment = calculate_rubric_judgment(base, [CriterionJudgment(c.criterion_id, False, True)
-                                               for c in base.criteria])
-    with httpx.Client(base_url='https://judge.invalid/v1/',
-                      transport=httpx.MockTransport(lambda _: response(output))) as client:
-        backend = OpenAICompatibleBackend('test', base_url='https://judge.invalid/v1/', client=client, api_key_env='JUDGE_KEY', max_retries=0)
-        proposal = LLMCritic(backend).critique('任务', 'A', 'B', base, judgment, 1)
-    assert [o.operation_id for o in proposal.operations] == ['op1_1', 'op1_2', 'op1_3']
-    assert proposal.operations[0].new_or_updated_criterion.criterion_id == 'private-first'
-    assert proposal.operations[1].new_or_updated_criterion.criterion_id == 'added1_2'
-    assert all(o.before_criterion is None for o in proposal.operations)
-    assert proposal.operations[2].target_criterion_id == 'private-second'
-
-    # Restore the same content for a new round: IDs are round-local, not model-generated.
-    from verge.models import InvalidRevisionAttempt
-    second_input = critic_payload('任务', 'A', 'B', base, judgment, 2,
-        previous_invalid_attempt=InvalidRevisionAttempt(1, '诊断', ['结构错误']))
-    codec = NumberedIDCodec('critic', second_input)
-    codec.project(second_input)
-    second = codec.restore({**output, 'operations': [
-        {**o, 'target_criterion_id': str(o['target_criterion_id']) if o['target_criterion_id'] else None}
-        for o in output['operations']]})
-    assert [o['operation_id'] for o in second['operations']] == ['op2_1', 'op2_2', 'op2_3']
-    assert second['operations'][1]['new_or_updated_criterion']['criterion_id'] == 'added2_2'
 
 
-def test_critic_system_new_id_avoids_existing_base_id():
-    base = Rubric('base', None, [Criterion('added1_1', '旧问题？', 5, []),
-                                Criterion('added1_1_new', '其它问题？', 5, [])])
-    judgment = calculate_rubric_judgment(base, [CriterionJudgment(c.criterion_id, False, True)
-                                               for c in base.criteria])
-    codec = NumberedIDCodec('critic', critic_payload('任务', 'A', 'B', base, judgment, 1))
-    restored = codec.restore({'operations': [{'operation_type': 'ADD', 'target_criterion_id': None,
-        'new_or_updated_criterion': {'question': '新问题？', 'importance_score': 5}}]})
-    assert restored['operations'][0]['new_or_updated_criterion']['criterion_id'] == 'added1_1_new_new'
 
 
 def test_judge_can_copy_numeric_labels_without_format_retry(monkeypatch):

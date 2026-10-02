@@ -59,9 +59,6 @@ def test_numeric_ranges_and_non_finite_values(tmp_path):
         ("modules.selection", "max_selected", 6),
         ("modules.selection", "exploration_slots", 2),
         ("modules.revision", "max_attempts", 3),
-        ("modules.revision_credit", "max_budget", -0.1),
-        ("modules.revision_credit", "max_budget", float("nan")),
-        ("modules.revision_credit", "max_budget", True),
     ]
     for section, name, bad in cases:
         data = deepcopy(valid)

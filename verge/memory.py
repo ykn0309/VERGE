@@ -74,25 +74,24 @@ class ExperienceMemory:
     ) -> CandidateExperience:
         """Admission PASS 后按外部 FusionJudge 的匹配结果 ADD 或 MERGE。"""
         self._ensure_writable()
-        if candidate.admission != "PASS" or candidate.credit is None or candidate.fusion is not None:
-            raise ValueError("fusion requires an admitted, credited, unfused candidate")
-        # 先验证证据和匹配 ID，避免非法调用改变内存后才失败。
-        evidence = EvidenceRecord(sample_id, "revision_credit", candidate.credit, 1.0)
+        if (candidate.admission != "PASS" or candidate.credit is not None
+                or candidate.linked_operation_ids or candidate.fusion is not None):
+            raise ValueError("fusion requires an admitted, uncredited, unfused candidate")
+        # 先验证候选和匹配 ID，避免非法调用改变内存后才失败。
         if matching_experience_id is None:
             experience_id = f"exp_{uuid4().hex}"
             while experience_id in self._experiences:
                 experience_id = f"exp_{uuid4().hex}"
             prior = Experience(experience_id, candidate.content, candidate.trigger, 1.0, 1.0,
                                [sample_id], [])
-            updated = apply_beta_evidence(prior, evidence)
+            updated = prior
             decision = "ADD"
         else:
             prior = self._experiences[matching_experience_id]
-            with_evidence = apply_beta_evidence(prior, evidence)
             updated = Experience(prior.experience_id, prior.content, prior.trigger,
-                                 with_evidence.alpha, with_evidence.beta,
+                                 prior.alpha, prior.beta,
                                  [*prior.source_trajectories, sample_id],
-                                 with_evidence.evidence_history)
+                                 prior.evidence_history)
             experience_id = prior.experience_id
             decision = "MERGE"
         result = CandidateExperience(candidate.candidate_id, candidate.content, candidate.trigger,

@@ -24,7 +24,6 @@ def runner_at(path, scenario='attempt_1_success'):
 @pytest.mark.parametrize('role,method,stage', [
     ('initial_generator', 'generate', 'initial_generator'),
     ('reflector', 'reflect', 'reflection'),
-    ('revision_credit_assigner', 'assign', 'revision_credit'),
     ('admission_checker', 'check', 'admission'),
     ('fusion_judge', 'find_match', 'fusion_judge'),
 ])

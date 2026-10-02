@@ -8,10 +8,10 @@ import re
 from typing import Any, Mapping, Sequence
 
 from verge.models import (CandidateExperience, Criterion, Experience, InvalidRevisionAttempt,
-                          RevisionAttempt, RevisionOperation, Rubric, RubricJudgment)
+                          RevisionAttempt, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "abstract-transferable-reflection"
+PROMPT_VERSION = "generator-dialogue-critic-feedback"
 
 # 专属身份和任务说明；Generator/Reflector 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
@@ -22,11 +22,11 @@ _ROLE_GUIDANCE = {
 再依据分析输出 criteria：全面覆盖直接相关的核心要求，保持简洁；每条标准表达一个准确具体、可独立核验的 Boolean 问题，肯定判断表示满足要求。标准数量由任务覆盖需要确定。最后吸收所选经验带来的评价设计增益。importance_score 表达任务重要性，source_experiences 表达实际影响该标准的经验来源。""",
     "judge": """你是逐标准回答核验员。你的任务是结合原始 task 的指令、输入和上下文，依据每条提供的标准和当前 response 的实际证据，独立判断这份回答是否满足要求。
 每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
-    "critic": """你是失败 rubric 的诊断与原子修订者。你的任务是结合 task、偏好对、R0 和逐项 Judge 结果，产出私有 analysis 和可执行 operations，使 chosen 的加权得分高于 rejected。
-analysis 根据已有证据解释失败原因及判断的不确定性，可引用 chosen/rejected 的内容；operations 根据 task 的要求构造可评价未来任意回答的标准。
-严格隔离分析与标准：operations 中的标准严禁泄露候选回答内容，严禁出现 chosen/rejected 或优选/非优选身份、两份回答的比较评价、候选专有事实及诊断性备注。标准的具体要求必须由 task 本身或独立于候选回答的领域知识支撑，不能把候选回答的措辞、结论或细节变成正确答案要求。输出前逐条核对 ADD/MODIFY 的 question，将候选相关诊断只保留在 analysis。每轮均针对 R0 提出完整操作集；第二轮结合第一轮实际保存的历史进行诊断。""",
+    "critic": """你是 rubric 失败诊断者。结合 task、偏好对、当前标准与逐项 Judge 判断，输出 analysis 和 improvement_advice。
+analysis 是私有诊断，可以讨论候选内容、Judge 错误及判断的不确定性，并分析上轮修订为何未奏效。
+improvement_advice 是唯一交给 Generator 的公开反馈：说明当前标准在内容、覆盖、适用边界或重要性上的问题，以及由任务支撑的对应修订建议。严禁引用、复述或暗示候选回答的内容、措辞、实体、数字、独有特征、比较评价和偏好身份；严禁引入仅因候选内容才成立的要求。建议只依据 task 或独立领域知识，不输出修订操作或完整替代 rubric，不建议程序不存在的一票否决或门槛机制。输出前将公开建议单独视为交给从未见过候选回答的 Generator 的文本检查泄露。""",
     "reflector": """你是 rubric 生成经验提炼者。你的任务是从成功修订中提炼可用于未来任务的评价设计原则。
-结合任务、chosen 和 rejected 的实际内容，参考成功修订的 Critic 私有分析，对照标准、两侧判断与成功操作的修改前后内容，识别成功修订解决的问题及有迁移价值的变化。Critic 分析是诊断依据，经验由实际执行的操作和判断结果支撑，content 提炼可迁移方法而非复述候选细节。先识别操作体现的评价设计变化，再抽象为任务类型、要求关系、输入条件或评价维度层面的方法。content 表达单一、具体的 rubric 设计方法，说明在何种条件下如何构造或调整判断标准及其目的；用语义类别替代样本特定场景、对象、名称、数字和候选措辞。样本和候选的专有细节仅用于理解，经验规则保留可复用的评价机制；抽象应改变方法的适用层次，而非仅替换对象名称。抽象后仍须保留操作体现的关键机制，而非退化为笼统的质量口号。trigger 表达任务结构或输入条件层面的明确适用范围，仅阅读未来 task 即可核验；适用范围可以限定任务类型，迁移性指同类任务间复用。每条候选同时填写直接支撑该原则的成功操作编号 linked_operation_ids；编号取自本次成功操作列表，支撑集合为空时填写空数组。一个操作可支持多条候选，一条候选可关联多个操作，信用数值由程序计算。""",
+结合任务、chosen 和 rejected 的实际内容，参考成功修订的 Critic 私有分析，对照标准、两侧判断与成功修订前后标准，识别成功修订解决的问题及有迁移价值的变化。Critic 分析是诊断依据，经验由实际修订前后变化和判断结果支撑，content 提炼可迁移方法而非复述候选细节。先识别修订前后体现的评价设计变化，再抽象为任务类型、要求关系、输入条件或评价维度层面的方法。content 表达单一、具体的 rubric 设计方法，说明在何种条件下如何构造或调整判断标准及其目的；用语义类别替代样本特定场景、对象、名称、数字和候选措辞。样本和候选的专有细节仅用于理解，经验规则保留可复用的评价机制；抽象应改变方法的适用层次，而非仅替换对象名称。抽象后仍须保留修订体现的关键机制，而非退化为笼统的质量口号。trigger 表达任务结构或输入条件层面的明确适用范围，仅阅读未来 task 即可核验；适用范围可以限定任务类型，迁移性指同类任务间复用。每次最多提炼一条最有迁移价值、证据清晰的设计机制；没有值得保留的方法时返回空数组。""",
     "admission_checker": """你是候选 rubric 经验的准入审核员。你的任务是根据 task、候选 content 和 trigger，判断经验是否符合准入条件，并给出具体理由。
 审核三项条件：content 表达单一、明确、可迁移的 rubric 设计原则；trigger 清晰具体，全部条件可通过阅读和语义理解未来 task 核验；候选表达依据任务要求抽象的方法，适用于未来任务和回答。
 依据候选实际文本作出裁决，理由引用相关 content 或 trigger，并说明满足或违反的准入条件。""",
@@ -54,22 +54,15 @@ _ROLE_INSTRUCTIONS = {
         '"satisfied":Boolean判断}]}。'
     ),
     "critic": (
-        '私有 analysis 使用非空中文表达，可引用两份回答和已有判断；缺失历史按实际缺失状态处理。'
-        'operations 的 question 只表达任务评价要求，严禁包含候选回答内容、偏好身份或对候选的评价；候选相关说明放在 analysis。'
-        '两轮 operations 均以 R0 为共同起点，各自构成可独立执行的完整操作集。'
-        '操作及新增标准的编号由系统分配；DELETE/MODIFY 的 target_criterion_id 引用 R0 已有编号。'
-        '每个目标对应一个操作，执行后保持 2 到 8 条标准。'
-        'ADD/MODIFY 的标准包含 question 与 importance_score，后者为 1 到 10 的整数；执行前后的对象编号及来源由系统补全。'
-        '返回 {"analysis":非空中文诊断,"operations":[{'
-        '"operation_type":"ADD"或"DELETE"或"MODIFY","target_criterion_id":目标ID或ADD时null,'
-        '"new_or_updated_criterion":ADD/MODIFY时包含question和importance_score的标准或DELETE时null}]}。'
+        '返回 {"analysis":非空中文私有诊断,"improvement_advice":非空中文候选无关改进建议}。'
+        '第二轮针对当前 rubric 及此前反馈的实际效果诊断，不要求从 R0 重做。'
     ),
     "reflector": (
-        '每条经验包含一个高于当前样本场景的 rubric 生成原则和明确的 task 可核验条件，候选数量为 0 到 3。'
+        '每条经验包含一个高于当前样本场景的 rubric 生成原则和明确的 task 可核验条件，候选数量为 0 到 1。'
         '输出前检查 content 与 trigger：换成同类任务的不同对象后，该方法仍成立且有操作指导价值；样本专有细节只用于理解，不写入候选。'
         '候选集合包含同时具备可迁移原则和事前适用条件的经验；集合为空时返回空数组。'
         '返回 {"candidates":[{"content":单一具体可复用方法,'
-        '"trigger":清晰的task可检验条件,"linked_operation_ids":[成功操作的 op 编号字符串]}]}。'
+        '"trigger":清晰的task可检验条件}]}。'
     ),
     "admission_checker": (
         '全部准入条件满足时 decision 为 PASS，其余情况为 FAIL。'
@@ -102,7 +95,9 @@ _INPUT_TITLES = {
     "judgment": "评价结果", "candidate": "待审核经验", "candidate_id": "候选编号",
     "linked_operation_ids": "支撑操作", "credit": "修订信用", "operation_contributions": "操作贡献",
     "admission": "准入结果", "admission_reason": "准入理由", "fusion": "融合结果",
-    "existing": "已有经验",
+    "existing": "已有经验", "improvement_advice": "Critic 改进建议",
+    "current_rubric": "当前标准", "current_judgment": "当前得分",
+    "previous_rubric": "本次修订前标准", "previous_judgment": "本次修订前得分",
     "unchanged_criteria": "未改动标准", "before_judgment": "修订前判断", "after_judgment": "修订后判断",
 }
 
@@ -114,7 +109,9 @@ def _inline_revision_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
             result = {key: visit(child) for key, child in value.items()
                       if key not in {"rubric_id", "base_rubric_id", "normalized_weights"}}
             for rubric_key, judgment_key in (("initial_rubric", "initial_judgment"),
-                                             ("rubric", "judgment")):
+                                             ("rubric", "judgment"),
+                                             ("previous_rubric", "previous_judgment"),
+                                             ("current_rubric", "current_judgment")):
                 rubric = result.get(rubric_key)
                 judgment = result.get(judgment_key)
                 if not isinstance(rubric, dict) or not isinstance(judgment, dict):
@@ -138,44 +135,10 @@ def _inline_revision_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
     return visit(payload)
 
 
-def _merged_reflection_evidence(payload: dict[str, Any]) -> dict[str, Any]:
-    """将已合并判断的标准按操作展示一次，内部 payload 不变。"""
-    attempt = payload.get("successful_attempt", {})
-    operations = attempt.get("operations", [])
-    if not operations:
-        return payload
-    initial = {c["criterion_id"]: c for c in payload.get("initial_rubric", {}).get("criteria", [])}
-    revised = {c["criterion_id"]: c for c in attempt.get("rubric", {}).get("criteria", [])}
-    changed = set()
-    changes = []
-    for operation in operations:
-        item = dict(operation)
-        target = item.get("target_criterion_id")
-        before = item.get("before")
-        after = item.get("after")
-        if isinstance(before, dict):
-            item["before"] = initial.get(before.get("criterion_id"), before)
-        if isinstance(after, dict):
-            item["after"] = revised.get(after.get("criterion_id"), after)
-            changed.add(after.get("criterion_id"))
-        changed.add(target)
-        changes.append(item)
-    history = {k: v for k, v in attempt.items() if k not in ("rubric", "operations")}
-    history["operations"] = changes
-    history["unchanged_criteria"] = [
-        {**{k: v for k, v in c.items() if k not in ("chosen", "rejected")}, "before_judgment": {k: initial.get(cid, {}).get(k) for k in ("chosen", "rejected")},
-         "after_judgment": {k: c.get(k) for k in ("chosen", "rejected")}}
-        for cid, c in revised.items() if cid not in changed]
-    return {**{k: v for k, v in payload.items() if k not in ("initial_rubric", "successful_attempt")},
-            "successful_attempt": history}
-
-
 def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
     """简单标签与紧凑列表；原文、局部编号及历史对象关系保持完整。"""
     if role in ("critic", "reflector"):
         payload = _inline_revision_evidence(payload)
-    if role == "reflector":
-        payload = _merged_reflection_evidence(payload)
     lines: list[str] = []
     keys: set[str] = set()
 
@@ -267,15 +230,6 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
         else:
             lines.append(indent + lead + scalar(value, field))
 
-    if role == "critic":
-        rubric = payload.get("initial_rubric", {})
-        references = [str(item["criterion_id"]) for item in rubric.get("criteria", [])
-                      if isinstance(item, Mapping) and "criterion_id" in item]
-        if references:
-            lines.append("本轮从初始标准 R0 重新修订，目标编号取自 R0：" + "、".join(references) + "。")
-            if payload.get("previous_attempt") or payload.get("previous_invalid_attempt"):
-                lines.append("第一次修订记录用于分析此前效果；本轮操作的目标仍是 R0 中的标准。")
-            lines.append("")
     render(payload, "")
     if role in ("critic", "reflector"):
         return "\n".join(lines).strip()
@@ -294,6 +248,9 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
 
 
 def llm_messages(role: str, payload: Mapping[str, Any]) -> list[dict[str, str]]:
+    if role == "initial_generator" and "_conversation" in payload:
+        return [dict(message) for message in payload["_conversation"]]
+
     """各角色专属 system + 自然分节的样本输入；JSON 仅用于输出。"""
     if role not in _ROLE_INSTRUCTIONS:
         raise ValueError(f"unknown LLM role: {role}")
@@ -364,18 +321,12 @@ def _rubric_semantics(rubric: Rubric) -> dict[str, Any]:
             "criteria": [_criterion_fields(item) for item in rubric.criteria]}
 
 
-def _operation_summary(operation: RevisionOperation) -> dict[str, Any]:
-    return {"operation_id": operation.operation_id, "operation_type": operation.operation_type,
-            "target_criterion_id": operation.target_criterion_id,
-            "before": _criterion_fields(operation.before_criterion) if operation.before_criterion else None,
-            "after": _criterion_fields(operation.new_or_updated_criterion)
-                     if operation.new_or_updated_criterion else None}
-
-
 def _attempt_semantics(attempt: RevisionAttempt) -> dict[str, Any]:
     return {"attempt_number": attempt.attempt_number,
-            "operations": [_operation_summary(item) for item in attempt.operations],
-            "rubric": _rubric_semantics(attempt.rubric), "judgment": attempt.judgment.to_dict()}
+            "rubric": _rubric_semantics(attempt.rubric), "judgment": attempt.judgment.to_dict(),
+            **({"previous_rubric": _rubric_semantics(attempt.previous_rubric),
+                "previous_judgment": attempt.previous_judgment.to_dict()}
+               if attempt.previous_rubric is not None and attempt.previous_judgment is not None else {})}
 
 
 def critic_payload(task: str, chosen: str, rejected: str, initial: Rubric,
@@ -384,17 +335,19 @@ def critic_payload(task: str, chosen: str, rejected: str, initial: Rubric,
                    previous_invalid_attempt: InvalidRevisionAttempt | None = None,
                    validation_feedback: str | None = None) -> dict[str, Any]:
     payload = {"task": task, "chosen": chosen, "rejected": rejected,
-               "initial_rubric": _rubric_semantics(initial),
-               "initial_judgment": initial_judgment.to_dict(),
+               "current_rubric": _rubric_semantics(initial),
+               "current_judgment": initial_judgment.to_dict(),
                "attempt_number": attempt_number}
     if attempt_number == 2:
         payload["previous_attempt"] = ({**_attempt_semantics(previous_attempt),
                                         "analysis": previous_attempt.analysis,
+                                        "improvement_advice": previous_attempt.feedback,
                                         "validation_failures": list(previous_attempt.validation_failures)}
                                        if previous_attempt else None)
         payload["previous_invalid_attempt"] = (
             {"attempt_number": previous_invalid_attempt.attempt_number,
              "analysis": previous_invalid_attempt.analysis,
+             "improvement_advice": previous_invalid_attempt.feedback,
              "validation_failures": list(previous_invalid_attempt.validation_failures)}
             if previous_invalid_attempt else None)
     if validation_feedback is not None:
@@ -409,7 +362,8 @@ def reflection_payload(task: str, initial: Rubric, initial_judgment: RubricJudgm
             "initial_rubric": _rubric_semantics(initial),
             "initial_judgment": initial_judgment.to_dict(),
             "successful_attempt": {**_attempt_semantics(successful_attempt),
-                                   "analysis": successful_attempt.analysis}}
+                                   "analysis": successful_attempt.analysis,
+                                   "improvement_advice": successful_attempt.feedback}}
 
 
 def admission_payload(task: str, candidate: CandidateExperience) -> dict[str, Any]:
@@ -518,38 +472,13 @@ class NumberedIDCodec:
             result["criterion_judgments"] = [
                 {**item, "criterion_id": self._existing("criterion", item.get("criterion_id"))}
                 if isinstance(item, dict) else item for item in result["criterion_judgments"]]
-        elif self.role == "critic" and isinstance(result.get("operations"), list):
-            operations = []
-            for index, item in enumerate(result["operations"], 1):
-                if not isinstance(item, dict) or set(item) != {
-                        "operation_type", "target_criterion_id", "new_or_updated_criterion"}:
-                    raise ValueError("critic: expected operation content fields")
-                operation = {**item, "operation_id": f"op{self.attempt_number}_{index}",
-                             "before_criterion": None}
-                target = item["target_criterion_id"]
-                if target is not None:
-                    operation["target_criterion_id"] = self._existing("criterion", target)
-                criterion = item["new_or_updated_criterion"]
-                if isinstance(criterion, dict):
-                    if set(criterion) != {"question", "importance_score"}:
-                        raise ValueError("critic: expected criterion content fields")
-                    cid = (f"added{self.attempt_number}_{index}"
-                           if item["operation_type"] == "ADD"
-                           else operation["target_criterion_id"])
-                    # Deterministic new IDs remain disjoint from the base rubric.
-                    while item["operation_type"] == "ADD" and cid in self.base_criteria:
-                        cid += "_new"
-                    operation["new_or_updated_criterion"] = {
-                        **criterion, "criterion_id": cid, "source_experiences": []}
-                operations.append(operation)
-            result["operations"] = operations
         elif self.role == "reflector" and isinstance(result.get("candidates"), list):
+            if len(result["candidates"]) > 1:
+                raise ValueError("reflector: expected 0..1 candidates")
             candidates = []
             for index, item in enumerate(result["candidates"], 1):
-                if not isinstance(item, dict) or set(item) != {"content", "trigger", "linked_operation_ids"}:
+                if not isinstance(item, dict) or set(item) != {"content", "trigger"}:
                     raise ValueError("reflector: expected candidate content fields")
-                candidates.append({**item, "candidate_id": f"candidate_{index}",
-                                   "linked_operation_ids": [self._existing("operation", key)
-                                                            for key in item["linked_operation_ids"]]})
+                candidates.append({**item, "candidate_id": f"candidate_{index}"})
             result["candidates"] = candidates
         return result

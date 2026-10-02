@@ -34,8 +34,8 @@ _ROLES = (
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
-    "retrieval": "fake", "selection": "llm", "revision": "critic_atomic_same_base",
-    "revision_credit": "operation_bound", "reliability": "beta",
+    "retrieval": "fake", "selection": "llm", "revision": "critic_generator_dialogue",
+    "reliability": "beta",
 }
 
 
@@ -127,9 +127,8 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
             raise ValueError("modules.retrieval.config.dimensions: unsupported text-embedding-v4 dimension")
     selection = configured["selection"]["config"]
     revision = configured["revision"]["config"]
-    credit = configured["revision_credit"]["config"]
     if (set(retrieval) - retrieval_keys or set(selection) - {"max_selected", "exploration_slots"}
-            or set(revision) - {"max_attempts", "invalid_output_retries"} or set(credit) - {"max_budget"}
+            or set(revision) - {"max_attempts", "invalid_output_retries"}
             or configured["reliability"]["config"]):
         raise ValueError("modules: unsupported V1 component options")
     if selection.get("exploration_slots", 0) != 0:
@@ -137,8 +136,6 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     retries = revision.get("invalid_output_retries", 2)
     if type(retries) is not int or not 0 <= retries <= 3:
         raise ValueError("modules.revision.config.invalid_output_retries: expected integer in [0, 3]")
-    if credit.get("max_budget", 1.0) != 1.0:
-        raise ValueError("modules.revision_credit.config.max_budget: V1 requires 1.0")
 
     store = config["store"]
     _only_keys(store, {"implementation", "config"}, "store")

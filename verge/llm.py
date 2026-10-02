@@ -41,11 +41,13 @@ class LLMFormatError(ValueError):
     """模型输出不是所需结构，已用尽格式重试。"""
 
 
+GENERATOR_TURN = ContextVar("generator_turn", default=None)
+
 _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "selector": ("selected_experience_ids", list),
     "initial_generator": ("criteria", list),
     "judge": ("criterion_judgments", list),
-    "critic": ("operations", list),
+    "critic": ("improvement_advice", str),
     "reflector": ("candidates", list),
     "admission_checker": ("decision", str),  # 另需非空 reason；在 _valid_shape 中联合校验。
     "fusion_judge": ("match_index", (int, type(None))),
@@ -91,30 +93,21 @@ def _valid_shape(role: str, value: Any) -> bool:
         return (isinstance(value, dict) and set(value) == {"decision", "reason"}
                 and value["decision"] in ("PASS", "FAIL")
                 and isinstance(value["reason"], str) and bool(value["reason"].strip()))
-    if role in ("critic", "initial_generator"):
-        data_field = "operations" if role == "critic" else "criteria"
-        if (not isinstance(value, dict) or set(value) != {"analysis", data_field}
+    if role == "critic":
+        return (isinstance(value, dict) and set(value) == {"analysis", "improvement_advice"}
+                and all(isinstance(value[key], str) and value[key].strip()
+                        for key in ("analysis", "improvement_advice")))
+    if role == "initial_generator":
+        if (not isinstance(value, dict) or set(value) != {"analysis", "criteria"}
                 or not isinstance(value["analysis"], str) or not value["analysis"].strip()
-                or not isinstance(value[data_field], list)):
+                or not isinstance(value["criteria"], list)):
             return False
-        data = value[data_field]
+        data = value["criteria"]
     else:
         field, expected = _OUTPUT_FIELDS[role]
         if not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], expected):
             return False
         data = value[field]
-    if role == "critic":
-        return all(isinstance(item, dict)
-                   and set(item) == {"operation_type", "target_criterion_id", "new_or_updated_criterion"}
-                   and item["operation_type"] in ("ADD", "DELETE", "MODIFY")
-                   and (item["target_criterion_id"] is None or isinstance(item["target_criterion_id"], str))
-                   and (item["new_or_updated_criterion"] is None
-                        or (isinstance(item["new_or_updated_criterion"], dict)
-                            and set(item["new_or_updated_criterion"]) == {"question", "importance_score"}
-                            and isinstance(item["new_or_updated_criterion"]["question"], str)
-                            and type(item["new_or_updated_criterion"]["importance_score"]) is int
-                            and 1 <= item["new_or_updated_criterion"]["importance_score"] <= 10))
-                   for item in data)
     if role == "selector":
         return all(isinstance(key, str) for key in data)
     if role == "initial_generator":
@@ -131,10 +124,8 @@ def _valid_shape(role: str, value: Any) -> bool:
                    and isinstance(item["criterion_id"], str)
                    and type(item["satisfied"]) is bool for item in data)
     if role == "reflector":
-        return all(isinstance(item, dict) and set(item) == {"content", "trigger", "linked_operation_ids"}
+        return len(data) <= 1 and all(isinstance(item, dict) and set(item) == {"content", "trigger"}
                    and all(isinstance(item[key], str) for key in ("content", "trigger"))
-                   and isinstance(item["linked_operation_ids"], list)
-                   and all(isinstance(key, str) for key in item["linked_operation_ids"])
                    for item in data)
     if role == "fusion_judge":
         return data is None or type(data) is int
@@ -301,6 +292,8 @@ class OpenAICompatibleBackend:
             self._trace(role, payload, messages, attempt, status=status,
                         raw_output=raw_output, output=result)
             self._metadata(role, attempt, status=status, response=response, body=body)
+            if role == "initial_generator":
+                GENERATOR_TURN.set((messages, raw_output))
             return result
         raise AssertionError("unreachable retry state")
 
@@ -445,6 +438,14 @@ class FakeLLMBackend:
                                      {"criterion_id": "c4", "question": "回答是否准确？",
                                       "importance_score": 1, "source_experiences": []},
                                  ]}}
+            if request.get("revision_number"):
+                number = request["revision_number"]
+                success = (self.scenario == "attempt_1_success" and number == 1
+                           or self.scenario == "attempt_2_success" and number == 2)
+                result["rubric"]["criteria"][1]["question"] = (
+                    "是否逐项满足关键要求？" if success else f"是否概述任务目标（第{number}次）？")
+                for criterion in result["rubric"]["criteria"]:
+                    criterion["source_experiences"] = []
         elif role == "judge":
             initial_success = self.scenario == "initial_success"
             preferred = JUDGE_RESPONSE_SIDE.get() == "chosen"
@@ -455,26 +456,14 @@ class FakeLLMBackend:
                                if preferred else item["criterion_id"] == "c1" and not initial_success)}
                 for item in request["criteria"]]}
         elif role == "critic":
-            attempt = request["attempt_number"]
-            success = (self.scenario == "attempt_1_success" and attempt == 1
-                       or self.scenario == "attempt_2_success" and attempt == 2)
-            question = ("是否逐项满足关键要求？" if success
-                        else f"是否概述任务目标（第{attempt}次）？")
-            result = {"analysis": "R0 对关键要求的判别不足，需要针对任务要求调整标准。", "operations": [{
-                "operation_id": f"op{attempt}", "operation_type": "MODIFY",
-                "target_criterion_id": "c2",
-                "new_or_updated_criterion": {"criterion_id": "c2", "question": question,
-                                             "importance_score": 8, "source_experiences": []},
-                "before_criterion": None,
-            }]}
+            result = {"analysis": "当前标准对关键要求的判别不足。",
+                      "improvement_advice": "依据任务要求完善关键要求的独立标准。"}
         elif role == "reflector":
-            operations = request["successful_attempt"]["operations"]
-            first_op = operations[0]["operation_id"] if operations else None
             result = {"candidates": [
                 {"candidate_id": f"candidate_{i}",
                  "content": "为关键任务要求设置单独的可判定标准。",
                  "trigger": "任务包含明确的关键要求。",
-                 "linked_operation_ids": ([] if self.unbound or first_op is None else [first_op])}
+                 }
                 for i in range(self.reflect_count)]}
         elif role == "admission_checker":
             result = {"decision": "PASS" if self.admission_pass else "FAIL",

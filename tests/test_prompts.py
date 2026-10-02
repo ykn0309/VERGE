@@ -75,8 +75,8 @@ def test_critic_history_has_independent_scopes_without_fabricated_judgment():
                'previous_attempt': None, 'previous_invalid_attempt': {
                    'attempt_number': 1, 'analysis': None, 'validation_failures': ['格式耗尽']}}
     system, user = llm_messages('critic', payload)
-    assert '操作及新增标准的编号由系统分配' in system['content']
-    assert '缺失历史按实际缺失状态处理' in system['content']
+    assert 'improvement_advice' in system['content']
+    assert '不要求从 R0 重做' in system['content']
     assert '上次无效修订' in user['content']
     assert '格式耗尽' in user['content']
     assert 'criterion_judgments' not in user['content']
@@ -199,14 +199,6 @@ def test_fusion_list_keeps_zero_based_positions_without_item_headings():
     assert all(not line.lstrip().startswith('#') for line in text.splitlines())
 
 
-def test_critic_targets_are_explicitly_scoped_to_r0_not_history():
-    payload = {"initial_rubric": {"criteria": [
-        {"criterion_id": "1", "question": "当前问题", "importance_score": 5}]},
-        "previous_attempt": {"rubric": {"criteria": [
-            {"criterion_id": "2", "question": "历史新增标准", "importance_score": 5}]}}}
-    text = llm_messages("critic", payload)[1]["content"]
-    assert text.startswith("本轮从初始标准 R0 重新修订，目标编号取自 R0：1。")
-    assert "- 2：历史新增标准" in text
 
 
 def test_judge_criterion_references_have_numeric_only_labels():
@@ -267,43 +259,12 @@ def test_scores_are_rounded_only_for_prompt_display(role):
     assert payload == original
 
 
-def test_reflection_merges_changes_and_strict_op_references():
-    from copy import deepcopy
-    from verge.prompts import NumberedIDCodec
-    old = {'criterion_id': 'a', 'question': '原要求', 'importance_score': 5}
-    new = {'criterion_id': 'a', 'question': '新要求', 'importance_score': 6}
-    payload = {'initial_rubric': {'criteria': [old]},
-               'initial_judgment': {'criterion_judgments': [
-                   {'criterion_id': 'a', 'chosen': False, 'rejected': True}]},
-               'successful_attempt': {'rubric': {'criteria': [new]},
-                   'judgment': {'criterion_judgments': [
-                       {'criterion_id': 'a', 'chosen': True, 'rejected': False}]},
-                   'operations': [{'operation_id': 'private-op', 'operation_type': 'MODIFY',
-                                   'target_criterion_id': 'a', 'before': old, 'after': new}]}}
-    original = deepcopy(payload)
-    codec = NumberedIDCodec('reflector', payload)
-    text = llm_messages('reflector', codec.project(payload))[1]['content']
-    assert text.count('原要求') == text.count('新要求') == 1
-    assert '- op1（MODIFY）' in text
-    assert '优选回答：满足' in text and '优选回答：未满足' in text
-    assert payload == original
-    candidate = {'content': '方法', 'trigger': '条件', 'linked_operation_ids': ['op1']}
-    assert codec.restore({'candidates': [candidate]})['candidates'][0]['linked_operation_ids'] == ['private-op']
-    for invalid in ('1', 'op2', 1):
-        with pytest.raises(ValueError):
-            codec.restore({'candidates': [{**candidate, 'linked_operation_ids': [invalid]}]})
 
 
-def test_critic_explicitly_separates_candidate_analysis_from_operations():
-    messages = llm_messages('critic', {'task': '任务'})
-    text = messages[0]['content']
-    for fragment in ('严禁泄露候选回答内容', '两份回答的比较评价', '候选专有事实',
-                     'task 本身或独立于候选回答的领域知识', '只保留在 analysis'):
-        assert fragment in text
 
 
 def test_reflector_requires_mechanism_level_transfer_not_sample_specific_rules():
     text = llm_messages('reflector', {'task': '任务'})[0]['content']
     for phrase in ('评价设计变化', '用语义类别替代', '迁移性指同类任务间复用',
-                   '操作体现的关键机制', '不同对象后', '不写入候选'):
+                   '修订体现的关键机制', '不同对象后', '不写入候选'):
         assert phrase in text

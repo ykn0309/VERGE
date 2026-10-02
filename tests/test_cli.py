@@ -64,7 +64,7 @@ def test_run_trains_then_evaluates_frozen_memory_and_inspects_full_stages(tmp_pa
     assert len(stored["experiences"]) == 1
     # 两次训练 ADD+MERGE，评估样本不会写入 evidence。
     assert {evidence["sample_id"] for evidence in stored["experiences"][0]["evidence_history"]} == {
-        "train-a", "train-b"}
+        "train-b"}
 
     inspected = command("inspect-sample", "--run-dir", str(run_dir), "--sample-id", "train-a")
     assert inspected.returncode == 0, inspected.stderr
@@ -72,9 +72,10 @@ def test_run_trains_then_evaluates_frozen_memory_and_inspects_full_stages(tmp_pa
     assert record["state"] == "revision_success_1"
     assert record["initial_rubric"]["criteria"]
     assert record["initial_judgment"]["criterion_judgments"]
-    assert record["revision_attempts"][0]["operations"][0]["before_criterion"] is not None
-    assert record["operation_contributions"]
-    assert record["reflected_candidates"][0]["credit"] > 0
+    assert record["revision_attempts"][0]["operations"] == []
+    assert record["revision_attempts"][0]["feedback"]
+    assert record["operation_contributions"] == {}
+    assert record["reflected_candidates"][0]["credit"] is None
     assert record["reflected_candidates"][0]["admission"] == "PASS"
     assert record["reflected_candidates"][0]["fusion"] == "ADD"
     next_record = json.loads(command("inspect-sample", "--run-dir", str(run_dir),
@@ -103,7 +104,7 @@ def test_test_workers_run_concurrently_commit_order_and_show_progress(tmp_path, 
     second_started = Event()
 
     def overlapping(self, role, payload):
-        if role == "initial_generator":
+        if role == "initial_generator" and not payload.get("revision_number"):
             if payload["task"] == "测试任务 0":
                 assert second_started.wait(5), "test samples did not overlap"
             elif payload["task"] == "测试任务 1":
@@ -148,7 +149,7 @@ def test_parallel_real_backend_metadata_uses_worker_sample_context(tmp_path, mon
 
     def offline_generate(self, role, payload):
         from verge.llm import JUDGE_RESPONSE_SIDE
-        if role == "initial_generator":
+        if role == "initial_generator" and not payload.get("revision_number"):
             if payload["task"] == "测试任务 0":
                 assert other_started.wait(5), "real-backend test requests did not overlap"
             elif payload["task"] == "测试任务 1":
@@ -348,7 +349,7 @@ def test_role_specific_backend_overrides_default_scenario(tmp_path):
     assert result.returncode == 0, result.stderr
     record = json.loads(command("inspect-sample", "--run-dir", str(tmp_path / "result"),
                                 "--sample-id", "train-a").stdout)
-    assert record["state"] == "revision_success_1"
+    assert record["state"] == "final_failure"
 
 
 def test_removed_generator_role_config_is_rejected(tmp_path):
@@ -406,7 +407,7 @@ def test_resume_copies_verified_prefix_without_repeating_train_or_mutating_paren
 
     def fail_second_initial(self, role, payload):
         nonlocal calls
-        if role == "initial_generator":
+        if role == "initial_generator" and not payload.get("revision_number"):
             calls += 1
             if calls == 2:
                 raise RuntimeError("invalid initial rubric")
@@ -520,7 +521,7 @@ def test_resume_rejects_request_or_role_io_beyond_next_sample(tmp_path, monkeypa
 
     def fail_second_initial(self, role, payload):
         nonlocal calls
-        if role == "initial_generator":
+        if role == "initial_generator" and not payload.get("revision_number"):
             calls += 1
             if calls == 2:
                 raise RuntimeError("stop before second sample")
@@ -550,7 +551,7 @@ def test_resume_after_all_train_skips_training_and_keeps_frozen_memory(tmp_path,
 
     def fail_test_initial(self, role, payload):
         nonlocal calls
-        if role == "initial_generator":
+        if role == "initial_generator" and not payload.get("revision_number"):
             calls += 1
             if calls == 3:
                 raise RuntimeError("bad test initial")
@@ -582,7 +583,7 @@ def test_resume_rejects_memory_write_after_last_complete_trajectory(tmp_path,
 
     def fail_second_initial(self, role, payload):
         nonlocal calls
-        if role == "initial_generator":
+        if role == "initial_generator" and not payload.get("revision_number"):
             calls += 1
             if calls == 2:
                 raise RuntimeError("invalid initial rubric")

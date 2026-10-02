@@ -64,3 +64,7 @@ Generator 不能看到 chosen/rejected。是否实质贡献属于语义判断，
 ## 7. 初始输出校验与有限重试
 
 生成结果须为无 base 的 R0、包含 2–8 条标准；每条 `source_experiences` 不得重复，且只能引用已选经验。普通运行与续跑默认均允许 2 次额外语义纠错，仅反馈不含响应文本的校验原因。Backend 的格式重试耗尽后不叠加语义重试。仍无合法输出时记录 `sample_error`（stage/type/message），不构造 R0/Judge，不计为正确或错误判别，继续下一样本。Generator 不获得 chosen/rejected 或 Judge 结果。
+
+## Generator 会话边界
+
+初始生成只接收 task 和经验；每个样本重置会话。训练初始失败后，原有 Generator 会话按[对话修订](./07-Generator对话修订.md)追加 Critic 公开建议，使用同一角色/后端输出完整 rubric。只读测试和 baseline 不执行修订。模型原始 assistant 回复保留；初始分析的 Web 摘要不被后续修订分析覆盖。

@@ -169,8 +169,7 @@ def test_invalid_result_values():
         replace(ready, admission="UNKNOWN")
     with pytest.raises(ValueError, match="fusion"):
         replace(ready, admission="PASS", fusion="UNKNOWN")
-    with pytest.raises(ValueError, match="credit"):
-        CandidateExperience("c", "principle", "trigger", admission="PASS")
+    assert CandidateExperience("c", "principle", "trigger", admission="PASS").credit is None
     with pytest.raises(ValueError, match="linked_operation_ids"):
         CandidateExperience("c", "principle", "trigger", credit=0.2)
     with pytest.raises(ValueError, match="PASS"):

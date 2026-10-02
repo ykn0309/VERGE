@@ -299,8 +299,8 @@ def test_overview_replays_pool_without_new_log_and_uses_pre_task_confidence(tmp_
     assert sum(b['uses'] for b in o['confidence_bins']) == 1
     # task b 使用的是 a 写入后的状态，不能包含 b 的合并信用。
     exp = payload['experiences'][0]
-    credit = exp['evidence_history'][0]['credit']
-    pre = (1 + max(credit, 0)) / (2 + abs(credit))
+    assert exp['evidence_history'] == []
+    pre = 0.5
     assert o['confidence_bins'][min(9, int(pre * 10))]['uses'] == 1
     assert o['scale_bins'][0]['tasks'] == 1
     assert o['scale_bins'][1]['tasks'] == 1
@@ -317,7 +317,9 @@ def test_overview_missing_evidence_prefix_suppresses_confidence(tmp_path):
     directory, _ = _run(tmp_path)
     path = directory / 'artifacts/experience_memory.json'
     memory = json.loads(path.read_text())
-    memory['experiences'][0]['evidence_history'][0]['sample_id'] = 'unfinished'
+    memory['experiences'][0]['evidence_history'] = [{'sample_id': 'unfinished', 'evidence_type': 'downstream_credit', 'credit': 0.2, 'evidence_weight': 1.0}]
+    memory['experiences'][0]['alpha'] = 1.2
+    memory['experiences'][0]['confidence'] = 1.2 / 2.2
     path.write_text(json.dumps(memory))
     result = load_run(directory)
     assert result['overview']['confidence_bins'] is None
@@ -436,7 +438,8 @@ def test_web_rejects_previous_prompt_version(tmp_path):
         load_run(directory)
     js = (PROJECT / 'verge/web_assets/app.js').read_text()
     assert 'revision_generator' not in js
-    assert 'bad.feedback' not in js and 'attempt.feedback' not in js
+    assert 'bad.feedback' in js and 'attempt.feedback' in js
+    assert 'attempt.operations.map' not in js
 
 
 def test_empty_runs_http_still_serves_dashboard(tmp_path):
@@ -474,3 +477,15 @@ def test_sample_error_before_r0_is_visible_and_excluded_from_initial_accuracy(tm
     assert result['overview']['initial']['errors'] == 1
     assert result['samples'][1]['sample_error']['stage'] == 'initial_generator'
     assert result['samples'][1]['experience_status']['referenced'] is None
+
+
+def test_revision_generator_analysis_does_not_override_initial_summary(tmp_path):
+    from verge.web import _generation_summaries
+    artifacts = tmp_path / 'artifacts'
+    artifacts.mkdir()
+    entries = [{'sample_id': 'a', 'role': 'initial_generator', 'input': {},
+                'output': {'analysis': '初始任务分析'}},
+               {'sample_id': 'a', 'role': 'initial_generator', 'input': {'revision_number': 1},
+                'output': {'analysis': '修订分析'}}]
+    (artifacts / 'role_io.jsonl').write_text(''.join(json.dumps(e) + '\n' for e in entries))
+    assert _generation_summaries(artifacts, [])['a']['generator_analysis'] == '初始任务分析'

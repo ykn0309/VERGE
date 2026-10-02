@@ -326,7 +326,7 @@ def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str,
               "requests": 0, "tokens": 0, "token_reports": 0}
              for label in ("0", "1–20", "21–50", "51–100", "101+")]
     curve, merges = [], []
-    add_count = merge_count = candidate_count = bound_count = passed = failed = 0
+    add_count = merge_count = candidate_count = passed = failed = 0
     for index, s in enumerate(train):
         before = len(pool)
         recalled = set(s.get("retrieved_experience_ids", []))
@@ -367,7 +367,6 @@ def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str,
                 bucket["token_reports"] += 1
         candidates = s.get("reflected_candidates", [])
         candidate_count += len(candidates)
-        bound_count += sum(bool(c["linked_operation_ids"]) and c["credit"] is not None for c in candidates)
         passed += sum(c["admission"] == "PASS" for c in candidates)
         failed += sum(c["admission"] == "FAIL" for c in candidates)
         added_here = set()
@@ -418,7 +417,7 @@ def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str,
             "train_completed": len(train), "sample_errors": sum(bool(s.get("sample_error")) for s in train),
             "initial": rate(train), "curve": curve,
             "segments": segments, "subsets": subsets, "adds": add_count, "merges": merge_count,
-            "candidates": candidate_count, "bound": bound_count, "admission_pass": passed,
+            "candidates": candidate_count, "admission_pass": passed,
             "admission_fail": failed, "merge_rate": merge_count / (add_count + merge_count)
                 if add_count + merge_count else None,
             "merge_events": merges, "confidence_bins": bins if replay_ok else None,
@@ -461,7 +460,8 @@ def _generation_summaries(root: Path, warnings: list[str]) -> dict[str, dict[str
             sid, output = entry.get("sample_id"), entry.get("output")
             if not isinstance(sid, str) or not isinstance(output, dict) or entry.get("error"):
                 continue
-            if entry.get("role") == "initial_generator":
+            if (entry.get("role") == "initial_generator"
+                    and not (entry.get("input") or {}).get("revision_number")):
                 analysis = output.get("analysis")
                 # The latest structured generation supersedes any previous retry's analysis.
                 summaries.setdefault(sid, {})["generator_analysis"] = (

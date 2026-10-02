@@ -330,7 +330,7 @@ def test_response_context_in_real_reflection_binding_messages(monkeypatch):
     attempt = revise(modules, initial, j0, 1)
     monkeypatch.setenv('CONTEXT_KEY', 'fake-key')
     captured = []
-    outputs = iter([{'candidates': [{'content': '按关键要求设计标准', 'trigger': '任务明确列出关键要求', "linked_operation_ids": ["1"]}]},
+    outputs = iter([{'candidates': [{'content': '按关键要求设计标准', 'trigger': '任务明确列出关键要求', "linked_operation_ids": ["op1"]}]},
                     ])
     def handler(request):
         captured.append(json.loads(request.content)['messages'])

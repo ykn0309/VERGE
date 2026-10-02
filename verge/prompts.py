@@ -11,7 +11,7 @@ from verge.models import (CandidateExperience, Criterion, Experience, InvalidRev
                           RevisionAttempt, RevisionOperation, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "reflection-with-operation-links"
+PROMPT_VERSION = "abstract-transferable-reflection"
 
 # 专属身份和任务说明；Generator/Reflector 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
@@ -23,9 +23,10 @@ _ROLE_GUIDANCE = {
     "judge": """你是逐标准回答核验员。你的任务是结合原始 task 的指令、输入和上下文，依据每条提供的标准和当前 response 的实际证据，独立判断这份回答是否满足要求。
 每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
     "critic": """你是失败 rubric 的诊断与原子修订者。你的任务是结合 task、偏好对、R0 和逐项 Judge 结果，产出私有 analysis 和可执行 operations，使 chosen 的加权得分高于 rejected。
-analysis 根据已有证据解释失败原因及判断的不确定性；operations 根据 task 的要求构造可评价未来回答的标准。每轮均针对 R0 提出完整操作集；第二轮结合第一轮实际保存的历史进行诊断。""",
+analysis 根据已有证据解释失败原因及判断的不确定性，可引用 chosen/rejected 的内容；operations 根据 task 的要求构造可评价未来任意回答的标准。
+严格隔离分析与标准：operations 中的标准严禁泄露候选回答内容，严禁出现 chosen/rejected 或优选/非优选身份、两份回答的比较评价、候选专有事实及诊断性备注。标准的具体要求必须由 task 本身或独立于候选回答的领域知识支撑，不能把候选回答的措辞、结论或细节变成正确答案要求。输出前逐条核对 ADD/MODIFY 的 question，将候选相关诊断只保留在 analysis。每轮均针对 R0 提出完整操作集；第二轮结合第一轮实际保存的历史进行诊断。""",
     "reflector": """你是 rubric 生成经验提炼者。你的任务是从成功修订中提炼可用于未来任务的评价设计原则。
-结合任务、chosen 和 rejected 的实际内容，对照初始标准、两侧判断与成功操作的修改前后内容，识别成功修订解决的问题及有迁移价值的变化。content 表达单一、具体的 rubric 设计方法；trigger 表达仅阅读未来 task 即可核验的明确适用条件。每条候选同时填写直接支撑该原则的成功操作编号 linked_operation_ids；编号取自本次成功操作列表，支撑集合为空时填写空数组。一个操作可支持多条候选，一条候选可关联多个操作，信用数值由程序计算。""",
+结合任务、chosen 和 rejected 的实际内容，参考成功修订的 Critic 私有分析，对照标准、两侧判断与成功操作的修改前后内容，识别成功修订解决的问题及有迁移价值的变化。Critic 分析是诊断依据，经验由实际执行的操作和判断结果支撑，content 提炼可迁移方法而非复述候选细节。先识别操作体现的评价设计变化，再抽象为任务类型、要求关系、输入条件或评价维度层面的方法。content 表达单一、具体的 rubric 设计方法，说明在何种条件下如何构造或调整判断标准及其目的；用语义类别替代样本特定场景、对象、名称、数字和候选措辞。样本和候选的专有细节仅用于理解，经验规则保留可复用的评价机制；抽象应改变方法的适用层次，而非仅替换对象名称。抽象后仍须保留操作体现的关键机制，而非退化为笼统的质量口号。trigger 表达任务结构或输入条件层面的明确适用范围，仅阅读未来 task 即可核验；适用范围可以限定任务类型，迁移性指同类任务间复用。每条候选同时填写直接支撑该原则的成功操作编号 linked_operation_ids；编号取自本次成功操作列表，支撑集合为空时填写空数组。一个操作可支持多条候选，一条候选可关联多个操作，信用数值由程序计算。""",
     "admission_checker": """你是候选 rubric 经验的准入审核员。你的任务是根据 task、候选 content 和 trigger，判断经验是否符合准入条件，并给出具体理由。
 审核三项条件：content 表达单一、明确、可迁移的 rubric 设计原则；trigger 清晰具体，全部条件可通过阅读和语义理解未来 task 核验；候选表达依据任务要求抽象的方法，适用于未来任务和回答。
 依据候选实际文本作出裁决，理由引用相关 content 或 trigger，并说明满足或违反的准入条件。""",
@@ -54,6 +55,7 @@ _ROLE_INSTRUCTIONS = {
     ),
     "critic": (
         '私有 analysis 使用非空中文表达，可引用两份回答和已有判断；缺失历史按实际缺失状态处理。'
+        'operations 的 question 只表达任务评价要求，严禁包含候选回答内容、偏好身份或对候选的评价；候选相关说明放在 analysis。'
         '两轮 operations 均以 R0 为共同起点，各自构成可独立执行的完整操作集。'
         '操作及新增标准的编号由系统分配；DELETE/MODIFY 的 target_criterion_id 引用 R0 已有编号。'
         '每个目标对应一个操作，执行后保持 2 到 8 条标准。'
@@ -63,10 +65,11 @@ _ROLE_INSTRUCTIONS = {
         '"new_or_updated_criterion":ADD/MODIFY时包含question和importance_score的标准或DELETE时null}]}。'
     ),
     "reflector": (
-        '每条经验包含一个 rubric 生成原则和明确的 task 可核验条件，候选数量为 0 到 3。'
+        '每条经验包含一个高于当前样本场景的 rubric 生成原则和明确的 task 可核验条件，候选数量为 0 到 3。'
+        '输出前检查 content 与 trigger：换成同类任务的不同对象后，该方法仍成立且有操作指导价值；样本专有细节只用于理解，不写入候选。'
         '候选集合包含同时具备可迁移原则和事前适用条件的经验；集合为空时返回空数组。'
         '返回 {"candidates":[{"content":单一具体可复用方法,'
-        '"trigger":清晰的task可检验条件,"linked_operation_ids":[成功操作的数字编号]}]}。'
+        '"trigger":清晰的task可检验条件,"linked_operation_ids":[成功操作的 op 编号字符串]}]}。'
     ),
     "admission_checker": (
         '全部准入条件满足时 decision 为 PASS，其余情况为 FAIL。'
@@ -100,6 +103,7 @@ _INPUT_TITLES = {
     "linked_operation_ids": "支撑操作", "credit": "修订信用", "operation_contributions": "操作贡献",
     "admission": "准入结果", "admission_reason": "准入理由", "fusion": "融合结果",
     "existing": "已有经验",
+    "unchanged_criteria": "未改动标准", "before_judgment": "修订前判断", "after_judgment": "修订后判断",
 }
 
 
@@ -134,10 +138,44 @@ def _inline_revision_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
     return visit(payload)
 
 
+def _merged_reflection_evidence(payload: dict[str, Any]) -> dict[str, Any]:
+    """将已合并判断的标准按操作展示一次，内部 payload 不变。"""
+    attempt = payload.get("successful_attempt", {})
+    operations = attempt.get("operations", [])
+    if not operations:
+        return payload
+    initial = {c["criterion_id"]: c for c in payload.get("initial_rubric", {}).get("criteria", [])}
+    revised = {c["criterion_id"]: c for c in attempt.get("rubric", {}).get("criteria", [])}
+    changed = set()
+    changes = []
+    for operation in operations:
+        item = dict(operation)
+        target = item.get("target_criterion_id")
+        before = item.get("before")
+        after = item.get("after")
+        if isinstance(before, dict):
+            item["before"] = initial.get(before.get("criterion_id"), before)
+        if isinstance(after, dict):
+            item["after"] = revised.get(after.get("criterion_id"), after)
+            changed.add(after.get("criterion_id"))
+        changed.add(target)
+        changes.append(item)
+    history = {k: v for k, v in attempt.items() if k not in ("rubric", "operations")}
+    history["operations"] = changes
+    history["unchanged_criteria"] = [
+        {**{k: v for k, v in c.items() if k not in ("chosen", "rejected")}, "before_judgment": {k: initial.get(cid, {}).get(k) for k in ("chosen", "rejected")},
+         "after_judgment": {k: c.get(k) for k in ("chosen", "rejected")}}
+        for cid, c in revised.items() if cid not in changed]
+    return {**{k: v for k, v in payload.items() if k not in ("initial_rubric", "successful_attempt")},
+            "successful_attempt": history}
+
+
 def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
     """简单标签与紧凑列表；原文、局部编号及历史对象关系保持完整。"""
     if role in ("critic", "reflector"):
         payload = _inline_revision_evidence(payload)
+    if role == "reflector":
+        payload = _merged_reflection_evidence(payload)
     lines: list[str] = []
     keys: set[str] = set()
 
@@ -152,6 +190,12 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
             return "是" if value else "否"
         if isinstance(value, float) and not math.isfinite(value):
             raise ValueError("prompt input must contain finite numbers")
+        if (role in ("critic", "reflector")
+                and field in ("chosen_score", "rejected_score", "margin")
+                and isinstance(value, (int, float))):
+            # 仅压缩模型输入的展示精度；计算和日志保留原始数值。
+            text = f"{value:.4f}".rstrip("0").rstrip(".")
+            return "0" if text == "-0" else text
         return str(value)
 
     def render(value: Any, field: str, indent: str = "", lead: str = "") -> None:
@@ -364,7 +408,8 @@ def reflection_payload(task: str, initial: Rubric, initial_judgment: RubricJudgm
     return {"task": task, "chosen": chosen, "rejected": rejected,
             "initial_rubric": _rubric_semantics(initial),
             "initial_judgment": initial_judgment.to_dict(),
-            "successful_attempt": _attempt_semantics(successful_attempt)}
+            "successful_attempt": {**_attempt_semantics(successful_attempt),
+                                   "analysis": successful_attempt.analysis}}
 
 
 def admission_payload(task: str, candidate: CandidateExperience) -> dict[str, Any]:
@@ -411,6 +456,8 @@ class NumberedIDCodec:
         known = self.forward[name]
         if value not in known:
             number = str(len(known) + 1)
+            if self.role == "reflector" and name == "operation":
+                number = "op" + number
             known[value] = number
             self.reverse[name][number] = value
         return known[value]
@@ -438,7 +485,8 @@ class NumberedIDCodec:
         return visit(dict(payload))
 
     def _existing(self, name: str, value: Any) -> str:
-        if not isinstance(value, str) or not re.fullmatch(r"[1-9][0-9]*", value):
+        pattern = r"op[1-9][0-9]*" if self.role == "reflector" and name == "operation" else r"[1-9][0-9]*"
+        if not isinstance(value, str) or not re.fullmatch(pattern, value):
             raise ValueError(f"{self.role}: {name} must be a numbered ID")
         if value not in self.reverse[name]:
             raise ValueError(f"{self.role}: unknown numbered {name}")

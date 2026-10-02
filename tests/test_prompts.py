@@ -109,7 +109,8 @@ def test_role_system_prompts_have_no_concrete_examples(role):
     assert '有效 JSON 对象' in text  # 输出协议不是具体案例。
 
 
-@pytest.mark.parametrize('role', list(_ROLE_GUIDANCE))
+# Critic 的候选隔离规则按用户要求使用显式禁止措辞。
+@pytest.mark.parametrize('role', [role for role in _ROLE_GUIDANCE if role != 'critic'])
 def test_role_messages_use_positive_task_descriptions(role):
     messages = llm_messages(role, {'task': '当前任务', 'chosen': '回答内容',
                                   'previous_invalid_attempt': {'analysis': None}})
@@ -251,3 +252,58 @@ def test_missing_judgment_remains_missing_not_fabricated(role):
     assert '- 1：要求？' in text
     assert '初始评价结果：未提供' in text
     assert '优选回答：满足' not in text and '非优选回答：未满足' not in text
+
+
+@pytest.mark.parametrize('role', ['critic', 'reflector'])
+def test_scores_are_rounded_only_for_prompt_display(role):
+    payload = {'chosen_score': 0.7142857142857143,
+               'rejected_score': 0.3333333333333333,
+               'margin': -0.00000001}
+    original = dict(payload)
+    text = llm_messages(role, payload)[1]['content']
+    assert '0.7143' in text and '0.3333' in text
+    assert '得分差：0' in text
+    assert '714285714' not in text and '-0' not in text
+    assert payload == original
+
+
+def test_reflection_merges_changes_and_strict_op_references():
+    from copy import deepcopy
+    from verge.prompts import NumberedIDCodec
+    old = {'criterion_id': 'a', 'question': '原要求', 'importance_score': 5}
+    new = {'criterion_id': 'a', 'question': '新要求', 'importance_score': 6}
+    payload = {'initial_rubric': {'criteria': [old]},
+               'initial_judgment': {'criterion_judgments': [
+                   {'criterion_id': 'a', 'chosen': False, 'rejected': True}]},
+               'successful_attempt': {'rubric': {'criteria': [new]},
+                   'judgment': {'criterion_judgments': [
+                       {'criterion_id': 'a', 'chosen': True, 'rejected': False}]},
+                   'operations': [{'operation_id': 'private-op', 'operation_type': 'MODIFY',
+                                   'target_criterion_id': 'a', 'before': old, 'after': new}]}}
+    original = deepcopy(payload)
+    codec = NumberedIDCodec('reflector', payload)
+    text = llm_messages('reflector', codec.project(payload))[1]['content']
+    assert text.count('原要求') == text.count('新要求') == 1
+    assert '- op1（MODIFY）' in text
+    assert '优选回答：满足' in text and '优选回答：未满足' in text
+    assert payload == original
+    candidate = {'content': '方法', 'trigger': '条件', 'linked_operation_ids': ['op1']}
+    assert codec.restore({'candidates': [candidate]})['candidates'][0]['linked_operation_ids'] == ['private-op']
+    for invalid in ('1', 'op2', 1):
+        with pytest.raises(ValueError):
+            codec.restore({'candidates': [{**candidate, 'linked_operation_ids': [invalid]}]})
+
+
+def test_critic_explicitly_separates_candidate_analysis_from_operations():
+    messages = llm_messages('critic', {'task': '任务'})
+    text = messages[0]['content']
+    for fragment in ('严禁泄露候选回答内容', '两份回答的比较评价', '候选专有事实',
+                     'task 本身或独立于候选回答的领域知识', '只保留在 analysis'):
+        assert fragment in text
+
+
+def test_reflector_requires_mechanism_level_transfer_not_sample_specific_rules():
+    text = llm_messages('reflector', {'task': '任务'})[0]['content']
+    for phrase in ('评价设计变化', '用语义类别替代', '迁移性指同类任务间复用',
+                   '操作体现的关键机制', '不同对象后', '不写入候选'):
+        assert phrase in text

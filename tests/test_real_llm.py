@@ -267,7 +267,7 @@ def test_role_prompts_are_isolated_and_versioned():
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "reflection-with-operation-links"
+    assert PROMPT_VERSION == "abstract-transferable-reflection"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
     assert all(text in selector for text in ('task 本身核验', '选择数量为 0 到 max_selected',
                                                '适用性与帮助相近时'))

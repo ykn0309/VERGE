@@ -113,7 +113,7 @@ def test_nested_projections_and_generated_revision_ids_are_numbered():
     ])
     op = RevisionOperation("operation_long_hash", "MODIFY", r0.criteria[0].criterion_id,
                            revised.criteria[0], r0.criteria[0])
-    attempt = RevisionAttempt(1, "改进", [op], revised, j1)
+    attempt = RevisionAttempt(1, "改进", [op], revised, j1, analysis="诊断核心要求覆盖不足")
     candidate = CandidateExperience("candidate_long_hash", "原则", "条件", [op.operation_id], 0.3)
     second_payload = critic_payload("任务", "答案 A", "答案 B", r0, j0, 2,
                                     previous_attempt=attempt)
@@ -136,10 +136,13 @@ def test_nested_projections_and_generated_revision_ids_are_numbered():
                           "long_revision_id", "operation_long_hash", "candidate_long_hash"):
             assert forbidden not in text, (role, forbidden)
     reflection = projections[-2][1]
+    assert reflection["successful_attempt"]["analysis"] == attempt.analysis
+    from verge.prompts import llm_messages
+    assert attempt.analysis in llm_messages("reflector", reflection)[1]["content"]
     codec = NumberedIDCodec("reflector", reflection)
     codec.project(reflection)
     restored = codec.restore({"candidates": [{"content": "方法", "trigger": "条件",
-                                             "linked_operation_ids": ["1"]}]})
+                                             "linked_operation_ids": ["op1"]}]})
     assert restored["candidates"][0]["linked_operation_ids"] == ["operation_long_hash"]
 
 
@@ -307,8 +310,8 @@ def test_reflector_system_ids_are_unique_and_reused_by_binding():
     op = RevisionOperation('internal_op', 'MODIFY', 'old', revised.criteria[0], initial.criteria[0])
     attempt = RevisionAttempt(1, '诊断', [op], revised, j1)
     # 重复文本也按列表位置分别编号，系统不擅自去重。
-    raw = {'candidates': [{'content': '方法', 'trigger': '条件', "linked_operation_ids": ["1"]},
-                          {'content': '方法', 'trigger': '条件', "linked_operation_ids": ["1"]}]}
+    raw = {'candidates': [{'content': '方法', 'trigger': '条件', "linked_operation_ids": ["op1"]},
+                          {'content': '方法', 'trigger': '条件', "linked_operation_ids": ["op1"]}]}
     backend = ScriptedRealBackend([raw])
     candidates = LLMReflector(backend).reflect('任务', initial, j0, attempt, chosen='preferred response', rejected='less preferred response')
     assert [c.candidate_id for c in candidates] == ['candidate_1', 'candidate_2']

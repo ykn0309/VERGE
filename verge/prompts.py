@@ -11,32 +11,35 @@ from verge.models import (CandidateExperience, Criterion, Experience, InvalidRev
                           RevisionAttempt, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "generator-dialogue-critic-feedback"
+PROMPT_VERSION = "generator-dialogue-inline-experience-definition"
 
 # 专属身份和任务说明；Generator/Reflector 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
-    "selector": """你是经验适用性筛选员。你的任务是根据当前 task，为初始 rubric 选择适用且有实质帮助的经验。
-理解任务目标、输入和要求，逐条核验 trigger，并判断经验能提供哪些评价设计增益。选择适用范围匹配、指导一致且互补的经验；适用性与帮助相近时，参考 confidence 和 evidence_amount。""",
-    "initial_generator": """你是初始 rubric 设计者。你的任务是依据 task 和所选经验，设计用于评价未来回答的 Boolean 判断标准。
-先输出 analysis：分析任务目标、实际提供的输入与上下文、明确要求、合理的领域要求，以及当前输入条件下成功回答应具备的关键性质。分析输入完整性，确定直接回答或请求补充信息等与当前条件匹配的合理行为。
-再依据分析输出 criteria：全面覆盖直接相关的核心要求，保持简洁；每条标准表达一个准确具体、可独立核验的 Boolean 问题，肯定判断表示满足要求。标准数量由任务覆盖需要确定。最后吸收所选经验带来的评价设计增益。importance_score 表达任务重要性，source_experiences 表达实际影响该标准的经验来源。""",
-    "judge": """你是逐标准回答核验员。你的任务是结合原始 task 的指令、输入和上下文，依据每条提供的标准和当前 response 的实际证据，独立判断这份回答是否满足要求。
+    "selector": """你是经验适用性筛选员。你的任务是：针对给定 task，筛选出可用于生成该 task 回答评价标准的经验""",
+    "initial_generator": """你是评分标准设计者。你的任务是依据 task 和候选经验，设计用于评价回答的是/否判断标准。
+先输出 analysis：结合候选经验分析给定 task 的一个高质量回答应该满足哪些要求，如何区分高质量和低质量的回答，以及不同评价维度的重要程度。
+再依据分析输出 criteria：每条标准表达一个准确具体、可独立核验的是/否问题，“是”表示满足要求。importance_score 表达任务重要性，source_experiences 表达实际影响该标准的经验来源。""",
+    "judge": """你是逐标准回答核验员。你的任务是结合 task 和评价标准，依据每条提供的标准和当前回答，独立判断这份回答是否满足要求。
 每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
-    "critic": """你是 rubric 失败诊断者。结合 task、偏好对、当前标准与逐项 Judge 判断，输出 analysis 和 improvement_advice。
+    "critic": """你是rubric质量诊断员。结合 task、偏好对、当前标准与逐项 Judge 判断，输出 analysis 和 improvement_advice。
 analysis 是私有诊断，可以讨论候选内容、Judge 错误及判断的不确定性，并分析上轮修订为何未奏效。
-improvement_advice 是唯一交给 Generator 的公开反馈：说明当前标准在内容、覆盖、适用边界或重要性上的问题，以及由任务支撑的对应修订建议。严禁引用、复述或暗示候选回答的内容、措辞、实体、数字、独有特征、比较评价和偏好身份；严禁引入仅因候选内容才成立的要求。建议只依据 task 或独立领域知识，不输出修订操作或完整替代 rubric，不建议程序不存在的一票否决或门槛机制。输出前将公开建议单独视为交给从未见过候选回答的 Generator 的文本检查泄露。""",
-    "reflector": """你是 rubric 生成经验提炼者。你的任务是从成功修订中提炼可用于未来任务的评价设计原则。
-结合任务、chosen 和 rejected 的实际内容，参考成功修订的 Critic 私有分析，对照标准、两侧判断与成功修订前后标准，识别成功修订解决的问题及有迁移价值的变化。Critic 分析是诊断依据，经验由实际修订前后变化和判断结果支撑，content 提炼可迁移方法而非复述候选细节。先识别修订前后体现的评价设计变化，再抽象为任务类型、要求关系、输入条件或评价维度层面的方法。content 表达单一、具体的 rubric 设计方法，说明在何种条件下如何构造或调整判断标准及其目的；用语义类别替代样本特定场景、对象、名称、数字和候选措辞。样本和候选的专有细节仅用于理解，经验规则保留可复用的评价机制；抽象应改变方法的适用层次，而非仅替换对象名称。抽象后仍须保留修订体现的关键机制，而非退化为笼统的质量口号。trigger 表达任务结构或输入条件层面的明确适用范围，仅阅读未来 task 即可核验；适用范围可以限定任务类型，迁移性指同类任务间复用。每次最多提炼一条最有迁移价值、证据清晰的设计机制；没有值得保留的方法时返回空数组。""",
-    "admission_checker": """你是候选 rubric 经验的准入审核员。你的任务是根据 task、候选 content 和 trigger，判断经验是否符合准入条件，并给出具体理由。
-审核三项条件：content 表达单一、明确、可迁移的 rubric 设计原则；trigger 清晰具体，全部条件可通过阅读和语义理解未来 task 核验；候选表达依据任务要求抽象的方法，适用于未来任务和回答。
-依据候选实际文本作出裁决，理由引用相关 content 或 trigger，并说明满足或违反的准入条件。""",
-    "fusion_judge": """你是 canonical 经验的语义等价判定员。你的任务是比较候选与已有经验的 content 和 trigger，确定匹配项。
-生成原则、具体指导动作和适用范围均实质等价时判为匹配。按已有列表的位置返回匹配结果，候选的新增或合并由程序执行。""",
+improvement_advice 是唯一交给rubric生成器的公开反馈：说明当前标准存在的问题及改进建议。严禁引用、复述或暗示与候选回答的任何信息（rubric生成器只能依据task生成评分标准）。""",
+    "reflector": """你是 rubric 生成经验提炼者。你的任务是思考为什么rubric在经过修订后，由judge不通过变成了judge通过， 从修订轨迹中提炼rubric生成经验，使rubric生成器在以后遇到类似任务时能够更有效地生成评分标准。提炼出的经验不能仅局限于当前 task 的场景，必须是更通用、更高层次的。
+content 说明如何设计评价标准；trigger 说明该经验的适用条件。
+最多提炼一条最有迁移价值、证据清晰的设计机制；没有值得保留的方法时返回空数组。""",
+    "admission_checker": """你是候选 rubric 经验的准入审核员。你的任务是根据 task、候选 content 和 trigger，审核供 rubric generator 首次生成标准使用的具体、可复用设计方法，并给出具体理由；实际有效性由后续下游任务验证。
+content 说明如何设计评价标准；trigger 说明该经验的适用条件。
+允许设计评价维度、安排标准重要性、排除不当要求；完整 rubric 和回答生成指南属于其他产物。任务类别有限、需要语义理解或机制具体，本身均不足以拒绝。
+审核三项条件：content 是否表达具体可复用的单一设计机制；trigger 是否仅凭未来 task 核验，且范围足以支持该机制及指导强度；应用机制是否仍尊重任务目标与明确约束。当前 task 用于理解候选的条件边界，经验的迁移范围以 trigger 为准。
+依据候选实际文本作出裁决，理由引用相关 content 或 trigger，并说明满足或违反的准入条件。FAIL 应定位具体缺陷：依赖未来回答或既有标准/Judge、保留样本答案或专有细节、改变任务目标、条件不足以支撑强制指导、混入可独立使用的多个原则，或要求程序不支持的评分机制。“太具体”“非通用原则”“属于制定评估标准的方法论”本身均不足以构成拒绝理由；定性指导通过任务语义核验，固定数值阈值仅在机制确有需要时核对。
+PASS 表示经验表达合格，不等于实际有效；准入保持候选文本，信用更新另由程序完成。""",
+    "fusion_judge": """你是经验融合员。你的任务是融合供 rubric generator 首次生成标准使用的具体、可复用设计方法。比较候选与已有经验的 content 和 trigger，选择一个能融合的已有经验，并输出融合后的完整文本。
+content 说明如何设计评价标准；trigger 说明该经验适用于哪些任务或输入条件。
+允许同一核心 rubric 设计机制的等价或互补扩展，吸收新增指导动作与适用条件，保留双方有效指导和条件边界；融合保持核心机制一致和既有约束完整；无关或相反指导作为独立候选。trigger 必须仅凭未来 task 核验，允许明确的条件分支，适用性全部由 task 自身决定。没有兼容机制时返回空匹配，独立新增候选。融合结果仍应是具体可迁移的 rubric 设计方法；不引入样本细节、无条件推广或程序不支持的否决机制。融合后的条件分支应分别支撑对应指导，扩展保持同一核心机制，条件性规则仍在其条件内适用；保留可用表达而非宣称扩展已被历史信用验证。只生成文本，不生成信用。""",
 }
 
 _ROLE_INSTRUCTIONS = {
     "selector": (
-        'trigger 的全部条件须由 task 本身核验且成立，所选经验须能实质新增或改变评价设计。'
         '选择数量为 0 到 max_selected，适用集合为空时返回空数组。'
         'ID 使用候选列表中的短数字字符串编号。'
         '返回 {"selected_experience_ids":[候选 experience_id]}。'
@@ -58,11 +61,10 @@ _ROLE_INSTRUCTIONS = {
         '第二轮针对当前 rubric 及此前反馈的实际效果诊断，不要求从 R0 重做。'
     ),
     "reflector": (
-        '每条经验包含一个高于当前样本场景的 rubric 生成原则和明确的 task 可核验条件，候选数量为 0 到 1。'
-        '输出前检查 content 与 trigger：换成同类任务的不同对象后，该方法仍成立且有操作指导价值；样本专有细节只用于理解，不写入候选。'
-        '候选集合包含同时具备可迁移原则和事前适用条件的经验；集合为空时返回空数组。'
+        '每条经验包含一个 rubric 生成原则和经验适用条件，候选数量为 0 到 1。'
+        '集合为空时返回空数组。'
         '返回 {"candidates":[{"content":单一具体可复用方法,'
-        '"trigger":清晰的task可检验条件}]}。'
+        '"trigger":经验的使用条件}]}。'
     ),
     "admission_checker": (
         '全部准入条件满足时 decision 为 PASS，其余情况为 FAIL。'
@@ -70,8 +72,9 @@ _ROLE_INSTRUCTIONS = {
         '返回 {"decision":"PASS"或"FAIL","reason":具体准入依据或违反的条件}。'
     ),
     "fusion_judge": (
-        '实质等价时返回 existing 列表中匹配项的位置；匹配集合为空时返回 null。'
-        '返回 {"match_index":从0开始的整数下标或null}。'
+        'MERGE 返回 existing 中从0开始的匹配位置及融合后的完整 content、trigger。'
+        '返回 {"match_index":整数下标,"content":融合方法,"trigger":融合条件}；'
+        '无匹配返回 {"match_index":null,"content":null,"trigger":null}。'
     ),
 }
 
@@ -367,7 +370,7 @@ def reflection_payload(task: str, initial: Rubric, initial_judgment: RubricJudgm
 
 
 def admission_payload(task: str, candidate: CandidateExperience) -> dict[str, Any]:
-    """准入信任已完成的绑定，仅投影任务与候选文本，不重复审核操作证据。"""
+    """准入仅投影任务与候选文本，不接收修订证据。"""
     return {"task": task, "candidate": {"candidate_id": candidate.candidate_id,
                                         "content": candidate.content,
                                         "trigger": candidate.trigger}}

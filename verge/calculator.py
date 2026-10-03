@@ -249,6 +249,17 @@ def allocate_revision_credit(
     return result
 
 
+def calculate_fusion_credit(previous: Rubric, previous_judgment: RubricJudgment,
+                            revised: Rubric, revised_judgment: RubricJudgment) -> float:
+    """成功轮的 margin 增益折扣；弱关联证据，不是候选的因果贡献。"""
+    _contributions(previous, previous_judgment)
+    _contributions(revised, revised_judgment)
+    if (revised.base_rubric_id != previous.rubric_id or previous_judgment.success
+            or not revised_judgment.success):
+        raise ValueError("fusion credit requires a successful revision of its failed valid base")
+    return .25 * min(1.0, revised_judgment.margin - previous_judgment.margin)
+
+
 def apply_beta_evidence(experience: Experience, evidence: EvidenceRecord) -> Experience:
     """正信用：α' = α + w_t credit；负信用：β' = β + w_t |credit|。
 

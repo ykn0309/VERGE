@@ -134,14 +134,68 @@ class EvidenceRecord(Model):
     """
 
     sample_id: str
-    evidence_type: Literal["revision_credit", "downstream_credit"]
+    evidence_type: Literal["revision_credit", "downstream_credit", "fusion_credit"]
     credit: float
     evidence_weight: float
+    candidate_id: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        result = super().to_dict()
+        if self.candidate_id is None:
+            result.pop("candidate_id")
+        return result
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
         _number(self.credit, "credit")
         _number(self.evidence_weight, "evidence_weight", minimum=0)
+        if self.evidence_type == "fusion_credit":
+            _id(self.candidate_id, "fusion evidence candidate_id")
+            if not 0 < self.credit <= .25 or self.evidence_weight != 1:
+                raise ValueError("fusion evidence requires credit in (0, .25] and weight=1")
+
+
+@dataclass
+class FusionResult(Model):
+    """融合模型只返回位置和文本，不产生数值信用。"""
+    match_index: int | None
+    content: str | None
+    trigger: str | None
+
+    def __post_init__(self) -> None:
+        if self.match_index is None:
+            if self.content is not None or self.trigger is not None:
+                raise ValueError("ADD must not contain merged text")
+        else:
+            if type(self.match_index) is not int or self.match_index < 0:
+                raise ValueError("fusion match_index must be a nonnegative integer or null")
+            _id(self.content, "merged content")
+            _id(self.trigger, "merged trigger")
+
+
+@dataclass
+class FusionRecord(Model):
+    """一次文本版本及其弱修订证据；旧证据不重新认证新文本。"""
+    sample_id: str
+    candidate_id: str
+    fusion: FusionDecision
+    previous_content: str | None
+    previous_trigger: str | None
+    content: str
+    trigger: str
+    credit: float
+
+    def __post_init__(self) -> None:
+        for name in ("sample_id", "candidate_id", "content", "trigger"):
+            _id(getattr(self, name), name)
+        if self.fusion == "MERGE":
+            _id(self.previous_content, "previous_content")
+            _id(self.previous_trigger, "previous_trigger")
+        elif self.fusion != "ADD" or self.previous_content is not None or self.previous_trigger is not None:
+            raise ValueError("invalid fusion text history")
+        _number(self.credit, "fusion credit", minimum=0)
+        if self.credit > .25:
+            raise ValueError("fusion credit must be in [0, .25]")
 
 
 @dataclass
@@ -162,6 +216,7 @@ class Experience(Model):
     beta: float
     source_trajectories: list[str]
     evidence_history: list[EvidenceRecord]
+    fusion_history: list[FusionRecord] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         _id(self.experience_id, "experience_id")
@@ -325,7 +380,7 @@ class CandidateExperience(Model):
 
     candidate_id: 候选唯一标识；content: 可迁移的生成原则；
     trigger: 原则适用的任务条件；linked_operation_ids/credit: 历史记录解码字段；
-    当前方法不赋值，分别固定为空列表/null；
+    当前方法不赋旧操作信用，分别固定为空列表/null；fusion_record 另保存融合弱证据；
     admission/admission_reason: 准入判断及模型给出的理由；
     fusion/experience_id: 融合决策及最终经验 ID。
     """
@@ -339,6 +394,7 @@ class CandidateExperience(Model):
     fusion: FusionDecision | None = None
     experience_id: str | None = None
     admission_reason: str | None = None
+    fusion_record: FusionRecord | None = None
 
     def __post_init__(self) -> None:
         _id(self.candidate_id, "candidate_id")
@@ -358,6 +414,9 @@ class CandidateExperience(Model):
                 raise ValueError("admission_reason requires a decision and non-empty text")
         if self.fusion not in (None, "MERGE", "ADD"):
             raise ValueError("fusion must be MERGE or ADD")
+        if self.fusion_record is not None and (self.fusion_record.fusion != self.fusion
+                or self.fusion_record.candidate_id != self.candidate_id):
+            raise ValueError("fusion_record must match fused candidate")
         if self.fusion is None:
             if self.experience_id is not None:
                 raise ValueError("experience_id requires fusion")
@@ -436,8 +495,8 @@ class TrajectoryRecord(Model):
     sample_id/state: 样本 ID 与处理阶段；retrieved_experience_ids /
     selected_experience_ids: 召回和最终选用的经验 ID；
     initial_rubric/initial_judgment: 初始 rubric 及其判断，尚未生成时为空；
-    revision_attempts: 最多两次同基线修订的操作及结果；
-    reflected_candidates: 成功修订反思出的候选，后续直接补全绑定、信用和决策；
+    revision_attempts: 最多两次接续最近有效基线的完整修订及结果；
+    reflected_candidates: 成功修订反思出的候选，后续补全准入、融合和文本版本；
     operation_contributions: 成功操作 ID 到直接收益的映射；
     invalid_revision_attempts: 条数不合法、未进入 Judge 的修订尝试及校验记录。
     """

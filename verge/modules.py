@@ -18,7 +18,7 @@ from verge.llm import (FakeLLMBackend, FakeScenario, JUDGE_RESPONSE_SIDE, GENERA
                        LLMBackend, LLMFormatError, OpenAICompatibleBackend)
 from verge.models import (
     CandidateExperience, CriticFeedback, CriterionJudgment, Experience, InvalidRevisionAttempt,
-    RevisionAttempt, Rubric, RubricJudgment,
+    RevisionAttempt, Rubric, RubricJudgment, FusionResult,
 )
 from verge.prompts import (
     ExperienceView, NumberedIDCodec, admission_payload, critic_payload,
@@ -84,10 +84,10 @@ class AdmissionChecker(Protocol):
 
 
 class FusionJudge(Protocol):
-    """经验融合判断：仅比较 content/trigger，返回等价经验的位置或 None。"""
+    """经验融合判断：仅看 content/trigger，返回兼容经验的位置及融合文本。"""
 
     def find_match(self, content: str, trigger: str,
-                   existing: Sequence[tuple[str, str]]) -> int | None: ...
+                   existing: Sequence[tuple[str, str]]) -> FusionResult: ...
 
 
 def _text(value: str, name: str) -> None:
@@ -115,6 +115,7 @@ def _output(backend: LLMBackend, role: str, payload: dict[str, Any],
     expected = ({"analysis", "criteria"} if codec and role == "initial_generator" else
                 {field} if field is not None else
                 {"decision", "reason"} if role == "admission_checker" else
+                {"match_index", "content", "trigger"} if role == "fusion_judge" else
                 {"analysis", "improvement_advice"})
     if not isinstance(response, Mapping) or set(response) != expected:
         raise ValueError(f"{role}: expected structured fields {sorted(expected)}")
@@ -410,7 +411,7 @@ class LLMJudge:
 
 
 class LLMCritic:
-    """私有分析和操作同次生成；Executor 对 R0 执行并补全旧标准。"""
+    """私有诊断与候选无关的公开反馈，不生成操作。"""
 
     def __init__(self, backend: LLMBackend) -> None:
         self.backend = backend
@@ -438,7 +439,7 @@ class LLMCritic:
 
 
 class LLMReflector:
-    """从成功对话修订提取 0–1 条中性先验的候选经验。"""
+    """从成功对话修订提取 0–1 条候选经验，融合后才写弱证据。"""
 
     def __init__(self, backend: LLMBackend) -> None:
         self.backend = backend
@@ -505,20 +506,21 @@ class LLMFusionJudge:
         self.backend = backend
 
     def find_match(self, content: str, trigger: str,
-                   existing: Sequence[tuple[str, str]]) -> int | None:
+                   existing: Sequence[tuple[str, str]]) -> FusionResult:
         _text(content, "content")
         _text(trigger, "trigger")
         if any(not isinstance(item, tuple) or len(item) != 2
                or any(not isinstance(text, str) for text in item) for item in existing):
             raise ValueError("fusion_judge: existing entries must be content/trigger pairs")
         if not existing:
-            return None
-        index = _output(self.backend, "fusion_judge", fusion_payload(
-            content, trigger, existing,
-        ), "match_index")
-        if index is not None and (type(index) is not int or not 0 <= index < len(existing)):
+            return FusionResult(None, None, None)
+        raw = _output(self.backend, "fusion_judge", fusion_payload(content, trigger, existing), None)
+        if raw["match_index"] is not None and type(raw["match_index"]) is not int:
+            raise ValueError("fusion_judge: match_index must be an integer or null")
+        result = FusionResult.from_dict(raw)
+        if result.match_index is not None and result.match_index >= len(existing):
             raise ValueError("fusion_judge: match_index must be an existing position or null")
-        return index
+        return result
 
 
 @dataclass

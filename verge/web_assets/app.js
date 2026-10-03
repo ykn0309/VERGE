@@ -22,7 +22,7 @@ const badge = (label, type = 'neutral') => `<span class="badge ${type}"><i class
 const warnBlock = () => data.warnings.length ? `<div class="warning">⚠ ${data.warnings.map(h).join('<br>')}</div>` : '';
 const lineage = () => data.resumed_from ? `<div class="callout">此运行从 ${h(data.resumed_from)} 的已验证轨迹前缀恢复；当前统计已包含复制的样本，不应与父运行相加。</div>` : '';
 const heading = (overline, title, description) => `<div class="page-heading"><div><span class="eyebrow">${h(overline)}</span><h1>${h(title)}</h1><p class="subheading">${h(description)}</p></div><span class="run-chip" title="${h(data.run_dir)}">${h(data.run_name)}</span></div>`;
-const sampleButton = (id, text = id) => { const idx = data.samples.findIndex(s => s.sample_id === id); return idx < 0 ? h(text) : `<button class="event-link" data-action="sample" data-index="${idx}">${h(text)}</button>`; };
+const sampleButton = (id, text = id) => { const idx = data.samples.findIndex(s => s.sample_id === id); return idx < 0 ? h(text) : `<button class="event-link" data-action="sample-preview" data-index="${idx}" aria-haspopup="dialog" title="点击预览 · Cmd+点击查看流水线">${h(text)}</button>`; };
 // The persisted experience model has no name field: use a readable, derived title.
 const experienceName = e => short(String(e.content || e.trigger || '未命名经验').replace(/\s+/g,' ').trim().split(/(?<=[.!?。！？])\s+/)[0], 68);
 const expButton = id => {
@@ -87,6 +87,7 @@ async function refresh(nextName = null) {
 function render() {
   if (!data) return;
   hideExperiencePreview();
+  hideSamplePreview();
   document.querySelectorAll('.nav').forEach(button => button.classList.toggle('active', button.dataset.page === page));
   document.getElementById('crumb').textContent = {overview:'运行概览',samples:'样本流水线',memory:'经验'}[page];
   app.innerHTML = page === 'overview' ? overview() : page === 'samples' ? samplesPage() : memoryPage();
@@ -117,7 +118,7 @@ function onlineOverview() {
   html+=overviewTable('每 50 条分段与子集构成',['训练序号','首次正确率','有效/总数','初始判断缺失','子集构成'],o.segments.map(s=>[`${s.start}–${s.end}${s.total<50?'（不满段）':''}`,pct(s.accuracy),`${s.valid}/${s.total}`,s.errors,Object.entries(s.subsets).map(([k,v])=>`${k}: ${v}`).join(' · ')]));
   html+=overviewTable('子集与修订',['子集','首次正确率','正确/有效','初始判断缺失'],Object.entries(o.subsets).map(([k,s])=>[k,pct(s.accuracy),`${s.correct}/${s.valid}`,s.errors]),`第一次修订成功率 ${pct(o.first_rate)}（分母：初始失败）；第二次补救率 ${pct(o.second_rate)}（${o.second_successes}/${o.second_attempted} 实际第二轮任务）。`);
   html+=evolutionChart('经验积累：已记录的融合事件',o.curve,[{label:'canonical 池大小',color:'#27664f',value:r=>r.pool},{label:'累计 ADD',color:'#4a75aa',value:r=>r.adds},{label:'累计 MERGE',color:'#b47b36',value:r=>r.merges}]);
-  html+=overviewTable('候选与准入',['轨迹保留候选','准入 PASS','准入 FAIL','ADD','MERGE'],[[o.candidates,o.admission_pass,o.admission_fail,o.adds,o.merges]],'每次成功修订最多一条候选；新经验从 Beta(1,1) 开始，融合不增加信用。');
+  html+=overviewTable('候选与准入',['轨迹保留候选','准入 PASS','准入 FAIL','ADD','MERGE'],[[o.candidates,o.admission_pass,o.admission_fail,o.adds,o.merges]],'每次成功修订最多一条候选；新版本 ADD/MERGE 追加 0.25 折扣的弱修订证据，旧日志保持原记录。');
   html+=overviewTable('使用前置信度与后续贡献',['confidence','使用数','正/负/零','平均 credit'],(o.confidence_bins||[]).filter(b=>b.uses).map(b=>[b.label,`${b.uses}${b.uses<10?'（小样本）':''}`,`${b.positive}/${b.negative}/${b.zero}`,n(b.mean_credit)]),o.replay_available?'按选中经验×有效 R0 计数；零值不等于无效。Beta 分数不是校准概率，代理反馈有内生性与选择偏差。':'日志不完整或证据不一致，无法可靠重建使用前置信度。');
   html+=overviewTable('池规模与检索使用链路',['池大小','任务数','召回/选中/引用','选中率','引用率','请求数','已报告 token'],(o.scale_bins||[]).map(b=>[b.label,b.tasks,`${b.recalled}/${b.selected}/${b.referenced}`,pct(b.selection_rate),pct(b.reference_rate),b.requests,b.token_reports?`${b.tokens}（${b.token_reports} 份报告）`:'未记录']), '引用按选中经验中的不同 ID 计数，不是 criterion 数；这不是检索 precision/recall。成本为整条任务的全部角色，非单独检索成本；本轮不采集耗时/相似度。');
   return html;
@@ -261,20 +262,27 @@ function candidateDetail({candidate:c,sample:s}) {
     <div class="detail-section"><div class="section-kicker">03 / SOURCE</div><h3>来源轨迹</h3><p class="body-text">${sampleButton(s.sample_id)}</p><p class="legend">这里只列出完整轨迹中保留的候选；Reflector 原始输出见对应样本的角色页签。</p></div>`;
 }
 function experienceDetail(e) {
-  const t=e.evolution;
-  const sourceCount=e.source_trajectories.length;
-  return `<div class="detail-header"><div><span class="section-kicker">CANONICAL EXPERIENCE / ${String(data.experiences.indexOf(e)+1).padStart(2,'0')}</span><h2>${h(experienceName(e))}</h2><p>名称由正文摘要生成 · 合并时保留原始内容和触发条件</p></div>${badge(pct(e.confidence),'ok')}</div>
+  const events = experienceTimeline(e);
+  return `<div class="detail-header"><div><span class="section-kicker">CANONICAL EXPERIENCE / ${String(data.experiences.indexOf(e)+1).padStart(2,'0')}</span><h2>${h(experienceName(e))}</h2><p>名称由正文摘要生成 · 文本融合历史见时间线</p></div>${badge(pct(e.confidence),'ok')}</div>
     <div class="detail-section"><div class="section-kicker">01 / PRINCIPLE</div><h3>经验内容</h3><p class="exp-intro">${h(e.content)}</p><div class="exp-trigger"><strong>TRIGGER · 适用条件</strong><br>${h(e.trigger)}</div></div>
-    <div class="detail-section"><div class="section-kicker">02 / RELIABILITY</div><h3>可靠性与证据</h3><div class="mini-stats"><span class="mini-stat">使用 <b>${experienceUsage(e)} 次</b></span><span class="mini-stat">合并 <b>${experienceMerges(e)} 次</b></span><span class="mini-stat">α <b>${n(e.alpha)}</b></span><span class="mini-stat">β <b>${n(e.beta)}</b></span><span class="mini-stat">CONFIDENCE <b>${pct(e.confidence)}</b></span><span class="mini-stat">证据量 <b>${n(e.alpha+e.beta-2)}</b></span></div>${lineChart(t)}<p class="legend">从 Beta(1,1) 先验开始，正信用增加 α、负信用增加 β。置信度是 α/(α+β)，并非校准后的成功概率。</p></div>
-    <div class="detail-section"><div class="section-kicker">03 / ORIGIN & EVOLUTION</div><h3>演化时间线 · ${t.length-1} 个事件</h3><p class="legend">按记录顺序重建，非真实时间戳。${sourceCount} 条来源轨迹 · ${e.evidence_history.length} 条有效证据；无法唯一匹配的候选融合单独标记，不重复计入信用。无完整轨迹的证据可能来自中断样本。</p><div class="timeline">${t.map((ev,i)=>`<div class="event ${i===0?'prior':''}"><div class="event-top"><strong>${i===0?'初始先验':ev.kind==='fusion'?ev.fusion+' · 候选融合（无独立证据）':'下游信用'}</strong><span class="mono">${pct(ev.confidence)}</span></div>${i ? `<p>${sampleButton(ev.sample_id)} ${ev.has_trajectory?'':'· 无完整轨迹'}<br>${ev.kind==='fusion'?'融合不增加信用':`credit ${n(ev.credit)} × weight ${n(ev.evidence_weight)}`} · α ${n(ev.alpha)} / β ${n(ev.beta)}${ev.candidate_id?`<br>候选 ${h(ev.candidate_id)}`:''}${ev.fusion==='MERGE'&&ev.candidate_content&&ev.candidate_content!==e.content?`<br>合并候选：${h(ev.candidate_content)}`:''}</p>`:`<p>${ev.sample_id?`${ev.origin_kind==='add'?'入池样本':'首条来源样本'}：${sampleButton(ev.sample_id)}${ev.has_trajectory?'':' · 无完整轨迹'}<br>`:'来源样本未记录<br>'}α 1.000 / β 1.000 · 尚无样本信用</p>`}</div>`).join('')}</div></div>
-    <div class="detail-section"><div class="section-kicker">04 / SOURCE TRAJECTORIES</div><h3>产生或再次发现它的样本</h3><p class="body-text">${e.source_trajectories.map(id=>sampleButton(id)).join(' · ')||'没有记录来源样本'}</p></div>`;
+    <div class="detail-section"><div class="section-kicker">02 / RELIABILITY</div><h3>可靠性与证据</h3><div class="mini-stats"><span class="mini-stat">使用 <b>${experienceUsage(e)} 次</b></span><span class="mini-stat">合并 <b>${experienceMerges(e)} 次</b></span><span class="mini-stat">α <b>${n(e.alpha)}</b></span><span class="mini-stat">β <b>${n(e.beta)}</b></span><span class="mini-stat">CONFIDENCE <b>${pct(e.confidence)}</b></span><span class="mini-stat">证据量 <b>${n(e.alpha+e.beta-2)}</b></span></div>${lineChart(events)}<p class="legend">从 Beta(1,1) 先验开始，正信用增加 α、负信用增加 β。置信度是 α/(α+β)，并非校准后的成功概率；继承的旧证据不证明融合扩展有效。</p></div>
+    <div class="detail-section"><div class="section-kicker">03 / ORIGIN & EVOLUTION</div><h3>演化时间线 · ${events.length} 个事件</h3><div class="timeline">${events.map(ev=>`<div class="event ${ev.kind==='prior'?'prior':''}"><div class="event-top"><strong>${ev.kind==='prior'?'初始先验':ev.kind==='fusion_credit'?ev.fusion+' · 融合与弱修订证据':ev.kind==='fusion'?(ev.fusion==='ADD'?'ADD · 初始先验':ev.fusion+' · 候选融合（无独立证据）'):ev.kind==='revision_credit'?'历史修订信用':'下游信用'}</strong><span class="mono">${pct(ev.confidence)}</span></div><p>${ev.sample_id?sampleButton(ev.sample_id):'来源样本未记录'}${ev.has_trajectory?'':' · 无完整轨迹'}<br>${ev.kind==='fusion'?'此历史融合未增加信用':ev.kind==='prior'?'尚无样本信用':`credit ${n(ev.credit)} × weight ${n(ev.evidence_weight)}`} · α ${n(ev.alpha)} / β ${n(ev.beta)}${ev.candidate_id?`<br>候选 ${h(ev.candidate_id)}`:''}${ev.fusion_record?`<br>融合文本：${h(ev.fusion_record.content)}<br>适用条件：${h(ev.fusion_record.trigger)}${ev.fusion_record.previous_content?`<details class="fusion-history"><summary>查看融合前文本</summary><p>${h(ev.fusion_record.previous_content)}</p><p>适用条件：${h(ev.fusion_record.previous_trigger)}</p></details>`:''}`:''}${ev.fusion==='MERGE'&&ev.candidate_content&&ev.candidate_content!==e.content?`<br>合并候选：${h(ev.candidate_content)}`:''}</p></div>`).join('')}</div></div>`;
+}
+function experienceTimeline(e) {
+  const [prior, ...events] = e.evolution;
+  // Fold only the matching origin ADD into the prior; preserve every credit/MERGE.
+  const addIndex = events.findIndex(ev => ['fusion', 'fusion_credit'].includes(ev.kind) && ev.fusion === 'ADD' &&
+    prior?.origin_kind === 'add' && ev.sample_id === prior.sample_id);
+  if (addIndex < 0) return e.evolution;
+  const origin = {...prior, ...events[addIndex]};
+  return [origin, ...events.filter((_, i) => i !== addIndex)];
 }
 function lineChart(events) {
   const w=600, height=150, left=34, right=14, top=13, bottom=24;
   const x=i=>left+(w-left-right)*(events.length===1?.5:i/(events.length-1));
   const y=value=>top+(height-top-bottom)*(1-value);
   const points=events.map((e,i)=>`${x(i)},${y(e.confidence)}`).join(' ');
-  return `<svg class="chart" viewBox="0 0 ${w} ${height}" role="img" aria-label="经验置信度变化折线图">${[0,.25,.5,.75,1].map(v=>`<line class="grid" x1="${left}" y1="${y(v)}" x2="${w-right}" y2="${y(v)}"/><text x="0" y="${y(v)+3}">${Math.round(v*100)}%</text>`).join('')}<polyline class="line" points="${points}"/>${events.map((e,i)=>`<circle cx="${x(i)}" cy="${y(e.confidence)}" r="3.2"><title>${h(i===0?'先验':e.sample_id)}: ${pct(e.confidence)}</title></circle>`).join('')}<text x="${left}" y="${height-3}">先验</text><text x="${w-right-37}" y="${height-3}">当前</text></svg>`;
+  return `<svg class="chart" viewBox="0 0 ${w} ${height}" role="img" aria-label="经验置信度变化折线图">${[0,.25,.5,.75,1].map(v=>`<line class="grid" x1="${left}" y1="${y(v)}" x2="${w-right}" y2="${y(v)}"/><text x="0" y="${y(v)+3}">${Math.round(v*100)}%</text>`).join('')}<polyline class="line" points="${points}"/>${events.map((e,i)=>`<circle cx="${x(i)}" cy="${y(e.confidence)}" r="3.2"><title>${h(i===0?(e.kind==='prior'?'先验':'入池'):e.sample_id)}: ${pct(e.confidence)}</title></circle>`).join('')}<text x="${left}" y="${height-3}">${events[0]?.kind==='prior'?'先验':'入池'}</text><text x="${w-right-37}" y="${height-3}">当前</text></svg>`;
 }
 const experiencePreview = document.getElementById('experience-preview');
 let previewCloseTimer = null, activePreviewButton = null;
@@ -334,6 +342,28 @@ document.addEventListener('scroll', event => {
     positionExperiencePreview(activePreviewButton);
 }, true);
 document.addEventListener('keydown', event => { if (event.key === 'Escape') hideExperiencePreview(); });
+const samplePreview = document.getElementById('sample-preview');
+let samplePreviewOpener = null;
+function hideSamplePreview() {
+  if (!samplePreview.open) return;
+  samplePreview.close();
+  if (samplePreviewOpener?.isConnected) samplePreviewOpener.focus();
+  samplePreviewOpener = null;
+}
+function showSamplePreview(button) {
+  const sample = data?.samples[Number(button.dataset.index)];
+  if (!sample) return;
+  hideExperiencePreview();
+  samplePreviewOpener = button;
+  samplePreview.innerHTML = `<div class="sample-preview-heading"><h2 id="sample-preview-title">样本预览</h2><button data-action="close-sample-preview" aria-label="关闭样本预览" autofocus>×</button></div>${['task','chosen','rejected'].map(field=>sampleInput(sample, field, field.toUpperCase())).join('')}`;
+  samplePreview.showModal();
+}
+samplePreview.addEventListener('click', event => {
+  if (event.target !== samplePreview) return;
+  const rect = samplePreview.getBoundingClientRect();
+  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) hideSamplePreview();
+});
+samplePreview.addEventListener('cancel', event => { event.preventDefault(); hideSamplePreview(); });
 async function translateSampleField(button) {
   const field = button.dataset.field;
   const sample = data?.samples[Number(button.dataset.index)];
@@ -387,6 +417,11 @@ document.addEventListener('click', event => {
   if(!button) return;
   if(button.dataset.page){page=button.dataset.page;render();window.scrollTo(0,0);return;}
   const action=button.dataset.action;
+  if(action==='close-sample-preview'){hideSamplePreview();return;}
+  if(action==='sample-preview'){
+    if(!event.metaKey && !event.ctrlKey){showSamplePreview(button);return;}
+    sampleTab='pipeline';
+  }
   if(action==='translate'){translateSampleField(button);return;}
   if(action==='sample-tab' && roleTabs.some(([key])=>key===button.dataset.tab)){
     sampleTab=button.dataset.tab;render();return;
@@ -397,7 +432,7 @@ document.addEventListener('click', event => {
   if(action==='refresh'){refresh(currentRun);return;}
   if(action==='split-filter'){splitFilter=button.dataset.split;resultFilter='all';query='';sampleIndex=data.samples.findIndex(s=>splitFilter==='unknown'?s.split!=='train'&&s.split!=='test':s.split===splitFilter);render();return;}
   if(action==='result-filter'){resultFilter=button.dataset.filter;render();return;}
-  if(action==='sample'){sampleIndex=Number(button.dataset.index);const sample=data.samples[sampleIndex];const nextSplit=sample?.split==='train'||sample?.split==='test'?sample.split:'unknown';if(page!=='samples'||splitFilter!==nextSplit){resultFilter='all';query='';}splitFilter=nextSplit;page='samples';render();window.scrollTo(0,0);return;}
+  if(action==='sample'||action==='sample-preview'){sampleIndex=Number(button.dataset.index);const sample=data.samples[sampleIndex];const nextSplit=sample?.split==='train'||sample?.split==='test'?sample.split:'unknown';if(page!=='samples'||splitFilter!==nextSplit){resultFilter='all';query='';}splitFilter=nextSplit;page='samples';render();window.scrollTo(0,0);return;}
   if(action==='experience'){if(page!=='memory'||memoryTab!=='pool') expQuery='';expIndex=Number(button.dataset.index);memoryTab='pool';page='memory';render();window.scrollTo(0,0);return;}
   if(action==='candidate'){if(page!=='memory'||memoryTab!=='candidates') candidateQuery='';candidateIndex=Number(button.dataset.index);memoryTab='candidates';page='memory';render();window.scrollTo(0,0);}
 });

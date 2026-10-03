@@ -90,7 +90,7 @@ def test_attempt_one_success_adds_experience_and_full_trajectory(tmp_path):
     assert result.credit is None
     assert (result.admission, result.fusion) == ("PASS", "ADD")
     stored = memory.get(result.experience_id)
-    assert stored.alpha == 1
+    assert stored.alpha == pytest.approx(1 + .25 * (attempt.judgment.margin - record.initial_judgment.margin))
     assert stored.source_trajectories == ["sample"]
     assert log.get("sample") == record
     # pool 为空，无需调用 fusion_judge 后端。

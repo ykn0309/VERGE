@@ -93,6 +93,13 @@ def _valid_shape(role: str, value: Any) -> bool:
         return (isinstance(value, dict) and set(value) == {"decision", "reason"}
                 and value["decision"] in ("PASS", "FAIL")
                 and isinstance(value["reason"], str) and bool(value["reason"].strip()))
+    if role == "fusion_judge":
+        if not isinstance(value, dict) or set(value) != {"match_index", "content", "trigger"}:
+            return False
+        if value["match_index"] is None:
+            return value["content"] is None and value["trigger"] is None
+        return (type(value["match_index"]) is int and value["match_index"] >= 0
+                and all(isinstance(value[k], str) and value[k].strip() for k in ("content", "trigger")))
     if role == "critic":
         return (isinstance(value, dict) and set(value) == {"analysis", "improvement_advice"}
                 and all(isinstance(value[key], str) and value[key].strip()
@@ -474,7 +481,9 @@ class FakeLLMBackend:
                           if (item["content"].strip().casefold() == candidate["content"].strip().casefold()
                               and item["trigger"].strip().casefold() == candidate["trigger"].strip().casefold())),
                          None)
-            result = {"match_index": match}
+            result = {"match_index": match,
+                      "content": candidate["content"] if match is not None else None,
+                      "trigger": candidate["trigger"] if match is not None else None}
         else:
             raise ValueError(f"unknown LLM role: {role}")
         if self.trace_hook is not None:

@@ -1,4 +1,4 @@
-"""新方法：单候选、中性先验、融合不增加信用。"""
+"""新方法：单候选、旧绑定字段隔离及中性存储种子。"""
 from dataclasses import replace
 import pytest
 from verge.memory import ExperienceMemory, TrajectoryLog
@@ -20,7 +20,8 @@ def test_add_and_merge_preserve_downstream_evidence(tmp_path):
     assert (e.alpha, e.beta, e.confidence, e.evidence_history) == (1, 1, .5, [])
     memory.apply_downstream_credits('used', {e.experience_id: -.4})
     before = memory.get(e.experience_id)
-    memory.fuse(replace(candidate, candidate_id='c2'), 'other', e.experience_id)
+    memory.fuse(replace(candidate, candidate_id='c2'), 'other', e.experience_id,
+                merged_content='融合方法', merged_trigger='融合条件')
     after = memory.get(e.experience_id)
     assert (after.alpha, after.beta, after.evidence_history) == (before.alpha, before.beta, before.evidence_history)
     assert after.source_trajectories == ['origin', 'other']

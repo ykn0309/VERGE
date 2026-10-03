@@ -5,13 +5,13 @@ from __future__ import annotations
 from typing import Iterable, Protocol
 
 from verge.calculator import (
-    calculate_existing_experience_credit,
+    calculate_existing_experience_credit, calculate_fusion_credit,
 )
 from verge.llm import LLMFormatError, LLMRefusalError
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import (
     InvalidRevisionAttempt, PreferenceSample, RevisionAttempt, Rubric, RubricJudgment,
-    TrajectoryRecord,
+    TrajectoryRecord, FusionResult,
 )
 from verge.modules import (
     AdmissionChecker, Critic, FusionJudge, InitialRubricGenerator, Judge, JudgeOutputError,
@@ -240,13 +240,19 @@ class PipelineRunner:
                                 reviewed.content, reviewed.trigger,
                                 [(item.content, item.trigger) for item in pool],
                             )
-                            if match is not None and (type(match) is not int or
-                                                      not 0 <= match < len(pool)):
-                                raise ValueError("fusion match must be a recalled experience index")
+                            if not isinstance(match, FusionResult) or (match.match_index is not None
+                                    and not 0 <= match.match_index < len(pool)):
+                                raise ValueError("fusion match must be a valid recalled result")
+                            self.current_stage = "fusion_credit"
+                            fusion_credit = calculate_fusion_credit(
+                                attempt.previous_rubric,
+                                attempt.previous_judgment, revised, revised_judgment)
                             self.current_stage = "fusion_write"
                             reviewed = self.memory.fuse(
                                 reviewed, sample.sample_id,
-                                pool[match].experience_id if match is not None else None,
+                                pool[match.match_index].experience_id if match.match_index is not None else None,
+                                merged_content=match.content, merged_trigger=match.trigger,
+                                fusion_credit=fusion_credit,
                             )
                         candidates[index] = reviewed
                     break

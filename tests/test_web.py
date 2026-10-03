@@ -299,8 +299,9 @@ def test_overview_replays_pool_without_new_log_and_uses_pre_task_confidence(tmp_
     assert sum(b['uses'] for b in o['confidence_bins']) == 1
     # task b 使用的是 a 写入后的状态，不能包含 b 的合并信用。
     exp = payload['experiences'][0]
-    assert exp['evidence_history'] == []
-    pre = 0.5
+    assert len(exp['evidence_history']) == 2
+    first_credit = exp['evidence_history'][0]['credit']
+    pre = (1 + first_credit) / (2 + first_credit)
     assert o['confidence_bins'][min(9, int(pre * 10))]['uses'] == 1
     assert o['scale_bins'][0]['tasks'] == 1
     assert o['scale_bins'][1]['tasks'] == 1

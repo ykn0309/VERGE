@@ -4,7 +4,7 @@
 
 ## 1. 项目目标
 
-VERGE（Verified Experience-guided Rubric Generation）研究如何从 preference trajectory 中提炼 rubric-generation experience，并根据修订贡献和后续任务表现维护经验可信度。
+VERGE（Verified Experience-guided Rubric Generation）研究如何从 preference trajectory 中提炼 rubric-generation experience，并根据成功轮 margin 增益的折扣弱修订证据和后续任务表现维护经验可信度；融合可更新文本并保留版本，弱修订证据不解释为因果贡献。
 
 ## 2. 权威文档
 

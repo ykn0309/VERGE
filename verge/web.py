@@ -165,14 +165,34 @@ def _evolution(experience: dict[str, Any], records: list[dict[str, Any]],
                 fusion_events.append({"sample_id": record["sample_id"], "fusion": candidate["fusion"],
                                       "candidate_id": candidate["candidate_id"], "credit": candidate["credit"],
                                       "candidate_content": candidate["content"],
-                                      "candidate_trigger": candidate["trigger"]})
+                                      "candidate_trigger": candidate["trigger"],
+                                      "fusion_record": candidate.get("fusion_record")})
+    # Memory may have a committed fusion before the complete trajectory is appended.
+    for history in experience.get("fusion_history", []):
+        key = (history["sample_id"], history["candidate_id"])
+        match = next((ev for ev in fusion_events if (ev["sample_id"], ev["candidate_id"]) == key), None)
+        if match is None:
+            fusion_events.append({"sample_id": history["sample_id"], "candidate_id": history["candidate_id"],
+                                  "fusion": history["fusion"], "credit": None, "fusion_record": history})
+        else:
+            match["fusion_record"] = history
     used: set[int] = set()
     events = []
     for index, evidence in enumerate(experience["evidence_history"]):
         item = dict(evidence)
         item["kind"] = evidence["evidence_type"]
         item["_sequence"] = index
-        if item["kind"] == "revision_credit":
+        if item["kind"] == "fusion_credit":
+            matches = [n for n, fusion in enumerate(fusion_events)
+                       if n not in used and fusion["sample_id"] == item["sample_id"]
+                       and fusion["candidate_id"] == item.get("candidate_id")]
+            if len(matches) == 1:
+                n = matches[0]
+                item.update({key: value for key, value in fusion_events[n].items() if key != "credit"})
+                used.add(n)
+            else:
+                warnings.append(f"经验 {exp_id} 的融合证据缺少唯一文本版本。")
+        elif item["kind"] == "revision_credit":
             matches = [n for n, fusion in enumerate(fusion_events)
                        if n not in used and fusion["sample_id"] == item["sample_id"]
                        and fusion["credit"] is not None
@@ -221,8 +241,14 @@ def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     if manifest.get("format_version") != 1:
         raise ValueError("unsupported run manifest format")
     versions = manifest.get("prompt_versions")
-    if not isinstance(versions, dict) or not versions or set(versions.values()) != {PROMPT_VERSION}:
-        raise ValueError("Web only supports runs using the current prompt version")
+    if not isinstance(versions, dict) or not versions or set(versions.values()) not in (
+            {PROMPT_VERSION}, {"generator-dialogue-initial-design-experience-v2"},
+            {"generator-dialogue-initial-design-experience"},
+            {"generator-dialogue-task-grounded-experience-compact"},
+            {"generator-dialogue-task-grounded-experience"},
+            {"generator-dialogue-fusion-revision-evidence"},
+            {"generator-dialogue-critic-feedback"}):
+        raise ValueError("Web only supports runs using the current prompt version or known previous dialogue versions")
     root_name = Path(manifest["config"]["store"]["config"]["root_dir"])
     if root_name.is_absolute() or ".." in root_name.parts or root_name == Path("."):
         raise ValueError("invalid store root_dir in manifest")

@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 from pathlib import Path
 from typing import Iterator
 from uuid import uuid4
 
 from verge.calculator import apply_beta_evidence
-from verge.models import CandidateExperience, EvidenceRecord, Experience, TrajectoryRecord
+from verge.models import CandidateExperience, EvidenceRecord, Experience, FusionRecord, TrajectoryRecord
 
 
 class ExperienceMemory:
@@ -70,34 +71,42 @@ class ExperienceMemory:
 
     def fuse(
         self, candidate: CandidateExperience, sample_id: str,
-        matching_experience_id: str | None = None,
+        matching_experience_id: str | None = None, *,
+        merged_content: str | None = None, merged_trigger: str | None = None,
+        fusion_credit: float = 0.0,
     ) -> CandidateExperience:
-        """Admission PASS 后按外部 FusionJudge 的匹配结果 ADD 或 MERGE。"""
+        """写入融合文本与弱修订证据；零信用仅供中性种子/存储边界调用。"""
         self._ensure_writable()
         if (candidate.admission != "PASS" or candidate.credit is not None
-                or candidate.linked_operation_ids or candidate.fusion is not None):
+                or candidate.linked_operation_ids or candidate.fusion is not None
+                or candidate.fusion_record is not None):
             raise ValueError("fusion requires an admitted, uncredited, unfused candidate")
-        # 先验证候选和匹配 ID，避免非法调用改变内存后才失败。
         if matching_experience_id is None:
+            if merged_content is not None or merged_trigger is not None:
+                raise ValueError("ADD must use candidate text")
             experience_id = f"exp_{uuid4().hex}"
             while experience_id in self._experiences:
                 experience_id = f"exp_{uuid4().hex}"
-            prior = Experience(experience_id, candidate.content, candidate.trigger, 1.0, 1.0,
-                               [sample_id], [])
-            updated = prior
+            prior = Experience(experience_id, candidate.content, candidate.trigger, 1.0, 1.0, [], [])
+            content, trigger = candidate.content, candidate.trigger
+            previous_content = previous_trigger = None
             decision = "ADD"
         else:
             prior = self._experiences[matching_experience_id]
-            updated = Experience(prior.experience_id, prior.content, prior.trigger,
-                                 prior.alpha, prior.beta,
-                                 [*prior.source_trajectories, sample_id],
-                                 prior.evidence_history)
             experience_id = prior.experience_id
+            content, trigger = merged_content, merged_trigger
+            previous_content, previous_trigger = prior.content, prior.trigger
             decision = "MERGE"
-        result = CandidateExperience(candidate.candidate_id, candidate.content, candidate.trigger,
-                                     list(candidate.linked_operation_ids), candidate.credit,
-                                     candidate.admission, decision, experience_id,
-                                     candidate.admission_reason)
+        history = FusionRecord(sample_id, candidate.candidate_id, decision,
+                              previous_content, previous_trigger, content, trigger, fusion_credit)
+        # 校验、计算完毕后才更新内存/磁盘，避免无效融合留下部分修改。
+        updated = replace(prior, content=content, trigger=trigger,
+                          source_trajectories=[*prior.source_trajectories, sample_id],
+                          fusion_history=[*prior.fusion_history, history])
+        if fusion_credit > 0:
+            updated = apply_beta_evidence(updated, EvidenceRecord(
+                sample_id, "fusion_credit", fusion_credit, 1.0, candidate.candidate_id))
+        result = replace(candidate, fusion=decision, experience_id=experience_id, fusion_record=history)
         self._experiences[experience_id] = updated
         self._save()
         return result

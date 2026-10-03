@@ -136,7 +136,7 @@ def test_global_service_io_and_programming_errors_still_abort(tmp_path, exc):
 
 def test_storage_value_error_is_not_misclassified_as_role_error(tmp_path):
     runner, _, memory, log = runner_at(tmp_path)
-    memory.fuse = lambda *_: (_ for _ in ()).throw(ValueError('invalid memory'))
+    memory.fuse = lambda *_, **kwargs: (_ for _ in ()).throw(ValueError('invalid memory'))
     with pytest.raises(ValueError, match='invalid memory'):
         runner.run_sample(sample('a'))
     assert list(log.all()) == []

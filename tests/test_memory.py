@@ -30,7 +30,8 @@ def test_zero_credit_add_merge_preserves_sources_without_zero_evidence(tmp_path)
     added = memory.fuse(candidate("zero", 0), "sample-1")
     stored = memory.get(added.experience_id)
     assert (stored.alpha, stored.beta, stored.evidence_history) == (1, 1, [])
-    memory.fuse(candidate("again", 0), "sample-2", added.experience_id)
+    memory.fuse(candidate("again", 0), "sample-2", added.experience_id,
+                merged_content="融合原则", merged_trigger="可迁移条件")
     stored = ExperienceMemory(tmp_path).get(added.experience_id)
     assert (stored.alpha, stored.beta, stored.evidence_history) == (1, 1, [])
     assert stored.source_trajectories == ["sample-1", "sample-2"]
@@ -61,7 +62,8 @@ def test_downstream_update_persists_at_initial_stage_even_if_revision_fails(tmp_
 def test_add_merges_within_same_trajectory_without_dedup(tmp_path):
     memory = ExperienceMemory(tmp_path)
     added = memory.fuse(candidate("a", 0.3), "same-sample")
-    memory.fuse(candidate("b", 0.2), "same-sample", added.experience_id)
+    memory.fuse(candidate("b", 0.2), "same-sample", added.experience_id,
+                merged_content="融合原则", merged_trigger="可迁移条件")
     stored = memory.get(added.experience_id)
     assert stored.source_trajectories == ["same-sample", "same-sample"]
     assert stored.alpha == pytest.approx(1)

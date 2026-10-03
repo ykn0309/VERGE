@@ -135,10 +135,10 @@ def test_attempt_one_success_credit_admission_and_fusion_privacy():
     assert len(candidates) == 1 and candidates[0].credit is None
     admitted = modules.admission_checker.check(TASK, candidates[0], attempt)
     assert admitted.admission == "PASS"
-    assert modules.fusion_judge.find_match(admitted.content, admitted.trigger, []) is None
+    assert modules.fusion_judge.find_match(admitted.content, admitted.trigger, []).match_index is None
     assert modules.fusion_judge.find_match(admitted.content, admitted.trigger,
                                            [("相反原则", admitted.trigger),
-                                            (admitted.content, admitted.trigger)]) == 1
+                                            (admitted.content, admitted.trigger)]).match_index == 1
     role, payload = modules.backend.requests[-1]
     assert role == "fusion_judge"
     text = json.dumps(payload, ensure_ascii=False)
@@ -221,7 +221,7 @@ def test_structured_response_and_domain_type_checks():
             "credit": 0.2,
         }]})).reflect(TASK, initial, judgment, attempt, chosen='preferred response', rejected='less preferred response')
     with pytest.raises(ValueError, match="match_index"):
-        LLMFusionJudge(ConstantBackend({"match_index": True})).find_match("c", "t", [("c", "t")])
+        LLMFusionJudge(ConstantBackend({"match_index": True, "content": "c", "trigger": "t"})).find_match("c", "t", [("c", "t")])
 
 
 

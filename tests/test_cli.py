@@ -64,7 +64,7 @@ def test_run_trains_then_evaluates_frozen_memory_and_inspects_full_stages(tmp_pa
     assert len(stored["experiences"]) == 1
     # 两次训练 ADD+MERGE，评估样本不会写入 evidence。
     assert {evidence["sample_id"] for evidence in stored["experiences"][0]["evidence_history"]} == {
-        "train-b"}
+        "train-a", "train-b"}
 
     inspected = command("inspect-sample", "--run-dir", str(run_dir), "--sample-id", "train-a")
     assert inspected.returncode == 0, inspected.stderr

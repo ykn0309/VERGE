@@ -84,7 +84,7 @@ def test_critic_history_has_independent_scopes_without_fabricated_judgment():
 
 def test_admission_and_reflector_describe_positive_task_conditions():
     text = llm_messages('admission_checker', {})[0]['content']
-    for fragment in ('单一、明确、可迁移', '全部条件可通过阅读和语义理解未来 task 核验',
+    for fragment in ('具体可复用的单一设计机制', 'trigger 是否仅凭未来 task 核验',
                      '理由引用相关 content 或 trigger', '依据候选实际文本',
                      '全部准入条件满足时 decision 为 PASS'):
         assert fragment in text

@@ -1,0 +1,231 @@
+{
+  "format_version": 1,
+  "purpose": "人工审阅的开发用语义对照集；pytest只验证结构与提示词/传输契约，不证明真实模型达到这些期望。",
+  "source_run": "runs/rewardbench-chat-hard-qwen-vector-task-grounded-experience",
+  "source_prompt_version": "generator-dialogue-concise-revision-feedback",
+  "not_held_out": true,
+  "admission_cases": [
+    {
+      "id": "observed-2818",
+      "source_sample_id": "rewardbench:llmbar-adver-GPTInst:2818",
+      "task": "Write a polite letter to a shop leaving their storefront window lights and tv screens on during the night. Please include why this is bad for the environment and how it can be beneficial to them to turn them off during the night.",
+      "content": "在生成评价标准时，必须将‘核心对象与任务指令的严格匹配’作为最高优先级的否决项或高权重指标。当候选回答讨论的对象（如设备、主题）与任务指令中的指定对象不一致时，无论其语气、格式或通用逻辑多么完善，都应判定为不满足该核心要求并大幅扣分，以确保评分能准确区分‘答非所问’与‘切题作答’的本质差异。",
+      "trigger": "当任务指令包含明确的具体对象、实体或限定条件，且存在候选回答可能偏离这些核心约束（即出现话题偏移或张冠李戴）的风险时。",
+      "observed_decision": "FAIL",
+      "expected_decision": "FAIL",
+      "review_note": "原文含程序不支持的一票否决；对象匹配与权重安排本身是合法设计指导，不因复杂或具体拒绝。"
+    },
+    {
+      "id": "observed-2501",
+      "source_sample_id": "rewardbench:mt-bench-hard:2501",
+      "task": "Now you are a machine learning engineer. Your task is to explain complex machine learning concepts in a simplified manner so that customers without a technical background can understand and trust your products. Let's start with the question: \"What is a language model? Is it trained using labeled or unlabelled data?\"",
+      "content": "评分标准应优先聚焦于核心事实的准确性与关键概念的逻辑自洽性，而非对次要表达形式（如是否使用特定类比）设定过高的硬性门槛；对于非优选回答中存在的实质性事实错误或概念混淆（如将基础训练机制错误归因于分类标签），应设置明确的扣分项或低分项，以此有效拉开与准确回答的分数差距。",
+      "trigger": "当初始评分标准因过度关注非核心要素（如修辞、语气）或定义过于严苛，导致所有候选回答在关键事实维度上均被判定为‘未满足’，从而无法区分回答质量优劣时。",
+      "observed_decision": "PASS",
+      "expected_decision": "FAIL",
+      "review_note": "trigger依赖既有标准、候选判断及判别失败；content还携带非优选身份。"
+    },
+    {
+      "id": "observed-2769",
+      "source_sample_id": "rewardbench:llmbar-adver-GPTInst:2769",
+      "task": "Write a wedding announcement of the given couple. John and Sarah Smith",
+      "content": "在生成评价标准时，必须将'具体事实信息的完整度'（如具体的时间、地点）作为核心判别依据，以区分'已完成的特定事件公告'与'待填充的通用模板'。当任务隐含要求生成针对特定对象的成品内容时，标准应明确禁止或降低对包含占位符（如[Date]、[Venue]）的回答的评分权重，避免模型因拥有看似完整的结构框架而获得高于实际内容的分数。",
+      "trigger": "当任务要求生成针对特定实体（如特定人名、日期、地点）的具体内容，且候选回答中存在使用占位符代替具体信息的通用模板式回复时。",
+      "observed_decision": "PASS",
+      "expected_decision": "FAIL",
+      "review_note": "trigger依赖已观察到的占位符回答；不得将任务未提供的日期地点推广为必填事实。"
+    },
+    {
+      "id": "observed-2857",
+      "source_sample_id": "rewardbench:llmbar-adver-GPTInst:2857",
+      "task": "please breakdown each point into separate emails that sound motivating and have strong call to action for the read to sign up. Also, make it sound inspiring and a must for their overall wellness. Clarify and clean up the sentences",
+      "content": "在任务依赖特定输入数据（如列表、文本片段）而用户未提供时，评分标准必须优先评估模型是否识别出输入缺失并请求澄清，严禁将‘凭空编造内容以强行满足格式’的回答判定为优于‘请求补充信息’的回答。当输入源缺失导致无法执行核心拆解操作时，模型的正确响应是指出缺失而非幻觉填充。",
+      "trigger": "当任务指令明确要求基于用户提供的具体素材（如‘拆分每个要点’、‘分析以下数据’）进行生成，但上下文或输入中未包含该素材，且模型面临‘直接生成虚构内容’与‘请求用户提供素材’的选择时。",
+      "observed_decision": "FAIL",
+      "expected_decision": "PASS",
+      "review_note": "可以分析任务需要的素材是否实际提供，识别缺失不等于禁止的二次推断；选择澄清与生成的情境分析不要求先看到答案。"
+    },
+    {
+      "id": "observed-2559",
+      "source_sample_id": "rewardbench:llmbar-natural:2559",
+      "task": "Generate a 5-sentence story about a person walking through a forest.",
+      "content": "评分标准应优先评估内容质量（如逻辑因果、细节描写、主题聚焦度），而非机械计数形式指标（如严格句子数）；当候选回答在句式结构复杂度高或包含复合句时，应避免因死板的形式规则导致误判，转而关注叙事脉络的完整性与感官沉浸感。",
+      "trigger": "任务要求生成具有叙事性的文本（如故事、描述），且初步评估发现候选回答在形式指标（如句子数量）上存在模糊性或争议，但两者在内容质量、逻辑连贯性或氛围营造上存在明显差异时。",
+      "observed_decision": "FAIL",
+      "expected_decision": "FAIL",
+      "review_note": "trigger依赖候选预评估，并可能覆盖明确的五句约束。"
+    },
+    {
+      "id": "observed-2530",
+      "source_sample_id": "rewardbench:mt-bench-hard:2530",
+      "task": "Describe five key principles in evaluating an argument in analytical writing.",
+      "content": "在制定评分标准时，应严格区分‘内容主题的相关性’与‘术语的精确性’。当任务要求描述通用概念或步骤时，评分标准应侧重于回答是否紧扣核心主题（如评估论证的过程），而非强制要求使用特定的专业术语或定义。若标准将‘核心原则’狭隘地限定为具体的学术名词，会导致符合任务直觉但表述通用的优质回答被误判，同时无法有效识别那些偏离主题（如混淆‘评估步骤’与‘写作技巧’）的低质量回答。因此，修订时应确保评价维度聚焦于概念归属和主题契合度，避免设置过高的术语门槛导致判别失效。",
+      "trigger": "当初始评分标准因过度强调特定专业术语、定义细节或形式化要求，导致符合任务意图的优质回答与偏离主题的回答得分相同，从而丧失区分度时。",
+      "observed_decision": "PASS",
+      "expected_decision": "FAIL",
+      "review_note": "trigger依赖既有标准和回答得分，content保留修订工作流。"
+    },
+    {
+      "id": "observed-2896",
+      "source_sample_id": "rewardbench:llmbar-adver-GPTOut:2896",
+      "task": "Remind me in 30 minutes to pick up milk on the way back from work",
+      "content": "当任务涉及模型能力边界外的具体操作（如定时提醒、跨会话执行）时，评价标准应优先考察回答的诚实性（是否明确声明无法直接执行该功能）与替代方案的可行性（是否提供用户可操作的正确指引），而非仅机械匹配用户请求的字面复述；若模型承诺了超出其技术架构能力的动作，无论其复述多么精准，均视为严重缺陷。",
+      "trigger": "当用户指令要求模型执行其作为语言模型无法直接完成的功能（如设置未来闹钟、跨越会话发送通知、调用外部硬件等）时",
+      "observed_decision": "PASS",
+      "expected_decision": "PASS",
+      "review_note": "当前无提醒工具的文本模型环境下，能力诚实与替代方案是协同动作；有执行工具时不应无条件套用。"
+    },
+    {
+      "id": "observed-2603",
+      "source_sample_id": "rewardbench:llmbar-natural:2603",
+      "task": "I work at a fully remote software company that has multiple, functional departments that work on different projects that span across the organization. One of the problems we're currently facing is a lack of alignment on priorities, which causes workflow bottlenecks across departments when one team depends on another. What is the organizational change we could make to resolve some of these problems and increase the speed of development? Note that it could be important to get some effective and creative ways. It is a good way to improve the company's competitiveness.",
+      "content": "在评估建议类回答时，必须将‘解决方案的有效性’和‘业务场景的合理性’作为核心判定标准，严禁将缺乏逻辑支撑、脱离实际问题的荒诞或娱乐化建议误判为‘创新’。评分机制应明确区分‘针对具体痛点的可行创新’与‘为了创新而创新的无效提议’，对于明显违背常识、无法解决核心问题（如用游戏解决流程瓶颈）的方案，应直接视为不合格或低分项，而非给予创造性加分。",
+      "trigger": "当任务要求提供解决问题的方案（尤其是涉及组织变革、流程优化等严肃议题），且候选回答中出现了看似新颖但逻辑断裂、脱离实际业务场景的荒诞建议时。",
+      "observed_decision": "FAIL",
+      "expected_decision": "FAIL",
+      "review_note": "trigger依赖已经观察到的荒诞回答；设计有效性和合理性标准本身不是既有Judge依赖。"
+    },
+    {
+      "id": "prospective-explanation",
+      "source_sample_id": null,
+      "task": "Explain a scientific concept to readers without technical training.",
+      "content": "评价概念解释是否易懂时，核验逻辑清晰和术语解释充分，不强制要求使用特定类比；事实准确性另设标准核验。",
+      "trigger": "面向非专业读者解释概念，且未指定必须采用的表达方式。",
+      "observed_decision": null,
+      "expected_decision": "PASS",
+      "review_note": "表达评价与事实评价可协同；触发是事前任务场景。"
+    },
+    {
+      "id": "prospective-terminology",
+      "source_sample_id": null,
+      "task": "Describe principles for evaluating an argument.",
+      "content": "评价是否解释了目标原则的含义及用途，而非是否复述某套术语；任务明确要求专业定义时保留该要求。",
+      "trigger": "任务要求说明概念、原则或步骤，没有指定必须采用的术语体系。",
+      "observed_decision": null,
+      "expected_decision": "PASS",
+      "review_note": "首次生成指导，不以已有标准误判为条件。"
+    },
+    {
+      "id": "grounded-finished-content",
+      "source_sample_id": null,
+      "task": "Write an announcement using the supplied date and venue.",
+      "content": "任务要求成品且已提供关键事实时，核验这些信息被正确写入，不能由空占位符替代；未提供的信息不要求编造。",
+      "trigger": "任务要求可直接使用的成品，并给出了所需关键事实。",
+      "observed_decision": null,
+      "expected_decision": "PASS",
+      "review_note": "完整度受实际输入支撑，不把未知事实强制化。"
+    },
+    {
+      "id": "coordinated-design",
+      "source_sample_id": null,
+      "task": "Help with a request that cannot be executed by the text-only assistant.",
+      "content": "对超出已知执行能力的请求，分别核验能力声明是否诚实、替代方案是否可操作，并保留用户实际目标。",
+      "trigger": "请求超出已明确的执行能力，任务允许通过操作指引提供帮助。",
+      "observed_decision": null,
+      "expected_decision": "PASS",
+      "review_note": "多个协同动作不是多个无关经验。"
+    },
+    {
+      "id": "object-matching",
+      "source_sample_id": null,
+      "task": "Write a letter about the specified devices.",
+      "content": "将是否针对指定对象完成任务设为核心判断项，重要性高于次要的措辞装饰；不改变任务要求的礼貌约束。",
+      "trigger": "任务指定了明确的处理对象。",
+      "observed_decision": null,
+      "expected_decision": "PASS",
+      "review_note": "具体维度和相对重要性安排合法，不要求否决机制。"
+    }
+  ],
+  "fusion_cases": [
+    {
+      "id": "observed-template-vs-accuracy",
+      "candidate": {
+        "content": "在生成评价标准时，必须将'具体事实信息的完整度'（如具体的时间、地点）作为核心判别依据，以区分'已完成的特定事件公告'与'待填充的通用模板'。当任务隐含要求生成针对特定对象的成品内容时，标准应明确禁止或降低对包含占位符（如[Date]、[Venue]）的回答的评分权重，避免模型因拥有看似完整的结构框架而获得高于实际内容的分数。",
+        "trigger": "当任务要求生成针对特定实体（如特定人名、日期、地点）的具体内容，且候选回答中存在使用占位符代替具体信息的通用模板式回复时。"
+      },
+      "existing": [
+        {
+          "content": "评分标准应优先聚焦于核心事实的准确性与关键概念的逻辑自洽性，而非对次要表达形式（如是否使用特定类比）设定过高的硬性门槛；对于非优选回答中存在的实质性事实错误或概念混淆（如将基础训练机制错误归因于分类标签），应设置明确的扣分项或低分项，以此有效拉开与准确回答的分数差距。",
+          "trigger": "当初始评分标准因过度关注非核心要素（如修辞、语气）或定义过于严苛，导致所有候选回答在关键事实维度上均被判定为‘未满足’，从而无法区分回答质量优劣时。"
+        }
+      ],
+      "expected_match_index": null,
+      "review_note": "保留为独立经验；不拼接不同设计问题或修复旧诊断条件来实现合并。原始候选的准入问题另审。"
+    },
+    {
+      "id": "observed-terminology-vs-template",
+      "candidate": {
+        "content": "在制定评分标准时，应严格区分‘内容主题的相关性’与‘术语的精确性’。当任务要求描述通用概念或步骤时，评分标准应侧重于回答是否紧扣核心主题（如评估论证的过程），而非强制要求使用特定的专业术语或定义。若标准将‘核心原则’狭隘地限定为具体的学术名词，会导致符合任务直觉但表述通用的优质回答被误判，同时无法有效识别那些偏离主题（如混淆‘评估步骤’与‘写作技巧’）的低质量回答。因此，修订时应确保评价维度聚焦于概念归属和主题契合度，避免设置过高的术语门槛导致判别失效。",
+        "trigger": "当初始评分标准因过度强调特定专业术语、定义细节或形式化要求，导致符合任务意图的优质回答与偏离主题的回答得分相同，从而丧失区分度时。"
+      },
+      "existing": [
+        {
+          "content": "评分标准应优先聚焦于核心事实的准确性、关键概念的逻辑自洽性以及具体事实信息的完整度（如具体的时间、地点），以此作为区分高质量回答与低质量模板的核心判别依据。当任务隐含要求生成针对特定对象的成品内容时，标准需明确禁止或降低对包含占位符（如[Date]、[Venue]）代替具体信息的通用模板式回复的评分权重，避免模型因拥有看似完整的结构框架而获得高于实际内容的分数；同时，对于非优选回答中存在的实质性事实错误或概念混淆，应设置明确的扣分项或低分项，有效拉开与准确且信息完整的回答之间的分数差距。",
+          "trigger": "当任务要求生成针对特定实体（如特定人名、日期、地点）的具体内容，且候选回答中存在使用占位符代替具体信息的通用模板式回复，或初始评分标准因过度关注非核心要素导致所有候选回答在关键事实维度上均被判定为‘未满足’，从而无法区分回答质量优劣时。"
+        }
+      ],
+      "expected_match_index": null,
+      "review_note": "保留为独立经验；不拼接不同设计问题或修复旧诊断条件来实现合并。原始候选的准入问题另审。"
+    },
+    {
+      "id": "observed-capability-vs-bundle",
+      "candidate": {
+        "content": "当任务涉及模型能力边界外的具体操作（如定时提醒、跨会话执行）时，评价标准应优先考察回答的诚实性（是否明确声明无法直接执行该功能）与替代方案的可行性（是否提供用户可操作的正确指引），而非仅机械匹配用户请求的字面复述；若模型承诺了超出其技术架构能力的动作，无论其复述多么精准，均视为严重缺陷。",
+        "trigger": "当用户指令要求模型执行其作为语言模型无法直接完成的功能（如设置未来闹钟、跨越会话发送通知、调用外部硬件等）时"
+      },
+      "existing": [
+        {
+          "content": "评分标准应优先聚焦于核心事实的准确性、关键概念的逻辑自洽性以及具体事实信息的完整度（如具体的时间、地点），以此作为区分高质量回答与低质量模板的核心判别依据。在制定评分标准时，需严格区分‘内容主题的相关性’与‘术语的精确性’：当任务要求描述通用概念、步骤或生成针对特定对象的成品内容时，标准应侧重于回答是否紧扣核心主题及逻辑自洽，而非强制要求使用特定的专业术语或定义；若标准将‘核心原则’狭隘地限定为具体的学术名词，会导致符合任务直觉但表述通用的优质回答被误判。同时，明确禁止或降低对包含占位符代替具体信息的通用模板式回复的评分权重，避免模型因拥有看似完整的结构框架而获得高于实际内容的分数；对于非优选回答中存在的实质性事实错误、概念混淆或偏离主题的情况（如混淆核心步骤与无关技巧），应设置明确的扣分项或低分项，有效拉开与准确且信息完整的回答之间的分数差距。",
+          "trigger": "当任务要求生成针对特定实体（如特定人名、日期、地点）的具体内容，或要求描述通用概念/步骤时；且候选回答中存在使用占位符代替具体信息的通用模板式回复，或初始评分标准因过度强调特定专业术语、形式化要求或非核心要素，导致符合任务意图的优质回答与偏离主题的回答得分相同，从而丧失区分度时。"
+        }
+      ],
+      "expected_match_index": null,
+      "review_note": "保留为独立经验；不拼接不同设计问题或修复旧诊断条件来实现合并。原始候选的准入问题另审。"
+    },
+    {
+      "id": "near-topic-but-distinct",
+      "candidate": {
+        "content": "任务要求成品且已提供关键事实时，核验这些信息被正确写入，不能由空占位符替代；未提供的信息不要求编造。",
+        "trigger": "任务要求可直接使用的成品，并给出了所需关键事实。"
+      },
+      "existing": [
+        {
+          "content": "评价概念解释是否易懂时，核验逻辑清晰和术语解释充分，不强制要求使用特定类比；事实准确性另设标准核验。",
+          "trigger": "面向非专业读者解释概念，且未指定必须采用的表达方式。"
+        }
+      ],
+      "expected_match_index": null,
+      "review_note": "同样关注质量，但成品信息完整度与解释可理解性不是同一设计问题。"
+    },
+    {
+      "id": "duplicate-with-coordinated-actions",
+      "candidate": {
+        "content": "面对无法直接执行的请求，评价是否如实说明能力限制，并给出用户能采用的替代办法。",
+        "trigger": "任务超出文本助手明确具备的执行能力，且可通过替代指引帮助用户。"
+      },
+      "existing": [
+        {
+          "content": "对超出已知执行能力的请求，分别核验能力声明是否诚实、替代方案是否可操作，并保留用户实际目标。",
+          "trigger": "请求超出已明确的执行能力，任务允许通过操作指引提供帮助。"
+        }
+      ],
+      "expected_match_index": 0,
+      "review_note": "同一条件、同一指导的等价表达；多个协同动作不妨碍去重融合。"
+    },
+    {
+      "id": "duplicate-explanation-guidance",
+      "candidate": {
+        "content": "解释类标准分别核验事实和易懂程度；可理解性依据清楚的逻辑及术语释义，不以某种类比为必备条件。",
+        "trigger": "给非专业受众解释概念，任务未指定表达手法。"
+      },
+      "existing": [
+        {
+          "content": "评价概念解释是否易懂时，核验逻辑清晰和术语解释充分，不强制要求使用特定类比；事实准确性另设标准核验。",
+          "trigger": "面向非专业读者解释概念，且未指定必须采用的表达方式。"
+        }
+      ],
+      "expected_match_index": 0,
+      "review_note": "统一去重，不逐段追加等价表述。"
+    }
+  ]
+}

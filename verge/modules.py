@@ -119,6 +119,20 @@ def _output(backend: LLMBackend, role: str, payload: dict[str, Any],
                 {"analysis", "improvement_advice"})
     if not isinstance(response, Mapping) or set(response) != expected:
         raise ValueError(f"{role}: expected structured fields {sorted(expected)}")
+    if role == "initial_generator" and payload.get("revision_number"):
+        # 修订来源是程序元数据，不参与信用；在编号反解前清空历史引用。
+        # 使用副本，保留 backend trace 的解析输出及实际 assistant 原文。
+        content = response if codec else response.get("rubric")
+        if not isinstance(content, Mapping) or not isinstance(content.get("criteria"), list):
+            raise ValueError("initial_generator: revision requires a criteria list")
+        criteria = []
+        for item in content["criteria"]:
+            if (not isinstance(item, dict) or not isinstance(item.get("source_experiences"), list)
+                    or any(not isinstance(key, str) for key in item["source_experiences"])):
+                raise ValueError("initial_generator: revision source_experiences must be a list of strings")
+            criteria.append({**item, "source_experiences": []})
+        response = ({**response, "criteria": criteria} if codec else
+                    {**response, "rubric": {**content, "criteria": criteria}})
     if codec:
         response = codec.restore(response)
     return response[field] if field is not None else response

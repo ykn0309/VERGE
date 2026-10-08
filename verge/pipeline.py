@@ -61,15 +61,18 @@ def _check_reused_judgments(
 
 
 class PipelineRunner:
-    """顺序处理样本；Memory 在下游信用和 Fusion 两处立即写盘。"""
+    """顺序处理样本；经验开启时更新Memory，也支持独立的生成/修订诊断。"""
 
     def __init__(
         self, modules: PipelineModules, memory: ExperienceMemory, trajectories: TrajectoryLog,
-        *, training: bool = True, evidence_weight: float = 1.0, max_attempts: int = 2,
+        *, training: bool = True, experience_enabled: bool = True,
+        evidence_weight: float = 1.0, max_attempts: int = 2,
         max_revision_output_retries: int = 2,
     ) -> None:
         if type(training) is not bool:
             raise ValueError("training must be Boolean")
+        if type(experience_enabled) is not bool:
+            raise ValueError("experience_enabled must be Boolean")
         if type(max_attempts) is not int or max_attempts not in (1, 2):
             raise ValueError("max_attempts must be 1 or 2")
         if type(max_revision_output_retries) is not int or not 0 <= max_revision_output_retries <= 3:
@@ -77,12 +80,13 @@ class PipelineRunner:
         if (type(evidence_weight) not in (int, float) or
                 not 0 <= evidence_weight <= 1):
             raise ValueError("evidence_weight must be in [0, 1]")
-        if training and memory.read_only:
+        if training and experience_enabled and memory.read_only:
             raise ValueError("training requires writable experience memory")
         self.modules = modules
         self.memory = memory
         self.trajectories = trajectories
         self.training = training
+        self.experience_enabled = experience_enabled
         self.evidence_weight = evidence_weight
         self.max_attempts = max_attempts
         self.max_revision_output_retries = max_revision_output_retries
@@ -116,20 +120,24 @@ class PipelineRunner:
     def _run_sample(self, sample: PreferenceSample, record: TrajectoryRecord) -> TrajectoryRecord:
         modules = self.modules
         # 召回、筛选和初始生成只看 task；preference pair 从 Judge 阶段才可见。
-        self.current_stage = "retrieval"
-        recalled = modules.retriever.retrieve(sample.task, self.memory.all())
-        record.retrieved_experience_ids = [item.experience_id for item in recalled]
-        views = [ExperienceView.from_experience(item) for item in recalled]
-        self.current_stage = "selection"
-        selected = modules.selector.select(sample.task, views, training=self.training)
-        recalled_ids = {item.experience_id for item in views}
-        if any(item.experience_id not in recalled_ids for item in selected):
-            raise ValueError("selected experiences must be retrieved experiences")
-        record.selected_experience_ids = [item.experience_id for item in selected]
+        recalled, selected = [], []
+        if self.experience_enabled:
+            self.current_stage = "retrieval"
+            recalled = modules.retriever.retrieve(sample.task, self.memory.all())
+            record.retrieved_experience_ids = [item.experience_id for item in recalled]
+            views = [ExperienceView.from_experience(item) for item in recalled]
+            self.current_stage = "selection"
+            selected = modules.selector.select(sample.task, views, training=self.training)
+            recalled_ids = {item.experience_id for item in views}
+            if any(item.experience_id not in recalled_ids for item in selected):
+                raise ValueError("selected experiences must be retrieved experiences")
+            record.selected_experience_ids = [item.experience_id for item in selected]
         self.current_stage = "initial_generator"
         initial = modules.initial_generator.generate(sample.task, selected)
         if initial.base_rubric_id is not None:
             raise ValueError("initial rubric must not have a revision base")
+        if not self.experience_enabled and any(c.source_experiences for c in initial.criteria):
+            raise ValueError("experience-disabled initial rubric must have empty sources")
         record.initial_rubric = initial
         self.current_stage = "initial_judge"
         try:
@@ -144,7 +152,7 @@ class PipelineRunner:
             return record
         record.initial_judgment = initial_judgment
         # 已有经验的下游信用只由 R0 计算，立即写盘；后续修订失败也不回滚。
-        if self.training:
+        if self.training and self.experience_enabled:
             self.current_stage = "existing_credit"
             credits = calculate_existing_experience_credit(initial, initial_judgment)
             self.memory.apply_downstream_credits(sample.sample_id, credits,
@@ -216,6 +224,8 @@ class PipelineRunner:
                 current, current_judgment = revised, revised_judgment
                 if revised_judgment.success:
                     state = f"revision_success_{number}"
+                    if not self.experience_enabled:
+                        break
                     self.current_stage = "reflection"
                     reflected = modules.reflector.reflect(sample.task, initial, initial_judgment,
                                                           attempt, chosen=sample.chosen,

@@ -83,15 +83,15 @@ def test_critic_history_has_independent_scopes_without_fabricated_judgment():
     assert 'criterion_judgments' not in user['content']
 
 
-def test_admission_and_reflector_describe_positive_task_conditions():
-    text = llm_messages('admission_checker', {})[0]['content']
-    for fragment in ('具体可复用的单一设计机制', 'trigger 是否仅凭未来 task 核验',
-                     '理由引用相关 content 或 trigger', '依据候选实际文本',
+def test_admission_and_reflector_allow_task_reasoning_before_generation():
+    admission = llm_messages('admission_checker', {})[0]['content']
+    for fragment in ('进行合理推理', '多个协同动作本身不足以拒绝',
+                     '理由引用实际 content 或 trigger',
                      '全部准入条件满足时 decision 为 PASS'):
-        assert fragment in text
+        assert fragment in admission
     reflector = llm_messages('reflector', {})[0]['content']
-    assert '单一、具体的 rubric 设计方法' in reflector
-    assert '仅阅读未来 task 即可核验' in reflector
+    assert 'content 说明首次生成时如何设计评价标准' in reflector
+    assert '生成标准之前可识别的适用场景' in reflector
 
 
 def test_nonfinite_input_is_not_sent_as_a_number():
@@ -110,16 +110,13 @@ def test_role_system_prompts_have_no_concrete_examples(role):
     assert '返回 {' in text  # 返回结构是协议说明，不是具体任务案例。
 
 
-# Critic 的候选隔离规则按用户要求使用显式禁止措辞。
-@pytest.mark.parametrize('role', [role for role in _ROLE_GUIDANCE if role != 'critic'])
-def test_role_messages_use_positive_task_descriptions(role):
-    messages = llm_messages(role, {'task': '当前任务', 'chosen': '回答内容',
-                                  'previous_invalid_attempt': {'analysis': None}})
-    for message in messages:
-        for phrase in ('不要', '不得', '不能', '禁止', '避免', '不可', '不必',
-                       '不允许', '不检查', '不输出', '不计算', '不是', '不依赖'):
-            assert phrase not in message['content'], (role, phrase)
-    assert '你的任务是' in messages[0]['content']
+@pytest.mark.parametrize('role', list(_ROLE_GUIDANCE))
+def test_role_system_messages_do_not_echo_sample_content(role):
+    system, user = llm_messages(role, {'task': 'RAW_TASK_SENTINEL', 'chosen': 'RAW_ANSWER_SENTINEL'})
+    assert 'RAW_TASK_SENTINEL' not in system['content']
+    assert 'RAW_ANSWER_SENTINEL' not in system['content']
+    assert 'RAW_TASK_SENTINEL' in user['content']
+    assert system['content'].startswith(_ROLE_GUIDANCE[role])
 
 
 @pytest.mark.parametrize('role, fields', [
@@ -264,8 +261,8 @@ def test_scores_are_rounded_only_for_prompt_display(role):
 
 
 
-def test_reflector_requires_mechanism_level_transfer_not_sample_specific_rules():
+def test_reflector_keeps_transferable_guidance_separate_from_sample_diagnosis():
     text = llm_messages('reflector', {'task': '任务'})[0]['content']
-    for phrase in ('评价设计变化', '用语义类别替代', '迁移性指同类任务间复用',
-                   '修订体现的关键机制', '不同对象后', '不写入候选'):
+    for phrase in ('具体、可复用设计指导', '将修订诊断转化为事前指导',
+                   '不保留样本答案细节或偏好身份', '同一设计目的的协同动作'):
         assert phrase in text

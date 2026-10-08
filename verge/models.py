@@ -255,7 +255,7 @@ class Criterion(Model):
     criterion_id: 标准唯一标识；question: 可回答是/否的判断问题；
     importance_score: 原始重要性整数分数（1–10）；
     source_experiences: 实质影响初始标准的经验 ID，可为空；
-    只在 initial rubric 的已有经验信用中使用，修订计算忽略该字段。
+    只在 initial rubric 的已有经验信用中使用，修订输出由程序统一清空。
     归一化权重和贡献由 Calculator 计算，不写入此对象。
     """
 

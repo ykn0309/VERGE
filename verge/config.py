@@ -64,6 +64,10 @@ def load_config(path: str | Path) -> dict[str, Any]:
     run = _mapping(_required(root, "run", "config"), "run")
     _integer(_required(run, "seed", "run"), "run.seed", 0)
     _text(_required(run, "output_dir", "run"), "run.output_dir")
+    if type(run.get("experience_enabled", True)) is not bool:
+        raise ValueError("run.experience_enabled: expected Boolean")
+    if "stop_after_train" in run:
+        _integer(run["stop_after_train"], "run.stop_after_train", 1)
 
     dataset = _component(_required(root, "dataset", "config"), "dataset")
     if "prepare" in dataset["config"]:

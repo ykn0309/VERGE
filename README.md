@@ -77,6 +77,26 @@ Reflector 在成功修订后生成 0–1 条候选，只返回 content、trigger
 
 训练初始失败后，Critic 只输出私有分析和公开建议；公开建议追加到同一 Generator 的样本内会话。Generator 输出完整 rubric，第二轮接续上一轮有效结果。无独立 Refiner、原子操作或 Executor。Web 的 Generator 页签包含初始及修订真实消息，Critic 页签显示分析与建议。Reflector 0–1 条经验，合法融合后记录弱修订证据，再由后续任务继续验证。旧检查点不能跨方法续跑。
 
+### 仅生成与修订（不使用或生成经验）
+
+新增配置开关（默认经验开启）：
+
+```yaml
+run:
+  experience_enabled: false
+  stop_after_train: 100
+```
+
+只执行Generator→Judge；失败后最多两轮Critic→Generator→Judge。不检索/选择/反思/准入/融合，不计算或更新经验信用，不调用embedding。保留原始请求与完整修订轨迹，空池文件仅作审计兼容。
+
+已准备 `configs/rewardbench-chat-hard-qwen-revision-only-100.yaml`，沿用数据顺序、qwen3.5-flash和两轮修订；**尚未运行真实实验**。获授权后可运行：
+
+```bash
+python3 -m verge.cli run --config configs/rewardbench-chat-hard-qwen-revision-only-100.yaml
+```
+
+配置将自动在100条训练前缀暂停，不进入测试。显式`--stop-after-train`优先于配置限制；继续前缀可指定更大上限和新的输出目录，resume不允许切换经验模式。详情见[计划26](docs/plans/26-仅生成与修订实验开关.md)。
+
 ### 经验文本融合与样本预览
 
 方案见[计划21](docs/plans/21-经验文本融合与弱修订证据.md)。新配置 `configs/rewardbench-chat-hard-qwen-vector-fusion-evidence.yaml` 使用全新输出目录；尚未发起真实实验，不修改或恢复旧运行。样本引用普通点击预览 task/chosen/rejected，支持现有设备端翻译；Cmd+点击进入流水线详情。

@@ -245,14 +245,14 @@ def test_role_prompts_are_isolated_and_versioned():
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "generator-dialogue-concise-revision-feedback"
+    assert PROMPT_VERSION == "generator-dialogue-program-owned-revision-sources"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
-    assert all(text in selector for text in ('task 本身核验', '选择数量为 0 到 max_selected',
-                                               '适用性与帮助相近时'))
+    assert all(text in selector for text in ('允许合理推理', '选择数量为 0 到 max_selected',
+                                               '高置信度不能代替适用性'))
     reflector = llm_messages("reflector", {"task": "task"})[0]["content"]
     admission = llm_messages("admission_checker", {"task": "task"})[0]["content"]
-    assert "明确的 task 可核验条件" in reflector
-    assert "trigger 是否仅凭未来 task 核验" in admission
+    assert "生成标准之前可识别的适用场景" in reflector
+    assert "trigger 不应以已经观察到这些性质为前提" in admission
     assert '"reason"' in admission
     critic = llm_messages("critic", {"task": "task"})[0]["content"]
     assert "improvement_advice" in critic

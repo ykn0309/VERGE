@@ -71,7 +71,14 @@ def _backend(spec: dict[str, Any], path: str) -> LLMBackend:
 def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, int]:
     """运行前校验所有当前可装配的组件，不把未实现的配置静默降级。"""
     _only_keys(config, {"run", "dataset", "models", "modules", "store"}, "config")
-    _only_keys(config["run"], {"seed", "output_dir", "test_workers"}, "run")
+    _only_keys(config["run"], {"seed", "output_dir", "test_workers", "experience_enabled",
+                               "stop_after_train"}, "run")
+    experience_enabled = config["run"].get("experience_enabled", True)
+    if type(experience_enabled) is not bool:
+        raise ValueError("run.experience_enabled: expected Boolean")
+    limit = config["run"].get("stop_after_train")
+    if "stop_after_train" in config["run"] and (type(limit) is not int or limit < 1):
+        raise ValueError("run.stop_after_train: expected a positive integer")
     workers = config["run"].get("test_workers", 4)
     if type(workers) is not int or not 1 <= workers <= 16:
         raise ValueError("run.test_workers: expected an integer in [1, 16]")
@@ -154,7 +161,7 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         if isinstance(backend, OpenAICompatibleBackend):
             created.append(backend)
         retriever = None
-        if vector_retrieval:
+        if vector_retrieval and experience_enabled:
             default = models["default"]
             embedder = OpenAICompatibleEmbedding(
                 retrieval["embedding_model"],
@@ -496,7 +503,8 @@ def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
                 retriever = retriever.fork()
             modules = replace(runner.modules, retriever=retriever)
             worker = PipelineRunner(modules, runner.memory, _DeferredTrajectoryLog(),
-                                    training=False, max_attempts=runner.max_attempts)
+                                    training=False, experience_enabled=runner.experience_enabled,
+                                    max_attempts=runner.max_attempts)
             thread_state.runner = worker
         token = request_context.set({"sample_id": sample.sample_id, "split": "test"})
         try:
@@ -552,6 +560,9 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
     modules = None
     try:
         config = load_config(config_path)
+        experience_enabled = config["run"].get("experience_enabled", True)
+        if stop_after_train is None:
+            stop_after_train = config["run"].get("stop_after_train")
         # Reject an existing run directory before any optional network download.
         run_dir = Path(config["run"]["output_dir"])
         if run_dir.exists():
@@ -564,6 +575,7 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
                     "execution": {"test_workers": config["run"].get("test_workers", 4),
                                   "mode": "train_test" if "test" in dataset.paths else "train_only",
+                                  "experience_enabled": experience_enabled,
                                   "initial_output_retries": initial_output_retries,
                                   "sample_error_policy": "record_and_continue"},
                     "dataset_version": "jsonl/v1",
@@ -632,6 +644,7 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         if isinstance(embedder, OpenAICompatibleEmbedding):
             embedder.metadata_hook = save_request
         runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts,
+                                experience_enabled=experience_enabled,
                                 max_revision_output_retries=config["modules"]["revision"]["config"].get(
                                     "invalid_output_retries", 2))
         seen_ids: set[str] = set()
@@ -649,7 +662,8 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         if "test" in dataset.paths:
             # 测试阶段复用训练后的 Memory，完全不写回信用或生成经验。
             evaluation = PipelineRunner(modules, ExperienceMemory(root, read_only=True),
-                                        trajectories, training=False, max_attempts=max_attempts)
+                                        trajectories, training=False, experience_enabled=experience_enabled,
+                                        max_attempts=max_attempts)
             test_progress = _Progress("test", _split_total(dataset, "test"))
             try:
                 workers = config["run"].get("test_workers", 4)

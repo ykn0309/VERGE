@@ -12,74 +12,80 @@ from verge.prompts import (
 
 
 @pytest.mark.parametrize('role', ['reflector', 'admission_checker', 'fusion_judge'])
-def test_experience_definition_is_inline_in_each_role_system_message(role):
+def test_experience_roles_use_prospective_guidance_without_shared_definition(role):
     import verge.prompts as prompts
     assert not hasattr(prompts, '_EXPERIENCE_DEFINITION')
     system = llm_messages(role, {})[0]['content']
-    definition = 'content 说明如何设计评价标准；trigger 说明该经验适用于哪些任务或输入条件。'
-    assert system.count(definition) == 1
     assert '首次生成标准' in system
-    assert '具体、可复用设计方法' in system
-    assert '如何设计或调整标准' not in system
-    assert 'trigger 仅凭未来 task 判断，并支撑指导的范围与强度' not in system
+    assert '已有 rubric' in system and 'Judge 结果' in system
+    assert '已观察到的候选特征' in system or '已经观察到这些性质' in system
+    assert '单一设计机制' not in system
+    assert '仅凭未来 task 核验' not in system
+    assert '协同动作' in system
 
 
-def test_admission_reviews_expression_and_explicit_defects_not_universal_effectiveness():
+def test_admission_allows_reasoning_and_complexity_but_rejects_concrete_defects():
     system = llm_messages('admission_checker', {})[0]['content']
-    for rule in ('审核供 rubric generator 首次生成标准使用的具体、可复用设计方法',
-                 '实际有效性由后续下游任务验证',
-                 '允许设计评价维度、安排标准重要性、排除不当要求',
-                 '任务类别有限、需要语义理解或机制具体，本身均不足以拒绝',
-                 '完整 rubric 和回答生成指南属于其他产物',
-                 '理由引用相关 content 或 trigger',
-                 '条件不足以支撑强制指导', '改变任务目标',
-                 '依赖未来回答或既有标准/Judge', '保留样本答案或专有细节',
-                 '可独立使用的多个原则', '程序不支持的评分机制',
-                 '“太具体”', '“非通用原则”', '均不足以构成拒绝理由',
-                 '固定数值阈值仅在机制确有需要时核对',
-                 'PASS 表示经验表达合格，不等于实际有效'):
+    for rule in ('表达是否可用，而非提前证明实际有效',
+                 '具体、可复用且指导连贯', '允许结合任务语义',
+                 '实际输入、上下文和领域知识', '进行合理推理',
+                 '多个协同动作本身不足以拒绝',
+                 'content 可以指导核验未来回答的性质',
+                 'trigger 不应以已经观察到这些性质为前提',
+                 '允许设计评价维度、安排重要性及排除不当要求',
+                 '尊重任务目标与明确约束', '只因明确缺陷返回 FAIL',
+                 '事后触发条件', '样本答案细节或偏好身份',
+                 '指导与适用条件不匹配', '拼接互不相关的指导',
+                 '程序不支持的评分机制', '理由引用实际 content 或 trigger',
+                 '不能仅因复杂、具体或属于评分标准设计方法而拒绝',
+                 'PASS 保持候选文本，不等于实际有效'):
         assert rule in system
-    assert '适用于未来任务和回答' not in system
-    assert '保持候选文本' in system
+    assert '固定数值阈值' not in system
+    assert '无需二次推断' not in system
     assert '"decision":"PASS"或"FAIL"' in system
 
 
-def test_reflection_keeps_mechanism_and_scope_support():
+def test_reflection_prioritizes_observed_design_changes_over_critic_story():
     system = llm_messages('reflector', {})[0]['content']
-    assert '用于未来任务首次生成标准' in system
-    assert '修订轨迹是提炼依据' in system
-    assert '如何构造或调整判断标准' not in system
-    assert '保留有效具体机制与协同动作' in system
-    assert 'trigger 如何支撑 content 的范围及指导强度' in system
-    assert '0 到 1' in system
-    assert 'linked_operation_ids' not in system
+    for rule in ('对照修订前后标准与两侧 Judge 判断', '实际产生区分的评价维度',
+                 'Critic 分析只作参考', '不把全部修订动作都解释为有效方法',
+                 '不把判别成功解释为经验的因果贡献',
+                 'content 说明首次生成时如何设计评价标准',
+                 'trigger 说明生成标准之前可识别的适用场景',
+                 '将修订诊断转化为事前指导', '不要求只有一个操作',
+                 '不保留样本答案细节或偏好身份'):
+        assert rule in system
+    assert '0 到 1' in system and 'linked_operation_ids' not in system
 
 
-def test_fusion_keeps_conditional_branches_and_does_not_certify_effectiveness():
+def test_fusion_defaults_to_add_and_deduplicates_instead_of_concatenating():
     system, user = llm_messages('fusion_judge', fusion_payload('方法', '条件', [('旧方法', '旧条件')]))
-    assert '条件分支应分别支撑对应指导' in system['content']
-    assert '条件性规则仍在其条件内适用' in system['content']
-    assert '而非宣称扩展已被历史信用验证' in system['content']
+    for rule in ('识别候选与已有经验是否重复', '默认独立新增候选',
+                 '同一评价设计问题', '指导等价或属于同一方法的必要细化',
+                 '适用条件兼容', '共享质量目标、主题或关键词不足以合并',
+                 '不确定是否重复时返回空匹配', '去重提炼为统一指导',
+                 '不逐条追加无关原则', '扩展无关场景或修复事后触发条件',
+                 '历史证据不认证新增内容'):
+        assert rule in system['content']
     assert set(fusion_payload('方法', '条件', [])) == {'candidate', 'existing'}
     assert '任务：' not in user['content']
     assert '"match_index":null,"content":null,"trigger":null' in system['content']
 
 
 @pytest.mark.parametrize('role', ['selector', 'initial_generator'])
-def test_task_operation_and_material_topic_are_distinct_in_system(role):
+def test_task_analysis_and_explicit_constraints_remain_preference_blind(role):
     payload = selector_payload('总结所附材料', [], max_selected=5, training=True) if role == 'selector' else generator_payload('总结所附材料', [])
     system, user = llm_messages(role, payload)
-    assert '指令要求执行的任务操作与输入材料讲述的主题' in system['content']
     assert '总结所附材料' in user['content']
     assert 'chosen' not in user['content'] and 'rejected' not in user['content']
     if role == 'selector':
-        assert '材料主题相似本身不足以支持选中' in system['content']
-        assert '指导强度与当前条件匹配' in system['content']
+        assert '允许合理推理' in system['content']
+        assert '不要求条件由 task 逐字声明' in system['content']
+        assert '高置信度不能代替适用性' in system['content']
     else:
+        assert '实际输入与完整性' in system['content']
+        assert '当前条件下合理的回答行为' in system['content']
         assert '任务目标与明确约束优先于经验指导' in system['content']
-        assert '材料中描述的行为与回答应执行的行为分别处理' in system['content']
-        assert '与任务冲突的指导不采用' in system['content']
-        assert '维度与权重的强度由当前 task 支撑' in system['content']
 
 
 @pytest.mark.parametrize('decision,content,trigger,reason', [
@@ -107,13 +113,14 @@ def test_real_admission_http_uses_aligned_system_and_unchanged_projection(
     assert reviewed.fusion_record is None
     assert len(bodies) == 1
     system, user = bodies[0]['messages']
-    assert 'content 说明如何设计评价标准；trigger 说明该经验适用于哪些任务或输入条件。' in system['content']
+    assert '允许结合任务语义' in system['content']
+    assert '生成标准之前可识别' in system['content']
     assert content in user['content'] and trigger in user['content']
     for hidden in ('internal-candidate-id', 'chosen', 'rejected', 'improvement_advice',
                    'fusion_credit', 'evidence_weight', 'successful_attempt'):
         assert hidden not in user['content']
     assert set(admission_payload('当前任务', candidate)) == {'task', 'candidate'}
-    assert PROMPT_VERSION == 'generator-dialogue-concise-revision-feedback'
+    assert PROMPT_VERSION == 'generator-dialogue-program-owned-revision-sources'
 
 
 @pytest.mark.parametrize('version', ['generator-dialogue-critic-feedback',
@@ -124,7 +131,9 @@ def test_real_admission_http_uses_aligned_system_and_unchanged_projection(
                                      'generator-dialogue-initial-design-experience-v2',
                                      'generator-dialogue-inline-experience-definition',
                                      'generator-dialogue-role-specific-output',
-                                     'generator-dialogue-role-specific-output-compact'])
+                                     'generator-dialogue-role-specific-output-compact',
+                                     'generator-dialogue-concise-revision-feedback',
+                                     'generator-dialogue-prospective-experience-conservative-fusion'])
 def test_read_only_web_accepts_known_previous_versions_without_rewriting(tmp_path, version):
     from test_web import _run
     from verge.web import load_run

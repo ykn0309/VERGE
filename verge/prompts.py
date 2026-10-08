@@ -11,7 +11,7 @@ from verge.models import (CandidateExperience, Criterion, Experience, InvalidRev
                           RevisionAttempt, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "generator-dialogue-role-specific-output-compact"
+PROMPT_VERSION = "generator-dialogue-concise-revision-feedback"
 
 # 专属身份和任务说明；Generator/Reflector 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
@@ -48,6 +48,7 @@ _ROLE_INSTRUCTIONS = {
         '"importance_score":重要性整数,"source_experiences":[来源经验ID]}]}。'
         'analysis 和 question 用中文，analysis 非空；生成 2 到 8 条标准，importance_score 为 1 到 10 的整数。'
         'source_experiences 填写实质新增或改变该标准的所选经验 ID；仅由 task 推导的标准使用空数组。'
+        '根据 Critic 建议重新生成时，source_experiences 使用空数组。'
     ),
     "judge": (
         '逐项判断用 JSON 返回 {"criterion_judgments":[{"criterion_id":输入标准ID,"satisfied":true或false}]}。'

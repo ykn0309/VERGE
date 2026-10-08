@@ -274,10 +274,8 @@ class LLMInitialRubricGenerator:
         if conversation is None:
             raise ValueError("generator revision requires this sample's initial conversation")
         _text(advice, "improvement advice")
-        instruction = ("请根据当前对话中的任务和最近标准修订完整 rubric。Critic 的改进建议：\n"
-                       + advice + "\n只依据任务要求和独立领域知识，不包含候选信息或比较评价。"
-                       "返回 analysis 和完整 criteria（2–8 条）；每项包含 question、importance_score（1–10整数）、"
-                       "source_experiences（空数组）。不要返回操作或标准 ID。")
+        instruction = ("你生成的 rubric 未通过 Judge 评判。这是 Critic 给你的改进建议：\n"
+                       + advice + "\n请根据建议重新生成一份 rubric。")
         if validation_feedback:
             instruction = "上一版完整 rubric 校验失败：" + validation_feedback + "。请纠正并返回完整结果。"
         messages = [*conversation, {"role": "user", "content": instruction}]

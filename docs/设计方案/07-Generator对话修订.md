@@ -8,13 +8,13 @@
 system: Generator 职责与专属输出要求（_ROLE_INSTRUCTIONS）
 user: task 和所选经验
 assistant: analysis + criteria（初始输出）
-user: Critic improvement_advice 与完整修订请求
+user: Judge失败状态 + Critic improvement_advice + 重新生成请求
 assistant: analysis + criteria（第一轮完整修订）
-user: 第二轮公开建议
+user: 最近有效rubric的Judge失败状态 + 第二轮公开建议
 assistant: analysis + criteria（第二轮完整修订）
 ```
 
-不将 chosen/rejected、Judge 结果或 Critic analysis 直接加入会话。初始 Generator 始终 preference-blind，修订获得的建议可能存在提示词未能阻止的间接泄露。
+仅告知Judge失败状态，不将 chosen/rejected、Judge逐项判断/得分或 Critic analysis 直接加入会话。初始 Generator 始终 preference-blind，修订获得的建议可能存在提示词未能阻止的间接泄露。
 
 完整输出仍是 `{analysis, criteria}`；每条含 question、importance_score、source_experiences。修订的来源固定空数组，不对训练中修订结果计算经验的下游信用。程序分配新的标准/rubric ID，base 指向最近有效 rubric。没有操作编号、ADD/DELETE/MODIFY 或 Executor。
 
@@ -23,3 +23,5 @@ assistant: analysis + criteria（第二轮完整修订）
 无效但结构可解析的回复仍保留在对话中，后续 user 告知校验原因，有限次数要求重输完整 rubric；不可解析输出的后端格式纠错和实际消息照实落日志，未获得有效回复时不能假装有修订。第二轮以最近有效标准为基线，而不是以无效输出构造 Judge 结果。
 
 参考 RF2：`experiments/critic-refine/run_critic_refine_v5_1.py:798–819` 中 `messages=[*state["active_messages"], feedback]`，模型与角色仍为 Generator。
+
+正常修订的user消息只说明“你生成的 rubric 未通过 Judge 评判”，附Critic公开建议并请求重新生成，不重复analysis/criteria、数量、重要性、来源或ID格式。输出要求沿用初始system；修订来源空数组的约束放在Generator的_ROLE_INSTRUCTIONS中。输出校验纠错仍只说明实际校验问题，不把未经过Judge的无效回复描述成Judge失败。

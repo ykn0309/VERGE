@@ -16,3 +16,9 @@ Reflector 读取初始和成功标准、两侧判断及成功 Critic 分析与�
 - 模拟真实 HTTP 验证实际 assistant 原文、后端格式纠错消息和同会话追加；Fake 验证两轮最新基线、无效完整输出有限纠错/耗尽、网络错误中止、跨样本和线程上下文隔离。
 - Web 浏览器验证 Generator 三次调用、两轮完整结果与 Critic 分析/建议；无控制台错误。初始分析摘要不被修订分析覆盖。
 - 仅在 `/tmp/verge-generator-dialogue-smoke` 运行 Fake smoke，未调用真实模型、未覆盖旧运行或重启实验。改动尚未提交。
+
+### 简短失败反馈
+
+正常修订追加“你生成的 rubric 未通过 Judge 评判。这是 Critic 给你的改进建议：\n{advice}\n请根据建议重新生成一份 rubric。”，不再重复输出格式、条数、重要性、来源或ID约束。输出要求由系统的角色专属指令承担，修订source_experiences空数组规则移至Generator的_ROLE_INSTRUCTIONS。只新增失败状态表达，不传Judge明细或私有证据；格式/语义校验失败继续单独纠错。第二轮仍接续最近有效rubric，原历史保留，用户手改角色职责不变。当前版本 `generator-dialogue-concise-revision-feedback`，未运行真实请求、未提交。
+
+本次验收：Generator对话与角色输出相关31项通过，完整测试371通过、13项既有旧措辞断言失败，失败集合未变化；diff检查通过。未执行真实请求，角色职责保持不变。

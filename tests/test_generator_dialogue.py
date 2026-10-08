@@ -33,6 +33,14 @@ def test_two_rounds_revise_latest_rubric_keep_one_generator_context(tmp_path):
     assert [m['role'] for m in first_messages] == ['system', 'user', 'assistant', 'user']
     assert [m['role'] for m in second_messages] == ['system', 'user', 'assistant', 'user', 'assistant', 'user']
     assert second_messages[:len(first_messages)] == first_messages
+    for messages, attempt in ((first_messages, first), (second_messages, second)):
+        feedback = messages[-1]['content']
+        assert feedback == ('你生成的 rubric 未通过 Judge 评判。这是 Critic 给你的改进建议：\n'
+                            + attempt.feedback + '\n请根据建议重新生成一份 rubric。')
+        for repeated in ('analysis', 'criteria', 'question', 'importance_score',
+                         'source_experiences', '2–8', '1–10', '标准 ID', '返回操作'):
+            assert repeated not in feedback
+        assert '根据 Critic 建议重新生成时，source_experiences 使用空数组。' in messages[0]['content']
     assert 'improvement_advice' not in second_messages[2]['content']  # actual R0 reply, not Critic
     for p in calls:
         assert '私有优选全文' not in json.dumps(p, ensure_ascii=False)
@@ -138,3 +146,15 @@ def test_generator_network_failure_still_aborts(tmp_path):
     modules.initial_generator.revise = fail
     with pytest.raises(LLMRequestError):
         run(tmp_path, modules=modules)
+
+
+def test_revision_validation_feedback_stays_distinct_from_judge_failure():
+    modules = make_fake_modules('attempt_1_success')
+    generator = modules.initial_generator
+    r0 = generator.generate('任务文本', [])
+    generator.revise(r0, '补全核心要求', 1, validation_feedback='条数校验失败')
+    payload = [p for role, p in modules.backend.requests if role == 'initial_generator'][-1]
+    user = payload['_conversation'][-1]['content']
+    assert user == '上一版完整 rubric 校验失败：条数校验失败。请纠正并返回完整结果。'
+    assert 'Judge' not in user
+    assert 'analysis' not in user and 'source_experiences' not in user

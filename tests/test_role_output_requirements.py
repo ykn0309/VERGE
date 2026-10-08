@@ -39,7 +39,8 @@ def test_output_requirements_live_in_each_role_without_common_protocol(role, fie
 @pytest.mark.parametrize('role,rules', [
     ('selector', ('0 到 max_selected', '短数字字符串编号', '返回空数组')),
     ('initial_generator', ('analysis 和 question 用中文', 'analysis 非空', '2 到 8 条标准',
-                           '1 到 10 的整数', '所选经验 ID')),
+                           '1 到 10 的整数', '所选经验 ID',
+                           '根据 Critic 建议重新生成时，source_experiences 使用空数组')),
     ('judge', ('每个输入编号恰好出现一次', 'true或false', '布尔值', '编号原样复制')),
     ('critic', ('私有诊断', '公开改进建议', '两个字段均为非空中文文本')),
     ('reflector', ('候选数量为 0 到 1', 'content 和 trigger 为非空中文文本', '返回空数组')),
@@ -97,4 +98,4 @@ def test_generator_dialogue_reuses_role_local_system_without_adding_protocol():
     assert llm_messages('initial_generator', {'_conversation': messages}) == messages
     assert messages[0]['content'].endswith(_ROLE_INSTRUCTIONS['initial_generator'])
     assert '【输出协议】' not in messages[0]['content']
-    assert PROMPT_VERSION == 'generator-dialogue-role-specific-output-compact'
+    assert PROMPT_VERSION == 'generator-dialogue-concise-revision-feedback'

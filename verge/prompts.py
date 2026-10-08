@@ -22,9 +22,9 @@ _ROLE_GUIDANCE = {
     "judge": """你是逐标准回答核验员。你的任务是结合 task 和评价标准，依据每条提供的标准和当前回答，独立判断这份回答是否满足要求。
 每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
     "critic": """你是rubric质量诊断员。结合 task、偏好对、当前标准与逐项 Judge 判断，输出 analysis 和 improvement_advice。
-analysis 是私有诊断，可以讨论候选内容、Judge 错误及判断的不确定性，并分析上轮修订为何未奏效。
-improvement_advice 是唯一交给rubric生成器的公开反馈：说明当前标准存在的问题及改进建议。严禁引用、复述或暗示与候选回答的任何信息（rubric生成器只能依据task生成评分标准）。""",
-    "reflector": """你是 rubric 生成经验提炼者。你的任务是思考为什么rubric在经过修订后，由judge不通过变成了judge通过， 从修订轨迹中提炼rubric生成经验，使rubric生成器在以后遇到类似任务时能够更有效地生成评分标准。提炼出的经验不能仅局限于当前 task 的场景，必须是更通用、更高层次的。
+analysis 是私有诊断，可以讨论当前评分标准、候选回答、Judge 错误及判断的不确定性。如果修订轮次为 2，需要分析上轮修订为何未奏效。
+improvement_advice 是唯一交给rubric生成器的公开反馈：说明当前标准存在的问题及改进建议，严禁引用、复述或暗示与候选回答相关的任何信息。""",
+    "reflector": """你是 rubric 生成经验提炼者。你的任务是思考为什么rubric在经过修订后，由judge不通过变成了judge通过， 从修订轨迹中提炼rubric生成经验，使rubric生成器在以后遇到类似任务时能够更有效地生成评分标准。提炼出的经验不能仅局限于当前 task 的场景，必须是更通用、更高层次的，也不能在经验中包含当前 task 或候选回答的任何细节。
 content 说明如何设计评价标准；trigger 说明该经验的适用条件。
 最多提炼一条最有迁移价值、证据清晰的设计机制；没有值得保留的方法时返回空数组。""",
     "admission_checker": """你是候选 rubric 经验的准入审核员。你的任务是根据 task、候选 content 和 trigger，审核供 rubric generator 首次生成标准使用的具体、可复用设计方法，并给出具体理由；实际有效性由后续下游任务验证。
@@ -63,7 +63,7 @@ _ROLE_INSTRUCTIONS = {
     "reflector": (
         '每条经验包含一个 rubric 生成原则和经验适用条件，候选数量为 0 到 1。'
         '集合为空时返回空数组。'
-        '返回 {"candidates":[{"content":单一具体可复用方法,'
+        '返回 {"candidates":[{"content":rubric生成原则,'
         '"trigger":经验的使用条件}]}。'
     ),
     "admission_checker": (

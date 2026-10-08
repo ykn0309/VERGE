@@ -242,7 +242,9 @@ def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
         raise ValueError("unsupported run manifest format")
     versions = manifest.get("prompt_versions")
     if not isinstance(versions, dict) or not versions or set(versions.values()) not in (
-            {PROMPT_VERSION}, {"generator-dialogue-initial-design-experience-v2"},
+            {PROMPT_VERSION}, {"generator-dialogue-role-specific-output"},
+            {"generator-dialogue-inline-experience-definition"},
+            {"generator-dialogue-initial-design-experience-v2"},
             {"generator-dialogue-initial-design-experience"},
             {"generator-dialogue-task-grounded-experience-compact"},
             {"generator-dialogue-task-grounded-experience"},

@@ -5,7 +5,7 @@
 同一 Generator 的单样本会话保留初始 system/user 及模型实际 assistant 原文；追加 Critic 公开建议为新 user，再输出完整 rubric。结构为：
 
 ```text
-system: Generator 职责与统一输出协议
+system: Generator 职责与专属输出要求（_ROLE_INSTRUCTIONS）
 user: task 和所选经验
 assistant: analysis + criteria（初始输出）
 user: Critic improvement_advice 与完整修订请求

@@ -11,7 +11,7 @@ import yaml
 
 from verge.cli import main
 from verge.llm import JUDGE_RESPONSE_SIDE, FakeLLMBackend, LLMFormatError, LLMRequestError, OpenAICompatibleBackend
-from verge.prompts import PROMPT_VERSION, _ROLE_GUIDANCE, llm_messages
+from verge.prompts import PROMPT_VERSION, _ROLE_GUIDANCE, _ROLE_INSTRUCTIONS, llm_messages
 
 
 def result(value, *, status=200, reason="stop", headers=None):
@@ -236,14 +236,16 @@ def test_role_prompts_are_isolated_and_versioned():
         if role in ("selector", "initial_generator"):
             assert "chosen" not in json.dumps(messages) and "rejected" not in json.dumps(messages)
         assert messages[0]["content"].startswith(_ROLE_GUIDANCE[role]) and "JSON" in messages[0]["content"]
-        assert "必须以中文表达" in messages[0]["content"]
-        assert "机器协议值使用规定形式" in messages[0]["content"]
+        assert messages[0]["content"] == _ROLE_GUIDANCE[role] + "\n\n" + _ROLE_INSTRUCTIONS[role]
+        if role not in ("selector", "judge"):
+            assert "中文" in _ROLE_INSTRUCTIONS[role]
+        assert "【输出协议】" not in messages[0]["content"]
     with pytest.raises(ValueError, match="unknown LLM role"):
         llm_messages("not_a_role", {})
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "generator-dialogue-inline-experience-definition"
+    assert PROMPT_VERSION == "generator-dialogue-role-specific-output-compact"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
     assert all(text in selector for text in ('task 本身核验', '选择数量为 0 到 max_selected',
                                                '适用性与帮助相近时'))
@@ -254,7 +256,7 @@ def test_admission_selection_and_provenance_prompt_requirements():
     assert '"reason"' in admission
     critic = llm_messages("critic", {"task": "task"})[0]["content"]
     assert "improvement_advice" in critic
-    assert "不要求从 R0 重做" in critic
+    assert "如果修订轮次为 2" in critic
     assert "analysis" in critic and "严禁引用" in critic
     generator = llm_messages("initial_generator", {"task": "task"})[0]["content"]
     assert "仅由 task 推导的标准使用空数组" in generator
@@ -279,7 +281,12 @@ def test_backend_does_not_gate_text_by_language(monkeypatch, role, output):
     llm = backend(monkeypatch, handler, max_retries=1)
     assert llm.generate(role, {"task": "private task"}) == output
     assert len(requests) == 1  # 提示词要求中文，但合法结构不会因文本语言触发重试。
-    assert "必须以中文表达" in requests[0]["messages"][0]["content"]
+    language_rule = {
+        "critic": "两个字段均为非空中文文本",
+        "initial_generator": "analysis 和 question 用中文",
+        "reflector": "content 和 trigger 为非空中文文本",
+    }[role]
+    assert language_rule in requests[0]["messages"][0]["content"]
 
 
 def test_cli_role_specific_backend_and_missing_key(tmp_path, monkeypatch, capsys, wire_payload):

@@ -113,7 +113,7 @@ def test_real_admission_http_uses_aligned_system_and_unchanged_projection(
                    'fusion_credit', 'evidence_weight', 'successful_attempt'):
         assert hidden not in user['content']
     assert set(admission_payload('当前任务', candidate)) == {'task', 'candidate'}
-    assert PROMPT_VERSION == 'generator-dialogue-inline-experience-definition'
+    assert PROMPT_VERSION == 'generator-dialogue-role-specific-output-compact'
 
 
 @pytest.mark.parametrize('version', ['generator-dialogue-critic-feedback',
@@ -121,7 +121,9 @@ def test_real_admission_http_uses_aligned_system_and_unchanged_projection(
                                      'generator-dialogue-task-grounded-experience',
                                      'generator-dialogue-task-grounded-experience-compact',
                                      'generator-dialogue-initial-design-experience',
-                                     'generator-dialogue-initial-design-experience-v2'])
+                                     'generator-dialogue-initial-design-experience-v2',
+                                     'generator-dialogue-inline-experience-definition',
+                                     'generator-dialogue-role-specific-output'])
 def test_read_only_web_accepts_known_previous_versions_without_rewriting(tmp_path, version):
     from test_web import _run
     from verge.web import load_run

@@ -5,7 +5,7 @@ import json
 import pytest
 
 from verge.prompts import (
-    _ROLE_GUIDANCE, fusion_payload,
+    _ROLE_GUIDANCE, _ROLE_INSTRUCTIONS, fusion_payload,
     generator_payload, judge_payload, llm_messages, selector_payload,
 )
 from verge.models import Criterion
@@ -18,8 +18,9 @@ def test_dedicated_system_and_explained_natural_input(role):
     system, user = messages
     assert system['content'].startswith(_ROLE_GUIDANCE[role])
     assert len(set(_ROLE_GUIDANCE.values())) == 7
-    assert '待分析资料' in system['content']
-    assert '有效 JSON 对象' in system['content']
+    assert system['content'] == _ROLE_GUIDANCE[role] + '\n\n' + _ROLE_INSTRUCTIONS[role]
+    assert 'JSON' in _ROLE_INSTRUCTIONS[role]
+    assert '【输出协议】' not in system['content']
     text = user['content']
     assert '任务：' in text and '本次需修正的问题' in text
     assert '用户原始任务\n第二行：包含' in text
@@ -76,7 +77,7 @@ def test_critic_history_has_independent_scopes_without_fabricated_judgment():
                    'attempt_number': 1, 'analysis': None, 'validation_failures': ['格式耗尽']}}
     system, user = llm_messages('critic', payload)
     assert 'improvement_advice' in system['content']
-    assert '不要求从 R0 重做' in system['content']
+    assert '如果修订轮次为 2' in system['content']
     assert '上次无效修订' in user['content']
     assert '格式耗尽' in user['content']
     assert 'criterion_judgments' not in user['content']
@@ -106,7 +107,7 @@ def test_role_system_prompts_have_no_concrete_examples(role):
                    '要求展开但未提供要点', '是否直接回答',
                    '生成的回答出现幻觉', '初始标准未区分回答'):
         assert marker not in text
-    assert '有效 JSON 对象' in text  # 输出协议不是具体案例。
+    assert '返回 {' in text  # 返回结构是协议说明，不是具体任务案例。
 
 
 # Critic 的候选隔离规则按用户要求使用显式禁止措辞。

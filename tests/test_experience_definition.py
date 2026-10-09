@@ -85,7 +85,7 @@ def test_task_analysis_and_explicit_constraints_remain_preference_blind(role):
     else:
         assert '实际输入与完整性' in system['content']
         assert '当前条件下合理的回答行为' in system['content']
-        assert '任务目标与明确约束优先于经验指导' in system['content']
+        assert '任务目标与明确约束优先于经验和修订建议' in system['content']
 
 
 @pytest.mark.parametrize('decision,content,trigger,reason', [
@@ -120,7 +120,7 @@ def test_real_admission_http_uses_aligned_system_and_unchanged_projection(
                    'fusion_credit', 'evidence_weight', 'successful_attempt'):
         assert hidden not in user['content']
     assert set(admission_payload('当前任务', candidate)) == {'task', 'candidate'}
-    assert PROMPT_VERSION == 'generator-dialogue-program-owned-revision-sources'
+    assert PROMPT_VERSION == 'generator-dialogue-evidence-grounded-critic'
 
 
 @pytest.mark.parametrize('version', ['generator-dialogue-critic-feedback',

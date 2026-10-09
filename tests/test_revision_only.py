@@ -201,7 +201,12 @@ def test_shipped_100_config_is_disabled_and_uses_existing_data_without_test():
     assert config['modules']['revision']['config']['max_attempts'] == 2
     assert config['models']['default']['model'] == 'qwen3.5-flash'
     assert set(config['dataset']['config']['paths']) == {'train'}
-    assert not Path(config['run']['output_dir']).exists()
+    # The authorized run now exists; the contract is a distinct output path, not
+    # the absence of local artifacts. Tests must never depend on/delete real runs.
+    assert config['run']['output_dir'] == 'runs/rewardbench-chat-hard-qwen-revision-only-100'
+    for other in ('task-grounded-experience', 'prospective-experience'):
+        previous = load_config(f'configs/rewardbench-chat-hard-qwen-vector-{other}.yaml')
+        assert config['run']['output_dir'] != previous['run']['output_dir']
 
 
 def test_resume_preserves_disabled_mode_and_rejects_switching_it(tmp_path, capsys):

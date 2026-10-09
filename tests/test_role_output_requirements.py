@@ -97,4 +97,4 @@ def test_generator_dialogue_reuses_role_local_system_without_adding_protocol():
     assert llm_messages('initial_generator', {'_conversation': messages}) == messages
     assert messages[0]['content'].endswith(_ROLE_INSTRUCTIONS['initial_generator'])
     assert '【输出协议】' not in messages[0]['content']
-    assert PROMPT_VERSION == 'generator-dialogue-program-owned-revision-sources'
+    assert PROMPT_VERSION == 'generator-dialogue-evidence-grounded-critic'

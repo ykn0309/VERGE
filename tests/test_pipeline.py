@@ -370,7 +370,10 @@ def test_critic_format_exhaustion_records_unknown_analysis_then_second_succeeds(
     failed = record.invalid_revision_attempts[0]
     assert failed.analysis is None and failed.feedback is None
     assert failed.validation_failures == ['critic: invalid structured output after 3 attempts']
-    assert calls[1]['previous_invalid_attempt']['analysis'] is None
+    assert 'analysis' not in calls[1]['previous_invalid_attempt']
+    assert calls[1]['previous_invalid_attempt']['validation_failures'] == failed.validation_failures
+    assert calls[1]['previous_invalid_attempt']['judgment_status'] == '未形成有效修订，无Judge结果'
+    assert calls[1]['current_baseline'] == 'R0'
     assert calls[1]['previous_attempt'] is None
     assert len(record.revision_attempts) == 1 and record.revision_attempts[0].attempt_number == 2
     assert memory.all() and log.get('sample') == record

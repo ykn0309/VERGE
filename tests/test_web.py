@@ -428,6 +428,21 @@ def test_generation_summary_latest_retry_empty_and_corrupt_records(tmp_path, mon
     assert _generation_summaries(tmp_path, []) == {}
 
 
+def test_web_reads_program_owned_source_version_without_rewriting_history(tmp_path):
+    from verge.web import load_role_io
+    directory, _ = _run(tmp_path)
+    path = directory / 'run_manifest.json'
+    manifest = json.loads(path.read_text())
+    manifest['prompt_versions'] = {role: 'generator-dialogue-program-owned-revision-sources'
+                                  for role in manifest['prompt_versions']}
+    path.write_text(json.dumps(manifest))
+    tracked = [path, *(directory / 'artifacts').iterdir()]
+    before = {str(p): sha256(p.read_bytes()).hexdigest() for p in tracked if p.is_file()}
+    assert len(load_run(directory)['samples']) == 3
+    assert load_role_io(directory, 'a')['available']
+    assert before == {str(p): sha256(Path(p).read_bytes()).hexdigest() for p in before}
+
+
 def test_web_rejects_previous_prompt_version(tmp_path):
     import pytest
     directory, _ = _run(tmp_path)

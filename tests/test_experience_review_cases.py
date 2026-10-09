@@ -81,4 +81,4 @@ def test_fusion_case_contract_with_preset_add_or_merge(monkeypatch, case):
     assert all(e['content'] in user['content'] and e['trigger'] in user['content'] for e in case['existing'])
     for hidden in ('confidence', 'credit', 'source_trajectories', 'review_note', 'expected_match_index'):
         assert hidden not in user['content']
-    assert PROMPT_VERSION == 'generator-dialogue-program-owned-revision-sources'
+    assert PROMPT_VERSION == 'generator-dialogue-evidence-grounded-critic'

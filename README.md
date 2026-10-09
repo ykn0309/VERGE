@@ -77,6 +77,8 @@ Reflector 在成功修订后生成 0–1 条候选，只返回 content、trigger
 
 训练初始失败后，Critic 只输出私有分析和公开建议；公开建议追加到同一 Generator 的样本内会话。Generator 输出完整 rubric，第二轮接续上一轮有效结果。无独立 Refiner、原子操作或 Executor。Web 的 Generator 页签包含初始及修订真实消息，Critic 页签显示分析与建议。Reflector 0–1 条经验，合法融合后记录弱修订证据，再由后续任务继续验证。旧检查点不能跨方法续跑。
 
+当前[计划28](docs/plans/28-Critic证据组织与修订职责校准.md)已校准Critic职责并去重第二轮证据：前后标准/判断各展示一次，不传旧私有诊断；失败不预设标准错误，建议不得改变评分机制或放宽任务约束。Generator结合任务判断建议是否适用。仅离线验证，提示词边界不保证模型遵循；未增加审核门禁。
+
 ### 仅生成与修订（不使用或生成经验）
 
 新增配置开关（默认经验开启）：
@@ -89,11 +91,7 @@ run:
 
 只执行Generator→Judge；失败后最多两轮Critic→Generator→Judge。不检索/选择/反思/准入/融合，不计算或更新经验信用，不调用embedding。保留原始请求与完整修订轨迹，空池文件仅作审计兼容。
 
-已准备 `configs/rewardbench-chat-hard-qwen-revision-only-100.yaml`，沿用数据顺序、qwen3.5-flash和两轮修订；**尚未运行真实实验**。获授权后可运行：
-
-```bash
-python3 -m verge.cli run --config configs/rewardbench-chat-hard-qwen-revision-only-100.yaml
-```
+`configs/rewardbench-chat-hard-qwen-revision-only-100.yaml` 已经授权运行并完成100条：初始62、救回28/38、最终90；详见[计划27](docs/plans/27-100样本仅生成与修订复核.md)。计划28校准后的授权复测亦已完成100条：初始67、救回24/33、最终91；[计划30](docs/plans/30-100样本Critic校准版本结果复核.md)显示公开泄漏及评分机制误解未解决，含负向问题奖励缺陷的假成功，不以最终+1认证语义效果。配置输出目录已有历史结果，不能直接重跑或覆盖；进一步真实验证须另获授权并使用全新目录，不能跨版本resume。
 
 配置将自动在100条训练前缀暂停，不进入测试。显式`--stop-after-train`优先于配置限制；继续前缀可指定更大上限和新的输出目录，resume不允许切换经验模式。详情见[计划26](docs/plans/26-仅生成与修订实验开关.md)。
 

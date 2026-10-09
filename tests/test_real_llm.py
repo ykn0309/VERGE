@@ -245,7 +245,7 @@ def test_role_prompts_are_isolated_and_versioned():
 
 
 def test_admission_selection_and_provenance_prompt_requirements():
-    assert PROMPT_VERSION == "generator-dialogue-program-owned-revision-sources"
+    assert PROMPT_VERSION == "generator-dialogue-evidence-grounded-critic"
     selector = llm_messages("selector", {"task": "task"})[0]["content"]
     assert all(text in selector for text in ('允许合理推理', '选择数量为 0 到 max_selected',
                                                '高置信度不能代替适用性'))
@@ -475,7 +475,8 @@ def test_critic_before_after_schema_failure_is_logged_and_not_fatal(tmp_path, mo
     record = runner.run_sample(PreferenceSample('schema', '任务', 'chosen', 'rejected', {}))
     assert record.state == 'final_failure' and len(record.invalid_revision_attempts) == 2
     assert len(calls) == 6  # 每轮仅 backend 的首次 + 2 次重试。
-    assert calls[3]['previous_invalid_attempt']['analysis'] is None
+    assert 'analysis' not in calls[3]['previous_invalid_attempt']
+    assert calls[3]['previous_invalid_attempt']['judgment_status'] == '未形成有效修订，无Judge结果'
     assert not record.revision_attempts and not record.reflected_candidates
     assert memory.all() == [] and log.get('schema') == record
     critic_backend._client.close()

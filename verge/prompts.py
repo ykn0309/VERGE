@@ -11,20 +11,22 @@ from verge.models import (CandidateExperience, Criterion, Experience, InvalidRev
                           RevisionAttempt, Rubric, RubricJudgment)
 
 
-PROMPT_VERSION = "generator-dialogue-program-owned-revision-sources"
+PROMPT_VERSION = "generator-dialogue-evidence-grounded-critic"
 
 # 专属身份和任务说明；Generator/Reflector 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
     "selector": """你是经验适用性筛选员。你的任务是针对给定 task，筛选可用于首次生成评价标准的经验。
 结合任务语义、实际输入和上下文分析适用条件，允许合理推理，不要求条件由 task 逐字声明。经验须有实质设计帮助；任务目标和明确约束优先，高置信度不能代替适用性。""",
     "initial_generator": """你是评分标准设计者。你的任务是依据 task 和候选经验，设计用于评价回答的是/否判断标准。
-先输出 analysis：结合所选经验分析 task 的目标、实际输入与完整性、当前条件下合理的回答行为，以及评价维度的重要程度。任务目标与明确约束优先于经验指导。
+先输出 analysis：结合所选经验分析 task 的目标、实际输入与完整性、当前条件下合理的回答行为，以及评价维度的重要程度。任务目标与明确约束优先于经验和修订建议。
+修订时结合 task 判断建议是否适用，保留合理标准，仅调整有依据的问题，并在 analysis 中简述关键调整依据；不为提高判别分差降低明确约束的重要性或增加无依据的要求。
 再依据分析输出 criteria：每条标准表达一个准确具体、可独立核验的是/否问题，“是”表示满足要求。importance_score 表达任务重要性，source_experiences 表达实际影响该标准的经验来源。""",
     "judge": """你是逐标准回答核验员。你的任务是结合 task 和评价标准，依据每条提供的标准和当前回答，独立判断这份回答是否满足要求。
 每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
-    "critic": """你是rubric质量诊断员。结合 task、偏好对、当前标准与逐项 Judge 判断，输出 analysis 和 improvement_advice。
-analysis 是私有诊断，可以讨论当前评分标准、候选回答、Judge 错误及判断的不确定性。如果修订轮次为 2，需要分析上轮修订为何未奏效。
-improvement_advice 是唯一交给rubric生成器的公开反馈：说明当前标准存在的问题及改进建议，严禁引用、复述或暗示与候选回答相关的任何信息。""",
+    "critic": """你是rubric质量诊断员。结合 task、偏好对、当前有效标准与逐项 Judge 判断，输出 analysis 和 improvement_advice；判别失败本身不证明标准有错。
+analysis 是私有诊断：先核对实际标准、回答与判断，区分有依据的设计缺陷、Judge 疑点及证据不足。如果修订轮次为 2，对照实际修改前后标准与判断分析为何未奏效；上一轮公开建议只是待核验的修改意图，不代表实际完成或正确。无效修订没有 Judge 结果。
+评价采用重要性归一化加权的是/否判断；只建议调整问题及重要性，不改变评分机制，不建议部分得分、一票否决或不适用项自动排除，也不要求每条标准都区分两侧。重要性由任务决定，不为偏好分差放宽明确约束；新增要求须有任务、上下文或合理领域推理依据，更严格或更详细不自动等于改进。
+improvement_advice 是唯一交给rubric生成器的公开反馈：说明哪个评价要求存在问题、如何调整及任务依据；允许 task 本身的信息和独立领域知识，严禁引用、复述或暗示候选特有内容、偏好身份、评分或比较评价。无可靠修改依据时建议保留合理标准，不强行提出新要求。""",
     "reflector": """你是 rubric 生成经验提炼者。你的任务是从成功修订中提炼供未来任务首次生成标准使用的具体、可复用设计指导。
 先对照修订前后标准与两侧 Judge 判断，识别实际产生区分的评价维度及其设计变化。Critic 分析只作参考，不把全部修订动作都解释为有效方法，也不把判别成功解释为经验的因果贡献。
 content 说明首次生成时如何设计评价标准；trigger 说明生成标准之前可识别的适用场景，允许结合任务语义、实际输入、上下文和领域知识进行合理推理，不依赖已有 rubric、Judge 结果或已观察到的候选特征。将修订诊断转化为事前指导，经验不保留样本答案细节或偏好身份。
@@ -137,6 +139,15 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
         payload = _inline_revision_evidence(payload)
     lines: list[str] = []
     keys: set[str] = set()
+    titles = dict(_INPUT_TITLES)
+    if role == "critic":
+        titles.update({"current_baseline": "当前有效基线",
+                       "current_rubric": "当前有效标准（修改后）" if payload.get("previous_attempt") else "当前有效标准",
+                       "current_judgment": "当前有效得分",
+                       "previous_attempt": "上一轮修改记录",
+                       "previous_rubric": "修改前标准", "previous_judgment": "修改前得分",
+                       "improvement_advice": "上一轮公开建议",
+                       "judgment_status": "判断状态"})
 
     def scalar(value: Any, field: str) -> str:
         if value is None:
@@ -193,7 +204,9 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
                     compact.clear()
 
             for key, child in rest.items():
-                label = _INPUT_TITLES.get(key, key)
+                label = titles.get(key, key)
+                if role == "critic" and key == "attempt_number":
+                    label = "即将进行的修订轮次" if field == "" else "已执行修订轮次"
                 if field in ("normalized_weights", "operation_contributions"):
                     label = key
                 if isinstance(child, (list, tuple)) and all(
@@ -324,21 +337,29 @@ def critic_payload(task: str, chosen: str, rejected: str, initial: Rubric,
                    previous_attempt: RevisionAttempt | None = None,
                    previous_invalid_attempt: InvalidRevisionAttempt | None = None,
                    validation_feedback: str | None = None) -> dict[str, Any]:
+    # Current is the trusted latest-valid baseline. History contains only the before
+    # version and intended public change, not a second copy of current or old diagnosis.
     payload = {"task": task, "chosen": chosen, "rejected": rejected,
-               "current_rubric": _rubric_semantics(initial),
-               "current_judgment": initial_judgment.to_dict(),
-               "attempt_number": attempt_number}
+               "attempt_number": attempt_number,
+               "current_baseline": (f"R{previous_attempt.attempt_number}"
+                                    if attempt_number == 2 and previous_attempt
+                                    and previous_attempt.rubric.rubric_id == initial.rubric_id else "R0")}
     if attempt_number == 2:
-        payload["previous_attempt"] = ({**_attempt_semantics(previous_attempt),
-                                        "analysis": previous_attempt.analysis,
-                                        "improvement_advice": previous_attempt.feedback,
-                                        "validation_failures": list(previous_attempt.validation_failures)}
-                                       if previous_attempt else None)
+        payload["previous_attempt"] = (
+            {"attempt_number": previous_attempt.attempt_number,
+             "previous_rubric": (_rubric_semantics(previous_attempt.previous_rubric)
+                                 if previous_attempt.previous_rubric is not None else None),
+             "previous_judgment": (previous_attempt.previous_judgment.to_dict()
+                                   if previous_attempt.previous_judgment is not None else None),
+             "improvement_advice": previous_attempt.feedback}
+            if previous_attempt else None)
+    payload["current_rubric"] = _rubric_semantics(initial)
+    payload["current_judgment"] = initial_judgment.to_dict()
+    if attempt_number == 2:
         payload["previous_invalid_attempt"] = (
             {"attempt_number": previous_invalid_attempt.attempt_number,
-             "analysis": previous_invalid_attempt.analysis,
-             "improvement_advice": previous_invalid_attempt.feedback,
-             "validation_failures": list(previous_invalid_attempt.validation_failures)}
+             "validation_failures": list(previous_invalid_attempt.validation_failures),
+             "judgment_status": "未形成有效修订，无Judge结果"}
             if previous_invalid_attempt else None)
     if validation_feedback is not None:
         payload["validation_feedback"] = validation_feedback

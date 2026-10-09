@@ -16,6 +16,8 @@ assistant: analysis + criteria（第二轮完整修订）
 
 仅告知Judge失败状态，不将 chosen/rejected、Judge逐项判断/得分或 Critic analysis 直接加入会话。初始 Generator 始终 preference-blind，修订获得的建议可能存在提示词未能阻止的间接泄露。
 
+Generator结合task判断公开建议是否适用，任务目标与明确约束优先于经验和修订建议；保留合理标准，仅调整有依据的问题，并在原analysis中简述关键调整依据。不为提高判别分差降低明确约束的重要性或增加无依据要求。反馈仍为简短user消息，职责写入角色system，不恢复操作协议或新增审核阶段。
+
 完整输出仍是 `{analysis, criteria}`；每条含 question、importance_score、source_experiences。修订来源由程序接管：基本结构/类型校验后，在编号反解前于返回值副本中统一清空，不要求模型清空、不向Generator说明内部处理规则。R0仍严格核验所选经验引用，其他字段及角色的校验不放宽。不对训练中修订结果计算已有经验下游信用。程序分配新的标准/rubric ID，base 指向最近有效 rubric。没有操作编号、ADD/DELETE/MODIFY 或 Executor。
 
 每个样本开始重置会话，ContextVar 隔离并发测试线程。初始成功、只读测试和 baseline 不追加 Critic 消息。保存每次真实请求中的完整消息及原始输出，可通过 Web Generator 页签审查。

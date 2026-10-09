@@ -9,7 +9,14 @@ from typing import Iterator
 from uuid import uuid4
 
 from verge.calculator import apply_beta_evidence
-from verge.models import CandidateExperience, EvidenceRecord, Experience, FusionRecord, TrajectoryRecord
+from verge.models import (
+    CandidateExperience,
+    Credit,
+    EvidenceRecord,
+    Experience,
+    FusionRecord,
+    TrajectoryRecord,
+)
 
 
 class ExperienceMemory:
@@ -24,7 +31,12 @@ class ExperienceMemory:
         self._experiences: dict[str, Experience] = {}
         if self.path.exists():
             data = json.loads(self.path.read_text(encoding="utf-8"))
-            if not isinstance(data, dict) or set(data) != {"experiences"} or not isinstance(data["experiences"], list):
+            if (
+                not isinstance(data, dict)
+                or set(data) != {"schema_version", "experiences"}
+                or data.get("schema_version") != 2
+                or not isinstance(data["experiences"], list)
+            ):
                 raise ValueError("invalid experience memory format")
             for value in data["experiences"]:
                 experience = Experience.from_dict(value)
@@ -43,9 +55,14 @@ class ExperienceMemory:
     def _save(self) -> None:
         self._ensure_writable()
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        payload = {"experiences": [item.to_dict() for item in self._experiences.values()]}
-        self.path.write_text(json.dumps(payload, ensure_ascii=False, allow_nan=False, indent=2) + "\n",
-                             encoding="utf-8")
+        payload = {
+            "schema_version": 2,
+            "experiences": [item.to_dict() for item in self._experiences.values()],
+        }
+        self.path.write_text(
+            json.dumps(payload, ensure_ascii=False, allow_nan=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
 
     def all(self) -> list[Experience]:
         """返回独立副本；修改查询结果不会悄悄改变池内状态。"""
@@ -55,39 +72,53 @@ class ExperienceMemory:
         return Experience.from_dict(self._experiences[experience_id].to_dict())
 
     def apply_downstream_credits(
-        self, sample_id: str, credits: dict[str, float], *, evidence_weight: float = 1.0,
+        self, sample_id: str, credits: dict[str, Credit]
     ) -> None:
-        """R0 判断后立即写入 U_t(e)；零信用/零权重不产生 evidence。"""
         self._ensure_writable()
-        updates: dict[str, Experience] = {}
-        for experience_id, credit in credits.items():
-            current = self._experiences[experience_id]
-            evidence = EvidenceRecord(sample_id, "downstream_credit", credit, evidence_weight)
-            updates[experience_id] = apply_beta_evidence(current, evidence)
-        changed = any(updates[key] is not self._experiences[key] for key in updates)
-        if changed:
+        updates = {}
+        for key, credit in credits.items():
+            current = self._experiences[key]
+            if credit.amount:
+                updates[key] = apply_beta_evidence(
+                    current,
+                    EvidenceRecord(
+                        sample_id,
+                        "downstream_credit",
+                        credit.positive_credit,
+                        credit.negative_credit,
+                    ),
+                )
+        if updates:
             self._experiences.update(updates)
             self._save()
 
     def fuse(
-        self, candidate: CandidateExperience, sample_id: str,
-        matching_experience_id: str | None = None, *,
-        merged_content: str | None = None, merged_trigger: str | None = None,
-        fusion_credit: float = 0.0,
+        self,
+        candidate: CandidateExperience,
+        sample_id: str,
+        matching_experience_id: str | None = None,
+        *,
+        merged_content: str | None = None,
+        merged_trigger: str | None = None,
+        application_credit: Credit = Credit(),
     ) -> CandidateExperience:
-        """写入融合文本与弱修订证据；零信用仅供中性种子/存储边界调用。"""
+        """写入融合文本与应用双通道证据；零值不追加证据记录。"""
         self._ensure_writable()
-        if (candidate.admission != "PASS" or candidate.credit is not None
-                or candidate.linked_operation_ids or candidate.fusion is not None
-                or candidate.fusion_record is not None):
-            raise ValueError("fusion requires an admitted, uncredited, unfused candidate")
+        if (
+            candidate.admission != "PASS"
+            or candidate.fusion is not None
+            or candidate.fusion_record is not None
+        ):
+            raise ValueError("fusion requires an admitted, unfused candidate")
         if matching_experience_id is None:
             if merged_content is not None or merged_trigger is not None:
                 raise ValueError("ADD must use candidate text")
             experience_id = f"exp_{uuid4().hex}"
             while experience_id in self._experiences:
                 experience_id = f"exp_{uuid4().hex}"
-            prior = Experience(experience_id, candidate.content, candidate.trigger, 1.0, 1.0, [], [])
+            prior = Experience(
+                experience_id, candidate.content, candidate.trigger, 1.0, 1.0, [], []
+            )
             content, trigger = candidate.content, candidate.trigger
             previous_content = previous_trigger = None
             decision = "ADD"
@@ -97,16 +128,41 @@ class ExperienceMemory:
             content, trigger = merged_content, merged_trigger
             previous_content, previous_trigger = prior.content, prior.trigger
             decision = "MERGE"
-        history = FusionRecord(sample_id, candidate.candidate_id, decision,
-                              previous_content, previous_trigger, content, trigger, fusion_credit)
+        history = FusionRecord(
+            sample_id,
+            candidate.candidate_id,
+            decision,
+            previous_content,
+            previous_trigger,
+            content,
+            trigger,
+            application_credit,
+        )
         # 校验、计算完毕后才更新内存/磁盘，避免无效融合留下部分修改。
-        updated = replace(prior, content=content, trigger=trigger,
-                          source_trajectories=[*prior.source_trajectories, sample_id],
-                          fusion_history=[*prior.fusion_history, history])
-        if fusion_credit > 0:
-            updated = apply_beta_evidence(updated, EvidenceRecord(
-                sample_id, "fusion_credit", fusion_credit, 1.0, candidate.candidate_id))
-        result = replace(candidate, fusion=decision, experience_id=experience_id, fusion_record=history)
+        updated = replace(
+            prior,
+            content=content,
+            trigger=trigger,
+            source_trajectories=[*prior.source_trajectories, sample_id],
+            fusion_history=[*prior.fusion_history, history],
+        )
+        if application_credit.amount:
+            updated = apply_beta_evidence(
+                updated,
+                EvidenceRecord(
+                    sample_id,
+                    "application_credit",
+                    application_credit.positive_credit,
+                    application_credit.negative_credit,
+                    candidate.candidate_id,
+                ),
+            )
+        result = replace(
+            candidate,
+            fusion=decision,
+            experience_id=experience_id,
+            fusion_record=history,
+        )
         self._experiences[experience_id] = updated
         self._save()
         return result

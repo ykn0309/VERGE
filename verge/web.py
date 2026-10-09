@@ -154,107 +154,80 @@ def _read_jsonl(path: Path, warnings: list[str]) -> list[dict[str, Any]]:
     return rows
 
 
-def _evolution(experience: dict[str, Any], records: list[dict[str, Any]],
-               order: dict[str, int], warnings: list[str]) -> list[dict[str, Any]]:
-    """Replay canonical evidence; add zero-credit fusion events absent from evidence_history."""
-    exp_id = experience["experience_id"]
-    fusion_events = []
-    for record in records:
-        for candidate in record.get("reflected_candidates", []):
-            if candidate.get("experience_id") == exp_id and candidate.get("fusion") in ("ADD", "MERGE"):
-                fusion_events.append({"sample_id": record["sample_id"], "fusion": candidate["fusion"],
-                                      "candidate_id": candidate["candidate_id"], "credit": candidate["credit"],
-                                      "candidate_content": candidate["content"],
-                                      "candidate_trigger": candidate["trigger"],
-                                      "fusion_record": candidate.get("fusion_record")})
-    # Memory may have a committed fusion before the complete trajectory is appended.
-    for history in experience.get("fusion_history", []):
-        key = (history["sample_id"], history["candidate_id"])
-        match = next((ev for ev in fusion_events if (ev["sample_id"], ev["candidate_id"]) == key), None)
-        if match is None:
-            fusion_events.append({"sample_id": history["sample_id"], "candidate_id": history["candidate_id"],
-                                  "fusion": history["fusion"], "credit": None, "fusion_record": history})
-        else:
-            match["fusion_record"] = history
-    used: set[int] = set()
-    events = []
-    for index, evidence in enumerate(experience["evidence_history"]):
-        item = dict(evidence)
-        item["kind"] = evidence["evidence_type"]
-        item["_sequence"] = index
-        if item["kind"] == "fusion_credit":
-            matches = [n for n, fusion in enumerate(fusion_events)
-                       if n not in used and fusion["sample_id"] == item["sample_id"]
-                       and fusion["candidate_id"] == item.get("candidate_id")]
-            if len(matches) == 1:
-                n = matches[0]
-                item.update({key: value for key, value in fusion_events[n].items() if key != "credit"})
-                used.add(n)
-            else:
-                warnings.append(f"经验 {exp_id} 的融合证据缺少唯一文本版本。")
-        elif item["kind"] == "revision_credit":
-            matches = [n for n, fusion in enumerate(fusion_events)
-                       if n not in used and fusion["sample_id"] == item["sample_id"]
-                       and fusion["credit"] is not None
-                       and abs(fusion["credit"] - item["credit"]) < 1e-8]
-            if len(matches) == 1:
-                n = matches[0]
-                item.update({key: value for key, value in fusion_events[n].items() if key != "credit"})
-                used.add(n)
-            elif len(matches) > 1:
-                warnings.append(f"经验 {exp_id} 在样本 {item['sample_id']} 中有同额候选，无法唯一绑定证据。")
-        events.append(item)
-    for n, fusion in enumerate(fusion_events):
-        if n not in used:
-            events.append({**fusion, "kind": "fusion", "evidence_weight": 0,
-                           "_sequence": len(events) + n})
-    events.sort(key=lambda event: (order.get(event["sample_id"], len(order)),
-                                   0 if event["kind"] == "downstream_credit" else 1,
-                                   event["_sequence"]))
+def _evolution(experience, records, order, warnings):
+    """Replay both evidence channels; zero-credit fusion still has a text version."""
+    evidence = experience["evidence_history"]
+    fusions = experience["fusion_history"]
+    events = [{**e, "kind": e["evidence_type"]} for e in evidence]
+    for fusion in fusions:
+        event = next(
+            (
+                e
+                for e in events
+                if e.get("candidate_id") == fusion["candidate_id"]
+                and e["sample_id"] == fusion["sample_id"]
+            ),
+            None,
+        )
+        if event is None:
+            event = {
+                "kind": "fusion",
+                "sample_id": fusion["sample_id"],
+                "candidate_id": fusion["candidate_id"],
+                "positive_credit": 0,
+                "negative_credit": 0,
+            }
+            events.append(event)
+        event.update(fusion=fusion["fusion"], fusion_record=fusion)
+    events.sort(
+        key=lambda e: (
+            order.get(e["sample_id"], len(order)),
+            0 if e["kind"] == "downstream_credit" else 1,
+        )
+    )
+    origin = next((f["sample_id"] for f in fusions if f["fusion"] == "ADD"), None)
     alpha = beta = 1.0
-    # Beta(1,1) has no evidence yet, but is instantiated when the first ADD
-    # admits the experience. Prefer that explicit origin over the source list.
-    add_origin = next((item["sample_id"] for item in fusion_events if item["fusion"] == "ADD"), None)
-    source_origin = next(iter(experience.get("source_trajectories", [])), None)
-    origin = add_origin or source_origin
-    timeline = [{"kind": "prior", "alpha": alpha, "beta": beta, "confidence": 0.5,
-                 "sample_id": origin, "origin_kind": "add" if add_origin else "source" if origin else None,
-                 "has_trajectory": origin in order if origin else False}]
+    timeline = [
+        {
+            "kind": "prior",
+            "alpha": 1,
+            "beta": 1,
+            "confidence": 0.5,
+            "sample_id": origin,
+            "origin_kind": "add" if origin else None,
+            "has_trajectory": origin in order,
+        }
+    ]
     for event in events:
-        credit = event.get("credit", 0) or 0
-        change = abs(credit) * event.get("evidence_weight", 1)
-        if event["kind"] != "fusion":
-            if credit > 0:
-                alpha += change
-            elif credit < 0:
-                beta += change
-        timeline.append({key: value for key, value in event.items() if not key.startswith("_")}
-                        | {"alpha": alpha, "beta": beta, "confidence": alpha / (alpha + beta),
-                           "has_trajectory": event["sample_id"] in order})
+        alpha += event["positive_credit"]
+        beta += event["negative_credit"]
+        timeline.append(
+            {
+                **event,
+                "alpha": alpha,
+                "beta": beta,
+                "confidence": alpha / (alpha + beta),
+                "has_trajectory": event["sample_id"] in order,
+            }
+        )
     if abs(alpha - experience["alpha"]) > 1e-7 or abs(beta - experience["beta"]) > 1e-7:
-        warnings.append(f"经验 {exp_id} 的证据与最终 α/β 不一致；图中仅展示可重建的证据。")
+        warnings.append(
+            f"经验 {experience['experience_id']} 的双通道证据与Beta不一致。"
+        )
     return timeline
 
 
 def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 1:
-        raise ValueError("unsupported run manifest format")
+    if manifest.get("format_version") != 2:
+        raise ValueError("unsupported run manifest format; new runs require v2")
     versions = manifest.get("prompt_versions")
-    if not isinstance(versions, dict) or not versions or set(versions.values()) not in (
-            {PROMPT_VERSION}, {"generator-dialogue-program-owned-revision-sources"},
-            {"generator-dialogue-prospective-experience-conservative-fusion"},
-            {"generator-dialogue-concise-revision-feedback"},
-            {"generator-dialogue-role-specific-output-compact"},
-            {"generator-dialogue-role-specific-output"},
-            {"generator-dialogue-inline-experience-definition"},
-            {"generator-dialogue-initial-design-experience-v2"},
-            {"generator-dialogue-initial-design-experience"},
-            {"generator-dialogue-task-grounded-experience-compact"},
-            {"generator-dialogue-task-grounded-experience"},
-            {"generator-dialogue-fusion-revision-evidence"},
-            {"generator-dialogue-critic-feedback"}):
-        raise ValueError("Web only supports runs using the current prompt version or known previous dialogue versions")
+    if (
+        not isinstance(versions, dict)
+        or not versions
+        or set(versions.values()) != {PROMPT_VERSION}
+    ):
+        raise ValueError("Web only supports the current candidate-validation protocol")
     root_name = Path(manifest["config"]["store"]["config"]["root_dir"])
     if root_name.is_absolute() or ".." in root_name.parts or root_name == Path("."):
         raise ValueError("invalid store root_dir in manifest")
@@ -313,153 +286,74 @@ def load_role_io(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
             "warnings": warnings}
 
 
-def _overview_metrics(samples: list[dict[str, Any]], experiences: list[dict[str, Any]],
-                      context: dict[str, dict[str, Any]], manifest: dict[str, Any],
-                      warnings: list[str]) -> dict[str, Any]:
-    """只读复算完整训练轨迹；使用前 Beta 不包含当前任务证据。"""
-    from verge.calculator import calculate_existing_experience_credit
-    from verge.models import Rubric, RubricJudgment
+def _overview_metrics(samples, experiences, context, manifest, warnings):
+    train = [
+        s for s in samples if s.get("split") == "train" and s["state"] != "interrupted"
+    ]
 
-    train = [s for s in samples if s.get("split") == "train" and s["state"] != "interrupted"]
-    ids = [s["sample_id"] for s in train]
-    known = set(ids)
-    pool: dict[str, list[float]] = {}
-    evidence: dict[str, list[tuple[str, dict[str, Any]]]] = defaultdict(list)
-    replay_ok = len(known) == len(ids)
-    adds = {c["experience_id"] for s in train for c in s.get("reflected_candidates", [])
-            if c.get("fusion") == "ADD"}
-    if adds != {e["experience_id"] for e in experiences}:
-        replay_ok = False
-    for e in experiences:
-        alpha = beta = 1.0
-        for ev in e["evidence_history"]:
-            if ev["sample_id"] not in known:
-                replay_ok = False
-            evidence[ev["sample_id"]].append((e["experience_id"], ev))
-            change = abs(ev["credit"]) * ev["evidence_weight"]
-            alpha += change if ev["credit"] > 0 else 0
-            beta += change if ev["credit"] < 0 else 0
-        if abs(alpha - e["alpha"]) > 1e-7 or abs(beta - e["beta"]) > 1e-7:
-            replay_ok = False
-    # 初始判断的缺失包括 initial Judge 错误；修订 Judge 错误仍有有效 R0。
     def rate(rows):
-        valid = [r for r in rows if r.get("initial_judgment") is not None]
-        correct = sum(r["initial_judgment"]["success"] for r in valid)
-        return {"total": len(rows), "valid": len(valid), "correct": correct,
-                "errors": len(rows) - len(valid),
-                "accuracy": correct / len(valid) if valid else None}
+        valid = [s for s in rows if s.get("initial_judgment")]
+        correct = sum(s["initial_judgment"]["success"] for s in valid)
+        return {
+            "total": len(rows),
+            "valid": len(valid),
+            "correct": correct,
+            "errors": len(rows) - len(valid),
+            "accuracy": correct / len(valid) if valid else None,
+        }
 
-    usage = {e["experience_id"]: {"experience_id": e["experience_id"], "recalled": 0,
-        "selected": 0, "referenced": 0, "positive": 0, "negative": 0, "zero": 0}
-        for e in experiences}
-    bins = [{"label": f"{i / 10:.1f}–{(i + 1) / 10:.1f}", "uses": 0,
-             "positive": 0, "negative": 0, "zero": 0, "credit_sum": 0.0} for i in range(10)]
-    scale = [{"label": label, "tasks": 0, "recalled": 0, "selected": 0, "referenced": 0,
-              "requests": 0, "tokens": 0, "token_reports": 0}
-             for label in ("0", "1–20", "21–50", "51–100", "101+")]
-    curve, merges = [], []
-    add_count = merge_count = candidate_count = passed = failed = 0
-    for index, s in enumerate(train):
-        before = len(pool)
-        recalled = set(s.get("retrieved_experience_ids", []))
-        selected = set(s.get("selected_experience_ids", []))
-        referenced = {eid for c in (s.get("initial_rubric") or {}).get("criteria", []) for eid in c["source_experiences"]}
-        for field, keys in (("recalled", recalled), ("selected", selected), ("referenced", referenced)):
-            for eid in keys:
-                if eid in usage:
-                    usage[eid][field] += 1
-        credits = (calculate_existing_experience_credit(Rubric.from_dict(s["initial_rubric"]),
-                    RubricJudgment.from_dict(s["initial_judgment"]))
-                   if s.get("initial_judgment") else {})
-        if replay_ok and s.get("initial_judgment"):
-            for eid in selected:
-                if eid not in pool:
-                    replay_ok = False
-                    break
-                alpha, beta = pool[eid]
-                bucket = bins[min(9, int(10 * alpha / (alpha + beta)))]
-                credit = credits.get(eid, 0.0)
-                kind = "positive" if credit > 0 else "negative" if credit < 0 else "zero"
-                bucket["uses"] += 1
-                bucket[kind] += 1
-                bucket["credit_sum"] += credit
-                if eid in usage:
-                    usage[eid][kind] += 1
-        bucket = scale[0 if before == 0 else 1 if before <= 20 else 2 if before <= 50
-                       else 3 if before <= 100 else 4]
-        bucket["tasks"] += 1
-        bucket["recalled"] += len(recalled)
-        bucket["selected"] += len(selected)
-        bucket["referenced"] += len(selected & referenced)
-        bucket["requests"] += len(s.get("requests", []))
-        for request in s.get("requests", []):
-            total = request.get("usage", {}).get("total_tokens")
-            if type(total) is int:
-                bucket["tokens"] += total
-                bucket["token_reports"] += 1
-        candidates = s.get("reflected_candidates", [])
-        candidate_count += len(candidates)
-        passed += sum(c["admission"] == "PASS" for c in candidates)
-        failed += sum(c["admission"] == "FAIL" for c in candidates)
-        added_here = set()
-        for c in candidates:
-            eid = c.get("experience_id")
-            if c.get("fusion") == "ADD":
-                pool[eid] = [1.0, 1.0]
-                added_here.add(eid)
-                add_count += 1
-            elif c.get("fusion") == "MERGE":
-                merge_count += 1
-                if eid not in pool:
-                    replay_ok = False
-                merges.append({"sample_id": s["sample_id"], "candidate_id": c["candidate_id"],
-                    "content": c["content"], "trigger": c["trigger"], "experience_id": eid,
-                    "credit": c["credit"], "same_task": eid in added_here})
-        for eid, ev in evidence[s["sample_id"]]:
-            if eid not in pool:
-                replay_ok = False
-                continue
-            change = abs(ev["credit"]) * ev["evidence_weight"]
-            pool[eid][0 if ev["credit"] > 0 else 1] += change
-        curve.append({"index": index + 1, "pool": len(pool), "adds": add_count, "merges": merge_count,
-                      "cumulative": rate(train[:index + 1]), "rolling": rate(train[max(0, index - 49):index + 1])})
-    if not replay_ok and train:
-        warnings.append("经验或证据无法与完整训练轨迹对齐：使用前置信度和池规模分桶不可用；池曲线仅累计已记录的融合事件。")
-    segments = [{"start": i + 1, "end": min(i + 50, len(train)), **rate(train[i:i + 50]),
-                 "subsets": dict(Counter(r.get("metadata", {}).get("subset", "unknown")
-                                         for r in train[i:i + 50]))} for i in range(0, len(train), 50)]
-    subsets = {name: rate([s for s in train if s.get("metadata", {}).get("subset", "unknown") == name])
-               for name in sorted({s.get("metadata", {}).get("subset", "unknown") for s in train})}
-    for b in bins:
-        b["mean_credit"] = b["credit_sum"] / b["uses"] if b["uses"] else None
-    for b in scale:
-        b["selection_rate"] = b["selected"] / b["recalled"] if b["recalled"] else None
-        b["reference_rate"] = b["referenced"] / b["selected"] if b["selected"] else None
-    initial_failures = sum(s.get("initial_judgment") is not None and
-                           not s["initial_judgment"]["success"] for s in train)
-    first = sum(any(a["attempt_number"] == 1 and a["judgment"]["success"]
-                    for a in s.get("revision_attempts", [])) for s in train)
-    second = sum(any(a["attempt_number"] == 2 and a["judgment"]["success"]
-                     for a in s.get("revision_attempts", [])) for s in train)
-    attempted_second = sum(any(a["attempt_number"] == 2 for a in
-                              s.get("revision_attempts", []) + s.get("invalid_revision_attempts", []))
-                           for s in train)
-    return {"mode": "train_test" if "test" in manifest["config"]["dataset"]["config"]["paths"] else "train_only",
-            "train_total": sum(c.get("split") == "train" for c in context.values()),
-            "train_completed": len(train), "sample_errors": sum(bool(s.get("sample_error")) for s in train),
-            "initial": rate(train), "curve": curve,
-            "segments": segments, "subsets": subsets, "adds": add_count, "merges": merge_count,
-            "candidates": candidate_count, "admission_pass": passed,
-            "admission_fail": failed, "merge_rate": merge_count / (add_count + merge_count)
-                if add_count + merge_count else None,
-            "merge_events": merges, "confidence_bins": bins if replay_ok else None,
-            "scale_bins": scale if replay_ok else None, "usage": list(usage.values()),
-            "replay_available": replay_ok, "initial_failures": initial_failures,
-            "repair_successes": first + second,
-            "repair_rate": (first + second) / initial_failures if initial_failures else None,
-            "first_rate": first / initial_failures if initial_failures else None,
-            "second_successes": second, "second_attempted": attempted_second,
-            "second_rate": second / attempted_second if attempted_second else None}
+    proposals = [p for s in train for p in s.get("proposal_attempts", [])]
+    candidates = [p["candidate"] for p in proposals if p.get("candidate")]
+    apps = [a for s in train for a in s.get("application_attempts", [])]
+    successes = [a for a in apps if a.get("judgment", {}) and a["judgment"]["success"]]
+    failures = sum(
+        bool(s.get("initial_judgment")) and not s["initial_judgment"]["success"]
+        for s in train
+    )
+    curve = []
+    adds = merges = 0
+    for i, s in enumerate(train):
+        local = [
+            p["candidate"] for p in s.get("proposal_attempts", []) if p.get("candidate")
+        ]
+        adds += sum(c["fusion"] == "ADD" for c in local)
+        merges += sum(c["fusion"] == "MERGE" for c in local)
+        curve.append(
+            {
+                "index": i + 1,
+                "pool": adds,
+                "adds": adds,
+                "merges": merges,
+                "cumulative": rate(train[: i + 1]),
+                "rolling": rate(train[max(0, i - 49) : i + 1]),
+            }
+        )
+    return {
+        "mode": manifest["execution"]["mode"],
+        "train_total": sum(c.get("split") == "train" for c in context.values()),
+        "train_completed": len(train),
+        "sample_errors": sum(bool(s.get("sample_error")) for s in train),
+        "initial": rate(train),
+        "curve": curve,
+        "adds": adds,
+        "merges": merges,
+        "candidates": len(candidates),
+        "admission_pass": sum(c["admission"] == "PASS" for c in candidates),
+        "admission_fail": sum(c["admission"] == "FAIL" for c in candidates),
+        "proposal_calls": len(proposals),
+        "applications": len(apps),
+        "adopted": sum(a["adopted"] is True for a in apps),
+        "success_without_candidate": sum(a["adopted"] is False for a in successes),
+        "repair_successes": len(successes),
+        "initial_failures": failures,
+        "repair_rate": len(successes) / failures if failures else None,
+        "admission_exhausted": sum(s["state"] == "admission_exhausted" for s in train),
+        "validation_exhausted": sum(
+            s["state"] in ("validation_exhausted", "invalid_application_exhausted")
+            for s in train
+        ),
+        "judge_errors": sum(bool(s.get("judge_error")) for s in train),
+    }
 
 
 def _generation_summaries(root: Path, warnings: list[str]) -> dict[str, dict[str, Any]]:
@@ -490,33 +384,61 @@ def _generation_summaries(root: Path, warnings: list[str]) -> dict[str, dict[str
                 bad += 1
                 continue
             sid, output = entry.get("sample_id"), entry.get("output")
-            if not isinstance(sid, str) or not isinstance(output, dict) or entry.get("error"):
+            if (
+                not isinstance(sid, str)
+                or not isinstance(output, dict)
+                or entry.get("error")
+            ):
                 continue
-            if (entry.get("role") == "initial_generator"
-                    and not (entry.get("input") or {}).get("revision_number")):
+            if entry.get(
+                "role"
+            ) == "initial_generator" and "candidate_experience" not in (
+                entry.get("input") or {}
+            ):
                 analysis = output.get("analysis")
                 # The latest structured generation supersedes any previous retry's analysis.
                 summaries.setdefault(sid, {})["generator_analysis"] = (
-                    analysis if isinstance(analysis, str) and analysis.strip() else None)
-            elif entry.get("role") == "reflector" and isinstance(output.get("candidates"), list):
-                summaries.setdefault(sid, {})["generated_candidates"] = len(output["candidates"])
+                    analysis if isinstance(analysis, str) and analysis.strip() else None
+                )
+            elif entry.get("role") == "critic" and isinstance(
+                output.get("candidates"), list
+            ):
+                summaries.setdefault(sid, {})["generated_candidates"] = len(
+                    output["candidates"]
+                )
     if bad:
-        warnings.append(f"角色摘要跳过 {bad} 条损坏或超长记录；部分生成状态可能不可确认。")
+        warnings.append(
+            f"角色摘要跳过 {bad} 条损坏或超长记录；部分生成状态可能不可确认。"
+        )
     return summaries
 
 
-def _sample_experience_status(sample: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
-    candidates = sample.get("reflected_candidates", [])
-    referenced = {eid for c in (sample.get("initial_rubric") or {}).get("criteria", [])
-                  for eid in c.get("source_experiences", [])}
+def _sample_experience_status(
+    sample: dict[str, Any], summary: dict[str, Any]
+) -> dict[str, Any]:
+    candidates = [
+        p["candidate"]
+        for p in sample.get("proposal_attempts", [])
+        if p.get("candidate")
+    ]
+    referenced = {
+        eid
+        for c in (sample.get("initial_rubric") or {}).get("criteria", [])
+        for eid in c.get("source_experiences", [])
+    }
     generated = summary.get("generated_candidates")
-    if generated is None and sample.get("state") in ("initial_success", "initial_failure"):
+    if generated is None and sample.get("state") in (
+        "initial_success",
+        "initial_failure",
+    ):
         generated = 0  # Completed without the reflection branch.
-    return {"generated_candidates": generated,
-            "added": sum(c.get("fusion") == "ADD" for c in candidates),
-            "merged": sum(c.get("fusion") == "MERGE" for c in candidates),
-            "selected": len(set(sample.get("selected_experience_ids", []))),
-            "referenced": len(referenced) if sample.get("initial_rubric") else None}
+    return {
+        "generated_candidates": generated,
+        "added": sum(c.get("fusion") == "ADD" for c in candidates),
+        "merged": sum(c.get("fusion") == "MERGE" for c in candidates),
+        "selected": len(sample.get("selected_experiences", [])),
+        "referenced": len(referenced) if sample.get("initial_rubric") else None,
+    }
 
 
 def load_run(run_dir: str | Path) -> dict[str, Any]:
@@ -530,45 +452,95 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
     # A sample ID can occur more than once in a damaged/replayed log; retain all entries.
     order = {item["sample_id"]: index for index, item in enumerate(records)}
     if len(order) != len(records):
-        warnings.append("轨迹含重复样本 ID：事件时间线只能近似按样本排序，部分数据关联不确定。")
+        warnings.append(
+            "轨迹含重复样本 ID：事件时间线只能近似按样本排序，部分数据关联不确定。"
+        )
     requests: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for item in _read_jsonl(root / "llm_requests.jsonl", warnings):
         sample_id = item.get("sample_id")
         if isinstance(sample_id, str) and sample_id:
-            requests[sample_id].append({key: item[key] for key in (
-                "role", "model", "status", "attempt", "finish_reason", "usage", "split",
-            ) if key in item})
+            requests[sample_id].append(
+                {
+                    key: item[key]
+                    for key in (
+                        "role",
+                        "model",
+                        "status",
+                        "attempt",
+                        "finish_reason",
+                        "usage",
+                        "split",
+                    )
+                    if key in item
+                }
+            )
     summaries = _generation_summaries(root, warnings)
     samples = []
     for item in records:
         sample_id = item["sample_id"]
-        samples.append({**item, **context.get(sample_id, {}), "requests": requests.get(sample_id, [])})
+        samples.append(
+            {
+                **item,
+                **context.get(sample_id, {}),
+                "requests": requests.get(sample_id, []),
+            }
+        )
     for sample_id, calls in requests.items():
         if sample_id not in order:
-            samples.append({"sample_id": sample_id, "state": "interrupted",
-                            **context.get(sample_id, {}), "requests": calls})
+            samples.append(
+                {
+                    "sample_id": sample_id,
+                    "state": "interrupted",
+                    **context.get(sample_id, {}),
+                    "requests": calls,
+                }
+            )
     for sample in samples:
         summary = summaries.get(sample["sample_id"], {})
         sample["generator_analysis"] = summary.get("generator_analysis")
         sample["experience_status"] = _sample_experience_status(sample, summary)
     memory = json.loads((root / "experience_memory.json").read_text(encoding="utf-8"))
-    experiences = [Experience.from_dict(item).to_dict() for item in memory["experiences"]]
+    if (
+        set(memory) != {"schema_version", "experiences"}
+        or memory["schema_version"] != 2
+    ):
+        raise ValueError("unsupported memory schema")
+    experiences = [
+        Experience.from_dict(item).to_dict() for item in memory["experiences"]
+    ]
     for item in experiences:
         item["evolution"] = _evolution(item, records, order, warnings)
     overview = _overview_metrics(samples, experiences, context, manifest, warnings)
     counts = Counter(item["state"] for item in samples)
-    return {"run_name": directory.name, "run_dir": str(directory), "code_version": manifest.get("code_version"),
-            "resumed_from": manifest.get("resumed_from", {}).get("source_run"),
-            "samples": samples, "experiences": experiences, "counts": dict(counts),
-            "warnings": warnings, "overview": overview}
+    return {
+        "run_name": directory.name,
+        "run_dir": str(directory),
+        "code_version": manifest.get("code_version"),
+        "resumed_from": manifest.get("resumed_from", {}).get("source_run"),
+        "samples": samples,
+        "experiences": experiences,
+        "counts": dict(counts),
+        "warnings": warnings,
+        "overview": overview,
+    }
 
 
 def discover_runs(root: Path) -> list[str]:
     """Only immediate, non-symlink children containing a run manifest are selectable."""
-    return sorted(child.name for child in root.iterdir()
-                  if child.is_dir() and not child.is_symlink()
-                  and (child / "run_manifest.json").is_file()
-                  and not (child / "run_manifest.json").is_symlink())
+    names = []
+    for child in root.iterdir():
+        if (
+            child.is_dir()
+            and not child.is_symlink()
+            and (child / "run_manifest.json").is_file()
+            and not (child / "run_manifest.json").is_symlink()
+        ):
+            try:
+                _run_artifacts(child)
+            except (ValueError, KeyError, TypeError, OSError):
+                continue
+            names.append(child.name)
+    return sorted(names)
 
 
 class DashboardHandler(BaseHTTPRequestHandler):

@@ -29,12 +29,18 @@ from verge.prompts import PROMPT_VERSION
 
 
 _ROLES = (
-    "selector", "initial_generator", "judge", "critic",
-    "reflector", "admission_checker", "fusion_judge",
+    "selector",
+    "initial_generator",
+    "judge",
+    "critic",
+    "admission_checker",
+    "fusion_judge",
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
-    "retrieval": "fake", "selection": "llm", "revision": "critic_generator_dialogue",
+    "retrieval": "fake",
+    "selection": "llm",
+    "application": "critic_candidate_validation",
     "reliability": "beta",
 }
 
@@ -71,11 +77,9 @@ def _backend(spec: dict[str, Any], path: str) -> LLMBackend:
 def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, int]:
     """运行前校验所有当前可装配的组件，不把未实现的配置静默降级。"""
     _only_keys(config, {"run", "dataset", "models", "modules", "store"}, "config")
-    _only_keys(config["run"], {"seed", "output_dir", "test_workers", "experience_enabled",
-                               "stop_after_train"}, "run")
-    experience_enabled = config["run"].get("experience_enabled", True)
-    if type(experience_enabled) is not bool:
-        raise ValueError("run.experience_enabled: expected Boolean")
+    _only_keys(
+        config["run"], {"seed", "output_dir", "test_workers", "stop_after_train"}, "run"
+    )
     limit = config["run"].get("stop_after_train")
     if "stop_after_train" in config["run"] and (type(limit) is not int or limit < 1):
         raise ValueError("run.stop_after_train: expected a positive integer")
@@ -88,14 +92,18 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         raise ValueError("dataset.implementation: V1 supports only jsonl")
     options = dataset_config["config"]
     if set(options) - {"paths", "field_map", "prepare"} or "paths" not in options:
-        raise ValueError("dataset.config: expected paths, optional field_map and prepare")
+        raise ValueError(
+            "dataset.config: expected paths, optional field_map and prepare"
+        )
     if "prepare" in options:
         _check_preparation_paths(options)
     dataset = JsonlDataset(options["paths"], options.get("field_map"))
     if "train" not in dataset.paths:
         raise ValueError("dataset.config.paths.train: required for run")
     if set(dataset.paths) - {"train", "test"}:
-        raise ValueError("dataset.config.paths: V1 supports only train and optional test")
+        raise ValueError(
+            "dataset.config.paths: V1 supports only train and optional test"
+        )
     for split, path in dataset.paths.items():
         if not path.is_file():
             raise ValueError(f"dataset.config.paths.{split}: file not found: {path}")
@@ -110,50 +118,85 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         raise ValueError(f"modules: expected exactly {', '.join(_IMPLEMENTATIONS)}")
     for name, implementation in _IMPLEMENTATIONS.items():
         _only_keys(configured[name], {"implementation", "config"}, f"modules.{name}")
-        if (configured[name]["implementation"] != implementation
-                and not (name == "retrieval" and configured[name]["implementation"] == "vector")):
-            raise ValueError(f"modules.{name}.implementation: V1 supports only {implementation}"
-                             + (" or vector" if name == "retrieval" else ""))
+        if configured[name]["implementation"] != implementation and not (
+            name == "retrieval" and configured[name]["implementation"] == "vector"
+        ):
+            raise ValueError(
+                f"modules.{name}.implementation: V1 supports only {implementation}"
+                + (" or vector" if name == "retrieval" else "")
+            )
     retrieval = configured["retrieval"]["config"]
     vector_retrieval = configured["retrieval"]["implementation"] == "vector"
-    retrieval_keys = {"top_l", "embedding_model", "dimensions"} if vector_retrieval else {"top_l"}
+    retrieval_keys = (
+        {"top_l", "embedding_model", "dimensions"} if vector_retrieval else {"top_l"}
+    )
     if vector_retrieval:
         if models["default"]["backend"] != "openai_compatible":
-            raise ValueError("modules.retrieval: vector requires an openai_compatible default model")
+            raise ValueError(
+                "modules.retrieval: vector requires an openai_compatible default model"
+            )
         embedding_url = models["default"].get("base_url")
         parsed = urlsplit(embedding_url) if isinstance(embedding_url, str) else None
-        if (parsed is None or parsed.hostname not in {
-                "dashscope.aliyuncs.com", "dashscope-intl.aliyuncs.com",
+        if (
+            parsed is None
+            or parsed.hostname
+            not in {
+                "dashscope.aliyuncs.com",
+                "dashscope-intl.aliyuncs.com",
                 "dashscope-us.aliyuncs.com",
-            } or parsed.path.rstrip("/") != "/compatible-mode/v1"):
-            raise ValueError("modules.retrieval: vector requires a DashScope compatible-mode/v1 base_url")
+            }
+            or parsed.path.rstrip("/") != "/compatible-mode/v1"
+        ):
+            raise ValueError(
+                "modules.retrieval: vector requires a DashScope compatible-mode/v1 base_url"
+            )
         if retrieval.get("embedding_model") != "text-embedding-v4":
-            raise ValueError("modules.retrieval.config.embedding_model: expected text-embedding-v4")
-        if (type(retrieval.get("dimensions", 1024)) is not int
-                or retrieval.get("dimensions", 1024) not in (64, 128, 256, 512, 768, 1024, 1536, 2048)):
-            raise ValueError("modules.retrieval.config.dimensions: unsupported text-embedding-v4 dimension")
+            raise ValueError(
+                "modules.retrieval.config.embedding_model: expected text-embedding-v4"
+            )
+        if type(retrieval.get("dimensions", 1024)) is not int or retrieval.get(
+            "dimensions", 1024
+        ) not in (64, 128, 256, 512, 768, 1024, 1536, 2048):
+            raise ValueError(
+                "modules.retrieval.config.dimensions: unsupported text-embedding-v4 dimension"
+            )
     selection = configured["selection"]["config"]
-    revision = configured["revision"]["config"]
-    if (set(retrieval) - retrieval_keys or set(selection) - {"max_selected", "exploration_slots"}
-            or set(revision) - {"max_attempts", "invalid_output_retries"}
-            or configured["reliability"]["config"]):
+    application = configured["application"]["config"]
+    if (
+        set(retrieval) - retrieval_keys
+        or set(selection) - {"max_selected", "exploration_slots"}
+        or set(application) - {"max_rounds", "invalid_output_retries"}
+        or configured["reliability"]["config"]
+    ):
         raise ValueError("modules: unsupported V1 component options")
     if selection.get("exploration_slots", 0) != 0:
-        raise ValueError("modules.selection.config.exploration_slots: V1 selector does not explore")
-    retries = revision.get("invalid_output_retries", 2)
+        raise ValueError(
+            "modules.selection.config.exploration_slots: V1 selector does not explore"
+        )
+    retries = application.get("invalid_output_retries", 2)
     if type(retries) is not int or not 0 <= retries <= 3:
-        raise ValueError("modules.revision.config.invalid_output_retries: expected integer in [0, 3]")
+        raise ValueError(
+            "modules.application.config.invalid_output_retries: expected integer in [0, 3]"
+        )
 
     store = config["store"]
     _only_keys(store, {"implementation", "config"}, "store")
     if store["implementation"] != "local" or set(store["config"]) - {"root_dir"}:
         raise ValueError("store: V1 supports only local with root_dir")
     relative_store = Path(store["config"].get("root_dir", "artifacts"))
-    if relative_store.is_absolute() or ".." in relative_store.parts or relative_store == Path("."):
-        raise ValueError("store.config.root_dir: must be a relative subdirectory of run.output_dir")
+    if (
+        relative_store.is_absolute()
+        or ".." in relative_store.parts
+        or relative_store == Path(".")
+    ):
+        raise ValueError(
+            "store.config.root_dir: must be a relative subdirectory of run.output_dir"
+        )
     run_dir = Path(config["run"]["output_dir"])
     if run_dir.exists():
-        raise ValueError(f"run.output_dir: already exists: {run_dir}; use a fresh directory")
+        raise ValueError(
+            f"run.output_dir: already exists: {run_dir}; use a fresh directory"
+        )
 
     created: list[OpenAICompatibleBackend | OpenAICompatibleEmbedding] = []
     try:
@@ -161,7 +204,7 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         if isinstance(backend, OpenAICompatibleBackend):
             created.append(backend)
         retriever = None
-        if vector_retrieval and experience_enabled:
+        if vector_retrieval:
             default = models["default"]
             embedder = OpenAICompatibleEmbedding(
                 retrieval["embedding_model"],
@@ -173,9 +216,14 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
             )
             created.append(embedder)
             retriever = VectorRetriever(embedder, retrieval.get("top_l", 20))
-        modules = make_llm_modules(backend, top_l=retrieval.get("top_l", 20),
-                                   max_selected=selection.get("max_selected", 5),
-                                   retriever=retriever)
+        modules = make_llm_modules(
+            backend,
+            top_l=retrieval.get("top_l", 20),
+            max_selected=selection.get("max_selected", 5),
+            retriever=retriever,
+        )
+        modules.initial_generator.invalid_output_retries = retries
+        modules.critic.invalid_output_retries = retries
         for role, spec in models.get("roles", {}).items():
             role_backend = _backend(spec, f"models.roles.{role}")
             if isinstance(role_backend, OpenAICompatibleBackend):
@@ -185,7 +233,7 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         for item in created:
             item.close()
         raise
-    return dataset, modules, run_dir, relative_store, revision.get("max_attempts", 2)
+    return dataset, modules, run_dir, relative_store, application.get("max_rounds", 2)
 
 
 def _code_version() -> str:
@@ -309,29 +357,44 @@ def _ensure_prepared_dataset(config: dict[str, Any], *, resuming: bool) -> None:
     )
 
 
-def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDataset,
-                       manifest: dict[str, Any]) -> tuple[Path, set[str], dict[str, Any]]:
-    """只接受有序完整轨迹前缀、且下一样本未改写 Memory 的旧运行。"""
+def _resume_checkpoint(
+    source: Path,
+    config: dict[str, Any],
+    dataset: JsonlDataset,
+    manifest: dict[str, Any],
+) -> tuple[Path, set[str], dict[str, Any]]:
+    """只接受有序完整轨迹前缀、且下一样本未改写 Memory 的同协议运行。"""
     old = json.loads((source / "run_manifest.json").read_text(encoding="utf-8"))
-    if (old.get("format_version") != 1 or old.get("dataset_version") != manifest["dataset_version"]
-            or not isinstance(old.get("code_version"), str)):
+    if (
+        old.get("format_version") != 2
+        or old.get("method") != "critic_candidate_validation"
+        or old.get("dataset_version") != manifest["dataset_version"]
+        or not isinstance(old.get("code_version"), str)
+    ):
         raise ValueError("resume: unsupported parent manifest")
     if old.get("prompt_versions") != manifest["prompt_versions"]:
         raise ValueError("resume: prompt protocol changed; start a fresh run")
+    if old["code_version"] != manifest["code_version"]:
+        raise ValueError("resume: executed code changed; start a fresh run")
+    old_execution = {
+        k: v for k, v in old.get("execution", {}).items() if k != "stop_after_train"
+    }
+    new_execution = {
+        k: v for k, v in manifest["execution"].items() if k != "stop_after_train"
+    }
+    if old_execution != new_execution:
+        raise ValueError("resume: effective execution parameters changed")
     old_config = old.get("config")
     if not isinstance(old_config, dict) or not isinstance(old_config.get("run"), dict):
         raise ValueError("resume: invalid parent config")
-    expected = {**old_config, "run": {**old_config["run"], "output_dir": config["run"]["output_dir"]}}
-    # Older runs predate the preparation declaration; the same bytes and verified
-    # provenance permit adding metadata without altering any executed parameter.
-    if ("prepare" in config["dataset"]["config"] and
-            "prepare" not in old_config["dataset"]["config"] and
-            "dataset_provenance" in manifest):
-        expected = {**expected, "dataset": {**old_config["dataset"], "config": {
-            **old_config["dataset"]["config"], "prepare": config["dataset"]["config"]["prepare"],
-        }}}
+    expected = {
+        **old_config,
+        "run": {**old_config["run"], "output_dir": config["run"]["output_dir"]},
+    }
     if expected != config or old.get("dataset_sha256") != manifest["dataset_sha256"]:
-        raise ValueError("resume: config or dataset changed (only run.output_dir may differ)")
+        raise ValueError(
+            "resume: config or dataset changed (only run.output_dir may differ)"
+        )
     if source.resolve() != Path(old_config["run"]["output_dir"]).resolve():
         raise ValueError("resume: source does not match parent manifest output_dir")
     root = source / config["store"]["config"].get("root_dir", "artifacts")
@@ -343,61 +406,106 @@ def _resume_checkpoint(source: Path, config: dict[str, Any], dataset: JsonlDatas
         raise ValueError("resume: missing checkpoint memory or trajectories")
     samples = [*dataset.load("train")]
     train_ids = [sample.sample_id for sample in samples]
-    test_ids = [sample.sample_id for sample in dataset.load("test")] if "test" in dataset.paths else []
+    test_ids = (
+        [sample.sample_id for sample in dataset.load("test")]
+        if "test" in dataset.paths
+        else []
+    )
     ordered = train_ids + test_ids
     if len(ordered) != len(set(ordered)):
         raise ValueError("resume: duplicate dataset sample IDs")
     completed = [record.sample_id for record in TrajectoryLog(root).all()]
-    if not completed or len(completed) >= len(ordered) or completed != ordered[:len(completed)]:
-        raise ValueError("resume: trajectories must be a nonempty strict dataset prefix")
+    if (
+        not completed
+        or len(completed) >= len(ordered)
+        or completed != ordered[: len(completed)]
+    ):
+        raise ValueError(
+            "resume: trajectories must be a nonempty strict dataset prefix"
+        )
     # 每条 train 完整轨迹先于下一条样本；测试不得写入 Beta evidence。
-    completed_train = set(train_ids[:min(len(completed), len(train_ids))])
+    completed_train = set(train_ids[: min(len(completed), len(train_ids))])
     memory = ExperienceMemory(root, read_only=True)
     for item in memory.all():
-        if (any(key not in completed_train for key in item.source_trajectories)
-                or any(ev.sample_id not in completed_train for ev in item.evidence_history)):
-            raise ValueError("resume: Memory contains evidence beyond completed train prefix")
+        if any(key not in completed_train for key in item.source_trajectories) or any(
+            ev.sample_id not in completed_train for ev in item.evidence_history
+        ):
+            raise ValueError(
+                "resume: Memory contains evidence beyond completed train prefix"
+            )
     next_id = ordered[len(completed)]
     parent_models = old_config["models"]
-    if (any(spec["backend"] == "openai_compatible" for spec in
-            [parent_models["default"], *parent_models.get("roles", {}).values()])
-            and not request_file.is_file()):
-        raise ValueError("resume: real backend requires request metadata to verify failed stage")
+    if (
+        any(
+            spec["backend"] == "openai_compatible"
+            for spec in [
+                parent_models["default"],
+                *parent_models.get("roles", {}).values(),
+            ]
+        )
+        and not request_file.is_file()
+    ):
+        raise ValueError(
+            "resume: real backend requires request metadata to verify failed stage"
+        )
     # 前面的 Memory 检查已排除未完成样本的 credit / fusion 写盘；
-    # 即使它已调用 Judge、Critic 或修订角色，也可从头重试这一整条样本。
+    # 即使它已调用 Judge、Critic 或候选/应用角色，也可从头重试这一整条样本。
     # 训练不得出现未来请求；只有 manifest 记载了并行测试时，才允许
     # 轨迹前缀之外的测试请求（可能已发出但尚未按序提交）。
     if request_file.exists():
         with request_file.open(encoding="utf-8") as stream:
             for number, line in enumerate(stream, 1):
                 event = json.loads(line)
-                if not isinstance(event, dict) or not isinstance(event.get("sample_id"), str):
+                if not isinstance(event, dict) or not isinstance(
+                    event.get("sample_id"), str
+                ):
                     raise ValueError(f"resume: invalid request event at line {number}")
-                if event["sample_id"] not in completed and event["sample_id"] != next_id:
+                if (
+                    event["sample_id"] not in completed
+                    and event["sample_id"] != next_id
+                ):
                     # Only runs declaring parallel test execution may log beyond the prefix.
-                    if not (len(completed) >= len(train_ids) and
-                            old.get("execution", {}).get("test_workers", 1) > 1 and
-                            event["sample_id"] in test_ids):
+                    if not (
+                        len(completed) >= len(train_ids)
+                        and old.get("execution", {}).get("test_workers", 1) > 1
+                        and event["sample_id"] in test_ids
+                    ):
                         raise ValueError("resume: request event beyond next sample")
     if role_io_file.exists():
         with role_io_file.open(encoding="utf-8") as stream:
             for number, line in enumerate(stream, 1):
                 event = json.loads(line)
-                if not isinstance(event, dict) or not isinstance(event.get("sample_id"), str):
+                if not isinstance(event, dict) or not isinstance(
+                    event.get("sample_id"), str
+                ):
                     raise ValueError(f"resume: invalid role IO event at line {number}")
-                if event["sample_id"] not in completed and event["sample_id"] != next_id:
-                    if not (len(completed) >= len(train_ids) and
-                            old.get("execution", {}).get("test_workers", 1) > 1 and
-                            event["sample_id"] in test_ids):
+                if (
+                    event["sample_id"] not in completed
+                    and event["sample_id"] != next_id
+                ):
+                    if not (
+                        len(completed) >= len(train_ids)
+                        and old.get("execution", {}).get("test_workers", 1) > 1
+                        and event["sample_id"] in test_ids
+                    ):
                         raise ValueError("resume: role IO event beyond next sample")
-    copied = {name: _sha256_file(path) for name, path in (
-        ("experience_memory.json", memory_file), ("trajectories.jsonl", trajectory_file),
-        ("llm_requests.jsonl", request_file), ("role_io.jsonl", role_io_file),
-    ) if path.exists()}
-    lineage = {"source_run": str(source.resolve()), "source_code_version": old.get("code_version"),
-               "completed_train": min(len(completed), len(train_ids)),
-               "completed_test": max(0, len(completed) - len(train_ids)),
-               "checkpoint_sha256": copied}
+    copied = {
+        name: _sha256_file(path)
+        for name, path in (
+            ("experience_memory.json", memory_file),
+            ("trajectories.jsonl", trajectory_file),
+            ("llm_requests.jsonl", request_file),
+            ("role_io.jsonl", role_io_file),
+        )
+        if path.exists()
+    }
+    lineage = {
+        "source_run": str(source.resolve()),
+        "source_code_version": old.get("code_version"),
+        "completed_train": min(len(completed), len(train_ids)),
+        "completed_test": max(0, len(completed) - len(train_ids)),
+        "checkpoint_sha256": copied,
+    }
     return root, set(completed), lineage
 
 
@@ -484,9 +592,15 @@ class _DeferredTrajectoryLog:
         pass
 
 
-def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
-                           seen_ids: set[str], request_context: ContextVar[dict[str, str]],
-                           progress: _Progress, skip_ids: set[str], workers: int) -> int:
+def _process_test_parallel(
+    runner: PipelineRunner,
+    dataset: JsonlDataset,
+    seen_ids: set[str],
+    request_context: ContextVar[dict[str, str]],
+    progress: _Progress,
+    skip_ids: set[str],
+    workers: int,
+) -> int:
     if runner.training or not runner.memory.read_only:
         raise ValueError("parallel evaluation requires frozen read-only memory")
     thread_state = local()
@@ -502,15 +616,21 @@ def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
                 # re-embedding of already cached experiences.
                 retriever = retriever.fork()
             modules = replace(runner.modules, retriever=retriever)
-            worker = PipelineRunner(modules, runner.memory, _DeferredTrajectoryLog(),
-                                    training=False, experience_enabled=runner.experience_enabled,
-                                    max_attempts=runner.max_attempts)
+            worker = PipelineRunner(
+                modules,
+                runner.memory,
+                _DeferredTrajectoryLog(),
+                training=False,
+                max_rounds=runner.max_rounds,
+            )
             thread_state.runner = worker
         token = request_context.set({"sample_id": sample.sample_id, "split": "test"})
         try:
             return worker.run_sample(sample)
         except Exception as exc:
-            raise RuntimeError(f"sample {sample.sample_id!r}, stage {worker.current_stage}: {exc}") from exc
+            raise RuntimeError(
+                f"sample {sample.sample_id!r}, stage {worker.current_stage}: {exc}"
+            ) from exc
         finally:
             request_context.reset(token)
 
@@ -535,12 +655,22 @@ def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
                 except (ValueError, OSError) as exc:
                     raise RuntimeError(f"split 'test', stage dataset: {exc}") from exc
                 if sample.sample_id in seen_ids:
-                    raise RuntimeError(f"sample {sample.sample_id!r}, stage dataset: duplicate ID across splits")
+                    raise RuntimeError(
+                        f"sample {sample.sample_id!r}, stage dataset: duplicate ID across splits"
+                    )
                 seen_ids.add(sample.sample_id)
                 if len(pending) >= workers:
                     commit_next()
-                pending.append((sample, None if sample.sample_id in skip_ids
-                                else pool.submit(evaluate, sample)))
+                pending.append(
+                    (
+                        sample,
+                        (
+                            None
+                            if sample.sample_id in skip_ids
+                            else pool.submit(evaluate, sample)
+                        ),
+                    )
+                )
             while pending:
                 commit_next()
         finally:
@@ -550,40 +680,65 @@ def _process_test_parallel(runner: PipelineRunner, dataset: JsonlDataset,
     return count
 
 
-def run(config_path: str | Path, *, resume_from: str | Path | None = None,
-        initial_output_retries: int = 2, stop_after_train: int | None = None) -> dict[str, Any]:
+def run(
+    config_path: str | Path,
+    *,
+    resume_from: str | Path | None = None,
+    initial_output_retries: int = 2,
+    stop_after_train: int | None = None,
+) -> dict[str, Any]:
     """Fresh run, or continue a certified prefix into a new immutable-lineage directory."""
     if type(initial_output_retries) is not int or not 0 <= initial_output_retries <= 3:
         raise ConfigError("initial_output_retries must be an integer in [0, 3]")
-    if stop_after_train is not None and (type(stop_after_train) is not int or stop_after_train < 1):
+    if stop_after_train is not None and (
+        type(stop_after_train) is not int or stop_after_train < 1
+    ):
         raise ConfigError("stop_after_train must be a positive integer")
     modules = None
     try:
         config = load_config(config_path)
-        experience_enabled = config["run"].get("experience_enabled", True)
         if stop_after_train is None:
             stop_after_train = config["run"].get("stop_after_train")
         # Reject an existing run directory before any optional network download.
         run_dir = Path(config["run"]["output_dir"])
         if run_dir.exists():
-            raise ValueError(f"run.output_dir: already exists: {run_dir}; use a fresh directory")
+            raise ValueError(
+                f"run.output_dir: already exists: {run_dir}; use a fresh directory"
+            )
         _ensure_prepared_dataset(config, resuming=resume_from is not None)
-        dataset, modules, run_dir, store_root, max_attempts = _components(config)
+        dataset, modules, run_dir, store_root, max_rounds = _components(config)
         provenance = _verify_prepared_dataset(config, dataset)
-        backend_names = {spec["backend"] for spec in
-                         [config["models"]["default"], *config["models"].get("roles", {}).values()]}
-        manifest = {"format_version": 1, "config": config, "code_version": _code_version(),
-                    "execution": {"test_workers": config["run"].get("test_workers", 4),
-                                  "mode": "train_test" if "test" in dataset.paths else "train_only",
-                                  "experience_enabled": experience_enabled,
-                                  "initial_output_retries": initial_output_retries,
-                                  "sample_error_policy": "record_and_continue"},
-                    "dataset_version": "jsonl/v1",
-                    "dataset_sha256": {split: _sha256_file(path)
-                                       for split, path in dataset.paths.items()},
-                    "module_versions": {name: "v1" for name in _IMPLEMENTATIONS},
-                    "backend_versions": {name: "v1" for name in sorted(backend_names)},
-                    "prompt_versions": {role: PROMPT_VERSION for role in _ROLES}}
+        backend_names = {
+            spec["backend"]
+            for spec in [
+                config["models"]["default"],
+                *config["models"].get("roles", {}).values(),
+            ]
+        }
+        manifest = {
+            "format_version": 2,
+            "method": "critic_candidate_validation",
+            "config": config,
+            "code_version": _code_version(),
+            "execution": {
+                "test_workers": config["run"].get("test_workers", 4),
+                "mode": "train_test" if "test" in dataset.paths else "train_only",
+                "max_application_rounds": max_rounds,
+                "admission_regenerations_per_round": 1,
+                "application_output_retries": config["modules"]["application"][
+                    "config"
+                ].get("invalid_output_retries", 2),
+                "initial_output_retries": initial_output_retries,
+                "sample_error_policy": "record_and_continue",
+            },
+            "dataset_version": "jsonl/v1",
+            "dataset_sha256": {
+                split: _sha256_file(path) for split, path in dataset.paths.items()
+            },
+            "module_versions": {name: "v2" for name in _IMPLEMENTATIONS},
+            "backend_versions": {name: "v1" for name in sorted(backend_names)},
+            "prompt_versions": {role: PROMPT_VERSION for role in _ROLES},
+        }
         if stop_after_train is not None:
             manifest["execution"]["stop_after_train"] = stop_after_train
         if provenance is not None:
@@ -592,10 +747,18 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         skipped: set[str] = set()
         if resume_from is not None:
             checkpoint, skipped, lineage = _resume_checkpoint(
-                Path(resume_from), config, dataset, manifest,
+                Path(resume_from),
+                config,
+                dataset,
+                manifest,
             )
-            manifest["resumed_from"] = {**lineage, "initial_output_retries": initial_output_retries}
-        serialized = json.dumps(manifest, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+            manifest["resumed_from"] = {
+                **lineage,
+                "initial_output_retries": initial_output_retries,
+            }
+        serialized = (
+            json.dumps(manifest, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+        )
     except (ValueError, OSError, TypeError) as exc:
         if modules is not None:
             _close_modules(modules)
@@ -617,65 +780,126 @@ def run(config_path: str | Path, *, resume_from: str | Path | None = None,
         role_io_file = root / "role_io.jsonl"
         role_io_file.touch(mode=0o600, exist_ok=True)
         role_io_file.chmod(0o600)
-        modules.initial_generator.invalid_output_retries = initial_output_retries
-        request_context: ContextVar[dict[str, str]] = ContextVar("sample_context", default={})
+        modules.initial_generator.initial_output_retries = initial_output_retries
+        request_context: ContextVar[dict[str, str]] = ContextVar(
+            "sample_context", default={}
+        )
         log_lock = Lock()
 
         def save_request(event: dict[str, Any]) -> None:
             # 只记录白名单元数据；不记录消息、偏好文本或 API key。
-            with log_lock, (root / "llm_requests.jsonl").open("a", encoding="utf-8") as stream:
-                stream.write(json.dumps({**request_context.get(), "backend": "openai_compatible", **event},
-                                        ensure_ascii=False, allow_nan=False) + "\n")
+            with log_lock, (root / "llm_requests.jsonl").open(
+                "a", encoding="utf-8"
+            ) as stream:
+                stream.write(
+                    json.dumps(
+                        {
+                            **request_context.get(),
+                            "backend": "openai_compatible",
+                            **event,
+                        },
+                        ensure_ascii=False,
+                        allow_nan=False,
+                    )
+                    + "\n"
+                )
 
         def save_role_io(event: dict[str, Any]) -> None:
             # Raw role inputs/outputs are sensitive research artifacts, never request headers or keys.
             with log_lock, role_io_file.open("a", encoding="utf-8") as stream:
-                stream.write(json.dumps({**request_context.get(), **event},
-                                        ensure_ascii=False, allow_nan=False) + "\n")
+                stream.write(
+                    json.dumps(
+                        {**request_context.get(), **event},
+                        ensure_ascii=False,
+                        allow_nan=False,
+                    )
+                    + "\n"
+                )
 
-        backends = {id(item): item for item in [modules.backend, *(
-            getattr(modules, role).backend for role in _ROLES)]
-            if isinstance(item, (OpenAICompatibleBackend, FakeLLMBackend))}
+        backends = {
+            id(item): item
+            for item in [
+                modules.backend,
+                *(getattr(modules, role).backend for role in _ROLES),
+            ]
+            if isinstance(item, (OpenAICompatibleBackend, FakeLLMBackend))
+        }
         for item in backends.values():
             item.trace_hook = save_role_io
             if isinstance(item, OpenAICompatibleBackend):
                 item.metadata_hook = save_request
-        embedder = modules.retriever.backend if isinstance(modules.retriever, VectorRetriever) else None
+        embedder = (
+            modules.retriever.backend
+            if isinstance(modules.retriever, VectorRetriever)
+            else None
+        )
         if isinstance(embedder, OpenAICompatibleEmbedding):
             embedder.metadata_hook = save_request
-        runner = PipelineRunner(modules, memory, trajectories, max_attempts=max_attempts,
-                                experience_enabled=experience_enabled,
-                                max_revision_output_retries=config["modules"]["revision"]["config"].get(
-                                    "invalid_output_retries", 2))
+        runner = PipelineRunner(modules, memory, trajectories, max_rounds=max_rounds)
         seen_ids: set[str] = set()
         train_total = _split_total(dataset, "train")
         train_progress = _Progress("train", train_total)
         try:
-            train_count = _process_split(runner, dataset, "train", seen_ids,
-                                         request_context, train_progress, skipped, stop_after_train)
+            train_count = _process_split(
+                runner,
+                dataset,
+                "train",
+                seen_ids,
+                request_context,
+                train_progress,
+                skipped,
+                stop_after_train,
+            )
         finally:
             train_progress.close()
         if train_count < train_total:
-            return {"run_dir": str(run_dir), "train_samples": train_count, "test_samples": 0,
-                    "train_total": train_total, "status": "paused_after_train_prefix"}
+            return {
+                "run_dir": str(run_dir),
+                "train_samples": train_count,
+                "test_samples": 0,
+                "train_total": train_total,
+                "status": "paused_after_train_prefix",
+            }
         test_count = 0
         if "test" in dataset.paths:
             # 测试阶段复用训练后的 Memory，完全不写回信用或生成经验。
-            evaluation = PipelineRunner(modules, ExperienceMemory(root, read_only=True),
-                                        trajectories, training=False, experience_enabled=experience_enabled,
-                                        max_attempts=max_attempts)
+            evaluation = PipelineRunner(
+                modules,
+                ExperienceMemory(root, read_only=True),
+                trajectories,
+                training=False,
+                max_rounds=max_rounds,
+            )
             test_progress = _Progress("test", _split_total(dataset, "test"))
             try:
                 workers = config["run"].get("test_workers", 4)
                 if workers == 1:
-                    test_count = _process_split(evaluation, dataset, "test", seen_ids,
-                                                request_context, test_progress, skipped)
+                    test_count = _process_split(
+                        evaluation,
+                        dataset,
+                        "test",
+                        seen_ids,
+                        request_context,
+                        test_progress,
+                        skipped,
+                    )
                 else:
-                    test_count = _process_test_parallel(evaluation, dataset, seen_ids,
-                                                        request_context, test_progress, skipped, workers)
+                    test_count = _process_test_parallel(
+                        evaluation,
+                        dataset,
+                        seen_ids,
+                        request_context,
+                        test_progress,
+                        skipped,
+                        workers,
+                    )
             finally:
                 test_progress.close()
-        return {"run_dir": str(run_dir), "train_samples": train_count, "test_samples": test_count}
+        return {
+            "run_dir": str(run_dir),
+            "train_samples": train_count,
+            "test_samples": test_count,
+        }
     finally:
         _close_modules(modules)
 
@@ -695,9 +919,11 @@ def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
     directory = Path(run_dir)
     manifest_file = directory / "run_manifest.json"
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 1:
+    if manifest.get("format_version") != 2:
         raise ValueError(f"{manifest_file}: unsupported manifest format")
-    store_root = Path(manifest["config"]["store"]["config"].get("root_dir", "artifacts"))
+    store_root = Path(
+        manifest["config"]["store"]["config"].get("root_dir", "artifacts")
+    )
     if store_root.is_absolute() or ".." in store_root.parts or store_root == Path("."):
         raise ValueError(f"{manifest_file}: invalid store root_dir")
     record = TrajectoryLog(directory / store_root).get(sample_id)
@@ -715,25 +941,40 @@ def summarize_rewardbench(run_dir: str | Path) -> dict[str, Any]:
         raise ValueError("RewardBench summary requires a test split")
     test_hash = manifest.get("dataset_sha256", {}).get("test")
     if not isinstance(test_hash, str) or _sha256_file(Path(paths["test"])) != test_hash:
-        raise ValueError("test dataset has changed since run or lacks a recorded SHA-256")
+        raise ValueError(
+            "test dataset has changed since run or lacks a recorded SHA-256"
+        )
     dataset = JsonlDataset({"test": paths["test"]})
-    expected = {sample.sample_id: sample.metadata.get("subset")
-                for sample in dataset.load("test")}
-    counts = {subset: list(expected.values()).count(subset) for subset in CHAT_HARD_SUBSETS}
-    if (not expected or any(subset not in CHAT_HARD_SUBSETS for subset in expected.values())
-            or len(set(counts.values())) != 1 or 0 in counts.values()):
+    expected = {
+        sample.sample_id: sample.metadata.get("subset")
+        for sample in dataset.load("test")
+    }
+    counts = {
+        subset: list(expected.values()).count(subset) for subset in CHAT_HARD_SUBSETS
+    }
+    if (
+        not expected
+        or any(subset not in CHAT_HARD_SUBSETS for subset in expected.values())
+        or len(set(counts.values())) != 1
+        or 0 in counts.values()
+    ):
         raise ValueError("test split must cover all six Chat Hard subsets equally")
     records = {}
     for record in TrajectoryLog(
-            directory / manifest["config"]["store"]["config"]["root_dir"]).all():
+        directory / manifest["config"]["store"]["config"]["root_dir"]
+    ).all():
         if record.sample_id in records:
             raise ValueError(f"duplicate trajectory sample_id {record.sample_id!r}")
         records[record.sample_id] = record
     missing = expected.keys() - records.keys()
     if missing:
-        raise ValueError(f"incomplete test evaluation: {len(missing)} sample(s) have no trajectory")
-    per_subset = {subset: {"total": 0, "correct": 0, "judge_errors": 0, "sample_errors": 0}
-                  for subset in CHAT_HARD_SUBSETS}
+        raise ValueError(
+            f"incomplete test evaluation: {len(missing)} sample(s) have no trajectory"
+        )
+    per_subset = {
+        subset: {"total": 0, "correct": 0, "judge_errors": 0, "sample_errors": 0}
+        for subset in CHAT_HARD_SUBSETS
+    }
     for sample_id, subset in expected.items():
         record = records[sample_id]
         judgment = record.initial_judgment
@@ -749,20 +990,40 @@ def summarize_rewardbench(run_dir: str | Path) -> dict[str, Any]:
             per_subset[subset]["correct"] += int(judgment.success)
     for counts in per_subset.values():
         valid = counts["total"] - counts["judge_errors"] - counts["sample_errors"]
-        counts["accuracy"] = (counts["correct"] / counts["total"]
-                              if counts["total"] and not counts["judge_errors"] and not counts["sample_errors"] else None)
+        counts["accuracy"] = (
+            counts["correct"] / counts["total"]
+            if counts["total"]
+            and not counts["judge_errors"]
+            and not counts["sample_errors"]
+            else None
+        )
         counts["accuracy_on_valid"] = counts["correct"] / valid if valid else None
     total = sum(item["total"] for item in per_subset.values())
     correct = sum(item["correct"] for item in per_subset.values())
     judge_errors = sum(item["judge_errors"] for item in per_subset.values())
     sample_errors = sum(item["sample_errors"] for item in per_subset.values())
-    invalid_revisions = sum(len(record.invalid_revision_attempts) for record in records.values())
-    return {"run_dir": str(directory), "scope": "internal Chat Hard split (not official leaderboard)",
-            "test_total": total, "test_correct": correct,
-            "test_judge_errors": judge_errors, "test_sample_errors": sample_errors,
-            "test_accuracy": correct / total if not (judge_errors + sample_errors) else None,
-            "test_accuracy_on_valid": correct / (total - judge_errors - sample_errors) if total > judge_errors + sample_errors else None,
-            "per_subset": per_subset, "invalid_revision_attempts": invalid_revisions}
+    invalid_applications = sum(
+        sum(a.error is not None for a in record.application_attempts)
+        for record in records.values()
+    )
+    return {
+        "run_dir": str(directory),
+        "scope": "internal Chat Hard split (not official leaderboard)",
+        "test_total": total,
+        "test_correct": correct,
+        "test_judge_errors": judge_errors,
+        "test_sample_errors": sample_errors,
+        "test_accuracy": (
+            correct / total if not (judge_errors + sample_errors) else None
+        ),
+        "test_accuracy_on_valid": (
+            correct / (total - judge_errors - sample_errors)
+            if total > judge_errors + sample_errors
+            else None
+        ),
+        "per_subset": per_subset,
+        "invalid_application_attempts": invalid_applications,
+    }
 
 
 def main(argv: Sequence[str] | None = None) -> int:

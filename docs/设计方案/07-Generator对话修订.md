@@ -1,29 +1,50 @@
-# Generator 对话修订
+# Generator新会话应用候选经验
 
-> 上位文档：[VERGE 设计总览](../设计方案.md) ｜ 调用方：[失败修订](./06-失败修订.md)
+> 上位文档：[设计总览](../设计方案.md) ｜ 调用方：[候选验证控制](06-失败修订.md)
+>
+> 新机制已实现，离线契约验收通过。路径保留；新代码不兼容旧同会话修订或来源清空协议，历史方法只留在main及旧计划，不要求新接口读取。
 
-同一 Generator 的单样本会话保留初始 system/user 及模型实际 assistant 原文；追加 Critic 公开建议为新 user，再输出完整 rubric。结构为：
+## 1. 会话边界
+
+每次应用重新创建同一Generator角色/后端的独立会话，不新增生成角色：
 
 ```text
-system: Generator 职责与专属输出要求（_ROLE_INSTRUCTIONS）
-user: task 和所选经验
-assistant: analysis + criteria（初始输出）
-user: Judge失败状态 + Critic improvement_advice + 重新生成请求
-assistant: analysis + criteria（第一轮完整修订）
-user: 最近有效rubric的Judge失败状态 + 第二轮公开建议
-assistant: analysis + criteria（第二轮完整修订）
+system：Generator职责与角色专属输出要求
+user：原始task + 本样本固定所选经验E + 本轮已准入候选C
+assistant：analysis + 完整criteria
 ```
 
-仅告知Judge失败状态，不将 chosen/rejected、Judge逐项判断/得分或 Critic analysis 直接加入会话。初始 Generator 始终 preference-blind，修订获得的建议可能存在提示词未能阻止的间接泄露。
+不输入R0/R1、旧analysis、assistant历史、普通修订建议、Critic私有诊断、偏好对或Judge结果。第二轮同样从task重新生成，仅替换候选C；E列表及输入文本固定，不再次检索、筛选，不累积第一轮候选。
 
-Generator结合task判断公开建议是否适用，任务目标与明确约束优先于经验和修订建议；保留合理标准，仅调整有依据的问题，并在原analysis中简述关键调整依据。不为提高判别分差降低明确约束的重要性或增加无依据要求。反馈仍为简短user消息，职责写入角色system，不恢复操作协议或新增审核阶段。
+R1/R2只表示应用顺序，不表示接续修改前一份rubric。诊断上的失败上下文应独立留档；新协议不为旧base_rubric_id保留兼容负担，不把审计引用当作消息继承。
 
-完整输出仍是 `{analysis, criteria}`；每条含 question、importance_score、source_experiences。修订来源由程序接管：基本结构/类型校验后，在编号反解前于返回值副本中统一清空，不要求模型清空、不向Generator说明内部处理规则。R0仍严格核验所选经验引用，其他字段及角色的校验不放宽。不对训练中修订结果计算已有经验下游信用。程序分配新的标准/rubric ID，base 指向最近有效 rubric。没有操作编号、ADD/DELETE/MODIFY 或 Executor。
+## 2. 自主采用与任务优先
 
-每个样本开始重置会话，ContextVar 隔离并发测试线程。初始成功、只读测试和 baseline 不追加 Critic 消息。保存每次真实请求中的完整消息及原始输出，可通过 Web Generator 页签审查。
+E与C同为可选指导，Generator按task决定采用、组合或忽略，不强制使用C，也不要求提高当前偏好分差。它们证据状态不同：E有历史可信度，C仅通过准入；不伪造候选confidence，也不给C自动优先权。
 
-无效但结构可解析的回复仍保留在对话中，后续 user 告知校验原因，有限次数要求重输完整 rubric；不可解析输出的后端格式纠错和实际消息照实落日志，未获得有效回复时不能假装有修订。第二轮以最近有效标准为基线，而不是以无效输出构造 Judge 结果。
+任务目标、实际输入和明确约束优先。经验只能在适用条件支持的范围内新增或实质影响标准。仅task已足以形成的标准不挂名；既不能全部引用，也不能把实际采用一律清空。重要性反映任务重要性，每条问题以“是＝满足要求”的正向Boolean方式表达。
 
-参考 RF2：`experiments/critic-refine/run_critic_refine_v5_1.py:798–819` 中 `messages=[*state["active_messages"], feedback]`，模型与角色仍为 Generator。
+## 3. 来源与采用记录
 
-正常修订的user消息只说明“你生成的 rubric 未通过 Judge 评判”，附Critic公开建议并请求重新生成，不重复analysis/criteria、数量、重要性、来源或ID格式。输出要求沿用初始system；修订来源清空只在程序内执行，system/user均不声明该内部规则。原始回复和backend解析输出原样留在role_io，assistant历史保留原文，轨迹Rubric保存程序规范化结果；不修改旧日志。输出校验纠错仍只说明实际校验问题，不把未经过Judge的无效回复描述成Judge失败。
+沿用完整输出analysis/criteria与2–8条标准、1–10整数重要性要求。每条source_experiences只允许本次E和C的局部编号，需反解到明确区分经验ID与候选ID的内部引用；多来源无重复，未知引用仍拒绝。
+
+**移除“revision_number触发来源统一清空”的旧路径**，直接用新应用协议保留有效来源，不保留历史兼容分支；这不放宽R0或其他角色校验。
+
+至少一条criterion声明实质使用C，作为本次“采用标记”；analysis可辅助人工核对，但不以“我使用了经验”一句话替代逐项来源。标注是模型自报，不证明因果性或真实效果，不新增LLM采用审核。
+
+## 4. 结果分流
+
+| 采用标记 | Judge | 处理 |
+|---|---|---|
+| 有C | 成功 | 同一候选可Fusion；记录应用成功及P/N，正负不抵消，整体成功也可有负证据 |
+| 无C | 成功 | 任务成功；C未采用、未验证，不Fusion，不再强行验证 |
+| 有C | 失败 | 保留应用失败证据；有预算则Critic重新设计 |
+| 无C | 失败 | 将未采用及实际失败反馈Critic；不能直接判C无效 |
+
+应用中E的来源用于审计，不再次追加本样本已有经验信用；该信用仍只由R0计算。
+
+## 5. 审计和错误
+
+保存每次独立会话真实system/user、原始assistant、解析输出、结构纠错及有效来源。不输入旧历史，不迁移或补造旧实验的候选引用；HTTP编号与Fake内部ID路径均需回归。
+
+沿用既有有限纠错与错误隔离：应用生成格式/结构耗尽记录无效轮，在剩余预算内可继续，不全局中止；技术错误不伪造Judge。Judge仅处理有效rubric，输出耗尽记录Judge错误并结束样本后续步骤，继续下一样本。鉴权/网络、存储和程序异常沿原全局故障边界。

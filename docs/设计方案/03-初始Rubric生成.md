@@ -28,7 +28,7 @@ critic feedback
 
 ## 3. 输出
 
-Generator 先返回非空 `analysis`，分析 task 的目标、实际输入与完整性、核心要求和当前条件下合理的回答行为；再依据分析返回 `criteria` 列表，每项只包含 `question`、`importance_score` 和 `source_experiences`。系统按列表顺序自动分配 criterion ID，并创建 rubric ID 和空 base；后续 Judge/Critic 使用系统分配的编号。来源经验引用仍使用输入提供的局部数字 ID。分析只依据 task 和所选经验，记录在既有 role_io 中；领域 Rubric 和信用计算不使用分析。标准数量仍为 2–8 条，由覆盖任务核心要求决定，不强行增加数量。
+Generator 先返回非空 `analysis`，分析 task 的目标、实际输入与完整性、核心要求和当前条件下合理的回答行为；再依据分析返回 `criteria` 列表，每项只包含 `question`、`importance_score` 和 `source_experiences`。系统按列表顺序自动分配 criterion ID，并创建独立 rubric ID；后续 Judge/Critic 使用系统分配的编号。来源经验引用仍使用输入提供的局部数字 ID。分析只依据 task 和所选经验，记录在既有 role_io 中；领域 Rubric 和信用计算不使用分析。标准数量仍为 2–8 条，由覆盖任务核心要求决定，不强行增加数量。
 
 ## 4. Importance Score
 
@@ -57,7 +57,7 @@ Generator 不能看到 chosen/rejected。是否实质贡献属于语义判断，
 每条 criterion 必须：
 
 - 只判断一个问题；
-- 能回答 Yes / No；
+- 能回答Yes/No，并以“是＝满足要求”的正向语义表达，不用“是否存在错误/遗漏”等缺陷问题搭配正向加分；
 - 能直接评价 response；
 - 不包含候选回答中特有信息；
 - 不引用 chosen/rejected；
@@ -65,8 +65,10 @@ Generator 不能看到 chosen/rejected。是否实质贡献属于语义判断，
 
 ## 7. 初始输出校验与有限重试
 
-生成结果须为无 base 的 R0、包含 2–8 条标准；每条 `source_experiences` 不得重复，且只能引用已选经验。普通运行与续跑默认均允许 2 次额外语义纠错，仅反馈不含响应文本的校验原因。Backend 的格式重试耗尽后不叠加语义重试。仍无合法输出时记录 `sample_error`（stage/type/message），不构造 R0/Judge，不计为正确或错误判别，继续下一样本。Generator 不获得 chosen/rejected 或 Judge 结果。
+生成结果须为独立 R0、包含 2–8 条标准；每条 `source_experiences` 不得重复，且只能引用已选经验。普通运行与续跑默认均允许 2 次额外语义纠错，仅反馈不含响应文本的校验原因。Backend 的格式重试耗尽后不叠加语义重试。仍无合法输出时记录 `sample_error`（stage/type/message），不构造 R0/Judge，不计为正确或错误判别，继续下一样本。Generator 不获得 chosen/rejected 或 Judge 结果。
 
 ## Generator 会话边界
 
-初始生成只接收 task 和经验；每个样本重置会话。训练初始失败后，原有 Generator 会话按[对话修订](./07-Generator对话修订.md)追加 Critic 公开建议，使用同一角色/后端输出完整 rubric。只读测试和 baseline 不执行修订。模型原始 assistant 回复保留；初始分析的 Web 摘要不被后续修订分析覆盖。修订时公开建议需结合task判断是否适用；任务目标与明确约束优先于经验和建议，不因偏好分差放宽明确要求或新增无依据要求，保留合理标准并在analysis中简述关键调整依据。
+R0只接收task与所选经验，每个样本重置会话，R0来源仍严格限定E。训练R0有效失败后，新目标是[候选经验新会话应用](./07-Generator对话修订.md)：Critic候选先Admission，再以task+固定E+本轮通过候选重新开始Generator会话，不继承R0、旧分析、assistant或普通建议。E和C均由Generator自主判断是否适用，明确约束优先。R0及应用会话的实际输入输出分别保存，初始分析摘要不能被后续覆盖。只读测试和baseline仅初始生成。
+
+此处描述已实现的新会话协议，见[计划31](../plans/31-Critic候选经验准入与新会话验证.md)。正向问题表达由提示词与现有协议约束，不据此自动增加语义审核门禁。

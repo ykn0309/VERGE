@@ -1,416 +1,507 @@
-"""用 Fake Modules 覆盖 Runner 的训练分支、隔离边界与写盘时机。"""
+"""Candidate-first business budgets and adoption branches (offline, no semantics claims)."""
 
 from dataclasses import replace
-
+from copy import deepcopy
 import pytest
 
-from verge.models import CandidateExperience
+from verge.calculator import calculate_rubric_judgment
+from verge.llm import FakeLLMBackend, LLMFormatError, LLMRequestError
 from verge.memory import ExperienceMemory, TrajectoryLog
-from verge.models import Criterion, PreferenceSample, RevisionOperation, Rubric
+from verge.models import (
+    Criterion,
+    CriterionJudgment,
+    PreferenceSample,
+    Rubric,
+    TrajectoryRecord,
+)
 from verge.modules import JudgeOutputError, make_fake_modules
 from verge.pipeline import PipelineRunner
 
 
-def sample(name: str = "sample") -> PreferenceSample:
-    return PreferenceSample(name, "任务包含明确的关键要求。", "优质回答", "较差回答", {})
+def sample(sid="s"):
+    return PreferenceSample(
+        sid,
+        "任务包含明确关键要求。",
+        "answer chosen private",
+        "answer rejected private",
+        {},
+    )
 
 
-def make_runner(tmp_path, scenario="attempt_1_success", **options):
+def runner(tmp_path, scenario="attempt_1_success", **options):
     modules = make_fake_modules(scenario, **options)
     memory = ExperienceMemory(tmp_path)
-    log = TrajectoryLog(tmp_path)
-    return PipelineRunner(modules, memory, log), modules, memory, log
+    return PipelineRunner(modules, memory, TrajectoryLog(tmp_path))
 
 
-def test_initial_success_stops_before_revision_and_writes_no_experience(tmp_path):
-    runner, modules, memory, log = make_runner(tmp_path, "initial_success")
-    record = runner.run_sample(sample())
-    assert record.state == "initial_success"
-    assert record.initial_judgment.success
-    assert (record.revision_attempts, record.reflected_candidates, record.operation_contributions) == ([], [], {})
-    assert memory.all() == []
-    assert [role for role, _ in modules.backend.requests] == ["initial_generator", "judge", "judge"]
-    assert log.get("sample") == record
+@pytest.mark.parametrize(
+    "scenario,state,rounds,pool",
+    [
+        ("initial_success", "initial_success", 0, 0),
+        ("attempt_1_success", "application_success", 1, 1),
+        ("attempt_2_success", "application_success", 2, 1),
+        ("final_failure", "validation_exhausted", 2, 0),
+    ],
+)
+def test_business_outcomes(tmp_path, scenario, state, rounds, pool):
+    r = runner(tmp_path, scenario)
+    result = r.run_sample(sample())
+    assert result.state == state
+    assert len(result.application_attempts) == rounds
+    assert len(r.memory.all()) == pool
+    assert TrajectoryRecord.from_json(result.to_json()) == result
+    assert len(list(r.trajectories.all())) == 1
+    assert not hasattr(r.modules, "reflector")
+    if pool:
+        c = result.proposal_attempts[-1].candidate
+        assert (r.memory.all()[0].content, r.memory.all()[0].trigger) == (
+            c.content,
+            c.trigger,
+        )
+        assert c.fusion_record.credit == result.application_attempts[-1].credit
+        assert r.memory.all()[0].alpha == pytest.approx(1.8)
 
 
-def test_initial_judge_error_records_failure_and_continues_without_credit(tmp_path):
-    runner, modules, memory, log = make_runner(tmp_path, "initial_success")
-    original = modules.judge.judge
-    calls = 0
-
-    def fail_once(*args, **kwargs):
-        nonlocal calls
-        calls += 1
-        if calls == 1:
-            raise JudgeOutputError("invalid numbered criterion")
-        return original(*args, **kwargs)
-
-    modules.judge.judge = fail_once
-    first, second = runner.run([sample("first"), sample("second")])
-    assert first.state == "judge_error_initial" and first.initial_judgment is None
-    assert first.judge_error == "invalid numbered criterion" and log.get("first") == first
-    assert second.state == "initial_success" and log.get("second") == second
-    assert memory.all() == []
-
-
-def test_revision_judge_error_preserves_initial_credit_and_skips_reflection(tmp_path):
-    runner, modules, memory, log = make_runner(tmp_path)
-    original = modules.judge.judge
-    calls = 0
-
-    def fail_revision(*args, **kwargs):
-        nonlocal calls
-        calls += 1
-        if calls == 2:
-            raise JudgeOutputError("invalid numbered criterion")
-        return original(*args, **kwargs)
-
-    modules.judge.judge = fail_revision
-    record = runner.run_sample(sample())
-    assert record.state == "judge_error_revision" and record.initial_judgment is not None
-    assert record.judge_error and not record.revision_attempts
-    assert not record.reflected_candidates and not memory.all()
-    assert log.get("sample") == record
+def test_admission_two_failures_ends_without_application(tmp_path):
+    r = runner(tmp_path, admission_pass=False)
+    result = r.run_sample(sample())
+    assert result.state == "admission_exhausted"
+    assert len(result.proposal_attempts) == 2 and not result.application_attempts
+    calls = [p for role, p in r.modules.backend.requests if role == "critic"]
+    rejected = result.proposal_attempts[0].candidate
+    assert calls[1]["rejected_candidate"] == {
+        "candidate_id": rejected.candidate_id,
+        "content": rejected.content,
+        "trigger": rejected.trigger,
+        "admission_reason": rejected.admission_reason,
+    }
+    assert calls[0]["current_rubric"] == calls[1]["current_rubric"]
+    assert (
+        len(
+            [1 for role, _ in r.modules.backend.requests if role == "initial_generator"]
+        )
+        == 1
+    )
+    assert r.memory.all() == []
 
 
-def test_attempt_one_success_adds_experience_and_full_trajectory(tmp_path):
-    runner, modules, memory, log = make_runner(tmp_path)
-    record = runner.run_sample(sample())
-    assert record.state == "revision_success_1"
-    assert not record.initial_judgment.success
-    assert len(record.revision_attempts) == 1
-    attempt = record.revision_attempts[0]
-    assert (attempt.attempt_number, attempt.rubric.base_rubric_id) == (1, record.initial_rubric.rubric_id)
-    assert attempt.judgment.success
-    assert attempt.operations == []
-    assert attempt.analysis and attempt.feedback
-    assert record.operation_contributions == {}
-    result = record.reflected_candidates[0]
-    assert result.linked_operation_ids == []
-    assert result.credit is None
-    assert (result.admission, result.fusion) == ("PASS", "ADD")
-    stored = memory.get(result.experience_id)
-    assert stored.alpha == pytest.approx(1 + .25 * (attempt.judgment.margin - record.initial_judgment.margin))
-    assert stored.source_trajectories == ["sample"]
-    assert log.get("sample") == record
-    # pool 为空，无需调用 fusion_judge 后端。
-    assert [role for role, _ in modules.backend.requests][-2:] == [
-        "reflector", "admission_checker",
-    ]
+def test_four_proposals_two_applications_and_reset(tmp_path):
+    r = runner(tmp_path, "attempt_2_success")
+    original = r.modules.backend.generate
+    count = 0
 
-
-def test_attempt_two_uses_r0_not_failed_r1_and_only_successful_operations(tmp_path):
-    runner, modules, memory, log = make_runner(tmp_path, "attempt_2_success")
-    record = runner.run_sample(sample())
-    assert record.state == "revision_success_2"
-    assert len(record.revision_attempts) == 2
-    failed, successful = record.revision_attempts
-    assert not failed.judgment.success and successful.judgment.success
-    assert failed.rubric.rubric_id != successful.rubric.rubric_id
-    assert failed.rubric.base_rubric_id == record.initial_rubric.rubric_id
-    assert successful.rubric.base_rubric_id == failed.rubric.rubric_id
-    assert successful.operations == []
-    assert record.operation_contributions == {}
-    assert record.reflected_candidates[0].linked_operation_ids == []
-    assert [item.experience_id for item in memory.all()] == [record.reflected_candidates[0].experience_id]
-    assert log.get("sample") == record
-    assert [payload["current_rubric"]["rubric_id"] for role, payload in
-            modules.backend.requests if role == "critic"] == ["r0", failed.rubric.rubric_id]
-
-
-
-
-def delete_to_one():
-    return {"analysis": "部分标准未能区分候选回答。", "operations": [{"operation_id": f"drop{i}", "operation_type": "DELETE",
-                            "target_criterion_id": f"c{i}", "new_or_updated_criterion": None}
-                           for i in (1, 2, 3)]}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def test_critic_contract_error_is_recorded_without_executor_retries(tmp_path):
-    modules = make_fake_modules("attempt_1_success")
-    original = modules.backend.generate
-    calls = []
-
-    def bad_generator(role, payload):
-        if role == "critic":
-            calls.append(payload)
-            return {"analysis": "诊断", "operations": "not a list"}
-        return original(role, payload)
-
-    modules.backend.generate = bad_generator
-    log = TrajectoryLog(tmp_path)
-    runner = PipelineRunner(modules, ExperienceMemory(tmp_path), log,
-                            max_revision_output_retries=2)
-    record = runner.run_sample(sample())
-    assert record.state == "sample_error"
-    assert record.sample_error["stage"] == "revision_1.critic"
-    assert "structured fields" in record.sample_error["message"]
-    assert len(calls) == 1 and log.get("sample") == record  # 不叠加 Executor 重试。
-
-
-
-
-def test_final_failure_writes_trajectory_without_new_experience(tmp_path):
-    runner, modules, memory, log = make_runner(tmp_path, "final_failure")
-    record = runner.run_sample(sample())
-    assert record.state == "final_failure"
-    assert len(record.revision_attempts) == 2
-    assert all(not attempt.judgment.success for attempt in record.revision_attempts)
-    assert record.reflected_candidates == [] and record.operation_contributions == {}
-    assert not any(role in ("reflector", "fusion_judge") for role, _ in modules.backend.requests)
-    assert memory.all() == [] and log.get("sample") == record
-
-
-@pytest.mark.parametrize("options,expected_roles", [
-    ({"reflect_count": 0}, {"reflector"}),
-])
-def test_no_candidates_or_unbound_skips_admission_and_fusion(tmp_path, options, expected_roles):
-    runner, modules, memory, log = make_runner(tmp_path, **options)
-    record = runner.run_sample(sample())
-    assert record.state == "revision_success_1"
-    roles = {role for role, _ in modules.backend.requests}
-    assert expected_roles <= roles and "admission_checker" not in roles and "fusion_judge" not in roles
-    assert not memory.all()
-    if options.get("unbound"):
-        assert len(record.reflected_candidates) == 1
-        assert record.reflected_candidates[0].linked_operation_ids == []
-        assert record.reflected_candidates[0].credit is None
-    else:
-        assert record.reflected_candidates == []
-    assert log.get("sample") == record
-
-
-def test_admission_fail_keeps_provisional_credit_in_log_without_memory(tmp_path):
-    runner, modules, memory, log = make_runner(tmp_path, admission_pass=False)
-    record = runner.run_sample(sample())
-    rejected = record.reflected_candidates[0]
-    assert rejected.credit is None and rejected.admission == "FAIL"
-    assert rejected.fusion is None and rejected.experience_id is None
-    assert memory.all() == [] and log.get("sample") == record
-    assert not any(role == "fusion_judge" for role, _ in modules.backend.requests)
-
-
-@pytest.mark.parametrize("trigger", [
-    "任务要求解释，而且初始标准未能区分回答",
-    "初始标准未能区分回答",
-])
-def test_admission_fail_path_for_scripted_posthoc_trigger(tmp_path, trigger):
-    runner, modules, memory, log = make_runner(tmp_path)
-    original = modules.backend.generate
-
-    def reject_mixed_trigger(role, payload):
-        response = original(role, payload)
-        if role == "reflector":
-            response["candidates"][0]["trigger"] = trigger
+    def generation(role, payload):
+        nonlocal count
+        result = original(role, payload)
         if role == "admission_checker":
-            assert payload["candidate"]["trigger"] == trigger
-            # 只测试模型返回 FAIL 后的写盘路径；不把 mock 当作语义判别器。
-            return {"decision": "FAIL", "reason": "条件依赖修订后才能观察的信息。"}
-        return response
+            count += 1
+            result = {
+                "decision": "FAIL" if count % 2 else "PASS",
+                "reason": f"具体原因{count}",
+            }
+        return result
 
-    modules.backend.generate = reject_mixed_trigger
-    record = runner.run_sample(sample())
-    assert record.reflected_candidates[0].admission == "FAIL"
-    assert record.reflected_candidates[0].admission_reason == "条件依赖修订后才能观察的信息。"
-    assert memory.all() == [] and log.get("sample") == record
-    assert "fusion_judge" not in [role for role, _ in modules.backend.requests]
-
-
-
-
-def test_downstream_persisted_before_later_revision_failure(tmp_path):
-    memory = ExperienceMemory(tmp_path)
-    created = memory.fuse(make_candidate(), "origin")
-    before = memory.get(created.experience_id).beta
-    modules = make_fake_modules("attempt_1_success")
-    runner = PipelineRunner(modules, memory, TrajectoryLog(tmp_path))
-
-    class FailedCritic:
-        def critique(self, *args, **kwargs):
-            raise RuntimeError("failure after downstream write")
-
-    modules.critic = FailedCritic()
-    with pytest.raises(RuntimeError, match="failure after downstream write"):
-        runner.run_sample(sample())
-    assert ExperienceMemory(tmp_path).get(created.experience_id).beta > before
-    assert TrajectoryLog(tmp_path).get("sample") is None
-    assert modules.backend.requests[0][0] == "selector"
-
-
-def make_candidate() -> CandidateExperience:
-    return CandidateExperience("seed", "参考经验", "任务包含明确的关键要求。", [],
-                               None, "PASS")
-
-
-def test_unmatched_high_confidence_experience_can_be_left_unselected(tmp_path):
-    memory = ExperienceMemory(tmp_path)
-    unrelated = memory.fuse(CandidateExperience(
-        "seed", "辨别法律条文引用是否准确", "任务明确要求引用法律条文", [],
-        None, "PASS"), "origin")
-    memory.apply_downstream_credits("verified", {unrelated.experience_id: 1.0})
-    runner = PipelineRunner(make_fake_modules("initial_success"), memory, TrajectoryLog(tmp_path))
-    record = runner.run_sample(sample())
-    assert memory.get(unrelated.experience_id).confidence > 0.5
-    assert record.retrieved_experience_ids == [unrelated.experience_id]
-    assert record.selected_experience_ids == []
-    assert all(not criterion.source_experiences for criterion in record.initial_rubric.criteria)
-    assert len(memory.get(unrelated.experience_id).evidence_history) == 1
+    r.modules.backend.generate = generation
+    rec = r.run_sample(sample())
+    assert rec.state == "application_success"
+    assert [(p.round_number, p.generation_number) for p in rec.proposal_attempts] == [
+        (1, 1),
+        (1, 2),
+        (2, 1),
+        (2, 2),
+    ]
+    assert len(rec.application_attempts) == 2
+    assert len({p.candidate.candidate_id for p in rec.proposal_attempts}) == 4
+    cs = [p for role, p in r.modules.backend.requests if role == "critic"]
+    assert cs[2]["current_rubric"] == rec.application_attempts[0].rubric.to_dict()
+    assert cs[2]["current_judgment"] == rec.application_attempts[0].judgment.to_dict()
+    assert (
+        cs[2]["previous_candidate"]["candidate_id"]
+        == rec.application_attempts[0].candidate_id
+    )
+    assert cs[2]["adopted"] is True and "rejected_candidate" not in cs[2]
+    assert "analysis" not in cs[2]
+    gs = [p for role, p in r.modules.backend.requests if role == "initial_generator"]
+    assert (
+        gs[1]["candidate_experience"]["experience_id"]
+        != gs[2]["candidate_experience"]["experience_id"]
+    )
+    for p in gs:
+        assert set(p) <= {
+            "task",
+            "selected_experiences",
+            "candidate_experience",
+            "_application_round",
+            "validation_feedback",
+        }
+        assert p["selected_experiences"] == gs[0]["selected_experiences"]
+        assert "private" not in str(p)
+    assert len([1 for role, _ in r.modules.backend.requests if role == "selector"]) <= 1
 
 
-def test_selected_but_unused_experience_does_not_receive_downstream_credit(tmp_path):
-    memory = ExperienceMemory(tmp_path)
-    seeded = memory.fuse(make_candidate(), "origin")
-    modules = make_fake_modules("initial_success")
-    original = modules.backend.generate
+def test_second_round_two_rejections_cannot_start_third_round(tmp_path):
+    r = runner(tmp_path, "final_failure")
+    original = r.modules.backend.generate
+    n = 0
 
-    def leave_selected_experience_unused(role, payload):
-        answer = original(role, payload)
-        if role == "initial_generator":
-            # 模拟 Generator 判断标准仅靠 task 就足够，无需虚构来源。
-            for criterion in answer["rubric"]["criteria"]:
-                criterion["source_experiences"] = []
-        return answer
+    def gen(role, payload):
+        nonlocal n
+        result = original(role, payload)
+        if role == "admission_checker":
+            n += 1
+            result = {
+                "decision": "PASS" if n == 1 else "FAIL",
+                "reason": "检查当前候选条件",
+            }
+        return result
 
-    modules.backend.generate = leave_selected_experience_unused
-    record = PipelineRunner(modules, memory, TrajectoryLog(tmp_path)).run_sample(sample())
-    assert record.selected_experience_ids == [seeded.experience_id]
-    assert all(not item.source_experiences for item in record.initial_rubric.criteria)
-    assert len(memory.get(seeded.experience_id).evidence_history) == 0
-    assert [item for role, payload in modules.backend.requests if role == "initial_generator"
-            for item in payload["selected_experiences"]][0]["experience_id"] == seeded.experience_id
-
-
-def test_downstream_credit_on_initial_success_and_sample_order(tmp_path):
-    memory = ExperienceMemory(tmp_path)
-    seed = memory.fuse(make_candidate(), "origin")
-    runner = PipelineRunner(make_fake_modules("initial_success"), memory, TrajectoryLog(tmp_path),
-                            evidence_weight=0.5)
-    first, second = runner.run([sample("one"), sample("two")])
-    assert first.selected_experience_ids == second.selected_experience_ids == [seed.experience_id]
-    stored = ExperienceMemory(tmp_path).get(seed.experience_id)
-    # c1 的权重为 2/12；每个样本证据权重为 0.5。
-    assert stored.alpha == pytest.approx(1 + 2 * (2 / 12) * 0.5)
-    assert [item.sample_id for item in stored.evidence_history] == ["one", "two"]
-    assert [item.evidence_type for item in stored.evidence_history] == [
-        "downstream_credit", "downstream_credit"]
+    r.modules.backend.generate = gen
+    rec = r.run_sample(sample())
+    assert rec.state == "admission_exhausted" and len(rec.application_attempts) == 1
+    assert len(rec.proposal_attempts) == 3
 
 
-@pytest.mark.parametrize("scenario", ["initial_success", "final_failure"])
-def test_eval_only_initial_judgment_never_writes_memory(tmp_path, scenario):
-    seeded = ExperienceMemory(tmp_path).fuse(make_candidate(), "origin")
-    before = (tmp_path / "experience_memory.json").read_bytes()
-    memory = ExperienceMemory(tmp_path, read_only=True)
-    modules = make_fake_modules(scenario)
-    log = TrajectoryLog(tmp_path)
-    runner = PipelineRunner(modules, memory, log, training=False)
-    record = runner.run_sample(sample())
-    assert record.selected_experience_ids == [seeded.experience_id]
-    assert record.state == ("initial_success" if scenario == "initial_success" else "initial_failure")
-    assert record.revision_attempts == [] and record.reflected_candidates == []
-    assert (tmp_path / "experience_memory.json").read_bytes() == before
-    assert not any(role in ("critic", "reflector")
-                   for role, _ in modules.backend.requests)
-    selector_payload = next(payload for role, payload in modules.backend.requests if role == "selector")
-    assert selector_payload["training"] is False
-    assert log.get("sample") == record
+@pytest.mark.parametrize(
+    "scenario,state",
+    [
+        ("attempt_1_success", "success_without_candidate"),
+        ("final_failure", "validation_exhausted"),
+    ],
+)
+def test_unadopted_candidate_is_not_fused_or_negative_evidence(
+    tmp_path, scenario, state
+):
+    r = runner(tmp_path, scenario, adopt_candidate=False)
+    rec = r.run_sample(sample())
+    assert rec.state == state and not r.memory.all()
+    assert all(
+        a.adopted is False and a.credit.amount == 0 for a in rec.application_attempts
+    )
+    assert all(role != "fusion_judge" for role, _ in r.modules.backend.requests)
+    if scenario == "final_failure":
+        cs = [p for role, p in r.modules.backend.requests if role == "critic"]
+        assert cs[1]["adopted"] is False
 
 
+def test_no_candidate_ends_without_inventing_admission(tmp_path):
+    r = runner(tmp_path, candidate_count=0)
+    rec = r.run_sample(sample())
+    assert rec.state == "no_candidate" and not rec.application_attempts
+    assert all(
+        role not in ("admission_checker", "fusion_judge")
+        for role, _ in r.modules.backend.requests
+    )
 
 
-def test_preference_blind_roles_receive_only_task_and_public_experiences(tmp_path):
-    memory = ExperienceMemory(tmp_path)
-    memory.fuse(make_candidate(), "origin")
-    modules = make_fake_modules("initial_success")
-    runner = PipelineRunner(modules, memory, TrajectoryLog(tmp_path))
-    runner.run_sample(sample())
-    selector = next(payload for role, payload in modules.backend.requests if role == "selector")
-    generator = next(payload for role, payload in modules.backend.requests
-                     if role == "initial_generator")
-    assert set(selector) == {"task", "candidates", "max_selected", "training"}
-    assert set(generator) == {"task", "selected_experiences"}
-    assert set(generator["selected_experiences"][0]) == {
-        "experience_id", "content", "trigger", "confidence", "evidence_amount"}
-    assert "优质回答" not in str(selector) + str(generator)
-    assert "较差回答" not in str(selector) + str(generator)
+@pytest.mark.parametrize(
+    "role,method,stage",
+    [
+        ("selector", "select", "selection"),
+        ("initial_generator", "generate", "initial_generator"),
+        ("admission_checker", "check", "admission"),
+        ("fusion_judge", "find_match", "fusion_judge"),
+    ],
+)
+def test_role_contract_isolation_continues_next_sample(tmp_path, role, method, stage):
+    r = runner(tmp_path)
+    obj = getattr(r.modules, role)
+    original = getattr(obj, method)
+    first = True
+
+    def call(*args, **kwargs):
+        nonlocal first
+        if first:
+            first = False
+            raise ValueError("external output invalid")
+        return original(*args, **kwargs)
+
+    setattr(obj, method, call)
+    records = r.run([sample("a"), sample("b")])
+    assert (
+        records[0].state == "sample_error" and records[0].sample_error["stage"] == stage
+    )
+    assert records[1].state == "application_success"
 
 
+@pytest.mark.parametrize(
+    "role,method", [("critic", "propose"), ("initial_generator", "apply")]
+)
+@pytest.mark.parametrize("error", [ValueError, LLMFormatError])
+def test_invalid_round_uses_remaining_opportunity_without_fake_judge(
+    tmp_path, role, method, error
+):
+    r = runner(tmp_path, "attempt_2_success")
+    obj = getattr(r.modules, role)
+    original = getattr(obj, method)
+    n = 0
+
+    def fail(*args, **kwargs):
+        nonlocal n
+        n += 1
+        if n == 1:
+            raise error("bad model output")
+        return original(*args, **kwargs)
+
+    setattr(obj, method, fail)
+    rec = r.run_sample(sample())
+    assert rec.state == "application_success"
+    if role == "critic":
+        assert rec.proposal_attempts[0].error and len(rec.application_attempts) == 1
+    else:
+        assert (
+            rec.application_attempts[0].judgment is None
+            and rec.application_attempts[0].adopted is None
+        )
+    calls = [p for name, p in r.modules.backend.requests if name == "critic"]
+    assert calls[-1]["invalid_error"] == "bad model output"
+    assert calls[-1]["current_judgment"] == rec.initial_judgment.to_dict()
 
 
+@pytest.mark.parametrize(
+    "role,method", [("critic", "propose"), ("initial_generator", "apply")]
+)
+def test_two_invalid_rounds_end_and_next_sample_continues(tmp_path, role, method):
+    r = runner(tmp_path)
+    obj = getattr(r.modules, role)
+    original = getattr(obj, method)
+    count = 0
+
+    def fail(*args, **kw):
+        nonlocal count
+        count += 1
+        if count <= 2:
+            raise LLMFormatError("format exhausted")
+        return original(*args, **kw)
+
+    setattr(obj, method, fail)
+    a, b = r.run([sample("a"), sample("b")])
+    assert (
+        a.state == "invalid_application_exhausted" and b.state == "application_success"
+    )
+    assert len(a.proposal_attempts) == 2 and not r.memory.all()[
+        0
+    ].source_trajectories == ["a"]
 
 
-def test_critic_format_exhaustion_records_unknown_analysis_then_second_succeeds(tmp_path):
-    from verge.llm import LLMFormatError
-    runner, modules, memory, log = make_runner(tmp_path, 'attempt_2_success')
-    original = modules.backend.generate
-    calls = []
+@pytest.mark.parametrize("application", [False, True])
+def test_judge_error_no_candidate_write_and_next_sample(tmp_path, application):
+    r = runner(tmp_path)
+    judge = r.modules.judge.judge
+    n = 0
 
-    def generate(role, payload):
-        if role == 'critic':
-            calls.append(payload)
-            if payload['attempt_number'] == 1:
-                raise LLMFormatError('critic: invalid structured output after 3 attempts')
-        return original(role, payload)
+    def fail(*args, **kwargs):
+        nonlocal n
+        n += 1
+        if n == (2 if application else 1):
+            raise JudgeOutputError("judge exhausted")
+        return judge(*args, **kwargs)
 
-    modules.backend.generate = generate
-    record = runner.run_sample(sample())
-    assert record.state == 'revision_success_2'
-    assert len(calls) == 2  # 格式重试已经耗尽，不能再叠加 2 次操作重试。
-    failed = record.invalid_revision_attempts[0]
-    assert failed.analysis is None and failed.feedback is None
-    assert failed.validation_failures == ['critic: invalid structured output after 3 attempts']
-    assert 'analysis' not in calls[1]['previous_invalid_attempt']
-    assert calls[1]['previous_invalid_attempt']['validation_failures'] == failed.validation_failures
-    assert calls[1]['previous_invalid_attempt']['judgment_status'] == '未形成有效修订，无Judge结果'
-    assert calls[1]['current_baseline'] == 'R0'
-    assert calls[1]['previous_attempt'] is None
-    assert len(record.revision_attempts) == 1 and record.revision_attempts[0].attempt_number == 2
-    assert memory.all() and log.get('sample') == record
-
-
-def test_both_critic_format_failures_do_not_abort_next_sample(tmp_path):
-    from verge.llm import LLMFormatError
-    runner, modules, memory, log = make_runner(tmp_path)
-    original = modules.backend.generate
-    calls = []
-
-    def generate(role, payload):
-        if role == 'critic':
-            calls.append(payload['attempt_number'])
-            raise LLMFormatError('critic: invalid structured output after 3 attempts')
-        return original(role, payload)
-
-    modules.backend.generate = generate
-    records = runner.run([sample('a'), sample('b')])
-    assert calls == [1, 2, 1, 2]
-    assert all(r.state == 'final_failure' and len(r.invalid_revision_attempts) == 2 for r in records)
-    assert all(not r.revision_attempts and not r.reflected_candidates for r in records)
-    assert memory.all() == [] and len(list(log.all())) == 2
-    assert [r for r, _ in modules.backend.requests] == ['initial_generator', 'judge', 'judge'] * 2
+    r.modules.judge.judge = fail
+    a, b = r.run([sample("a"), sample("b")])
+    assert (
+        a.state == "judge_error_application"
+        if application
+        else a.state == "judge_error_initial"
+    )
+    assert a.judge_error and b.state == "application_success"
+    assert all("a" not in e.source_trajectories for e in r.memory.all())
+    if application:
+        assert (
+            a.application_attempts[0].rubric
+            and a.application_attempts[0].judgment is None
+        )
 
 
-def test_critic_network_error_still_aborts(tmp_path):
-    from verge.llm import LLMRequestError
-    runner, modules, memory, log = make_runner(tmp_path)
-    original = modules.backend.generate
+@pytest.mark.parametrize(
+    "component,method,error",
+    [
+        ("critic", "propose", LLMRequestError),
+        ("initial_generator", "apply", RuntimeError),
+        ("admission_checker", "check", TypeError),
+    ],
+)
+def test_infrastructure_or_program_error_is_not_swallowed(
+    tmp_path, component, method, error
+):
+    r = runner(tmp_path)
+    setattr(
+        getattr(r.modules, component),
+        method,
+        lambda *a, **kw: (_ for _ in ()).throw(error("fatal")),
+    )
+    with pytest.raises(error):
+        r.run_sample(sample())
+    assert not list(r.trajectories.all())
 
-    def generate(role, payload):
-        if role == 'critic':
-            raise LLMRequestError('critic: HTTP 401')
-        return original(role, payload)
 
-    modules.backend.generate = generate
-    with pytest.raises(LLMRequestError, match='HTTP 401'):
-        runner.run_sample(sample())
-    assert list(log.all()) == [] and memory.all() == []
+def test_storage_and_calculator_errors_are_global(tmp_path, monkeypatch):
+    r = runner(tmp_path)
+    monkeypatch.setattr(
+        "verge.pipeline.calculate_experience_credits",
+        lambda *a: (_ for _ in ()).throw(ValueError("internal mismatch")),
+    )
+    with pytest.raises(ValueError, match="internal mismatch"):
+        r.run_sample(sample())
+    assert not list(r.trajectories.all())
+
+
+def test_r0_credit_survives_later_failure_and_e_is_not_recredited(tmp_path):
+    r = runner(tmp_path)
+    seed = r.memory.fuse(
+        __import__(
+            "verge.models", fromlist=["CandidateExperience"]
+        ).CandidateExperience("seed_c", "经验", "*", "PASS", "可用"),
+        "seed",
+    )
+    original = r.modules.critic.propose
+
+    def fail(*a, **kw):
+        raise ValueError("invalid critic output")
+
+    r.modules.critic.propose = fail
+    rec = r.run_sample(sample())
+    e = r.memory.get(seed.experience_id)
+    assert rec.state == "invalid_application_exhausted" and e.beta == pytest.approx(1.2)
+    r.modules.critic.propose = original
+    nxt = r.run_sample(sample("next"))
+    e = r.memory.get(seed.experience_id)
+    assert nxt.state == "application_success" and e.beta == pytest.approx(1.4)
+    assert len(e.evidence_history) == 2
+    for call in [
+        p for role, p in r.modules.backend.requests if role == "initial_generator"
+    ]:
+        if "candidate_experience" in call:
+            assert call["selected_experiences"] == nxt.selected_experiences
+
+
+def test_success_with_negative_candidate_credit_still_fuses(tmp_path):
+    r = runner(tmp_path)
+    original = r.modules.initial_generator.apply
+
+    def apply(task, selected, candidate, n):
+        return Rubric(
+            "applied",
+            [
+                Criterion("bad", "基础条件", 2, [candidate.candidate_id]),
+                Criterion("good", "关键条件", 8, []),
+            ],
+        )
+
+    r.modules.initial_generator.apply = apply
+    judge = r.modules.judge.judge
+
+    def judged(rubric, *args, **kw):
+        if rubric.rubric_id == "applied":
+            return calculate_rubric_judgment(
+                rubric,
+                [
+                    CriterionJudgment("bad", False, True),
+                    CriterionJudgment("good", True, False),
+                ],
+            )
+        return judge(rubric, *args, **kw)
+
+    r.modules.judge.judge = judged
+    rec = r.run_sample(sample())
+    e = r.memory.all()[0]
+    assert (
+        rec.state == "application_success"
+        and e.alpha == 1
+        and e.beta == pytest.approx(1.2)
+    )
+    assert rec.application_attempts[0].credit.net < 0
+
+
+def test_heldout_freezes_memory_text_beta_and_no_candidate_roles(tmp_path):
+    r = runner(tmp_path)
+    r.run_sample(sample("train"))
+    before = r.memory.path.read_bytes()
+    r.modules.backend.requests.clear()
+    evaluation = PipelineRunner(
+        r.modules,
+        ExperienceMemory(tmp_path, read_only=True),
+        r.trajectories,
+        training=False,
+    )
+    rec = evaluation.run_sample(sample("test"))
+    assert (
+        not rec.proposal_attempts
+        and not rec.application_attempts
+        and not rec.downstream_credits
+    )
+    assert r.memory.path.read_bytes() == before
+    assert all(
+        role in ("selector", "initial_generator", "judge")
+        for role, _ in r.modules.backend.requests
+    )
+
+
+def test_max_rounds_one_preserves_finite_bound(tmp_path):
+    r = runner(tmp_path, "attempt_2_success")
+    r.max_rounds = 1
+    rec = r.run_sample(sample())
+    assert rec.state == "validation_exhausted" and len(rec.application_attempts) == 1
+
+
+def test_r0_balanced_channels_update_before_success_branch(tmp_path):
+    from verge.models import CandidateExperience
+
+    r = runner(tmp_path, "initial_success")
+    seeded = r.memory.fuse(
+        CandidateExperience("seed_c", "经验", "*", "PASS", "可用"), "seed"
+    )
+    eid = seeded.experience_id
+    r.modules.initial_generator.generate = lambda *a: Rubric(
+        "r0",
+        [
+            Criterion("p", "正向要求", 2, [eid]),
+            Criterion("n", "另一个正向要求", 2, [eid]),
+            Criterion("t", "task要求", 6, []),
+        ],
+    )
+    r.modules.judge.judge = lambda rubric, *a, **kw: calculate_rubric_judgment(
+        rubric,
+        [
+            CriterionJudgment("p", True, False),
+            CriterionJudgment("n", False, True),
+            CriterionJudgment("t", True, False),
+        ],
+    )
+    rec = r.run_sample(sample())
+    e = r.memory.get(eid)
+    assert rec.state == "initial_success" and rec.downstream_credits[eid].net == 0
+    assert (e.alpha, e.beta) == pytest.approx((1.2, 1.2)) and len(
+        e.evidence_history
+    ) == 1
+    assert not rec.proposal_attempts
+
+
+def test_adopted_zero_candidate_credit_still_adds_without_beta_evidence(tmp_path):
+    r = runner(tmp_path)
+    r.modules.initial_generator.apply = lambda task, e, c, n: Rubric(
+        "a",
+        [
+            Criterion("c", "候选影响的要求", 2, [c.candidate_id]),
+            Criterion("t", "task要求", 8, []),
+        ],
+    )
+    original = r.modules.judge.judge
+
+    def judged(rubric, *a, **kw):
+        if rubric.rubric_id == "a":
+            return calculate_rubric_judgment(
+                rubric,
+                [
+                    CriterionJudgment("c", True, True),
+                    CriterionJudgment("t", True, False),
+                ],
+            )
+        return original(rubric, *a, **kw)
+
+    r.modules.judge.judge = judged
+    rec = r.run_sample(sample())
+    e = r.memory.all()[0]
+    assert rec.state == "application_success" and rec.application_attempts[0].adopted
+    assert (
+        e.alpha == e.beta == 1 and not e.evidence_history and len(e.fusion_history) == 1
+    )

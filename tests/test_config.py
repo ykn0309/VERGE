@@ -13,10 +13,14 @@ DEFAULT = Path(__file__).resolve().parents[1] / "configs" / "default.yaml"
 
 def test_default_config_loads_without_creating_output_dir():
     config = load_config(DEFAULT)
-    assert config["run"] == {"seed": 42, "output_dir": "runs/default", "test_workers": 4}
+    assert config["run"] == {
+        "seed": 42,
+        "output_dir": "runs/default",
+        "test_workers": 4,
+    }
     assert config["dataset"]["implementation"] == "jsonl"
     assert config["models"]["default"]["backend"] == "fake"
-    assert config["modules"]["revision"]["config"]["max_attempts"] == 2
+    assert config["modules"]["application"]["config"]["max_rounds"] == 2
     assert not Path("runs/default").exists()
 
 
@@ -31,10 +35,14 @@ def test_required_fields_and_types_report_paths(tmp_path):
         (lambda c: c["dataset"].pop("implementation"), "dataset.implementation"),
         (lambda c: c["dataset"].update(config=[]), "dataset.config"),
         (lambda c: c["models"]["default"].pop("backend"), "models.default.backend"),
-        (lambda c: c["models"].update(roles={"judge": {"model": "m"}}),
-         "models.roles.judge.backend"),
-        (lambda c: c["modules"]["revision"].update(implementation=""),
-         "modules.revision.implementation"),
+        (
+            lambda c: c["models"].update(roles={"judge": {"model": "m"}}),
+            "models.roles.judge.backend",
+        ),
+        (
+            lambda c: c["modules"]["application"].update(implementation=""),
+            "modules.application.implementation",
+        ),
         (lambda c: c["store"].update(config={"root_dir": ""}), "store.config.root_dir"),
         (lambda c: c.pop("modules"), "config.modules"),
     ]
@@ -58,7 +66,7 @@ def test_numeric_ranges_and_non_finite_values(tmp_path):
         ("modules.retrieval", "top_l", 21),
         ("modules.selection", "max_selected", 6),
         ("modules.selection", "exploration_slots", 2),
-        ("modules.revision", "max_attempts", 3),
+        ("modules.application", "max_rounds", 3),
     ]
     for section, name, bad in cases:
         data = deepcopy(valid)

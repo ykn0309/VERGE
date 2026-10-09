@@ -41,15 +41,15 @@ class LLMFormatError(ValueError):
     """模型输出不是所需结构，已用尽格式重试。"""
 
 
-GENERATOR_TURN = ContextVar("generator_turn", default=None)
-
 _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "selector": ("selected_experience_ids", list),
     "initial_generator": ("criteria", list),
     "judge": ("criterion_judgments", list),
-    "critic": ("improvement_advice", str),
-    "reflector": ("candidates", list),
-    "admission_checker": ("decision", str),  # 另需非空 reason；在 _valid_shape 中联合校验。
+    "critic": ("candidates", list),
+    "admission_checker": (
+        "decision",
+        str,
+    ),  # 另需非空 reason；在 _valid_shape 中联合校验。
     "fusion_judge": ("match_index", (int, type(None))),
 }
 
@@ -58,14 +58,13 @@ def _reject_constant(_value: str) -> None:
     raise ValueError("invalid JSON constant")
 
 
-_NUMERIC_ID_FIELDS = frozenset({"rubric_id", "base_rubric_id", "criterion_id",
-                                "target_criterion_id", "operation_id", "candidate_id"})
-_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences", "linked_operation_ids"})
+_NUMERIC_ID_FIELDS = frozenset({"rubric_id", "criterion_id", "candidate_id"})
+_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences"})
 
 
 def _normalize_numeric_ids(role: str, value: Any) -> None:
     """只在模型 ID 字段把正整数 1 规范化为 "1"；原始响应仍留在 trace 中。"""
-    if role not in {"selector", "initial_generator", "judge", "critic", "reflector"}:
+    if role not in {"selector", "initial_generator", "judge", "critic"}:
         return
 
     def numeric_id(item: Any) -> Any:
@@ -90,50 +89,88 @@ def _normalize_numeric_ids(role: str, value: Any) -> None:
 def _valid_shape(role: str, value: Any) -> bool:
     """缺字段/字段类型不对才重试；ID引用、绑定为空、准入FAIL等语义决策不重试。"""
     if role == "admission_checker":
-        return (isinstance(value, dict) and set(value) == {"decision", "reason"}
-                and value["decision"] in ("PASS", "FAIL")
-                and isinstance(value["reason"], str) and bool(value["reason"].strip()))
+        return (
+            isinstance(value, dict)
+            and set(value) == {"decision", "reason"}
+            and value["decision"] in ("PASS", "FAIL")
+            and isinstance(value["reason"], str)
+            and bool(value["reason"].strip())
+        )
     if role == "fusion_judge":
-        if not isinstance(value, dict) or set(value) != {"match_index", "content", "trigger"}:
+        if not isinstance(value, dict) or set(value) != {
+            "match_index",
+            "content",
+            "trigger",
+        }:
             return False
         if value["match_index"] is None:
             return value["content"] is None and value["trigger"] is None
-        return (type(value["match_index"]) is int and value["match_index"] >= 0
-                and all(isinstance(value[k], str) and value[k].strip() for k in ("content", "trigger")))
+        return (
+            type(value["match_index"]) is int
+            and value["match_index"] >= 0
+            and all(
+                isinstance(value[k], str) and value[k].strip()
+                for k in ("content", "trigger")
+            )
+        )
     if role == "critic":
-        return (isinstance(value, dict) and set(value) == {"analysis", "improvement_advice"}
-                and all(isinstance(value[key], str) and value[key].strip()
-                        for key in ("analysis", "improvement_advice")))
+        return (
+            isinstance(value, dict)
+            and set(value) == {"analysis", "candidates"}
+            and isinstance(value["analysis"], str)
+            and bool(value["analysis"].strip())
+            and isinstance(value["candidates"], list)
+            and len(value["candidates"]) <= 1
+            and all(
+                isinstance(c, dict)
+                and set(c) == {"content", "trigger"}
+                and all(
+                    isinstance(c[k], str) and c[k].strip()
+                    for k in ("content", "trigger")
+                )
+                for c in value["candidates"]
+            )
+        )
     if role == "initial_generator":
-        if (not isinstance(value, dict) or set(value) != {"analysis", "criteria"}
-                or not isinstance(value["analysis"], str) or not value["analysis"].strip()
-                or not isinstance(value["criteria"], list)):
+        if (
+            not isinstance(value, dict)
+            or set(value) != {"analysis", "criteria"}
+            or not isinstance(value["analysis"], str)
+            or not value["analysis"].strip()
+            or not isinstance(value["criteria"], list)
+        ):
             return False
         data = value["criteria"]
     else:
         field, expected = _OUTPUT_FIELDS[role]
-        if not isinstance(value, dict) or set(value) != {field} or not isinstance(value[field], expected):
+        if (
+            not isinstance(value, dict)
+            or set(value) != {field}
+            or not isinstance(value[field], expected)
+        ):
             return False
         data = value[field]
     if role == "selector":
         return all(isinstance(key, str) for key in data)
     if role == "initial_generator":
-        return all(isinstance(item, dict)
-                   and set(item) == {"question", "importance_score", "source_experiences"}
-                   and isinstance(item["question"], str)
-                   and type(item["importance_score"]) is int
-                   and 1 <= item["importance_score"] <= 10
-                   and isinstance(item["source_experiences"], list)
-                   and all(isinstance(key, str) for key in item["source_experiences"])
-                   for item in data)
+        return all(
+            isinstance(item, dict)
+            and set(item) == {"question", "importance_score", "source_experiences"}
+            and isinstance(item["question"], str)
+            and type(item["importance_score"]) is int
+            and 1 <= item["importance_score"] <= 10
+            and isinstance(item["source_experiences"], list)
+            and all(isinstance(key, str) for key in item["source_experiences"])
+            for item in data
+        )
     if role == "judge":
-        return all(isinstance(item, dict) and set(item) == {"criterion_id", "satisfied"}
-                   and isinstance(item["criterion_id"], str)
-                   and type(item["satisfied"]) is bool for item in data)
-    if role == "reflector":
-        return len(data) <= 1 and all(isinstance(item, dict) and set(item) == {"content", "trigger"}
-                   and all(isinstance(item[key], str) for key in ("content", "trigger"))
-                   for item in data)
+        return all(
+            isinstance(item, dict)
+            and set(item) == {"criterion_id", "satisfied"}
+            and isinstance(item["criterion_id"], str)
+            and type(item["satisfied"]) is bool
+            for item in data
+        )
     if role == "fusion_judge":
         return data is None or type(data) is int
     return True
@@ -228,8 +265,11 @@ class OpenAICompatibleBackend:
         messages = llm_messages(role, payload)
         for attempt in range(1, self.max_retries + 2):
             try:
-                request_body: dict[str, Any] = {"model": self.model, "messages": messages,
-                                                "response_format": {"type": "json_object"}}
+                request_body: dict[str, Any] = {
+                    "model": self.model,
+                    "messages": messages,
+                    "response_format": {"type": "json_object"},
+                }
                 if self.enable_thinking is not None:
                     request_body["enable_thinking"] = self.enable_thinking
                 response = self._client.post(
@@ -243,10 +283,19 @@ class OpenAICompatibleBackend:
                 if attempt <= self.max_retries:
                     self._sleep(min(2 ** (attempt - 1), 8))
                     continue
-                raise LLMRequestError(f"{role}: request failed after {attempt} attempts ({type(exc).__name__})") from None
+                raise LLMRequestError(
+                    f"{role}: request failed after {attempt} attempts ({type(exc).__name__})"
+                ) from None
             status = response.status_code
             if status == 429 or 500 <= status < 600:
-                self._trace(role, payload, messages, attempt, status=status, error=f"HTTP {status}")
+                self._trace(
+                    role,
+                    payload,
+                    messages,
+                    attempt,
+                    status=status,
+                    error=f"HTTP {status}",
+                )
                 self._metadata(role, attempt, status=status, response=response)
                 if attempt <= self.max_retries:
                     retry_after = response.headers.get("retry-after", "")
@@ -260,7 +309,14 @@ class OpenAICompatibleBackend:
                     continue
                 raise LLMRequestError(f"{role}: HTTP {status} after {attempt} attempts")
             if status < 200 or status >= 300:
-                self._trace(role, payload, messages, attempt, status=status, error=f"HTTP {status}")
+                self._trace(
+                    role,
+                    payload,
+                    messages,
+                    attempt,
+                    status=status,
+                    error=f"HTTP {status}",
+                )
                 self._metadata(role, attempt, status=status, response=response)
                 raise LLMRequestError(f"{role}: HTTP {status}")
             raw_output: str | None = None
@@ -271,10 +327,21 @@ class OpenAICompatibleBackend:
                 raw_output = choice["message"].get("content")
                 if not isinstance(raw_output, str):
                     raw_output = response.text
-                if choice.get("finish_reason") == "content_filter" or choice["message"].get("refusal"):
-                    self._trace(role, payload, messages, attempt, status=status,
-                                raw_output=raw_output, error="model refused the request")
-                    self._metadata(role, attempt, status=status, response=response, body=body)
+                if choice.get("finish_reason") == "content_filter" or choice[
+                    "message"
+                ].get("refusal"):
+                    self._trace(
+                        role,
+                        payload,
+                        messages,
+                        attempt,
+                        status=status,
+                        raw_output=raw_output,
+                        error="model refused the request",
+                    )
+                    self._metadata(
+                        role, attempt, status=status, response=response, body=body
+                    )
                     raise LLMRefusalError(f"{role}: model refused the request")
                 if choice.get("finish_reason") == "length":
                     raise ValueError("truncated output")
@@ -288,19 +355,38 @@ class OpenAICompatibleBackend:
             except LLMRequestError:
                 raise
             except (ValueError, TypeError, KeyError, IndexError, AttributeError):
-                self._trace(role, payload, messages, attempt, status=status,
-                            raw_output=raw_output if raw_output is not None else response.text,
-                            error="invalid structured output")
+                self._trace(
+                    role,
+                    payload,
+                    messages,
+                    attempt,
+                    status=status,
+                    raw_output=raw_output if raw_output is not None else response.text,
+                    error="invalid structured output",
+                )
                 self._metadata(role, attempt, status=status, response=response)
                 if attempt <= self.max_retries:
-                    messages = [*messages, {"role": "user", "content": "上次输出格式无效；请严格只返回指定字段的 JSON 对象。"}]
+                    messages = [
+                        *messages,
+                        {
+                            "role": "user",
+                            "content": "上次输出格式无效；请严格只返回指定字段的 JSON 对象。",
+                        },
+                    ]
                     continue
-                raise LLMFormatError(f"{role}: invalid structured output after {attempt} attempts") from None
-            self._trace(role, payload, messages, attempt, status=status,
-                        raw_output=raw_output, output=result)
+                raise LLMFormatError(
+                    f"{role}: invalid structured output after {attempt} attempts"
+                ) from None
+            self._trace(
+                role,
+                payload,
+                messages,
+                attempt,
+                status=status,
+                raw_output=raw_output,
+                output=result,
+            )
             self._metadata(role, attempt, status=status, response=response, body=body)
-            if role == "initial_generator":
-                GENERATOR_TURN.set((messages, raw_output))
             return result
         raise AssertionError("unreachable retry state")
 
@@ -406,89 +492,146 @@ class OpenAICompatibleEmbedding:
 
 
 class FakeLLMBackend:
-    """用于无网络 contract/pipeline 测试；不是实际语义评价器。"""
+    """Deterministic offline fixture; no semantic audit claims."""
 
-    def __init__(self, scenario: FakeScenario = "attempt_1_success", *,
-                 reflect_count: int = 1, unbound: bool = False,
-                 admission_pass: bool = True,
-                 trace_hook: Callable[[dict[str, Any]], None] | None = None) -> None:
-        if scenario not in ("initial_success", "attempt_1_success", "attempt_2_success", "final_failure"):
+    def __init__(
+        self,
+        scenario: FakeScenario = "attempt_1_success",
+        *,
+        candidate_count: int = 1,
+        adopt_candidate: bool = True,
+        admission_pass: bool = True,
+        trace_hook=None,
+    ) -> None:
+        if scenario not in (
+            "initial_success",
+            "attempt_1_success",
+            "attempt_2_success",
+            "final_failure",
+        ):
             raise ValueError("unknown fake scenario")
-        if type(reflect_count) is not int or not 0 <= reflect_count <= 3:
-            raise ValueError("reflect_count must be between 0 and 3")
-        self.scenario = scenario
-        self.reflect_count = reflect_count
-        self.unbound = unbound
-        self.admission_pass = admission_pass
+        if type(candidate_count) is not int or candidate_count not in (0, 1):
+            raise ValueError("candidate_count must be 0 or 1")
+        self.scenario, self.candidate_count = scenario, candidate_count
+        self.adopt_candidate, self.admission_pass = adopt_candidate, admission_pass
         self.trace_hook = trace_hook
-        self.requests: list[tuple[str, dict[str, Any]]] = []
+        self.requests = []
 
     def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]:
         request = deepcopy(dict(payload))
         self.requests.append((role, request))
         if role == "selector":
-            task = request["task"].casefold()
-            matching = [item["experience_id"] for item in request["candidates"]
-                        if item["trigger"] == "*" or item["trigger"].casefold() in task]
-            result: dict[str, Any] = {"selected_experience_ids": matching[:request["max_selected"]]}
+            result = {
+                "selected_experience_ids": [
+                    x["experience_id"]
+                    for x in request["candidates"]
+                    if x["trigger"] == "*"
+                    or x["trigger"].casefold() in request["task"].casefold()
+                ][: request["max_selected"]]
+            }
         elif role == "initial_generator":
-            sources = ([request["selected_experiences"][0]["experience_id"]]
-                       if request["selected_experiences"] else [])
-            result = {"rubric": {"rubric_id": "r0", "base_rubric_id": None,
-                                 "criteria": [
-                                     {"criterion_id": "c1", "question": "回答是否完整？",
-                                      "importance_score": 2, "source_experiences": sources},
-                                     {"criterion_id": "c2", "question": "回答是否符合要求？",
-                                      "importance_score": 8, "source_experiences": []},
-                                     {"criterion_id": "c3", "question": "回答是否清楚？",
-                                      "importance_score": 1, "source_experiences": []},
-                                     {"criterion_id": "c4", "question": "回答是否准确？",
-                                      "importance_score": 1, "source_experiences": []},
-                                 ]}}
-            if request.get("revision_number"):
-                number = request["revision_number"]
-                success = (self.scenario == "attempt_1_success" and number == 1
-                           or self.scenario == "attempt_2_success" and number == 2)
-                result["rubric"]["criteria"][1]["question"] = (
-                    "是否逐项满足关键要求？" if success else f"是否概述任务目标（第{number}次）？")
-                for criterion in result["rubric"]["criteria"]:
-                    criterion["source_experiences"] = []
+            candidate = request.get("candidate_experience")
+            round_number = request.get("_application_round", 0)
+            successful = self.scenario == "initial_success" or (
+                self.scenario == f"attempt_{round_number}_success"
+                and candidate is not None
+            )
+            sources = (
+                [candidate["experience_id"]]
+                if candidate and self.adopt_candidate
+                else []
+            )
+            result = {
+                "rubric": {
+                    "rubric_id": "fake",
+                    "criteria": [
+                        {
+                            "criterion_id": "c1",
+                            "question": "回答是否完整？",
+                            "importance_score": 2,
+                            "source_experiences": (
+                                [request["selected_experiences"][0]["experience_id"]]
+                                if request["selected_experiences"]
+                                else []
+                            ),
+                        },
+                        {
+                            "criterion_id": "c2",
+                            "question": (
+                                "是否逐项满足关键要求？"
+                                if successful
+                                else f"是否概述任务目标（第{round_number}次）？"
+                            ),
+                            "importance_score": 8,
+                            "source_experiences": sources,
+                        },
+                    ],
+                }
+            }
         elif role == "judge":
-            initial_success = self.scenario == "initial_success"
             preferred = JUDGE_RESPONSE_SIDE.get() == "chosen"
-            result = {"criterion_judgments": [
-                {"criterion_id": item["criterion_id"],
-                 "satisfied": ((True if item["criterion_id"] == "c1" and initial_success
-                                else item["question"] == "是否逐项满足关键要求？")
-                               if preferred else item["criterion_id"] == "c1" and not initial_success)}
-                for item in request["criteria"]]}
+            result = {
+                "criterion_judgments": [
+                    {
+                        "criterion_id": x["criterion_id"],
+                        "satisfied": (
+                            x["question"] == "是否逐项满足关键要求？"
+                            and self.scenario != "final_failure"
+                            if preferred
+                            else x["question"] == "回答是否完整？"
+                        ),
+                    }
+                    for x in request["criteria"]
+                ]
+            }
         elif role == "critic":
-            result = {"analysis": "当前标准对关键要求的判别不足。",
-                      "improvement_advice": "依据任务要求完善关键要求的独立标准。"}
-        elif role == "reflector":
-            result = {"candidates": [
-                {"candidate_id": f"candidate_{i}",
-                 "content": "为关键任务要求设置单独的可判定标准。",
-                 "trigger": "任务包含明确的关键要求。",
-                 }
-                for i in range(self.reflect_count)]}
+            result = {
+                "analysis": "依据实际标准和判断分析任务设计。",
+                "candidates": [
+                    {
+                        "content": "为关键任务要求设置独立的正向Boolean标准。",
+                        "trigger": "任务包含明确关键要求。",
+                    }
+                    for _ in range(self.candidate_count)
+                ],
+            }
         elif role == "admission_checker":
-            result = {"decision": "PASS" if self.admission_pass else "FAIL",
-                      "reason": "候选满足准入条件。" if self.admission_pass else "候选不满足准入条件。"}
+            result = {
+                "decision": "PASS" if self.admission_pass else "FAIL",
+                "reason": (
+                    "可用于首次标准生成。"
+                    if self.admission_pass
+                    else "适用条件需修正。"
+                ),
+            }
         elif role == "fusion_judge":
-            candidate = request["candidate"]
-            match = next((index for index, item in enumerate(request["existing"])
-                          if (item["content"].strip().casefold() == candidate["content"].strip().casefold()
-                              and item["trigger"].strip().casefold() == candidate["trigger"].strip().casefold())),
-                         None)
-            result = {"match_index": match,
-                      "content": candidate["content"] if match is not None else None,
-                      "trigger": candidate["trigger"] if match is not None else None}
+            c = request["candidate"]
+            match = next((i for i, x in enumerate(request["existing"]) if x == c), None)
+            result = {
+                "match_index": match,
+                "content": c["content"] if match is not None else None,
+                "trigger": c["trigger"] if match is not None else None,
+            }
         else:
             raise ValueError(f"unknown LLM role: {role}")
-        if self.trace_hook is not None:
-            self.trace_hook({"role": role, "backend": "fake", "model": self.scenario,
-                             "attempt": 1, "status": None, "input": request,
-                             **({"response_side": JUDGE_RESPONSE_SIDE.get()} if role == "judge" else {}),
-                             "messages": None, "raw_output": None, "output": result, "error": None})
+        if self.trace_hook:
+            self.trace_hook(
+                {
+                    "role": role,
+                    "backend": "fake",
+                    "model": self.scenario,
+                    "attempt": 1,
+                    "status": None,
+                    "input": request,
+                    **(
+                        {"response_side": JUDGE_RESPONSE_SIDE.get()}
+                        if role == "judge"
+                        else {}
+                    ),
+                    "messages": None,
+                    "raw_output": None,
+                    "output": result,
+                    "error": None,
+                }
+            )
         return deepcopy(result)

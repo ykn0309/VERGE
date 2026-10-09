@@ -7,30 +7,30 @@ import math
 import re
 from typing import Any, Mapping, Sequence
 
-from verge.models import (CandidateExperience, Criterion, Experience, InvalidRevisionAttempt,
-                          RevisionAttempt, Rubric, RubricJudgment)
+from verge.models import (
+    CandidateExperience,
+    Criterion,
+    Experience,
+    Rubric,
+    RubricJudgment,
+)
 
 
-PROMPT_VERSION = "generator-dialogue-evidence-grounded-critic"
+PROMPT_VERSION = "critic-candidate-admission-fresh-application"
 
-# 专属身份和任务说明；Generator/Reflector 的对象编号由系统分配。
+# 专属身份和任务说明；Generator/Critic 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
     "selector": """你是经验适用性筛选员。你的任务是针对给定 task，筛选可用于首次生成评价标准的经验。
 结合任务语义、实际输入和上下文分析适用条件，允许合理推理，不要求条件由 task 逐字声明。经验须有实质设计帮助；任务目标和明确约束优先，高置信度不能代替适用性。""",
-    "initial_generator": """你是评分标准设计者。你的任务是依据 task 和候选经验，设计用于评价回答的是/否判断标准。
-先输出 analysis：结合所选经验分析 task 的目标、实际输入与完整性、当前条件下合理的回答行为，以及评价维度的重要程度。任务目标与明确约束优先于经验和修订建议。
-修订时结合 task 判断建议是否适用，保留合理标准，仅调整有依据的问题，并在 analysis 中简述关键调整依据；不为提高判别分差降低明确约束的重要性或增加无依据的要求。
-再依据分析输出 criteria：每条标准表达一个准确具体、可独立核验的是/否问题，“是”表示满足要求。importance_score 表达任务重要性，source_experiences 表达实际影响该标准的经验来源。""",
+    "initial_generator": """你是评分标准设计者。依据task和本次提供的经验，设计用于评价回答的是/否标准。
+先分析任务目标、实际输入与完整性、明确约束及评价重要性。任务要求优先；已有经验与已准入候选都是可选指导，自主采用、组合或忽略，不因来自Critic就优先或强制采用，不新增无依据要求。
+每条问题独立核验，“是”表示满足要求，不用“是否存在错误”等缺陷问题搭配正向加分。重要性表示task重要程度。来源只标注实质新增或改变该标准的经验；task足以推导的标准不挂名，实际采用也不一律删除。""",
     "judge": """你是逐标准回答核验员。你的任务是结合 task 和评价标准，依据每条提供的标准和当前回答，独立判断这份回答是否满足要求。
 每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
-    "critic": """你是rubric质量诊断员。结合 task、偏好对、当前有效标准与逐项 Judge 判断，输出 analysis 和 improvement_advice；判别失败本身不证明标准有错。
-analysis 是私有诊断：先核对实际标准、回答与判断，区分有依据的设计缺陷、Judge 疑点及证据不足。如果修订轮次为 2，对照实际修改前后标准与判断分析为何未奏效；上一轮公开建议只是待核验的修改意图，不代表实际完成或正确。无效修订没有 Judge 结果。
-评价采用重要性归一化加权的是/否判断；只建议调整问题及重要性，不改变评分机制，不建议部分得分、一票否决或不适用项自动排除，也不要求每条标准都区分两侧。重要性由任务决定，不为偏好分差放宽明确约束；新增要求须有任务、上下文或合理领域推理依据，更严格或更详细不自动等于改进。
-improvement_advice 是唯一交给rubric生成器的公开反馈：说明哪个评价要求存在问题、如何调整及任务依据；允许 task 本身的信息和独立领域知识，严禁引用、复述或暗示候选特有内容、偏好身份、评分或比较评价。无可靠修改依据时建议保留合理标准，不强行提出新要求。""",
-    "reflector": """你是 rubric 生成经验提炼者。你的任务是从成功修订中提炼供未来任务首次生成标准使用的具体、可复用设计指导。
-先对照修订前后标准与两侧 Judge 判断，识别实际产生区分的评价维度及其设计变化。Critic 分析只作参考，不把全部修订动作都解释为有效方法，也不把判别成功解释为经验的因果贡献。
-content 说明首次生成时如何设计评价标准；trigger 说明生成标准之前可识别的适用场景，允许结合任务语义、实际输入、上下文和领域知识进行合理推理，不依赖已有 rubric、Judge 结果或已观察到的候选特征。将修订诊断转化为事前指导，经验不保留样本答案细节或偏好身份。
-一条经验可包含服务于同一设计目的的协同动作，不要求只有一个操作。每次最多提炼一条值得复用的经验；没有清晰指导时返回空数组。""",
+    "critic": """你是rubric生成经验提出者。核对task、偏好对、当前失败标准和实际Judge结果，先输出私有analysis，再提出0到1条供首次生成rubric使用的候选经验。
+失败不证明标准有错；区分设计缺陷、Judge疑点与证据不足。后续轮核对上条候选、实际生成和采用记录，旧私有分析不代替事实。准入重生成时依据被拒候选和具体拒绝原因重新提出指导。
+content表达具体连贯的标准设计方法；trigger表达生成前可识别的任务或输入条件，允许上下文、领域知识推理及同一目的的协同动作，不依赖已有rubric、Judge或已观察到的回答特征。
+候选不能包含候选回答特有内容、偏好身份、私有评分或比较结论。task及明确约束优先，不为偏好分差放宽约束，不把加严或增加细节当作自动改进。不要求程序支持部分分、否决、自动跳过或修改已有Judge状态。没有可信可复用指导返回空候选，不强行解释成功或伪造经验。""",
     "admission_checker": """你是候选 rubric 经验的准入审核员。你的任务是审核经验能否指导未来任务首次生成标准，判断表达是否可用，而非提前证明实际有效。
 content 是具体、可复用且指导连贯的标准设计方法；trigger 是生成标准之前可识别的适用场景。允许结合任务语义、实际输入、上下文和领域知识进行合理推理；限定任务类型、具体指导或多个协同动作本身不足以拒绝。
 content 可以指导核验未来回答的性质，但 trigger 不应以已经观察到这些性质为前提，也不应依赖已有 rubric 或 Judge 结果。允许设计评价维度、安排重要性及排除不当要求，应用仍尊重任务目标与明确约束。
@@ -44,28 +44,24 @@ content 可以指导核验未来回答的性质，但 trigger 不应以已经观
 _ROLE_INSTRUCTIONS = {
     "selector": (
         '选择结果用 JSON 返回 {"selected_experience_ids":[候选经验ID]}。'
-        '选择数量为 0 到 max_selected，ID 使用候选列表中的短数字字符串编号；无适用经验返回空数组。'
+        "选择数量为 0 到 max_selected，ID 使用候选列表中的短数字字符串编号；无适用经验返回空数组。"
     ),
     "initial_generator": (
         '以 JSON 返回 {"analysis":任务分析,"criteria":[{"question":判断问题,'
         '"importance_score":重要性整数,"source_experiences":[来源经验ID]}]}。'
-        'analysis 和 question 用中文，analysis 非空；生成 2 到 8 条标准，importance_score 为 1 到 10 的整数。'
-        'source_experiences 填写实质新增或改变该标准的所选经验 ID；仅由 task 推导的标准使用空数组。'
+        "analysis 和 question 用中文，analysis 非空；生成 2 到 8 条标准，importance_score 为 1 到 10 的整数。"
+        "source_experiences 填写实质新增或改变该标准的本次提供的经验 ID；仅由 task 推导的标准使用空数组。"
     ),
     "judge": (
         '逐项判断用 JSON 返回 {"criterion_judgments":[{"criterion_id":输入标准ID,"satisfied":true或false}]}。'
-        '每个输入编号恰好出现一次，编号原样复制，satisfied 为布尔值。'
+        "每个输入编号恰好出现一次，编号原样复制，satisfied 为布尔值。"
     ),
     "critic": (
-        '诊断结果用 JSON 返回 {"analysis":私有诊断,"improvement_advice":公开改进建议}，两个字段均为非空中文文本。'
-    ),
-    "reflector": (
-        '提炼结果用 JSON 返回 {"candidates":[{"content":rubric生成原则,"trigger":适用条件}]}。'
-        '候选数量为 0 到 1，content 和 trigger 为非空中文文本；无可用经验返回空数组。'
+        '用 JSON 返回 {"analysis":私有诊断,"candidates":[{"content":设计指导,"trigger":适用条件}]}。analysis为非空中文，候选0到1条，content/trigger为非空中文，无可信经验返回空数组。'
     ),
     "admission_checker": (
         '准入结果用 JSON 返回 {"decision":"PASS"或"FAIL","reason":审核理由}。'
-        '全部准入条件满足时 decision 为 PASS，其余情况为 FAIL；reason 为非空中文文本。'
+        "全部准入条件满足时 decision 为 PASS，其余情况为 FAIL；reason 为非空中文文本。"
     ),
     "fusion_judge": (
         '融合结果用 JSON 返回 {"match_index":从0开始的整数下标,"content":完整融合方法,"trigger":适用条件}。'
@@ -75,41 +71,63 @@ _ROLE_INSTRUCTIONS = {
 
 # 输入使用自然标题；技术量只在确有出现时集中说明一次。
 _INPUT_TITLES = {
-    "task": "任务", "response": "待评价回答", "chosen": "优选回答", "rejected": "非优选回答",
-    "candidates": "候选经验", "selected_experiences": "本次选中的经验", "max_selected": "选择上限",
-    "training": "阶段", "experience_id": "经验编号", "content": "经验原则", "trigger": "适用条件",
-    "confidence": "置信度", "evidence_amount": "证据量", "criteria": "评价标准",
-    "criterion_id": "标准编号", "question": "判断问题", "importance_score": "重要性",
-    "source_experiences": "来源经验", "rubric_id": "标准集编号", "base_rubric_id": "起点标准集",
-    "initial_rubric": "初始标准 R0", "initial_judgment": "初始评价结果",
-    "normalized_weights": "标准权重", "criterion_judgments": "逐项判断",
-    "chosen_score": "优选回答得分", "rejected_score": "非优选回答得分", "margin": "得分差",
-    "success": "判别成功", "satisfied": "满足标准", "attempt_number": "修订轮次",
-    "previous_attempt": "上次有效修订", "previous_invalid_attempt": "上次无效修订",
-    "successful_attempt": "成功修订", "analysis": "分析", "validation_failures": "校验问题",
-    "validation_feedback": "本次需修正的问题", "operations": "修订操作", "operation_id": "操作编号",
-    "operation_type": "操作类型", "target_criterion_id": "目标标准", "before": "修改前",
-    "after": "修改后", "new_or_updated_criterion": "新增或更新的标准", "rubric": "修订后的标准",
-    "judgment": "评价结果", "candidate": "待审核经验", "candidate_id": "候选编号",
-    "linked_operation_ids": "支撑操作", "credit": "修订信用", "operation_contributions": "操作贡献",
-    "admission": "准入结果", "admission_reason": "准入理由", "fusion": "融合结果",
-    "existing": "已有经验", "improvement_advice": "Critic 改进建议",
-    "current_rubric": "当前标准", "current_judgment": "当前得分",
-    "previous_rubric": "本次修订前标准", "previous_judgment": "本次修订前得分",
-    "unchanged_criteria": "未改动标准", "before_judgment": "修订前判断", "after_judgment": "修订后判断",
+    "task": "任务",
+    "response": "待评价回答",
+    "chosen": "优选回答",
+    "rejected": "非优选回答",
+    "candidates": "候选经验",
+    "selected_experiences": "本次选中的经验",
+    "max_selected": "选择上限",
+    "training": "阶段",
+    "experience_id": "经验编号",
+    "content": "经验原则",
+    "trigger": "适用条件",
+    "confidence": "置信度",
+    "evidence_amount": "证据量",
+    "criteria": "评价标准",
+    "criterion_id": "标准编号",
+    "question": "判断问题",
+    "importance_score": "重要性",
+    "source_experiences": "来源经验",
+    "rubric_id": "标准集编号",
+    "normalized_weights": "标准权重",
+    "criterion_judgments": "逐项判断",
+    "chosen_score": "优选回答得分",
+    "rejected_score": "非优选回答得分",
+    "margin": "得分差",
+    "success": "判别成功",
+    "satisfied": "满足标准",
+    "analysis": "分析",
+    "validation_feedback": "本次需修正的问题",
+    "candidate": "待审核经验",
+    "candidate_id": "候选编号",
+    "admission_reason": "准入理由",
+    "existing": "已有经验",
+    "current_rubric": "当前失败标准",
+    "current_judgment": "当前判断",
+    "previous_rubric": "上轮应用之前的标准",
+    "previous_judgment": "上轮应用之前的判断",
+    "adopted_criterion_ids": "上条候选声明引用标准",
+    "status": "证据状态",
 }
 
 
-def _inline_revision_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
-    """组织修订/反思的可读证据，不修改内部对象或数字编号映射。"""
+def _inline_critic_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """组织实际失败与应用前的可读证据，不修改内部对象或数字编号映射。"""
+
     def visit(value: Any) -> Any:
         if isinstance(value, Mapping):
-            result = {key: visit(child) for key, child in value.items()
-                      if key not in {"rubric_id", "base_rubric_id", "normalized_weights"}}
-            for rubric_key, judgment_key in (("initial_rubric", "initial_judgment"),
-                                             ("rubric", "judgment"),
-                                             ("previous_rubric", "previous_judgment"),
-                                             ("current_rubric", "current_judgment")):
+            result = {
+                key: visit(child)
+                for key, child in value.items()
+                if key not in {"rubric_id", "normalized_weights"}
+            }
+            for rubric_key, judgment_key in (
+                ("initial_rubric", "initial_judgment"),
+                ("rubric", "judgment"),
+                ("previous_rubric", "previous_judgment"),
+                ("current_rubric", "current_judgment"),
+            ):
                 rubric = result.get(rubric_key)
                 judgment = result.get(judgment_key)
                 if not isinstance(rubric, dict) or not isinstance(judgment, dict):
@@ -118,36 +136,54 @@ def _inline_revision_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
                 answers = judgment.get("criterion_judgments")
                 if not isinstance(criteria, list) or not isinstance(answers, list):
                     continue
-                by_id = {answer["criterion_id"]: answer for answer in answers
-                         if isinstance(answer, dict) and "criterion_id" in answer}
+                by_id = {
+                    answer["criterion_id"]: answer
+                    for answer in answers
+                    if isinstance(answer, dict) and "criterion_id" in answer
+                }
                 rubric["criteria"] = [
-                    {**criterion, **{key: by_id.get(criterion.get("criterion_id"), {})[key]
-                                     for key in ("chosen", "rejected")
-                                     if key in by_id.get(criterion.get("criterion_id"), {})}}
-                    if isinstance(criterion, dict) else criterion for criterion in criteria]
+                    (
+                        {
+                            **criterion,
+                            **{
+                                key: by_id.get(criterion.get("criterion_id"), {})[key]
+                                for key in ("chosen", "rejected")
+                                if key in by_id.get(criterion.get("criterion_id"), {})
+                            },
+                        }
+                        if isinstance(criterion, dict)
+                        else criterion
+                    )
+                    for criterion in criteria
+                ]
                 judgment.pop("criterion_judgments")
             return result
         if isinstance(value, (list, tuple)):
             return [visit(child) for child in value]
         return value
+
     return visit(payload)
 
 
 def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
     """简单标签与紧凑列表；原文、局部编号及历史对象关系保持完整。"""
-    if role in ("critic", "reflector"):
-        payload = _inline_revision_evidence(payload)
+    if role == "critic":
+        payload = _inline_critic_evidence(payload)
     lines: list[str] = []
     keys: set[str] = set()
     titles = dict(_INPUT_TITLES)
-    if role == "critic":
-        titles.update({"current_baseline": "当前有效基线",
-                       "current_rubric": "当前有效标准（修改后）" if payload.get("previous_attempt") else "当前有效标准",
-                       "current_judgment": "当前有效得分",
-                       "previous_attempt": "上一轮修改记录",
-                       "previous_rubric": "修改前标准", "previous_judgment": "修改前得分",
-                       "improvement_advice": "上一轮公开建议",
-                       "judgment_status": "判断状态"})
+    titles.update(
+        {
+            "round_number": "本次应用轮次",
+            "generation_number": "本轮候选生成次数",
+            "candidate_experience": "本轮可选候选经验",
+            "previous_candidate": "上条已准入候选",
+            "rejected_candidate": "本轮被拒候选",
+            "adopted": "上条候选声明采用",
+            "invalid_error": "上次技术错误",
+            "judgment_status": "判断状态",
+        }
+    )
 
     def scalar(value: Any, field: str) -> str:
         if value is None:
@@ -160,9 +196,11 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
             return "是" if value else "否"
         if isinstance(value, float) and not math.isfinite(value):
             raise ValueError("prompt input must contain finite numbers")
-        if (role in ("critic", "reflector")
-                and field in ("chosen_score", "rejected_score", "margin")
-                and isinstance(value, (int, float))):
+        if (
+            role == "critic"
+            and field in ("chosen_score", "rejected_score", "margin")
+            and isinstance(value, (int, float))
+        ):
             # 仅压缩模型输入的展示精度；计算和日志保留原始数值。
             text = f"{value:.4f}".rstrip("0").rstrip(".")
             return "0" if text == "-0" else text
@@ -177,14 +215,10 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
                 summary = scalar(rest.pop("criterion_id"), "criterion_id")
                 if "question" in rest:
                     summary += "：" + scalar(rest.pop("question"), "question")
-            elif "operation_id" in value:
-                summary = scalar(rest.pop("operation_id"), "operation_id")
-                if "operation_type" in rest:
-                    summary += "（" + scalar(rest.pop("operation_type"), "operation_type") + "）"
-                if "target_criterion_id" in rest:
-                    summary += "，目标标准：" + scalar(rest.pop("target_criterion_id"), "target_criterion_id")
             elif "experience_id" in value or "candidate_id" in value:
-                id_field = "experience_id" if "experience_id" in value else "candidate_id"
+                id_field = (
+                    "experience_id" if "experience_id" in value else "candidate_id"
+                )
                 summary = scalar(rest.pop(id_field), id_field)
                 if "content" in rest:
                     summary += "：" + scalar(rest.pop("content"), "content")
@@ -206,18 +240,25 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
             for key, child in rest.items():
                 label = titles.get(key, key)
                 if role == "critic" and key == "attempt_number":
-                    label = "即将进行的修订轮次" if field == "" else "已执行修订轮次"
-                if field in ("normalized_weights", "operation_contributions"):
+                    label = "应用轮次"
+                if field == "normalized_weights":
                     label = key
                 if isinstance(child, (list, tuple)) and all(
-                        not isinstance(item, (Mapping, list, tuple)) for item in child):
-                    compact.append(label + "：" + ("、".join(scalar(item, key) for item in child) or "暂无"))
+                    not isinstance(item, (Mapping, list, tuple)) for item in child
+                ):
+                    compact.append(
+                        label
+                        + "："
+                        + ("、".join(scalar(item, key) for item in child) or "暂无")
+                    )
                 elif isinstance(child, (Mapping, list, tuple)):
                     flush()
                     lines.append(indent + label + "：")
                     render(child, key, indent + "  ")
-                elif isinstance(child, str) and (key in ("task", "response", "chosen", "rejected", "analysis")
-                                                or "\n" in child):
+                elif isinstance(child, str) and (
+                    key in ("task", "response", "chosen", "rejected", "analysis")
+                    or "\n" in child
+                ):
                     flush()
                     # 原始文本保持不变，资料本身的 Markdown 也按原文保留。
                     lines.extend([indent + label + "：", child, ""])
@@ -240,34 +281,34 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
             lines.append(indent + lead + scalar(value, field))
 
     render(payload, "")
-    if role in ("critic", "reflector"):
+    if role == "critic":
         return "\n".join(lines).strip()
     notes = []
     if "confidence" in keys or "evidence_amount" in keys:
-        notes.append("经验置信度为历史信用的 Beta 证据分数；证据量为 alpha + beta - 2。")
+        notes.append(
+            "经验置信度为历史信用的 Beta 证据分数；证据量为 alpha + beta - 2。"
+        )
     if "normalized_weights" in keys or "margin" in keys:
-        notes.append("标准权重由重要性归一化；得分差为优选回答得分减非优选回答得分，正值表示判别成功。")
-    if "operation_contributions" in keys or "credit" in keys:
-        notes.append("操作贡献和修订信用由程序计算。")
-    if "existing" in keys:
-        notes.append("匹配位置从 0 开始，对应已有经验的排列顺序。")
+        notes.append(
+            "标准权重由重要性归一化；得分差为优选回答得分减非优选回答得分，正值表示判别成功。"
+        )
     if notes:
         lines.extend(["", "补充说明：", *notes])
     return "\n".join(lines).strip()
 
 
 def llm_messages(role: str, payload: Mapping[str, Any]) -> list[dict[str, str]]:
-    if role == "initial_generator" and "_conversation" in payload:
-        return [dict(message) for message in payload["_conversation"]]
-
     """各角色专属 system + 自然分节的样本输入；JSON 仅用于输出。"""
     if role not in _ROLE_INSTRUCTIONS:
         raise ValueError(f"unknown LLM role: {role}")
     return [
-        {"role": "system", "content": _ROLE_GUIDANCE[role]
-         + "\n\n" + _ROLE_INSTRUCTIONS[role]},
+        {
+            "role": "system",
+            "content": _ROLE_GUIDANCE[role] + "\n\n" + _ROLE_INSTRUCTIONS[role],
+        },
         {"role": "user", "content": _natural_input(role, payload)},
     ]
+
 
 @dataclass(frozen=True)
 class ExperienceView:
@@ -296,9 +337,24 @@ def selector_payload(task: str, candidates: Sequence[ExperienceView], *,
             "max_selected": max_selected, "training": training}
 
 
-def generator_payload(task: str, selected: Sequence[ExperienceView], *,
-                      validation_feedback: str | None = None) -> dict[str, Any]:
-    payload = {"task": task, "selected_experiences": [item.to_dict() for item in selected]}
+def generator_payload(
+    task: str,
+    selected: Sequence[ExperienceView],
+    *,
+    candidate: CandidateExperience | None = None,
+    validation_feedback: str | None = None,
+) -> dict[str, Any]:
+    payload = {
+        "task": task,
+        "selected_experiences": [item.to_dict() for item in selected],
+    }
+    if candidate is not None:
+        payload["candidate_experience"] = {
+            "experience_id": candidate.candidate_id,
+            "content": candidate.content,
+            "trigger": candidate.trigger,
+            "status": "已准入、尚未验证，无历史置信度",
+        }
     if validation_feedback is not None:
         payload["validation_feedback"] = validation_feedback
     return payload
@@ -320,61 +376,67 @@ def _criterion_fields(criterion: Criterion) -> dict[str, Any]:
 
 
 def _rubric_semantics(rubric: Rubric) -> dict[str, Any]:
-    return {"rubric_id": rubric.rubric_id, "base_rubric_id": rubric.base_rubric_id,
-            "criteria": [_criterion_fields(item) for item in rubric.criteria]}
+    return {
+        "rubric_id": rubric.rubric_id,
+        "criteria": [_criterion_fields(item) for item in rubric.criteria],
+    }
 
 
-def _attempt_semantics(attempt: RevisionAttempt) -> dict[str, Any]:
-    return {"attempt_number": attempt.attempt_number,
-            "rubric": _rubric_semantics(attempt.rubric), "judgment": attempt.judgment.to_dict(),
-            **({"previous_rubric": _rubric_semantics(attempt.previous_rubric),
-                "previous_judgment": attempt.previous_judgment.to_dict()}
-               if attempt.previous_rubric is not None and attempt.previous_judgment is not None else {})}
-
-
-def critic_payload(task: str, chosen: str, rejected: str, initial: Rubric,
-                   initial_judgment: RubricJudgment, attempt_number: int, *,
-                   previous_attempt: RevisionAttempt | None = None,
-                   previous_invalid_attempt: InvalidRevisionAttempt | None = None,
-                   validation_feedback: str | None = None) -> dict[str, Any]:
-    # Current is the trusted latest-valid baseline. History contains only the before
-    # version and intended public change, not a second copy of current or old diagnosis.
-    payload = {"task": task, "chosen": chosen, "rejected": rejected,
-               "attempt_number": attempt_number,
-               "current_baseline": (f"R{previous_attempt.attempt_number}"
-                                    if attempt_number == 2 and previous_attempt
-                                    and previous_attempt.rubric.rubric_id == initial.rubric_id else "R0")}
-    if attempt_number == 2:
-        payload["previous_attempt"] = (
-            {"attempt_number": previous_attempt.attempt_number,
-             "previous_rubric": (_rubric_semantics(previous_attempt.previous_rubric)
-                                 if previous_attempt.previous_rubric is not None else None),
-             "previous_judgment": (previous_attempt.previous_judgment.to_dict()
-                                   if previous_attempt.previous_judgment is not None else None),
-             "improvement_advice": previous_attempt.feedback}
-            if previous_attempt else None)
-    payload["current_rubric"] = _rubric_semantics(initial)
-    payload["current_judgment"] = initial_judgment.to_dict()
-    if attempt_number == 2:
-        payload["previous_invalid_attempt"] = (
-            {"attempt_number": previous_invalid_attempt.attempt_number,
-             "validation_failures": list(previous_invalid_attempt.validation_failures),
-             "judgment_status": "未形成有效修订，无Judge结果"}
-            if previous_invalid_attempt else None)
-    if validation_feedback is not None:
-        payload["validation_feedback"] = validation_feedback
+def critic_payload(
+    task: str,
+    chosen: str,
+    rejected: str,
+    current: Rubric,
+    judgment: RubricJudgment,
+    round_number: int,
+    generation_number: int,
+    *,
+    previous_candidate: CandidateExperience | None = None,
+    rejected_candidate: CandidateExperience | None = None,
+    adopted: bool | None = None,
+    invalid_error: str | None = None,
+    previous_rubric: Rubric | None = None,
+    previous_judgment: RubricJudgment | None = None,
+) -> dict[str, Any]:
+    payload = {
+        "task": task,
+        "chosen": chosen,
+        "rejected": rejected,
+        "round_number": round_number,
+        "generation_number": generation_number,
+        "current_rubric": current.to_dict(),
+        "current_judgment": judgment.to_dict(),
+    }
+    if previous_rubric is not None and previous_judgment is not None:
+        payload["previous_rubric"] = previous_rubric.to_dict()
+        payload["previous_judgment"] = previous_judgment.to_dict()
+    if previous_candidate is not None:
+        payload["previous_candidate"] = {
+            "candidate_id": previous_candidate.candidate_id,
+            "content": previous_candidate.content,
+            "trigger": previous_candidate.trigger,
+        }
+        payload["adopted"] = adopted
+        payload["adopted_criterion_ids"] = (
+            [
+                c.criterion_id
+                for c in current.criteria
+                if previous_candidate.candidate_id in c.source_experiences
+            ]
+            if adopted is not None
+            else None
+        )
+    if rejected_candidate is not None:
+        payload["rejected_candidate"] = {
+            "candidate_id": rejected_candidate.candidate_id,
+            "content": rejected_candidate.content,
+            "trigger": rejected_candidate.trigger,
+            "admission_reason": rejected_candidate.admission_reason,
+        }
+    if invalid_error is not None:
+        payload["invalid_error"] = invalid_error
+        payload["judgment_status"] = "上次未形成有效应用结果，无新的Judge判断"
     return payload
-
-
-def reflection_payload(task: str, initial: Rubric, initial_judgment: RubricJudgment,
-                       successful_attempt: RevisionAttempt, *,
-                       chosen: str, rejected: str) -> dict[str, Any]:
-    return {"task": task, "chosen": chosen, "rejected": rejected,
-            "initial_rubric": _rubric_semantics(initial),
-            "initial_judgment": initial_judgment.to_dict(),
-            "successful_attempt": {**_attempt_semantics(successful_attempt),
-                                   "analysis": successful_attempt.analysis,
-                                   "improvement_advice": successful_attempt.feedback}}
 
 
 def admission_payload(task: str, candidate: CandidateExperience) -> dict[str, Any]:
@@ -382,6 +444,7 @@ def admission_payload(task: str, candidate: CandidateExperience) -> dict[str, An
     return {"task": task, "candidate": {"candidate_id": candidate.candidate_id,
                                         "content": candidate.content,
                                         "trigger": candidate.trigger}}
+
 
 def fusion_payload(content: str, trigger: str,
                    existing: Sequence[tuple[str, str]]) -> dict[str, Any]:
@@ -391,13 +454,18 @@ def fusion_payload(content: str, trigger: str,
                          for old_content, old_trigger in existing]}
 
 
-_ID_FIELDS = {"criterion_id": "criterion", "target_criterion_id": "criterion",
-              "rubric_id": "rubric", "base_rubric_id": "rubric",
-              "experience_id": "experience", "operation_id": "operation",
-              "candidate_id": "candidate"}
-_ID_LISTS = {"source_experiences": "experience", "selected_experience_ids": "experience",
-             "linked_operation_ids": "operation"}
-_ID_DICTS = {"normalized_weights": "criterion", "operation_contributions": "operation"}
+_ID_FIELDS = {
+    "criterion_id": "criterion",
+    "rubric_id": "rubric",
+    "experience_id": "experience",
+    "candidate_id": "experience",
+}
+_ID_LISTS = {
+    "source_experiences": "experience",
+    "selected_experience_ids": "experience",
+    "adopted_criterion_ids": "criterion",
+}
+_ID_DICTS = {"normalized_weights": "criterion"}
 
 
 class NumberedIDCodec:
@@ -409,20 +477,15 @@ class NumberedIDCodec:
 
     def __init__(self, role: str, payload: Mapping[str, Any]) -> None:
         self.role = role
-        self.attempt_number = payload.get("attempt_number", 1)
-        self.base_criteria = {item["criterion_id"] for item in
-                              payload.get("initial_rubric", {}).get("criteria", [])
-                              if isinstance(item, dict) and isinstance(item.get("criterion_id"), str)}
-        self.forward: dict[str, dict[str, str]] = {name: {} for name in
-                                                     ("criterion", "rubric", "experience", "operation", "candidate")}
+        self.forward: dict[str, dict[str, str]] = {
+            name: {} for name in ("criterion", "rubric", "experience")
+        }
         self.reverse: dict[str, dict[str, str]] = {name: {} for name in self.forward}
 
     def _encode(self, name: str, value: str) -> str:
         known = self.forward[name]
         if value not in known:
             number = str(len(known) + 1)
-            if self.role == "reflector" and name == "operation":
-                number = "op" + number
             known[value] = number
             self.reverse[name][number] = value
         return known[value]
@@ -450,7 +513,7 @@ class NumberedIDCodec:
         return visit(dict(payload))
 
     def _existing(self, name: str, value: Any) -> str:
-        pattern = r"op[1-9][0-9]*" if self.role == "reflector" and name == "operation" else r"[1-9][0-9]*"
+        pattern = r"[1-9][0-9]*"
         if not isinstance(value, str) or not re.fullmatch(pattern, value):
             raise ValueError(f"{self.role}: {name} must be a numbered ID")
         if value not in self.reverse[name]:
@@ -460,36 +523,64 @@ class NumberedIDCodec:
     def restore(self, response: Mapping[str, Any]) -> dict[str, Any]:
         """只反解角色协议字段；错误引用直接拒绝，不猜测或按位置悄悄匹配。"""
         result = dict(response)
-        if self.role == "selector" and isinstance(result.get("selected_experience_ids"), list):
-            result["selected_experience_ids"] = [self._existing("experience", value)
-                                                 for value in result["selected_experience_ids"]]
+        if self.role == "selector" and isinstance(
+            result.get("selected_experience_ids"), list
+        ):
+            result["selected_experience_ids"] = [
+                self._existing("experience", value)
+                for value in result["selected_experience_ids"]
+            ]
         elif self.role == "initial_generator":
-            if (set(result) != {"analysis", "criteria"}
-                    or not isinstance(result.get("analysis"), str) or not result["analysis"].strip()
-                    or not isinstance(result["criteria"], list)):
-                raise ValueError("initial_generator: expected non-empty analysis and criteria list")
+            if (
+                set(result) != {"analysis", "criteria"}
+                or not isinstance(result.get("analysis"), str)
+                or not result["analysis"].strip()
+                or not isinstance(result["criteria"], list)
+            ):
+                raise ValueError(
+                    "initial_generator: expected non-empty analysis and criteria list"
+                )
             criteria = []
             for index, item in enumerate(result["criteria"], 1):
                 if not isinstance(item, dict) or set(item) != {
-                        "question", "importance_score", "source_experiences"}:
-                    raise ValueError("initial_generator: expected criterion content fields")
+                    "question",
+                    "importance_score",
+                    "source_experiences",
+                }:
+                    raise ValueError(
+                        "initial_generator: expected criterion content fields"
+                    )
                 criterion = {**item, "criterion_id": f"c{index}"}
                 if isinstance(item["source_experiences"], list):
                     criterion["source_experiences"] = [
-                        self._existing("experience", value) for value in item["source_experiences"]]
+                        self._existing("experience", value)
+                        for value in item["source_experiences"]
+                    ]
                 criteria.append(criterion)
-            result = {"rubric": {"rubric_id": "r1", "base_rubric_id": None, "criteria": criteria}}
-        elif self.role == "judge" and isinstance(result.get("criterion_judgments"), list):
+            result = {"rubric": {"rubric_id": "r1", "criteria": criteria}}
+        elif self.role == "judge" and isinstance(
+            result.get("criterion_judgments"), list
+        ):
             result["criterion_judgments"] = [
-                {**item, "criterion_id": self._existing("criterion", item.get("criterion_id"))}
-                if isinstance(item, dict) else item for item in result["criterion_judgments"]]
-        elif self.role == "reflector" and isinstance(result.get("candidates"), list):
+                (
+                    {
+                        **item,
+                        "criterion_id": self._existing(
+                            "criterion", item.get("criterion_id")
+                        ),
+                    }
+                    if isinstance(item, dict)
+                    else item
+                )
+                for item in result["criterion_judgments"]
+            ]
+        elif self.role == "critic" and isinstance(result.get("candidates"), list):
             if len(result["candidates"]) > 1:
-                raise ValueError("reflector: expected 0..1 candidates")
+                raise ValueError("critic: expected 0..1 candidates")
             candidates = []
             for index, item in enumerate(result["candidates"], 1):
                 if not isinstance(item, dict) or set(item) != {"content", "trigger"}:
-                    raise ValueError("reflector: expected candidate content fields")
+                    raise ValueError("critic: expected candidate content fields")
                 candidates.append({**item, "candidate_id": f"candidate_{index}"})
             result["candidates"] = candidates
         return result

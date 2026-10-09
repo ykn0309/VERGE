@@ -35,15 +35,21 @@ def _sha(path: Path) -> str:
 def _source(directory: str | Path) -> tuple[Path, dict[str, Any], JsonlDataset]:
     directory = Path(directory).expanduser().resolve()
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 1:
+    if manifest.get("format_version") != 2:
         raise ValueError("unsupported source manifest format")
     config = manifest["config"]["dataset"]
     if config["implementation"] != "jsonl":
         raise ValueError("baseline requires a JSONL source dataset")
     original = Path(config["config"]["paths"]["train"])
-    candidates = [original] if original.is_absolute() else [
-        Path.cwd() / original, PROJECT / original, directory / original,
-    ]
+    candidates = (
+        [original]
+        if original.is_absolute()
+        else [
+            Path.cwd() / original,
+            PROJECT / original,
+            directory / original,
+        ]
+    )
     path = next((p.resolve() for p in candidates if p.is_file()), None)
     if path is None or _sha(path) != manifest.get("dataset_sha256", {}).get("train"):
         raise ValueError("source train dataset is missing or has changed")
@@ -78,37 +84,50 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
     config["dataset"]["config"].pop("prepare", None)
     config["models"]["roles"] = {
         role: config["models"].get("roles", {})[role]
-        for role in ROLES if role in config["models"].get("roles", {})
+        for role in ROLES
+        if role in config["models"].get("roles", {})
     }
     root = _root(output, {"config": config})
-    retries = original.get("resumed_from", {}).get("initial_output_retries", 0)
+    retries = original.get("execution", {}).get("initial_output_retries", 2)
     # Resolve only active roles: never instantiate retriever/embedding/Selector/Critic.
     backends: dict[str, Any] = {}
     try:
         for role in ROLES:
             spec = config["models"]["roles"].get(role, config["models"]["default"])
             backends[role] = _backend(spec, f"models.{role}")
-        generator = LLMInitialRubricGenerator(backends["initial_generator"],
-                                              invalid_output_retries=retries)
+        generator = LLMInitialRubricGenerator(
+            backends["initial_generator"], invalid_output_retries=retries
+        )
         judge = LLMJudge(backends["judge"])
         manifest = {
-            "format_version": 1, "config": config, "code_version": _code_version(),
-            "execution": {"mode": "initial_only_baseline", "test_workers": 1,
-                          "roles": list(ROLES), "initial_output_retries": retries},
+            "format_version": 2,
+            "config": config,
+            "code_version": _code_version(),
+            "execution": {
+                "mode": "initial_only_baseline",
+                "test_workers": 1,
+                "roles": list(ROLES),
+                "initial_output_retries": retries,
+            },
             "dataset_version": original.get("dataset_version"),
             "dataset_sha256": {"train": original["dataset_sha256"]["train"]},
             "prompt_versions": {role: PROMPT_VERSION for role in ROLES},
-            "baseline_source": {"run_dir": str(source),
-                                "manifest_sha256": _sha(source / "run_manifest.json"),
-                                "code_version": original.get("code_version")},
+            "baseline_source": {
+                "run_dir": str(source),
+                "manifest_sha256": _sha(source / "run_manifest.json"),
+                "code_version": original.get("code_version"),
+            },
         }
         output.mkdir(parents=True, exist_ok=False)
         (output / "run_manifest.json").write_text(
             json.dumps(manifest, ensure_ascii=False, allow_nan=False, indent=2) + "\n",
-            encoding="utf-8")
+            encoding="utf-8",
+        )
         root.mkdir(parents=True, exist_ok=False)
         # Static empty view for existing read-only dashboard, not an ExperienceMemory instance.
-        (root / "experience_memory.json").write_text('{"experiences": []}\n', encoding="utf-8")
+        (root / "experience_memory.json").write_text(
+            '{"schema_version": 2, "experiences": []}\n', encoding="utf-8"
+        )
         role_file = root / "role_io.jsonl"
         role_file.touch(mode=0o600)
         role_file.chmod(0o600)
@@ -117,13 +136,25 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
 
         def save_role(event: dict[str, Any]) -> None:
             with log_lock, role_file.open("a", encoding="utf-8") as stream:
-                stream.write(json.dumps({**context, **event}, ensure_ascii=False,
-                                        allow_nan=False) + "\n")
+                stream.write(
+                    json.dumps(
+                        {**context, **event}, ensure_ascii=False, allow_nan=False
+                    )
+                    + "\n"
+                )
 
         def save_request(event: dict[str, Any]) -> None:
-            with log_lock, (root / "llm_requests.jsonl").open("a", encoding="utf-8") as stream:
-                stream.write(json.dumps({**context, "backend": "openai_compatible", **event},
-                                        ensure_ascii=False, allow_nan=False) + "\n")
+            with log_lock, (root / "llm_requests.jsonl").open(
+                "a", encoding="utf-8"
+            ) as stream:
+                stream.write(
+                    json.dumps(
+                        {**context, "backend": "openai_compatible", **event},
+                        ensure_ascii=False,
+                        allow_nan=False,
+                    )
+                    + "\n"
+                )
 
         for backend in backends.values():
             backend.trace_hook = save_role
@@ -136,37 +167,58 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
         try:
             for sample in samples:
                 context.update(sample_id=sample.sample_id, split="train")
-                record = TrajectoryRecord(sample.sample_id, "in_progress", [], [],
-                                          None, None, [], [], {})
+                record = TrajectoryRecord(sample.sample_id)
                 stage = "initial_generator"
                 try:
                     record.initial_rubric = generator.generate(sample.task, [])
                     stage = "initial_judge"
-                    record.initial_judgment = judge.judge(record.initial_rubric, sample.chosen,
-                                                         sample.rejected, task=sample.task)
+                    record.initial_judgment = judge.judge(
+                        record.initial_rubric,
+                        sample.chosen,
+                        sample.rejected,
+                        task=sample.task,
+                    )
                 except JudgeOutputError as exc:
                     record.state = "judge_error_initial"
                     record.judge_error = str(exc)
                     errors += 1
                 except (ValueError, LLMRefusalError) as exc:
                     record.state = "sample_error"
-                    record.sample_error = {"stage": stage, "type": type(exc).__name__,
-                                           "message": str(exc)[:500] or type(exc).__name__}
+                    record.sample_error = {
+                        "stage": stage,
+                        "type": type(exc).__name__,
+                        "message": str(exc)[:500] or type(exc).__name__,
+                    }
                     sample_errors += 1
                 else:
                     valid += 1
                     correct += int(record.initial_judgment.success)
-                    record.state = "initial_success" if record.initial_judgment.success else "initial_failure"
+                    record.state = (
+                        "initial_success"
+                        if record.initial_judgment.success
+                        else "initial_failure"
+                    )
                 log.append(record)
                 progress.advance()
         finally:
             progress.close()
-        result = {"run_dir": str(output), "samples": len(samples), "valid": valid,
-                  "correct": correct, "judge_errors": errors, "sample_errors": sample_errors,
-                  "valid_accuracy": correct / valid if valid else None,
-                  "accuracy": correct / len(samples) if samples and not (errors + sample_errors) else None}
+        result = {
+            "run_dir": str(output),
+            "samples": len(samples),
+            "valid": valid,
+            "correct": correct,
+            "judge_errors": errors,
+            "sample_errors": sample_errors,
+            "valid_accuracy": correct / valid if valid else None,
+            "accuracy": (
+                correct / len(samples)
+                if samples and not (errors + sample_errors)
+                else None
+            ),
+        }
         (output / "baseline_summary.json").write_text(
-            json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
         return result
     finally:
         for backend in backends.values():

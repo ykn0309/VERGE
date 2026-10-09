@@ -1,4 +1,4 @@
-"""VERGE V1 的领域数据契约；数值计算和持久化由后续模块负责。"""
+"""VERGE candidate-validation 的领域数据契约；数值计算和持久化由后续模块负责。"""
 
 from __future__ import annotations
 
@@ -9,7 +9,6 @@ from typing import Any, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 
 ModelT = TypeVar("ModelT", bound="Model")
-OperationType = Literal["ADD", "DELETE", "MODIFY"]
 FusionDecision = Literal["MERGE", "ADD"]
 AdmissionDecision = Literal["PASS", "FAIL"]
 
@@ -124,40 +123,53 @@ class PreferenceSample(Model):
         _id(self.sample_id, "sample_id")
 
 
+@dataclass(frozen=True)
+class Credit(Model):
+    """两个非负通道；净方向仅供展示。"""
+
+    positive_credit: float = 0.0
+    negative_credit: float = 0.0
+
+    def __post_init__(self) -> None:
+        for name in ("positive_credit", "negative_credit"):
+            _number(getattr(self, name), name, minimum=0)
+        if self.positive_credit + self.negative_credit > 1 + 1e-9:
+            raise ValueError("credit evidence amount must be at most 1")
+
+    @property
+    def net(self) -> float:
+        return self.positive_credit - self.negative_credit
+
+    @property
+    def amount(self) -> float:
+        return self.positive_credit + self.negative_credit
+
+
 @dataclass
 class EvidenceRecord(Model):
-    """一次可追溯的可靠性证据。
-
-    sample_id: 证据所属样本；evidence_type: 修订或下游信用来源；
-    credit: 带符号的贡献；evidence_weight: 样本证据权重。
-    V1 不在单条证据中保存更细的来源标识。
-    """
-
     sample_id: str
-    evidence_type: Literal["revision_credit", "downstream_credit", "fusion_credit"]
-    credit: float
-    evidence_weight: float
+    evidence_type: Literal["downstream_credit", "application_credit"]
+    positive_credit: float
+    negative_credit: float
     candidate_id: str | None = None
-
-    def to_dict(self) -> dict[str, Any]:
-        result = super().to_dict()
-        if self.candidate_id is None:
-            result.pop("candidate_id")
-        return result
+    evidence_weight: float = 1.0
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
-        _number(self.credit, "credit")
-        _number(self.evidence_weight, "evidence_weight", minimum=0)
-        if self.evidence_type == "fusion_credit":
-            _id(self.candidate_id, "fusion evidence candidate_id")
-            if not 0 < self.credit <= .25 or self.evidence_weight != 1:
-                raise ValueError("fusion evidence requires credit in (0, .25] and weight=1")
+        if type(self.evidence_weight) not in (int, float) or self.evidence_weight != 1:
+            raise ValueError("evidence_weight is fixed at 1")
+        if self.evidence_type not in ("downstream_credit", "application_credit"):
+            raise ValueError("unknown evidence type")
+        if Credit(self.positive_credit, self.negative_credit).amount == 0:
+            raise ValueError("zero evidence must not be appended")
+        if self.evidence_type == "application_credit":
+            _id(self.candidate_id, "application candidate_id")
+        elif self.candidate_id is not None:
+            raise ValueError("downstream evidence must not have a candidate")
 
 
 @dataclass
 class FusionResult(Model):
-    """融合模型只返回位置和文本，不产生数值信用。"""
     match_index: int | None
     content: str | None
     trigger: str | None
@@ -175,7 +187,6 @@ class FusionResult(Model):
 
 @dataclass
 class FusionRecord(Model):
-    """一次文本版本及其弱修订证据；旧证据不重新认证新文本。"""
     sample_id: str
     candidate_id: str
     fusion: FusionDecision
@@ -183,7 +194,7 @@ class FusionRecord(Model):
     previous_trigger: str | None
     content: str
     trigger: str
-    credit: float
+    credit: Credit
 
     def __post_init__(self) -> None:
         for name in ("sample_id", "candidate_id", "content", "trigger"):
@@ -191,24 +202,16 @@ class FusionRecord(Model):
         if self.fusion == "MERGE":
             _id(self.previous_content, "previous_content")
             _id(self.previous_trigger, "previous_trigger")
-        elif self.fusion != "ADD" or self.previous_content is not None or self.previous_trigger is not None:
+        elif (
+            self.fusion != "ADD"
+            or self.previous_content is not None
+            or self.previous_trigger is not None
+        ):
             raise ValueError("invalid fusion text history")
-        _number(self.credit, "fusion credit", minimum=0)
-        if self.credit > .25:
-            raise ValueError("fusion credit must be in [0, .25]")
 
 
 @dataclass
 class Experience(Model):
-    """可复用的 rubric 生成原则及其累计证据。
-
-    experience_id: 经验唯一标识；content: 生成原则；trigger: 适用条件；
-    alpha/beta: 正/负证据累积（含基础先验）；
-    source_trajectories: 生成或再次发现该经验的样本 ID；
-    evidence_history: 可追溯的修订与下游证据记录。
-    confidence 和 evidence_amount 均从 alpha/beta 派生，不独立存储。
-    """
-
     experience_id: str
     content: str
     trigger: str
@@ -219,7 +222,8 @@ class Experience(Model):
     fusion_history: list[FusionRecord] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        _id(self.experience_id, "experience_id")
+        for name in ("experience_id", "content", "trigger"):
+            _id(getattr(self, name), name)
         _number(self.alpha, "alpha", minimum=1)
         _number(self.beta, "beta", minimum=1)
 
@@ -236,29 +240,20 @@ class Experience(Model):
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Experience:
-        # 历史记录中的 confidence 仅供读取和核验，不作为独立状态恢复。
         values = dict(data)
-        has_confidence = "confidence" in values
         confidence = values.pop("confidence", None)
         result = super().from_dict(values)
-        if has_confidence and (type(confidence) not in (float, int) or
-                               not isfinite(confidence) or
-                               abs(confidence - result.confidence) > 1e-9):
+        if confidence is not None and (
+            type(confidence) not in (float, int)
+            or not isfinite(confidence)
+            or abs(confidence - result.confidence) > 1e-9
+        ):
             raise ValueError("Experience: confidence disagrees with alpha/beta")
         return result
 
 
 @dataclass
 class Criterion(Model):
-    """一条原子 Boolean 评价标准。
-
-    criterion_id: 标准唯一标识；question: 可回答是/否的判断问题；
-    importance_score: 原始重要性整数分数（1–10）；
-    source_experiences: 实质影响初始标准的经验 ID，可为空；
-    只在 initial rubric 的已有经验信用中使用，修订输出由程序统一清空。
-    归一化权重和贡献由 Calculator 计算，不写入此对象。
-    """
-
     criterion_id: str
     question: str
     importance_score: int
@@ -266,28 +261,30 @@ class Criterion(Model):
 
     def __post_init__(self) -> None:
         _id(self.criterion_id, "criterion_id")
-        if type(self.importance_score) is not int or not 1 <= self.importance_score <= 10:
+        _id(self.question, "question")
+        if (
+            type(self.importance_score) is not int
+            or not 1 <= self.importance_score <= 10
+        ):
             raise ValueError("importance_score must be an integer from 1 to 10")
+        if (
+            not isinstance(self.source_experiences, list)
+            or any(type(key) is not str or not key for key in self.source_experiences)
+            or len(set(self.source_experiences)) != len(self.source_experiences)
+        ):
+            raise ValueError("source_experiences must be distinct nonempty IDs")
 
 
 @dataclass
 class Rubric(Model):
-    """一组完整的评价标准。
-
-    rubric_id: 当前 rubric 的唯一标识；base_rubric_id: 修订起点的 rubric ID，
-    初始 rubric 为 None；criteria: 组成 rubric 的标准列表。
-    """
-
     rubric_id: str
-    base_rubric_id: str | None
     criteria: list[Criterion]
 
     def __post_init__(self) -> None:
         _id(self.rubric_id, "rubric_id")
-        if self.base_rubric_id is not None:
-            _id(self.base_rubric_id, "base_rubric_id")
-        ids = [criterion.criterion_id for criterion in self.criteria]
-        if len(ids) != len(set(ids)):
+        if not 2 <= len(self.criteria) <= 8:
+            raise ValueError("rubric must have 2..8 criteria")
+        if len({c.criterion_id for c in self.criteria}) != len(self.criteria):
             raise ValueError("duplicate criterion_id in rubric")
 
 
@@ -337,189 +334,199 @@ class RubricJudgment(Model):
 
 
 @dataclass
-class RevisionOperation(Model):
-    """生成与执行共用的原子修订操作。
-
-    operation_id: 当前修订尝试内的操作标识；operation_type: ADD、DELETE 或 MODIFY；
-    target_criterion_id: DELETE/MODIFY 的目标 ID，ADD 时为空；
-    new_or_updated_criterion: ADD 的新标准或 MODIFY 的更新后标准，DELETE 时为空；
-    before_criterion: Critic 留空；Executor 从初始 rubric 补全 DELETE/MODIFY 的旧标准。
-    """
-
-    operation_id: str
-    operation_type: OperationType
-    target_criterion_id: str | None
-    new_or_updated_criterion: Criterion | None
-    before_criterion: Criterion | None = None
-
-    def __post_init__(self) -> None:
-        _id(self.operation_id, "operation_id")
-        if self.operation_type not in ("ADD", "DELETE", "MODIFY"):
-            raise ValueError("operation_type must be ADD, DELETE or MODIFY")
-        if self.operation_type == "ADD":
-            if (self.target_criterion_id is not None or self.new_or_updated_criterion is None
-                    or self.before_criterion is not None):
-                raise ValueError("ADD needs only new_or_updated_criterion")
-        elif self.operation_type == "DELETE":
-            _id(self.target_criterion_id, "target_criterion_id")
-            if self.new_or_updated_criterion is not None:
-                raise ValueError("DELETE must not include a new criterion")
-        else:
-            _id(self.target_criterion_id, "target_criterion_id")
-            if (self.new_or_updated_criterion is None or
-                    self.new_or_updated_criterion.criterion_id != self.target_criterion_id):
-                raise ValueError("MODIFY must preserve target_criterion_id")
-        if (self.before_criterion is not None and
-                self.before_criterion.criterion_id != self.target_criterion_id):
-            raise ValueError("before_criterion must match target_criterion_id")
-
-
-@dataclass
 class CandidateExperience(Model):
-    """从成功修订中反思出的待准入经验。
-
-    candidate_id: 候选唯一标识；content: 可迁移的生成原则；
-    trigger: 原则适用的任务条件；linked_operation_ids/credit: 历史记录解码字段；
-    当前方法不赋旧操作信用，分别固定为空列表/null；fusion_record 另保存融合弱证据；
-    admission/admission_reason: 准入判断及模型给出的理由；
-    fusion/experience_id: 融合决策及最终经验 ID。
-    """
-
     candidate_id: str
     content: str
     trigger: str
-    linked_operation_ids: list[str] = field(default_factory=list)
-    credit: float | None = None
     admission: AdmissionDecision | None = None
+    admission_reason: str | None = None
     fusion: FusionDecision | None = None
     experience_id: str | None = None
-    admission_reason: str | None = None
     fusion_record: FusionRecord | None = None
 
     def __post_init__(self) -> None:
-        _id(self.candidate_id, "candidate_id")
-        if len(set(self.linked_operation_ids)) != len(self.linked_operation_ids):
-            raise ValueError("linked_operation_ids must not contain duplicates")
-        for operation_id in self.linked_operation_ids:
-            _id(operation_id, "linked_operation_ids item")
-        if self.credit is not None:
-            _number(self.credit, "credit")
-            if not self.linked_operation_ids:
-                raise ValueError("credit requires linked_operation_ids")
+        for name in ("candidate_id", "content", "trigger"):
+            _id(getattr(self, name), name)
         if self.admission not in (None, "PASS", "FAIL"):
-            raise ValueError("admission must be PASS or FAIL")
-        if self.admission_reason is not None:
-            if (self.admission is None or not isinstance(self.admission_reason, str)
-                    or not self.admission_reason.strip()):
-                raise ValueError("admission_reason requires a decision and non-empty text")
-        if self.fusion not in (None, "MERGE", "ADD"):
-            raise ValueError("fusion must be MERGE or ADD")
-        if self.fusion_record is not None and (self.fusion_record.fusion != self.fusion
-                or self.fusion_record.candidate_id != self.candidate_id):
-            raise ValueError("fusion_record must match fused candidate")
-        if self.fusion is None:
-            if self.experience_id is not None:
-                raise ValueError("experience_id requires fusion")
-        elif self.admission != "PASS":
-            raise ValueError("fusion requires PASS admission")
+            raise ValueError("invalid admission decision")
+        if self.admission is None:
+            if self.admission_reason is not None:
+                raise ValueError("reason requires admission")
         else:
+            _id(self.admission_reason, "admission reason")
+        if self.fusion is None:
+            if self.experience_id is not None or self.fusion_record is not None:
+                raise ValueError("fusion fields require a decision")
+        else:
+            if self.fusion not in ("ADD", "MERGE") or self.admission != "PASS":
+                raise ValueError("fusion requires PASS")
             _id(self.experience_id, "experience_id")
+            if (
+                self.fusion_record is None
+                or self.fusion_record.fusion != self.fusion
+                or self.fusion_record.candidate_id != self.candidate_id
+            ):
+                raise ValueError("fusion record must match candidate")
 
 
 @dataclass
-class CriticFeedback(Model):
-    """私有诊断与唯一交给 Generator 的公开建议。"""
+class CriticProposal(Model):
     analysis: str
-    improvement_advice: str
+    candidate: CandidateExperience | None
 
     def __post_init__(self) -> None:
-        for name in ("analysis", "improvement_advice"):
-            if not isinstance(getattr(self, name), str) or not getattr(self, name).strip():
-                raise ValueError(f"critic {name} must be non-empty")
+        _id(self.analysis, "critic analysis")
 
 
 @dataclass
-class RevisionAttempt(Model):
-    """一次接续当前 rubric 的 Generator 对话修订。
-
-    attempt_number: 第 1 或第 2 次；analysis: 新流程的私有失败分析；
-    feedback: Critic 的公开 improvement_advice；
-    operations: 历史字段，当前固定空列表；
-    rubric/judgment: 修订产生的完整 rubric 及其评价结果；
-    validation_failures: 有效修订前的结构校验错误，便于审计纠错次数与上下文。
-    """
-
-    attempt_number: int
-    feedback: str | None
-    operations: list[RevisionOperation]
-    rubric: Rubric
-    judgment: RubricJudgment
-    validation_failures: list[str] = field(default_factory=list)
+class ProposalAttempt(Model):
+    round_number: int
+    generation_number: int
     analysis: str | None = None
-    previous_rubric: Rubric | None = None
-    previous_judgment: RubricJudgment | None = None
+    candidate: CandidateExperience | None = None
+    error: str | None = None
 
     def __post_init__(self) -> None:
-        if self.analysis is not None and (not isinstance(self.analysis, str) or not self.analysis.strip()):
-            raise ValueError("revision analysis must be non-empty")
-        if type(self.attempt_number) is not int or self.attempt_number not in (1, 2):
-            raise ValueError("attempt_number must be 1 or 2")
-        if not isinstance(self.validation_failures, list) or any(
-                type(item) is not str or not item for item in self.validation_failures):
-            raise ValueError("validation_failures must be non-empty error strings")
+        if self.round_number not in (1, 2) or self.generation_number not in (1, 2):
+            raise ValueError("proposal budget exceeded")
 
 
 @dataclass
-class InvalidRevisionAttempt(Model):
-    """Critic 格式错误或 Generator 完整修订校验耗尽，无有效新 rubric/Judge。"""
-
-    attempt_number: int
-    feedback: str | None
-    validation_failures: list[str]
-    analysis: str | None = None
+class ApplicationAttempt(Model):
+    round_number: int
+    candidate_id: str
+    rubric: Rubric | None = None
+    judgment: RubricJudgment | None = None
+    adopted: bool | None = None
+    adopted_criterion_ids: list[str] = field(default_factory=list)
+    credit: Credit | None = None
+    error: str | None = None
 
     def __post_init__(self) -> None:
-        if self.analysis is not None and (not isinstance(self.analysis, str) or not self.analysis.strip()):
-            raise ValueError("revision analysis must be non-empty")
-        if type(self.attempt_number) is not int or self.attempt_number not in (1, 2):
-            raise ValueError("attempt_number must be 1 or 2")
-        if not self.validation_failures or any(
-                type(item) is not str or not item for item in self.validation_failures):
-            raise ValueError("invalid revision must have validation errors")
+        if self.round_number not in (1, 2):
+            raise ValueError("application budget exceeded")
+        _id(self.candidate_id, "candidate_id")
+        if self.rubric is None:
+            if (
+                self.judgment is not None
+                or self.adopted is not None
+                or self.adopted_criterion_ids
+                or self.credit is not None
+            ):
+                raise ValueError(
+                    "invalid output must not invent adoption, judgment or credit"
+                )
+        else:
+            used = [
+                c.criterion_id
+                for c in self.rubric.criteria
+                if self.candidate_id in c.source_experiences
+            ]
+            if self.adopted is not bool(used) or self.adopted_criterion_ids != used:
+                raise ValueError("adoption must match actual criterion sources")
+            if self.judgment is None:
+                if self.credit is not None:
+                    raise ValueError("credit requires an effective judgment")
+            elif (
+                self.judgment.rubric_id != self.rubric.rubric_id or self.credit is None
+            ):
+                raise ValueError(
+                    "application judgment and credit must match its rubric"
+                )
 
 
 @dataclass
 class TrajectoryRecord(Model):
-    """单个样本的阶段结果；记忆更新在相应阶段直接写入。
-
-    sample_id/state: 样本 ID 与处理阶段；retrieved_experience_ids /
-    selected_experience_ids: 召回和最终选用的经验 ID；
-    initial_rubric/initial_judgment: 初始 rubric 及其判断，尚未生成时为空；
-    revision_attempts: 最多两次接续最近有效基线的完整修订及结果；
-    reflected_candidates: 成功修订反思出的候选，后续补全准入、融合和文本版本；
-    operation_contributions: 成功操作 ID 到直接收益的映射；
-    invalid_revision_attempts: 条数不合法、未进入 Judge 的修订尝试及校验记录。
-    """
-
     sample_id: str
-    state: str
-    retrieved_experience_ids: list[str]
-    selected_experience_ids: list[str]
-    initial_rubric: Rubric | None
-    initial_judgment: RubricJudgment | None
-    revision_attempts: list[RevisionAttempt]
-    reflected_candidates: list[CandidateExperience]
-    operation_contributions: dict[str, float]
-    invalid_revision_attempts: list[InvalidRevisionAttempt] = field(default_factory=list)
-    judge_error: str | None = None
+    state: str = "in_progress"
+    retrieved_experience_ids: list[str] = field(default_factory=list)
+    selected_experiences: list[dict[str, Any]] = field(default_factory=list)
+    initial_rubric: Rubric | None = None
+    initial_judgment: RubricJudgment | None = None
+    downstream_credits: dict[str, Credit] = field(default_factory=dict)
+    proposal_attempts: list[ProposalAttempt] = field(default_factory=list)
+    application_attempts: list[ApplicationAttempt] = field(default_factory=list)
     sample_error: dict[str, str] | None = None
+    judge_error: str | None = None
+    schema_version: int = 2
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
-        if self.sample_error is not None:
-            if (self.state != "sample_error" or set(self.sample_error) != {"stage", "type", "message"}
-                    or any(not isinstance(v, str) or not v.strip() for v in self.sample_error.values())):
-                raise ValueError("sample_error requires stage, type, message and sample_error state")
-        if self.judge_error is not None and (not isinstance(self.judge_error, str)
-                                             or not self.judge_error.strip()):
-            raise ValueError("judge_error must be a non-empty message")
+        if self.schema_version != 2:
+            raise ValueError("unsupported trajectory schema")
+        if self.state not in {
+            "in_progress",
+            "initial_success",
+            "initial_failure",
+            "application_success",
+            "success_without_candidate",
+            "no_candidate",
+            "admission_exhausted",
+            "validation_exhausted",
+            "invalid_application_exhausted",
+            "sample_error",
+            "judge_error_initial",
+            "judge_error_application",
+        }:
+            raise ValueError("unknown trajectory state")
+        pairs = [(p.round_number, p.generation_number) for p in self.proposal_attempts]
+        if pairs != sorted(set(pairs)) or len(pairs) > 4:
+            raise ValueError(
+                "proposal attempts must be unique and ordered within budget"
+            )
+        rounds = [a.round_number for a in self.application_attempts]
+        if rounds != sorted(set(rounds)) or len(rounds) > 2:
+            raise ValueError(
+                "application attempts must be unique and ordered within budget"
+            )
+        cids = [p.candidate.candidate_id for p in self.proposal_attempts if p.candidate]
+        if len(cids) != len(set(cids)):
+            raise ValueError("candidate versions must have distinct IDs")
+        for app in self.application_attempts:
+            source = next(
+                (
+                    p.candidate
+                    for p in self.proposal_attempts
+                    if p.candidate
+                    and p.candidate.candidate_id == app.candidate_id
+                    and p.round_number == app.round_number
+                ),
+                None,
+            )
+            if source is None or source.admission != "PASS":
+                raise ValueError(
+                    "application must reference this round's admitted candidate"
+                )
+        for p in self.proposal_attempts:
+            if p.candidate and p.candidate.fusion:
+                app = next(
+                    (
+                        a
+                        for a in self.application_attempts
+                        if a.candidate_id == p.candidate.candidate_id
+                    ),
+                    None,
+                )
+                if (
+                    app is None
+                    or app.adopted is not True
+                    or app.judgment is None
+                    or not app.judgment.success
+                ):
+                    raise ValueError(
+                        "fusion requires adoption and effective application success"
+                    )
+        if self.sample_error is not None and (
+            set(self.sample_error) != {"stage", "type", "message"}
+            or any(
+                not isinstance(v, str) or not v.strip()
+                for v in self.sample_error.values()
+            )
+        ):
+            raise ValueError("invalid sample_error")
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> TrajectoryRecord:
+        if not isinstance(data, dict) or data.get("schema_version") != 2:
+            raise ValueError("TrajectoryRecord requires explicit schema_version 2")
+        return super().from_dict(data)

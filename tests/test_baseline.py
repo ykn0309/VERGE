@@ -18,21 +18,46 @@ def source_run(tmp_path, count=3):
     source = tmp_path / "main"
     source.mkdir()
     data = tmp_path / "train.jsonl"
-    data.write_text("".join(json.dumps({"sample_id": f"s{i}", "task": f"task {i}",
-                                       "chosen": "good", "rejected": "bad",
-                                       "metadata": {"subset": "llmbar-natural"}}) + "\n"
-                            for i in range(count)))
-    config = {"run": {"output_dir": str(source), "seed": 42},
-              "dataset": {"implementation": "jsonl", "config": {"paths": {"train": str(data)}}},
-              "models": {"default": {"backend": "fake", "model": "initial_success"}, "roles": {}},
-              "modules": {}, "store": {"config": {"root_dir": "artifacts"}}}
-    manifest = {"format_version": 1, "config": config,
-                "dataset_sha256": {"train": baseline._sha(data)},
-                "prompt_versions": {r: PROMPT_VERSION for r in baseline.ROLES}}
+    data.write_text(
+        "".join(
+            json.dumps(
+                {
+                    "sample_id": f"s{i}",
+                    "task": f"task {i}",
+                    "chosen": "good",
+                    "rejected": "bad",
+                    "metadata": {"subset": "llmbar-natural"},
+                }
+            )
+            + "\n"
+            for i in range(count)
+        )
+    )
+    config = {
+        "run": {"output_dir": str(source), "seed": 42},
+        "dataset": {
+            "implementation": "jsonl",
+            "config": {"paths": {"train": str(data)}},
+        },
+        "models": {
+            "default": {"backend": "fake", "model": "initial_success"},
+            "roles": {},
+        },
+        "modules": {},
+        "store": {"config": {"root_dir": "artifacts"}},
+    }
+    manifest = {
+        "format_version": 2,
+        "config": config,
+        "dataset_sha256": {"train": baseline._sha(data)},
+        "prompt_versions": {r: PROMPT_VERSION for r in baseline.ROLES},
+    }
     (source / "run_manifest.json").write_text(json.dumps(manifest))
     root = source / "artifacts"
     root.mkdir()
-    (root / "experience_memory.json").write_text('{"experiences": []}\n')
+    (root / "experience_memory.json").write_text(
+        '{"schema_version": 2, "experiences": []}\n'
+    )
     return source, tmp_path / "baseline", data
 
 
@@ -62,9 +87,16 @@ def test_baseline_only_two_roles_and_no_source_writes(tmp_path, monkeypatch):
         assert payload["selected_experiences"] == []
         assert "chosen" not in payload and "rejected" not in payload
     records = list(baseline.TrajectoryLog(output / "artifacts").all())
-    assert all(not r.revision_attempts and not r.reflected_candidates
-               and not r.selected_experience_ids and not r.operation_contributions for r in records)
-    assert (output / "artifacts/experience_memory.json").read_text() == '{"experiences": []}\n'
+    assert all(
+        not r.application_attempts
+        and not r.proposal_attempts
+        and not r.selected_experiences
+        and not r.downstream_credits
+        for r in records
+    )
+    assert (
+        output / "artifacts/experience_memory.json"
+    ).read_text() == '{"schema_version": 2, "experiences": []}\n'
     assert (output / "artifacts/role_io.jsonl").stat().st_mode & 0o777 == 0o600
     assert load_run(output)["experiences"] == []
 
@@ -141,20 +173,33 @@ def test_pairing_uses_initial_judgments_and_valid_pairs_only(tmp_path, monkeypat
     records = [json.loads(line) for line in path.read_text().splitlines()]
 
     def failed(row):
-        row["initial_judgment"].update(chosen_score=0, rejected_score=1, margin=-1, success=False)
+        row["initial_judgment"].update(
+            chosen_score=0, rejected_score=1, margin=-1, success=False
+        )
 
     main = deepcopy(records)
-    failed(main[2]); failed(main[3])
-    failed(records[1]); failed(records[3])
+    failed(main[2])
+    failed(main[3])
+    failed(records[1])
+    failed(records[3])
     # A repair success must not replace a failed initial judgment.
-    main[2]["state"] = "revision_success_1"
+    main[2]["state"] = "success_without_candidate"
     path.write_text("".join(json.dumps(r) + "\n" for r in records))
     source_path = source / "artifacts/trajectories.jsonl"
     source_path.write_text("".join(json.dumps(r) + "\n" for r in main))
-    monkeypatch.setattr(baseline, "_backend", lambda *args: pytest.fail("compare makes requests"))
+    monkeypatch.setattr(
+        baseline, "_backend", lambda *args: pytest.fail("compare makes requests")
+    )
     result = baseline.compare_runs(source, output)
-    assert [result[k] for k in ("both_correct", "experience_only_correct",
-                                "baseline_only_correct", "both_wrong")] == [1, 1, 1, 1]
+    assert [
+        result[k]
+        for k in (
+            "both_correct",
+            "experience_only_correct",
+            "baseline_only_correct",
+            "both_wrong",
+        )
+    ] == [1, 1, 1, 1]
     assert result["net_accuracy_gain"] == 0 and not result["provisional"]
     source_path.write_text(json.dumps(main[0]) + "\n" + '{"partial":')
     result = baseline.compare_runs(source, output)

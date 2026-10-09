@@ -64,39 +64,74 @@ def load_config(path: str | Path) -> dict[str, Any]:
     run = _mapping(_required(root, "run", "config"), "run")
     _integer(_required(run, "seed", "run"), "run.seed", 0)
     _text(_required(run, "output_dir", "run"), "run.output_dir")
-    if type(run.get("experience_enabled", True)) is not bool:
-        raise ValueError("run.experience_enabled: expected Boolean")
+    if "experience_enabled" in run:
+        raise ValueError(
+            "run.experience_enabled was removed; use the candidate-validation protocol"
+        )
     if "stop_after_train" in run:
         _integer(run["stop_after_train"], "run.stop_after_train", 1)
 
     dataset = _component(_required(root, "dataset", "config"), "dataset")
     if "prepare" in dataset["config"]:
         prepare = _mapping(dataset["config"]["prepare"], "dataset.config.prepare")
-        expected = {"implementation", "output_dir", "revision", "seed", "per_subset",
-                    "train_per_subset", "preserve_splits_from", "mode"}
+        expected = {
+            "implementation",
+            "output_dir",
+            "revision",
+            "seed",
+            "per_subset",
+            "train_per_subset",
+            "preserve_splits_from",
+            "mode",
+        }
         if set(prepare) - expected:
             raise ValueError("dataset.config.prepare: unsupported fields")
         if prepare.get("implementation") != "rewardbench_chat_hard":
-            raise ValueError("dataset.config.prepare.implementation: expected rewardbench_chat_hard")
+            raise ValueError(
+                "dataset.config.prepare.implementation: expected rewardbench_chat_hard"
+            )
         for name in ("output_dir", "revision"):
-            _text(_required(prepare, name, "dataset.config.prepare"), f"dataset.config.prepare.{name}")
+            _text(
+                _required(prepare, name, "dataset.config.prepare"),
+                f"dataset.config.prepare.{name}",
+            )
         if not re.fullmatch(r"[0-9a-f]{40}", prepare["revision"]):
-            raise ValueError("dataset.config.prepare.revision: expected a 40-character commit SHA")
+            raise ValueError(
+                "dataset.config.prepare.revision: expected a 40-character commit SHA"
+            )
         if "preserve_splits_from" in prepare:
-            _text(prepare["preserve_splits_from"], "dataset.config.prepare.preserve_splits_from")
+            _text(
+                prepare["preserve_splits_from"],
+                "dataset.config.prepare.preserve_splits_from",
+            )
         mode = prepare.get("mode", "split")
         if mode not in ("split", "full_train"):
-            raise ValueError("dataset.config.prepare.mode: expected split or full_train")
-        _integer(_required(prepare, "seed", "dataset.config.prepare"), "dataset.config.prepare.seed", 0)
+            raise ValueError(
+                "dataset.config.prepare.mode: expected split or full_train"
+            )
+        _integer(
+            _required(prepare, "seed", "dataset.config.prepare"),
+            "dataset.config.prepare.seed",
+            0,
+        )
         if mode == "full_train":
-            if set(prepare) & {"per_subset", "train_per_subset", "preserve_splits_from"}:
+            if set(prepare) & {
+                "per_subset",
+                "train_per_subset",
+                "preserve_splits_from",
+            }:
                 raise ValueError("full_train does not accept split sampling fields")
         else:
             for name, minimum in (("per_subset", 2), ("train_per_subset", 1)):
-                _integer(_required(prepare, name, "dataset.config.prepare"),
-                         f"dataset.config.prepare.{name}", minimum)
+                _integer(
+                    _required(prepare, name, "dataset.config.prepare"),
+                    f"dataset.config.prepare.{name}",
+                    minimum,
+                )
             if prepare["train_per_subset"] >= prepare["per_subset"]:
-                raise ValueError("dataset.config.prepare.train_per_subset: must be less than per_subset")
+                raise ValueError(
+                    "dataset.config.prepare.train_per_subset: must be less than per_subset"
+                )
     models = _mapping(_required(root, "models", "config"), "models")
     _model(_required(models, "default", "models"), "models.default")
     for role, value in _mapping(models.get("roles", {}), "models.roles").items():
@@ -114,14 +149,36 @@ def load_config(path: str | Path) -> dict[str, Any]:
                 raise ValueError("modules.retrieval.config.top_l: V1 requires 20")
         elif name == "selection":
             if "max_selected" in options:
-                _integer(options["max_selected"], "modules.selection.config.max_selected", 0, 5)
+                _integer(
+                    options["max_selected"],
+                    "modules.selection.config.max_selected",
+                    0,
+                    5,
+                )
             if "exploration_slots" in options:
-                _integer(options["exploration_slots"], "modules.selection.config.exploration_slots", 0, 1)
-                if ("max_selected" in options
-                        and options["exploration_slots"] > options["max_selected"]):
-                    raise ValueError("modules.selection.config.exploration_slots: cannot exceed max_selected")
-        elif name == "revision" and "max_attempts" in options:
-            _integer(options["max_attempts"], "modules.revision.config.max_attempts", 1, 2)
+                _integer(
+                    options["exploration_slots"],
+                    "modules.selection.config.exploration_slots",
+                    0,
+                    1,
+                )
+                if (
+                    "max_selected" in options
+                    and options["exploration_slots"] > options["max_selected"]
+                ):
+                    raise ValueError(
+                        "modules.selection.config.exploration_slots: cannot exceed max_selected"
+                    )
+        elif name == "application" and "max_rounds" in options:
+            _integer(
+                options["max_rounds"], "modules.application.config.max_rounds", 1, 2
+            )
+    if set(modules) != {"retrieval", "selection", "application", "reliability"}:
+        raise ValueError(
+            "modules: expected retrieval, selection, application, reliability"
+        )
+    if modules["application"]["implementation"] != "critic_candidate_validation":
+        raise ValueError("modules.application: expected critic_candidate_validation")
     _component(_required(root, "store", "config"), "store")
     store_config = root["store"]["config"]
     if "root_dir" in store_config:

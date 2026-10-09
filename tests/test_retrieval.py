@@ -85,7 +85,9 @@ def test_vector_empty_pool_ties_and_invalid_vectors():
         retriever.retrieve("task", [pool(1)[0], pool(1)[0]])
 
 
-def test_pipeline_uses_same_vector_retriever_for_training_fusion_and_read_only_test(tmp_path):
+def test_pipeline_uses_same_vector_retriever_for_training_fusion_and_read_only_test(
+    tmp_path,
+):
     class CountingEmbedding:
         def __init__(self):
             self.calls = []
@@ -103,17 +105,26 @@ def test_pipeline_uses_same_vector_retriever_for_training_fusion_and_read_only_t
     def sample(sample_id):
         return PreferenceSample(sample_id, "明确回答问题", "合理答复", "不合理答复", {})
 
-    assert train.run_sample(sample("train-1")).reflected_candidates[0].fusion == "ADD"
+    assert (
+        train.run_sample(sample("train-1")).proposal_attempts[0].candidate.fusion
+        == "ADD"
+    )
     assert backend.calls == []  # 空池既不做主检索，也不做 Fusion 检索
-    assert train.run_sample(sample("train-2")).reflected_candidates[0].fusion == "MERGE"
+    assert (
+        train.run_sample(sample("train-2")).proposal_attempts[0].candidate.fusion
+        == "MERGE"
+    )
     assert len(backend.calls) == 3  # task、经验文本和 fusion task（向量复用）
     original = (tmp_path / "experience_memory.json").read_bytes()
-    evaluation = PipelineRunner(modules, ExperienceMemory(tmp_path, read_only=True), log,
-                                training=False)
-    assert evaluation.run_sample(sample("test-1")).revision_attempts == []
+    evaluation = PipelineRunner(
+        modules, ExperienceMemory(tmp_path, read_only=True), log, training=False
+    )
+    assert evaluation.run_sample(sample("test-1")).application_attempts == []
     assert (tmp_path / "experience_memory.json").read_bytes() == original
     assert len(backend.calls) == 4
-    assert all("合理答复" not in text and "不合理答复" not in text for text in backend.calls)
+    assert all(
+        "合理答复" not in text and "不合理答复" not in text for text in backend.calls
+    )
 
 
 def test_embedding_reuses_env_key_and_parses_response(monkeypatch):

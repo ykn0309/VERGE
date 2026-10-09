@@ -31,10 +31,10 @@ modules:
     config:
       max_selected: 5
       exploration_slots: 0
-  revision:
-    implementation: critic_generator_dialogue
+  application:
+    implementation: critic_candidate_validation
     config:
-      max_attempts: 2
+      max_rounds: 2
       invalid_output_retries: 2
   reliability:
     implementation: beta

@@ -15,8 +15,13 @@ from verge.prompts import NumberedIDCodec, critic_payload
 
 
 def rubric():
-    return Rubric('private-rubric', None, [Criterion('private-first', '第一项要求？', 6, []),
-                                          Criterion('private-second', '第二项要求？', 4, [])])
+    return Rubric(
+        "private-rubric",
+        [
+            Criterion("private-first", "第一项要求？", 6, []),
+            Criterion("private-second", "第二项要求？", 4, []),
+        ],
+    )
 
 
 def response(value):
@@ -122,13 +127,16 @@ def test_exhaustion_is_unknown_and_transport_error_takes_precedence(monkeypatch,
 def test_all_reused_judgments_require_zero_calls():
     class Unused:
         def generate(self, *args):
-            pytest.fail('unchanged criteria must reuse both sides')
+            pytest.fail("unchanged criteria must reuse both sides")
 
     base = rubric()
-    judgment = calculate_rubric_judgment(base, [CriterionJudgment(c.criterion_id, True, False)
-                                               for c in base.criteria])
-    revised = Rubric('revised', base.rubric_id, base.criteria)
-    result = LLMJudge(Unused()).judge(revised, 'A', 'B', previous=base, previous_judgment=judgment, task="测试任务")
+    judgment = calculate_rubric_judgment(
+        base, [CriterionJudgment(c.criterion_id, True, False) for c in base.criteria]
+    )
+    revised = Rubric("revised", base.criteria)
+    result = LLMJudge(Unused()).judge(
+        revised, "A", "B", previous=base, previous_judgment=judgment, task="测试任务"
+    )
     assert result.criterion_judgments == judgment.criterion_judgments
 
 
@@ -147,10 +155,6 @@ def test_same_response_is_independent_and_can_tie(monkeypatch, wire_payload):
         result = LLMJudge(backend).judge(rubric(), 'same answer', 'same answer', task="测试任务")
     assert len(calls) == 2 and calls[0] == calls[1]
     assert result.margin == 0 and not result.success
-
-
-
-
 
 
 def test_judge_can_copy_numeric_labels_without_format_retry(monkeypatch):

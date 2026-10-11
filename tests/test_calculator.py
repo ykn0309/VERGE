@@ -29,7 +29,7 @@ def rubric_case(scores, signs, sources):
     judgment = calculate_rubric_judgment(
         rubric,
         [
-            CriterionJudgment(str(i), sign == 1, sign == -1)
+            CriterionJudgment(str(i), sign == 1, sign == -1, "chosen fixture evidence", "rejected fixture evidence")
             for i, sign in enumerate(signs)
         ],
     )
@@ -99,6 +99,37 @@ def test_precision_tie_does_not_become_success():
     assert j.margin == 0 and not j.success
 
 
+@pytest.mark.parametrize("scale", [1, 100, 1e-200, 1e200])
+def test_relative_decimal_weights_normalize_and_preserve_credit(scale):
+    r, j = rubric_case([0.99 * scale, 0.01 * scale], [1, -1], [["a", "b"], ["a"]])
+    assert normalize_weights(r) == pytest.approx({"0": .99, "1": .01})
+    assert j.margin == pytest.approx(.98) and j.success
+    credit = calculate_experience_credits(r, j)
+    assert credit["a"].positive_credit == pytest.approx(.495)
+    assert credit["a"].negative_credit == pytest.approx(.01)
+    assert credit["b"].positive_credit == pytest.approx(.495)
+
+
+@pytest.mark.parametrize("weights", [[.1, .2, .3], [.3, .6, .9]])
+def test_decimal_sum_tie_is_exact(weights):
+    r, j = rubric_case(weights, [1, 1, -1], [["e"]] * 3)
+    assert j.margin == 0 and j.chosen_score == j.rejected_score and not j.success
+    assert calculate_experience_credits(r, j)["e"] == Credit(.5, .5)
+
+
+@pytest.mark.parametrize("last,success", [(.30000000000000004, False), (.29999999999999993, True)])
+def test_small_real_decimal_difference_is_not_treated_as_tie(last, success):
+    r, j = rubric_case([.1, .2, last], [1, 1, -1], [["e"]] * 3)
+    assert j.margin != 0 and j.success is success
+    calculate_experience_credits(r, j)
+
+
+def test_finite_weights_with_overflowing_float_sum_remain_normalizable():
+    r, j = rubric_case([1e308, 1e308], [1, -1], [[], []])
+    assert normalize_weights(r) == {"0": .5, "1": .5}
+    assert j.margin == 0 and not j.success
+
+
 @pytest.mark.parametrize(
     "field,value",
     [
@@ -117,9 +148,9 @@ def test_calculator_rejects_corrupt_judgment(field, value):
 @pytest.mark.parametrize(
     "answers",
     [
-        [CriterionJudgment("0", True, False)],
-        [CriterionJudgment("0", True, False)] * 2,
-        [CriterionJudgment("0", True, False), CriterionJudgment("other", False, False)],
+        [CriterionJudgment("0", True, False, "chosen fixture evidence", "rejected fixture evidence")],
+        [CriterionJudgment("0", True, False, "chosen fixture evidence", "rejected fixture evidence")] * 2,
+        [CriterionJudgment("0", True, False, "chosen fixture evidence", "rejected fixture evidence"), CriterionJudgment("other", False, False, "chosen fixture evidence", "rejected fixture evidence")],
     ],
 )
 def test_exact_criterion_coverage(answers):

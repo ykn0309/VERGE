@@ -16,29 +16,29 @@ from verge.models import (
 )
 
 
-PROMPT_VERSION = "critic-candidate-admission-fresh-application"
+PROMPT_VERSION = "critic-candidate-weighted-judge-reasons"
 
 # 专属身份和任务说明；Generator/Critic 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
     "selector": """你是经验适用性筛选员。你的任务是针对给定 task，筛选可用于首次生成评价标准的经验。
 结合任务语义、实际输入和上下文分析适用条件，允许合理推理，不要求条件由 task 逐字声明。经验须有实质设计帮助；任务目标和明确约束优先，高置信度不能代替适用性。""",
-    "initial_generator": """你是评分标准设计者。依据task和本次提供的经验，设计用于评价回答的是/否标准。
-先分析任务目标、实际输入与完整性、明确约束及评价重要性。任务要求优先；已有经验与已准入候选都是可选指导，自主采用、组合或忽略，不因来自Critic就优先或强制采用，不新增无依据要求。
-每条问题独立核验，“是”表示满足要求，不用“是否存在错误”等缺陷问题搭配正向加分。重要性表示task重要程度。来源只标注实质新增或改变该标准的经验；task足以推导的标准不挂名，实际采用也不一律删除。""",
-    "judge": """你是逐标准回答核验员。你的任务是结合 task 和评价标准，依据每条提供的标准和当前回答，独立判断这份回答是否满足要求。
-每条标准对应一个 satisfied Boolean 判断，各项结果由这份回答的实际内容确定。""",
-    "critic": """你是rubric生成经验提出者。核对task、偏好对、当前失败标准和实际Judge结果，先输出私有analysis，再提出0到1条供首次生成rubric使用的候选经验。
-失败不证明标准有错；区分设计缺陷、Judge疑点与证据不足。后续轮核对上条候选、实际生成和采用记录，旧私有分析不代替事实。准入重生成时依据被拒候选和具体拒绝原因重新提出指导。
-content表达具体连贯的标准设计方法；trigger表达生成前可识别的任务或输入条件，允许上下文、领域知识推理及同一目的的协同动作，不依赖已有rubric、Judge或已观察到的回答特征。
-候选不能包含候选回答特有内容、偏好身份、私有评分或比较结论。task及明确约束优先，不为偏好分差放宽约束，不把加严或增加细节当作自动改进。不要求程序支持部分分、否决、自动跳过或修改已有Judge状态。没有可信可复用指导返回空候选，不强行解释成功或伪造经验。""",
-    "admission_checker": """你是候选 rubric 经验的准入审核员。你的任务是审核经验能否指导未来任务首次生成标准，判断表达是否可用，而非提前证明实际有效。
-content 是具体、可复用且指导连贯的标准设计方法；trigger 是生成标准之前可识别的适用场景。允许结合任务语义、实际输入、上下文和领域知识进行合理推理；限定任务类型、具体指导或多个协同动作本身不足以拒绝。
-content 可以指导核验未来回答的性质，但 trigger 不应以已经观察到这些性质为前提，也不应依赖已有 rubric 或 Judge 结果。允许设计评价维度、安排重要性及排除不当要求，应用仍尊重任务目标与明确约束。
-只因明确缺陷返回 FAIL：事后触发条件、保留样本答案细节或偏好身份、改变任务目标、指导与适用条件不匹配、拼接互不相关的指导，或要求程序不支持的评分机制。理由引用实际 content 或 trigger 并指出具体缺陷，不能仅因复杂、具体或属于评分标准设计方法而拒绝。PASS 保持候选文本，不等于实际有效。""",
-    "fusion_judge": """你是经验融合员。你的任务是识别候选与已有经验是否重复，而非尽量合并或压缩经验池；默认独立新增候选。
-只有两者解决同一评价设计问题、指导等价或属于同一方法的必要细化，且适用条件兼容时才 MERGE。共享质量目标、主题或关键词不足以合并；服务不同设计目的、需在各自场景独立使用的指导分别保留。不确定是否重复时返回空匹配。
-融合结果应能指导首次生成标准，适用条件允许任务语义与上下文分析，但不依赖已有 rubric、Judge 结果或已观察到的候选特征。去重提炼为统一指导，保留必要条件边界，不逐条追加无关原则；若必须拼接不同设计问题、扩展无关场景或修复事后触发条件才能合并，则独立新增。
-同一设计指导可含多个协同动作。输出完整 content 和 trigger，只生成文本，不生成信用；历史证据不认证新增内容。""",
+    "initial_generator": """你是评分标准设计者。根据task和本次可用经验，设计用于评价回答的是/否标准。
+先理解任务目标、明确约束、实际输入及上下文，确定当前任务中合理的评价要求。任务要求优先；经验是可选的标准设计指导，依据适用条件自主采用、组合或忽略，不因来自Critic而优先。
+把任务要求组织成2到8条可独立核验的正向问题，“是”表示满足要求，避免用缺陷问题搭配正向加分。采用经验时落实其设计动作：可能只改变一项，也可能影响多个问题的表达、关系或权重。检查整套标准与task及所采用经验是否相容，避免相互冲突、重复计权或仅追加引用而保留与经验冲突的要求；不要求每条经验都重构全部标准。
+对整套标准共同分配总预算1，weight表示相对权重。依据task主次权衡核心与辅助要求，允许权重差距较大；拆分同一维度时共同占据该维度的预算，不因条目更多而扩大重要性。所有weight为有限正数，系统按总和归一化。不引入task无依据的要求、阈值、总分否决、部分分或自动跳过。
+来源只标注实质新增或改变问题表达或权重分配的经验；task足以推导且经验未实质改变的标准不挂名，实际采用也不一律删除。analysis简述设计取舍，具体标准与权重应落实这些取舍。""",
+    "judge": """你是逐标准回答核验员。结合task、标准问题与当前这份回答，独立判断每条要求是否满足。
+逐项定位回答中的相关内容或缺失信息，核对问题要求的性质、范围、数量及否定条件，然后给出satisfied和简短reason。reason记录可核对的判断依据：指出相关表述或缺失内容；涉及计数时给出计数结果及必要的计数对象说明，不只复述结论，也不需要长篇推理。
+以原文和task提供的事实为依据，不补造回答内容或外部核验结果。每项按其问题判断，不用其他条目的结论替代当前项。""",
+    "critic": """你从失败证据中提炼供未来首次设计评分标准使用的经验。目标是形成有依据、可复用的设计动作。
+私有analysis先核对task要求、标准文本、回答事实、两侧Judge判断及理由。Judge理由是待核对的模型解释，不是事实证明；区分标准设计缺陷、表达歧义、Judge执行错误、偏好冲突与证据不足。分差不理想本身不意味着标准需要改变；只有Judge误判且没有可信设计动作时返回空候选。
+从可确认的问题中提炼如何设计标准：明确核验性质、澄清语义边界、组织互相一致的要求或分配相对权重。可以使正确要求更明确、更容易被Judge核验，但不能迁就错误事实、放宽task明确约束或为了偏好分差创造无依据要求。保持加权Boolean协议，不提出部分分、总分否决、自动跳过或修改Judge的指令。
+公开content表达面向一类问题的标准设计方法，trigger表达生成前能从task、实际输入、上下文或领域知识识别的条件。把本题主体转换为语义角色，把数量、时长等转换为从新task读取的参数，保留方法必需的专业边界。content与trigger范围一致；方法可以包含同一目的的协同动作，不必覆盖全部标准。
+公开经验不依赖已有评分标准、Judge或已观察回答特征，不保留本题专名、答案片段、固定数值、偏好身份或私有分差，也不转成给回答者的成稿/拒绝命令。必要领域条件与通用参数说明可以保留，抽象不等于删除所有专业含义。
+第二轮对照前候选、实际标准、来源与前后Judge依据，辨别诊断错误、方法不足、未落实或Judge执行问题；来源声明不证明已落实。根据新增证据决定是否调整设计方法，避免仅换说法重复前候选；仍无可信设计动作可返回空候选。""",
+    "fusion_judge": """你是经验融合员。比较候选与已有经验是否解决同一评分标准设计问题；指导等价或属于同一方法的必要细化、适用条件兼容时才MERGE。共享质量目标、主题或关键词不足以合并；不同设计目的分别保留，不确定时默认独立新增，返回空匹配。
+合并时提炼统一方法，保留必需任务类型、领域边界与同一目的的协同动作，content与trigger覆盖同一范围。来源任务特有的实体和数值转为语义角色或任务参数，不拼接来源任务的实例、答案对照或无关原则；trigger须在生成前可识别，不依赖已有评分标准、Judge或已观察回答特征。若合并须拼接不同方法或扩展无关场景，则返回空匹配。
+只改写匹配双方的完整content/trigger，不生成信用；历史证据不认证新增内容。无匹配时保留候选原文供独立新增。""",
 }
 
 _ROLE_INSTRUCTIONS = {
@@ -48,20 +48,16 @@ _ROLE_INSTRUCTIONS = {
     ),
     "initial_generator": (
         '以 JSON 返回 {"analysis":任务分析,"criteria":[{"question":判断问题,'
-        '"importance_score":重要性整数,"source_experiences":[来源经验ID]}]}。'
-        "analysis 和 question 用中文，analysis 非空；生成 2 到 8 条标准，importance_score 为 1 到 10 的整数。"
+        '"weight":相对权重,"source_experiences":[来源经验ID]}]}。'
+        "analysis 和 question 用中文，analysis 非空；生成 2 到 8 条标准，weight为有限正数，按总预算1分配，系统统一归一化。"
         "source_experiences 填写实质新增或改变该标准的本次提供的经验 ID；仅由 task 推导的标准使用空数组。"
     ),
     "judge": (
-        '逐项判断用 JSON 返回 {"criterion_judgments":[{"criterion_id":输入标准ID,"satisfied":true或false}]}。'
-        "每个输入编号恰好出现一次，编号原样复制，satisfied 为布尔值。"
+        '逐项判断用 JSON 返回 {"criterion_judgments":[{"criterion_id":输入标准ID,"satisfied":true或false,"reason":简短判断依据}]}。'
+        "每个输入编号恰好出现一次，编号原样复制，satisfied为布尔值，reason为非空字符串。"
     ),
     "critic": (
-        '用 JSON 返回 {"analysis":私有诊断,"candidates":[{"content":设计指导,"trigger":适用条件}]}。analysis为非空中文，候选0到1条，content/trigger为非空中文，无可信经验返回空数组。'
-    ),
-    "admission_checker": (
-        '准入结果用 JSON 返回 {"decision":"PASS"或"FAIL","reason":审核理由}。'
-        "全部准入条件满足时 decision 为 PASS，其余情况为 FAIL；reason 为非空中文文本。"
+        '用 JSON 返回 {"analysis":私有诊断,"candidates":[{"content":设计指导,"trigger":适用条件}]}。analysis为非空中文，简洁组织事实核对、问题定位与方法提炼，候选0到1条，content/trigger为非空中文，无可信经验返回空数组。'
     ),
     "fusion_judge": (
         '融合结果用 JSON 返回 {"match_index":从0开始的整数下标,"content":完整融合方法,"trigger":适用条件}。'
@@ -87,7 +83,7 @@ _INPUT_TITLES = {
     "criteria": "评价标准",
     "criterion_id": "标准编号",
     "question": "判断问题",
-    "importance_score": "重要性",
+    "weight": "分配权重",
     "source_experiences": "来源经验",
     "rubric_id": "标准集编号",
     "normalized_weights": "标准权重",
@@ -97,14 +93,16 @@ _INPUT_TITLES = {
     "margin": "得分差",
     "success": "判别成功",
     "satisfied": "满足标准",
+    "chosen_reason": "优选回答判断依据",
+    "rejected_reason": "非优选回答判断依据",
+    "reason": "判断依据",
     "analysis": "分析",
     "validation_feedback": "本次需修正的问题",
-    "candidate": "待审核经验",
+    "candidate": "待融合经验",
     "candidate_id": "候选编号",
-    "admission_reason": "准入理由",
     "existing": "已有经验",
-    "current_rubric": "当前失败标准",
-    "current_judgment": "当前判断",
+    "current_rubric": "当前评分标准",
+    "current_judgment": "本次Judge结果",
     "previous_rubric": "上轮应用之前的标准",
     "previous_judgment": "上轮应用之前的判断",
     "adopted_criterion_ids": "上条候选声明引用标准",
@@ -147,7 +145,7 @@ def _inline_critic_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
                             **criterion,
                             **{
                                 key: by_id.get(criterion.get("criterion_id"), {})[key]
-                                for key in ("chosen", "rejected")
+                                for key in ("chosen", "rejected", "chosen_reason", "rejected_reason")
                                 if key in by_id.get(criterion.get("criterion_id"), {})
                             },
                         }
@@ -175,15 +173,23 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
     titles.update(
         {
             "round_number": "本次应用轮次",
-            "generation_number": "本轮候选生成次数",
             "candidate_experience": "本轮可选候选经验",
-            "previous_candidate": "上条已准入候选",
-            "rejected_candidate": "本轮被拒候选",
+            "previous_candidate": "上条候选",
             "adopted": "上条候选声明采用",
             "invalid_error": "上次技术错误",
             "judgment_status": "判断状态",
         }
     )
+
+    if role == "initial_generator":
+        # E/C share one usable list in the actual message; audit fields stay distinct.
+        payload = dict(payload)
+        available = list(payload.get("selected_experiences", []))
+        if "candidate_experience" in payload:
+            available.append(payload.pop("candidate_experience"))
+        if "selected_experiences" in payload:
+            payload["selected_experiences"] = available
+        titles["selected_experiences"] = "本次可用经验"
 
     def scalar(value: Any, field: str) -> str:
         if value is None:
@@ -290,7 +296,7 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
         )
     if "normalized_weights" in keys or "margin" in keys:
         notes.append(
-            "标准权重由重要性归一化；得分差为优选回答得分减非优选回答得分，正值表示判别成功。"
+            "标准权重由分配权重归一化；得分差为优选回答得分减非优选回答得分，正值表示判别成功。"
         )
     if notes:
         lines.extend(["", "补充说明：", *notes])
@@ -353,7 +359,7 @@ def generator_payload(
             "experience_id": candidate.candidate_id,
             "content": candidate.content,
             "trigger": candidate.trigger,
-            "status": "已准入、尚未验证，无历史置信度",
+            "status": "当前候选、尚未验证，无历史置信度",
         }
     if validation_feedback is not None:
         payload["validation_feedback"] = validation_feedback
@@ -372,7 +378,7 @@ def judge_payload(pending: Sequence[Criterion], response: str, *, task: str,
 
 def _criterion_fields(criterion: Criterion) -> dict[str, Any]:
     return {"criterion_id": criterion.criterion_id, "question": criterion.question,
-            "importance_score": criterion.importance_score}
+            "weight": criterion.weight}
 
 
 def _rubric_semantics(rubric: Rubric) -> dict[str, Any]:
@@ -389,10 +395,8 @@ def critic_payload(
     current: Rubric,
     judgment: RubricJudgment,
     round_number: int,
-    generation_number: int,
     *,
     previous_candidate: CandidateExperience | None = None,
-    rejected_candidate: CandidateExperience | None = None,
     adopted: bool | None = None,
     invalid_error: str | None = None,
     previous_rubric: Rubric | None = None,
@@ -403,7 +407,6 @@ def critic_payload(
         "chosen": chosen,
         "rejected": rejected,
         "round_number": round_number,
-        "generation_number": generation_number,
         "current_rubric": current.to_dict(),
         "current_judgment": judgment.to_dict(),
     }
@@ -426,24 +429,12 @@ def critic_payload(
             if adopted is not None
             else None
         )
-    if rejected_candidate is not None:
-        payload["rejected_candidate"] = {
-            "candidate_id": rejected_candidate.candidate_id,
-            "content": rejected_candidate.content,
-            "trigger": rejected_candidate.trigger,
-            "admission_reason": rejected_candidate.admission_reason,
-        }
     if invalid_error is not None:
         payload["invalid_error"] = invalid_error
         payload["judgment_status"] = "上次未形成有效应用结果，无新的Judge判断"
     return payload
 
 
-def admission_payload(task: str, candidate: CandidateExperience) -> dict[str, Any]:
-    """准入仅投影任务与候选文本，不接收修订证据。"""
-    return {"task": task, "candidate": {"candidate_id": candidate.candidate_id,
-                                        "content": candidate.content,
-                                        "trigger": candidate.trigger}}
 
 
 def fusion_payload(content: str, trigger: str,
@@ -544,7 +535,7 @@ class NumberedIDCodec:
             for index, item in enumerate(result["criteria"], 1):
                 if not isinstance(item, dict) or set(item) != {
                     "question",
-                    "importance_score",
+                    "weight",
                     "source_experiences",
                 }:
                     raise ValueError(

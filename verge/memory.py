@@ -105,11 +105,10 @@ class ExperienceMemory:
         """写入融合文本与应用双通道证据；零值不追加证据记录。"""
         self._ensure_writable()
         if (
-            candidate.admission != "PASS"
-            or candidate.fusion is not None
+            candidate.fusion is not None
             or candidate.fusion_record is not None
         ):
-            raise ValueError("fusion requires an admitted, unfused candidate")
+            raise ValueError("fusion requires an unfused candidate")
         if matching_experience_id is None:
             if merged_content is not None or merged_trigger is not None:
                 raise ValueError("ADD must use candidate text")

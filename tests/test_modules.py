@@ -3,7 +3,7 @@
 import pytest
 from verge.llm import FakeLLMBackend, LLMFormatError
 from verge.models import CandidateExperience
-from verge.modules import LLMInitialRubricGenerator, LLMCritic, LLMAdmissionChecker
+from verge.modules import LLMInitialRubricGenerator, LLMCritic
 from verge.prompts import ExperienceView
 
 
@@ -17,7 +17,7 @@ def test_fake_unknown_source_retries_then_exhausts_without_mutating_response():
 
     backend = Bad()
     gen = LLMInitialRubricGenerator(backend, invalid_output_retries=1)
-    c = CandidateExperience("candidate_current", "方法", "条件", "PASS", "可用")
+    c = CandidateExperience("candidate_current", "方法", "条件")
     with pytest.raises(ValueError, match="source_experiences"):
         gen.apply("task", [], c, 1)
     assert (
@@ -55,17 +55,6 @@ def test_generator_criterion_bounds_are_structural(count):
         LLMInitialRubricGenerator(Bad(), invalid_output_retries=0).generate("task", [])
 
 
-def test_admission_does_not_rewrite_input_candidate():
-    c = CandidateExperience("c", "具体指导", "task条件")
-    b = FakeLLMBackend()
-    out = LLMAdmissionChecker(b).check("task", c)
-    assert c.admission is None and out.admission == "PASS"
-    assert (out.content, out.trigger, out.candidate_id) == (
-        c.content,
-        c.trigger,
-        c.candidate_id,
-    )
-    assert set(b.requests[0][1]) == {"task", "candidate"}
 
 
 def test_missing_analysis_and_extra_old_fields_rejected():
@@ -79,9 +68,9 @@ def test_missing_analysis_and_extra_old_fields_rejected():
 
         r = Rubric("r", [Criterion("a", "问题", 1, []), Criterion("b", "问题2", 1, [])])
         j = calculate_rubric_judgment(
-            r, [CriterionJudgment(c.criterion_id, False, False) for c in r.criteria]
+            r, [CriterionJudgment(c.criterion_id, False, False, "chosen fixture evidence", "rejected fixture evidence") for c in r.criteria]
         )
-        LLMCritic(Old()).propose("task", "A", "B", r, j, 1, 1)
+        LLMCritic(Old()).propose("task", "A", "B", r, j, 1)
 
 
 @pytest.mark.parametrize(
@@ -98,9 +87,9 @@ def test_critic_candidate_type_failure_is_bounded_role_error(bad):
 
     r = Rubric("r", [Criterion("a", "问题", 1, []), Criterion("b", "问题2", 1, [])])
     j = calculate_rubric_judgment(
-        r, [CriterionJudgment(c.criterion_id, False, False) for c in r.criteria]
+        r, [CriterionJudgment(c.criterion_id, False, False, "chosen fixture evidence", "rejected fixture evidence") for c in r.criteria]
     )
     b = Bad()
     with pytest.raises(ValueError):
-        LLMCritic(b, invalid_output_retries=1).propose("task", "A", "B", r, j, 1, 1)
+        LLMCritic(b, invalid_output_retries=1).propose("task", "A", "B", r, j, 1)
     assert len(b.requests) == 2 and "validation_feedback" in b.requests[-1][1]

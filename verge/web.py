@@ -219,15 +219,15 @@ def _evolution(experience, records, order, warnings):
 
 def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 2:
-        raise ValueError("unsupported run manifest format; new runs require v2")
+    if manifest.get("format_version") != 4:
+        raise ValueError("unsupported run manifest format; new runs require v4")
     versions = manifest.get("prompt_versions")
     if (
         not isinstance(versions, dict)
         or not versions
         or set(versions.values()) != {PROMPT_VERSION}
     ):
-        raise ValueError("Web only supports the current candidate-validation protocol")
+        raise ValueError("Web only supports the current candidate-application protocol")
     root_name = Path(manifest["config"]["store"]["config"]["root_dir"])
     if root_name.is_absolute() or ".." in root_name.parts or root_name == Path("."):
         raise ValueError("invalid store root_dir in manifest")
@@ -338,8 +338,6 @@ def _overview_metrics(samples, experiences, context, manifest, warnings):
         "adds": adds,
         "merges": merges,
         "candidates": len(candidates),
-        "admission_pass": sum(c["admission"] == "PASS" for c in candidates),
-        "admission_fail": sum(c["admission"] == "FAIL" for c in candidates),
         "proposal_calls": len(proposals),
         "applications": len(apps),
         "adopted": sum(a["adopted"] is True for a in apps),
@@ -347,7 +345,6 @@ def _overview_metrics(samples, experiences, context, manifest, warnings):
         "repair_successes": len(successes),
         "initial_failures": failures,
         "repair_rate": len(successes) / failures if failures else None,
-        "admission_exhausted": sum(s["state"] == "admission_exhausted" for s in train),
         "validation_exhausted": sum(
             s["state"] in ("validation_exhausted", "invalid_application_exhausted")
             for s in train

@@ -16,7 +16,6 @@ from verge.models import (
     TrajectoryRecord,
 )
 from verge.modules import (
-    AdmissionChecker,
     Critic,
     FusionJudge,
     InitialRubricGenerator,
@@ -34,7 +33,6 @@ class PipelineModules(Protocol):
     initial_generator: InitialRubricGenerator
     judge: Judge
     critic: Critic
-    admission_checker: AdmissionChecker
     fusion_judge: FusionJudge
 
 
@@ -81,7 +79,6 @@ class PipelineRunner:
                 "selection",
                 "initial_generator",
                 "initial_judge",
-                "admission",
                 "fusion_judge",
             }
             if (
@@ -145,68 +142,39 @@ class PipelineRunner:
         candidate_ids = set()
         record.state = "validation_exhausted"
         for number in range(1, self.max_rounds + 1):
-            rejected = None
-            candidate = None
-            for generation in (1, 2):
-                attempt = ProposalAttempt(number, generation)
-                record.proposal_attempts.append(attempt)
-                self.current_stage = f"application_{number}.critic"
-                try:
-                    proposal = m.critic.propose(
-                        sample.task,
-                        sample.chosen,
-                        sample.rejected,
-                        current,
-                        current_judgment,
-                        number,
-                        generation,
-                        previous_candidate=previous_candidate,
-                        rejected_candidate=rejected,
-                        adopted=adopted,
-                        invalid_error=invalid_error,
-                        previous_rubric=previous_rubric,
-                        previous_judgment=previous_judgment,
-                    )
-                except ValueError as exc:
-                    attempt.error = invalid_error = str(exc)
-                    break  # invalid round, no invented Admission/Judge failure or extra proposal.
-                attempt.analysis, attempt.candidate = (
-                    proposal.analysis,
-                    proposal.candidate,
+            attempt = ProposalAttempt(number)
+            record.proposal_attempts.append(attempt)
+            self.current_stage = f"application_{number}.critic"
+            try:
+                proposal = m.critic.propose(
+                    sample.task,
+                    sample.chosen,
+                    sample.rejected,
+                    current,
+                    current_judgment,
+                    number,
+                    previous_candidate=previous_candidate,
+                    adopted=adopted,
+                    invalid_error=invalid_error,
+                    previous_rubric=previous_rubric,
+                    previous_judgment=previous_judgment,
                 )
-                if proposal.candidate is None:
-                    record.state = "no_candidate"
-                    return
-                candidate = proposal.candidate
-                if (
-                    candidate.candidate_id in allowed_e
-                    or candidate.candidate_id in candidate_ids
-                ):
-                    raise ValueError("critic candidate IDs must be new and unique")
-                candidate_ids.add(candidate.candidate_id)
-                if candidate.admission is not None or candidate.fusion is not None:
-                    raise ValueError("critic must propose unreviewed candidates")
-                self.current_stage = "admission"
-                reviewed = m.admission_checker.check(sample.task, candidate)
-                if (reviewed.candidate_id, reviewed.content, reviewed.trigger) != (
-                    candidate.candidate_id,
-                    candidate.content,
-                    candidate.trigger,
-                ):
-                    raise ValueError("admission must preserve candidate text and ID")
-                if reviewed.admission not in ("PASS", "FAIL"):
-                    raise ValueError("admission must return a decision")
-                attempt.candidate = reviewed
-                candidate = reviewed
-                if candidate.admission == "PASS":
-                    break
-                rejected = candidate
-                candidate = None
-                if generation == 2:
-                    record.state = "admission_exhausted"
-                    return
+            except ValueError as exc:
+                attempt.error = invalid_error = str(exc)
+                continue  # invalid round; no invented Judge result or extra proposal.
+            attempt.analysis, attempt.candidate = proposal.analysis, proposal.candidate
+            candidate = proposal.candidate
             if candidate is None:
-                continue  # only Critic format exhaustion reaches here.
+                record.state = "no_candidate"
+                return
+            if (
+                candidate.candidate_id in allowed_e
+                or candidate.candidate_id in candidate_ids
+            ):
+                raise ValueError("critic candidate IDs must be new and unique")
+            candidate_ids.add(candidate.candidate_id)
+            if candidate.fusion is not None:
+                raise ValueError("critic must propose unfused candidates")
             application = ApplicationAttempt(number, candidate.candidate_id)
             record.application_attempts.append(application)
             self.current_stage = f"application_{number}.generator"

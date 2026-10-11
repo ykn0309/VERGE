@@ -4,7 +4,7 @@
 
 ## 1. 项目目标
 
-VERGE（Verified Experience-guided Rubric Generation）研究如何从preference trajectory提出rubric-generation experience，先准入，再通过新Generator会话自主应用并观察结果，结合后续任务维护可信度；融合保留文本版本，成功应用只提供弱证据，不解释为因果贡献。新分支目标见计划31，代码尚未迁移；已有经验R0与新候选统一用实际引用标准的无折扣正向P/负向N证据，alpha加P、beta加N，不使用lambda或margin增益；不先抵消，双通道均0才不更新，净方向仅展示，入池资格不因此改变。已确定删除无经验诊断和旧方案兼容，保留既有格式/契约错误的有限纠错与样本/无效轮隔离；不兼容不授权删除历史数据或产物。
+VERGE（Verified Experience-guided Rubric Generation）从preference trajectory提出rubric-generation experience，直接交给新Generator会话自主应用，再用实际结果及后续任务维护可信度。当前协议已删除Admission，见计划42；计划44将标准改为相对权重预算，Judge输出逐项Boolean及依据供Critic核对：每轮一次Critic提案、最多两轮，只有声明采用且有效应用成功的候选才可Fusion。已有经验R0与候选统一按来源标准累计无折扣正向P/负向N，alpha加P、beta加N，不先抵消、不使用lambda或margin增益；双通道均0才不增加数值证据。融合保留文本版本，应用证据不解释为因果贡献。真实实验固定所有LLM角色Qwen3.5-Flash、关闭思考；历史配置与产物保留。保持有限纠错与样本/无效轮隔离，基础设施和程序错误fail-fast，不做旧协议兼容或跨方法resume。
 
 ## 2. 权威文档
 

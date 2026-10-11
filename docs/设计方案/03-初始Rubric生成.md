@@ -28,26 +28,20 @@ critic feedback
 
 ## 3. 输出
 
-Generator 先返回非空 `analysis`，分析 task 的目标、实际输入与完整性、核心要求和当前条件下合理的回答行为；再依据分析返回 `criteria` 列表，每项只包含 `question`、`importance_score` 和 `source_experiences`。系统按列表顺序自动分配 criterion ID，并创建独立 rubric ID；后续 Judge/Critic 使用系统分配的编号。来源经验引用仍使用输入提供的局部数字 ID。分析只依据 task 和所选经验，记录在既有 role_io 中；领域 Rubric 和信用计算不使用分析。标准数量仍为 2–8 条，由覆盖任务核心要求决定，不强行增加数量。
+Generator 先返回非空 `analysis`，分析 task 的目标、实际输入与完整性、核心要求和当前条件下合理的回答行为；再依据分析返回 `criteria` 列表，每项只包含 `question`、`weight` 和 `source_experiences`。系统按列表顺序自动分配 criterion ID，并创建独立 rubric ID；后续 Judge/Critic 使用系统分配的编号。来源经验引用仍使用输入提供的局部数字 ID。分析只依据 task 和所选经验，记录在既有 role_io 中；领域 Rubric 和信用计算不使用分析。标准数量仍为 2–8 条，由覆盖任务核心要求决定，不强行增加数量。
 
-## 4. Importance Score
+## 4. 相对权重预算
 
-模型为每条 criterion 输出 1–10 的整数重要性分数：
+模型针对整套标准共同分配总预算1，每条`weight`必须是有限正数，允许不同标准之间超过10:1的比例。实际输出之和可以不为1，Calculator统一归一化，原值保留在rubric中。权重仅反映task目标与明确约束的重要程度，不表示预计区分偏好对的能力。
 
-$$
-1\le s_i\le10
-$$
-
-不要求这些分数之和等于 1。分数只表示 criterion 对 task 的重要程度，不能表示其预计区分当前 response pair 的能力。
-
-Generator 不计算 normalized weight。归一化由 [Rubric Judge](./04-Rubric-Judge.md) 中的 Calculator 完成。
+生成时检查标准之间是否相容、是否重复计权，以及是否实际落实所采用经验的设计动作。一条经验可以只影响一项，也可以改变多个问题表达及权重关系；不强制重构全部标准，不增加输入状态或适用维度专门字段。
 
 ## 5. Provenance
 
 先根据 task 的显式要求形成标准，再考虑所选经验能否真正补充或改变标准。`source_experiences` 只记录对 criterion 形成有实质作用的经验；来源 ID 合法不等于语义归因正确。
 
 - 仅根据 task 就足以提出该 criterion 的问题，即便某条经验也提出类似原则，仍标 `[]`；
-- 经验真正新增或实质改变该 criterion 的判断问题时，才记录对应 experience ID；多来源时逐个检查；
+- 经验真正新增或实质改变该 criterion 的判断问题或权重分配时，才记录对应 experience ID；多来源时逐个检查；
 - 一条经验可能因实质帮助另一条标准而被选中，不能因此把它附在本来仅凭 task 就能写出的标准上。已选但未实际使用的经验不得挂名；不得因为经验出现在上下文里就全部引用，也不得为避免误标而把真正有用的来源一律删除。
 
 Generator 不能看到 chosen/rejected。是否实质贡献属于语义判断，确定性校验只保证来源 ID 已选、无重复，不声称能证明该判断正确。
@@ -69,6 +63,6 @@ Generator 不能看到 chosen/rejected。是否实质贡献属于语义判断，
 
 ## Generator 会话边界
 
-R0只接收task与所选经验，每个样本重置会话，R0来源仍严格限定E。训练R0有效失败后，新目标是[候选经验新会话应用](./07-Generator对话修订.md)：Critic候选先Admission，再以task+固定E+本轮通过候选重新开始Generator会话，不继承R0、旧分析、assistant或普通建议。E和C均由Generator自主判断是否适用，明确约束优先。R0及应用会话的实际输入输出分别保存，初始分析摘要不能被后续覆盖。只读测试和baseline仅初始生成。
+R0只接收task与所选经验，每个样本重置会话，R0来源仍严格限定E。训练R0有效失败后，新目标是[候选经验新会话应用](./07-Generator对话修订.md)：Critic候选直接以task+固定E+本轮候选重新开始Generator会话，不继承R0、旧分析、assistant或普通建议。E和C均由Generator自主判断是否适用，明确约束优先。R0及应用会话的实际输入输出分别保存，初始分析摘要不能被后续覆盖。只读测试和baseline仅初始生成。
 
-此处描述已实现的新会话协议，见[计划31](../plans/31-Critic候选经验准入与新会话验证.md)。正向问题表达由提示词与现有协议约束，不据此自动增加语义审核门禁。
+此处描述已实现的新会话协议，见[计划44](../plans/44-相对权重与Judge依据反馈.md)。正向问题表达由提示词与现有协议约束，不据此自动增加语义审核门禁。

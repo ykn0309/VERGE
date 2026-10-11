@@ -1,0 +1,67 @@
+# 迭代五：沿用第四版提示词，仅Plus Critic/Admission启用思考模式。
+run:
+  seed: 42
+  output_dir: runs/rewardbench-chat-hard-qwen-experience-iteration-5-plus-thinking-30
+  test_workers: 1
+  stop_after_train: 30
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: runs/rewardbench-chat-hard-data-full/train.jsonl
+    prepare:
+      implementation: rewardbench_chat_hard
+      mode: full_train
+      output_dir: runs/rewardbench-chat-hard-data-full
+      revision: 168d848cdbbea9764fae4a544dc9ca1e6cca4931
+      seed: 42
+models:
+  default:
+    backend: openai_compatible
+    model: qwen3.5-flash
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY_2
+    enable_thinking: false
+    timeout_seconds: 30
+    max_retries: 2
+  roles:
+    critic:
+      backend: openai_compatible
+      model: qwen3.5-plus
+      base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api_key_env: DASHSCOPE_API_KEY_2
+      enable_thinking: true
+      timeout_seconds: 90
+      max_retries: 2
+    admission_checker:
+      backend: openai_compatible
+      model: qwen3.5-plus
+      base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api_key_env: DASHSCOPE_API_KEY_2
+      enable_thinking: true
+      timeout_seconds: 90
+      max_retries: 2
+modules:
+  retrieval:
+    implementation: vector
+    config:
+      top_l: 20
+      embedding_model: text-embedding-v4
+      dimensions: 1024
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 0
+  application:
+    implementation: critic_candidate_validation
+    config:
+      max_rounds: 2
+      invalid_output_retries: 2
+  reliability:
+    implementation: beta
+    config: {}
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

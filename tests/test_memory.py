@@ -12,8 +12,6 @@ def candidate(sid="candidate_1"):
         sid,
         "独立关键要求标准",
         "明确关键要求",
-        admission="PASS",
-        admission_reason="表达可用",
     )
 
 
@@ -58,18 +56,6 @@ def test_zero_application_still_adds_text_without_evidence(tmp_path):
     assert m.path.read_bytes() == before
 
 
-@pytest.mark.parametrize(
-    "mutation",
-    [
-        lambda c: replace(c, admission=None, admission_reason=None),
-        lambda c: replace(c, admission="FAIL"),
-    ],
-)
-def test_unadmitted_candidate_cannot_write(tmp_path, mutation):
-    m = ExperienceMemory(tmp_path)
-    with pytest.raises(ValueError):
-        m.fuse(mutation(candidate()), "s")
-    assert not m.all()
 
 
 def test_readonly_does_not_write_and_rejects_mutations(tmp_path):
@@ -103,4 +89,13 @@ def test_merge_validation_happens_before_persistence(tmp_path):
     before = m.path.read_bytes()
     with pytest.raises(ValueError):
         m.fuse(candidate(), "next", e.experience_id, merged_content="missing trigger")
+    assert m.path.read_bytes() == before
+
+
+def test_fused_candidate_cannot_be_fused_again(tmp_path):
+    m = ExperienceMemory(tmp_path)
+    fused = m.fuse(candidate(), "s")
+    before = m.path.read_bytes()
+    with pytest.raises(ValueError, match="unfused"):
+        m.fuse(fused, "again")
     assert m.path.read_bytes() == before

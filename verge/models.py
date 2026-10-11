@@ -10,7 +10,6 @@ from typing import Any, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 ModelT = TypeVar("ModelT", bound="Model")
 FusionDecision = Literal["MERGE", "ADD"]
-AdmissionDecision = Literal["PASS", "FAIL"]
 
 
 def _decode(value: Any, annotation: Any) -> Any:
@@ -256,17 +255,15 @@ class Experience(Model):
 class Criterion(Model):
     criterion_id: str
     question: str
-    importance_score: int
+    weight: float
     source_experiences: list[str]
 
     def __post_init__(self) -> None:
         _id(self.criterion_id, "criterion_id")
         _id(self.question, "question")
-        if (
-            type(self.importance_score) is not int
-            or not 1 <= self.importance_score <= 10
-        ):
-            raise ValueError("importance_score must be an integer from 1 to 10")
+        _number(self.weight, "weight")
+        if self.weight <= 0:
+            raise ValueError("weight must be positive")
         if (
             not isinstance(self.source_experiences, list)
             or any(type(key) is not str or not key for key in self.source_experiences)
@@ -290,19 +287,24 @@ class Rubric(Model):
 
 @dataclass
 class CriterionJudgment(Model):
-    """一条标准对偏好对两侧回答的 Boolean 判断。
+    """一条标准对偏好对两侧回答的Boolean判断与原始依据。
 
-    criterion_id: 被判断的标准 ID；chosen/rejected: 对应回答是否满足该标准。
+    criterion_id: 被判断的标准ID；chosen/rejected: 对应回答是否满足该标准；
+    chosen_reason/rejected_reason: 各侧原始判断依据，不等于事实认证。
     """
 
     criterion_id: str
     chosen: bool
     rejected: bool
+    chosen_reason: str
+    rejected_reason: str
 
     def __post_init__(self) -> None:
         _id(self.criterion_id, "criterion_id")
         if type(self.chosen) is not bool or type(self.rejected) is not bool:
             raise ValueError("criterion judgments must be Boolean")
+        _id(self.chosen_reason, "chosen_reason")
+        _id(self.rejected_reason, "rejected_reason")
 
 
 @dataclass
@@ -338,8 +340,6 @@ class CandidateExperience(Model):
     candidate_id: str
     content: str
     trigger: str
-    admission: AdmissionDecision | None = None
-    admission_reason: str | None = None
     fusion: FusionDecision | None = None
     experience_id: str | None = None
     fusion_record: FusionRecord | None = None
@@ -347,19 +347,12 @@ class CandidateExperience(Model):
     def __post_init__(self) -> None:
         for name in ("candidate_id", "content", "trigger"):
             _id(getattr(self, name), name)
-        if self.admission not in (None, "PASS", "FAIL"):
-            raise ValueError("invalid admission decision")
-        if self.admission is None:
-            if self.admission_reason is not None:
-                raise ValueError("reason requires admission")
-        else:
-            _id(self.admission_reason, "admission reason")
         if self.fusion is None:
             if self.experience_id is not None or self.fusion_record is not None:
                 raise ValueError("fusion fields require a decision")
         else:
-            if self.fusion not in ("ADD", "MERGE") or self.admission != "PASS":
-                raise ValueError("fusion requires PASS")
+            if self.fusion not in ("ADD", "MERGE"):
+                raise ValueError("invalid fusion decision")
             _id(self.experience_id, "experience_id")
             if (
                 self.fusion_record is None
@@ -381,13 +374,12 @@ class CriticProposal(Model):
 @dataclass
 class ProposalAttempt(Model):
     round_number: int
-    generation_number: int
     analysis: str | None = None
     candidate: CandidateExperience | None = None
     error: str | None = None
 
     def __post_init__(self) -> None:
-        if self.round_number not in (1, 2) or self.generation_number not in (1, 2):
+        if self.round_number not in (1, 2):
             raise ValueError("proposal budget exceeded")
 
 
@@ -448,11 +440,11 @@ class TrajectoryRecord(Model):
     application_attempts: list[ApplicationAttempt] = field(default_factory=list)
     sample_error: dict[str, str] | None = None
     judge_error: str | None = None
-    schema_version: int = 2
+    schema_version: int = 4
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
-        if self.schema_version != 2:
+        if self.schema_version != 4:
             raise ValueError("unsupported trajectory schema")
         if self.state not in {
             "in_progress",
@@ -461,7 +453,6 @@ class TrajectoryRecord(Model):
             "application_success",
             "success_without_candidate",
             "no_candidate",
-            "admission_exhausted",
             "validation_exhausted",
             "invalid_application_exhausted",
             "sample_error",
@@ -469,8 +460,8 @@ class TrajectoryRecord(Model):
             "judge_error_application",
         }:
             raise ValueError("unknown trajectory state")
-        pairs = [(p.round_number, p.generation_number) for p in self.proposal_attempts]
-        if pairs != sorted(set(pairs)) or len(pairs) > 4:
+        pairs = [p.round_number for p in self.proposal_attempts]
+        if pairs != sorted(set(pairs)) or len(pairs) > 2:
             raise ValueError(
                 "proposal attempts must be unique and ordered within budget"
             )
@@ -493,9 +484,9 @@ class TrajectoryRecord(Model):
                 ),
                 None,
             )
-            if source is None or source.admission != "PASS":
+            if source is None:
                 raise ValueError(
-                    "application must reference this round's admitted candidate"
+                    "application must reference this round's candidate"
                 )
         for p in self.proposal_attempts:
             if p.candidate and p.candidate.fusion:
@@ -527,6 +518,6 @@ class TrajectoryRecord(Model):
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> TrajectoryRecord:
-        if not isinstance(data, dict) or data.get("schema_version") != 2:
-            raise ValueError("TrajectoryRecord requires explicit schema_version 2")
+        if not isinstance(data, dict) or data.get("schema_version") != 4:
+            raise ValueError("TrajectoryRecord requires explicit schema_version 4")
         return super().from_dict(data)

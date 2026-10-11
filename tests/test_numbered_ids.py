@@ -5,7 +5,7 @@ import httpx
 import pytest
 from verge.llm import OpenAICompatibleBackend
 from verge.models import CandidateExperience, Criterion, CriterionJudgment, Rubric
-from verge.modules import LLMInitialRubricGenerator, LLMCritic, LLMAdmissionChecker
+from verge.modules import LLMInitialRubricGenerator, LLMCritic
 from verge.prompts import ExperienceView
 from verge.calculator import calculate_rubric_judgment
 
@@ -45,7 +45,7 @@ def views():
 
 def candidate():
     return CandidateExperience(
-        "candidate_current", "本轮指导", "本轮场景", "PASS", "可用"
+        "candidate_current", "本轮指导", "本轮场景"
     )
 
 
@@ -87,12 +87,12 @@ def test_http_application_sources_retained_and_no_dialogue_history(
                 "criteria": [
                     {
                         "question": "准确？",
-                        "importance_score": 2,
+                        "weight": 2,
                         "source_experiences": ["1", "2"],
                     },
                     {
                         "question": "满足要求？",
-                        "importance_score": 8,
+                        "weight": 8,
                         "source_experiences": [],
                     },
                 ],
@@ -104,7 +104,7 @@ def test_http_application_sources_retained_and_no_dialogue_history(
         gen = LLMInitialRubricGenerator(backend)
         a = gen.apply("任务", views(), candidate(), 1)
         c2 = CandidateExperience(
-            "candidate_new", "第二轮独立指导", "第二轮场景", "PASS", "可用"
+            "candidate_new", "第二轮独立指导", "第二轮场景"
         )
         b = gen.apply("任务", views(), c2, 2)
     finally:
@@ -139,12 +139,12 @@ def test_invalid_application_sources_exhaust_without_clearing(
                 "criteria": [
                     {
                         "question": "要求？",
-                        "importance_score": 2,
+                        "weight": 2,
                         "source_experiences": ids,
                     },
                     {
                         "question": "完整？",
-                        "importance_score": 8,
+                        "weight": 8,
                         "source_experiences": [],
                     },
                 ],
@@ -174,12 +174,12 @@ def test_r0_cannot_reference_candidate(monkeypatch):
                 "criteria": [
                     {
                         "question": "要求？",
-                        "importance_score": 2,
+                        "weight": 2,
                         "source_experiences": ["2"],
                     },
                     {
                         "question": "完整？",
-                        "importance_score": 8,
+                        "weight": 8,
                         "source_experiences": [],
                     },
                 ],
@@ -193,48 +193,3 @@ def test_r0_cannot_reference_candidate(monkeypatch):
             )
     finally:
         client.close()
-
-
-def test_critic_rejected_feedback_and_frozen_admission_http(monkeypatch, wire_payload):
-    observed = []
-
-    def handler(request):
-        p = wire_payload(json.loads(request.content))
-        observed.append(p)
-        if "current_rubric" in p:
-            assert p["rejected_candidate"]["content"] == "被拒原文"
-            assert p["rejected_candidate"]["admission_reason"] == "具体拒绝原因"
-            assert "analysis" not in p
-            return response(
-                {
-                    "analysis": "私有事实核对",
-                    "candidates": [{"content": "新指导", "trigger": "事前条件"}],
-                }
-            )
-        assert set(p) == {"task", "candidate"} and set(p["candidate"]) == {
-            "candidate_id",
-            "content",
-            "trigger",
-        }
-        return response({"decision": "PASS", "reason": "可用于生成"})
-
-    backend, client = make_backend(monkeypatch, handler)
-    r = Rubric("old_r", [Criterion("a", "条件", 2, []), Criterion("b", "要求", 8, [])])
-    j = calculate_rubric_judgment(
-        r, [CriterionJudgment(c.criterion_id, False, False) for c in r.criteria]
-    )
-    rejected = CandidateExperience(
-        "rejected_c", "被拒原文", "事后条件", "FAIL", "具体拒绝原因"
-    )
-    try:
-        proposal = LLMCritic(backend).propose(
-            "任务", "A", "B", r, j, 1, 2, rejected_candidate=rejected
-        )
-        approved = LLMAdmissionChecker(backend).check("任务", proposal.candidate)
-    finally:
-        client.close()
-    assert approved.content == "新指导" and approved.candidate_id.startswith(
-        "candidate_"
-    )
-    assert proposal.candidate.admission is None and approved.admission == "PASS"
-    assert len(observed) == 2

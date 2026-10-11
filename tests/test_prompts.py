@@ -6,7 +6,6 @@ from verge.prompts import (
     _ROLE_INSTRUCTIONS,
     llm_messages,
     generator_payload,
-    admission_payload,
     ExperienceView,
 )
 from verge.models import CandidateExperience
@@ -31,13 +30,13 @@ def test_dedicated_role_instructions_and_no_shared_definition(role):
 
 
 def test_generator_projection_no_private_context_and_equal_optional_use():
-    c = CandidateExperience("candidate_x", "指导", "适用场景", "PASS", "审核原文")
+    c = CandidateExperience("candidate_x", "指导", "适用场景")
     p = generator_payload(
         "任务", [ExperienceView("e", "原指导", "条件", 0.7, 1)], candidate=c
     )
     assert set(p) == {"task", "selected_experiences", "candidate_experience"}
     assert "confidence" not in p["candidate_experience"]
-    assert "审核原文" not in str(p)
+    assert "admission" not in str(p)
     assert "自主采用" in _ROLE_GUIDANCE["initial_generator"]
     assert "任务要求优先" in _ROLE_GUIDANCE["initial_generator"]
     assert "缺陷问题" in _ROLE_GUIDANCE["initial_generator"]
@@ -57,17 +56,9 @@ def test_critic_prospective_method_and_private_analysis():
         assert text in guidance
     assert "improvement_advice" not in _ROLE_INSTRUCTIONS["critic"]
     assert "candidates" in _ROLE_INSTRUCTIONS["critic"]
-    assert "不依赖已有rubric" in guidance
+    assert "不依赖已有评分标准" in guidance
 
 
-def test_admission_allows_task_reasoning_and_conservative_fusion():
-    for text in ("合理推理", "多个协同动作", "首次生成", "具体缺陷"):
-        assert text in _ROLE_GUIDANCE["admission_checker"]
-    assert "默认独立新增" in _ROLE_GUIDANCE["fusion_judge"]
-    assert "共享质量目标" in _ROLE_GUIDANCE["fusion_judge"]
-    assert "历史证据不认证新增内容" in _ROLE_GUIDANCE["fusion_judge"]
-    p = admission_payload("task", CandidateExperience("c", "content", "trigger"))
-    assert set(p) == {"task", "candidate"}
 
 
 def test_judge_boolean_interface_and_task_independence():
@@ -100,3 +91,20 @@ def test_fusion_indices_start_at_zero():
         },
     )
     assert "0：" in messages[1]["content"] and "1：" in messages[1]["content"]
+
+
+def test_generator_actual_message_unifies_e_and_current_candidate():
+    candidate = CandidateExperience("candidate_current", "本轮方法", "本轮条件")
+    payload = generator_payload("任务", [ExperienceView("e", "已有方法", "原条件", .7, 1)], candidate=candidate)
+    user = llm_messages("initial_generator", payload)[1]["content"]
+    assert user.count("本次可用经验") == 1
+    assert user.index("已有方法") < user.index("本轮方法")
+    assert "当前候选、尚未验证，无历史置信度" in user
+    assert "已准入" not in user and "本次选中的经验" not in user
+    assert "confidence" not in payload["candidate_experience"]
+    assert set(_ROLE_GUIDANCE) == {"selector", "initial_generator", "judge", "critic", "fusion_judge"}
+
+
+def test_role_prompts_use_scoring_standard_language():
+    for guidance in _ROLE_GUIDANCE.values():
+        assert "rubric" not in guidance.lower()

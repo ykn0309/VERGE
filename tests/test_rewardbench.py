@@ -320,14 +320,11 @@ def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, 
     audited[0]["proposal_attempts"] = [
         {
             "round_number": 1,
-            "generation_number": 1,
             "analysis": "分析",
             "candidate": {
                 "candidate_id": "candidate_invalid",
                 "content": "指导",
                 "trigger": "条件",
-                "admission": "PASS",
-                "admission_reason": "可用",
             },
         }
     ]

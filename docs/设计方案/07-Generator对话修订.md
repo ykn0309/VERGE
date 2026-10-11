@@ -10,9 +10,11 @@
 
 ```text
 system：Generator职责与角色专属输出要求
-user：原始task + 本样本固定所选经验E + 本轮已准入候选C
+user：原始task + 本样本固定所选经验E + 本轮候选C
 assistant：analysis + 完整criteria
 ```
+
+实际user消息只展示一份“本次可用经验”列表：固定E按原顺序保留，本轮C附在末尾，共享同一局部编号与来源引用权限。E保留confidence/evidence_amount，C只标注当前候选、尚未验证，不伪造历史置信度；E为空而C存在时列表只展示C，不同时写“选中经验暂无”。审计payload仍分别记录selected_experiences与candidate_experience，以核对固定E和当前C；这不表示Generator分两份输入，也不把C加入Memory或下轮候选集合。
 
 不输入R0/R1、旧analysis、assistant历史、普通修订建议、Critic私有诊断、偏好对或Judge结果。第二轮同样从task重新生成，仅替换候选C；E列表及输入文本固定，不再次检索、筛选，不累积第一轮候选。
 
@@ -20,13 +22,13 @@ R1/R2只表示应用顺序，不表示接续修改前一份rubric。诊断上的
 
 ## 2. 自主采用与任务优先
 
-E与C同为可选指导，Generator按task决定采用、组合或忽略，不强制使用C，也不要求提高当前偏好分差。它们证据状态不同：E有历史可信度，C仅通过准入；不伪造候选confidence，也不给C自动优先权。
+E与C同为可选指导，Generator按task决定采用、组合或忽略，不强制使用C，也不要求提高当前偏好分差。它们证据状态不同：E有历史可信度，C尚无实际应用证据；不伪造候选confidence，也不给C自动优先权。
 
 任务目标、实际输入和明确约束优先。经验只能在适用条件支持的范围内新增或实质影响标准。仅task已足以形成的标准不挂名；既不能全部引用，也不能把实际采用一律清空。重要性反映任务重要性，每条问题以“是＝满足要求”的正向Boolean方式表达。
 
 ## 3. 来源与采用记录
 
-沿用完整输出analysis/criteria与2–8条标准、1–10整数重要性要求。每条source_experiences只允许本次E和C的局部编号，需反解到明确区分经验ID与候选ID的内部引用；多来源无重复，未知引用仍拒绝。
+沿用完整输出analysis/criteria与2–8条标准、有限正数weight相对权重预算要求，程序按总和归一化。每条source_experiences只允许本次E和C的局部编号，需反解到明确区分经验ID与候选ID的内部引用；多来源无重复，未知引用仍拒绝。
 
 **移除“revision_number触发来源统一清空”的旧路径**，直接用新应用协议保留有效来源，不保留历史兼容分支；这不放宽R0或其他角色校验。
 

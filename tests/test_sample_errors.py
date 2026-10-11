@@ -11,7 +11,6 @@ from verge.models import CandidateExperience
     [
         ("critic", "propose"),
         ("initial_generator", "apply"),
-        ("admission_checker", "check"),
         ("fusion_judge", "find_match"),
     ],
 )
@@ -61,20 +60,3 @@ def test_illegal_fusion_cannot_write_and_leaves_actual_success_audit(tmp_path):
     rec = r.run_sample(sample())
     assert rec.state == "sample_error" and rec.sample_error["stage"] == "fusion_judge"
     assert rec.application_attempts[0].judgment.success and not r.memory.all()
-
-
-def test_admission_text_mutation_is_a_contract_error(tmp_path):
-    r = runner(tmp_path)
-
-    def altered(task, candidate):
-        return CandidateExperience(
-            candidate.candidate_id, "私自改写", candidate.trigger, "PASS", "可用"
-        )
-
-    r.modules.admission_checker.check = altered
-    rec = r.run_sample(sample())
-    assert (
-        rec.state == "sample_error"
-        and not rec.application_attempts
-        and not r.memory.all()
-    )

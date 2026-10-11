@@ -47,7 +47,7 @@ def source_run(tmp_path, count=3):
         "store": {"config": {"root_dir": "artifacts"}},
     }
     manifest = {
-        "format_version": 2,
+        "format_version": 4,
         "config": config,
         "dataset_sha256": {"train": baseline._sha(data)},
         "prompt_versions": {r: PROMPT_VERSION for r in baseline.ROLES},
@@ -247,11 +247,11 @@ def test_mock_http_logs_numeric_ids_and_no_secrets(tmp_path, monkeypatch, wire_p
             assert payload['selected_experiences'] == []
             response = {'analysis': '按任务要求组织评价标准。', 'criteria': [
                 {'question': f'是否满足要求{i}？',
-                 'importance_score': 5, 'source_experiences': []} for i in (1, 2)]}
+                 'weight': 5, 'source_experiences': []} for i in (1, 2)]}
         else:
             assert [c['criterion_id'] for c in payload['criteria']] == ['1', '2']
             response = {'criterion_judgments': [
-                {'criterion_id': c['criterion_id'], 'satisfied': payload['response'] == 'good'}
+                {"reason": "fixture evidence", 'criterion_id': c['criterion_id'], 'satisfied': payload['response'] == 'good'}
                 for c in payload['criteria']]}
         return httpx.Response(200, json={'choices': [{'finish_reason': 'stop', 'message': {
             'content': json.dumps(response)}}],

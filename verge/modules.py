@@ -35,7 +35,6 @@ from verge.models import (
 from verge.prompts import (
     ExperienceView,
     NumberedIDCodec,
-    admission_payload,
     critic_payload,
     fusion_payload,
     generator_payload,
@@ -90,15 +89,8 @@ class Critic(Protocol):
         current: Rubric,
         judgment: RubricJudgment,
         round_number: int,
-        generation_number: int,
         **history,
     ) -> CriticProposal: ...
-
-
-class AdmissionChecker(Protocol):
-    def check(
-        self, task: str, candidate: CandidateExperience
-    ) -> CandidateExperience: ...
 
 
 class FusionJudge(Protocol):
@@ -138,13 +130,9 @@ def _output(
             {field}
             if field is not None
             else (
-                {"decision", "reason"}
-                if role == "admission_checker"
-                else (
-                    {"match_index", "content", "trigger"}
-                    if role == "fusion_judge"
-                    else {"analysis", "candidates"}
-                )
+                {"match_index", "content", "trigger"}
+                if role == "fusion_judge"
+                else {"analysis", "candidates"}
             )
         )
     )
@@ -273,8 +261,8 @@ class LLMInitialRubricGenerator:
         candidate: CandidateExperience,
         round_number: int,
     ) -> Rubric:
-        if candidate.admission != "PASS" or candidate.fusion is not None:
-            raise ValueError("application requires an admitted unfused candidate")
+        if candidate.fusion is not None:
+            raise ValueError("application requires an unfused candidate")
         if round_number not in (1, 2):
             raise ValueError("application round must be 1 or 2")
         return self._generate(task, selected, candidate, round_number)
@@ -333,7 +321,7 @@ class JudgeOutputError(ValueError):
 
 
 class LLMJudge:
-    """LLM 只判断 Boolean；错误输出有限重试，最终失败交由 Runner 记账并继续。"""
+    """LLM返回Boolean与依据；错误输出有限重试，最终失败显式留档。"""
 
     def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 2) -> None:
         if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
@@ -371,7 +359,7 @@ class LLMJudge:
                 previous_judgment.criterion_judgments
             ):
                 raise ValueError("previous judgment does not cover the base rubric")
-            # 相同问题若 R0 判断一致，按文本复用 Boolean；包含 MODIFY 后撞名的情况。
+            # 相同问题若判断一致，按文本复用Boolean及原依据。
             # R0 同名问题判断不一致时，不猜测答案，只沿用 ID 与问题均未变的判断。
             by_question: dict[str, set[tuple[bool, bool]]] = {}
             for item in previous.criteria:
@@ -386,13 +374,13 @@ class LLMJudge:
                 ):
                     known[item.criterion_id] = old_answers[item.criterion_id]
                 elif len(by_question.get(item.question, ())) == 1:
-                    chosen_answer, rejected_answer = next(
-                        iter(by_question[item.question])
+                    prior_answer = next(
+                        old_answers[c.criterion_id]
+                        for c in previous.criteria
+                        if c.question == item.question
                     )
-                    known[item.criterion_id] = CriterionJudgment(
-                        item.criterion_id,
-                        chosen_answer,
-                        rejected_answer,
+                    known[item.criterion_id] = replace(
+                        prior_answer, criterion_id=item.criterion_id,
                     )
         # 后端仅回答待判断标准，返回值必须恰好覆盖这些 ID。
         pending = [item for item in rubric.criteria if item.criterion_id not in known]
@@ -400,7 +388,7 @@ class LLMJudge:
         requested = {item.criterion_id for item in pending}
         if pending:
 
-            def score_response(response: str, side: str) -> dict[str, bool]:
+            def score_response(response: str, side: str) -> dict[str, tuple[bool, str]]:
                 token = JUDGE_RESPONSE_SIDE.set(side)
                 try:
                     feedback = None
@@ -425,16 +413,18 @@ class LLMJudge:
                             for item in raw:
                                 if (
                                     not isinstance(item, dict)
-                                    or set(item) != {"criterion_id", "satisfied"}
+                                    or set(item) != {"criterion_id", "satisfied", "reason"}
                                     or not isinstance(item["criterion_id"], str)
                                     or type(item["satisfied"]) is not bool
+                                    or not isinstance(item["reason"], str)
+                                    or not item["reason"].strip()
                                 ):
                                     raise ValueError(
-                                        "judge: expected criterion_id and Boolean satisfied"
+                                        "judge: expected criterion_id, Boolean satisfied and nonempty reason"
                                     )
                                 if item["criterion_id"] in answers:
                                     raise ValueError("judge: duplicate criterion_id")
-                                answers[item["criterion_id"]] = item["satisfied"]
+                                answers[item["criterion_id"]] = (item["satisfied"], item["reason"])
                             if set(answers) != requested:
                                 raise ValueError(
                                     "judge: judgments must cover exactly the requested criteria "
@@ -442,6 +432,11 @@ class LLMJudge:
                                     f"extra={len(answers.keys() - requested)})"
                                 )
                             return answers
+                        except LLMFormatError as exc:
+                            # Backend格式预算已耗尽，不再叠加适配层结构重试。
+                            raise JudgeOutputError(
+                                f"judge ({side}): backend format retries exhausted: {exc}"
+                            ) from exc
                         except ValueError as exc:
                             if retry == self.invalid_output_retries:
                                 raise JudgeOutputError(
@@ -452,7 +447,7 @@ class LLMJudge:
                                 "上次 Judge 输出校验信息："
                                 + str(exc)[:160]
                                 + "。请严格复制其数字编号，每条标准返回一次判断，"
-                                "完整覆盖本次标准；satisfied 使用布尔值。"
+                                "完整覆盖本次标准；satisfied使用布尔值，reason给出非空判断依据。"
                             )
                     raise AssertionError("unreachable judge retry state")
                 finally:
@@ -484,8 +479,10 @@ class LLMJudge:
             generated = [
                 CriterionJudgment(
                     item.criterion_id,
-                    chosen_answers[item.criterion_id],
-                    rejected_answers[item.criterion_id],
+                    chosen_answers[item.criterion_id][0],
+                    rejected_answers[item.criterion_id][0],
+                    chosen_answers[item.criterion_id][1],
+                    rejected_answers[item.criterion_id][1],
                 )
                 for item in pending
             ]
@@ -517,10 +514,8 @@ class LLMCritic:
         current,
         judgment,
         round_number,
-        generation_number,
         *,
         previous_candidate=None,
-        rejected_candidate=None,
         adopted=None,
         invalid_error=None,
         previous_rubric=None,
@@ -529,7 +524,7 @@ class LLMCritic:
         _text(task, "task")
         if judgment.rubric_id != current.rubric_id or judgment.success:
             raise ValueError("critic requires a failed valid rubric")
-        if round_number not in (1, 2) or generation_number not in (1, 2):
+        if round_number not in (1, 2):
             raise ValueError("critic budget exceeded")
         payload = critic_payload(
             task,
@@ -538,9 +533,7 @@ class LLMCritic:
             current,
             judgment,
             round_number,
-            generation_number,
             previous_candidate=previous_candidate,
-            rejected_candidate=rejected_candidate,
             adopted=adopted,
             invalid_error=invalid_error,
             previous_rubric=previous_rubric,
@@ -584,24 +577,6 @@ class LLMCritic:
         raise AssertionError("unreachable")
 
 
-class LLMAdmissionChecker:
-    def __init__(self, backend: LLMBackend) -> None:
-        self.backend = backend
-
-    def check(self, task: str, candidate: CandidateExperience) -> CandidateExperience:
-        if candidate.admission is not None or candidate.fusion is not None:
-            raise ValueError("admission requires an unreviewed candidate")
-        raw = _output(
-            self.backend, "admission_checker", admission_payload(task, candidate), None
-        )
-        if raw["decision"] not in ("PASS", "FAIL"):
-            raise ValueError("admission expected PASS or FAIL")
-        _text(raw["reason"], "admission reason")
-        return replace(
-            candidate, admission=raw["decision"], admission_reason=raw["reason"]
-        )
-
-
 class LLMFusionJudge:
     """只提交 content/trigger；匹配位置由调用方映射回 canonical experience ID。"""
 
@@ -636,7 +611,6 @@ class LLMModules:
     initial_generator: LLMInitialRubricGenerator
     judge: LLMJudge
     critic: LLMCritic
-    admission_checker: LLMAdmissionChecker
     fusion_judge: LLMFusionJudge
 
 
@@ -655,7 +629,6 @@ def make_llm_modules(
         LLMInitialRubricGenerator(backend),
         LLMJudge(backend),
         LLMCritic(backend),
-        LLMAdmissionChecker(backend),
         LLMFusionJudge(backend),
     )
 

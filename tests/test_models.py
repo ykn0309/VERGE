@@ -4,6 +4,7 @@ import pytest
 from verge.models import (
     CandidateExperience,
     Criterion,
+    CriterionJudgment,
     Credit,
     EvidenceRecord,
     Experience,
@@ -13,10 +14,34 @@ from verge.models import (
 )
 
 
-@pytest.mark.parametrize("score", [True, 0, 11, 1.2, "2"])
-def test_importance_is_integer_one_to_ten(score):
+@pytest.mark.parametrize("score", [True, 0, -1, float("nan"), float("inf"), float("-inf"), "2"])
+def test_weight_is_finite_positive_number(score):
     with pytest.raises(ValueError):
         Criterion("c", "问题", score, [])
+
+
+@pytest.mark.parametrize("weight", [.001, .999, 1.2, 100])
+def test_relative_weight_round_trip_without_integer_range_limit(weight):
+    c = Criterion("c", "问题", weight, [])
+    assert Criterion.from_json(c.to_json()) == c
+
+
+def test_old_importance_and_boolean_only_judgment_rejected():
+    with pytest.raises(ValueError, match="importance_score"):
+        Criterion.from_dict({"criterion_id": "c", "question": "问题", "importance_score": 8,
+                             "source_experiences": []})
+    with pytest.raises(ValueError, match="reason"):
+        CriterionJudgment.from_dict({"criterion_id": "c", "chosen": True, "rejected": False})
+
+
+@pytest.mark.parametrize("reason", [None, "", "  ", 1, True])
+def test_both_answer_reasons_are_required_nonempty_text(reason):
+    for field in ("chosen_reason", "rejected_reason"):
+        data = dict(criterion_id="c", chosen=True, rejected=False,
+                    chosen_reason="有依据", rejected_reason="缺少依据")
+        data[field] = reason
+        with pytest.raises(ValueError):
+            CriterionJudgment.from_dict(data)
 
 
 @pytest.mark.parametrize("sources", [["x", "x"], [""], [1], None])
@@ -104,3 +129,11 @@ def test_confidence_derived_and_verified():
     data["confidence"] = 0.8
     with pytest.raises(ValueError):
         Experience.from_dict(data)
+
+
+@pytest.mark.parametrize("version", [2, 3])
+def test_old_trajectory_version_cannot_be_read_as_weighted_application(version):
+    old = TrajectoryRecord("s").to_dict()
+    old["schema_version"] = version
+    with pytest.raises(ValueError, match="schema_version 4"):
+        TrajectoryRecord.from_dict(old)

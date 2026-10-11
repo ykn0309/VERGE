@@ -1,0 +1,56 @@
+# 新机制真实验证：沿用既有有序数据的前30条，空经验池启动，结束后暂停。
+# 完整启用检索/Selector、Critic候选、先准入、新会话应用和P/N分别累计。
+run:
+  seed: 42
+  output_dir: runs/rewardbench-chat-hard-qwen-abstract-experience-30
+  test_workers: 1
+  stop_after_train: 30
+
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: runs/rewardbench-chat-hard-data-full/train.jsonl
+    prepare:
+      implementation: rewardbench_chat_hard
+      mode: full_train
+      output_dir: runs/rewardbench-chat-hard-data-full
+      revision: 168d848cdbbea9764fae4a544dc9ca1e6cca4931
+      seed: 42
+
+models:
+  default:
+    backend: openai_compatible
+    model: qwen3.5-flash
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY_2
+    enable_thinking: false
+    timeout_seconds: 30
+    max_retries: 2
+  roles: {}
+
+modules:
+  retrieval:
+    implementation: vector
+    config:
+      top_l: 20
+      embedding_model: text-embedding-v4
+      dimensions: 1024
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 0
+  application:
+    implementation: critic_candidate_validation
+    config:
+      max_rounds: 2
+      invalid_output_retries: 2
+  reliability:
+    implementation: beta
+    config: {}
+
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

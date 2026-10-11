@@ -52,6 +52,9 @@ def test_business_outcomes(tmp_path, scenario, state, rounds, pool):
     assert TrajectoryRecord.from_json(result.to_json()) == result
     assert len(list(r.trajectories.all())) == 1
     assert not hasattr(r.modules, "reflector")
+    assert not hasattr(r.modules, "admission_checker")
+    assert len(result.proposal_attempts) == rounds
+    assert all(role != "admission_checker" for role, _ in r.modules.backend.requests)
     if pool:
         c = result.proposal_attempts[-1].candidate
         assert (r.memory.all()[0].content, r.memory.all()[0].trigger) == (
@@ -62,65 +65,24 @@ def test_business_outcomes(tmp_path, scenario, state, rounds, pool):
         assert r.memory.all()[0].alpha == pytest.approx(1.8)
 
 
-def test_admission_two_failures_ends_without_application(tmp_path):
-    r = runner(tmp_path, admission_pass=False)
-    result = r.run_sample(sample())
-    assert result.state == "admission_exhausted"
-    assert len(result.proposal_attempts) == 2 and not result.application_attempts
-    calls = [p for role, p in r.modules.backend.requests if role == "critic"]
-    rejected = result.proposal_attempts[0].candidate
-    assert calls[1]["rejected_candidate"] == {
-        "candidate_id": rejected.candidate_id,
-        "content": rejected.content,
-        "trigger": rejected.trigger,
-        "admission_reason": rejected.admission_reason,
-    }
-    assert calls[0]["current_rubric"] == calls[1]["current_rubric"]
-    assert (
-        len(
-            [1 for role, _ in r.modules.backend.requests if role == "initial_generator"]
-        )
-        == 1
-    )
-    assert r.memory.all() == []
 
 
-def test_four_proposals_two_applications_and_reset(tmp_path):
+def test_two_proposals_two_direct_applications(tmp_path):
     r = runner(tmp_path, "attempt_2_success")
-    original = r.modules.backend.generate
-    count = 0
-
-    def generation(role, payload):
-        nonlocal count
-        result = original(role, payload)
-        if role == "admission_checker":
-            count += 1
-            result = {
-                "decision": "FAIL" if count % 2 else "PASS",
-                "reason": f"具体原因{count}",
-            }
-        return result
-
-    r.modules.backend.generate = generation
     rec = r.run_sample(sample())
     assert rec.state == "application_success"
-    assert [(p.round_number, p.generation_number) for p in rec.proposal_attempts] == [
-        (1, 1),
-        (1, 2),
-        (2, 1),
-        (2, 2),
-    ]
+    assert [p.round_number for p in rec.proposal_attempts] == [1, 2]
     assert len(rec.application_attempts) == 2
-    assert len({p.candidate.candidate_id for p in rec.proposal_attempts}) == 4
+    assert len({p.candidate.candidate_id for p in rec.proposal_attempts}) == 2
     cs = [p for role, p in r.modules.backend.requests if role == "critic"]
-    assert cs[2]["current_rubric"] == rec.application_attempts[0].rubric.to_dict()
-    assert cs[2]["current_judgment"] == rec.application_attempts[0].judgment.to_dict()
+    assert cs[1]["current_rubric"] == rec.application_attempts[0].rubric.to_dict()
+    assert cs[1]["current_judgment"] == rec.application_attempts[0].judgment.to_dict()
     assert (
-        cs[2]["previous_candidate"]["candidate_id"]
+        cs[1]["previous_candidate"]["candidate_id"]
         == rec.application_attempts[0].candidate_id
     )
-    assert cs[2]["adopted"] is True and "rejected_candidate" not in cs[2]
-    assert "analysis" not in cs[2]
+    assert cs[1]["adopted"] is True and "rejected_candidate" not in cs[1]
+    assert "analysis" not in cs[1]
     gs = [p for role, p in r.modules.backend.requests if role == "initial_generator"]
     assert (
         gs[1]["candidate_experience"]["experience_id"]
@@ -139,26 +101,6 @@ def test_four_proposals_two_applications_and_reset(tmp_path):
     assert len([1 for role, _ in r.modules.backend.requests if role == "selector"]) <= 1
 
 
-def test_second_round_two_rejections_cannot_start_third_round(tmp_path):
-    r = runner(tmp_path, "final_failure")
-    original = r.modules.backend.generate
-    n = 0
-
-    def gen(role, payload):
-        nonlocal n
-        result = original(role, payload)
-        if role == "admission_checker":
-            n += 1
-            result = {
-                "decision": "PASS" if n == 1 else "FAIL",
-                "reason": "检查当前候选条件",
-            }
-        return result
-
-    r.modules.backend.generate = gen
-    rec = r.run_sample(sample())
-    assert rec.state == "admission_exhausted" and len(rec.application_attempts) == 1
-    assert len(rec.proposal_attempts) == 3
 
 
 @pytest.mark.parametrize(
@@ -198,7 +140,6 @@ def test_no_candidate_ends_without_inventing_admission(tmp_path):
     [
         ("selector", "select", "selection"),
         ("initial_generator", "generate", "initial_generator"),
-        ("admission_checker", "check", "admission"),
         ("fusion_judge", "find_match", "fusion_judge"),
     ],
 )
@@ -317,7 +258,7 @@ def test_judge_error_no_candidate_write_and_next_sample(tmp_path, application):
     [
         ("critic", "propose", LLMRequestError),
         ("initial_generator", "apply", RuntimeError),
-        ("admission_checker", "check", TypeError),
+        ("judge", "judge", TypeError),
     ],
 )
 def test_infrastructure_or_program_error_is_not_swallowed(
@@ -350,7 +291,7 @@ def test_r0_credit_survives_later_failure_and_e_is_not_recredited(tmp_path):
     seed = r.memory.fuse(
         __import__(
             "verge.models", fromlist=["CandidateExperience"]
-        ).CandidateExperience("seed_c", "经验", "*", "PASS", "可用"),
+        ).CandidateExperience("seed_c", "经验", "*"),
         "seed",
     )
     original = r.modules.critic.propose
@@ -395,8 +336,8 @@ def test_success_with_negative_candidate_credit_still_fuses(tmp_path):
             return calculate_rubric_judgment(
                 rubric,
                 [
-                    CriterionJudgment("bad", False, True),
-                    CriterionJudgment("good", True, False),
+                    CriterionJudgment("bad", False, True, "chosen fixture evidence", "rejected fixture evidence"),
+                    CriterionJudgment("good", True, False, "chosen fixture evidence", "rejected fixture evidence"),
                 ],
             )
         return judge(rubric, *args, **kw)
@@ -448,7 +389,7 @@ def test_r0_balanced_channels_update_before_success_branch(tmp_path):
 
     r = runner(tmp_path, "initial_success")
     seeded = r.memory.fuse(
-        CandidateExperience("seed_c", "经验", "*", "PASS", "可用"), "seed"
+        CandidateExperience("seed_c", "经验", "*"), "seed"
     )
     eid = seeded.experience_id
     r.modules.initial_generator.generate = lambda *a: Rubric(
@@ -462,9 +403,9 @@ def test_r0_balanced_channels_update_before_success_branch(tmp_path):
     r.modules.judge.judge = lambda rubric, *a, **kw: calculate_rubric_judgment(
         rubric,
         [
-            CriterionJudgment("p", True, False),
-            CriterionJudgment("n", False, True),
-            CriterionJudgment("t", True, False),
+            CriterionJudgment("p", True, False, "chosen fixture evidence", "rejected fixture evidence"),
+            CriterionJudgment("n", False, True, "chosen fixture evidence", "rejected fixture evidence"),
+            CriterionJudgment("t", True, False, "chosen fixture evidence", "rejected fixture evidence"),
         ],
     )
     rec = r.run_sample(sample())
@@ -492,8 +433,8 @@ def test_adopted_zero_candidate_credit_still_adds_without_beta_evidence(tmp_path
             return calculate_rubric_judgment(
                 rubric,
                 [
-                    CriterionJudgment("c", True, True),
-                    CriterionJudgment("t", True, False),
+                    CriterionJudgment("c", True, True, "chosen fixture evidence", "rejected fixture evidence"),
+                    CriterionJudgment("t", True, False, "chosen fixture evidence", "rejected fixture evidence"),
                 ],
             )
         return original(rubric, *a, **kw)

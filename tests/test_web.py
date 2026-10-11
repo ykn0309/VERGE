@@ -49,11 +49,12 @@ def test_dashboard_candidates_adoption_dual_credit_and_no_writes(tmp_path):
     assert {p: p.read_bytes() for p in before} == before
 
 
-def test_old_manifest_hidden_without_deleting_directory(tmp_path):
+@pytest.mark.parametrize("version", [1, 3])
+def test_old_manifest_hidden_without_deleting_directory(tmp_path, version):
     directory, _ = _run(tmp_path)
     old = tmp_path / "old"
     old.mkdir()
-    (old / "run_manifest.json").write_text('{"format_version":1}')
+    (old / "run_manifest.json").write_text(json.dumps({"format_version": version}))
     assert discover_runs(tmp_path) == ["run"] and old.exists()
     with pytest.raises(ValueError):
         load_run(old)

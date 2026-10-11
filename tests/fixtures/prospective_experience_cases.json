@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "purpose": "人工审阅的开发用语义对照集；pytest只验证结构与提示词/传输契约，不证明真实模型达到这些期望。",
+  "purpose": "人工审阅的开发用语义对照集；观察文本与observed_decision保留历史记录，expected_decision/review_note按当前准入要求维护；pytest只验证结构与提示词/传输契约，不证明真实模型达到这些期望。",
   "source_run": "runs/rewardbench-chat-hard-qwen-vector-task-grounded-experience",
   "source_prompt_version": "generator-dialogue-concise-revision-feedback",
   "not_held_out": true,
@@ -43,7 +43,7 @@
       "trigger": "当任务指令明确要求基于用户提供的具体素材（如‘拆分每个要点’、‘分析以下数据’）进行生成，但上下文或输入中未包含该素材，且模型面临‘直接生成虚构内容’与‘请求用户提供素材’的选择时。",
       "observed_decision": "FAIL",
       "expected_decision": "PASS",
-      "review_note": "可以分析任务需要的素材是否实际提供，识别缺失不等于禁止的二次推断；选择澄清与生成的情境分析不要求先看到答案。"
+      "review_note": "方法核验输入依赖与缺失，条件在生成前可识别；材料类型和指令短语是通用说明，不固定题目要点或仅用关键词触发。"
     },
     {
       "id": "observed-2559",
@@ -73,7 +73,7 @@
       "trigger": "当用户指令要求模型执行其作为语言模型无法直接完成的功能（如设置未来闹钟、跨越会话发送通知、调用外部硬件等）时",
       "observed_decision": "PASS",
       "expected_decision": "PASS",
-      "review_note": "当前无提醒工具的文本模型环境下，能力诚实与替代方案是协同动作；有执行工具时不应无条件套用。"
+      "review_note": "按已知工具环境核验能力声明与替代指引；操作类型是领域条件，不保存30分钟或买牛奶等本题参数，有执行工具时不能无条件套用。"
     },
     {
       "id": "observed-2603",

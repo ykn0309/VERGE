@@ -8,14 +8,23 @@ let sampleTab = 'pipeline';
 const roleTabs = [
   ['pipeline','流水线'],['selector','经验筛选'],['initial_generator','Generator'],
   ['judge','Judge'],['critic','Critic · 分析与候选'],
-  ['admission_checker','经验准入'],['fusion_judge','经验融合'],
+  ['fusion_judge','经验融合'],
 ];
 const translationKey = (run, sampleId, field) => JSON.stringify([run, sampleId, field]);
 const h = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n = (value, digits = 3) => typeof value === 'number' ? value.toFixed(digits) : '—';
 const pct = value => typeof value === 'number' ? (value * 100).toFixed(1) + '%' : '—';
-const short = (s, max = 48) => String(s || '—').length > max ? String(s).slice(0, max) + '…' : String(s || '—');
-const stateName = {sample_error:'样本处理错误',judge_error_initial:'初始判断缺失',judge_error_application:'应用 Judge 错误',initial_success:'初始成功',application_success:'采用候选后成功',success_without_candidate:'成功但未采用候选',admission_exhausted:'准入重生成耗尽',validation_exhausted:'应用预算耗尽',invalid_application_exhausted:'技术无效轮耗尽',no_candidate:'未提出候选',initial_failure:'测试未通过',interrupted:'未完成轨迹'};
+const short = (s, max = 48) => {
+  const text = String(s || '—').replace(/\s+/g, ' ').trim();
+  return text.length > max ? text.slice(0, max) + '…' : text;
+};
+const sampleLabel = s => {
+  const parts = String(s.sample_id || '').split(':');
+  const subset = parts.length > 2 ? parts.slice(1,-1).join(' · ').replace('llmbar-adver-', '').replace('llmbar-', '') : parts[0];
+  return {subset: subset || '样本', number: parts.at(-1) || '—'};
+};
+const sampleTitle = s => { const label=sampleLabel(s); return `${label.subset} · ${label.number}`; };
+const stateName = {sample_error:'样本处理错误',judge_error_initial:'初始判断缺失',judge_error_application:'应用 Judge 错误',initial_success:'初始成功',application_success:'采用候选后成功',success_without_candidate:'成功但未采用候选',validation_exhausted:'应用预算耗尽',invalid_application_exhausted:'技术无效轮耗尽',no_candidate:'未提出候选',initial_failure:'测试未通过',interrupted:'未完成轨迹'};
 const successful = state => ['initial_success','application_success','success_without_candidate'].includes(state);
 const statusClass = state => successful(state) ? 'ok' : ['sample_error','interrupted'].includes(state) ? 'bad' : 'warn';
 const sampleCandidates = sample => (sample.proposal_attempts || []).filter(p=>p.candidate).map(p=>p.candidate);
@@ -25,7 +34,7 @@ const lineage = () => data.resumed_from ? `<div class="callout">此运行从 ${h
 const heading = (overline, title, description) => `<div class="page-heading"><div><span class="eyebrow">${h(overline)}</span><h1>${h(title)}</h1><p class="subheading">${h(description)}</p></div><span class="run-chip" title="${h(data.run_dir)}">${h(data.run_name)}</span></div>`;
 const sampleButton = (id, text = id) => { const idx = data.samples.findIndex(s => s.sample_id === id); return idx < 0 ? h(text) : `<button class="event-link" data-action="sample-preview" data-index="${idx}" aria-haspopup="dialog" title="点击预览 · Cmd+点击查看流水线">${h(text)}</button>`; };
 // The persisted experience model has no name field: use a readable, derived title.
-const experienceName = e => short(String(e.content || e.trigger || '未命名经验').replace(/\s+/g,' ').trim().split(/(?<=[.!?。！？])\s+/)[0], 68);
+const experienceName = e => short(String(e.content || e.trigger || '未命名经验').replace(/\s+/g,' ').trim().split(/(?<=[.!?。！？])\s+/)[0], 44);
 const expButton = id => {
   const idx = data.experiences.findIndex(e => e.experience_id === id);
   const rows = candidateEntries(); const ci=rows.findIndex(r=>r.candidate.candidate_id===id);
@@ -116,7 +125,7 @@ function trainingOverview() {
   if (!o) return '';
   return `<div class="metrics">${metric('训练进度',`${o.train_completed} / ${o.train_total}`,`样本错误 ${o.sample_errors} · Judge错误 ${o.judge_errors}`)}${metric('首次正确率',pct(o.initial.accuracy),`${o.initial.correct}/${o.initial.valid} 有效`)}${metric('任务救回率',pct(o.repair_rate),`${o.repair_successes}/${o.initial_failures} 初始失败`)}${metric('已声明采用',o.adopted,`${o.applications} 次实际应用`)}${metric('成功但未采用',o.success_without_candidate,'不验证候选、不写入Memory')}</div>` +
     evolutionChart('首次正确率趋势',o.curve,[{label:'累计',color:'#27664f',value:r=>r.cumulative.accuracy},{label:'最近50条',color:'#b47b36',value:r=>r.rolling.accuracy}],1) +
-    overviewTable('候选、准入与入池',['候选业务生成','保留候选','准入 PASS / FAIL','ADD / MERGE','准入耗尽 / 应用耗尽'],[[o.proposal_calls,o.candidates,`${o.admission_pass} / ${o.admission_fail}`,`${o.adds} / ${o.merges}`,`${o.admission_exhausted} / ${o.validation_exhausted}`]],'候选在应用前准入；Generator自主采用。只融合已准入、声明采用且有效Judge成功的原候选，正负应用证据分别追加。');
+    overviewTable('候选、应用与入池',['候选提出','保留候选','应用次数','ADD / MERGE','应用耗尽'],[[o.proposal_calls,o.candidates,o.applications,`${o.adds} / ${o.merges}`,o.validation_exhausted]],'Critic候选直接进入独立Generator应用，自主采用。只融合声明采用且有效Judge成功的原候选，正负应用证据分别追加。');
 }
 function overview() {
   const samples = data.samples, exps = data.experiences, count = key => data.counts[key] || 0;
@@ -133,20 +142,19 @@ function overview() {
       ${metric('正向判别',success,`初始 ${count('initial_success')} · 应用 ${count('application_success') + count('success_without_candidate')}`)}
       ${metric('候选经验',candidates.length,`新增 ${added} · 合并 ${merged} · 未入池 ${candidates.length-added-merged}`)}
       ${metric('当前经验',exps.length,data.overview?.mode==='train_only'?'在线训练持续更新经验池':'冻结测试阶段不更新经验池')}
-      ${metric('证据事件',exps.reduce((sum,e)=>sum+e.evidence_history.length,0),'downstream credit')}
-    </div><section class="panel overview-states"><div class="panel-title"><h2>结果分布</h2><small>SAMPLE STATES</small></div>${Object.entries(data.counts).map(([state,value])=>`<div class="bar-row ${state.includes('failure')?'fail':state==='initial_failure'?'test':''}"><span>${h(stateName[state]||state)}</span><div class="bar-track"><svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="bar-fill" width="${Math.round(100*value/max)}" height="8"/></svg></div><b>${value}</b></div>`).join('') || '<p class="muted">暂无样本轨迹</p>'}</section>`;
+      ${metric('证据事件',exps.reduce((sum,e)=>sum+e.evidence_history.length,0),'R0下游 · 候选应用')}
+    </div><section class="panel overview-states"><div class="panel-title"><h2>结果分布</h2><small>SAMPLE STATES</small></div>${Object.entries(data.counts).map(([state,value])=>`<div class="bar-row ${successful(state)?'success':'fail'}"><span>${h(stateName[state]||state)}</span><div class="bar-track"><svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="bar-fill" width="${Math.round(100*value/max)}" height="8"/></svg></div><b>${value}</b></div>`).join('') || '<p class="muted">暂无样本轨迹</p>'}</section>`;
 }
 function metric(label,value,foot) {return `<div class="metric"><div class="metric-label">${h(label)}</div><div class="metric-value">${value}</div><div class="metric-foot">${h(foot)}</div></div>`;}
 function sampleExperienceBadges(s) {
-  const e = s.experience_status || {};
-  const generated = e.generated_candidates == null
-    ? '生成未确认'
-    : (e.generated_candidates ? `生成候选 ${e.generated_candidates}` : '无候选');
-  const use = e.referenced == null ? '引用未确认' : e.referenced ? `已引用 ${e.referenced}` : '未引用';
-  return `<span class="sample-experience-status" aria-label="经验生成与利用状态">${badge(generated,e.generated_candidates ? 'info' : 'neutral')}${e.added || e.merged ? badge(`入池 ${e.added + e.merged} · 新增 ${e.added} / 合并 ${e.merged}`,'ok') : ''}${badge(`选中 ${e.selected ?? 0}`)}${badge(use,e.referenced ? 'ok' : 'neutral')}</span>`;
+  const e=s.experience_status||{};
+  const items=[`候选 ${sampleCandidates(s).length}`,
+    `选中 ${e.selected??0}`, e.referenced==null?'引用待确认':`引用 ${e.referenced}`];
+  if(e.added||e.merged) items.push(`入池 ${e.added+e.merged}`);
+  return `<span class="sample-experience-status" aria-label="经验生成与利用状态">${items.map(text=>`<span>${h(text)}</span>`).join('')}</span>`;
 }
 function generatorAnalysis(s) {
-  return `<section class="generator-analysis"><h4>Generator · 任务分析</h4>${s.generator_analysis ? `<div class="body-text">${h(s.generator_analysis)}</div><p class="legend">初始生成的分析；全部生成和修订调用见“Generator”页签。</p>` : '<p class="muted body-text">该样本尚无完整 Generator 分析记录，可查看“Generator”调用状态。</p>'}</section>`;
+  return s.generator_analysis ? `<details class="generator-analysis"><summary>Generator · 任务分析 <span>展开分析</span></summary><div class="body-text">${h(s.generator_analysis)}</div></details>` : '';
 }
 function samplesPage() {
   const matchesSplit = s => splitFilter === 'unknown' ? s.split !== 'train' && s.split !== 'test' : s.split === splitFilter;
@@ -162,8 +170,8 @@ function samplesPage() {
   const results = splitFilter === 'train' ? [['all','全部'],['initial_success','初始成功'],['application','应用成功'],['failure','失败 / 中断']] : splitFilter === 'test' ? [['all','全部'],['initial_success','测试通过'],['failure','测试未通过 / 中断']] : [['all','全部'],['failure','失败 / 中断']];
   return warnBlock() +
     `<div class="sample-split-tabs" role="tablist" aria-label="样本阶段">${splits.map(([key,label,count])=>`<button role="tab" aria-selected="${splitFilter===key}" class="split-tab ${splitFilter===key?'active':''}" data-action="split-filter" data-split="${key}">${label}<span class="mono">${count}</span></button>`).join('')}</div>
-    <div class="workbench"><section class="panel list-panel"><div class="list-head"><h2>${splitFilter==='train'?'训练':splitFilter==='test'?'测试':'未标注'}样本 <span class="muted mono">${visible.length} / ${group.length}</span></h2><input class="search" data-search="sample" placeholder="搜索 ID 或任务内容…" value="${h(query)}" aria-label="搜索样本"><div class="filters">${results.map(([key,label])=>`<button class="filter ${resultFilter===key?'active':''}" data-action="result-filter" data-filter="${key}">${label}</button>`).join('')}</div></div>
-    <div class="list-scroll">${visible.map(({s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="sample" data-index="${i}"><span class="row-top"><strong title="${h(s.sample_id)}">${h(short(s.sample_id,36))}</strong>${badge(s.split==='test'&&s.state==='initial_success'?'测试通过':stateName[s.state]||s.state,statusClass(s.state))}</span><p>${h(short(s.task||s.split||'未提供任务文本',70))}</p>${sampleExperienceBadges(s)}</button>`).join('')||'<div class="empty">没有匹配的样本</div>'}</div></section>
+    <div class="workbench sample-workbench"><section class="panel list-panel"><div class="list-head"><h2>${splitFilter==='train'?'训练':splitFilter==='test'?'测试':'未标注'}样本 <span class="muted mono">${visible.length} / ${group.length}</span></h2><input class="search" data-search="sample" placeholder="搜索 ID 或任务内容…" value="${h(query)}" aria-label="搜索样本"><div class="filters">${results.map(([key,label])=>`<button class="filter ${resultFilter===key?'active':''}" data-action="result-filter" data-filter="${key}">${label}</button>`).join('')}</div></div>
+    <div class="list-scroll">${visible.map(({s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="sample" data-index="${i}"><span class="row-top"><strong title="${h(s.sample_id)}">${h(sampleTitle(s))}</strong><span class="list-state ${statusClass(s.state)}" title="${h(stateName[s.state]||s.state)}">${h(s.split==='test'&&s.state==='initial_success'?'测试通过':stateName[s.state]||s.state)}</span></span><p>${h(short(s.task||s.split||'未提供任务文本',130))}</p>${sampleExperienceBadges(s)}</button>`).join('')||'<div class="empty">没有匹配的样本</div>'}</div></section>
     <section class="panel detail">${selected ? sampleDetail(selected) : '<div class="empty">当前阶段没有匹配的样本</div>'}</section></div>`;
 }
 function sampleInput(s, field, label) {
@@ -214,23 +222,50 @@ function roleDetail(s, role) {
     <div class="io-grid"><div class="io-side"><h3>输入 <span>INPUT</span></h3>${Array.isArray(entry.messages)?entry.messages.map(m=>`<div class="io-message"><div class="io-label">${h(m.role||'消息')} · 实际发送</div><pre>${h(pretty(m.content))}</pre></div>`).join(''):`<div class="io-message"><div class="io-label">${entry.backend==='fake'?'Fake 角色输入':'角色参数'}</div><pre>${h(pretty(entry.input))}</pre></div>`}</div>
     <div class="io-side"><h3>输出 <span>OUTPUT</span></h3>${entry.raw_output!=null?`<div class="io-message"><div class="io-label">模型原文</div><pre>${h(pretty(entry.raw_output))}</pre></div>`:entry.output!=null?`<div class="io-message"><div class="io-label">${entry.backend==='fake'?'Fake 返回':'结构化返回'}</div><pre>${h(pretty(entry.output))}</pre></div>`:'<div class="io-message"><div class="io-label">无输出</div><p>该尝试在获得有效模型文本前失败。</p></div>'}</div></div></section>`).join('');
 }
-function pipelineDetail(s) {
-  const selected=(s.selected_experiences||[]).map(e=>e.experience_id);
-  const proposals=s.proposal_attempts||[], applications=s.application_attempts||[];
-  return `<div class="detail-header"><div><h2>${h(s.sample_id)}</h2></div>${badge(stateName[s.state]||s.state,statusClass(s.state))}</div>
-    ${s.sample_error?`<div class="warning">${h(s.sample_error.stage)} · ${h(s.sample_error.message)}</div>`:''}
-    ${s.judge_error?`<div class="warning">Judge判断未知：${h(s.judge_error)}</div>`:''}
-    <div class="detail-section"><h3>任务与偏好对</h3>${sampleInput(s,'task','TASK')}${sampleInput(s,'chosen','CHOSEN')}${sampleInput(s,'rejected','REJECTED')}</div>
-    <div class="detail-section"><h3>召回与固定经验 E</h3><p>召回 ${s.retrieved_experience_ids?.length||0} · 选中 ${selected.length}</p>${selected.map(expButton).join(' · ')}<details><summary>R0和两轮应用共享的经验文本快照</summary><pre>${h(pretty(s.selected_experiences||[]))}</pre></details></div>
-    ${s.initial_rubric?`<div class="detail-section"><h3>初始标准 R0</h3>${generatorAnalysis(s)}${judgmentStats(s.initial_judgment)}${criteria(s.initial_rubric,s.initial_judgment)}<details><summary>R0正负信用</summary><pre>${h(pretty(s.downstream_credits))}</pre></details></div>`:''}
-    ${[1,2].map(round=>{
-      const ps=proposals.filter(p=>p.round_number===round), a=applications.find(a=>a.round_number===round);
-      if (!ps.length&&!a) return '';
-      return `<div class="detail-section"><h3>应用轮 ${round} · Critic → Admission → 新Generator → Judge</h3>${ps.map(p=>`<div class="candidate"><strong>候选生成 ${p.generation_number}</strong><details><summary>Critic私有分析</summary><p>${h(p.analysis)}</p></details>${p.error?`<div class="warning">${h(p.error)}</div>`:''}${p.candidate?`<p>${h(p.candidate.content)}</p><small>trigger：${h(p.candidate.trigger)}</small><p>${badge(p.candidate.admission||'未准入',p.candidate.admission==='PASS'?'ok':'warn')} ${h(p.candidate.admission_reason)}</p>${p.candidate.fusion?`<p>${badge(p.candidate.fusion,'ok')} ${expButton(p.candidate.experience_id)}</p>`:''}`:'<p>未取得候选</p>'}</div>`).join('')}${a?`<div class="attempt"><p>声明采用：${a.adopted===null?'未知':a.adopted?'是':'否'} · 引用标准 ${h(a.adopted_criterion_ids.join('、'))}</p>${a.error?`<div class="warning">${h(a.error)}</div>`:''}${a.rubric?`${judgmentStats(a.judgment)}${criteria(a.rubric,a.judgment)}`:''}${a.credit?`<p>候选证据 P ${n(a.credit.positive_credit)} / N ${n(a.credit.negative_credit)}；净方向 ${n(a.credit.positive_credit-a.credit.negative_credit)}。失败候选仅留审计。</p>`:''}</div>`:'<p>没有进入Generator应用</p>'}</div>`;
-    }).join('')}`;
+function traceSection(number,title,content,extra='') {
+  return `<section class="detail-section ${extra}"><div class="section-title"><span class="section-number">${number}</span><h3>${title}</h3></div>${content}</section>`;
 }
-function judgmentStats(j) {return j ? `<div class="mini-stats"><span class="mini-stat">MARGIN <b>${n(j.margin)}</b></span><span class="mini-stat">CHOSEN <b>${n(j.chosen_score)}</b></span><span class="mini-stat">REJECTED <b>${n(j.rejected_score)}</b></span></div>` : '';}
-function criteria(rubric, judgment) {return `<div class="rubric-list" role="region" tabindex="0" aria-label="Rubric 标准，可滚动">${rubric.criteria.map(c=>{const verdict=judgment?.criterion_judgments?.find(j=>j.criterion_id===c.criterion_id);return `<div class="criterion"><div class="criterion-head"><strong>${h(c.criterion_id)}</strong><span class="criterion-meta">重要性 ${h(c.importance_score)} · 权重 ${pct(judgment?.normalized_weights?.[c.criterion_id])}</span>${verdict?`<span class="judgment-pills"><span class="truth ${verdict.chosen?'yes':'no'}">Chosen ${verdict.chosen?'✓':'✕'}</span><span class="truth ${verdict.rejected?'yes':'no'}">Rejected ${verdict.rejected?'✓':'✕'}</span></span>`:''}</div><div class="criterion-body"><p>${h(c.question)}</p>${c.source_experiences?.length?`<div class="sources">来源经验：${c.source_experiences.map(expButton).join(' · ')}</div>`:''}</div></div>`;}).join('')}</div>`;}
+function creditStats(credit) {
+  return `<div class="credit-summary"><span>候选证据</span><span class="credit-positive">P <b>${n(credit.positive_credit)}</b></span><span class="credit-negative">N <b>${n(credit.negative_credit)}</b></span><span class="muted">净方向 ${n(credit.positive_credit-credit.negative_credit)}</span></div>`;
+}
+function proposalCard(p) {
+  const c=p.candidate;
+  return `<article class="candidate proposal-card">
+    <div class="candidate-head"><span class="section-kicker">CRITIC / ${String(p.round_number).padStart(2,'0')}</span><strong>本轮候选</strong>${c?badge('直接应用候选','neutral'):''}</div>
+    ${p.error?`<div class="warning">${h(p.error)}</div>`:''}
+    ${c?`<p class="candidate-content">${h(c.content)}</p><div class="candidate-trigger"><span>适用条件</span><p>${h(c.trigger)}</p></div>
+      ${c.fusion?`<div class="candidate-fusion">${badge(c.fusion,'ok')}${expButton(c.experience_id)}</div>`:''}`:'<p class="muted">未取得候选</p>'}
+    <details class="private-analysis"><summary>Critic私有分析</summary><div class="body-text">${h(p.analysis)}</div></details>
+  </article>`;
+}
+function pipelineDetail(s) {
+  const selected=s.selected_experiences||[], proposals=s.proposal_attempts||[], applications=s.application_attempts||[];
+  const label=sampleLabel(s);
+  const recorded=value=>value?'done':'skip';
+  const steps=[['输入',recorded(typeof s.task==='string')],['R0',s.initial_judgment?(s.initial_judgment.success?'done':'error'):recorded(s.initial_rubric)],['候选',recorded(proposals.length)],['应用',applications.some(a=>a.judgment?.success)?'done':applications.length?'error':'skip'],['融合',recorded(sampleCandidates(s).some(c=>!!c.fusion))]];
+  const header=`<div class="detail-header"><div><span class="section-kicker">${h(label.subset)} / SAMPLE</span><h2>样本 ${h(label.number)}</h2><p class="artifact-id" title="${h(s.sample_id)}">${h(s.sample_id)}</p></div>${badge(stateName[s.state]||s.state,statusClass(s.state))}</div>
+    <div class="trace-progress" aria-label="已记录流程">${steps.map(([title,status],i)=>`<div class="trace-step ${status}" title="${h(title)} · ${status==='done'?'已完成':status==='error'?'未通过或缺少有效结果':'未进入'}"><span>${status==='done'?'✓':status==='error'?'!':String(i+1).padStart(2,'0')}</span><b>${title}</b></div>`).join('')}</div>`;
+  const inputs=traceSection('01','任务与偏好对',`<div class="sample-inputs">${sampleInput(s,'task','TASK · 任务')}${sampleInput(s,'chosen','CHOSEN · 偏好回答')}${sampleInput(s,'rejected','REJECTED · 对照回答')}</div>`,'input-section');
+  const memory=traceSection('02','固定经验 E',`<div class="retrieval-summary"><span>召回 <b>${s.retrieved_experience_ids?.length||0}</b></span><span>选中 <b>${selected.length}</b></span><small>R0与两轮应用共享</small></div>${selected.length?`<div class="selected-experiences">${selected.map(e=>`<div>${expButton(e.experience_id)}</div>`).join('')}</div>`:'<p class="muted empty-note">本次未选用已有经验。</p>'}<details class="audit-details"><summary>查看固定经验文本快照</summary><pre>${h(pretty(selected))}</pre></details>`);
+  const initial=s.initial_rubric?traceSection('03','初始标准 R0',`${judgmentStats(s.initial_judgment)}${generatorAnalysis(s)}${criteria(s.initial_rubric,s.initial_judgment)}<details class="audit-details"><summary>查看R0正负信用</summary><pre>${h(pretty(s.downstream_credits))}</pre></details>`):'';
+  const rounds=[1,2].map(round=>{
+    const ps=proposals.filter(p=>p.round_number===round), a=applications.find(a=>a.round_number===round);
+    if(!ps.length&&!a) return '';
+    const application=a?`<div class="attempt"><div class="attempt-top"><strong>新Generator · 应用结果</strong>${badge(a.adopted===null?'采用未知':a.adopted?'声明采用':'未采用候选',a.adopted?'ok':'neutral')}</div><p class="adoption-meta">声明采用：${a.adopted===null?'未知':a.adopted?'是':'否'} · 引用 ${a.adopted_criterion_ids.length} 条标准</p>${a.adopted_criterion_ids.length?`<details class="audit-details"><summary>查看引用标准ID</summary><pre>${h(a.adopted_criterion_ids.join('\n'))}</pre></details>`:''}${a.error?`<div class="warning">${h(a.error)}</div>`:''}${a.rubric?`${judgmentStats(a.judgment)}${criteria(a.rubric,a.judgment)}`:''}${a.credit?creditStats(a.credit):''}</div>`:'<div class="round-end"><span class="round-end-dot"></span>没有进入Generator应用</div>';
+    return traceSection(String(round+3).padStart(2,'0'),`应用轮 ${round}`,`<div class="round-route"><span>Critic</span><i>→</i><span>新Generator</span><i>→</i><span>Judge</span></div>${ps.map(proposalCard).join('')}${application}`,'application-section');
+  }).join('');
+  return header+`${s.sample_error?`<div class="warning">${h(s.sample_error.stage)} · ${h(s.sample_error.message)}</div>`:''}${s.judge_error?`<div class="warning">Judge判断未知：${h(s.judge_error)}</div>`:''}`+inputs+memory+initial+rounds;
+}
+function judgmentStats(j) {
+  if(!j) return '';
+  return `<div class="judgment-summary ${j.success?'judgment-positive':'judgment-negative'}"><div class="margin-score"><span>MARGIN</span><strong>${j.margin>0?'+':''}${n(j.margin)}</strong></div><div class="answer-score"><span>CHOSEN</span><b>${n(j.chosen_score)}</b></div><div class="answer-score"><span>REJECTED</span><b>${n(j.rejected_score)}</b></div>${badge(j.success?'判别成功':'判别未通过',j.success?'ok':'warn')}</div>`;
+}
+function criteria(rubric, judgment) {
+  return `<div class="rubric-list" role="region" tabindex="0" aria-label="Rubric 标准，可滚动">${rubric.criteria.map((c,index)=>{
+    const verdict=judgment?.criterion_judgments?.find(j=>j.criterion_id===c.criterion_id);
+    return `<article class="criterion"><div class="criterion-head"><strong title="${h(c.criterion_id)}">标准 ${index+1}</strong><span class="criterion-meta">分配权重 ${h(c.weight)} · 权重 ${pct(judgment?.normalized_weights?.[c.criterion_id])}</span>${verdict?`<span class="judgment-pills"><span class="truth ${verdict.chosen?'yes':'no'}" title="Chosen：${verdict.chosen?'是':'否'}">C ${verdict.chosen?'✓':'✕'}</span><span class="truth ${verdict.rejected?'yes':'no'}" title="Rejected：${verdict.rejected?'是':'否'}">R ${verdict.rejected?'✓':'✕'}</span></span>`:''}</div><div class="criterion-body"><p>${h(c.question)}</p>${c.source_experiences?.length?`<div class="sources">来源经验：${c.source_experiences.map(expButton).join(' · ')}</div>`:''}</div>${verdict?`<details class="criterion-audit"><summary>Judge 判断依据</summary><p><strong>Chosen：</strong>${h(verdict.chosen_reason)}</p><p><strong>Rejected：</strong>${h(verdict.rejected_reason)}</p></details>`:''}<details class="criterion-audit"><summary>标准ID</summary><code>${h(c.criterion_id)}</code></details></article>`;
+  }).join('')}</div><p class="rubric-legend">C / Chosen · R / Rejected · ✓ 满足标准 · ✕ 不满足</p>`;
+}
 function experienceUsage(e) {
   // Count distinct samples whose R0 cites this experience, not merely selector choices.
   return new Set(data.samples.filter(s => s.initial_rubric?.criteria?.some(c =>
@@ -239,7 +274,7 @@ function experienceUsage(e) {
 function experienceMerges(e) {return e.evolution.filter(event => event.fusion === 'MERGE').length;}
 function candidateStatus(c) {
   return c.fusion === 'ADD' ? badge('已新增','ok') : c.fusion === 'MERGE' ? badge('已合并','ok') :
-    c.admission === 'FAIL' ? badge('准入拒绝','bad') : badge('未入池','neutral');
+    badge('未入池','neutral');
 }
 function memoryPage() {
   const rows = candidateEntries();
@@ -251,14 +286,14 @@ function memoryPage() {
     <button role="tab" aria-selected="${pool}" class="split-tab ${pool?'active':''}" data-action="memory-tab" data-tab="pool">经验池 <span class="mono">${data.experiences.length}</span></button>
     <button role="tab" aria-selected="${!pool}" class="split-tab ${pool?'':'active'}" data-action="memory-tab" data-tab="candidates">候选经验 <span class="mono">${rows.length}</span></button></div>
     <div class="workbench"><section class="panel list-panel memory-list"><div class="list-head"><h2>${pool?'经验池':'候选经验'} <span class="muted mono">${visible.length} / ${pool?data.experiences.length:rows.length}</span></h2><input class="search" data-search="${pool?'experience':'candidate'}" placeholder="搜索内容、ID 或来源样本…" value="${h(pool?expQuery:candidateQuery)}" aria-label="搜索${pool?'经验池':'候选经验'}"></div>
-    <div class="list-scroll">${pool ? visible.map(({e,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="experience" data-index="${i}"><span class="row-top"><strong title="${h(experienceName(e))}">${h(experienceName(e))}</strong>${badge(pct(e.confidence),'ok')}</span><p class="mono">${h(e.experience_id)}</p><div class="list-metrics"><span title="训练及测试样本 R0 中引用该经验的次数（每个样本最多计一次）">使用 ${experienceUsage(e)} 次</span><span title="该经验接收 MERGE 候选的次数">合并 ${experienceMerges(e)} 次</span></div></button>`).join('') : visible.map(({candidate:c,sample:s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="candidate" data-index="${i}"><span class="row-top"><strong title="${h(c.candidate_id)}">${h(short(c.candidate_id,30))}</strong>${candidateStatus(c)}</span><p>${h(short(c.content,74))}</p><span class="candidate-origin">${h(short(s.sample_id,36))}</span></button>`).join('')}${visible.length?'':'<div class="empty">没有匹配的经验</div>'}</div></section>
-    <section class="panel detail">${current ? pool?experienceDetail(current.e):candidateDetail(current) : `<div class="empty">${pool?'经验池为空；准入通过、声明采用且应用成功后出现经验。':'当前轨迹没有保留候选经验。'}</div>`}</section></div>`;
+    <div class="list-scroll">${pool ? visible.map(({e,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="experience" data-index="${i}"><span class="row-top"><strong title="${h(experienceName(e))}">${h(experienceName(e))}</strong>${badge(pct(e.confidence),'ok')}</span><p class="mono" title="${h(e.experience_id)}">${h(e.experience_id)}</p><div class="list-metrics"><span title="训练及测试样本 R0 中引用该经验的次数（每个样本最多计一次）">使用 ${experienceUsage(e)} 次</span><span title="该经验接收 MERGE 候选的次数">合并 ${experienceMerges(e)} 次</span></div></button>`).join('') : visible.map(({candidate:c,sample:s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="candidate" data-index="${i}"><span class="row-top"><strong title="${h(c.candidate_id)}">${h(short(c.content,58))}</strong>${candidateStatus(c)}</span><p>${h(short(c.trigger,100))}</p><span class="candidate-origin">${h(short(s.sample_id,36))}</span></button>`).join('')}${visible.length?'':'<div class="empty">没有匹配的经验</div>'}</div></section>
+    <section class="panel detail">${current ? pool?experienceDetail(current.e):candidateDetail(current) : `<div class="empty">${pool?'经验池为空；声明采用且应用成功后出现经验。':'当前轨迹没有保留候选经验。'}</div>`}</section></div>`;
 }
 function candidateDetail({candidate:c,sample:s}) {
   const a=(s.application_attempts||[]).find(a=>a.candidate_id===c.candidate_id);
-  return `<div class="detail-header"><div><span class="section-kicker">CRITIC / CANDIDATE</span><h2>${h(c.candidate_id)}</h2><p>来源样本：${sampleButton(s.sample_id)} · ${h(s.split || '未标注')}</p></div>${candidateStatus(c)}</div>
+  return `<div class="detail-header"><div><span class="section-kicker">CRITIC / CANDIDATE</span><h2>候选经验</h2><p class="artifact-id">${h(c.candidate_id)}</p><p>来源样本：${sampleButton(s.sample_id)} · ${h(s.split || '未标注')}</p></div>${candidateStatus(c)}</div>
     <div class="detail-section"><div class="section-kicker">01 / CANDIDATE</div><h3>候选内容</h3><p class="exp-intro">${h(c.content)}</p><div class="exp-trigger"><strong>TRIGGER · 适用条件</strong><br>${h(c.trigger)}</div></div>
-    <div class="detail-section"><div class="section-kicker">02 / DECISION</div><h3>准入、提供、采用与融合</h3><div class="mini-stats"><span class="mini-stat">准入 <b>${h(c.admission||'未记录')}</b></span><span class="mini-stat">融合 <b>${h(c.fusion||'未发生')}</b></span></div>${a?`<p class="body-text">已提供给Generator · 声明采用：${a.adopted===null?'未知':a.adopted?'是':'否'} · Judge：${a.judgment?(a.judgment.success?'成功':'失败'):'无有效判断'}${a.credit?` · P ${n(a.credit.positive_credit)} / N ${n(a.credit.negative_credit)}`:''}</p>`:'<p class="body-text">未提供给Generator</p>'}${c.admission_reason?`<div class="callout">准入理由：${h(c.admission_reason)}</div>`:''}${c.experience_id?`<p class="body-text">目标经验：${expButton(c.experience_id)}</p>`:''}</div>
+    <div class="detail-section"><div class="section-kicker">02 / DECISION</div><h3>提供、采用与融合</h3><div class="mini-stats"><span class="mini-stat">融合 <b>${h(c.fusion||'未发生')}</b></span></div>${a?`<p class="body-text">已提供给Generator · 声明采用：${a.adopted===null?'未知':a.adopted?'是':'否'} · Judge：${a.judgment?(a.judgment.success?'成功':'失败'):'无有效判断'}${a.credit?` · P ${n(a.credit.positive_credit)} / N ${n(a.credit.negative_credit)}`:''}</p>`:'<p class="body-text">未提供给Generator</p>'}${c.experience_id?`<p class="body-text">目标经验：${expButton(c.experience_id)}</p>`:''}</div>
     <div class="detail-section"><div class="section-kicker">03 / SOURCE</div><h3>来源轨迹</h3><p class="body-text">${sampleButton(s.sample_id)}</p><p class="legend">这里只列出完整轨迹中保留的候选；Critic 原始输出见对应样本的角色页签。</p></div>`;
 }
 function experienceDetail(e) {

@@ -13,12 +13,12 @@ from test_pipeline import sample
 from test_numbered_ids import response
 
 
-def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
+def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
     monkeypatch, tmp_path, wire_payload
 ):
     monkeypatch.setenv("MOCK_KEY", "test-secret")
     lock = Lock()
-    counts = {"critic": 0, "admission_checker": 0, "generator": 0}
+    counts = {"critic": 0, "generator": 0}
     requests = []
     traces = []
 
@@ -32,13 +32,18 @@ def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
         if "current_rubric" in p:
             counts["critic"] += 1
             n = counts["critic"]
-            assert p["generation_number"] == (1 if n % 2 else 2)
-            if n in (2, 4):
-                assert p["rejected_candidate"]["content"] == f"指导{n-1}"
-                assert p["rejected_candidate"]["admission_reason"] == f"拒绝原因{n-1}"
-            if n == 3:
+            assert p["round_number"] == n
+            for judgment_key, prefix in [("current_judgment", f"R{n-1}")]+(
+                [("previous_judgment", "R0")] if n == 2 else []
+            ):
+                for i, verdict in enumerate(p[judgment_key]["criterion_judgments"], 1):
+                    for side in ("chosen", "rejected"):
+                        expected = f"JUDGE_EVIDENCE:answer {side} private:{prefix}问题{i}"
+                        assert verdict[f"{side}_reason"] == expected
+                        assert expected in body["messages"][1]["content"]
+            if n == 2:
                 assert p["adopted"] is True
-                assert p["previous_candidate"]["content"] == "指导2"
+                assert p["previous_candidate"]["content"] == "指导1"
                 assert p["previous_candidate"]["candidate_id"] in p["current_rubric"]["criteria"][0]["source_experiences"]
                 assert "previous_rubric" in p and "previous_judgment" in p
                 assert p["previous_rubric"]["criteria"][0]["question"] == "R0问题1"
@@ -63,12 +68,19 @@ def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
             )  # fixed before R0 update
             assert all(
                 s not in str(body)
-                for s in ("PRIVATE", "answer chosen private", "answer rejected private")
+                for s in ("PRIVATE", "answer chosen private", "answer rejected private", "JUDGE_EVIDENCE")
             )
+            user = body["messages"][1]["content"]
+            assert user.count("本次可用经验") == 1
+            assert "本次选中的经验" not in user
+            assert "admission" not in p
             if n:
-                assert p["candidate_experience"]["content"] == f"指导{2*n}"
+                assert "当前候选、尚未验证，无历史置信度" in user
+                assert f"2：指导{n}" in user
+                assert p["candidate_experience"]["content"] == f"指导{n}"
                 assert "confidence" not in p["candidate_experience"]
-                assert "指导1" not in str(body) and "指导3" not in str(body)
+                if n == 2:
+                    assert "指导1" not in str(body)
                 assert f"R{n-1}问题" not in str(body)
             return response(
                 {
@@ -76,12 +88,12 @@ def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
                     "criteria": [
                         {
                             "question": f"R{n}问题1",
-                            "importance_score": 2,
+                            "weight": .2,
                             "source_experiences": ["1", "2"] if n else ["1"],
                         },
                         {
                             "question": f"R{n}问题2",
-                            "importance_score": 8,
+                            "weight": .8,
                             "source_experiences": ["2"] if n else [],
                         },
                     ],
@@ -92,7 +104,7 @@ def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
             return response(
                 {
                     "criterion_judgments": [
-                        {
+                        {"reason": f"JUDGE_EVIDENCE:{p['response']}:{x['question']}",
                             "criterion_id": x["criterion_id"],
                             "satisfied": (
                                 x["question"] == "R2问题2"
@@ -104,22 +116,12 @@ def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
                     ]
                 }
             )
-        if "candidate" in p and "existing" not in p:
-            n = counts["admission_checker"]
-            counts["admission_checker"] += 1
-            assert set(p) == {"task", "candidate"}
-            return response(
-                {
-                    "decision": "FAIL" if n % 2 == 0 else "PASS",
-                    "reason": f"拒绝原因{n+1}" if n % 2 == 0 else "候选表达可用",
-                }
-            )
         assert (
-            set(p) == {"candidate", "existing"} and p["candidate"]["content"] == "指导4"
+            set(p) == {"candidate", "existing"} and p["candidate"]["content"] == "指导2"
         )
         assert p["existing"][0]["content"] == "种子指导"
         return response(
-            {"match_index": 0, "content": "融合指导4", "trigger": "兼容事前条件"}
+            {"match_index": 0, "content": "融合指导2", "trigger": "兼容事前条件"}
         )
 
     with httpx.Client(
@@ -135,16 +137,25 @@ def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
         )
         memory = ExperienceMemory(tmp_path)
         seed = memory.fuse(
-            CandidateExperience("seed_c", "种子指导", "*", "PASS", "种子"), "seed"
+            CandidateExperience("seed_c", "种子指导", "*"), "seed"
         )
         rec = PipelineRunner(
             make_llm_modules(backend), memory, TrajectoryLog(tmp_path)
         ).run_sample(sample())
-    assert counts == {"critic": 4, "admission_checker": 4, "generator": 3}
+    assert counts == {"critic": 2, "generator": 3}
+    saved = list(TrajectoryLog(tmp_path).all())[0]
+    assert saved.to_dict() == rec.to_dict()
+    assert saved.schema_version == 4
+    for judgment, prefix in [(rec.initial_judgment, "R0")]+[
+        (a.judgment, f"R{i}") for i, a in enumerate(rec.application_attempts, 1)
+    ]:
+        for i, verdict in enumerate(judgment.criterion_judgments, 1):
+            assert verdict.chosen_reason == f"JUDGE_EVIDENCE:answer chosen private:{prefix}问题{i}"
+            assert verdict.rejected_reason == f"JUDGE_EVIDENCE:answer rejected private:{prefix}问题{i}"
     assert rec.state == "application_success" and len(rec.application_attempts) == 2
     assert rec.application_attempts[0].credit == Credit(0, 0.1)
     assert rec.application_attempts[1].credit == Credit(0.8, 0.1)
-    assert rec.proposal_attempts[-1].candidate.content == "指导4"
+    assert rec.proposal_attempts[-1].candidate.content == "指导2"
     assert rec.proposal_attempts[-1].candidate.fusion == "MERGE"
     e = memory.get(seed.experience_id)
     assert (e.alpha, e.beta) == pytest.approx((1.8, 1.3))
@@ -164,7 +175,7 @@ def test_http_four_candidates_two_fresh_applications_exact_candidate_fusion(
         b["messages"][1]["content"] for b, p in requests if "current_rubric" in p
     ]
     assert (
-        critic_messages[2].count("R0问题1") == 1
-        and critic_messages[2].count("R1问题1") == 1
+        critic_messages[1].count("：R0问题1\n") == 1
+        and critic_messages[1].count("：R1问题1\n") == 1
     )
-    assert "PRIVATE诊断" not in critic_messages[2]
+    assert "PRIVATE诊断" not in critic_messages[1]

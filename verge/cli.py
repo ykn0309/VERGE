@@ -33,14 +33,13 @@ _ROLES = (
     "initial_generator",
     "judge",
     "critic",
-    "admission_checker",
     "fusion_judge",
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
     "retrieval": "fake",
     "selection": "llm",
-    "application": "critic_candidate_validation",
+    "application": "critic_candidate_weighted_application",
     "reliability": "beta",
 }
 
@@ -366,8 +365,8 @@ def _resume_checkpoint(
     """只接受有序完整轨迹前缀、且下一样本未改写 Memory 的同协议运行。"""
     old = json.loads((source / "run_manifest.json").read_text(encoding="utf-8"))
     if (
-        old.get("format_version") != 2
-        or old.get("method") != "critic_candidate_validation"
+        old.get("format_version") != 4
+        or old.get("method") != "critic_candidate_weighted_application"
         or old.get("dataset_version") != manifest["dataset_version"]
         or not isinstance(old.get("code_version"), str)
     ):
@@ -716,15 +715,15 @@ def run(
             ]
         }
         manifest = {
-            "format_version": 2,
-            "method": "critic_candidate_validation",
+            "format_version": 4,
+            "method": "critic_candidate_weighted_application",
             "config": config,
             "code_version": _code_version(),
             "execution": {
                 "test_workers": config["run"].get("test_workers", 4),
                 "mode": "train_test" if "test" in dataset.paths else "train_only",
                 "max_application_rounds": max_rounds,
-                "admission_regenerations_per_round": 1,
+                "critic_proposals_per_round": 1,
                 "application_output_retries": config["modules"]["application"][
                     "config"
                 ].get("invalid_output_retries", 2),
@@ -735,7 +734,7 @@ def run(
             "dataset_sha256": {
                 split: _sha256_file(path) for split, path in dataset.paths.items()
             },
-            "module_versions": {name: "v2" for name in _IMPLEMENTATIONS},
+            "module_versions": {name: "v4" for name in _IMPLEMENTATIONS},
             "backend_versions": {name: "v1" for name in sorted(backend_names)},
             "prompt_versions": {role: PROMPT_VERSION for role in _ROLES},
         }
@@ -919,7 +918,7 @@ def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
     directory = Path(run_dir)
     manifest_file = directory / "run_manifest.json"
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 2:
+    if manifest.get("format_version") != 4:
         raise ValueError(f"{manifest_file}: unsupported manifest format")
     store_root = Path(
         manifest["config"]["store"]["config"].get("root_dir", "artifacts")

@@ -32,7 +32,7 @@ modules:
       max_selected: 5
       exploration_slots: 0
   application:
-    implementation: critic_candidate_validation
+    implementation: critic_candidate_weighted_application
     config:
       max_rounds: 2
       invalid_output_retries: 2

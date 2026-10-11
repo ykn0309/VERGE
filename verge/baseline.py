@@ -35,7 +35,7 @@ def _sha(path: Path) -> str:
 def _source(directory: str | Path) -> tuple[Path, dict[str, Any], JsonlDataset]:
     directory = Path(directory).expanduser().resolve()
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 2:
+    if manifest.get("format_version") != 4:
         raise ValueError("unsupported source manifest format")
     config = manifest["config"]["dataset"]
     if config["implementation"] != "jsonl":
@@ -100,7 +100,7 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
         )
         judge = LLMJudge(backends["judge"])
         manifest = {
-            "format_version": 2,
+            "format_version": 4,
             "config": config,
             "code_version": _code_version(),
             "execution": {

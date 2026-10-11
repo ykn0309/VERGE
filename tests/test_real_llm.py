@@ -146,7 +146,7 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
                 "criteria": [
                     {
                         "question": "准则？",
-                        "importance_score": 8,
+                        "weight": 8,
                         "source_experiences": [3],
                     }
                 ],
@@ -156,7 +156,7 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
                 "criteria": [
                     {
                         "question": "准则？",
-                        "importance_score": 8,
+                        "weight": 8,
                         "source_experiences": ["3"],
                     }
                 ],
@@ -164,8 +164,8 @@ def test_structured_success_metadata_prompt_version_and_privacy(monkeypatch):
         ),
         (
             "judge",
-            {"criterion_judgments": [{"criterion_id": 1, "satisfied": True}]},
-            {"criterion_judgments": [{"criterion_id": "1", "satisfied": True}]},
+            {"criterion_judgments": [{"reason": "fixture evidence", "criterion_id": 1, "satisfied": True}]},
+            {"criterion_judgments": [{"reason": "fixture evidence", "criterion_id": "1", "satisfied": True}]},
         ),
         (
             "critic",
@@ -195,7 +195,7 @@ def test_format_retry_on_missing_nested_field_and_limit(monkeypatch):
         value = (
             {"criterion_judgments": [{"criterion_id": "c1"}]}
             if len(calls) == 1
-            else {"criterion_judgments": [{"criterion_id": "c1", "satisfied": True}]}
+            else {"criterion_judgments": [{"reason": "fixture evidence", "criterion_id": "c1", "satisfied": True}]}
         )
         return result(value)
 
@@ -274,13 +274,12 @@ def test_rate_limit_timeout_and_terminal_errors(monkeypatch):
             return httpx.Response(429, headers={"retry-after": "0"}, text="private error body")
         if len(attempts) == 2:
             raise httpx.ReadTimeout("private network details")
-        return result({"decision": "FAIL", "reason": "触发条件依赖回答内容。"})
+        return result({"analysis": "证据不足", "candidates": []})
 
     llm = backend(monkeypatch, handler, max_retries=2, sleep=waits.append)
-    assert llm.generate("admission_checker", {"candidate": {}}) == {
-        "decision": "FAIL", "reason": "触发条件依赖回答内容。"}
+    assert llm.generate("critic", {"task": "任务"}) == {"analysis": "证据不足", "candidates": []}
     assert len(attempts) == 3 and waits == [0.0, 2]
-    assert len(attempts) == 3  # FAIL 是语义决策，不重试。
+    assert len(attempts) == 3  # 空候选是合法结果，不重试。
 
     unauthorized = backend(monkeypatch, lambda _: httpx.Response(401, text="test-secret-never-log"))
     with pytest.raises(LLMRequestError, match="HTTP 401") as exc:
@@ -299,24 +298,9 @@ def test_rate_limit_timeout_and_terminal_errors(monkeypatch):
     assert len(exhausted) == 2
 
 
-def test_admission_requires_nonempty_reason_and_retries_format(monkeypatch):
-    calls = []
-
-    def handler(request):
-        calls.append(request)
-        if len(calls) == 1:
-            return result({"decision": "PASS"})
-        if len(calls) == 2:
-            return result({"decision": "PASS", "reason": "  "})
-        return result({"decision": "PASS", "reason": "绑定操作支撑且触发条件可核验。"})
-
-    llm = backend(monkeypatch, handler, max_retries=2)
-    assert llm.generate("admission_checker", {"candidate": {}}) == {
-        "decision": "PASS", "reason": "绑定操作支撑且触发条件可核验。"}
-    assert len(calls) == 3
 
 
-def test_empty_binding_and_admission_fail_are_not_format_failures(monkeypatch):
+def test_candidate_is_not_a_format_failure(monkeypatch):
     calls = []
 
     def handler(request):

@@ -21,7 +21,7 @@ JUDGE_RESPONSE_SIDE: ContextVar[str | None] = ContextVar("judge_response_side", 
 
 
 class LLMBackend(Protocol):
-    """Backend 只返回结构化字段；权重与 credit 由 Calculator 计算。"""
+    """Backend返回分配权重、Boolean与依据等结构化字段；归一化及credit由Calculator计算。"""
 
     def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]: ...
 
@@ -46,10 +46,6 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "initial_generator": ("criteria", list),
     "judge": ("criterion_judgments", list),
     "critic": ("candidates", list),
-    "admission_checker": (
-        "decision",
-        str,
-    ),  # 另需非空 reason；在 _valid_shape 中联合校验。
     "fusion_judge": ("match_index", (int, type(None))),
 }
 
@@ -87,15 +83,7 @@ def _normalize_numeric_ids(role: str, value: Any) -> None:
 
 
 def _valid_shape(role: str, value: Any) -> bool:
-    """缺字段/字段类型不对才重试；ID引用、绑定为空、准入FAIL等语义决策不重试。"""
-    if role == "admission_checker":
-        return (
-            isinstance(value, dict)
-            and set(value) == {"decision", "reason"}
-            and value["decision"] in ("PASS", "FAIL")
-            and isinstance(value["reason"], str)
-            and bool(value["reason"].strip())
-        )
+    """缺字段/字段类型不对才重试；ID引用、空候选等语义结果不重试。"""
     if role == "fusion_judge":
         if not isinstance(value, dict) or set(value) != {
             "match_index",
@@ -155,10 +143,11 @@ def _valid_shape(role: str, value: Any) -> bool:
     if role == "initial_generator":
         return all(
             isinstance(item, dict)
-            and set(item) == {"question", "importance_score", "source_experiences"}
+            and set(item) == {"question", "weight", "source_experiences"}
             and isinstance(item["question"], str)
-            and type(item["importance_score"]) is int
-            and 1 <= item["importance_score"] <= 10
+            and type(item["weight"]) in (int, float)
+            and math.isfinite(item["weight"])
+            and item["weight"] > 0
             and isinstance(item["source_experiences"], list)
             and all(isinstance(key, str) for key in item["source_experiences"])
             for item in data
@@ -166,9 +155,11 @@ def _valid_shape(role: str, value: Any) -> bool:
     if role == "judge":
         return all(
             isinstance(item, dict)
-            and set(item) == {"criterion_id", "satisfied"}
+            and set(item) == {"criterion_id", "satisfied", "reason"}
             and isinstance(item["criterion_id"], str)
             and type(item["satisfied"]) is bool
+            and isinstance(item["reason"], str)
+            and bool(item["reason"].strip())
             for item in data
         )
     if role == "fusion_judge":
@@ -500,7 +491,6 @@ class FakeLLMBackend:
         *,
         candidate_count: int = 1,
         adopt_candidate: bool = True,
-        admission_pass: bool = True,
         trace_hook=None,
     ) -> None:
         if scenario not in (
@@ -513,7 +503,7 @@ class FakeLLMBackend:
         if type(candidate_count) is not int or candidate_count not in (0, 1):
             raise ValueError("candidate_count must be 0 or 1")
         self.scenario, self.candidate_count = scenario, candidate_count
-        self.adopt_candidate, self.admission_pass = adopt_candidate, admission_pass
+        self.adopt_candidate = adopt_candidate
         self.trace_hook = trace_hook
         self.requests = []
 
@@ -548,7 +538,7 @@ class FakeLLMBackend:
                         {
                             "criterion_id": "c1",
                             "question": "回答是否完整？",
-                            "importance_score": 2,
+                            "weight": 0.2,
                             "source_experiences": (
                                 [request["selected_experiences"][0]["experience_id"]]
                                 if request["selected_experiences"]
@@ -562,7 +552,7 @@ class FakeLLMBackend:
                                 if successful
                                 else f"是否概述任务目标（第{round_number}次）？"
                             ),
-                            "importance_score": 8,
+                            "weight": 0.8,
                             "source_experiences": sources,
                         },
                     ],
@@ -574,6 +564,7 @@ class FakeLLMBackend:
                 "criterion_judgments": [
                     {
                         "criterion_id": x["criterion_id"],
+                        "reason": "离线固定场景判断依据，不代表真实语义核验。",
                         "satisfied": (
                             x["question"] == "是否逐项满足关键要求？"
                             and self.scenario != "final_failure"
@@ -594,15 +585,6 @@ class FakeLLMBackend:
                     }
                     for _ in range(self.candidate_count)
                 ],
-            }
-        elif role == "admission_checker":
-            result = {
-                "decision": "PASS" if self.admission_pass else "FAIL",
-                "reason": (
-                    "可用于首次标准生成。"
-                    if self.admission_pass
-                    else "适用条件需修正。"
-                ),
             }
         elif role == "fusion_judge":
             c = request["candidate"]

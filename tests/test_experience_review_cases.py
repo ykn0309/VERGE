@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from verge.models import CandidateExperience
-from verge.modules import LLMAdmissionChecker, LLMFusionJudge
+from verge.modules import LLMFusionJudge
 from verge.prompts import PROMPT_VERSION, llm_messages
 
 
@@ -24,51 +24,12 @@ def test_curated_cases_are_explicitly_development_only_and_cover_both_decisions(
     assert {c['expected_match_index'] for c in FIXTURE['fusion_cases']} == {None, 0}
     observed = [c for c in FIXTURE['admission_cases'] if c['source_sample_id']]
     assert len(observed) == 8
+    # Historical observations remain intact; generic explanations may preserve method boundaries.
     assert next(c for c in observed if c['id'] == 'observed-2857')['expected_decision'] == 'PASS'
+    assert next(c for c in observed if c['id'] == 'observed-2896')['expected_decision'] == 'PASS'
     assert next(c for c in observed if c['id'] == 'observed-2501')['expected_decision'] == 'FAIL'
 
 
-@pytest.mark.parametrize("case", FIXTURE["admission_cases"], ids=lambda c: c["id"])
-def test_admission_case_projection_and_text_preservation_with_preset_decision(
-    monkeypatch, case
-):
-    from test_real_llm import backend, result
-
-    requests = []
-
-    # Gold labels are supplied by the mock. Passing does not evaluate model judgment.
-    def handler(request):
-        requests.append(json.loads(request.content))
-        return result(
-            {"decision": case["expected_decision"], "reason": case["review_note"]}
-        )
-
-    candidate = CandidateExperience(
-        "internal-candidate", case["content"], case["trigger"]
-    )
-    checker = LLMAdmissionChecker(backend(monkeypatch, handler, max_retries=0))
-    reviewed = checker.check(case["task"], candidate)
-    assert reviewed.admission == case["expected_decision"]
-    assert reviewed.admission_reason == case["review_note"]
-    assert (reviewed.content, reviewed.trigger) == (
-        candidate.content,
-        candidate.trigger,
-    )
-    assert candidate.admission is None and reviewed.fusion_record is None
-    assert len(requests) == 1
-    system, user = requests[0]["messages"]
-    assert system == llm_messages("admission_checker", {})[0]
-    assert case["task"] in user["content"]
-    assert case["content"] in user["content"] and case["trigger"] in user["content"]
-    assert "internal-candidate" not in user["content"]
-    for hidden in (
-        "successful_attempt",
-        "fusion_credit",
-        "evidence_weight",
-        "chosen",
-        "rejected",
-    ):
-        assert hidden not in user["content"]
 
 
 @pytest.mark.parametrize("case", FIXTURE["fusion_cases"], ids=lambda c: c["id"])
@@ -114,4 +75,4 @@ def test_fusion_case_contract_with_preset_add_or_merge(monkeypatch, case):
         "expected_match_index",
     ):
         assert hidden not in user["content"]
-    assert PROMPT_VERSION == "critic-candidate-admission-fresh-application"
+    assert PROMPT_VERSION == "critic-candidate-weighted-judge-reasons"

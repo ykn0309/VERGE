@@ -1,4 +1,4 @@
-"""CLI v2, ordered prefixes, bounded workers, new-only checkpoint/config contract."""
+"""CLI v4, ordered prefixes, bounded workers, new-only checkpoint/config contract."""
 
 import json
 from pathlib import Path
@@ -75,8 +75,8 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
     assert summary["train_samples"] == 2 and summary["test_samples"] == 1
     manifest = json.loads((directory / "run_manifest.json").read_text())
     assert (
-        manifest["format_version"] == 2
-        and manifest["method"] == "critic_candidate_validation"
+        manifest["format_version"] == 4
+        and manifest["method"] == "critic_candidate_weighted_application"
     )
     assert set(manifest["prompt_versions"].values()) == {PROMPT_VERSION}
     assert set(manifest["prompt_versions"]) == {
@@ -84,10 +84,11 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
         "initial_generator",
         "judge",
         "critic",
-        "admission_checker",
         "fusion_judge",
     }
     assert manifest["execution"]["max_application_rounds"] == 2
+    assert manifest["execution"]["critic_proposals_per_round"] == 1
+    assert "admission_regenerations_per_round" not in manifest["execution"]
     assert "experience_enabled" not in manifest["execution"]
     rs = records(directory)
     assert [r["state"] for r in rs] == [
@@ -182,7 +183,7 @@ def test_pause_then_resume_exact_prefix_new_directory(tmp_path, capsys):
 
 @pytest.mark.parametrize(
     "problem",
-    ["old_schema", "prompt", "code", "execution", "memory_pending", "dataset", "order"],
+    ["old_schema", "previous_schema", "prompt", "code", "execution", "memory_pending", "dataset", "order"],
 )
 def test_resume_rejects_uncertified_parent_without_touching_it(
     tmp_path, problem, capsys
@@ -193,8 +194,8 @@ def test_resume_rejects_uncertified_parent_without_touching_it(
     source = tmp_path / "result"
     mf = source / "run_manifest.json"
     m = json.loads(mf.read_text())
-    if problem == "old_schema":
-        m["format_version"] = 1
+    if problem in {"old_schema", "previous_schema"}:
+        m["format_version"] = 1 if problem == "old_schema" else 3
         mf.write_text(json.dumps(m))
     elif problem == "prompt":
         m["prompt_versions"]["critic"] = "old"

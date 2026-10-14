@@ -1,0 +1,45 @@
+# Resume certified 45-prefix; same protocol and model settings.
+run:
+  seed: 42
+  output_dir: runs/helpsteer3-general-delayed-experience-qwen-flash-200-resume2
+  test_workers: 1
+  stop_after_train: 200
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: runs/helpsteer3-general-consensus-data/train.jsonl
+models:
+  default:
+    backend: openai_compatible
+    model: qwen3.5-flash
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY_2
+    enable_thinking: false
+    timeout_seconds: 120
+    max_retries: 2
+  roles: {}
+modules:
+  retrieval:
+    implementation: vector
+    config:
+      top_l: 20
+      embedding_model: text-embedding-v4
+      dimensions: 1024
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 0
+  application:
+    implementation: local_credit_bounded_experience
+    config:
+      max_rounds: 2
+      invalid_output_retries: 2
+  reliability:
+    implementation: beta
+    config: {}
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

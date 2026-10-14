@@ -6,7 +6,7 @@ Verified Experience-guided Rubric Generation.
 
 [计划61](docs/plans/61-延迟归纳与正负案例经验更新.md)已实现：保留Beta正负累计，反向完整负信用、同判25%轻负信用；候选自身P>N，正常结束最多新增一条。已有经验正负案例每3个不同下游任务归纳一次，第10个案例最后归纳，之后冻结文本/案例、继续信用。取消Fusion/MERGE及拆分，Critic样本内多轮和Generator固定E/当前C保持。
 
-最近完整链路实验是计划49的HelpSteer3前100条（55初始/17救回/72最终），属于旧拆分协议。本次301项程序测试通过，20个历史目标任务的归纳模块新旧独立复测完成：40输出/42请求，新20有效、旧19有效。结构简化，但负向案例修正仍不稳定；见[简报](docs/实验分析/历史运行归档/delayed-experience-signed-replay-20/实验简报.md)。没有跑新完整链路，历史原产物保留，不跨协议续跑。
+最新完整链路实验为[计划62](docs/plans/62-新版200样本完整链路实验.md)：新版空池200题，110初始正确/46救回/156最终正确（78%），3题Judge错误，31经验/31归纳/8冻结。303项测试及信用/窗口/版本/最终池审计通过，运行在200后暂停、test=0；见[简报](docs/实验分析/62-新版200样本完整链路实验.md)。旧日志已清理、报告归档，数据/缓存不变；本次恢复来源及最终日志保留。
 - [方法设计](docs/设计方案.md)
 - [工程设计](docs/工程设计.md)
 - [实施计划48](docs/plans/48-局部正向准入与有限样本经验更新.md)
@@ -85,7 +85,7 @@ python3 -m pytest -q
 python3 -m verge.web --runs-dir runs --port 8765
 ```
 
-manifest、trajectory使用版本7，Memory使用版本5；提示词标识为 `local-credit-delayed-experience-signed-cases`。Web只列当前协议，展示候选、应用/采用、Judge、局部资格/最终入池、案例数/文本版本及P/N；不解析旧版本，不跨方法resume，历史产物保留。新版Web仅列新协议运行，当前没有新完整运行可展示；本轮未重启Web。
+manifest、trajectory使用版本7，Memory使用版本5；提示词标识为 `local-credit-delayed-experience-signed-cases`。Web只列当前协议，展示候选、应用/采用、Judge、局部资格/最终入池、案例数/文本版本及P/N；不解析旧版本，不跨方法resume，历史产物保留。新版Web仅列新协议运行，当前200题新运行可由新版Web读取，本轮未重启Web。
 
 历史计划43配置 [rewardbench-chat-hard-qwen-direct-experience-flash-30.yaml](configs/rewardbench-chat-hard-qwen-direct-experience-flash-30.yaml) 已按用户授权完成，使用独立输出目录；结果见[计划43](docs/plans/43-无Admission固定Flash30样本实验.md)，不自动继续剩余样本。
 

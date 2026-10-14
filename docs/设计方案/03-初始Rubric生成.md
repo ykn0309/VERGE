@@ -14,7 +14,7 @@
 
 ```text
 Task
-Selected Experiences（可以为空）
+Selected Experiences（experience_id/content/trigger，可以为空）
 ```
 
 禁止输入：
@@ -25,6 +25,8 @@ preference label
 judge results
 critic feedback
 ```
+
+计划53精简：已选经验的confidence/evidence_amount不进入Generator，仍保留在Selector输入、选中快照和审计对象中；本轮候选保留尚未验证状态。Generator设计标准依据task及方法，不把历史可靠性数值转成标准权重。
 
 ## 3. 输出
 

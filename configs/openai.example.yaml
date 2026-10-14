@@ -31,7 +31,7 @@ modules:
       max_selected: 5
       exploration_slots: 0
   application:
-    implementation: critic_candidate_weighted_application
+    implementation: local_credit_bounded_experience
     config:
       max_rounds: 2
       invalid_output_retries: 2

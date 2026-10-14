@@ -35,12 +35,16 @@ def test_generator_projection_no_private_context_and_equal_optional_use():
         "任务", [ExperienceView("e", "原指导", "条件", 0.7, 1)], candidate=c
     )
     assert set(p) == {"task", "selected_experiences", "candidate_experience"}
+    assert set(p["selected_experiences"][0]) == {"experience_id", "content", "trigger"}
     assert "confidence" not in p["candidate_experience"]
     assert "admission" not in str(p)
     assert "自主采用" in _ROLE_GUIDANCE["initial_generator"]
     assert "任务要求优先" in _ROLE_GUIDANCE["initial_generator"]
     assert "缺陷问题" in _ROLE_GUIDANCE["initial_generator"]
     assert "source_experiences" in _ROLE_INSTRUCTIONS["initial_generator"]
+    user = llm_messages("initial_generator", p)[1]["content"]
+    assert "置信度为历史信用" not in user and "证据量" not in user
+    assert "0.7" not in user
 
 
 def test_critic_prospective_method_and_private_analysis():
@@ -79,20 +83,6 @@ def test_natural_input_preserves_raw_multiline_and_no_old_conversation_inheritan
     assert len(m) == 2
 
 
-def test_fusion_indices_start_at_zero():
-    messages = llm_messages(
-        "fusion_judge",
-        {
-            "candidate": {"content": "新", "trigger": "*"},
-            "existing": [
-                {"content": "旧0", "trigger": "*"},
-                {"content": "旧1", "trigger": "*"},
-            ],
-        },
-    )
-    assert "0：" in messages[1]["content"] and "1：" in messages[1]["content"]
-
-
 def test_generator_actual_message_unifies_e_and_current_candidate():
     candidate = CandidateExperience("candidate_current", "本轮方法", "本轮条件")
     payload = generator_payload("任务", [ExperienceView("e", "已有方法", "原条件", .7, 1)], candidate=candidate)
@@ -102,7 +92,7 @@ def test_generator_actual_message_unifies_e_and_current_candidate():
     assert "当前候选、尚未验证，无历史置信度" in user
     assert "已准入" not in user and "本次选中的经验" not in user
     assert "confidence" not in payload["candidate_experience"]
-    assert set(_ROLE_GUIDANCE) == {"selector", "initial_generator", "judge", "critic", "fusion_judge"}
+    assert set(_ROLE_GUIDANCE) == {"selector", "initial_generator", "judge", "critic", "experience_updater"}
 
 
 def test_role_prompts_use_scoring_standard_language():

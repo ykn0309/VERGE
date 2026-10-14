@@ -45,7 +45,7 @@ def test_vector_top20_cache_add_and_text_change():
     assert len(backend.calls) == 25  # ADD 实时可见，只编码一条新经验
     items[0] = Experience("exp_00", "doc42", "applicable", 2, 1, [], [])
     assert retriever.retrieve("task", items)[0].experience_id == "exp_00"
-    assert len(backend.calls) == 27  # MERGE 改文后缓存失效
+    assert len(backend.calls) == 27  # 经验文本变化后缓存失效
     assert not any("exp_00" in text or "confidence" in text for text in backend.calls)
 
 
@@ -85,7 +85,7 @@ def test_vector_empty_pool_ties_and_invalid_vectors():
         retriever.retrieve("task", [pool(1)[0], pool(1)[0]])
 
 
-def test_pipeline_uses_same_vector_retriever_for_training_fusion_and_read_only_test(
+def test_pipeline_vector_retrieval_and_read_only_evaluation(
     tmp_path,
 ):
     class CountingEmbedding:
@@ -105,16 +105,11 @@ def test_pipeline_uses_same_vector_retriever_for_training_fusion_and_read_only_t
     def sample(sample_id):
         return PreferenceSample(sample_id, "明确回答问题", "合理答复", "不合理答复", {})
 
-    assert (
-        train.run_sample(sample("train-1")).proposal_attempts[0].candidate.fusion
-        == "ADD"
-    )
-    assert backend.calls == []  # 空池既不做主检索，也不做 Fusion 检索
-    assert (
-        train.run_sample(sample("train-2")).proposal_attempts[0].candidate.fusion
-        == "MERGE"
-    )
-    assert len(backend.calls) == 3  # task、经验文本和 fusion task（向量复用）
+    assert train.run_sample(sample("train-1")).admitted_experience_id
+    assert backend.calls == []
+    assert train.run_sample(sample("train-2")).admitted_experience_id
+    assert len(memory.all()) == 2
+    assert len(backend.calls) == 2  # task and one existing experience; no Fusion retrieval
     original = (tmp_path / "experience_memory.json").read_bytes()
     evaluation = PipelineRunner(
         modules, ExperienceMemory(tmp_path, read_only=True), log, training=False

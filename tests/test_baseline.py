@@ -47,7 +47,7 @@ def source_run(tmp_path, count=3):
         "store": {"config": {"root_dir": "artifacts"}},
     }
     manifest = {
-        "format_version": 4,
+        "format_version": 7,
         "config": config,
         "dataset_sha256": {"train": baseline._sha(data)},
         "prompt_versions": {r: PROMPT_VERSION for r in baseline.ROLES},
@@ -56,7 +56,7 @@ def source_run(tmp_path, count=3):
     root = source / "artifacts"
     root.mkdir()
     (root / "experience_memory.json").write_text(
-        '{"schema_version": 2, "experiences": []}\n'
+        '{"schema_version": 5, "experiences": []}\n'
     )
     return source, tmp_path / "baseline", data
 
@@ -96,7 +96,7 @@ def test_baseline_only_two_roles_and_no_source_writes(tmp_path, monkeypatch):
     )
     assert (
         output / "artifacts/experience_memory.json"
-    ).read_text() == '{"schema_version": 2, "experiences": []}\n'
+    ).read_text() == '{"schema_version": 5, "experiences": []}\n'
     assert (output / "artifacts/role_io.jsonl").stat().st_mode & 0o777 == 0o600
     assert load_run(output)["experiences"] == []
 

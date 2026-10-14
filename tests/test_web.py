@@ -38,7 +38,7 @@ def test_dashboard_candidates_adoption_dual_credit_and_no_writes(tmp_path):
     result = load_run(directory)
     assert result["warnings"] == [] and result["counts"] == {"application_success": 2}
     assert result["overview"]["adopted"] == 2 and result["overview"]["candidates"] == 2
-    assert result["overview"]["adds"] == 1 and result["overview"]["merges"] == 1
+    assert result["overview"]["adds"] == 2 and "merges" not in result["overview"]
     e = result["experiences"][0]
     assert e["evolution"][-1]["alpha"] == pytest.approx(e["alpha"])
     assert e["evolution"][-1]["beta"] == pytest.approx(e["beta"])
@@ -49,7 +49,7 @@ def test_dashboard_candidates_adoption_dual_credit_and_no_writes(tmp_path):
     assert {p: p.read_bytes() for p in before} == before
 
 
-@pytest.mark.parametrize("version", [1, 3])
+@pytest.mark.parametrize("version", [1, 3, 5])
 def test_old_manifest_hidden_without_deleting_directory(tmp_path, version):
     directory, _ = _run(tmp_path)
     old = tmp_path / "old"

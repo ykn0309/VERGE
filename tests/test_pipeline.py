@@ -1,5 +1,6 @@
 """Candidate-first business budgets and adoption branches (offline, no semantics claims)."""
 
+from experience_helpers import seed
 from dataclasses import replace
 from copy import deepcopy
 import pytest
@@ -10,6 +11,7 @@ from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import (
     Criterion,
     CriterionJudgment,
+    Credit,
     PreferenceSample,
     Rubric,
     TrajectoryRecord,
@@ -61,7 +63,7 @@ def test_business_outcomes(tmp_path, scenario, state, rounds, pool):
             c.content,
             c.trigger,
         )
-        assert c.fusion_record.credit == result.application_attempts[-1].credit
+        assert result.admitted_candidate_id == c.candidate_id
         assert r.memory.all()[0].alpha == pytest.approx(1.8)
 
 
@@ -140,7 +142,6 @@ def test_no_candidate_ends_without_inventing_admission(tmp_path):
     [
         ("selector", "select", "selection"),
         ("initial_generator", "generate", "initial_generator"),
-        ("fusion_judge", "find_match", "fusion_judge"),
     ],
 )
 def test_role_contract_isolation_continues_next_sample(tmp_path, role, method, stage):
@@ -288,7 +289,7 @@ def test_storage_and_calculator_errors_are_global(tmp_path, monkeypatch):
 
 def test_r0_credit_survives_later_failure_and_e_is_not_recredited(tmp_path):
     r = runner(tmp_path)
-    seed = r.memory.fuse(
+    seeded = seed(r.memory,
         __import__(
             "verge.models", fromlist=["CandidateExperience"]
         ).CandidateExperience("seed_c", "经验", "*"),
@@ -301,21 +302,24 @@ def test_r0_credit_survives_later_failure_and_e_is_not_recredited(tmp_path):
 
     r.modules.critic.propose = fail
     rec = r.run_sample(sample())
-    e = r.memory.get(seed.experience_id)
+    e = r.memory.get(seeded.experience_id)
     assert rec.state == "invalid_application_exhausted" and e.beta == pytest.approx(1.2)
     r.modules.critic.propose = original
     nxt = r.run_sample(sample("next"))
-    e = r.memory.get(seed.experience_id)
+    e = r.memory.get(seeded.experience_id)
     assert nxt.state == "application_success" and e.beta == pytest.approx(1.4)
-    assert len(e.evidence_history) == 2
+    assert len(e.evidence_history) == 3
     for call in [
         p for role, p in r.modules.backend.requests if role == "initial_generator"
     ]:
         if "candidate_experience" in call:
-            assert call["selected_experiences"] == nxt.selected_experiences
+            assert call["selected_experiences"] == [
+                {k: e[k] for k in ("experience_id", "content", "trigger")}
+                for e in nxt.selected_experiences
+            ]
 
 
-def test_success_with_negative_candidate_credit_still_fuses(tmp_path):
+def test_success_with_negative_candidate_credit_does_not_admit(tmp_path):
     r = runner(tmp_path)
     original = r.modules.initial_generator.apply
 
@@ -344,13 +348,10 @@ def test_success_with_negative_candidate_credit_still_fuses(tmp_path):
 
     r.modules.judge.judge = judged
     rec = r.run_sample(sample())
-    e = r.memory.all()[0]
-    assert (
-        rec.state == "application_success"
-        and e.alpha == 1
-        and e.beta == pytest.approx(1.2)
-    )
-    assert rec.application_attempts[0].credit.net < 0
+    assert rec.state == "application_success"
+    assert rec.application_attempts[0].credit == Credit(0, .2)
+    assert not rec.application_attempts[0].eligible
+    assert rec.admitted_candidate_id is None and not r.memory.all()
 
 
 def test_heldout_freezes_memory_text_beta_and_no_candidate_roles(tmp_path):
@@ -388,7 +389,7 @@ def test_r0_balanced_channels_update_before_success_branch(tmp_path):
     from verge.models import CandidateExperience
 
     r = runner(tmp_path, "initial_success")
-    seeded = r.memory.fuse(
+    seeded = seed(r.memory,
         CandidateExperience("seed_c", "经验", "*"), "seed"
     )
     eid = seeded.experience_id
@@ -411,13 +412,13 @@ def test_r0_balanced_channels_update_before_success_branch(tmp_path):
     rec = r.run_sample(sample())
     e = r.memory.get(eid)
     assert rec.state == "initial_success" and rec.downstream_credits[eid].net == 0
-    assert (e.alpha, e.beta) == pytest.approx((1.2, 1.2)) and len(
+    assert (e.alpha, e.beta) == pytest.approx((1.4, 1.2)) and len(
         e.evidence_history
-    ) == 1
+    ) == 2
     assert not rec.proposal_attempts
 
 
-def test_adopted_zero_candidate_credit_still_adds_without_beta_evidence(tmp_path):
+def test_adopted_zero_candidate_credit_does_not_add(tmp_path):
     r = runner(tmp_path)
     r.modules.initial_generator.apply = lambda task, e, c, n: Rubric(
         "a",
@@ -441,8 +442,5 @@ def test_adopted_zero_candidate_credit_still_adds_without_beta_evidence(tmp_path
 
     r.modules.judge.judge = judged
     rec = r.run_sample(sample())
-    e = r.memory.all()[0]
     assert rec.state == "application_success" and rec.application_attempts[0].adopted
-    assert (
-        e.alpha == e.beta == 1 and not e.evidence_history and len(e.fusion_history) == 1
-    )
+    assert not r.memory.all() and rec.admitted_candidate_id is None

@@ -155,37 +155,13 @@ def _read_jsonl(path: Path, warnings: list[str]) -> list[dict[str, Any]]:
 
 
 def _evolution(experience, records, order, warnings):
-    """Replay both evidence channels; zero-credit fusion still has a text version."""
-    evidence = experience["evidence_history"]
-    fusions = experience["fusion_history"]
-    events = [{**e, "kind": e["evidence_type"]} for e in evidence]
-    for fusion in fusions:
-        event = next(
-            (
-                e
-                for e in events
-                if e.get("candidate_id") == fusion["candidate_id"]
-                and e["sample_id"] == fusion["sample_id"]
-            ),
-            None,
-        )
-        if event is None:
-            event = {
-                "kind": "fusion",
-                "sample_id": fusion["sample_id"],
-                "candidate_id": fusion["candidate_id"],
-                "positive_credit": 0,
-                "negative_credit": 0,
-            }
-            events.append(event)
-        event.update(fusion=fusion["fusion"], fusion_record=fusion)
-    events.sort(
-        key=lambda e: (
-            order.get(e["sample_id"], len(order)),
-            0 if e["kind"] == "downstream_credit" else 1,
-        )
-    )
-    origin = next((f["sample_id"] for f in fusions if f["fusion"] == "ADD"), None)
+    """Replay numeric credit and independent text updates without implying task success."""
+    events = [{**e, "kind": e["evidence_type"]} for e in experience["evidence_history"]]
+    events.extend({"kind": "text_update", "sample_id": u["sample_id"],
+                   "positive_credit": 0, "negative_credit": 0, "text_update": u}
+                  for u in experience["update_history"])
+    events.sort(key=lambda e: (order.get(e["sample_id"], len(order)), e["kind"] == "text_update"))
+    origin = experience["source_trajectories"][0] if experience["source_trajectories"] else None
     alpha = beta = 1.0
     timeline = [
         {
@@ -219,8 +195,8 @@ def _evolution(experience, records, order, warnings):
 
 def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 4:
-        raise ValueError("unsupported run manifest format; new runs require v4")
+    if manifest.get("format_version") != 7:
+        raise ValueError("unsupported run manifest format; new runs require v6")
     versions = manifest.get("prompt_versions")
     if (
         not isinstance(versions, dict)
@@ -311,19 +287,17 @@ def _overview_metrics(samples, experiences, context, manifest, warnings):
         for s in train
     )
     curve = []
-    adds = merges = 0
+    adds = 0
     for i, s in enumerate(train):
         local = [
             p["candidate"] for p in s.get("proposal_attempts", []) if p.get("candidate")
         ]
-        adds += sum(c["fusion"] == "ADD" for c in local)
-        merges += sum(c["fusion"] == "MERGE" for c in local)
+        adds += sum(c["experience_id"] is not None for c in local)
         curve.append(
             {
                 "index": i + 1,
                 "pool": adds,
                 "adds": adds,
-                "merges": merges,
                 "cumulative": rate(train[: i + 1]),
                 "rolling": rate(train[max(0, i - 49) : i + 1]),
             }
@@ -336,8 +310,10 @@ def _overview_metrics(samples, experiences, context, manifest, warnings):
         "initial": rate(train),
         "curve": curve,
         "adds": adds,
-        "merges": merges,
         "candidates": len(candidates),
+        "text_updates": sum(len(e["update_history"]) for e in experiences),
+        "frozen_experiences": sum(len(e["cases"]) >= 10 for e in experiences),
+        "active_experiences": len(experiences),
         "proposal_calls": len(proposals),
         "applications": len(apps),
         "adopted": sum(a["adopted"] is True for a in apps),
@@ -431,8 +407,7 @@ def _sample_experience_status(
         generated = 0  # Completed without the reflection branch.
     return {
         "generated_candidates": generated,
-        "added": sum(c.get("fusion") == "ADD" for c in candidates),
-        "merged": sum(c.get("fusion") == "MERGE" for c in candidates),
+        "added": sum(c.get("experience_id") is not None for c in candidates),
         "selected": len(sample.get("selected_experiences", [])),
         "referenced": len(referenced) if sample.get("initial_rubric") else None,
     }
@@ -499,7 +474,7 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
     memory = json.loads((root / "experience_memory.json").read_text(encoding="utf-8"))
     if (
         set(memory) != {"schema_version", "experiences"}
-        or memory["schema_version"] != 2
+        or memory["schema_version"] != 5
     ):
         raise ValueError("unsupported memory schema")
     experiences = [
@@ -507,6 +482,10 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
     ]
     for item in experiences:
         item["evolution"] = _evolution(item, records, order, warnings)
+        item["case_count"] = len(item["cases"])
+        item["pending_feedback_count"] = Experience.from_dict({k:v for k,v in item.items() if k not in {"evolution", "case_count"}}).pending_feedback_count
+        item["downstream_task_count"] = len({e["sample_id"] for e in item["evidence_history"] if e["evidence_type"] == "downstream_credit"})
+        item["text_frozen"] = len(item["cases"]) >= 10
     overview = _overview_metrics(samples, experiences, context, manifest, warnings)
     counts = Counter(item["state"] for item in samples)
     return {

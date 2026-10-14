@@ -75,8 +75,8 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
     assert summary["train_samples"] == 2 and summary["test_samples"] == 1
     manifest = json.loads((directory / "run_manifest.json").read_text())
     assert (
-        manifest["format_version"] == 4
-        and manifest["method"] == "critic_candidate_weighted_application"
+        manifest["format_version"] == 7
+        and manifest["method"] == "local_credit_bounded_experience"
     )
     assert set(manifest["prompt_versions"].values()) == {PROMPT_VERSION}
     assert set(manifest["prompt_versions"]) == {
@@ -84,7 +84,7 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
         "initial_generator",
         "judge",
         "critic",
-        "fusion_judge",
+        "experience_updater",
     }
     assert manifest["execution"]["max_application_rounds"] == 2
     assert manifest["execution"]["critic_proposals_per_round"] == 1
@@ -96,13 +96,13 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
         "application_success",
         "initial_failure",
     ]
-    assert rs[0]["proposal_attempts"][0]["candidate"]["fusion"] == "ADD"
-    assert rs[1]["proposal_attempts"][0]["candidate"]["fusion"] == "MERGE"
+    assert all(rs[i]["admitted_experience_id"] for i in (0, 1))
+    assert rs[0]["admitted_experience_id"] != rs[1]["admitted_experience_id"]
     assert not rs[2]["application_attempts"] and not rs[2]["downstream_credits"]
     pool = json.loads((directory / "artifacts/experience_memory.json").read_text())[
         "experiences"
     ]
-    assert len(pool) == 1 and all(
+    assert len(pool) == 2 and all(
         ev["sample_id"] != "test-a" for ev in pool[0]["evidence_history"]
     )
     assert (
@@ -195,7 +195,7 @@ def test_resume_rejects_uncertified_parent_without_touching_it(
     mf = source / "run_manifest.json"
     m = json.loads(mf.read_text())
     if problem in {"old_schema", "previous_schema"}:
-        m["format_version"] = 1 if problem == "old_schema" else 3
+        m["format_version"] = 1 if problem == "old_schema" else 5
         mf.write_text(json.dumps(m))
     elif problem == "prompt":
         m["prompt_versions"]["critic"] = "old"

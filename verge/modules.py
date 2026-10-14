@@ -28,15 +28,15 @@ from verge.models import (
     Criterion,
     CriterionJudgment,
     Experience,
+    ExperienceUpdate,
     Rubric,
     RubricJudgment,
-    FusionResult,
 )
 from verge.prompts import (
     ExperienceView,
     NumberedIDCodec,
     critic_payload,
-    fusion_payload,
+    experience_update_payload,
     generator_payload,
     judge_payload,
     selector_payload,
@@ -93,11 +93,8 @@ class Critic(Protocol):
     ) -> CriticProposal: ...
 
 
-class FusionJudge(Protocol):
-    """经验融合判断：仅看 content/trigger，返回兼容经验的位置及融合文本。"""
-
-    def find_match(self, content: str, trigger: str,
-                   existing: Sequence[tuple[str, str]]) -> FusionResult: ...
+class ExperienceUpdater(Protocol):
+    def update(self, experience: Experience) -> ExperienceUpdate: ...
 
 
 def _text(value: str, name: str) -> None:
@@ -112,7 +109,8 @@ def _views(items: Sequence[ExperienceView]) -> None:
 
 
 def _output(
-    backend: LLMBackend, role: str, payload: dict[str, Any], field: str | None
+    backend: LLMBackend, role: str, payload: dict[str, Any], field: str | None,
+    *, conversation: list[dict[str, str]] | None = None,
 ) -> Any:
     """所有角色共享的结构校验；字段值仍由对应模块按领域模型校验。"""
     # Fake 后端沿用内部固定 ID；真实模型只接触本次调用的局部数字编号。
@@ -122,7 +120,8 @@ def _output(
         else None
     )
     projected = codec.project(payload) if codec else payload
-    response = backend.generate(role, projected)
+    response = (backend.generate(role, projected, conversation=conversation)
+                if conversation is not None else backend.generate(role, projected))
     expected = (
         {"analysis", "criteria"}
         if codec and role == "initial_generator"
@@ -130,8 +129,8 @@ def _output(
             {field}
             if field is not None
             else (
-                {"match_index", "content", "trigger"}
-                if role == "fusion_judge"
+                {"content", "trigger"}
+                if role == "experience_updater"
                 else {"analysis", "candidates"}
             )
         )
@@ -261,8 +260,8 @@ class LLMInitialRubricGenerator:
         candidate: CandidateExperience,
         round_number: int,
     ) -> Rubric:
-        if candidate.fusion is not None:
-            raise ValueError("application requires an unfused candidate")
+        if candidate.experience_id is not None:
+            raise ValueError("application requires a new candidate")
         if round_number not in (1, 2):
             raise ValueError("application round must be 1 or 2")
         return self._generate(task, selected, candidate, round_number)
@@ -520,6 +519,7 @@ class LLMCritic:
         invalid_error=None,
         previous_rubric=None,
         previous_judgment=None,
+        conversation=None,
     ):
         _text(task, "task")
         if judgment.rubric_id != current.rubric_id or judgment.success:
@@ -541,7 +541,7 @@ class LLMCritic:
         )
         for retry in range(self.invalid_output_retries + 1):
             try:
-                raw = _output(self.backend, "critic", payload, None)
+                raw = _output(self.backend, "critic", payload, None, conversation=conversation)
                 _text(raw["analysis"], "critic analysis")
                 if (
                     not isinstance(raw["candidates"], list)
@@ -577,28 +577,35 @@ class LLMCritic:
         raise AssertionError("unreachable")
 
 
-class LLMFusionJudge:
-    """只提交 content/trigger；匹配位置由调用方映射回 canonical experience ID。"""
-
-    def __init__(self, backend: LLMBackend) -> None:
+class LLMExperienceUpdater:
+    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 2) -> None:
+        if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
+            raise ValueError("invalid_output_retries must be in [0,3]")
         self.backend = backend
+        self.invalid_output_retries = invalid_output_retries
 
-    def find_match(self, content: str, trigger: str,
-                   existing: Sequence[tuple[str, str]]) -> FusionResult:
-        _text(content, "content")
-        _text(trigger, "trigger")
-        if any(not isinstance(item, tuple) or len(item) != 2
-               or any(not isinstance(text, str) for text in item) for item in existing):
-            raise ValueError("fusion_judge: existing entries must be content/trigger pairs")
-        if not existing:
-            return FusionResult(None, None, None)
-        raw = _output(self.backend, "fusion_judge", fusion_payload(content, trigger, existing), None)
-        if raw["match_index"] is not None and type(raw["match_index"]) is not int:
-            raise ValueError("fusion_judge: match_index must be an integer or null")
-        result = FusionResult.from_dict(raw)
-        if result.match_index is not None and result.match_index >= len(existing):
-            raise ValueError("fusion_judge: match_index must be an existing position or null")
-        return result
+    def update(self, experience: Experience) -> ExperienceUpdate:
+        if not 2 <= len(experience.cases) <= 10:
+            raise ValueError("experience update requires 2..10 cases")
+        payload = experience_update_payload(experience)
+        # Bound the full request in UTF-8 bytes; never truncate original cases.
+        from verge.prompts import llm_messages
+        budget_payload = (NumberedIDCodec("experience_updater", payload).project(payload)
+                          if isinstance(self.backend, OpenAICompatibleBackend) else payload)
+        if sum(len(m["content"].encode("utf-8")) for m in llm_messages("experience_updater", budget_payload)) > 100_000:
+            raise ValueError("experience update context budget exceeded")
+        for retry in range(self.invalid_output_retries + 1):
+            try:
+                raw = _output(self.backend, "experience_updater", payload, None)
+                update = ExperienceUpdate.from_dict(dict(raw))
+                return update
+            except LLMFormatError:
+                raise
+            except ValueError as exc:
+                if retry == self.invalid_output_retries:
+                    raise
+                payload = {**payload, "validation_feedback": "上次文本校验失败：" + str(exc)[:160]}
+        raise AssertionError("unreachable")
 
 
 @dataclass
@@ -611,7 +618,7 @@ class LLMModules:
     initial_generator: LLMInitialRubricGenerator
     judge: LLMJudge
     critic: LLMCritic
-    fusion_judge: LLMFusionJudge
+    experience_updater: LLMExperienceUpdater
 
 
 def make_llm_modules(
@@ -629,7 +636,7 @@ def make_llm_modules(
         LLMInitialRubricGenerator(backend),
         LLMJudge(backend),
         LLMCritic(backend),
-        LLMFusionJudge(backend),
+        LLMExperienceUpdater(backend),
     )
 
 

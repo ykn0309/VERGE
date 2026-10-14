@@ -4,20 +4,20 @@ from __future__ import annotations
 
 from typing import Iterable, Protocol
 
-from verge.calculator import calculate_experience_credits, validate_rubric_judgment
+from verge.calculator import calculate_experience_credits, validate_rubric_judgment, positive_experience_sources
 from verge.llm import LLMRefusalError
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import (
     ApplicationAttempt,
     Credit,
-    FusionResult,
+    ExperienceCase,
     PreferenceSample,
     ProposalAttempt,
     TrajectoryRecord,
 )
 from verge.modules import (
     Critic,
-    FusionJudge,
+    ExperienceUpdater,
     InitialRubricGenerator,
     Judge,
     JudgeOutputError,
@@ -33,7 +33,7 @@ class PipelineModules(Protocol):
     initial_generator: InitialRubricGenerator
     judge: Judge
     critic: Critic
-    fusion_judge: FusionJudge
+    experience_updater: ExperienceUpdater
 
 
 class PipelineRunner:
@@ -63,8 +63,10 @@ class PipelineRunner:
         if not isinstance(sample, PreferenceSample):
             raise ValueError("runner requires PreferenceSample")
         record = TrajectoryRecord(sample.sample_id)
+        normal_end = False
         try:
             self._run_sample(sample, record)
+            normal_end = True
         except JudgeOutputError as exc:
             record.state = (
                 "judge_error_initial"
@@ -79,7 +81,6 @@ class PipelineRunner:
                 "selection",
                 "initial_generator",
                 "initial_judge",
-                "fusion_judge",
             }
             if (
                 self.current_stage not in role_stages
@@ -92,6 +93,8 @@ class PipelineRunner:
                 "type": type(exc).__name__,
                 "message": str(exc)[:500] or type(exc).__name__,
             }
+        if self.training and record.initial_judgment is not None:
+            self._finish_sample(sample, record, admit=normal_end)
         self.current_stage = "trajectory"
         self.trajectories.append(record)
         return record
@@ -140,6 +143,7 @@ class PipelineRunner:
         invalid_error = None
         previous_rubric = previous_judgment = None
         candidate_ids = set()
+        critic_conversation: list[dict[str, str]] = []  # sample-local; never reaches Generator
         record.state = "validation_exhausted"
         for number in range(1, self.max_rounds + 1):
             attempt = ProposalAttempt(number)
@@ -158,6 +162,7 @@ class PipelineRunner:
                     invalid_error=invalid_error,
                     previous_rubric=previous_rubric,
                     previous_judgment=previous_judgment,
+                    conversation=critic_conversation,
                 )
             except ValueError as exc:
                 attempt.error = invalid_error = str(exc)
@@ -173,8 +178,8 @@ class PipelineRunner:
             ):
                 raise ValueError("critic candidate IDs must be new and unique")
             candidate_ids.add(candidate.candidate_id)
-            if candidate.fusion is not None:
-                raise ValueError("critic must propose unfused candidates")
+            if candidate.experience_id is not None:
+                raise ValueError("critic must propose new candidates")
             application = ApplicationAttempt(number, candidate.candidate_id)
             record.application_attempts.append(application)
             self.current_stage = f"application_{number}.generator"
@@ -215,6 +220,7 @@ class PipelineRunner:
             application.credit = calculate_experience_credits(rubric, result).get(
                 candidate.candidate_id, Credit()
             )
+            application.eligible = bool(used) and candidate.candidate_id in positive_experience_sources(rubric, result)
             previous_rubric, previous_judgment = current, current_judgment
             current, current_judgment = rubric, result
             previous_candidate, adopted, invalid_error = candidate, bool(used), None
@@ -223,39 +229,54 @@ class PipelineRunner:
             record.state = (
                 "application_success" if used else "success_without_candidate"
             )
-            if not used:
-                return
-            self.current_stage = "fusion_retrieval"
-            pool = m.retriever.retrieve(
-                f"{candidate.content} {candidate.trigger}", self.memory.all()
-            )
-            self.current_stage = "fusion_judge"
-            match = m.fusion_judge.find_match(
-                candidate.content,
-                candidate.trigger,
-                [(x.content, x.trigger) for x in pool],
-            )
-            if not isinstance(match, FusionResult) or (
-                match.match_index is not None and match.match_index >= len(pool)
-            ):
-                raise ValueError("invalid fusion match")
-            self.current_stage = "fusion_write"
-            fused = self.memory.fuse(
-                candidate,
-                sample.sample_id,
-                (
-                    pool[match.match_index].experience_id
-                    if match.match_index is not None
-                    else None
-                ),
-                merged_content=match.content,
-                merged_trigger=match.trigger,
-                application_credit=application.credit,
-            )
-            attempt.candidate = fused
             return
         if (
             not record.application_attempts
             or record.application_attempts[-1].judgment is None
         ):
             record.state = "invalid_application_exhausted"
+
+    def _finish_sample(self, sample, record, *, admit):
+        # Errors do not perform normal candidate admission; valid R0 evidence remains usable.
+        if admit:
+            eligible = [a for a in record.application_attempts if a.eligible]
+            if eligible:
+                app = eligible[-1]  # latest valid positive candidate, never compare margins across rubrics
+                proposal = next(p for p in record.proposal_attempts if p.candidate and p.candidate.candidate_id == app.candidate_id)
+                candidate = proposal.candidate
+                case = ExperienceCase(
+                    sample.sample_id, sample.task, sample.chosen, sample.rejected,
+                    candidate.candidate_id, 1, candidate.content, candidate.trigger,
+                    app.rubric, app.judgment, app.credit, proposal.analysis,
+                )
+                self.current_stage = "candidate_admission"
+                proposal.candidate = self.memory.add(candidate, case)
+                record.admitted_candidate_id = candidate.candidate_id
+                record.admitted_experience_id = proposal.candidate.experience_id
+        for view in record.selected_experiences:
+            eid = view["experience_id"]
+            if eid not in record.downstream_credits:
+                continue
+            experience = self.memory.get(eid)
+            case = ExperienceCase(
+                sample.sample_id, sample.task, sample.chosen, sample.rejected,
+                eid, experience.text_version, view["content"], view["trigger"],
+                record.initial_rubric, record.initial_judgment, record.downstream_credits[eid],
+            )
+            self.current_stage = "experience_case"
+            if not self.memory.collect_case(eid, case):
+                continue
+            experience = self.memory.get(eid)
+            if not experience.update_due:
+                continue
+            self.current_stage = "experience_updater"
+            error = None
+            try:
+                update = self.modules.experience_updater.update(experience)
+            except (ValueError, LLMRefusalError) as exc:
+                error = str(exc)[:500] or type(exc).__name__
+            self.current_stage = "experience_text_write"
+            record.experience_updates[eid] = (
+                self.memory.update_text(eid, experience.content, experience.trigger, error=error)
+                if error is not None else self.memory.apply_update(eid, update)
+            )

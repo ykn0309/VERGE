@@ -8,19 +8,21 @@ from pathlib import Path
 from typing import Iterator
 from uuid import uuid4
 
-from verge.calculator import apply_beta_evidence
+from verge.calculator import apply_beta_evidence, positive_experience_sources
 from verge.models import (
     CandidateExperience,
     Credit,
     EvidenceRecord,
     Experience,
-    FusionRecord,
+    ExperienceCase,
+    ExperienceUpdate,
+    TextUpdateRecord,
     TrajectoryRecord,
 )
 
 
 class ExperienceMemory:
-    """保存 canonical experience；调用方负责计算信用和决定 Fusion 匹配对象。
+    """保存经验、有限案例和文本版本；调用方计算信用并决定候选新增与文本更新。
 
     每次有效更新立即写入单个 JSON 文件。不处理重复运行、跨文件事务或崩溃恢复。
     """
@@ -34,12 +36,14 @@ class ExperienceMemory:
             if (
                 not isinstance(data, dict)
                 or set(data) != {"schema_version", "experiences"}
-                or data.get("schema_version") != 2
+                or data.get("schema_version") != 5
                 or not isinstance(data["experiences"], list)
             ):
                 raise ValueError("invalid experience memory format")
             for value in data["experiences"]:
                 experience = Experience.from_dict(value)
+                if not experience.cases or experience.source_trajectories != [c.sample_id for c in experience.cases]:
+                    raise ValueError("memory requires a recorded origin and bounded source cases")
                 if experience.experience_id in self._experiences:
                     raise ValueError("duplicate experience ID in memory")
                 self._experiences[experience.experience_id] = experience
@@ -56,7 +60,7 @@ class ExperienceMemory:
         self._ensure_writable()
         self.path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
-            "schema_version": 2,
+            "schema_version": 5,
             "experiences": [item.to_dict() for item in self._experiences.values()],
         }
         self.path.write_text(
@@ -65,8 +69,11 @@ class ExperienceMemory:
         )
 
     def all(self) -> list[Experience]:
-        """返回独立副本；修改查询结果不会悄悄改变池内状态。"""
+        """Return detached copies; there are no retired/split experiences."""
         return [Experience.from_dict(item.to_dict()) for item in self._experiences.values()]
+
+    def _active(self, experience_id: str) -> Experience:
+        return self._experiences[experience_id]
 
     def get(self, experience_id: str) -> Experience:
         return Experience.from_dict(self._experiences[experience_id].to_dict())
@@ -77,7 +84,7 @@ class ExperienceMemory:
         self._ensure_writable()
         updates = {}
         for key, credit in credits.items():
-            current = self._experiences[key]
+            current = self._active(key)
             if credit.amount:
                 updates[key] = apply_beta_evidence(
                     current,
@@ -86,85 +93,82 @@ class ExperienceMemory:
                         "downstream_credit",
                         credit.positive_credit,
                         credit.negative_credit,
+                        text_version=current.text_version,
                     ),
                 )
         if updates:
             self._experiences.update(updates)
             self._save()
 
-    def fuse(
-        self,
-        candidate: CandidateExperience,
-        sample_id: str,
-        matching_experience_id: str | None = None,
-        *,
-        merged_content: str | None = None,
-        merged_trigger: str | None = None,
-        application_credit: Credit = Credit(),
-    ) -> CandidateExperience:
-        """写入融合文本与应用双通道证据；零值不追加证据记录。"""
+    def add(self, candidate: CandidateExperience, case: ExperienceCase) -> CandidateExperience:
+        """New candidate only; no matching, MERGE, or text rewriting at admission."""
         self._ensure_writable()
-        if (
-            candidate.fusion is not None
-            or candidate.fusion_record is not None
+        if candidate.experience_id is not None:
+            raise ValueError("candidate must not already be admitted")
+        if (case.source_id != candidate.candidate_id
+                or (case.content, case.trigger) != (candidate.content, candidate.trigger)):
+            raise ValueError("origin case must match actually applied candidate")
+        if any(case.sample_id == e.source_trajectories[0] for e in self._experiences.values()
+               if e.source_trajectories):
+            raise ValueError("at most one candidate per sample")
+        if case.source_id not in positive_experience_sources(case.rubric, case.judgment):
+            raise ValueError("origin requires net-positive candidate credit")
+        experience_id = "exp_" + uuid4().hex
+        experience = Experience(
+            experience_id, candidate.content, candidate.trigger, 1, 1,
+            [case.sample_id], [], [case],
+        )
+        experience = apply_beta_evidence(experience, EvidenceRecord(
+            case.sample_id, "application_credit", case.credit.positive_credit,
+            case.credit.negative_credit, candidate.candidate_id, text_version=1,
+        ))
+        self._experiences[experience_id] = experience
+        self._save()
+        return replace(candidate, experience_id=experience_id)
+
+    def collect_case(self, experience_id: str, case: ExperienceCase) -> bool:
+        """Collect positive, reversed and neutral R0 cases; ten includes the origin."""
+        self._ensure_writable()
+        current = self._active(experience_id)
+        if case.source_id != experience_id or (case.content, case.trigger, case.text_version) != (
+            current.content, current.trigger, current.text_version,
         ):
-            raise ValueError("fusion requires an unfused candidate")
-        if matching_experience_id is None:
-            if merged_content is not None or merged_trigger is not None:
-                raise ValueError("ADD must use candidate text")
-            experience_id = f"exp_{uuid4().hex}"
-            while experience_id in self._experiences:
-                experience_id = f"exp_{uuid4().hex}"
-            prior = Experience(
-                experience_id, candidate.content, candidate.trigger, 1.0, 1.0, [], []
-            )
-            content, trigger = candidate.content, candidate.trigger
-            previous_content = previous_trigger = None
-            decision = "ADD"
-        else:
-            prior = self._experiences[matching_experience_id]
-            experience_id = prior.experience_id
-            content, trigger = merged_content, merged_trigger
-            previous_content, previous_trigger = prior.content, prior.trigger
-            decision = "MERGE"
-        history = FusionRecord(
-            sample_id,
-            candidate.candidate_id,
-            decision,
-            previous_content,
-            previous_trigger,
-            content,
-            trigger,
-            application_credit,
+            raise ValueError("case must refer to the actually used current text version")
+        if current.text_frozen or any(c.sample_id == case.sample_id for c in current.cases):
+            return False
+        self._experiences[experience_id] = replace(
+            current, cases=[*current.cases, case],
+            source_trajectories=[*current.source_trajectories, case.sample_id],
         )
-        # 校验、计算完毕后才更新内存/磁盘，避免无效融合留下部分修改。
-        updated = replace(
-            prior,
-            content=content,
-            trigger=trigger,
-            source_trajectories=[*prior.source_trajectories, sample_id],
-            fusion_history=[*prior.fusion_history, history],
+        self._save()
+        return True
+
+    def update_text(self, experience_id: str, content: str, trigger: str,
+                    *, error: str | None = None) -> TextUpdateRecord:
+        self._ensure_writable()
+        current = self._pending_update(experience_id)
+        changed = (current.content, current.trigger) != (content, trigger)
+        event = TextUpdateRecord(
+            current.cases[-1].sample_id, [c.sample_id for c in current.cases],
+            current.text_version, current.text_version + int(changed),
+            current.content, current.trigger, content, trigger, error,
         )
-        if application_credit.amount:
-            updated = apply_beta_evidence(
-                updated,
-                EvidenceRecord(
-                    sample_id,
-                    "application_credit",
-                    application_credit.positive_credit,
-                    application_credit.negative_credit,
-                    candidate.candidate_id,
-                ),
-            )
-        result = replace(
-            candidate,
-            fusion=decision,
-            experience_id=experience_id,
-            fusion_record=history,
-        )
+        updated = replace(current, content=content, trigger=trigger,
+                          text_version=event.text_version,
+                          update_history=[*current.update_history, event])
         self._experiences[experience_id] = updated
         self._save()
-        return result
+        return event
+
+    def _pending_update(self, experience_id: str) -> Experience:
+        current = self._active(experience_id)
+        if not current.update_due:
+            raise ValueError("no pending text update")
+        return current
+
+    def apply_update(self, experience_id: str, update: ExperienceUpdate) -> TextUpdateRecord:
+        """Keep ID and accumulated credit; only revise content/trigger."""
+        return self.update_text(experience_id, update.content, update.trigger)
 
 
 class TrajectoryLog:

@@ -1,4 +1,4 @@
-"""各角色独立的输入投影；隔离 preference、provenance 和 Fusion 数值。"""
+"""角色输入投影：Generator不见偏好/轨迹；Critic与归纳员核对实际证据。"""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from verge.models import (
 )
 
 
-PROMPT_VERSION = "critic-candidate-weighted-judge-reasons"
+PROMPT_VERSION = "local-credit-delayed-experience-signed-cases"
 
 # 专属身份和任务说明；Generator/Critic 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
@@ -35,10 +35,14 @@ _ROLE_GUIDANCE = {
 从可确认的问题中提炼如何设计标准：明确核验性质、澄清语义边界、组织互相一致的要求或分配相对权重。可以使正确要求更明确、更容易被Judge核验，但不能迁就错误事实、放宽task明确约束或为了偏好分差创造无依据要求。保持加权Boolean协议，不提出部分分、总分否决、自动跳过或修改Judge的指令。
 公开content表达面向一类问题的标准设计方法，trigger表达生成前能从task、实际输入、上下文或领域知识识别的条件。把本题主体转换为语义角色，把数量、时长等转换为从新task读取的参数，保留方法必需的专业边界。content与trigger范围一致；方法可以包含同一目的的协同动作，不必覆盖全部标准。
 公开经验不依赖已有评分标准、Judge或已观察回答特征，不保留本题专名、答案片段、固定数值、偏好身份或私有分差，也不转成给回答者的成稿/拒绝命令。必要领域条件与通用参数说明可以保留，抽象不等于删除所有专业含义。
-第二轮对照前候选、实际标准、来源与前后Judge依据，辨别诊断错误、方法不足、未落实或Judge执行问题；来源声明不证明已落实。根据新增证据决定是否调整设计方法，避免仅换说法重复前候选；仍无可信设计动作可返回空候选。""",
-    "fusion_judge": """你是经验融合员。比较候选与已有经验是否解决同一评分标准设计问题；指导等价或属于同一方法的必要细化、适用条件兼容时才MERGE。共享质量目标、主题或关键词不足以合并；不同设计目的分别保留，不确定时默认独立新增，返回空匹配。
-合并时提炼统一方法，保留必需任务类型、领域边界与同一目的的协同动作，content与trigger覆盖同一范围。来源任务特有的实体和数值转为语义角色或任务参数，不拼接来源任务的实例、答案对照或无关原则；trigger须在生成前可识别，不依赖已有评分标准、Judge或已观察回答特征。若合并须拼接不同方法或扩展无关场景，则返回空匹配。
-只改写匹配双方的完整content/trigger，不生成信用；历史证据不认证新增内容。无匹配时保留候选原文供独立新增。""",
+第二轮接续本样本的消息历史，对照自己上一轮的分析和候选、实际标准、来源与前后Judge依据，辨别诊断错误、方法不足、未落实或Judge执行问题；历史分析和来源声明均不证明已落实。根据新增证据重新分析并提出经验，避免仅换说法重复前候选；仍无可信设计动作可返回空候选。""",
+    "experience_updater": """你是经验归纳员。根据同一条经验的有限来源和后续正负使用案例，重新归纳供未来首次设计评分标准使用的方法及适用条件。
+输入包含当前经验、完整task/chosen/rejected，以及仅引用本经验的标准和两侧Judge判断/理由。每条标准的feedback由程序给出：positive表示优选满足而非优选不满足，negative表示反向区分，neutral表示同判、记较轻负信用。反馈是应用线索，不是事实证明，也不能从标准子集推断整体结果。applied_experience只在当时使用的文本与当前文本不同时出现。
+结合task和两回答核对案例，综合成功与失败的使用：正向案例帮助保留有依据的方法，负向案例帮助识别方法内容不足、适用条件过宽或不恰当的应用。同判仅表示本次没有区分作用，不自动证明方法错误；Judge解释可能有误，不据此新增无依据规则，也不因一次失败机械否定方法。
+只归纳一条清晰的设计方法，允许修正content或收窄trigger。保留任务必要边界及合理专业限定，把专名、固定数字和情节转为语义角色或从新task读取的参数，不追加每题特殊规则，不通过举例拼接案例，不让最后一例覆盖其他证据。证据不足以支持改写时保留当前方法，不拆分经验。
+content写如何设计标准，trigger只依据生成前task、实际输入、上下文或领域知识识别，不依赖已观察回答或Judge结果。不放宽task明确约束，不提出总分否决、部分分或修改Judge的指令。
+content不超过150个字符，trigger不超过60个字符，仅输出content/trigger，不输出analysis或案例分组。""",
+
 }
 
 _ROLE_INSTRUCTIONS = {
@@ -59,10 +63,11 @@ _ROLE_INSTRUCTIONS = {
     "critic": (
         '用 JSON 返回 {"analysis":私有诊断,"candidates":[{"content":设计指导,"trigger":适用条件}]}。analysis为非空中文，简洁组织事实核对、问题定位与方法提炼，候选0到1条，content/trigger为非空中文，无可信经验返回空数组。'
     ),
-    "fusion_judge": (
-        '融合结果用 JSON 返回 {"match_index":从0开始的整数下标,"content":完整融合方法,"trigger":适用条件}。'
-        'content 和 trigger 为非空中文文本；无匹配返回 {"match_index":null,"content":null,"trigger":null}。'
+    "experience_updater": (
+        '仅返回JSON {"content":"设计方法","trigger":"生成前可识别的适用条件"}。'
+        '两字段为非空中文，content≤150字符、trigger≤60字符；无需修改时保留当前方法。'
     ),
+
 }
 
 # 输入使用自然标题；技术量只在确有出现时集中说明一次。
@@ -100,7 +105,6 @@ _INPUT_TITLES = {
     "validation_feedback": "本次需修正的问题",
     "candidate": "待融合经验",
     "candidate_id": "候选编号",
-    "existing": "已有经验",
     "current_rubric": "当前评分标准",
     "current_judgment": "本次Judge结果",
     "previous_rubric": "上轮应用之前的标准",
@@ -163,13 +167,20 @@ def _inline_critic_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
     return visit(payload)
 
 
-def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
+def _natural_input(role: str, payload: Mapping[str, Any], *,
+                   critic_labels: bool = False, critic_boolean: bool = False,
+                   critic_reasons: str = "inline") -> str:
     """简单标签与紧凑列表；原文、局部编号及历史对象关系保持完整。"""
     if role == "critic":
         payload = _inline_critic_evidence(payload)
     lines: list[str] = []
     keys: set[str] = set()
     titles = dict(_INPUT_TITLES)
+    if critic_reasons not in ("inline", "separate", "absent"):
+        raise ValueError("unknown Critic reason presentation")
+    if role == "critic" and critic_labels:
+        titles.update(chosen="回答A", rejected="回答B",
+                      chosen_score="回答A得分", rejected_score="回答B得分")
     titles.update(
         {
             "round_number": "本次应用轮次",
@@ -198,6 +209,8 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
             if field == "training":
                 return "训练" if value else "测试"
             if field in ("chosen", "rejected", "satisfied"):
+                if role == "critic" and critic_boolean:
+                    return "true" if value else "false"
                 return "满足" if value else "未满足"
             return "是" if value else "否"
         if isinstance(value, float) and not math.isfinite(value):
@@ -237,6 +250,11 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
             if not value:
                 lines.append(indent + "暂无记录")
             compact: list[str] = []
+            sides = {}
+            if role == "critic" and "criterion_id" in value:
+                for side in ("chosen", "rejected"):
+                    if isinstance(rest.get(side), bool):
+                        sides[side] = (rest.pop(side), rest.pop(side + "_reason", None))
 
             def flush() -> None:
                 if compact:
@@ -271,14 +289,21 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
                 else:
                     compact.append(label + "：" + scalar(child, key))
             flush()
+            for side, (judgment, reason) in sides.items():
+                lines.append(indent + titles[side] + "：")
+                lines.append(indent + "  Judge判定：" + scalar(judgment, side))
+                if reason is not None and critic_reasons == "inline":
+                    lines.extend([indent + "  Judge解释（待核对）：", str(reason)])
+            if sides and critic_reasons == "separate":
+                lines.append(indent + "Judge解释（待核对，分别对应上述判定）：")
+                for side, (_, reason) in sides.items():
+                    if reason is not None:
+                        lines.extend([indent + "  " + titles[side] + "：", str(reason)])
         elif isinstance(value, (list, tuple)):
             if not value:
                 lines.append(indent + "暂无")
-            for index, child in enumerate(value):
-                if field == "existing":
-                    lead_in = f"- {index}："
-                else:
-                    lead_in = "- "
+            for child in value:
+                lead_in = "- "
                 if isinstance(child, (Mapping, list, tuple)):
                     render(child, field, indent, lead_in)
                 else:
@@ -303,10 +328,33 @@ def _natural_input(role: str, payload: Mapping[str, Any]) -> str:
     return "\n".join(lines).strip()
 
 
-def llm_messages(role: str, payload: Mapping[str, Any]) -> list[dict[str, str]]:
-    """各角色专属 system + 自然分节的样本输入；JSON 仅用于输出。"""
+def llm_messages(
+    role: str, payload: Mapping[str, Any], *,
+    history: Sequence[Mapping[str, str]] = (),
+) -> list[dict[str, str]]:
+    """Critic接续样本内历史；其他角色保持独立system/user。"""
     if role not in _ROLE_INSTRUCTIONS:
         raise ValueError(f"unknown LLM role: {role}")
+    if history:
+        if role != "critic":
+            raise ValueError("only critic accepts conversation history")
+        if "validation_feedback" in payload:
+            feedback = {"validation_feedback": payload["validation_feedback"]}
+            instruction = "请修正上条输出，仍只返回analysis及0到1条候选。"
+        else:
+            feedback = {key: value for key, value in payload.items() if key not in {
+                "task", "chosen", "rejected", "previous_rubric", "previous_judgment",
+            }}
+            instruction = (
+                "上次未形成有效应用结果，没有新的Judge判断。请结合技术错误重新分析并提出经验。"
+                if "invalid_error" in payload else
+                "上条候选的独立应用仍未成功。请对照实际结果重新分析并提出新的经验（0到1条）。"
+            )
+        return [
+            *[dict(message) for message in history],
+            {"role": "user", "content": instruction + "\n\n"
+             + "以下对象编号仅在本条反馈内解释。\n" + _natural_input(role, feedback)},
+        ]
     return [
         {
             "role": "system",
@@ -352,7 +400,10 @@ def generator_payload(
 ) -> dict[str, Any]:
     payload = {
         "task": task,
-        "selected_experiences": [item.to_dict() for item in selected],
+        "selected_experiences": [
+            {"experience_id": item.experience_id, "content": item.content, "trigger": item.trigger}
+            for item in selected
+        ],
     }
     if candidate is not None:
         payload["candidate_experience"] = {
@@ -437,12 +488,30 @@ def critic_payload(
 
 
 
-def fusion_payload(content: str, trigger: str,
-                   existing: Sequence[tuple[str, str]]) -> dict[str, Any]:
-    """只包含待比较的文本，不发送 ID、confidence、credit 或来源。"""
-    return {"candidate": {"content": content, "trigger": trigger},
-            "existing": [{"content": old_content, "trigger": old_trigger}
-                         for old_content, old_trigger in existing]}
+def experience_update_payload(experience: Experience) -> dict[str, Any]:
+    cases = []
+    for case in experience.cases:
+        verdicts = {j.criterion_id: j for j in case.judgment.criterion_judgments}
+        card = {
+            "sample_id": case.sample_id,
+            "task": case.task, "chosen": case.chosen, "rejected": case.rejected,
+            "criteria": [{
+                "question": c.question,
+                "feedback": ("positive" if verdicts[c.criterion_id].chosen > verdicts[c.criterion_id].rejected
+                             else "negative" if verdicts[c.criterion_id].chosen < verdicts[c.criterion_id].rejected
+                             else "neutral"),
+                "chosen": verdicts[c.criterion_id].chosen,
+                "rejected": verdicts[c.criterion_id].rejected,
+                "chosen_reason": verdicts[c.criterion_id].chosen_reason,
+                "rejected_reason": verdicts[c.criterion_id].rejected_reason,
+            } for c in case.rubric.criteria if case.source_id in c.source_experiences],
+        }
+        if (case.content, case.trigger) != (experience.content, experience.trigger):
+            card["applied_experience"] = {"content": case.content, "trigger": case.trigger}
+        cases.append(card)
+    return {"current_experience": {
+        "content": experience.content, "trigger": experience.trigger,
+    }, "cases": cases}
 
 
 _ID_FIELDS = {
@@ -450,11 +519,13 @@ _ID_FIELDS = {
     "rubric_id": "rubric",
     "experience_id": "experience",
     "candidate_id": "experience",
+    "sample_id": "sample",
 }
 _ID_LISTS = {
     "source_experiences": "experience",
     "selected_experience_ids": "experience",
     "adopted_criterion_ids": "criterion",
+    "sample_ids": "sample",
 }
 _ID_DICTS = {"normalized_weights": "criterion"}
 
@@ -469,7 +540,7 @@ class NumberedIDCodec:
     def __init__(self, role: str, payload: Mapping[str, Any]) -> None:
         self.role = role
         self.forward: dict[str, dict[str, str]] = {
-            name: {} for name in ("criterion", "rubric", "experience")
+            name: {} for name in ("criterion", "rubric", "experience", "sample")
         }
         self.reverse: dict[str, dict[str, str]] = {name: {} for name in self.forward}
 

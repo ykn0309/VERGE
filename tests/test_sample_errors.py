@@ -11,7 +11,6 @@ from verge.models import CandidateExperience
     [
         ("critic", "propose"),
         ("initial_generator", "apply"),
-        ("fusion_judge", "find_match"),
     ],
 )
 def test_model_refusal_preserves_prior_results_and_continues(tmp_path, role, method):
@@ -50,13 +49,3 @@ def test_non_role_valueerrors_never_become_sample_error(tmp_path, monkeypatch, s
         r.trajectories.append = fatal
     with pytest.raises(ValueError, match="internal failure"):
         r.run_sample(sample())
-
-
-def test_illegal_fusion_cannot_write_and_leaves_actual_success_audit(tmp_path):
-    r = runner(tmp_path)
-    from verge.models import FusionResult
-
-    r.modules.fusion_judge.find_match = lambda *a: FusionResult(10, "合并", "条件")
-    rec = r.run_sample(sample())
-    assert rec.state == "sample_error" and rec.sample_error["stage"] == "fusion_judge"
-    assert rec.application_attempts[0].judgment.success and not r.memory.all()

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 from fractions import Fraction
-from math import isclose, isfinite
+from math import fsum, isclose, isfinite
 
 from verge.models import (
     CriterionJudgment,
@@ -91,23 +91,39 @@ def _contributions(rubric: Rubric, judgment: RubricJudgment) -> dict[str, float]
             for key, weight in weights.items()}
 
 
-def calculate_experience_credits(
-    rubric: Rubric, judgment: RubricJudgment
-) -> dict[str, Credit]:
-    """P/N separately; multiple declared sources split each criterion's weight."""
-    contributions = _contributions(rubric, judgment)
-    totals: dict[str, list[float]] = {}
+# Same verdict has weaker negative credit than reversed preference.
+NEUTRAL_NEGATIVE_FACTOR = Fraction(1, 4)
+
+
+def _credit_ratios(rubric: Rubric, judgment: RubricJudgment) -> dict[str, list[Fraction]]:
+    _contributions(rubric, judgment)
+    ratios = _weight_ratios(rubric)
+    answers = {item.criterion_id: item for item in judgment.criterion_judgments}
+    totals: dict[str, list[Fraction]] = {}
     for criterion in rubric.criteria:
         if not criterion.source_experiences:
             continue
-        share = contributions[criterion.criterion_id] / len(
-            criterion.source_experiences
-        )
+        verdict = answers[criterion.criterion_id]
+        direction = verdict.chosen - verdict.rejected
+        share = ratios[criterion.criterion_id] / len(criterion.source_experiences)
         for source in criterion.source_experiences:
-            pair = totals.setdefault(source, [0.0, 0.0])
-            pair[0] += max(share, 0)
-            pair[1] += max(-share, 0)
-    return {key: Credit(*pair) for key, pair in totals.items() if sum(pair) > 0}
+            pair = totals.setdefault(source, [Fraction(0), Fraction(0)])
+            if direction > 0:
+                pair[0] += share
+            else:
+                pair[1] += share * (NEUTRAL_NEGATIVE_FACTOR if direction == 0 else 1)
+    return totals
+
+
+def calculate_experience_credits(rubric: Rubric, judgment: RubricJudgment) -> dict[str, Credit]:
+    """Separate weighted P/N; shared sources split credit, same verdict gets quarter N."""
+    return {key: Credit(*map(float, pair)) for key, pair in _credit_ratios(rubric, judgment).items()}
+
+
+def positive_experience_sources(rubric: Rubric, judgment: RubricJudgment) -> set[str]:
+    """Use exact ratios including neutral penalties for admission, never float net noise."""
+    return {source for source, (positive, negative) in _credit_ratios(rubric, judgment).items()
+            if positive > negative}
 
 
 def apply_beta_evidence(experience: Experience, evidence: EvidenceRecord) -> Experience:

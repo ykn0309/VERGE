@@ -23,7 +23,8 @@ JUDGE_RESPONSE_SIDE: ContextVar[str | None] = ContextVar("judge_response_side", 
 class LLMBackend(Protocol):
     """Backend返回分配权重、Boolean与依据等结构化字段；归一化及credit由Calculator计算。"""
 
-    def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]: ...
+    def generate(self, role: str, payload: Mapping[str, Any], *,
+                 conversation: list[dict[str, str]] | None = None) -> Mapping[str, Any]: ...
 
 
 FakeScenario = Literal["initial_success", "attempt_1_success", "attempt_2_success", "final_failure"]
@@ -46,7 +47,7 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "initial_generator": ("criteria", list),
     "judge": ("criterion_judgments", list),
     "critic": ("candidates", list),
-    "fusion_judge": ("match_index", (int, type(None))),
+    "experience_updater": ("content", str),
 }
 
 
@@ -55,12 +56,12 @@ def _reject_constant(_value: str) -> None:
 
 
 _NUMERIC_ID_FIELDS = frozenset({"rubric_id", "criterion_id", "candidate_id"})
-_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences"})
+_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences", "sample_ids"})
 
 
 def _normalize_numeric_ids(role: str, value: Any) -> None:
     """只在模型 ID 字段把正整数 1 规范化为 "1"；原始响应仍留在 trace 中。"""
-    if role not in {"selector", "initial_generator", "judge", "critic"}:
+    if role not in {"selector", "initial_generator", "judge", "critic", "experience_updater"}:
         return
 
     def numeric_id(item: Any) -> Any:
@@ -84,23 +85,9 @@ def _normalize_numeric_ids(role: str, value: Any) -> None:
 
 def _valid_shape(role: str, value: Any) -> bool:
     """缺字段/字段类型不对才重试；ID引用、空候选等语义结果不重试。"""
-    if role == "fusion_judge":
-        if not isinstance(value, dict) or set(value) != {
-            "match_index",
-            "content",
-            "trigger",
-        }:
-            return False
-        if value["match_index"] is None:
-            return value["content"] is None and value["trigger"] is None
-        return (
-            type(value["match_index"]) is int
-            and value["match_index"] >= 0
-            and all(
-                isinstance(value[k], str) and value[k].strip()
-                for k in ("content", "trigger")
-            )
-        )
+    if role == "experience_updater":
+        return (isinstance(value, dict) and set(value) == {"content", "trigger"}
+                and all(isinstance(value[k], str) and value[k].strip() for k in ("content", "trigger")))
     if role == "critic":
         return (
             isinstance(value, dict)
@@ -162,8 +149,6 @@ def _valid_shape(role: str, value: Any) -> bool:
             and bool(item["reason"].strip())
             for item in data
         )
-    if role == "fusion_judge":
-        return data is None or type(data) is int
     return True
 
 
@@ -250,10 +235,14 @@ class OpenAICompatibleBackend:
                              "status": status, "input": dict(payload), "messages": messages,
                              "raw_output": raw_output, "output": output, "error": error})
 
-    def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]:
+    def generate(self, role: str, payload: Mapping[str, Any], *,
+                 conversation: list[dict[str, str]] | None = None) -> Mapping[str, Any]:
         if role not in _OUTPUT_FIELDS:
             raise ValueError(f"unknown LLM role: {role}")
-        messages = llm_messages(role, payload)
+        if conversation is not None and role != "critic":
+            raise ValueError("only critic accepts conversation history")
+        messages = (llm_messages(role, payload, history=conversation)
+                    if conversation is not None else llm_messages(role, payload))
         for attempt in range(1, self.max_retries + 2):
             try:
                 request_body: dict[str, Any] = {
@@ -311,11 +300,14 @@ class OpenAICompatibleBackend:
                 self._metadata(role, attempt, status=status, response=response)
                 raise LLMRequestError(f"{role}: HTTP {status}")
             raw_output: str | None = None
+            assistant_output: str | None = None
             try:
                 body = json.loads(response.text, parse_constant=_reject_constant)
                 choices = body["choices"]
                 choice = choices[0]
                 raw_output = choice["message"].get("content")
+                if isinstance(raw_output, str):
+                    assistant_output = raw_output
                 if not isinstance(raw_output, str):
                     raw_output = response.text
                 if choice.get("finish_reason") == "content_filter" or choice[
@@ -356,6 +348,10 @@ class OpenAICompatibleBackend:
                     error="invalid structured output",
                 )
                 self._metadata(role, attempt, status=status, response=response)
+                if conversation is not None:
+                    if assistant_output is not None:
+                        messages = [*messages, {"role": "assistant", "content": assistant_output}]
+                    conversation[:] = [dict(message) for message in messages]
                 if attempt <= self.max_retries:
                     messages = [
                         *messages,
@@ -378,6 +374,11 @@ class OpenAICompatibleBackend:
                 output=result,
             )
             self._metadata(role, attempt, status=status, response=response, body=body)
+            if conversation is not None:
+                conversation[:] = [
+                    *[dict(message) for message in messages],
+                    {"role": "assistant", "content": content},
+                ]
             return result
         raise AssertionError("unreachable retry state")
 
@@ -507,7 +508,10 @@ class FakeLLMBackend:
         self.trace_hook = trace_hook
         self.requests = []
 
-    def generate(self, role: str, payload: Mapping[str, Any]) -> Mapping[str, Any]:
+    def generate(self, role: str, payload: Mapping[str, Any], *,
+                 conversation: list[dict[str, str]] | None = None) -> Mapping[str, Any]:
+        if conversation is not None and role != "critic":
+            raise ValueError("only critic accepts conversation history")
         request = deepcopy(dict(payload))
         self.requests.append((role, request))
         if role == "selector":
@@ -586,16 +590,15 @@ class FakeLLMBackend:
                     for _ in range(self.candidate_count)
                 ],
             }
-        elif role == "fusion_judge":
-            c = request["candidate"]
-            match = next((i for i, x in enumerate(request["existing"]) if x == c), None)
-            result = {
-                "match_index": match,
-                "content": c["content"] if match is not None else None,
-                "trigger": c["trigger"] if match is not None else None,
-            }
+        elif role == "experience_updater":
+            result = dict(request["current_experience"])
         else:
             raise ValueError(f"unknown LLM role: {role}")
+        if conversation is not None:
+            conversation[:] = [
+                *llm_messages(role, payload, history=conversation),
+                {"role": "assistant", "content": json.dumps(result, ensure_ascii=False)},
+            ]
         if self.trace_hook:
             self.trace_hook(
                 {

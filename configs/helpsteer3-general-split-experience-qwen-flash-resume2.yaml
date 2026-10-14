@@ -1,0 +1,49 @@
+# Plan 49 recovery: keep the failed run and resume its certified 55-prefix to 100.
+# CLI: python -m verge.cli run --config configs/helpsteer3-general-split-experience-qwen-flash-resume.yaml --resume-from runs/helpsteer3-general-split-experience-qwen-flash-100 --stop-after-train 100
+# Keep the parent stop_after_train=30 in config for strict resume equality; CLI sets the effective 100-prefix budget.
+# Prepare first: python -m scripts.prepare_helpsteer3
+# Source revision/filter/hashes: runs/helpsteer3-general-consensus-data/provenance.json
+run:
+  seed: 42
+  output_dir: runs/helpsteer3-general-split-experience-qwen-flash-100-resume2
+  test_workers: 1
+  stop_after_train: 30
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: runs/helpsteer3-general-consensus-data/train.jsonl
+models:
+  default:
+    backend: openai_compatible
+    model: qwen3.5-flash
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY_2
+    enable_thinking: false
+    timeout_seconds: 30
+    max_retries: 2
+  roles: {}
+modules:
+  retrieval:
+    implementation: vector
+    config:
+      top_l: 20
+      embedding_model: text-embedding-v4
+      dimensions: 1024
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+      exploration_slots: 0
+  application:
+    implementation: local_credit_bounded_experience
+    config:
+      max_rounds: 2
+      invalid_output_retries: 2
+  reliability:
+    implementation: beta
+    config: {}
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

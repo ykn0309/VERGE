@@ -9,7 +9,6 @@ from typing import Any, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 
 ModelT = TypeVar("ModelT", bound="Model")
-FusionDecision = Literal["MERGE", "ADD"]
 
 
 def _decode(value: Any, annotation: Any) -> Any:
@@ -152,9 +151,12 @@ class EvidenceRecord(Model):
     negative_credit: float
     candidate_id: str | None = None
     evidence_weight: float = 1.0
+    text_version: int = 1
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
+        if type(self.text_version) is not int or self.text_version < 1:
+            raise ValueError("invalid evidence text_version")
         if type(self.evidence_weight) not in (int, float) or self.evidence_weight != 1:
             raise ValueError("evidence_weight is fixed at 1")
         if self.evidence_type not in ("downstream_credit", "application_credit"):
@@ -168,45 +170,69 @@ class EvidenceRecord(Model):
 
 
 @dataclass
-class FusionResult(Model):
-    match_index: int | None
-    content: str | None
-    trigger: str | None
+class ExperienceCase(Model):
+    sample_id: str
+    task: str
+    chosen: str
+    rejected: str
+    source_id: str
+    text_version: int
+    content: str
+    trigger: str
+    rubric: Rubric
+    judgment: RubricJudgment
+    credit: Credit
+    analysis: str | None = None
 
     def __post_init__(self) -> None:
-        if self.match_index is None:
-            if self.content is not None or self.trigger is not None:
-                raise ValueError("ADD must not contain merged text")
-        else:
-            if type(self.match_index) is not int or self.match_index < 0:
-                raise ValueError("fusion match_index must be a nonnegative integer or null")
-            _id(self.content, "merged content")
-            _id(self.trigger, "merged trigger")
+        for name in ("sample_id", "task", "chosen", "rejected", "source_id", "content", "trigger"):
+            _id(getattr(self, name), name)
+        if type(self.text_version) is not int or self.text_version < 1:
+            raise ValueError("invalid case text_version")
+        from verge.calculator import calculate_experience_credits
+        expected = calculate_experience_credits(self.rubric, self.judgment).get(self.source_id)
+        if expected != self.credit or self.credit.amount == 0:
+            raise ValueError("case requires actual nonzero source credit")
 
 
 @dataclass
-class FusionRecord(Model):
-    sample_id: str
-    candidate_id: str
-    fusion: FusionDecision
-    previous_content: str | None
-    previous_trigger: str | None
+class ExperienceUpdate(Model):
     content: str
     trigger: str
-    credit: Credit
 
     def __post_init__(self) -> None:
-        for name in ("sample_id", "candidate_id", "content", "trigger"):
+        _id(self.content, "update content")
+        _id(self.trigger, "update trigger")
+
+
+@dataclass
+class TextUpdateRecord(Model):
+    sample_id: str
+    case_ids: list[str]
+    previous_version: int
+    text_version: int
+    previous_content: str
+    previous_trigger: str
+    content: str
+    trigger: str
+    error: str | None = None
+
+    def __post_init__(self) -> None:
+        for name in ("sample_id", "previous_content", "previous_trigger", "content", "trigger"):
             _id(getattr(self, name), name)
-        if self.fusion == "MERGE":
-            _id(self.previous_content, "previous_content")
-            _id(self.previous_trigger, "previous_trigger")
-        elif (
-            self.fusion != "ADD"
-            or self.previous_content is not None
-            or self.previous_trigger is not None
-        ):
-            raise ValueError("invalid fusion text history")
+        for case_id in self.case_ids:
+            _id(case_id, "case_id")
+        if self.error is not None:
+            _id(self.error, "update error")
+        if type(self.previous_version) is not int or type(self.text_version) is not int:
+            raise ValueError("text versions must be integers")
+        if not 2 <= len(self.case_ids) <= 10 or len(set(self.case_ids)) != len(self.case_ids):
+            raise ValueError("text update requires 2..10 distinct cases")
+        changed = (self.content, self.trigger) != (self.previous_content, self.previous_trigger)
+        if self.text_version != self.previous_version + int(changed) or self.previous_version < 1:
+            raise ValueError("invalid text version transition")
+        if self.error is not None and changed:
+            raise ValueError("failed update must preserve original text")
 
 
 @dataclass
@@ -218,13 +244,37 @@ class Experience(Model):
     beta: float
     source_trajectories: list[str]
     evidence_history: list[EvidenceRecord]
-    fusion_history: list[FusionRecord] = field(default_factory=list)
+    cases: list[ExperienceCase] = field(default_factory=list)
+    text_version: int = 1
+    update_history: list[TextUpdateRecord] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         for name in ("experience_id", "content", "trigger"):
             _id(getattr(self, name), name)
         _number(self.alpha, "alpha", minimum=1)
         _number(self.beta, "beta", minimum=1)
+        if type(self.text_version) is not int or self.text_version < 1:
+            raise ValueError("invalid experience text_version")
+        if len(self.cases) > 10 or len({c.sample_id for c in self.cases}) != len(self.cases):
+            raise ValueError("experience cases must be distinct and at most 10")
+        if any(c.text_version > self.text_version for c in self.cases) or any(
+            e.text_version > self.text_version for e in self.evidence_history
+        ):
+            raise ValueError("evidence cannot refer to a future text version")
+
+    @property
+    def pending_feedback_count(self) -> int:
+        successful = [u for u in self.update_history if u.error is None]
+        included = set(successful[-1].case_ids) if successful else set()
+        return len({c.sample_id for c in self.cases
+                    if c.source_id == self.experience_id and c.sample_id not in included})
+
+    @property
+    def update_due(self) -> bool:
+        # One bounded attempt per newly collected task. Failed attempts do not reset the window.
+        return (len(self.cases) >= 2 and self.cases[-1].source_id == self.experience_id
+                and not any(u.sample_id == self.cases[-1].sample_id for u in self.update_history)
+                and (self.pending_feedback_count >= 3 or len(self.cases) == 10))
 
     @property
     def confidence(self) -> float:
@@ -233,6 +283,10 @@ class Experience(Model):
     @property
     def evidence_amount(self) -> float:
         return self.alpha + self.beta - 2
+
+    @property
+    def text_frozen(self) -> bool:
+        return len(self.cases) >= 10
 
     def to_dict(self) -> dict[str, Any]:
         return {**super().to_dict(), "confidence": self.confidence}
@@ -340,26 +394,13 @@ class CandidateExperience(Model):
     candidate_id: str
     content: str
     trigger: str
-    fusion: FusionDecision | None = None
     experience_id: str | None = None
-    fusion_record: FusionRecord | None = None
 
     def __post_init__(self) -> None:
         for name in ("candidate_id", "content", "trigger"):
             _id(getattr(self, name), name)
-        if self.fusion is None:
-            if self.experience_id is not None or self.fusion_record is not None:
-                raise ValueError("fusion fields require a decision")
-        else:
-            if self.fusion not in ("ADD", "MERGE"):
-                raise ValueError("invalid fusion decision")
+        if self.experience_id is not None:
             _id(self.experience_id, "experience_id")
-            if (
-                self.fusion_record is None
-                or self.fusion_record.fusion != self.fusion
-                or self.fusion_record.candidate_id != self.candidate_id
-            ):
-                raise ValueError("fusion record must match candidate")
 
 
 @dataclass
@@ -392,18 +433,22 @@ class ApplicationAttempt(Model):
     adopted: bool | None = None
     adopted_criterion_ids: list[str] = field(default_factory=list)
     credit: Credit | None = None
+    eligible: bool = False
     error: str | None = None
 
     def __post_init__(self) -> None:
         if self.round_number not in (1, 2):
             raise ValueError("application budget exceeded")
         _id(self.candidate_id, "candidate_id")
+        if type(self.eligible) is not bool:
+            raise ValueError("eligible must be Boolean")
         if self.rubric is None:
             if (
                 self.judgment is not None
                 or self.adopted is not None
                 or self.adopted_criterion_ids
                 or self.credit is not None
+                or self.eligible
             ):
                 raise ValueError(
                     "invalid output must not invent adoption, judgment or credit"
@@ -417,7 +462,7 @@ class ApplicationAttempt(Model):
             if self.adopted is not bool(used) or self.adopted_criterion_ids != used:
                 raise ValueError("adoption must match actual criterion sources")
             if self.judgment is None:
-                if self.credit is not None:
+                if self.credit is not None or self.eligible:
                     raise ValueError("credit requires an effective judgment")
             elif (
                 self.judgment.rubric_id != self.rubric.rubric_id or self.credit is None
@@ -425,6 +470,13 @@ class ApplicationAttempt(Model):
                 raise ValueError(
                     "application judgment and credit must match its rubric"
                 )
+            else:
+                from verge.calculator import positive_experience_sources, calculate_experience_credits
+                expected = calculate_experience_credits(self.rubric, self.judgment).get(self.candidate_id, Credit())
+                if self.credit != expected or self.eligible != (
+                    self.candidate_id in positive_experience_sources(self.rubric, self.judgment)
+                ):
+                    raise ValueError("eligibility and credit must match actual source judgments")
 
 
 @dataclass
@@ -440,11 +492,14 @@ class TrajectoryRecord(Model):
     application_attempts: list[ApplicationAttempt] = field(default_factory=list)
     sample_error: dict[str, str] | None = None
     judge_error: str | None = None
-    schema_version: int = 4
+    admitted_candidate_id: str | None = None
+    admitted_experience_id: str | None = None
+    experience_updates: dict[str, TextUpdateRecord] = field(default_factory=dict)
+    schema_version: int = 7
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
-        if self.schema_version != 4:
+        if self.schema_version != 7:
             raise ValueError("unsupported trajectory schema")
         if self.state not in {
             "in_progress",
@@ -488,25 +543,25 @@ class TrajectoryRecord(Model):
                 raise ValueError(
                     "application must reference this round's candidate"
                 )
-        for p in self.proposal_attempts:
-            if p.candidate and p.candidate.fusion:
-                app = next(
-                    (
-                        a
-                        for a in self.application_attempts
-                        if a.candidate_id == p.candidate.candidate_id
-                    ),
-                    None,
-                )
-                if (
-                    app is None
-                    or app.adopted is not True
-                    or app.judgment is None
-                    or not app.judgment.success
-                ):
-                    raise ValueError(
-                        "fusion requires adoption and effective application success"
-                    )
+        admitted = [p.candidate for p in self.proposal_attempts if p.candidate and p.candidate.experience_id]
+        if len(admitted) > 1:
+            raise ValueError("at most one candidate admitted per sample")
+        if admitted:
+            candidate = admitted[0]
+            app = next(a for a in self.application_attempts if a.candidate_id == candidate.candidate_id)
+            from verge.calculator import positive_experience_sources, calculate_experience_credits
+            if (app.adopted is not True or app.judgment is None or app.rubric is None
+                    or candidate.candidate_id not in positive_experience_sources(app.rubric, app.judgment)
+                    or app.credit != calculate_experience_credits(app.rubric, app.judgment).get(candidate.candidate_id)
+                    or not app.eligible):
+                raise ValueError("admission requires adoption and actual net-positive credit")
+            if (self.admitted_candidate_id, self.admitted_experience_id) != (candidate.candidate_id, candidate.experience_id):
+                raise ValueError("admission record does not match selected candidate")
+            eligible = [a for a in self.application_attempts if a.eligible]
+            if candidate.candidate_id != eligible[-1].candidate_id:
+                raise ValueError("admission must select the latest eligible candidate")
+        elif self.admitted_candidate_id is not None or self.admitted_experience_id is not None:
+            raise ValueError("admission record requires an admitted candidate")
         if self.sample_error is not None and (
             set(self.sample_error) != {"stage", "type", "message"}
             or any(
@@ -518,6 +573,6 @@ class TrajectoryRecord(Model):
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> TrajectoryRecord:
-        if not isinstance(data, dict) or data.get("schema_version") != 4:
-            raise ValueError("TrajectoryRecord requires explicit schema_version 4")
+        if not isinstance(data, dict) or data.get("schema_version") != 7:
+            raise ValueError("TrajectoryRecord requires explicit schema_version 7")
         return super().from_dict(data)

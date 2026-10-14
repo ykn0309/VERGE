@@ -131,9 +131,9 @@ def test_confidence_derived_and_verified():
         Experience.from_dict(data)
 
 
-@pytest.mark.parametrize("version", [2, 3])
+@pytest.mark.parametrize("version", [2, 3, 4, 5])
 def test_old_trajectory_version_cannot_be_read_as_weighted_application(version):
     old = TrajectoryRecord("s").to_dict()
     old["schema_version"] = version
-    with pytest.raises(ValueError, match="schema_version 4"):
+    with pytest.raises(ValueError, match="schema_version 7"):
         TrajectoryRecord.from_dict(old)

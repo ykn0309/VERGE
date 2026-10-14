@@ -1,4 +1,5 @@
 """Render actual frontend functions in Node with a minimal DOM boundary."""
+from experience_helpers import keep_update
 
 import json, subprocess
 from pathlib import Path
@@ -53,3 +54,31 @@ console.log(JSON.stringify(output));"""
     assert "<img src=x onerror=alert(1)>" not in html[1]
     assert "rejected evidence" in html[1]
     assert '<details class="criterion-audit"><summary>Judge 判断依据' in html[1]
+
+
+def test_actual_text_update_events_render_versions_and_escape_text(tmp_path):
+    from test_bounded_experience import existing_runner
+    from verge.web import _evolution
+    r, eid = existing_runner(tmp_path / 'update')
+    r.modules.experience_updater.update = lambda e: keep_update(e, '共同方法 <img src=x onerror=alert(1)>', '必要条件')
+    r.run_sample(__import__('test_pipeline').sample('warm1'))
+    r.run_sample(__import__('test_pipeline').sample('warm2'))
+    record = r.run_sample(__import__('test_pipeline').sample('next'))
+    experience = r.memory.get(eid).to_dict()
+    experience.update(case_count=len(experience['cases']), text_frozen=False)
+    experience['evolution'] = _evolution(experience, {}, {'seed': 0, 'next': 1}, [])
+    source = tmp_path / 'render.js'
+    source.write_text(Path('verge/web_assets/app.js').read_text().split('const experiencePreview =')[0])
+    payload = tmp_path / 'payload.json'
+    payload.write_text(json.dumps({'experiences': [experience], 'samples': [record.to_dict()]}))
+    program = """const vm=require('node:vm'),fs=require('node:fs');
+const ctx={document:{getElementById:()=>({})},URLSearchParams,location:{search:''},setTimeout,clearTimeout};
+vm.createContext(ctx);vm.runInContext(fs.readFileSync(process.argv[1],'utf8'),ctx);
+vm.runInContext('data='+fs.readFileSync(process.argv[2],'utf8'),ctx);
+console.log(vm.runInContext('experienceDetail(data.experiences[0])',ctx));"""
+    rendered = subprocess.run(['node','-e',program,str(source),str(payload)], capture_output=True, text=True)
+    assert rendered.returncode == 0, rendered.stderr
+    assert '案例 4/10' in rendered.stdout and '文本 v1 → v2' in rendered.stdout
+    assert '文本重新归纳' in rendered.stdout and '查看原文本' in rendered.stdout
+    assert '&lt;img src=x onerror=alert(1)&gt;' in rendered.stdout
+    assert '<img src=x onerror=alert(1)>' not in rendered.stdout

@@ -177,8 +177,8 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValueError(
             "modules: expected retrieval, selection, application, reliability"
         )
-    if modules["application"]["implementation"] != "critic_candidate_weighted_application":
-        raise ValueError("modules.application: expected critic_candidate_weighted_application")
+    if modules["application"]["implementation"] != "local_credit_bounded_experience":
+        raise ValueError("modules.application: expected local_credit_bounded_experience")
     _component(_required(root, "store", "config"), "store")
     store_config = root["store"]["config"]
     if "root_dir" in store_config:

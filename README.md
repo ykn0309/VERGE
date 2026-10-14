@@ -4,30 +4,25 @@ Verified Experience-guided Rubric Generation.
 
 ## 当前状态
 
-当前主链已按用户要求删除Admission：**Critic候选 → 独立Generator应用 → Judge → 合格Fusion**。每轮一次提案、最多两轮。当前已按[计划44](docs/plans/44-相对权重与Judge依据反馈.md)升级相对权重与Judge依据反馈，238项离线测试通过；该版本尚未真实实验。所有真实实验LLM角色保持Qwen3.5-Flash且关闭思考；[新30条实验](docs/plans/43-无Admission固定Flash30样本实验.md)已完成：17初始成功、4救回、21最终成功，4条入池，零请求错误；存在事后条件及实际落实问题，未证明迁移或因果效果。历史原始生成产物已按用户指令删除，报告保留。
+[计划61](docs/plans/61-延迟归纳与正负案例经验更新.md)已实现：保留Beta正负累计，反向完整负信用、同判25%轻负信用；候选自身P>N，正常结束最多新增一条。已有经验正负案例每3个不同下游任务归纳一次，第10个案例最后归纳，之后冻结文本/案例、继续信用。取消Fusion/MERGE及拆分，Critic样本内多轮和Generator固定E/当前C保持。
 
+最近完整链路实验是计划49的HelpSteer3前100条（55初始/17救回/72最终），属于旧拆分协议。本次301项程序测试通过，20个历史目标任务的归纳模块新旧独立复测完成：40输出/42请求，新20有效、旧19有效。结构简化，但负向案例修正仍不稳定；见[简报](docs/实验分析/历史运行归档/delayed-experience-signed-replay-20/实验简报.md)。没有跑新完整链路，历史原产物保留，不跨协议续跑。
 - [方法设计](docs/设计方案.md)
 - [工程设计](docs/工程设计.md)
-- [实施计划42](docs/plans/42-删除Admission直接应用候选经验.md)
+- [实施计划48](docs/plans/48-局部正向准入与有限样本经验更新.md)
 - [状态索引](PLAN.md)
 
 ## 当前机制
 
 ```text
-task → 检索 / Selector得到固定E
-→ Generator首次生成R0 → Judge
-→ 按R0实际来源的P/N更新已有经验
-R0失败：
-  Critic提出0–1条C → 全新Generator(task+E+C)，自主采用 → Judge
-    成功且采用C：Fusion → Memory
-    成功未采用C：任务成功，C未验证，不入池
-    失败：有剩余轮次则依据实际失败结果重新提出并独立应用
-最多2次业务提案、2轮应用；没有准入或拒绝反馈重生成。
+task → 检索/Selector固定E → Generator R0 → Judge → 训练R0来源P/N写入
+R0失败：最多两轮Critic → 独立Generator(task+固定E+当前C) → Judge
+  候选采用且自身P>N：暂存，与整体成功独立
+正常结束：优先合格C2，否则合格C1，每题最多新增一条
+样本收尾：R0有信用的已有经验收录正负案例 → 每3个不同下游任务归纳 → 第10个案例最后归纳
 ```
 
-实际Generator消息使用统一“本次可用经验”列表，固定E在前、当前C在后；每轮只替换C，不积累历史。C标注“当前候选、尚未验证”，没有历史可信度，任务约束优先。来源是采用自报，不证明真实实施或因果贡献。
-
-R0已有经验与应用候选统一按来源标准的P/N分别累计：alpha加P、beta加N，多来源均分，无折扣、不先抵消、不用margin增益；双通道均0才不增加数值证据。整体成功可以有负信用，零信用也可合法入池。Fusion默认ADD原文，仅兼容的同一设计问题才MERGE并保留文本版本；继承证据不认证扩展。
+Critic接续本样本消息/真实回复，Generator仅替换C、不积累旧候选。R0已有经验及被选候选分别累计P/N，alpha加P、beta加N，无折扣、不先抵消；P>N只控制候选入池，同判给25%轻负信用。案例包含初始来源，原题不计3任务窗口；每3个不同下游任务归纳，第10条强制最后一次，之后冻结文本/案例；有变化才增加文本版本，旧信用不认证新文本。
 
 ## 已确认的工程边界
 
@@ -41,6 +36,17 @@ R0已有经验与应用候选统一按来源标准的P/N分别累计：alpha加P
 Generator按总预算1分配有限正数`weight`，程序归一化；Judge逐项输出`satisfied`和非空`reason`，两侧依据保存到轨迹、传给Critic并在Web默认折叠展示。理由不进入Generator，且不等于事实认证。
 
 ## 环境与目录
+
+当前数据切换：[计划46](docs/plans/46-HelpSteer3数据切换与Flash30验证.md)使用HelpSteer3-Preference的General英文单轮强一致偏好任务。RewardBench配置和原产物保留，现有提示词、模型和评分流程保持。
+
+```bash
+# 仅准备固定版本官方训练集；不会读取validation或覆盖已有输出。
+python -m scripts.prepare_helpsteer3
+# 独立空池实验，最多30条；官方validation不参与本次调试。
+python -m verge.cli run --config configs/helpsteer3-general-bounded-experience-qwen-flash-30.yaml
+```
+
+筛选规则与源文件/JSONL哈希保存在`runs/helpsteer3-general-consensus-data/provenance.json`。人工分数、reasoning及附带feedback仅保存在样本metadata用于复核，不进入LLM角色输入。准备脚本与配置独立，不扩充业务协议或为RewardBench增加兼容处理。
 
 需要Python 3.10或更高版本；本机验收使用`/opt/anaconda3/bin/python`（3.12）。
 
@@ -70,7 +76,7 @@ tests/               离线测试
 docs/                方法、工程与计划
 ```
 
-新版配置使用 `modules.application.implementation: critic_candidate_weighted_application`，`max_rounds: 2`；每轮一次Critic业务提案固定在流程中，`invalid_output_retries`只控制有限结构纠错，不增加业务机会。默认Fake配置及OpenAI/Qwen示例已迁移；历史实验配置保留原样，新CLI拒绝它们。
+新版配置使用 `modules.application.implementation: local_credit_bounded_experience`，`max_rounds: 2`；每轮一次Critic业务提案固定在流程中，`invalid_output_retries`只控制有限结构纠错，不增加业务机会。默认Fake配置及OpenAI/Qwen示例已迁移；历史实验配置保留原样，新CLI拒绝它们。
 
 ```bash
 # 离线Fake示例；输出目录必须不存在。
@@ -79,11 +85,11 @@ python3 -m pytest -q
 python3 -m verge.web --runs-dir runs --port 8765
 ```
 
-manifest、trajectory使用版本4，Memory保持版本2；提示词标识为 `critic-candidate-weighted-judge-reasons`。Web只列当前协议，展示候选、应用/采用、Judge、Fusion及P/N；不解析旧版本，不跨方法resume，历史原始目录已按用户指令清理，研究报告保留。
+manifest、trajectory使用版本7，Memory使用版本5；提示词标识为 `local-credit-delayed-experience-signed-cases`。Web只列当前协议，展示候选、应用/采用、Judge、局部资格/最终入池、案例数/文本版本及P/N；不解析旧版本，不跨方法resume，历史产物保留。新版Web仅列新协议运行，当前没有新完整运行可展示；本轮未重启Web。
 
 历史计划43配置 [rewardbench-chat-hard-qwen-direct-experience-flash-30.yaml](configs/rewardbench-chat-hard-qwen-direct-experience-flash-30.yaml) 已按用户授权完成，使用独立输出目录；结果见[计划43](docs/plans/43-无Admission固定Flash30样本实验.md)，不自动继续剩余样本。
 
-离线验证覆盖两轮预算、实际HTTP消息、固定E/替换C、严格来源、未采用成功、负/零信用Fusion、错误边界、冻结/续跑以及前端渲染。Mock和Fake仅验证工程契约。历史100条准入流程结果见[计划32](docs/plans/32-新机制100样本真实验证.md)，最近Flash30条结果见[计划41](docs/plans/41-固定Flash非思考30样本实验.md)。
+离线验证覆盖两轮预算、实际HTTP消息、固定E/替换C、严格来源、未采用成功、候选零/净负不入池、延迟C2/C1选择、10/11条案例和文本冻结、错误边界、冻结/续跑以及前端渲染。Mock和Fake仅验证工程契约。历史100条准入流程结果见[计划32](docs/plans/32-新机制100样本真实验证.md)，最近Flash30条结果见[计划41](docs/plans/41-固定Flash非思考30样本实验.md)。
 
 ## 历史结果
 

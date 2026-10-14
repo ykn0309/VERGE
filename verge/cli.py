@@ -33,13 +33,13 @@ _ROLES = (
     "initial_generator",
     "judge",
     "critic",
-    "fusion_judge",
+    "experience_updater",
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
     "retrieval": "fake",
     "selection": "llm",
-    "application": "critic_candidate_weighted_application",
+    "application": "local_credit_bounded_experience",
     "reliability": "beta",
 }
 
@@ -223,6 +223,7 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         )
         modules.initial_generator.invalid_output_retries = retries
         modules.critic.invalid_output_retries = retries
+        modules.experience_updater.invalid_output_retries = retries
         for role, spec in models.get("roles", {}).items():
             role_backend = _backend(spec, f"models.roles.{role}")
             if isinstance(role_backend, OpenAICompatibleBackend):
@@ -365,8 +366,8 @@ def _resume_checkpoint(
     """只接受有序完整轨迹前缀、且下一样本未改写 Memory 的同协议运行。"""
     old = json.loads((source / "run_manifest.json").read_text(encoding="utf-8"))
     if (
-        old.get("format_version") != 4
-        or old.get("method") != "critic_candidate_weighted_application"
+        old.get("format_version") != 7
+        or old.get("method") != "local_credit_bounded_experience"
         or old.get("dataset_version") != manifest["dataset_version"]
         or not isinstance(old.get("code_version"), str)
     ):
@@ -447,7 +448,7 @@ def _resume_checkpoint(
         raise ValueError(
             "resume: real backend requires request metadata to verify failed stage"
         )
-    # 前面的 Memory 检查已排除未完成样本的 credit / fusion 写盘；
+    # 前面的 Memory 检查已排除未完成样本的信用、入池和案例写盘。
     # 即使它已调用 Judge、Critic 或候选/应用角色，也可从头重试这一整条样本。
     # 训练不得出现未来请求；只有 manifest 记载了并行测试时，才允许
     # 轨迹前缀之外的测试请求（可能已发出但尚未按序提交）。
@@ -715,8 +716,8 @@ def run(
             ]
         }
         manifest = {
-            "format_version": 4,
-            "method": "critic_candidate_weighted_application",
+            "format_version": 7,
+            "method": "local_credit_bounded_experience",
             "config": config,
             "code_version": _code_version(),
             "execution": {
@@ -729,12 +730,21 @@ def run(
                 ].get("invalid_output_retries", 2),
                 "initial_output_retries": initial_output_retries,
                 "sample_error_policy": "record_and_continue",
+                "candidate_admission": "latest_net_positive_at_sample_end",
+                "experience_case_limit": 10,
+                "experience_update_input_bytes": 100_000,
+                "experience_update_input": "signed_cases_v3",
+                "experience_update_output": "single_content_trigger",
+                "experience_length_limits": {"content": 150, "trigger": 60, "enforcement": "prompt_only"},
+                "neutral_negative_factor": 0.25,
+                "experience_update_task_interval": 3,
+                "experience_case_policy": "all_nonzero_r0_feedback",
             },
             "dataset_version": "jsonl/v1",
             "dataset_sha256": {
                 split: _sha256_file(path) for split, path in dataset.paths.items()
             },
-            "module_versions": {name: "v4" for name in _IMPLEMENTATIONS},
+            "module_versions": {name: "v6" for name in _IMPLEMENTATIONS},
             "backend_versions": {name: "v1" for name in sorted(backend_names)},
             "prompt_versions": {role: PROMPT_VERSION for role in _ROLES},
         }
@@ -918,7 +928,7 @@ def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
     directory = Path(run_dir)
     manifest_file = directory / "run_manifest.json"
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 4:
+    if manifest.get("format_version") != 7:
         raise ValueError(f"{manifest_file}: unsupported manifest format")
     store_root = Path(
         manifest["config"]["store"]["config"].get("root_dir", "artifacts")

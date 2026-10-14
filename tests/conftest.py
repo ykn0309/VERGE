@@ -13,8 +13,8 @@ def wire_payload(monkeypatch):
     original = llm.llm_messages
     snapshots = {}
 
-    def capture(role, payload):
-        messages = original(role, payload)
+    def capture(role, payload, **kwargs):
+        messages = original(role, payload, **kwargs)
         snapshots[json.dumps(messages, ensure_ascii=False)] = deepcopy(dict(payload))
         return messages
 

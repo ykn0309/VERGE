@@ -4,7 +4,7 @@
 
 ## 1. 项目目标
 
-VERGE（Verified Experience-guided Rubric Generation）从preference trajectory提出rubric-generation experience，直接交给新Generator会话自主应用，再用实际结果及后续任务维护可信度。当前协议已删除Admission，见计划42；计划44将标准改为相对权重预算，Judge输出逐项Boolean及依据供Critic核对：每轮一次Critic提案、最多两轮，只有声明采用且有效应用成功的候选才可Fusion。已有经验R0与候选统一按来源标准累计无折扣正向P/负向N，alpha加P、beta加N，不先抵消、不使用lambda或margin增益；双通道均0才不增加数值证据。融合保留文本版本，应用证据不解释为因果贡献。真实实验固定所有LLM角色Qwen3.5-Flash、关闭思考；历史配置与产物保留。保持有限纠错与样本/无效轮隔离，基础设施和程序错误fail-fast，不做旧协议兼容或跨方法resume。
+VERGE（Verified Experience-guided Rubric Generation）从偏好轨迹中提炼可复用的评分标准设计经验，指导Generator设计评分标准，并通过实际应用与后续任务反馈维护经验及其可信度。
 
 ## 2. 权威文档
 
@@ -15,6 +15,8 @@ VERGE（Verified Experience-guided Rubric Generation）从preference trajectory�
 3. [`docs/工程设计.md`](docs/工程设计.md)：工程约束；
 4. [`PLAN.md`](PLAN.md)：总体方向、TODO 和当前状态；
 5. [`docs/plans/`](docs/plans/)：各阶段的具体执行计划。
+
+“项目目标”和“权威文档”两节保持固定，不随阶段进展更新，以保持提示词前缀稳定、利于缓存命中。当前协议、实验结果和进度统一维护在上述设计文档、PLAN.md及阶段计划中；仅在用户明确要求调整项目目标或文档入口时修改这两节。
 
 ## 3. 当前目录约定
 
@@ -42,3 +44,8 @@ configs/       实验配置
 tests/         测试
 docs/          方法、工程文档和阶段计划
 ```
+
+## 4. 项目约定
+
+- WebUI 启动或重启必须在沙盒外执行（`sandbox_permissions="require_escalated"`），仅监听 `127.0.0.1`，并验证苹果翻译正常。仅修改 JS/CSS 时刷新即可，无需重启。
+- 改进模块或提示词时，每个模块固定至少20条按任务去重、有代表性的历史真实输入，覆盖问题、正常及边界情况，独立复测，不跑完整流水线；以Qwen3.5-Flash为基准，可按用户要求比较其他模型，并明确记录思考设置。结果另存且不改原产物，只作为模块局部效果证据。

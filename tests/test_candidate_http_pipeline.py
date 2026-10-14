@@ -2,6 +2,7 @@
 
 import json
 from threading import Lock
+from experience_helpers import seed
 import httpx
 import pytest
 from verge.llm import OpenAICompatibleBackend
@@ -13,7 +14,7 @@ from test_pipeline import sample
 from test_numbered_ids import response
 
 
-def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
+def test_http_two_candidates_fresh_applications_single_candidate_admission(
     monkeypatch, tmp_path, wire_payload
 ):
     monkeypatch.setenv("MOCK_KEY", "test-secret")
@@ -40,8 +41,17 @@ def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
                     for side in ("chosen", "rejected"):
                         expected = f"JUDGE_EVIDENCE:answer {side} private:{prefix}问题{i}"
                         assert verdict[f"{side}_reason"] == expected
-                        assert expected in body["messages"][1]["content"]
+                        assert expected in str(body["messages"])
             if n == 2:
+                assert [m["role"] for m in body["messages"]] == ["system", "user", "assistant", "user"]
+                first = [b for b, p in requests if "current_rubric" in p][0]
+                assert body["messages"][:2] == first["messages"]
+                assert body["messages"][2]["content"] == next(
+                    t["raw_output"] for t in traces if t["role"] == "critic"
+                )
+                feedback = body["messages"][-1]["content"]
+                assert "仍未成功" in feedback and "重新分析" in feedback
+                assert "R0问题" not in feedback and "\n优选回答：" not in feedback
                 assert p["adopted"] is True
                 assert p["previous_candidate"]["content"] == "指导1"
                 assert p["previous_candidate"]["candidate_id"] in p["current_rubric"]["criteria"][0]["source_experiences"]
@@ -63,9 +73,8 @@ def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
                 "selected_experiences",
                 "candidate_experience",
             }
-            assert (
-                p["selected_experiences"][0]["confidence"] == 0.5
-            )  # fixed before R0 update
+            assert set(p["selected_experiences"][0]) == {"experience_id", "content", "trigger"}
+            assert "证据量" not in body["messages"][1]["content"]
             assert all(
                 s not in str(body)
                 for s in ("PRIVATE", "answer chosen private", "answer rejected private", "JUDGE_EVIDENCE")
@@ -116,13 +125,7 @@ def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
                     ]
                 }
             )
-        assert (
-            set(p) == {"candidate", "existing"} and p["candidate"]["content"] == "指导2"
-        )
-        assert p["existing"][0]["content"] == "种子指导"
-        return response(
-            {"match_index": 0, "content": "融合指导2", "trigger": "兼容事前条件"}
-        )
+        pytest.fail("unexpected extra LLM role")
 
     with httpx.Client(
         base_url="https://mock.invalid/v1/", transport=httpx.MockTransport(handler)
@@ -136,7 +139,7 @@ def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
             trace_hook=traces.append,
         )
         memory = ExperienceMemory(tmp_path)
-        seed = memory.fuse(
+        seeded = seed(memory,
             CandidateExperience("seed_c", "种子指导", "*"), "seed"
         )
         rec = PipelineRunner(
@@ -145,7 +148,7 @@ def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
     assert counts == {"critic": 2, "generator": 3}
     saved = list(TrajectoryLog(tmp_path).all())[0]
     assert saved.to_dict() == rec.to_dict()
-    assert saved.schema_version == 4
+    assert saved.schema_version == 7
     for judgment, prefix in [(rec.initial_judgment, "R0")]+[
         (a.judgment, f"R{i}") for i, a in enumerate(rec.application_attempts, 1)
     ]:
@@ -153,14 +156,16 @@ def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
             assert verdict.chosen_reason == f"JUDGE_EVIDENCE:answer chosen private:{prefix}问题{i}"
             assert verdict.rejected_reason == f"JUDGE_EVIDENCE:answer rejected private:{prefix}问题{i}"
     assert rec.state == "application_success" and len(rec.application_attempts) == 2
-    assert rec.application_attempts[0].credit == Credit(0, 0.1)
+    assert rec.application_attempts[0].credit == Credit(0, 0.3)
     assert rec.application_attempts[1].credit == Credit(0.8, 0.1)
     assert rec.proposal_attempts[-1].candidate.content == "指导2"
-    assert rec.proposal_attempts[-1].candidate.fusion == "MERGE"
-    e = memory.get(seed.experience_id)
-    assert (e.alpha, e.beta) == pytest.approx((1.8, 1.3))
-    assert len(e.evidence_history) == 2  # R0 once, successful current candidate once
-    assert e.fusion_history[-1].credit == Credit(0.8, 0.1)
+    assert rec.admitted_candidate_id == rec.proposal_attempts[-1].candidate.candidate_id
+    e = memory.get(seeded.experience_id)
+    assert (e.alpha, e.beta) == pytest.approx((1.2, 1.2))
+    assert len(e.evidence_history) == 2  # original seed and R0 only
+    new = memory.get(rec.admitted_experience_id)
+    assert (new.alpha, new.beta) == pytest.approx((1.8, 1.1))
+    assert new.cases[0].credit == Credit(.8, .1)
     assert all("test-secret" not in str(t) for t in traces)
     rawgens = [t for t in traces if t["role"] == "initial_generator"]
     assert json.loads(rawgens[-1]["raw_output"])["criteria"][0][
@@ -168,14 +173,24 @@ def test_http_two_candidates_direct_fresh_applications_exact_candidate_fusion(
     ] == ["1", "2"]
     assert rawgens[-1]["output"]["criteria"][0]["source_experiences"] == ["1", "2"]
     assert rec.application_attempts[-1].rubric.criteria[0].source_experiences == [
-        seed.experience_id,
+        seeded.experience_id,
         rec.application_attempts[-1].candidate_id,
     ]
     critic_messages = [
-        b["messages"][1]["content"] for b, p in requests if "current_rubric" in p
+        "\n".join(m["content"] for m in b["messages"])
+        for b, p in requests if "current_rubric" in p
     ]
     assert (
         critic_messages[1].count("：R0问题1\n") == 1
         and critic_messages[1].count("：R1问题1\n") == 1
     )
-    assert "PRIVATE诊断" not in critic_messages[1]
+    assert json.loads([b for b, p in requests if "current_rubric" in p][1]["messages"][2]["content"])["analysis"] == "PRIVATE诊断1"
+    # Check actual messages across selector, generator, both judges and Critic history.
+    internal_ids = {seeded.experience_id, rec.admitted_experience_id}
+    internal_ids.update(p.candidate.candidate_id for p in rec.proposal_attempts)
+    for rubric in [rec.initial_rubric, *(a.rubric for a in rec.application_attempts)]:
+        internal_ids.add(rubric.rubric_id)
+        internal_ids.update(c.criterion_id for c in rubric.criteria)
+    assert {t['role'] for t in traces} == {'selector', 'initial_generator', 'judge', 'critic'}
+    assert all(real_id not in json.dumps(body['messages'], ensure_ascii=False)
+               for body, _ in requests for real_id in internal_ids)

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Iterable, Protocol
 
-from verge.calculator import calculate_experience_credits, validate_rubric_judgment, positive_experience_sources
-from verge.llm import LLMRefusalError
+from verge.calculator import calculate_experience_credits, validate_rubric_judgment, positive_experience_sources, calculate_experience_usage
+from verge.llm import LLMFormatError, LLMSampleError
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import (
     ApplicationAttempt,
@@ -23,6 +23,8 @@ from verge.modules import (
     JudgeOutputError,
     Retriever,
     Selector,
+    CategoryOrganizer,
+    retrieval_units,
 )
 from verge.prompts import ExperienceView
 
@@ -34,6 +36,7 @@ class PipelineModules(Protocol):
     judge: Judge
     critic: Critic
     experience_updater: ExperienceUpdater
+    category_organizer: CategoryOrganizer
 
 
 class PipelineRunner:
@@ -45,6 +48,7 @@ class PipelineRunner:
         *,
         training: bool = True,
         max_rounds: int = 2,
+        organization_batch_size: int = 5,
     ) -> None:
         if type(training) is not bool:
             raise ValueError("training must be Boolean")
@@ -52,12 +56,18 @@ class PipelineRunner:
             raise ValueError("max_rounds must be 1 or 2")
         if training and memory.read_only:
             raise ValueError("training requires writable memory")
+        if type(organization_batch_size) is not int or organization_batch_size < 1:
+            raise ValueError("organization_batch_size must be positive")
         self.modules, self.memory, self.trajectories = modules, memory, trajectories
         self.training, self.max_rounds = training, max_rounds
+        self.organization_batch_size = organization_batch_size
         self.current_stage = "not_started"
 
     def run(self, samples: Iterable[PreferenceSample]) -> list[TrajectoryRecord]:
-        return [self.run_sample(s) for s in samples]
+        records = [self.run_sample(s) for s in samples]
+        if records:
+            self.flush_organization(records[-1].sample_id)
+        return records
 
     def run_sample(self, sample: PreferenceSample) -> TrajectoryRecord:
         if not isinstance(sample, PreferenceSample):
@@ -76,7 +86,7 @@ class PipelineRunner:
             record.judge_error = str(exc)
             if record.application_attempts and self.current_stage.endswith(".judge"):
                 record.application_attempts[-1].error = str(exc)
-        except (ValueError, LLMRefusalError) as exc:
+        except (ValueError, LLMSampleError) as exc:
             role_stages = {
                 "selection",
                 "initial_generator",
@@ -85,6 +95,7 @@ class PipelineRunner:
             if (
                 self.current_stage not in role_stages
                 and not self.current_stage.endswith((".critic", ".generator", ".judge"))
+                and not (self.current_stage == "retrieval" and isinstance(exc, (LLMSampleError, LLMFormatError)))
             ):
                 raise
             record.state = "sample_error"
@@ -93,8 +104,14 @@ class PipelineRunner:
                 "type": type(exc).__name__,
                 "message": str(exc)[:500] or type(exc).__name__,
             }
+            if record.application_attempts and self.current_stage.endswith((".generator", ".judge")):
+                record.application_attempts[-1].error = record.sample_error["message"]
+            if record.proposal_attempts and self.current_stage.endswith(".critic"):
+                record.proposal_attempts[-1].error = record.sample_error["message"]
         if self.training and record.initial_judgment is not None:
             self._finish_sample(sample, record, admit=normal_end)
+        if self.training:
+            record.category_organization = self._organize(sample.sample_id)
         self.current_stage = "trajectory"
         self.trajectories.append(record)
         return record
@@ -102,12 +119,17 @@ class PipelineRunner:
     def _run_sample(self, sample, record):
         m = self.modules
         self.current_stage = "retrieval"
-        recalled = m.retriever.retrieve(sample.task, self.memory.all())
+        categories = self.memory.categories()
+        recalled = m.retriever.retrieve(sample.task, self.memory.all(), categories=categories)
         record.retrieved_experience_ids = [x.experience_id for x in recalled]
+        record.retrieved_units = [{"unit_id": u.unit_id, "kind": "category" if u.category else "experience",
+                                   "experience_ids": [e.experience_id for e in u.members]}
+                                  for u in retrieval_units(recalled, categories)]
+        by_category = {c.category_id: c for c in categories}
         self.current_stage = "selection"
         selected = m.selector.select(
             sample.task,
-            [ExperienceView.from_experience(x) for x in recalled],
+            [ExperienceView.from_experience(x, by_category.get(x.category_id)) for x in recalled],
             training=self.training,
         )
         if len({x.experience_id for x in selected}) != len(selected) or set(
@@ -132,7 +154,9 @@ class PipelineRunner:
             self.current_stage = "existing_credit"
             credits = calculate_experience_credits(initial, judgment)
             record.downstream_credits = credits
-            self.memory.apply_downstream_credits(sample.sample_id, credits)
+            usage = calculate_experience_usage(initial, judgment, sample.sample_id,
+                                               {v.experience_id: self.memory.get(v.experience_id).text_version for v in selected})
+            self.memory.apply_downstream_credits(sample.sample_id, credits, usage=usage)
         record.state = "initial_success" if judgment.success else "initial_failure"
         if judgment.success or not self.training:
             return
@@ -255,7 +279,7 @@ class PipelineRunner:
                 record.admitted_experience_id = proposal.candidate.experience_id
         for view in record.selected_experiences:
             eid = view["experience_id"]
-            if eid not in record.downstream_credits:
+            if eid not in record.downstream_credits or not record.downstream_credits[eid].amount:
                 continue
             experience = self.memory.get(eid)
             case = ExperienceCase(
@@ -273,10 +297,26 @@ class PipelineRunner:
             error = None
             try:
                 update = self.modules.experience_updater.update(experience)
-            except (ValueError, LLMRefusalError) as exc:
+            except (ValueError, LLMSampleError) as exc:
                 error = str(exc)[:500] or type(exc).__name__
             self.current_stage = "experience_text_write"
             record.experience_updates[eid] = (
                 self.memory.update_text(eid, experience.content, experience.trigger, error=error)
                 if error is not None else self.memory.apply_update(eid, update)
             )
+
+    def _organize(self, sample_id: str, *, flush: bool = False):
+        if not self.training or not self.memory.organization_due(self.organization_batch_size, flush=flush):
+            return None
+        self.current_stage = "category_organizer"
+        try:
+            plan = self.modules.category_organizer.organize(
+                self.memory.all(), self.memory.categories(), dict(self.memory.pending_organization))
+        except (ValueError, LLMSampleError) as exc:
+            return self.memory.organize(sample_id, None, error=str(exc)[:500] or type(exc).__name__)
+        self.current_stage = "category_organization_write"
+        return self.memory.organize(sample_id, plan)
+
+    def flush_organization(self, sample_id: str):
+        """Training stop/finalization; event persists in memory history under the last task."""
+        return self._organize(sample_id, flush=True)

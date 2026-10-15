@@ -26,7 +26,7 @@ def test_text_updates_preserve_id_credit_and_versions(tmp_path):
     assert e.experience_id == eid and (e.alpha, e.beta) == pytest.approx((2.2, 1.8))
     assert e.text_version == 2 and e.update_history == [event]
     assert len(e.cases) == 4 and [ev.text_version for ev in e.evidence_history] == [1, 1, 1, 1]
-    assert json.loads(memory.path.read_text())['schema_version'] == 5
+    assert json.loads(memory.path.read_text())['schema_version'] == 6
     assert not hasattr(memory, 'fuse')
 
 

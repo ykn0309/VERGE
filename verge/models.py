@@ -206,6 +206,78 @@ class ExperienceUpdate(Model):
 
 
 @dataclass
+class UsageRecord(Model):
+    """实际引用标准的次数，与加权P/N证据分开；同判不改变Beta。"""
+
+    sample_id: str
+    text_version: int
+    positive: int = 0
+    negative: int = 0
+    both_true: int = 0
+    both_false: int = 0
+
+    def __post_init__(self) -> None:
+        _id(self.sample_id, "usage sample_id")
+        if type(self.text_version) is not int or self.text_version < 1:
+            raise ValueError("invalid usage text_version")
+        counts = [self.positive, self.negative, self.both_true, self.both_false]
+        if any(type(n) is not int or n < 0 for n in counts) or sum(counts) == 0:
+            raise ValueError("usage requires nonnegative counts and actual citations")
+
+
+@dataclass
+class ExperienceCategory(Model):
+    category_id: str
+    name: str
+    description: str
+
+    def __post_init__(self) -> None:
+        for name in ("category_id", "name", "description"):
+            _id(getattr(self, name), name)
+
+
+@dataclass
+class CategoryDraft(Model):
+    category_id: str | None
+    name: str
+    description: str
+    experience_ids: list[str]
+
+    def __post_init__(self) -> None:
+        if self.category_id is not None:
+            _id(self.category_id, "category_id")
+        _id(self.name, "category name")
+        _id(self.description, "category description")
+        if not self.experience_ids:
+            raise ValueError("category must have members")
+        for key in self.experience_ids:
+            _id(key, "member experience_id")
+
+
+@dataclass
+class CategoryOrganization(Model):
+    categories: list[CategoryDraft]
+    ungrouped_experience_ids: list[str]
+
+    def validate_partition(self, experience_ids: set[str], category_ids: set[str]) -> None:
+        existing = [c.category_id for c in self.categories if c.category_id is not None]
+        members = [*self.ungrouped_experience_ids,
+                   *(key for c in self.categories for key in c.experience_ids)]
+        if (len(existing) != len(set(existing)) or set(existing) - category_ids
+                or len(members) != len(set(members)) or set(members) != experience_ids):
+            raise ValueError("organization must assign every experience exactly once and reuse only known categories")
+
+
+@dataclass
+class OrganizationRecord(Model):
+    sample_id: str
+    pending_versions: dict[str, int]
+    categories: list[ExperienceCategory]
+    assignments: dict[str, str | None]
+    error: str | None = None
+
+
+@dataclass
 class TextUpdateRecord(Model):
     sample_id: str
     case_ids: list[str]
@@ -247,18 +319,22 @@ class Experience(Model):
     cases: list[ExperienceCase] = field(default_factory=list)
     text_version: int = 1
     update_history: list[TextUpdateRecord] = field(default_factory=list)
+    category_id: str | None = None
+    usage_history: list[UsageRecord] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         for name in ("experience_id", "content", "trigger"):
             _id(getattr(self, name), name)
         _number(self.alpha, "alpha", minimum=1)
         _number(self.beta, "beta", minimum=1)
+        if self.category_id is not None:
+            _id(self.category_id, "category_id")
         if type(self.text_version) is not int or self.text_version < 1:
             raise ValueError("invalid experience text_version")
         if len(self.cases) > 10 or len({c.sample_id for c in self.cases}) != len(self.cases):
             raise ValueError("experience cases must be distinct and at most 10")
         if any(c.text_version > self.text_version for c in self.cases) or any(
-            e.text_version > self.text_version for e in self.evidence_history
+            e.text_version > self.text_version for e in [*self.evidence_history, *self.usage_history]
         ):
             raise ValueError("evidence cannot refer to a future text version")
 
@@ -484,6 +560,7 @@ class TrajectoryRecord(Model):
     sample_id: str
     state: str = "in_progress"
     retrieved_experience_ids: list[str] = field(default_factory=list)
+    retrieved_units: list[dict[str, Any]] = field(default_factory=list)
     selected_experiences: list[dict[str, Any]] = field(default_factory=list)
     initial_rubric: Rubric | None = None
     initial_judgment: RubricJudgment | None = None
@@ -495,11 +572,12 @@ class TrajectoryRecord(Model):
     admitted_candidate_id: str | None = None
     admitted_experience_id: str | None = None
     experience_updates: dict[str, TextUpdateRecord] = field(default_factory=dict)
-    schema_version: int = 7
+    category_organization: OrganizationRecord | None = None
+    schema_version: int = 8
 
     def __post_init__(self) -> None:
         _id(self.sample_id, "sample_id")
-        if self.schema_version != 7:
+        if self.schema_version != 8:
             raise ValueError("unsupported trajectory schema")
         if self.state not in {
             "in_progress",
@@ -573,6 +651,6 @@ class TrajectoryRecord(Model):
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> TrajectoryRecord:
-        if not isinstance(data, dict) or data.get("schema_version") != 7:
-            raise ValueError("TrajectoryRecord requires explicit schema_version 7")
+        if not isinstance(data, dict) or data.get("schema_version") != 8:
+            raise ValueError("TrajectoryRecord requires explicit schema_version 8")
         return super().from_dict(data)

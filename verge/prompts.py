@@ -11,17 +11,19 @@ from verge.models import (
     CandidateExperience,
     Criterion,
     Experience,
+    ExperienceCategory,
     Rubric,
     RubricJudgment,
 )
 
 
-PROMPT_VERSION = "local-credit-delayed-experience-signed-cases"
+PROMPT_VERSION = "atomic-experience-categories-neutral-observations"
 
 # 专属身份和任务说明；Generator/Critic 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
     "selector": """你是经验适用性筛选员。你的任务是针对给定 task，筛选可用于首次生成评价标准的经验。
-结合任务语义、实际输入和上下文分析适用条件，允许合理推理，不要求条件由 task 逐字声明。经验须有实质设计帮助；任务目标和明确约束优先，高置信度不能代替适用性。""",
+结合任务语义、实际输入和上下文分析适用条件，允许合理推理，不要求条件由 task 逐字声明。经验须有实质设计帮助；任务目标和明确约束优先，高置信度不能代替适用性。
+候选可能是类别（含名称、描述与全部成员）或未分类的小经验。类别只用于组织，不代表所有成员适用；逐条判断成员，最终只能选择小经验编号，不选择类别编号，不必整类采用。""",
     "initial_generator": """你是评分标准设计者。根据task和本次可用经验，设计用于评价回答的是/否标准。
 先理解任务目标、明确约束、实际输入及上下文，确定当前任务中合理的评价要求。任务要求优先；经验是可选的标准设计指导，依据适用条件自主采用、组合或忽略，不因来自Critic而优先。
 把任务要求组织成2到8条可独立核验的正向问题，“是”表示满足要求，避免用缺陷问题搭配正向加分。采用经验时落实其设计动作：可能只改变一项，也可能影响多个问题的表达、关系或权重。检查整套标准与task及所采用经验是否相容，避免相互冲突、重复计权或仅追加引用而保留与经验冲突的要求；不要求每条经验都重构全部标准。
@@ -33,17 +35,21 @@ _ROLE_GUIDANCE = {
     "critic": """你从失败证据中提炼供未来首次设计评分标准使用的经验。目标是形成有依据、可复用的设计动作。
 私有analysis先核对task要求、标准文本、回答事实、两侧Judge判断及理由。Judge理由是待核对的模型解释，不是事实证明；区分标准设计缺陷、表达歧义、Judge执行错误、偏好冲突与证据不足。分差不理想本身不意味着标准需要改变；只有Judge误判且没有可信设计动作时返回空候选。
 从可确认的问题中提炼如何设计标准：明确核验性质、澄清语义边界、组织互相一致的要求或分配相对权重。可以使正确要求更明确、更容易被Judge核验，但不能迁就错误事实、放宽task明确约束或为了偏好分差创造无依据要求。保持加权Boolean协议，不提出部分分、总分否决、自动跳过或修改Judge的指令。
-公开content表达面向一类问题的标准设计方法，trigger表达生成前能从task、实际输入、上下文或领域知识识别的条件。把本题主体转换为语义角色，把数量、时长等转换为从新task读取的参数，保留方法必需的专业边界。content与trigger范围一致；方法可以包含同一目的的协同动作，不必覆盖全部标准。
+公开content表达面向一类问题的标准设计方法，trigger表达生成前能从task、实际输入、上下文或领域知识识别的条件。把本题主体转换为语义角色，把数量、时长等转换为从新task读取的参数，保留方法必需的专业边界。content与trigger范围一致。每条小经验只表达一个能独立采用或忽略的原子核验方法；若两个要求可以分别采用，不把它们捆绑成一条。本轮仅提最值得验证的一种方法，不必覆盖全部标准。content≤150字符、trigger≤60字符。
 公开经验不依赖已有评分标准、Judge或已观察回答特征，不保留本题专名、答案片段、固定数值、偏好身份或私有分差，也不转成给回答者的成稿/拒绝命令。必要领域条件与通用参数说明可以保留，抽象不等于删除所有专业含义。
 第二轮接续本样本的消息历史，对照自己上一轮的分析和候选、实际标准、来源与前后Judge依据，辨别诊断错误、方法不足、未落实或Judge执行问题；历史分析和来源声明均不证明已落实。根据新增证据重新分析并提出经验，避免仅换说法重复前候选；仍无可信设计动作可返回空候选。""",
     "experience_updater": """你是经验归纳员。根据同一条经验的有限来源和后续正负使用案例，重新归纳供未来首次设计评分标准使用的方法及适用条件。
-输入包含当前经验、完整task/chosen/rejected，以及仅引用本经验的标准和两侧Judge判断/理由。每条标准的feedback由程序给出：positive表示优选满足而非优选不满足，negative表示反向区分，neutral表示同判、记较轻负信用。反馈是应用线索，不是事实证明，也不能从标准子集推断整体结果。applied_experience只在当时使用的文本与当前文本不同时出现。
-结合task和两回答核对案例，综合成功与失败的使用：正向案例帮助保留有依据的方法，负向案例帮助识别方法内容不足、适用条件过宽或不恰当的应用。同判仅表示本次没有区分作用，不自动证明方法错误；Judge解释可能有误，不据此新增无依据规则，也不因一次失败机械否定方法。
-只归纳一条清晰的设计方法，允许修正content或收窄trigger。保留任务必要边界及合理专业限定，把专名、固定数字和情节转为语义角色或从新task读取的参数，不追加每题特殊规则，不通过举例拼接案例，不让最后一例覆盖其他证据。证据不足以支持改写时保留当前方法，不拆分经验。
+输入包含当前经验、完整task/chosen/rejected，以及仅引用本经验的标准和两侧Judge判断/理由。每条标准的feedback由程序给出：positive表示优选满足而非优选不满足，negative表示反向区分；同判标准不进入本次归纳输入。反馈是应用线索，不是事实证明，也不能从标准子集推断整体结果。applied_experience只在当时使用的文本与当前文本不同时出现。
+结合task和两回答核对案例，综合成功与失败的使用：正向案例帮助保留有依据的方法，负向案例帮助识别方法内容不足、适用条件过宽或不恰当的应用。Judge解释可能有误，不据此新增无依据规则，也不因一次失败机械否定方法。
+只修正当前这一种原子核验方法及其适用范围，允许修正content或收窄trigger。不要追加可以独立采用的其他方法，不生成新候选或分类。保留任务必要边界及合理专业限定，把专名、固定数字和情节转为语义角色或从新task读取的参数，不追加每题特殊规则，不通过举例拼接案例，不让最后一例覆盖其他证据。证据不足以支持改写时保留当前方法，不拆分经验。
 content写如何设计标准，trigger只依据生成前task、实际输入、上下文或领域知识识别，不依赖已观察回答或Judge结果。不放宽task明确约束，不提出总分否决、部分分或修改Judge的指令。
 content不超过150个字符，trigger不超过60个字符，仅输出content/trigger，不输出analysis或案例分组。""",
 
 }
+
+_ROLE_GUIDANCE["category_organizer"] = """你是经验分类整理员。按核验方法及适用范围组织小经验，类别有名称和描述，不改小经验正文、适用条件或信用。
+读取已有类别、全部小经验及待整理编号，优先保持合理的现有类别及其编号；可将待整理经验归入已有类别、建立新类别、调整归属，并更新受影响类别的名称和描述。名称便于识别，描述应概括成员的核验方法及适用范围，便于检索，不只是宽泛主题。
+对全部小经验给出一次完整分配，每条恰好出现一次。无合适类别时保持未分类，不强凑类别；类别允许只有一个成员，删除空类别。保留类别身份时沿用其编号，新类别编号为null。不新增经验，不合并或改写成员，不输出分析。"""
 
 _ROLE_INSTRUCTIONS = {
     "selector": (
@@ -70,6 +76,8 @@ _ROLE_INSTRUCTIONS = {
 
 }
 
+_ROLE_INSTRUCTIONS["category_organizer"] = '仅返回JSON {"categories":[{"category_id":"已有类别编号或null","name":"名称","description":"描述","experience_ids":["小经验编号"]}],"ungrouped_experience_ids":["未分类的小经验编号"]}。新类别category_id使用JSON null；所有编号使用输入中的短数字字符串，全部经验恰好分配一次，类别不得为空。'
+
 # 输入使用自然标题；技术量只在确有出现时集中说明一次。
 _INPUT_TITLES = {
     "task": "任务",
@@ -81,6 +89,14 @@ _INPUT_TITLES = {
     "max_selected": "选择上限",
     "training": "阶段",
     "experience_id": "经验编号",
+    "category_id": "类别编号",
+    "category": "所属类别",
+    "categories": "现有类别",
+    "name": "名称",
+    "description": "描述",
+    "members": "类别内小经验",
+    "experiences": "全部小经验",
+    "pending_experience_ids": "待整理小经验",
     "content": "经验原则",
     "trigger": "适用条件",
     "confidence": "置信度",
@@ -373,11 +389,12 @@ class ExperienceView:
     trigger: str
     confidence: float
     evidence_amount: float
+    category: ExperienceCategory | None = None
 
     @classmethod
-    def from_experience(cls, experience: Experience) -> ExperienceView:
+    def from_experience(cls, experience: Experience, category: ExperienceCategory | None = None) -> ExperienceView:
         return cls(experience.experience_id, experience.content, experience.trigger,
-                   experience.confidence, experience.evidence_amount)
+                   experience.confidence, experience.evidence_amount, category)
 
     def to_dict(self) -> dict[str, Any]:
         return {"experience_id": self.experience_id, "content": self.content,
@@ -387,7 +404,18 @@ class ExperienceView:
 
 def selector_payload(task: str, candidates: Sequence[ExperienceView], *,
                      max_selected: int, training: bool) -> dict[str, Any]:
-    return {"task": task, "candidates": [item.to_dict() for item in candidates],
+    units = []
+    groups = {}
+    for item in candidates:
+        if item.category is None:
+            units.append(item.to_dict())
+        else:
+            key = item.category.category_id
+            if key not in groups:
+                groups[key] = {**item.category.to_dict(), "members": []}
+                units.append(groups[key])
+            groups[key]["members"].append(item.to_dict())
+    return {"task": task, "candidates": units,
             "max_selected": max_selected, "training": training}
 
 
@@ -504,7 +532,8 @@ def experience_update_payload(experience: Experience) -> dict[str, Any]:
                 "rejected": verdicts[c.criterion_id].rejected,
                 "chosen_reason": verdicts[c.criterion_id].chosen_reason,
                 "rejected_reason": verdicts[c.criterion_id].rejected_reason,
-            } for c in case.rubric.criteria if case.source_id in c.source_experiences],
+            } for c in case.rubric.criteria if case.source_id in c.source_experiences
+                and verdicts[c.criterion_id].chosen != verdicts[c.criterion_id].rejected],
         }
         if (case.content, case.trigger) != (experience.content, experience.trigger):
             card["applied_experience"] = {"content": case.content, "trigger": case.trigger}
@@ -514,18 +543,30 @@ def experience_update_payload(experience: Experience) -> dict[str, Any]:
     }, "cases": cases}
 
 
+def category_organization_payload(experiences, categories, pending) -> dict[str, Any]:
+    return {"categories": [c.to_dict() for c in categories],
+            "experiences": [{"experience_id": e.experience_id, "content": e.content,
+                             "trigger": e.trigger, "category_id": e.category_id}
+                            for e in experiences],
+            "pending_experience_ids": list(pending)}
+
+
 _ID_FIELDS = {
     "criterion_id": "criterion",
     "rubric_id": "rubric",
     "experience_id": "experience",
     "candidate_id": "experience",
     "sample_id": "sample",
+    "category_id": "category",
 }
 _ID_LISTS = {
     "source_experiences": "experience",
     "selected_experience_ids": "experience",
     "adopted_criterion_ids": "criterion",
     "sample_ids": "sample",
+    "experience_ids": "experience",
+    "ungrouped_experience_ids": "experience",
+    "pending_experience_ids": "experience",
 }
 _ID_DICTS = {"normalized_weights": "criterion"}
 
@@ -540,7 +581,7 @@ class NumberedIDCodec:
     def __init__(self, role: str, payload: Mapping[str, Any]) -> None:
         self.role = role
         self.forward: dict[str, dict[str, str]] = {
-            name: {} for name in ("criterion", "rubric", "experience", "sample")
+            name: {} for name in ("criterion", "rubric", "experience", "sample", "category")
         }
         self.reverse: dict[str, dict[str, str]] = {name: {} for name in self.forward}
 
@@ -585,7 +626,13 @@ class NumberedIDCodec:
     def restore(self, response: Mapping[str, Any]) -> dict[str, Any]:
         """只反解角色协议字段；错误引用直接拒绝，不猜测或按位置悄悄匹配。"""
         result = dict(response)
-        if self.role == "selector" and isinstance(
+        if self.role == "category_organizer":
+            result["categories"] = [{**c,
+                "category_id": (self._existing("category", c["category_id"]) if c["category_id"] is not None else None),
+                "experience_ids": [self._existing("experience", key) for key in c["experience_ids"]]}
+                for c in result["categories"]]
+            result["ungrouped_experience_ids"] = [self._existing("experience", key) for key in result["ungrouped_experience_ids"]]
+        elif self.role == "selector" and isinstance(
             result.get("selected_experience_ids"), list
         ):
             result["selected_experience_ids"] = [

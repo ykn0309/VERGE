@@ -10,7 +10,7 @@ import pytest
 import yaml
 
 from verge.cli import main
-from verge.llm import JUDGE_RESPONSE_SIDE, FakeLLMBackend, LLMFormatError, LLMRequestError, OpenAICompatibleBackend
+from verge.llm import JUDGE_RESPONSE_SIDE, FakeLLMBackend, LLMFormatError, LLMRequestError, LLMSampleError, OpenAICompatibleBackend
 from verge.prompts import PROMPT_VERSION, _ROLE_GUIDANCE, _ROLE_INSTRUCTIONS, llm_messages
 
 
@@ -285,6 +285,7 @@ def test_rate_limit_timeout_and_terminal_errors(monkeypatch):
     with pytest.raises(LLMRequestError, match="HTTP 401") as exc:
         unauthorized.generate("critic", {"task": "x"})
     assert "test-secret-never-log" not in str(exc.value)
+    assert not isinstance(exc.value, LLMSampleError)
 
     exhausted = []
 
@@ -293,9 +294,29 @@ def test_rate_limit_timeout_and_terminal_errors(monkeypatch):
         return httpx.Response(503, text="private service body")
 
     flaky = backend(monkeypatch, unavailable, max_retries=1)
-    with pytest.raises(LLMRequestError, match="HTTP 503 after 2 attempts"):
+    with pytest.raises(LLMSampleError, match="HTTP 503 after 2 attempts"):
         flaky.generate("critic", {"task": "x"})
     assert len(exhausted) == 2
+
+
+def test_timeout_retries_are_bounded_and_sample_scoped(monkeypatch):
+    calls = []
+
+    def timeout(request):
+        calls.append(request)
+        raise httpx.ReadTimeout("private endpoint must not leak")
+
+    llm = backend(monkeypatch, timeout, max_retries=2)
+    with pytest.raises(LLMSampleError, match="after 3 attempts.*ReadTimeout") as exc:
+        llm.generate("critic", {"task": "x"})
+    assert len(calls) == 3 and "private endpoint" not in str(exc.value)
+
+
+@pytest.mark.parametrize("status", [400, 413, 422])
+def test_request_input_rejection_is_sample_scoped(monkeypatch, status):
+    llm = backend(monkeypatch, lambda _: httpx.Response(status, text="private body"))
+    with pytest.raises(LLMSampleError, match=f"HTTP {status}"):
+        llm.generate("critic", {"task": "x"})
 
 
 

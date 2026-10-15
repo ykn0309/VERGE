@@ -34,6 +34,7 @@ _ROLES = (
     "judge",
     "critic",
     "experience_updater",
+    "category_organizer",
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
@@ -163,8 +164,8 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     application = configured["application"]["config"]
     if (
         set(retrieval) - retrieval_keys
-        or set(selection) - {"max_selected", "exploration_slots"}
-        or set(application) - {"max_rounds", "invalid_output_retries"}
+        or set(selection) - {"max_selected", "exploration_slots", "input_bytes"}
+        or set(application) - {"max_rounds", "invalid_output_retries", "organization_batch_size"}
         or configured["reliability"]["config"]
     ):
         raise ValueError("modules: unsupported V1 component options")
@@ -172,6 +173,9 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         raise ValueError(
             "modules.selection.config.exploration_slots: V1 selector does not explore"
         )
+    batch = application.get("organization_batch_size", 5)
+    if type(batch) is not int or batch < 1:
+        raise ValueError("modules.application.config.organization_batch_size: expected positive integer")
     retries = application.get("invalid_output_retries", 2)
     if type(retries) is not int or not 0 <= retries <= 3:
         raise ValueError(
@@ -224,6 +228,11 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         modules.initial_generator.invalid_output_retries = retries
         modules.critic.invalid_output_retries = retries
         modules.experience_updater.invalid_output_retries = retries
+        modules.category_organizer.invalid_output_retries = retries
+        selector_bytes = selection.get("input_bytes", 100_000)
+        if type(selector_bytes) is not int or selector_bytes < 1:
+            raise ValueError("modules.selection.config.input_bytes: expected positive integer")
+        modules.selector.input_bytes = selector_bytes
         for role, spec in models.get("roles", {}).items():
             role_backend = _backend(spec, f"models.roles.{role}")
             if isinstance(role_backend, OpenAICompatibleBackend):
@@ -366,7 +375,7 @@ def _resume_checkpoint(
     """只接受有序完整轨迹前缀、且下一样本未改写 Memory 的同协议运行。"""
     old = json.loads((source / "run_manifest.json").read_text(encoding="utf-8"))
     if (
-        old.get("format_version") != 7
+        old.get("format_version") != 8
         or old.get("method") != "local_credit_bounded_experience"
         or old.get("dataset_version") != manifest["dataset_version"]
         or not isinstance(old.get("code_version"), str)
@@ -428,11 +437,13 @@ def _resume_checkpoint(
     memory = ExperienceMemory(root, read_only=True)
     for item in memory.all():
         if any(key not in completed_train for key in item.source_trajectories) or any(
-            ev.sample_id not in completed_train for ev in item.evidence_history
+            ev.sample_id not in completed_train for ev in [*item.evidence_history, *item.usage_history]
         ):
             raise ValueError(
                 "resume: Memory contains evidence beyond completed train prefix"
             )
+    if any(event.sample_id not in completed_train for event in memory.organization_history):
+        raise ValueError("resume: category organization beyond completed train prefix")
     next_id = ordered[len(completed)]
     parent_models = old_config["models"]
     if (
@@ -556,6 +567,7 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
                    stop_after: int | None = None) -> int:
     count = 0
     iterator = iter(dataset.load(split))
+    last_id = None
     while stop_after is None or count < stop_after:
         try:
             sample = next(iterator)
@@ -566,6 +578,7 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
         if sample.sample_id in seen_ids:
             raise RuntimeError(f"sample {sample.sample_id!r}, stage dataset: duplicate ID across splits")
         seen_ids.add(sample.sample_id)
+        last_id = sample.sample_id
         if skip_ids is not None and sample.sample_id in skip_ids:
             count += 1
             progress.advance()
@@ -582,6 +595,12 @@ def _process_split(runner: PipelineRunner, dataset: JsonlDataset, split: str,
             request_context.reset(token)
         count += 1
         progress.advance()
+    if split == "train" and last_id is not None:
+        token = request_context.set({"sample_id": last_id, "split": split})
+        try:
+            runner.flush_organization(last_id)
+        finally:
+            request_context.reset(token)
     return count
 
 
@@ -716,7 +735,7 @@ def run(
             ]
         }
         manifest = {
-            "format_version": 7,
+            "format_version": 8,
             "method": "local_credit_bounded_experience",
             "config": config,
             "code_version": _code_version(),
@@ -733,18 +752,23 @@ def run(
                 "candidate_admission": "latest_net_positive_at_sample_end",
                 "experience_case_limit": 10,
                 "experience_update_input_bytes": 100_000,
-                "experience_update_input": "signed_cases_v3",
+                "experience_update_input": "discriminating_cases_v4",
                 "experience_update_output": "single_content_trigger",
                 "experience_length_limits": {"content": 150, "trigger": 60, "enforcement": "prompt_only"},
-                "neutral_negative_factor": 0.25,
+                "neutral_feedback": "record_both_true_false_no_credit_no_case",
                 "experience_update_task_interval": 3,
-                "experience_case_policy": "all_nonzero_r0_feedback",
+                "experience_case_policy": "discriminating_r0_feedback",
+                "category_organization_batch_size": config["modules"]["application"]["config"].get("organization_batch_size", 5),
+                "category_organization_input": "full_atomic_pool_no_credit",
+                "selector_input_bytes": modules.selector.input_bytes,
+                "retrieval_units": "categories_and_ungrouped_experiences",
+                "category_embedding": "name_description_all_member_trigger_content",
             },
             "dataset_version": "jsonl/v1",
             "dataset_sha256": {
                 split: _sha256_file(path) for split, path in dataset.paths.items()
             },
-            "module_versions": {name: "v6" for name in _IMPLEMENTATIONS},
+            "module_versions": {name: "v7" for name in _IMPLEMENTATIONS},
             "backend_versions": {name: "v1" for name in sorted(backend_names)},
             "prompt_versions": {role: PROMPT_VERSION for role in _ROLES},
         }
@@ -844,7 +868,8 @@ def run(
         )
         if isinstance(embedder, OpenAICompatibleEmbedding):
             embedder.metadata_hook = save_request
-        runner = PipelineRunner(modules, memory, trajectories, max_rounds=max_rounds)
+        runner = PipelineRunner(modules, memory, trajectories, max_rounds=max_rounds,
+                                organization_batch_size=config["modules"]["application"]["config"].get("organization_batch_size", 5))
         seen_ids: set[str] = set()
         train_total = _split_total(dataset, "train")
         train_progress = _Progress("train", train_total)
@@ -928,7 +953,7 @@ def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
     directory = Path(run_dir)
     manifest_file = directory / "run_manifest.json"
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 7:
+    if manifest.get("format_version") != 8:
         raise ValueError(f"{manifest_file}: unsupported manifest format")
     store_root = Path(
         manifest["config"]["store"]["config"].get("root_dir", "artifacts")

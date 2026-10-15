@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from math import isclose
 
-from verge.calculator import calculate_experience_credits
+from verge.calculator import calculate_experience_credits, calculate_experience_usage
 from verge.memory import ExperienceMemory,TrajectoryLog
 from verge.models import EvidenceRecord,ExperienceCase
 
@@ -19,7 +19,7 @@ def require(condition,message):
 
 def audit(directory,expected=None):
     manifest_file=directory/'run_manifest.json';m=json.loads(manifest_file.read_text())
-    require(m['format_version']==7,'wrong manifest protocol')
+    require(m['format_version']==8,'wrong manifest protocol')
     root=directory/m['config']['store']['config']['root_dir']
     source=Path(m['config']['dataset']['config']['paths']['train'])
     require(digest(source)==m['dataset_sha256']['train'],'dataset hash mismatch')
@@ -40,14 +40,18 @@ def audit(directory,expected=None):
         if rec.initial_judgment is not None:
             credits=calculate_experience_credits(rec.initial_rubric,rec.initial_judgment)
             require(credits==rec.downstream_credits,'R0 credit mismatch')
+            usages=calculate_experience_usage(rec.initial_rubric,rec.initial_judgment,rec.sample_id,{eid:e.text_version for eid,e in state.items()})
+            for eid,u in usages.items():
+                state[eid]=replace(state[eid],usage_history=[*state[eid].usage_history,u])
             for eid,c in credits.items():
+                if not c.amount: continue
                 e=state[eid];counts['downstream_events']+=1
                 counts['net_positive' if c.net>0 else 'net_negative' if c.net<0 else 'net_tie']+=1
                 state[eid]=replace(e,alpha=e.alpha+c.positive_credit,beta=e.beta+c.negative_credit,
                     evidence_history=[*e.evidence_history,EvidenceRecord(rec.sample_id,'downstream_credit',c.positive_credit,c.negative_credit,text_version=e.text_version)])
             for view in rec.selected_experiences:
                 eid=view['experience_id']
-                if eid not in credits or len(state[eid].cases)>=10:continue
+                if eid not in credits or not credits[eid].amount or len(state[eid].cases)>=10:continue
                 e=state[eid];c=ExperienceCase(rec.sample_id,raw['task'],raw['chosen'],raw['rejected'],
                     eid,e.text_version,view['content'],view['trigger'],rec.initial_rubric,rec.initial_judgment,credits[eid])
                 state[eid]=replace(e,cases=[*e.cases,c],source_trajectories=[*e.source_trajectories,rec.sample_id])
@@ -63,6 +67,7 @@ def audit(directory,expected=None):
             state[e.experience_id]=replace(e,content=candidate.content,trigger=candidate.trigger,
                 alpha=1+app.credit.positive_credit,beta=1+app.credit.negative_credit,
                 cases=[origin],source_trajectories=[rec.sample_id],text_version=1,update_history=[],
+                usage_history=[calculate_experience_usage(app.rubric,app.judgment,rec.sample_id,{key:1 for c in app.rubric.criteria for key in c.source_experiences})[candidate.candidate_id]],
                 evidence_history=[EvidenceRecord(rec.sample_id,'application_credit',app.credit.positive_credit,app.credit.negative_credit,candidate.candidate_id,text_version=1)])
         require(set(rec.experience_updates)==due,'delayed update invocation mismatch')
         for eid,event in rec.experience_updates.items():
@@ -78,7 +83,7 @@ def audit(directory,expected=None):
         require(replace(e,alpha=actual.alpha,beta=actual.beta)==actual,'final text/cases/evidence/history mismatch')
     roles=[json.loads(x) for x in (root/'role_io.jsonl').read_text().splitlines()]
     require(all(x['split']=='train' for x in roles),'unexpected held-out calls')
-    llm=[x for x in roles if x['role'] in {'selector','initial_generator','judge','critic','experience_updater'}]
+    llm=[x for x in roles if x['role'] in {'selector','initial_generator','judge','critic','experience_updater','category_organizer'}]
     require(all(x['model']=='qwen3.5-flash' for x in llm),'model changed')
     updates=[u for e in final.values() for u in e.update_history]
     require(before=={p:digest(Path(p)) for p in before},'audit changed source')

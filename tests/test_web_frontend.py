@@ -82,3 +82,41 @@ console.log(vm.runInContext('experienceDetail(data.experiences[0])',ctx));"""
     assert '文本重新归纳' in rendered.stdout and '查看原文本' in rendered.stdout
     assert '&lt;img src=x onerror=alert(1)&gt;' in rendered.stdout
     assert '<img src=x onerror=alert(1)>' not in rendered.stdout
+
+
+def test_experience_sorting_preserves_ids_selection_and_scroll(tmp_path):
+    """Exercise actual delegated change/click handlers after reordering and searching."""
+    js = Path('verge/web_assets/app.js').read_text().removesuffix('refresh();\n')
+    source = tmp_path / 'app.js'
+    source.write_text(js)
+    program = r"""const vm=require('node:vm'), fs=require('node:fs'), assert=require('node:assert/strict');
+const listeners={}, list={scrollTop:0};
+const element={addEventListener(){},hidden:true,open:false};
+const app={querySelector:()=>list, set innerHTML(value){this.html=value;list.scrollTop=0}};
+const document={getElementById:id=>id==='app'?app:element,
+  addEventListener(type,fn){(listeners[type]??=[]).push(fn)},
+  querySelectorAll:()=>[],querySelector:()=>({focus(){}})};
+const ctx={document,URLSearchParams,location:{search:''},setTimeout,clearTimeout,
+  window:{scrollTo(){throw Error('click unexpectedly scrolled page')}}};
+vm.createContext(ctx); vm.runInContext(fs.readFileSync(process.argv[1],'utf8'),ctx);
+vm.runInContext(`data={warnings:[],experiences:[.4,.9,.9,.6].map((confidence,i)=>({
+  experience_id:'e'+i,content:'method'+i,trigger:'*',confidence,update_history:[],case_count:1,text_version:1})),
+  samples:[{sample_id:'s1',initial_rubric:{criteria:[{source_experiences:['e0','e1']},{source_experiences:['e0']}]}},
+    {sample_id:'s2',initial_rubric:{criteria:[{source_experiences:['e0']}]},selected_experiences:[{experience_id:'e2'}]},
+    {sample_id:'s3',application_attempts:[{rubric:{criteria:[{source_experiences:['e2']}]}}]}]};
+page='memory';experienceDetail=e=>'DETAIL:'+e.experience_id;`,ctx);
+function order(){return [...app.html.matchAll(/data-action="experience" data-index="(\d+)"/g)].map(m=>Number(m[1]));}
+function sort(value){list.scrollTop=240;listeners.change.forEach(fn=>fn({target:{value,matches:()=>true}}));assert.equal(list.scrollTop,240);}
+sort('confidence_desc');assert.deepEqual(order(),[1,2,3,0]);
+assert.ok(app.html.includes('data-index="0"') && app.html.includes('DETAIL:e0'));
+const button={dataset:{action:'experience',index:'2'}};
+list.scrollTop=320;listeners.click.forEach(fn=>fn({target:{closest:()=>button}}));
+assert.equal(list.scrollTop,320);assert.ok(app.html.includes('DETAIL:e2'));
+sort('confidence_asc');assert.deepEqual(order(),[0,3,1,2]);assert.ok(app.html.includes('DETAIL:e2'));
+sort('usage_desc');assert.deepEqual(order(),[0,1,2,3]);assert.ok(app.html.includes('引用 2 次'));
+sort('usage_asc');assert.deepEqual(order(),[2,3,1,0]);assert.ok(app.html.includes('DETAIL:e2'));
+vm.runInContext("expQuery='method1';render()",ctx);assert.deepEqual(order(),[1]);assert.ok(app.html.includes('DETAIL:e1'));
+vm.runInContext("expQuery='';memoryTab='candidates';render()",ctx);assert.ok(!app.html.includes('data-experience-sort'));
+console.log('sorting, selection, search and scroll passed');"""
+    result = subprocess.run(['node', '-e', program, str(source)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr

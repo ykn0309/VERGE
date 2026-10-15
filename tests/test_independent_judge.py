@@ -8,7 +8,7 @@ import httpx
 import pytest
 
 from verge.calculator import calculate_rubric_judgment
-from verge.llm import JUDGE_RESPONSE_SIDE, LLMRequestError, OpenAICompatibleBackend
+from verge.llm import JUDGE_RESPONSE_SIDE, LLMRequestError, LLMSampleError, OpenAICompatibleBackend
 from verge.models import Criterion, CriterionJudgment, Rubric
 from verge.modules import JudgeOutputError, LLMCritic, LLMJudge
 from verge.prompts import NumberedIDCodec, critic_payload
@@ -125,6 +125,23 @@ def test_exhaustion_is_unknown_and_transport_error_takes_precedence(monkeypatch,
         with pytest.raises(expected):
             LLMJudge(backend, invalid_output_retries=1).judge(rubric(), 'A', 'B', task="测试任务")
     assert calls == {'A': 2, 'B': 1}
+
+
+@pytest.mark.parametrize("fatal_side", ["A", "B"])
+def test_auth_failure_wins_over_other_sides_timeout(monkeypatch, wire_payload, fatal_side):
+    monkeypatch.setenv('JUDGE_KEY', 'test-key')
+
+    def handler(request):
+        payload = wire_payload(json.loads(request.content))
+        if payload['response'] == fatal_side:
+            return httpx.Response(401)
+        raise httpx.ReadTimeout('private transport details')
+
+    with httpx.Client(base_url='https://judge.invalid/v1/', transport=httpx.MockTransport(handler)) as client:
+        backend = OpenAICompatibleBackend('test', base_url='https://judge.invalid/v1/', client=client, api_key_env='JUDGE_KEY', max_retries=0)
+        with pytest.raises(LLMRequestError, match='HTTP 401') as error:
+            LLMJudge(backend).judge(rubric(), 'A', 'B', task='任务')
+    assert not isinstance(error.value, LLMSampleError)
 
 
 def test_all_reused_judgments_require_zero_calls():

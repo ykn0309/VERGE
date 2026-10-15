@@ -148,7 +148,7 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
     assert counts == {"critic": 2, "generator": 3}
     saved = list(TrajectoryLog(tmp_path).all())[0]
     assert saved.to_dict() == rec.to_dict()
-    assert saved.schema_version == 7
+    assert saved.schema_version == 8
     for judgment, prefix in [(rec.initial_judgment, "R0")]+[
         (a.judgment, f"R{i}") for i, a in enumerate(rec.application_attempts, 1)
     ]:
@@ -156,7 +156,7 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
             assert verdict.chosen_reason == f"JUDGE_EVIDENCE:answer chosen private:{prefix}问题{i}"
             assert verdict.rejected_reason == f"JUDGE_EVIDENCE:answer rejected private:{prefix}问题{i}"
     assert rec.state == "application_success" and len(rec.application_attempts) == 2
-    assert rec.application_attempts[0].credit == Credit(0, 0.3)
+    assert rec.application_attempts[0].credit == Credit(0, 0.1)
     assert rec.application_attempts[1].credit == Credit(0.8, 0.1)
     assert rec.proposal_attempts[-1].candidate.content == "指导2"
     assert rec.admitted_candidate_id == rec.proposal_attempts[-1].candidate.candidate_id

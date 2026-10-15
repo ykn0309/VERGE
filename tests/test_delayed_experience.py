@@ -25,7 +25,7 @@ def directional_rubric(eid, direction):
 
 
 @pytest.mark.parametrize('direction,p,n', [('positive',.4,0),('negative',0,.4),
-                                         ('both_true',0,.1),('both_false',0,.1)])
+                                         ('both_true',0,0),('both_false',0,0)])
 def test_credit_matches_each_verdict_and_shared_mass(direction,p,n):
     r,j = directional_rubric('e',direction)
     credit = calculate_experience_credits(r,j)['e']
@@ -38,16 +38,16 @@ def test_credit_matches_each_verdict_and_shared_mass(direction,p,n):
     assert credits['e']==credits['f']
 
 
-def test_neutral_penalty_affects_exact_candidate_admission():
+def test_neutral_does_not_penalize_exact_candidate_admission():
     r=Rubric('r',[Criterion('p','正向？',.2,['e']),Criterion('tie','同判？',.8,['e'])])
     j=calculate_rubric_judgment(r,[CriterionJudgment('p',True,False,'甲','乙'),
                                  CriterionJudgment('tie',True,True,'甲','乙')])
-    assert not positive_experience_sources(r,j)  # .2 positive == .8/4 negative
+    assert positive_experience_sources(r,j) == {'e'}
 
 
 def test_mixed_three_task_window_includes_negative_and_neutral_then_resets(tmp_path):
     r,eid=existing_runner(tmp_path)
-    r.modules.retriever.retrieve=lambda task,pool: pool
+    r.modules.retriever.retrieve=lambda task,pool,**kw: pool
     r.modules.selector.select=lambda task,views,**kw: views
     active={'direction':'positive'}
     r.modules.initial_generator.generate=lambda task, views: directional_rubric(eid,active['direction'])[0]
@@ -57,14 +57,14 @@ def test_mixed_three_task_window_includes_negative_and_neutral_then_resets(tmp_p
     for i,d in enumerate(['positive','negative','both_true','both_false','positive','negative'],1):
         active['direction']=d
         rec=r.run_sample(sample(f'next{i}'))
-        assert bool(rec.experience_updates)==(i in (3,6))
+        assert bool(rec.experience_updates)==(i == 5)
         assert len(r.memory.all())==1
     e=r.memory.get(eid)
-    assert [len(c.cases) for c in calls]==[4,7]
-    assert e.pending_feedback_count==0 and e.text_version==2
-    assert (e.alpha,e.beta)==pytest.approx((2,2))  # origin .2 + two .4; N=.4+.1+.1+.4
+    assert [len(c.cases) for c in calls]==[4]
+    assert e.pending_feedback_count==1 and e.text_version==2
+    assert (e.alpha,e.beta)==pytest.approx((2,1.8))  # origin .2 + two .4; N=.4+.1+.1+.4
     payload=experience_update_payload(calls[0])
-    assert [c['criteria'][0]['feedback'] for c in payload['cases'][1:]]==['positive','negative','neutral']
+    assert [c['criteria'][0]['feedback'] for c in payload['cases'][1:]]==['positive','negative','positive']
     assert all(c['chosen']==case.chosen and c['rejected']==case.rejected
                for c,case in zip(payload['cases'],calls[0].cases))
     assert ExperienceMemory(tmp_path).get(eid)==e

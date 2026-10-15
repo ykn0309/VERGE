@@ -9,7 +9,7 @@ from experience_helpers import seed
 from test_pipeline import runner, sample
 from test_real_llm import backend, result
 from verge.calculator import calculate_rubric_judgment, positive_experience_sources
-from verge.llm import LLMFormatError, LLMRequestError
+from verge.llm import LLMFormatError, LLMRequestError, LLMSampleError
 from verge.models import CandidateExperience, Criterion, CriterionJudgment, Rubric, TrajectoryRecord
 from verge.modules import JudgeOutputError, LLMExperienceUpdater
 
@@ -149,7 +149,7 @@ def test_positive_r0_updates_after_all_applications_with_fixed_e(tmp_path, overa
     assert TrajectoryRecord.from_json(rec.to_json())==rec
 
 
-@pytest.mark.parametrize('error', [ValueError, LLMFormatError])
+@pytest.mark.parametrize('error', [ValueError, LLMFormatError, LLMSampleError])
 def test_updater_failure_preserves_text_credit_case_and_records_error(tmp_path, error):
     r, eid = existing_runner(tmp_path)
     warm_window(r)
@@ -161,13 +161,30 @@ def test_updater_failure_preserves_text_credit_case_and_records_error(tmp_path, 
     assert rec.state=='initial_success' and rec.experience_updates[eid].error=='invalid update'
 
 
-def test_updater_network_failure_is_fail_fast(tmp_path):
+def test_updater_fatal_request_error_is_fail_fast(tmp_path):
     r, _ = existing_runner(tmp_path)
     warm_window(r)
-    r.modules.experience_updater.update = lambda e: (_ for _ in ()).throw(LLMRequestError('network'))
+    r.modules.experience_updater.update = lambda e: (_ for _ in ()).throw(LLMRequestError('HTTP 401'))
     with pytest.raises(LLMRequestError):
         r.run_sample(sample('next'))
     assert len(list(r.trajectories.all())) == 2
+
+
+def test_updater_timeout_keeps_window_and_next_sample_can_update(tmp_path):
+    r, eid = existing_runner(tmp_path)
+    warm_window(r)
+    original = r.modules.experience_updater.update
+    r.modules.experience_updater.update = lambda e: (_ for _ in ()).throw(LLMSampleError('ReadTimeout'))
+    failed = r.run_sample(sample('failed'))
+    before = r.memory.get(eid)
+    assert failed.state == 'initial_success' and failed.experience_updates[eid].error == 'ReadTimeout'
+    assert before.pending_feedback_count == 3 and before.text_version == 1
+    r.modules.experience_updater.update = original
+    following = r.run_sample(sample('following'))
+    after = r.memory.get(eid)
+    assert following.experience_updates[eid].error is None
+    assert after.pending_feedback_count == 0 and len(after.cases) == 5
+    assert len(list(r.trajectories.all())) == 4
 
 
 def test_tenth_case_last_call_eleventh_case_only_credit(tmp_path):
@@ -229,6 +246,7 @@ def test_context_budget_skips_without_truncating_or_calling_backend(tmp_path):
     r,eid=existing_runner(tmp_path)
     r.modules.experience_updater.update=LLMExperienceUpdater(r.modules.backend).update
     warm_window(r)
+    r.modules.selector.input_bytes = 1_000_000  # Isolate the Updater's separate budget.
     rec=r.run_sample(replace(sample('huge'),task='原文'*60000))
     assert 'context budget' in rec.experience_updates[eid].error
     assert r.memory.get(eid).content=='原方法'

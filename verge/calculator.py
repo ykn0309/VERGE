@@ -13,6 +13,7 @@ from verge.models import (
     Experience,
     Rubric,
     RubricJudgment,
+    UsageRecord,
 )
 
 
@@ -91,10 +92,6 @@ def _contributions(rubric: Rubric, judgment: RubricJudgment) -> dict[str, float]
             for key, weight in weights.items()}
 
 
-# Same verdict has weaker negative credit than reversed preference.
-NEUTRAL_NEGATIVE_FACTOR = Fraction(1, 4)
-
-
 def _credit_ratios(rubric: Rubric, judgment: RubricJudgment) -> dict[str, list[Fraction]]:
     _contributions(rubric, judgment)
     ratios = _weight_ratios(rubric)
@@ -110,20 +107,36 @@ def _credit_ratios(rubric: Rubric, judgment: RubricJudgment) -> dict[str, list[F
             pair = totals.setdefault(source, [Fraction(0), Fraction(0)])
             if direction > 0:
                 pair[0] += share
-            else:
-                pair[1] += share * (NEUTRAL_NEGATIVE_FACTOR if direction == 0 else 1)
+            elif direction < 0:
+                pair[1] += share
     return totals
 
 
 def calculate_experience_credits(rubric: Rubric, judgment: RubricJudgment) -> dict[str, Credit]:
-    """Separate weighted P/N; shared sources split credit, same verdict gets quarter N."""
+    """Separate weighted P/N; same verdict carries no numerical evidence."""
     return {key: Credit(*map(float, pair)) for key, pair in _credit_ratios(rubric, judgment).items()}
 
 
 def positive_experience_sources(rubric: Rubric, judgment: RubricJudgment) -> set[str]:
-    """Use exact ratios including neutral penalties for admission, never float net noise."""
+    """Use exact ratios for admission, never float net noise."""
     return {source for source, (positive, negative) in _credit_ratios(rubric, judgment).items()
             if positive > negative}
+
+
+def calculate_experience_usage(rubric: Rubric, judgment: RubricJudgment,
+                               sample_id: str, versions: dict[str, int]) -> dict[str, UsageRecord]:
+    _contributions(rubric, judgment)
+    verdicts = {j.criterion_id: j for j in judgment.criterion_judgments}
+    counts: dict[str, dict[str, int]] = {}
+    for criterion in rubric.criteria:
+        j = verdicts[criterion.criterion_id]
+        kind = ("positive" if j.chosen and not j.rejected else
+                "negative" if j.rejected and not j.chosen else
+                "both_true" if j.chosen else "both_false")
+        for source in criterion.source_experiences:
+            row = counts.setdefault(source, {})
+            row[kind] = row.get(kind, 0) + 1
+    return {key: UsageRecord(sample_id, versions[key], **row) for key, row in counts.items()}
 
 
 def apply_beta_evidence(experience: Experience, evidence: EvidenceRecord) -> Experience:

@@ -34,8 +34,12 @@ class LLMRequestError(RuntimeError):
     """网络/API 调用失败；信息不包含 URL、请求正文或凭据。"""
 
 
-class LLMRefusalError(LLMRequestError):
-    """当前样本遭模型拒答；可记录并跳过，区别于鉴权和服务故障。"""
+class LLMSampleError(LLMRequestError):
+    """有限请求重试耗尽或输入被拒绝；记录当前样本并继续。"""
+
+
+class LLMRefusalError(LLMSampleError):
+    """当前样本遭模型拒答；可记录并跳过，区别于鉴权错误。"""
 
 
 class LLMFormatError(ValueError):
@@ -48,6 +52,7 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "judge": ("criterion_judgments", list),
     "critic": ("candidates", list),
     "experience_updater": ("content", str),
+    "category_organizer": ("categories", list),
 }
 
 
@@ -55,13 +60,13 @@ def _reject_constant(_value: str) -> None:
     raise ValueError("invalid JSON constant")
 
 
-_NUMERIC_ID_FIELDS = frozenset({"rubric_id", "criterion_id", "candidate_id"})
-_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences", "sample_ids"})
+_NUMERIC_ID_FIELDS = frozenset({"rubric_id", "criterion_id", "candidate_id", "category_id"})
+_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences", "sample_ids", "experience_ids", "ungrouped_experience_ids"})
 
 
 def _normalize_numeric_ids(role: str, value: Any) -> None:
     """只在模型 ID 字段把正整数 1 规范化为 "1"；原始响应仍留在 trace 中。"""
-    if role not in {"selector", "initial_generator", "judge", "critic", "experience_updater"}:
+    if role not in _OUTPUT_FIELDS:
         return
 
     def numeric_id(item: Any) -> Any:
@@ -85,6 +90,14 @@ def _normalize_numeric_ids(role: str, value: Any) -> None:
 
 def _valid_shape(role: str, value: Any) -> bool:
     """缺字段/字段类型不对才重试；ID引用、空候选等语义结果不重试。"""
+    if role == "category_organizer":
+        return (isinstance(value, dict) and set(value) == {"categories", "ungrouped_experience_ids"}
+                and isinstance(value["categories"], list)
+                and isinstance(value["ungrouped_experience_ids"], list)
+                and all(isinstance(c, dict) and set(c) == {"category_id", "name", "description", "experience_ids"}
+                        and (c["category_id"] is None or isinstance(c["category_id"], str))
+                        and all(isinstance(c[k], str) and c[k].strip() for k in ("name", "description"))
+                        and isinstance(c["experience_ids"], list) for c in value["categories"]))
     if role == "experience_updater":
         return (isinstance(value, dict) and set(value) == {"content", "trigger"}
                 and all(isinstance(value[k], str) and value[k].strip() for k in ("content", "trigger")))
@@ -263,11 +276,11 @@ class OpenAICompatibleBackend:
                 if attempt <= self.max_retries:
                     self._sleep(min(2 ** (attempt - 1), 8))
                     continue
-                raise LLMRequestError(
+                raise LLMSampleError(
                     f"{role}: request failed after {attempt} attempts ({type(exc).__name__})"
                 ) from None
             status = response.status_code
-            if status == 429 or 500 <= status < 600:
+            if status in (408, 429) or 500 <= status < 600:
                 self._trace(
                     role,
                     payload,
@@ -287,7 +300,7 @@ class OpenAICompatibleBackend:
                         delay = 2 ** (attempt - 1)
                     self._sleep(min(max(delay, 0), 8))
                     continue
-                raise LLMRequestError(f"{role}: HTTP {status} after {attempt} attempts")
+                raise LLMSampleError(f"{role}: HTTP {status} after {attempt} attempts")
             if status < 200 or status >= 300:
                 self._trace(
                     role,
@@ -298,7 +311,8 @@ class OpenAICompatibleBackend:
                     error=f"HTTP {status}",
                 )
                 self._metadata(role, attempt, status=status, response=response)
-                raise LLMRequestError(f"{role}: HTTP {status}")
+                error_type = LLMSampleError if status in (400, 413, 422) else LLMRequestError
+                raise error_type(f"{role}: HTTP {status}")
             raw_output: str | None = None
             assistant_output: str | None = None
             try:
@@ -439,9 +453,9 @@ class OpenAICompatibleEmbedding:
                 if attempt <= self.max_retries:
                     self._sleep(min(2 ** (attempt - 1), 8))
                     continue
-                raise LLMRequestError(f"embedding: request failed after {attempt} attempts ({type(exc).__name__})") from None
+                raise LLMSampleError(f"embedding: request failed after {attempt} attempts ({type(exc).__name__})") from None
             status = response.status_code
-            if status == 429 or 500 <= status < 600:
+            if status in (408, 429) or 500 <= status < 600:
                 if attempt <= self.max_retries:
                     retry_after = response.headers.get("retry-after", "")
                     try:
@@ -452,9 +466,10 @@ class OpenAICompatibleEmbedding:
                         delay = 2 ** (attempt - 1)
                     self._sleep(min(max(delay, 0), 8))
                     continue
-                raise LLMRequestError(f"embedding: HTTP {status} after {attempt} attempts")
+                raise LLMSampleError(f"embedding: HTTP {status} after {attempt} attempts")
             if not 200 <= status < 300:
-                raise LLMRequestError(f"embedding: HTTP {status}")
+                error_type = LLMSampleError if status in (400, 413, 422) else LLMRequestError
+                raise error_type(f"embedding: HTTP {status}")
             try:
                 body = json.loads(response.text, parse_constant=_reject_constant)
                 data = body["data"]
@@ -515,10 +530,12 @@ class FakeLLMBackend:
         request = deepcopy(dict(payload))
         self.requests.append((role, request))
         if role == "selector":
+            candidates = [member for unit in request["candidates"]
+                          for member in unit.get("members", [unit])]
             result = {
                 "selected_experience_ids": [
                     x["experience_id"]
-                    for x in request["candidates"]
+                    for x in candidates
                     if x["trigger"] == "*"
                     or x["trigger"].casefold() in request["task"].casefold()
                 ][: request["max_selected"]]
@@ -592,6 +609,15 @@ class FakeLLMBackend:
             }
         elif role == "experience_updater":
             result = dict(request["current_experience"])
+        elif role == "category_organizer":
+            groups = {}
+            for e in request["experiences"]:
+                if e["category_id"] is not None:
+                    groups.setdefault(e["category_id"], []).append(e["experience_id"])
+            result = {"categories": [{**c, "experience_ids": groups[c["category_id"]]}
+                                     for c in request["categories"] if c["category_id"] in groups],
+                      "ungrouped_experience_ids": [e["experience_id"] for e in request["experiences"]
+                                                   if e["category_id"] is None]}
         else:
             raise ValueError(f"unknown LLM role: {role}")
         if conversation is not None:

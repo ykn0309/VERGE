@@ -5,7 +5,7 @@ import json
 import httpx
 import pytest
 
-from verge.llm import LLMFormatError, LLMRequestError, OpenAICompatibleEmbedding
+from verge.llm import LLMFormatError, LLMRequestError, LLMSampleError, OpenAICompatibleEmbedding
 from verge.memory import ExperienceMemory, TrajectoryLog
 from verge.models import Experience, PreferenceSample
 from verge.modules import VectorRetriever, make_fake_modules
@@ -180,4 +180,26 @@ def test_embedding_retry_and_fail_closed_on_invalid_response(monkeypatch):
     with pytest.raises(LLMRequestError, match="embedding: HTTP 401") as error:
         backend.embed("task")
     assert "private-test-key" not in str(error.value)
+    assert not isinstance(error.value, LLMSampleError)
     forbidden.close()
+
+
+@pytest.mark.parametrize('failure', ['timeout', 408, 429, 503])
+def test_embedding_exhausted_requests_are_sample_scoped(monkeypatch, failure):
+    monkeypatch.setenv('DASHSCOPE_API_KEY_2', 'private-test-key')
+    calls = []
+
+    def respond(request):
+        calls.append(request)
+        if failure == 'timeout':
+            raise httpx.ReadTimeout('private endpoint details')
+        return httpx.Response(failure)
+
+    base_url = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+    with httpx.Client(base_url=base_url+'/', transport=httpx.MockTransport(respond)) as client:
+        backend = OpenAICompatibleEmbedding('text-embedding-v4', base_url=base_url,
+            api_key_env='DASHSCOPE_API_KEY_2', dimensions=64, client=client,
+            max_retries=2, sleep=lambda _: None)
+        with pytest.raises(LLMSampleError, match='after 3 attempts') as error:
+            backend.embed('task')
+    assert len(calls) == 3 and 'private endpoint' not in str(error.value)

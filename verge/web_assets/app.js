@@ -1,14 +1,19 @@
 /* VERGE run dashboard — no third-party runtime; every artifact string is escaped. */
 const app = document.getElementById('app');
 let data = null, page = 'overview', sampleIndex = 0, expIndex = 0, query = '', splitFilter = 'train', resultFilter = 'all', expQuery = '';
-let currentRun = null, requestSequence = 0, memoryTab = 'pool', candidateIndex = 0, candidateQuery = '';
+let currentRun = null, requestSequence = 0, memoryTab = 'pool', candidateIndex = 0, candidateQuery = '', expSort = 'original', categoryFilter = 'all';
+const experienceSortOptions = [
+  ['original', '默认顺序'], ['confidence_desc', '置信度：高 → 低'],
+  ['confidence_asc', '置信度：低 → 高'], ['usage_desc', '引用次数：多 → 少'],
+  ['usage_asc', '引用次数：少 → 多'],
+];
 const translations = new Map(), translatedFields = new Set();
 const roleIoCache = new Map(), roleIoPending = new Map();
 let sampleTab = 'pipeline';
 const roleTabs = [
   ['pipeline','流水线'],['selector','经验筛选'],['initial_generator','Generator'],
   ['judge','Judge'],['critic','Critic · 分析与候选'],
-  ['experience_updater','经验重新归纳'],
+  ['experience_updater','经验重新归纳'], ['category_organizer','类别整理'],
 ];
 const translationKey = (run, sampleId, field) => JSON.stringify([run, sampleId, field]);
 const h = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -78,9 +83,10 @@ async function refresh(nextName = null) {
     if (!sameRun) {
       sampleIndex = 0; expIndex = 0; candidateIndex = 0; memoryTab = 'pool'; query = ''; expQuery = ''; candidateQuery = ''; splitFilter = 'train'; resultFilter = 'all';
     }
-    currentRun = name;
+    currentRun = name; if (!sameRun) categoryFilter = 'all';
     translations.clear(); translatedFields.clear(); roleIoCache.clear();
     data = payload;
+    if (!['all','ungrouped'].includes(categoryFilter) && !(data.categories||[]).some(c=>c.category_id===categoryFilter)) categoryFilter='all';
     if (!data.samples.some(s=>s.split===splitFilter)) {
       splitFilter = data.samples.some(s=>s.split==='train') ? 'train' : data.samples.some(s=>s.split==='test') ? 'test' : 'unknown';
       resultFilter = 'all';
@@ -281,6 +287,13 @@ function experienceUsage(e) {
     c.source_experiences?.includes(e.experience_id))).map(s => s.sample_id)).size;
 }
 function experienceUpdates(e) {return e.update_history.length;}
+function experienceEntries() {
+  const entries = data.experiences.map((e,i)=>({e,i,usage:experienceUsage(e)}));
+  if (expSort === 'original') return entries;
+  const field = expSort.startsWith('confidence_') ? 'confidence' : 'usage';
+  const direction = expSort.endsWith('_asc') ? 1 : -1;
+  return entries.sort((a,b)=>direction*((field==='confidence'?a.e.confidence:a.usage)-(field==='confidence'?b.e.confidence:b.usage)) || a.i-b.i);
+}
 function candidateStatus(c) {
   return c.experience_id ? badge('已新增','ok') :
     badge('未入池','neutral');
@@ -288,16 +301,16 @@ function candidateStatus(c) {
 function memoryPage() {
   const rows = candidateEntries();
   const pool = memoryTab !== 'candidates';
-  const group = data.experiences.map((e,i)=>({e,i}));
+  const group = experienceEntries();
   const title = pool ? '经验池' : '候选经验';
   const tabs = [['pool','经验池',data.experiences.length],['candidates','候选经验',rows.length]];
-  const visible = pool ? group.filter(({e})=>!expQuery||`${e.experience_id} ${e.content} ${e.trigger}`.toLowerCase().includes(expQuery.toLowerCase())) :
+  const visible = pool ? group.filter(({e})=>(categoryFilter==='all'||(e.category_id||'ungrouped')===categoryFilter) && (!expQuery||`${e.experience_id} ${e.content} ${e.trigger} ${e.category?.name||''} ${e.category?.description||''}`.toLowerCase().includes(expQuery.toLowerCase()))) :
     rows.map((entry,i)=>({...entry,i})).filter(({candidate:c,sample:s})=>!candidateQuery||`${c.candidate_id} ${c.content} ${c.trigger} ${s.sample_id}`.toLowerCase().includes(candidateQuery.toLowerCase()));
   const current = visible.find(({i})=>i===(pool?expIndex:candidateIndex)) || visible[0];
   return warnBlock() + `<div class="sample-split-tabs" role="tablist" aria-label="经验分类">
     ${tabs.map(([key,label,count])=>`<button role="tab" aria-selected="${memoryTab===key}" class="split-tab ${memoryTab===key?'active':''}" data-action="memory-tab" data-tab="${key}">${label} <span class="mono">${count}</span></button>`).join('')}</div>
-    <div class="workbench memory-workbench"><section class="panel list-panel memory-list"><div class="list-head"><h2>${title} <span class="muted mono">${visible.length} / ${pool?group.length:rows.length}</span></h2><input class="search" data-search="${pool?'experience':'candidate'}" placeholder="搜索内容或 ID…" value="${h(pool?expQuery:candidateQuery)}" aria-label="搜索${title}"></div>
-    <div class="list-scroll">${pool ? visible.map(({e,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="experience" data-index="${i}"><span class="row-top"><strong title="${h(experienceName(e))}">${h(experienceName(e))}</strong>${badge(pct(e.confidence),'ok')}</span><p class="mono" title="${h(e.experience_id)}">${h(e.experience_id)}</p><div class="list-metrics"><span title="训练及测试样本 R0 中引用该经验的次数（每个样本最多计一次）">使用 ${experienceUsage(e)} 次</span><span title="经验文本重新归纳次数">归纳 ${experienceUpdates(e)} 次 · 案例 ${e.case_count}/10 · v${e.text_version}${e.text_frozen?' · 已冻结':''}</span></div></button>`).join('') : visible.map(({candidate:c,sample:s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="candidate" data-index="${i}"><span class="row-top"><strong title="${h(c.candidate_id)}">${h(short(c.content,58))}</strong>${candidateStatus(c)}</span><p>${h(short(c.trigger,100))}</p><span class="candidate-origin">${h(short(s.sample_id,36))}</span></button>`).join('')}${visible.length?'':'<div class="empty">没有匹配的经验</div>'}</div></section>
+    <div class="workbench memory-workbench"><section class="panel list-panel memory-list"><div class="list-head"><h2>${title} <span class="muted mono">${visible.length} / ${pool?group.length:rows.length}</span></h2><input class="search" data-search="${pool?'experience':'candidate'}" placeholder="搜索内容或 ID…" value="${h(pool?expQuery:candidateQuery)}" aria-label="搜索${title}">${pool?`<label class="experience-sort">类别<select data-category-filter aria-label="经验类别">${[['all','全部类别'],['ungrouped','未分类'],...(data.categories||[]).map(c=>[c.category_id,c.name])].map(([key,label])=>`<option value="${h(key)}"${categoryFilter===key?' selected':''}>${h(label)}</option>`).join('')}</select></label><label class="experience-sort">排序<select data-experience-sort aria-label="经验排序">${experienceSortOptions.map(([value,label])=>`<option value="${value}"${expSort===value?' selected':''}>${label}</option>`).join('')}</select></label>`:''}</div>
+    <div class="list-scroll">${pool ? visible.map(({e,i,usage})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="experience" data-index="${i}"><span class="row-top"><strong title="${h(experienceName(e))}">${h(experienceName(e))}</strong>${badge(pct(e.confidence),'ok')}</span><p class="mono" title="${h(e.experience_id)}">${h(e.experience_id)}</p><div class="list-metrics"><span title="训练及测试样本 R0 中引用该经验的次数（每个样本最多计一次）">引用 ${usage} 次</span><span title="经验文本重新归纳次数">归纳 ${experienceUpdates(e)} 次 · 案例 ${e.case_count}/10 · v${e.text_version}${e.text_frozen?' · 已冻结':''}</span></div></button>`).join('') : visible.map(({candidate:c,sample:s,i})=>`<button class="list-item ${i===current?.i?'active':''}" data-action="candidate" data-index="${i}"><span class="row-top"><strong title="${h(c.candidate_id)}">${h(short(c.content,58))}</strong>${candidateStatus(c)}</span><p>${h(short(c.trigger,100))}</p><span class="candidate-origin">${h(short(s.sample_id,36))}</span></button>`).join('')}${visible.length?'':'<div class="empty">没有匹配的经验</div>'}</div></section>
     <section class="panel detail">${current ? pool?experienceDetail(current.e):candidateDetail(current) : `<div class="empty">${visible.length===0 && (pool?expQuery:candidateQuery)?'没有匹配的经验。':pool?'暂无经验。':'当前轨迹没有保留候选经验。'}</div>`}</section></div>`;
 }
 function candidateDetail({candidate:c,sample:s}) {
@@ -311,8 +324,9 @@ function experienceDetail(e) {
   const events = experienceTimeline(e);
   return `<div class="detail-header"><div><span class="section-kicker">CANONICAL EXPERIENCE / ${String(data.experiences.indexOf(e)+1).padStart(2,'0')}</span><h2>${h(experienceName(e))}</h2><p>名称由正文摘要生成 · 文本归纳历史见时间线</p></div>${badge(pct(e.confidence),'ok')}</div>
     <div class="detail-section"><div class="section-kicker">01 / PRINCIPLE</div><h3>经验内容</h3><p class="exp-intro">${h(e.content)}</p><div class="exp-trigger"><strong>TRIGGER · 适用条件</strong><br>${h(e.trigger)}</div></div>
+    <div class="detail-section"><h3>所属类别 · ${h(e.category?.name||'未分类')}</h3><p class="body-text">${h(e.category?.description||'该经验作为独立检索单位，仍可直接被召回。')}</p></div>
     <div class="detail-section experience-cases"><div class="section-kicker">02 / CASES</div><h3>归纳案例 · ${e.cases.length} 个</h3><p class="legend">点击任务预览两个回答；Cmd/Ctrl＋点击查看完整流水线。案例保留当时的经验和判断，历史反馈不代表改写后的文本已直接验证。</p><div class="case-list">${e.cases.map((c,index)=>experienceCase(c,e,index)).join('')}</div></div>
-    <div class="detail-section"><div class="section-kicker">03 / RELIABILITY</div><h3>可靠性与证据</h3><div class="mini-stats"><span class="mini-stat">使用 <b>${experienceUsage(e)} 次</b></span><span class="mini-stat">归纳 <b>${experienceUpdates(e)} 次</b></span><span class="mini-stat">α <b>${n(e.alpha)}</b></span><span class="mini-stat">β <b>${n(e.beta)}</b></span><span class="mini-stat">CONFIDENCE <b>${pct(e.confidence)}</b></span><span class="mini-stat">证据量 <b>${n(e.alpha+e.beta-2)}</b></span><span class="mini-stat">下游任务 <b>${e.downstream_task_count||0}</b></span><span class="mini-stat">待归纳反馈 <b>${e.pending_feedback_count||0}/3</b></span></div>${lineChart(events)}<p class="legend">从 Beta(1,1) 先验开始，正负证据分别增加 α/β，不先抵消。置信度是 α/(α+β)，并非校准后的成功概率；历史信用不证明新文本版本已验证。</p></div>
+    <div class="detail-section"><div class="section-kicker">03 / RELIABILITY</div><h3>可靠性与证据</h3><div class="mini-stats"><span class="mini-stat">使用 <b>${experienceUsage(e)} 次</b></span><span class="mini-stat">归纳 <b>${experienceUpdates(e)} 次</b></span><span class="mini-stat">α <b>${n(e.alpha)}</b></span><span class="mini-stat">β <b>${n(e.beta)}</b></span><span class="mini-stat">CONFIDENCE <b>${pct(e.confidence)}</b></span><span class="mini-stat">证据量 <b>${n(e.alpha+e.beta-2)}</b></span><span class="mini-stat">下游任务 <b>${e.downstream_task_count||0}</b></span><span class="mini-stat">待归纳反馈 <b>${e.pending_feedback_count||0}/3</b></span></div>${lineChart(events)}<p class="body-text">正确区分 ${e.usage_counts?.positive||0} · 反向区分 ${e.usage_counts?.negative||0} · 双方满足 ${e.usage_counts?.both_true||0} · 双方未满足 ${e.usage_counts?.both_false||0} · 区分率 ${pct(e.discrimination_rate)}</p><p class="legend">以上按被引用标准计次，同判不改信用、不参与归纳；区分率仅展示，不提供给Selector。</p><p class="legend">从 Beta(1,1) 先验开始，正负证据分别增加 α/β，不先抵消。置信度是 α/(α+β)，并非校准后的成功概率；历史信用不证明新文本版本已验证。</p></div>
     <div class="detail-section"><div class="section-kicker">04 / ORIGIN & EVOLUTION</div><h3>演化时间线 · ${events.length} 个事件 · 案例 ${e.case_count}/10 · v${e.text_version}${e.text_frozen?' · 文本冻结':''}</h3><div class="timeline">${events.map(ev=>`<div class="event"><div class="event-top"><strong>${ev.kind==='prior'?'初始先验':ev.kind==='text_update'?'文本重新归纳':ev.kind==='application_credit'?'入池应用证据':'R0下游证据'}</strong><span>${pct(ev.confidence)}</span></div><p>${ev.sample_id?sampleButton(ev.sample_id):'无来源'} · α ${n(ev.alpha)} / β ${n(ev.beta)}<br>P ${n(ev.positive_credit||0)} / N ${n(ev.negative_credit||0)}${ev.text_version?` · 使用版本 v${ev.text_version}`:''}${ev.text_update?`<br>文本 v${ev.text_update.previous_version} → v${ev.text_update.text_version}<br>${h(ev.text_update.content)}<br>适用条件：${h(ev.text_update.trigger)}<br>归纳案例：${ev.text_update.case_ids.map(id=>sampleButton(id)).join('、')}${ev.text_update.error?`<br>更新失败：${h(ev.text_update.error)}`:''}<details><summary>查看原文本</summary><p>${h(ev.text_update.previous_content)}</p><p>${h(ev.text_update.previous_trigger)}</p></details>`:''}</p></div>`).join('')}</div></div>`;
 
 }
@@ -498,6 +512,12 @@ document.addEventListener('click', event => {
   }
 });
 document.getElementById('run-select').addEventListener('change', event => refresh(event.target.value));
+document.addEventListener('change', event => {
+  if (!event.target.matches('[data-experience-sort]') || !experienceSortOptions.some(([key])=>key===event.target.value)) return;
+  expSort=event.target.value;
+  render({preserveListScroll:true});
+  document.querySelector('[data-experience-sort]')?.focus();
+});
 document.addEventListener('input', event=>{
   if(!event.target.dataset.search) return;
   const focus=event.target.dataset.search;
@@ -509,4 +529,12 @@ document.addEventListener('input', event=>{
   const replacement=document.querySelector(`[data-search="${focus}"]`);
   if(replacement){replacement.focus();if(position!==null) replacement.setSelectionRange(position,position);}
 });
+document.addEventListener('change', event => {
+  if (!event.target.matches('[data-category-filter]')) return;
+  if (!['all','ungrouped',...(data?.categories||[]).map(c=>c.category_id)].includes(event.target.value)) return;
+  categoryFilter=event.target.value;
+  render();
+  document.querySelector('[data-category-filter]')?.focus();
+});
+
 refresh();

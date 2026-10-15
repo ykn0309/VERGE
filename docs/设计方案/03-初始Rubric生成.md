@@ -14,7 +14,7 @@
 
 ```text
 Task
-Selected Experiences（experience_id/content/trigger，可以为空）
+Selected Atomic Experiences（小经验experience_id/content/trigger，可以为空；不含类别或类别信用）
 ```
 
 禁止输入：

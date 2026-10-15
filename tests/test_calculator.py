@@ -39,10 +39,10 @@ def rubric_case(scores, signs, sources):
 @pytest.mark.parametrize(
     "scores,signs,expected",
     [
-        ([2, 2, 6], [1, -1, 0], Credit(0.2, 0.35)),
-        ([3, 2, 5], [1, -1, 0], Credit(0.3, 0.325)),
-        ([2, 8], [1, 0], Credit(0.2, 0.2)),
-        ([2, 8], [-1, 0], Credit(0, 0.4)),
+        ([2, 2, 6], [1, -1, 0], Credit(0.2, 0.2)),
+        ([3, 2, 5], [1, -1, 0], Credit(0.3, 0.2)),
+        ([2, 8], [1, 0], Credit(0.2, 0)),
+        ([2, 8], [-1, 0], Credit(0, 0.2)),
     ],
 )
 def test_separate_channels_never_net_before_beta_update(scores, signs, expected):
@@ -74,7 +74,7 @@ def test_shared_sources_conserve_total_mass():
 @pytest.mark.parametrize("sources", [[[], []], [["e"], ["e"]]])
 def test_zero_channels_no_record(sources):
     r, j = rubric_case([2, 8], [0, 0], sources)
-    assert calculate_experience_credits(r, j) == ({"e": Credit(0, .25)} if sources[0] else {})
+    assert calculate_experience_credits(r, j) == ({"e": Credit(0, 0)} if sources[0] else {})
 
 
 def test_balanced_evidence_pulls_asymmetric_beta_toward_half():

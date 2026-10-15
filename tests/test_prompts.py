@@ -92,7 +92,7 @@ def test_generator_actual_message_unifies_e_and_current_candidate():
     assert "当前候选、尚未验证，无历史置信度" in user
     assert "已准入" not in user and "本次选中的经验" not in user
     assert "confidence" not in payload["candidate_experience"]
-    assert set(_ROLE_GUIDANCE) == {"selector", "initial_generator", "judge", "critic", "experience_updater"}
+    assert set(_ROLE_GUIDANCE) == {"selector", "initial_generator", "judge", "critic", "experience_updater", "category_organizer"}
 
 
 def test_role_prompts_use_scoring_standard_language():

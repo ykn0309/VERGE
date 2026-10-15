@@ -6,7 +6,7 @@ from threading import Barrier, Lock
 import pytest
 import yaml
 from verge.cli import main
-from verge.llm import FakeLLMBackend
+from verge.llm import FakeLLMBackend, LLMSampleError
 from verge.prompts import PROMPT_VERSION
 
 PROJECT = Path(__file__).resolve().parents[1]
@@ -75,7 +75,7 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
     assert summary["train_samples"] == 2 and summary["test_samples"] == 1
     manifest = json.loads((directory / "run_manifest.json").read_text())
     assert (
-        manifest["format_version"] == 7
+        manifest["format_version"] == 8
         and manifest["method"] == "local_credit_bounded_experience"
     )
     assert set(manifest["prompt_versions"].values()) == {PROMPT_VERSION}
@@ -85,6 +85,7 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
         "judge",
         "critic",
         "experience_updater",
+        "category_organizer",
     }
     assert manifest["execution"]["max_application_rounds"] == 2
     assert manifest["execution"]["critic_proposals_per_round"] == 1
@@ -251,6 +252,34 @@ def test_errors_count_toward_processed_prefix_and_pause_skips_test(
     assert result["train_samples"] == 1 and result["test_samples"] == 0
     rs = records(tmp_path / "result")
     assert len(rs) == 1 and rs[0]["state"] == "sample_error"
+
+
+@pytest.mark.parametrize("role", ["initial_generator", "judge"])
+def test_request_exhaustion_does_not_abort_cli_run(tmp_path, monkeypatch, capsys, role):
+    path, _ = experiment(tmp_path)
+    original = FakeLLMBackend.generate
+    failed = False
+    lock = Lock()
+
+    def fail_once(self, requested_role, payload, **kwargs):
+        nonlocal failed
+        with lock:
+            if requested_role == role and not failed:
+                failed = True
+                raise LLMSampleError("request failed after 3 attempts (ReadTimeout)")
+        return original(self, requested_role, payload, **kwargs)
+
+    monkeypatch.setattr(FakeLLMBackend, "generate", fail_once)
+    assert main(["run", "--config", str(path)]) == 0
+    output = capsys.readouterr()
+    summary = json.loads(output.out)
+    assert summary["train_samples"] == 2 and summary["test_samples"] == 1
+    saved = records(tmp_path / "result")
+    assert [r["sample_id"] for r in saved] == ["train-a", "train-b", "test-a"]
+    assert saved[0]["state"] == "sample_error" and saved[0]["sample_error"]["stage"] == ("initial_judge" if role == "judge" else role)
+    assert saved[1]["state"] == "application_success"
+    assert saved[2]["initial_judgment"] is not None
+    assert "recorded, continuing" in output.err
 
 
 def test_parallel_evaluation_keeps_order_and_no_candidate_calls(

@@ -195,8 +195,8 @@ def _evolution(experience, records, order, warnings):
 
 def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 7:
-        raise ValueError("unsupported run manifest format; new runs require v6")
+    if manifest.get("format_version") != 8:
+        raise ValueError("unsupported run manifest format; new runs require v8")
     versions = manifest.get("prompt_versions")
     if (
         not isinstance(versions, dict)
@@ -471,21 +471,24 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
         summary = summaries.get(sample["sample_id"], {})
         sample["generator_analysis"] = summary.get("generator_analysis")
         sample["experience_status"] = _sample_experience_status(sample, summary)
-    memory = json.loads((root / "experience_memory.json").read_text(encoding="utf-8"))
-    if (
-        set(memory) != {"schema_version", "experiences"}
-        or memory["schema_version"] != 5
-    ):
-        raise ValueError("unsupported memory schema")
-    experiences = [
-        Experience.from_dict(item).to_dict() for item in memory["experiences"]
-    ]
-    for item in experiences:
+    from verge.memory import ExperienceMemory
+    pool = ExperienceMemory(root, read_only=True)
+    categories = {c.category_id: c.to_dict() for c in pool.categories()}
+    experiences = []
+    for experience in pool.all():
+        item = experience.to_dict()
         item["evolution"] = _evolution(item, records, order, warnings)
-        item["case_count"] = len(item["cases"])
-        item["pending_feedback_count"] = Experience.from_dict({k:v for k,v in item.items() if k not in {"evolution", "case_count"}}).pending_feedback_count
-        item["downstream_task_count"] = len({e["sample_id"] for e in item["evidence_history"] if e["evidence_type"] == "downstream_credit"})
-        item["text_frozen"] = len(item["cases"]) >= 10
+        item["case_count"] = len(experience.cases)
+        item["pending_feedback_count"] = experience.pending_feedback_count
+        item["downstream_task_count"] = len({e.sample_id for e in experience.usage_history if e.sample_id != experience.cases[0].sample_id})
+        item["text_frozen"] = experience.text_frozen
+        item["category"] = categories.get(experience.category_id)
+        item["usage_counts"] = {kind: sum(getattr(u, kind) for u in experience.usage_history)
+                                for kind in ("positive", "negative", "both_true", "both_false")}
+        counts = item["usage_counts"]
+        total = sum(counts.values())
+        item["discrimination_rate"] = (counts["positive"] + counts["negative"]) / total if total else None
+        experiences.append(item)
     overview = _overview_metrics(samples, experiences, context, manifest, warnings)
     counts = Counter(item["state"] for item in samples)
     return {
@@ -495,6 +498,9 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
         "resumed_from": manifest.get("resumed_from", {}).get("source_run"),
         "samples": samples,
         "experiences": experiences,
+        "categories": list(categories.values()),
+        "pending_organization": dict(pool.pending_organization),
+        "organization_history": [e.to_dict() for e in pool.organization_history],
         "counts": dict(counts),
         "warnings": warnings,
         "overview": overview,

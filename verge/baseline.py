@@ -35,7 +35,7 @@ def _sha(path: Path) -> str:
 def _source(directory: str | Path) -> tuple[Path, dict[str, Any], JsonlDataset]:
     directory = Path(directory).expanduser().resolve()
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 7:
+    if manifest.get("format_version") != 8:
         raise ValueError("unsupported source manifest format")
     config = manifest["config"]["dataset"]
     if config["implementation"] != "jsonl":
@@ -100,7 +100,7 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
         )
         judge = LLMJudge(backends["judge"])
         manifest = {
-            "format_version": 7,
+            "format_version": 8,
             "config": config,
             "code_version": _code_version(),
             "execution": {
@@ -126,7 +126,7 @@ def run_baseline(source_run: str | Path, output_dir: str | Path) -> dict[str, An
         root.mkdir(parents=True, exist_ok=False)
         # Static empty view for existing read-only dashboard, not an ExperienceMemory instance.
         (root / "experience_memory.json").write_text(
-            '{"schema_version": 5, "experiences": []}\n', encoding="utf-8"
+            '{"schema_version": 6, "experiences": [], "categories": [], "pending_organization": {}, "organization_history": []}\n', encoding="utf-8"
         )
         role_file = root / "role_io.jsonl"
         role_file.touch(mode=0o600)

@@ -20,6 +20,7 @@ from verge.llm import (
     JUDGE_RESPONSE_SIDE,
     LLMBackend,
     LLMFormatError,
+    LLMSampleError,
     OpenAICompatibleBackend,
 )
 from verge.models import (
@@ -29,6 +30,8 @@ from verge.models import (
     CriterionJudgment,
     Experience,
     ExperienceUpdate,
+    ExperienceCategory,
+    CategoryOrganization,
     Rubric,
     RubricJudgment,
 )
@@ -40,6 +43,7 @@ from verge.prompts import (
     generator_payload,
     judge_payload,
     selector_payload,
+    category_organization_payload,
 )
 
 
@@ -47,7 +51,8 @@ from verge.prompts import (
 class Retriever(Protocol):
     """广召回：输入 task 和经验池，输出候选经验；不得读取偏好回答。"""
 
-    def retrieve(self, task: str, experiences: Sequence[Experience]) -> list[Experience]: ...
+    def retrieve(self, task: str, experiences: Sequence[Experience], *,
+                 categories: Sequence[ExperienceCategory] = ()) -> list[Experience]: ...
 
 
 class Selector(Protocol):
@@ -97,6 +102,11 @@ class ExperienceUpdater(Protocol):
     def update(self, experience: Experience) -> ExperienceUpdate: ...
 
 
+class CategoryOrganizer(Protocol):
+    def organize(self, experiences: Sequence[Experience], categories: Sequence[ExperienceCategory],
+                 pending: Mapping[str, int]) -> CategoryOrganization: ...
+
+
 def _text(value: str, name: str) -> None:
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{name} must be a non-empty string")
@@ -129,7 +139,9 @@ def _output(
             {field}
             if field is not None
             else (
-                {"content", "trigger"}
+                {"categories", "ungrouped_experience_ids"}
+                if role == "category_organizer"
+                else {"content", "trigger"}
                 if role == "experience_updater"
                 else {"analysis", "candidates"}
             )
@@ -142,6 +154,38 @@ def _output(
     return response[field] if field is not None else response
 
 
+@dataclass
+class RetrievalUnit:
+    unit_id: str
+    text: str
+    members: list[Experience]
+    category: ExperienceCategory | None = None
+
+
+def retrieval_units(experiences: Sequence[Experience], categories: Sequence[ExperienceCategory]) -> list[RetrievalUnit]:
+    by_category = {c.category_id: c for c in categories}
+    if (len({e.experience_id for e in experiences}) != len(experiences)
+            or len(by_category) != len(categories)):
+        raise ValueError("retrieval requires unique experience and category IDs")
+    units = []
+    grouped = {}
+    for e in experiences:
+        if e.category_id is None:
+            units.append(RetrievalUnit(e.experience_id, f"{e.content}\n{e.trigger}", [e]))
+        else:
+            if e.category_id not in by_category:
+                raise ValueError("retrieval found unknown category")
+            if e.category_id not in grouped:
+                c = by_category[e.category_id]
+                grouped[e.category_id] = RetrievalUnit(c.category_id, "", [], c)
+                units.append(grouped[e.category_id])
+            grouped[e.category_id].members.append(e)
+    for unit in grouped.values():
+        unit.text = "\n".join([unit.category.name, unit.category.description,
+                              *(f"{e.trigger}\n{e.content}" for e in unit.members)])
+    return units
+
+
 class FakeRetriever:
     """稳定取前 L 条，供离线测试使用；不声称提供向量相似度。"""
 
@@ -150,9 +194,10 @@ class FakeRetriever:
             raise ValueError("V1 retrieval top_l must be 20")
         self.top_l = top_l
 
-    def retrieve(self, task: str, experiences: Sequence[Experience]) -> list[Experience]:
+    def retrieve(self, task: str, experiences: Sequence[Experience], *,
+                 categories: Sequence[ExperienceCategory] = ()) -> list[Experience]:
         _text(task, "task")
-        return list(experiences[:self.top_l])
+        return [e for unit in retrieval_units(experiences, categories)[:self.top_l] for e in unit.members]
 
 
 class EmbeddingBackend(Protocol):
@@ -166,7 +211,7 @@ class VectorRetriever:
         if type(top_l) is not int or top_l != 20:
             raise ValueError("V1 retrieval top_l must be 20")
         self.backend, self.top_l = backend, top_l
-        self._vectors: dict[str, tuple[tuple[str, str], tuple[float, ...]]] = {}
+        self._vectors: dict[str, tuple[str, tuple[float, ...]]] = {}
 
     def fork(self) -> VectorRetriever:
         """为并发只读评估复制已缓存的经验向量，避免线程共享可变缓存。"""
@@ -184,37 +229,41 @@ class VectorRetriever:
             raise ValueError("retrieval requires a nonzero embedding vector")
         return tuple(x / norm for x in vector)
 
-    def retrieve(self, task: str, experiences: Sequence[Experience]) -> list[Experience]:
+    def retrieve(self, task: str, experiences: Sequence[Experience], *,
+                 categories: Sequence[ExperienceCategory] = ()) -> list[Experience]:
         _text(task, "task")
         if not experiences:
             return []
-        if len({item.experience_id for item in experiences}) != len(experiences):
-            raise ValueError("retrieval requires unique experience IDs")
+        units = retrieval_units(experiences, categories)
         query = self._unit(self.backend.embed(task))
-        scored: list[tuple[float, str, Experience]] = []
-        for item in experiences:
-            text = (item.content, item.trigger)
-            cached = self._vectors.get(item.experience_id)
+        scored = []
+        self._vectors = {key: value for key, value in self._vectors.items() if key in {u.unit_id for u in units}}
+        for item in units:
+            text = item.text
+            cached = self._vectors.get(item.unit_id)
             if cached is None or cached[0] != text:
-                vector = self._unit(self.backend.embed(f"{item.content}\n{item.trigger}"))
-                self._vectors[item.experience_id] = (text, vector)
+                vector = self._unit(self.backend.embed(text))
+                self._vectors[item.unit_id] = (text, vector)
             else:
                 vector = cached[1]
             if len(query) != len(vector):
                 raise ValueError("retrieval embedding dimensions disagree")
-            scored.append((sum(a * b for a, b in zip(query, vector)), item.experience_id, item))
+            scored.append((sum(a * b for a, b in zip(query, vector)), item.unit_id, item))
         scored.sort(key=lambda row: (-row[0], row[1]))
-        return [row[2] for row in scored[:self.top_l]]
+        return [e for row in scored[:self.top_l] for e in row[2].members]
 
 
 class LLMSelector:
     """让 LLM 返回召回候选的 ID；不允许凭空选出未召回的经验。"""
 
-    def __init__(self, backend: LLMBackend, *, max_selected: int = 5) -> None:
+    def __init__(self, backend: LLMBackend, *, max_selected: int = 5, input_bytes: int = 100_000) -> None:
         if type(max_selected) is not int or not 0 <= max_selected <= 5:
             raise ValueError("max_selected must be an integer in [0, 5]")
         self.backend = backend
         self.max_selected = max_selected
+        if type(input_bytes) is not int or input_bytes < 1:
+            raise ValueError("selector input_bytes must be positive")
+        self.input_bytes = input_bytes
 
     def select(self, task: str, candidates: Sequence[ExperienceView], *,
                training: bool = True) -> list[ExperienceView]:
@@ -224,9 +273,11 @@ class LLMSelector:
             raise ValueError("training must be Boolean")
         if not candidates or not self.max_selected:
             return []
-        identifiers = _output(self.backend, "selector", selector_payload(
+        payload = selector_payload(
             task, candidates, max_selected=self.max_selected, training=training,
-        ), "selected_experience_ids")
+        )
+        _input_budget(self.backend, "selector", payload, self.input_bytes)
+        identifiers = _output(self.backend, "selector", payload, "selected_experience_ids")
         if not isinstance(identifiers, list) or any(type(key) is not str for key in identifiers):
             raise ValueError("selector: selected_experience_ids must be a list of strings")
         by_id = {item.experience_id: item for item in candidates}
@@ -469,10 +520,10 @@ class LLMJudge:
                         outcomes.append(None)
                         errors.append(exc)
             if errors:
-                # Transport/auth errors keep their abort semantics even if the other side is malformed.
+                # Fatal auth/program errors must win over a skippable error on the other side.
                 raise next(
-                    (exc for exc in errors if not isinstance(exc, JudgeOutputError)),
-                    errors[0],
+                    (exc for exc in errors if not isinstance(exc, (JudgeOutputError, LLMSampleError))),
+                    next((exc for exc in errors if isinstance(exc, LLMSampleError)), errors[0]),
                 )
             chosen_answers, rejected_answers = outcomes
             generated = [
@@ -608,6 +659,37 @@ class LLMExperienceUpdater:
         raise AssertionError("unreachable")
 
 
+def _input_budget(backend, role, payload, limit):
+    from verge.prompts import llm_messages
+    projected = NumberedIDCodec(role, payload).project(payload) if isinstance(backend, OpenAICompatibleBackend) else payload
+    if sum(len(m["content"].encode("utf-8")) for m in llm_messages(role, projected)) > limit:
+        raise ValueError(f"{role} context budget exceeded")
+
+
+class LLMCategoryOrganizer:
+    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 2) -> None:
+        if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
+            raise ValueError("invalid_output_retries must be in [0,3]")
+        self.backend, self.invalid_output_retries = backend, invalid_output_retries
+
+    def organize(self, experiences, categories, pending) -> CategoryOrganization:
+        payload = category_organization_payload(experiences, categories, pending)
+        for retry in range(self.invalid_output_retries + 1):
+            try:
+                _input_budget(self.backend, "category_organizer", payload, 100_000)
+                plan = CategoryOrganization.from_dict(dict(_output(self.backend, "category_organizer", payload, None)))
+                plan.validate_partition({e.experience_id for e in experiences}, {c.category_id for c in categories})
+                return plan
+            except LLMFormatError:
+                raise
+            except ValueError:
+                if retry == self.invalid_output_retries:
+                    raise
+                # Do not echo long internal IDs into correction prompts.
+                payload = {**payload, "validation_feedback": "上次分类结构或分配无效：请确保所有经验恰好分配一次，沿用输入类别编号或用null创建新类别，输出完整方案。"}
+        raise AssertionError("unreachable")
+
+
 @dataclass
 class LLMModules:
     """角色适配器共享一个 backend；可由配置为各角色覆盖。"""
@@ -619,6 +701,7 @@ class LLMModules:
     judge: LLMJudge
     critic: LLMCritic
     experience_updater: LLMExperienceUpdater
+    category_organizer: LLMCategoryOrganizer
 
 
 def make_llm_modules(
@@ -637,6 +720,7 @@ def make_llm_modules(
         LLMJudge(backend),
         LLMCritic(backend),
         LLMExperienceUpdater(backend),
+        LLMCategoryOrganizer(backend),
     )
 
 

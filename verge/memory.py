@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Iterator
 from uuid import uuid4
 
-from verge.calculator import apply_beta_evidence, positive_experience_sources
+from verge.calculator import apply_beta_evidence, positive_experience_sources, calculate_experience_usage
 from verge.models import (
     CandidateExperience,
     Credit,
@@ -18,6 +18,10 @@ from verge.models import (
     ExperienceUpdate,
     TextUpdateRecord,
     TrajectoryRecord,
+    UsageRecord,
+    ExperienceCategory,
+    CategoryOrganization,
+    OrganizationRecord,
 )
 
 
@@ -31,12 +35,15 @@ class ExperienceMemory:
         self.path = Path(root_dir) / "experience_memory.json"
         self.read_only = read_only
         self._experiences: dict[str, Experience] = {}
+        self._categories: dict[str, ExperienceCategory] = {}
+        self.pending_organization: dict[str, int] = {}
+        self.organization_history: list[OrganizationRecord] = []
         if self.path.exists():
             data = json.loads(self.path.read_text(encoding="utf-8"))
             if (
                 not isinstance(data, dict)
-                or set(data) != {"schema_version", "experiences"}
-                or data.get("schema_version") != 5
+                or set(data) != {"schema_version", "experiences", "categories", "pending_organization", "organization_history"}
+                or data.get("schema_version") != 6
                 or not isinstance(data["experiences"], list)
             ):
                 raise ValueError("invalid experience memory format")
@@ -47,6 +54,24 @@ class ExperienceMemory:
                 if experience.experience_id in self._experiences:
                     raise ValueError("duplicate experience ID in memory")
                 self._experiences[experience.experience_id] = experience
+            for value in data["categories"]:
+                category = ExperienceCategory.from_dict(value)
+                if category.category_id in self._categories:
+                    raise ValueError("duplicate category ID")
+                self._categories[category.category_id] = category
+            self.pending_organization = data["pending_organization"]
+            if not isinstance(self.pending_organization, dict) or any(
+                key not in self._experiences or type(version) is not int
+                or version != self._experiences[key].text_version
+                for key, version in self.pending_organization.items()
+            ):
+                raise ValueError("invalid pending organization versions")
+            if any(e.category_id is not None and e.category_id not in self._categories
+                   for e in self._experiences.values()):
+                raise ValueError("unknown experience category")
+            if set(self._categories) != {e.category_id for e in self._experiences.values() if e.category_id}:
+                raise ValueError("categories must have members")
+            self.organization_history = [OrganizationRecord.from_dict(v) for v in data["organization_history"]]
         elif read_only:
             raise FileNotFoundError(self.path)
         else:
@@ -60,8 +85,11 @@ class ExperienceMemory:
         self._ensure_writable()
         self.path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
-            "schema_version": 5,
+            "schema_version": 6,
             "experiences": [item.to_dict() for item in self._experiences.values()],
+            "categories": [item.to_dict() for item in self._categories.values()],
+            "pending_organization": self.pending_organization,
+            "organization_history": [item.to_dict() for item in self.organization_history],
         }
         self.path.write_text(
             json.dumps(payload, ensure_ascii=False, allow_nan=False, indent=2) + "\n",
@@ -78,8 +106,11 @@ class ExperienceMemory:
     def get(self, experience_id: str) -> Experience:
         return Experience.from_dict(self._experiences[experience_id].to_dict())
 
+    def categories(self) -> list[ExperienceCategory]:
+        return [ExperienceCategory.from_dict(c.to_dict()) for c in self._categories.values()]
+
     def apply_downstream_credits(
-        self, sample_id: str, credits: dict[str, Credit]
+        self, sample_id: str, credits: dict[str, Credit], *, usage: dict[str, UsageRecord] | None = None
     ) -> None:
         self._ensure_writable()
         updates = {}
@@ -96,6 +127,11 @@ class ExperienceMemory:
                         text_version=current.text_version,
                     ),
                 )
+        for key, event in (usage or {}).items():
+            current = updates.get(key, self._active(key))
+            if event.sample_id != sample_id or event.text_version != current.text_version:
+                raise ValueError("usage must match applied sample and text version")
+            updates[key] = replace(current, usage_history=[*current.usage_history, event])
         if updates:
             self._experiences.update(updates)
             self._save()
@@ -122,12 +158,16 @@ class ExperienceMemory:
             case.sample_id, "application_credit", case.credit.positive_credit,
             case.credit.negative_credit, candidate.candidate_id, text_version=1,
         ))
+        usage = calculate_experience_usage(case.rubric, case.judgment, case.sample_id,
+            {source: 1 for c in case.rubric.criteria for source in c.source_experiences})
+        experience.usage_history = [usage[candidate.candidate_id]]
         self._experiences[experience_id] = experience
+        self.pending_organization[experience_id] = experience.text_version
         self._save()
         return replace(candidate, experience_id=experience_id)
 
     def collect_case(self, experience_id: str, case: ExperienceCase) -> bool:
-        """Collect positive, reversed and neutral R0 cases; ten includes the origin."""
+        """Collect discriminating R0 cases; ten includes the origin."""
         self._ensure_writable()
         current = self._active(experience_id)
         if case.source_id != experience_id or (case.content, case.trigger, case.text_version) != (
@@ -157,6 +197,43 @@ class ExperienceMemory:
                           text_version=event.text_version,
                           update_history=[*current.update_history, event])
         self._experiences[experience_id] = updated
+        if changed:
+            self.pending_organization[experience_id] = updated.text_version
+        self._save()
+        return event
+
+    def organization_due(self, batch_size: int, *, flush: bool = False) -> bool:
+        if not self.pending_organization or (not flush and len(self.pending_organization) < batch_size):
+            return False
+        # A failed request has already exhausted bounded retries for this exact queue.
+        return not (self.organization_history and self.organization_history[-1].error is not None
+                    and self.organization_history[-1].pending_versions == self.pending_organization)
+
+    def organize(self, sample_id: str, plan: CategoryOrganization | None,
+                 *, error: str | None = None) -> OrganizationRecord:
+        self._ensure_writable()
+        if not self.pending_organization:
+            raise ValueError("no pending organization")
+        if error is None:
+            if plan is None:
+                raise ValueError("organization requires a plan")
+            plan.validate_partition(set(self._experiences), set(self._categories))
+            categories = {}
+            assignments = {key: None for key in plan.ungrouped_experience_ids}
+            for draft in plan.categories:
+                key = draft.category_id or "cat_" + uuid4().hex
+                categories[key] = ExperienceCategory(key, draft.name, draft.description)
+                assignments.update({eid: key for eid in draft.experience_ids})
+            updated = {key: replace(e, category_id=assignments[key]) for key, e in self._experiences.items()}
+        else:
+            categories, updated = self._categories, self._experiences
+            assignments = {key: e.category_id for key, e in updated.items()}
+        event = OrganizationRecord(sample_id, dict(self.pending_organization),
+                                   list(categories.values()), assignments, error)
+        self._experiences, self._categories = updated, categories
+        self.organization_history.append(event)
+        if error is None:
+            self.pending_organization = {}
         self._save()
         return event
 

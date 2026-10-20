@@ -19,7 +19,7 @@ def test_fake_unknown_source_retries_then_exhausts_without_mutating_response():
     gen = LLMInitialRubricGenerator(backend, invalid_output_retries=1)
     c = CandidateExperience("candidate_current", "方法", "条件")
     with pytest.raises(ValueError, match="source_experiences"):
-        gen.apply("task", [], c, 1)
+        gen.apply("task", [], [c], 1)
     assert (
         len(backend.requests) == 2 and "validation_feedback" in backend.requests[-1][1]
     )

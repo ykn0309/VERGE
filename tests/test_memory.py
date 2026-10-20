@@ -1,92 +1,80 @@
-"""Persistent bounded cases, separate credit, frozen text and new-only protocol."""
+"""Immutable version credit, windows and atomic replacement."""
 import json
 import pytest
-from experience_helpers import seed, case_for
-from verge.memory import ExperienceMemory, TrajectoryLog
-from verge.models import CandidateExperience, Credit, TrajectoryRecord
+from experience_helpers import seed,case_for
+from verge.memory import ExperienceMemory,TrajectoryLog
+from verge.models import CandidateExperience, Credit, AtomicMethod, AtomicResult, ExperienceUpdate, TrajectoryRecord
 
+def pool(tmp_path):
+    m=ExperienceMemory(tmp_path)
+    eid=seed(m,CandidateExperience('c','方法','*'),'origin').experience_id
+    return m,eid
 
-def candidate(sid='candidate_1'):
-    return CandidateExperience(sid, '独立关键要求标准', '*')
+def feedback(m,eid,sid,p=.2,n=0):
+    e=m.get(eid);c=case_for(eid,sid,e.content,e.trigger,p=p,n=n)
+    m.apply_downstream_credits(sid,{eid:c.credit})
+    assert m.collect_case(eid,c)
+    return c
 
+def test_keep_consumes_five_and_continues_beyond_ten(tmp_path):
+    m,eid=pool(tmp_path)
+    for i in range(15):
+        feedback(m,eid,f't{i}')
+        e=m.get(eid)
+        assert e.update_due==((i+1)%5==0)
+        if e.update_due: m.evolve(eid,ExperienceUpdate('keep'),None)
+    e=ExperienceMemory(tmp_path).get(eid)
+    assert e.pending_feedback_count==0 and len(e.cases)==16 and len(e.working_cases)==5
+    assert e.status=="active" and len(e.update_history)==3
+    assert e.alpha==pytest.approx(4.2)
 
-def test_text_updates_preserve_id_credit_and_versions(tmp_path):
-    memory = ExperienceMemory(tmp_path)
-    added = seed(memory, candidate(), 's1', p=.3, n=.2)
-    eid = added.experience_id
-    memory.apply_downstream_credits('s2', {eid: Credit(.3, .2)})
-    e = memory.get(eid)
-    case = case_for(eid, 's2', e.content, e.trigger, e.text_version, .3, .2)
-    assert memory.collect_case(eid, case)
-    for sid in ('s3', 's4'):
-        memory.apply_downstream_credits(sid, {eid: Credit(.3, .2)})
-        memory.collect_case(eid, case_for(eid, sid, e.content, e.trigger, 1, .3, .2))
-    event = memory.update_text(eid, '跨案例共同方法', '必要条件')
-    e = ExperienceMemory(tmp_path).get(eid)
-    assert e.experience_id == eid and (e.alpha, e.beta) == pytest.approx((2.2, 1.8))
-    assert e.text_version == 2 and e.update_history == [event]
-    assert len(e.cases) == 4 and [ev.text_version for ev in e.evidence_history] == [1, 1, 1, 1]
-    assert json.loads(memory.path.read_text())['schema_version'] == 6
-    assert not hasattr(memory, 'fuse')
+def test_split_retains_parent_evidence_and_shares_credit(tmp_path):
+    m,eid=pool(tmp_path)
+    for i in range(5): feedback(m,eid,f't{i}',p=.2,n=.1)
+    before=m.get(eid)
+    result=AtomicResult([AtomicMethod('动作A','条件A'),AtomicMethod('动作B','条件B')])
+    ev=m.evolve(eid,ExperienceUpdate('revise',AtomicMethod('动作A和B','条件')),result)
+    parent=m.get(eid)
+    assert parent.status=='retired' and parent.evidence_history==before.evidence_history
+    assert parent.alpha==before.alpha and parent.beta==before.beta
+    assert len(m.all(active_only=True))==2
+    for key in ev.child_ids:
+        child=m.get(key)
+        assert child.alpha==pytest.approx(1.6) and child.beta==pytest.approx(1.4)
+        assert not child.cases and not child.usage_history and not child.evidence_history
+        assert child.origin_refs==[eid] and child.created_by_event_id==ev.event_id
+    assert ExperienceMemory(tmp_path).get(eid)==parent
+    with pytest.raises(ValueError):m.apply_downstream_credits('later',{eid:Credit(.1,0)})
 
+def test_failed_window_retries_only_on_new_case(tmp_path):
+    m,eid=pool(tmp_path)
+    for i in range(5):feedback(m,eid,f't{i}')
+    m.evolve(eid,None,None,error='timeout')
+    assert not m.get(eid).update_due and m.get(eid).pending_feedback_count==5
+    feedback(m,eid,'t5',p=0,n=.2)
+    e=m.get(eid)
+    assert e.update_due and [c.sample_id for c in e.working_cases]==[f't{i}' for i in range(1,6)]
+    m.evolve(eid,ExperienceUpdate('keep'),None)
+    assert m.get(eid).pending_feedback_count==0 and len(m.get(eid).cases)==7
 
-def test_ten_cases_freeze_text_and_dedup_unchanged_updates(tmp_path):
-    m = ExperienceMemory(tmp_path)
-    eid = seed(m, candidate(), 's0').experience_id
-    for i in range(1, 10):
-        e = m.get(eid)
-        case = case_for(eid, f's{i}', e.content, e.trigger, e.text_version)
-        assert m.collect_case(eid, case)
-        assert not m.collect_case(eid, case)
-        if m.get(eid).update_due:
-            m.update_text(eid, e.content, e.trigger)  # unchanged still consumes a case
-    e = m.get(eid)
-    assert len(e.cases) == 10 and len(e.update_history) == 3
-    assert e.text_frozen and e.text_version == 1
-    assert not m.collect_case(eid, case_for(eid, 's10', e.content, e.trigger))
-    with pytest.raises(ValueError, match='pending'):
-        m.update_text(eid, '绕过冻结', '*')
-    m.apply_downstream_credits('s10', {eid: Credit(.2, .1)})
-    assert m.get(eid).alpha == pytest.approx(1.4)
-    assert m.get(eid).content == e.content
+def test_unchanged_revision_keep_and_duplicate_feedback_rejected(tmp_path):
+    m,eid=pool(tmp_path)
+    for i in range(5):feedback(m,eid,f't{i}')
+    e=m.get(eid);draft=AtomicMethod(e.content,e.trigger)
+    ev=m.evolve(eid,ExperienceUpdate('revise',draft),AtomicResult([draft]))
+    assert ev.result=='keep' and not ev.child_ids and m.get(eid).status=='active'
+    before=m.path.read_bytes()
+    with pytest.raises(ValueError): m.apply_downstream_credits('t4',{eid:Credit(.2,0)})
+    assert m.path.read_bytes()==before
+    with pytest.raises(ValueError):m.evolve(eid,ExperienceUpdate('keep'),None)
 
-
-def test_readonly_rejects_mutations(tmp_path):
-    m = ExperienceMemory(tmp_path)
-    c = candidate()
-    eid = seed(m, c).experience_id
-    before = m.path.read_bytes()
-    frozen = ExperienceMemory(tmp_path, read_only=True)
-    case = case_for(eid, 'next', c.content, c.trigger)
-    for action in [lambda: frozen.apply_downstream_credits('s', {eid: Credit(.2, 0)}),
-                   lambda: frozen.collect_case(eid, case),
-                   lambda: seed(frozen, candidate('c2'), 's'),
-                   lambda: frozen.update_text(eid, '方法', '条件')]:
-        with pytest.raises(ValueError):
-            action()
-    assert m.path.read_bytes() == before
-
-
-@pytest.mark.parametrize('version', [None, 1, 2, 3, 4])
-def test_old_memory_rejected_and_trajectory_roundtrip(tmp_path, version):
-    data = {'experiences': []}
-    if version is not None:
-        data['schema_version'] = version
-    (tmp_path/'experience_memory.json').write_text(json.dumps(data))
-    with pytest.raises(ValueError):
-        ExperienceMemory(tmp_path)
-    log = TrajectoryLog(tmp_path)
-    record = TrajectoryRecord('s', 'initial_failure')
-    log.append(record)
-    assert log.get('s') == record
-
-
-def test_origin_case_and_duplicate_admission_are_validated_before_write(tmp_path):
-    m = ExperienceMemory(tmp_path)
-    added = seed(m, candidate(), 's1')
-    before = m.path.read_bytes()
-    with pytest.raises(ValueError, match='already'):
-        m.add(added, m.get(added.experience_id).cases[0])
-    with pytest.raises(ValueError, match='one candidate'):
-        seed(m, candidate('c2'), 's1')
-    assert m.path.read_bytes() == before
+def test_readonly_and_old_protocol(tmp_path):
+    m,eid=pool(tmp_path);before=m.path.read_bytes();f=ExperienceMemory(tmp_path,read_only=True)
+    for action in (lambda:f.evolve(eid,None,None,error='x'),lambda:f.apply_downstream_credits('x',{eid:Credit(.1,0)}),
+                   lambda:seed(f,CandidateExperience('new','方法','*'),'new')):
+        with pytest.raises(ValueError):action()
+    assert m.path.read_bytes()==before
+    data=json.loads(before);data['schema_version']=6;m.path.write_text(json.dumps(data))
+    with pytest.raises(ValueError):ExperienceMemory(tmp_path)
+    t=TrajectoryRecord('s','initial_failure');log=TrajectoryLog(tmp_path);log.append(t)
+    assert log.get('s')==t

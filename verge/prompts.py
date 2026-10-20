@@ -17,7 +17,7 @@ from verge.models import (
 )
 
 
-PROMPT_VERSION = "atomic-experience-categories-neutral-observations"
+PROMPT_VERSION = "immutable-atomic-evolution-inherited-credit-v2"
 
 # 专属身份和任务说明；Generator/Critic 的对象编号由系统分配。
 _ROLE_GUIDANCE = {
@@ -38,18 +38,24 @@ _ROLE_GUIDANCE = {
 公开content表达面向一类问题的标准设计方法，trigger表达生成前能从task、实际输入、上下文或领域知识识别的条件。把本题主体转换为语义角色，把数量、时长等转换为从新task读取的参数，保留方法必需的专业边界。content与trigger范围一致。每条小经验只表达一个能独立采用或忽略的原子核验方法；若两个要求可以分别采用，不把它们捆绑成一条。本轮仅提最值得验证的一种方法，不必覆盖全部标准。content≤150字符、trigger≤60字符。
 公开经验不依赖已有评分标准、Judge或已观察回答特征，不保留本题专名、答案片段、固定数值、偏好身份或私有分差，也不转成给回答者的成稿/拒绝命令。必要领域条件与通用参数说明可以保留，抽象不等于删除所有专业含义。
 第二轮接续本样本的消息历史，对照自己上一轮的分析和候选、实际标准、来源与前后Judge依据，辨别诊断错误、方法不足、未落实或Judge执行问题；历史分析和来源声明均不证明已落实。根据新增证据重新分析并提出经验，避免仅换说法重复前候选；仍无可信设计动作可返回空候选。""",
-    "experience_updater": """你是经验归纳员。根据同一条经验的有限来源和后续正负使用案例，重新归纳供未来首次设计评分标准使用的方法及适用条件。
-输入包含当前经验、完整task/chosen/rejected，以及仅引用本经验的标准和两侧Judge判断/理由。每条标准的feedback由程序给出：positive表示优选满足而非优选不满足，negative表示反向区分；同判标准不进入本次归纳输入。反馈是应用线索，不是事实证明，也不能从标准子集推断整体结果。applied_experience只在当时使用的文本与当前文本不同时出现。
-结合task和两回答核对案例，综合成功与失败的使用：正向案例帮助保留有依据的方法，负向案例帮助识别方法内容不足、适用条件过宽或不恰当的应用。Judge解释可能有误，不据此新增无依据规则，也不因一次失败机械否定方法。
-只修正当前这一种原子核验方法及其适用范围，允许修正content或收窄trigger。不要追加可以独立采用的其他方法，不生成新候选或分类。保留任务必要边界及合理专业限定，把专名、固定数字和情节转为语义角色或从新task读取的参数，不追加每题特殊规则，不通过举例拼接案例，不让最后一例覆盖其他证据。证据不足以支持改写时保留当前方法，不拆分经验。
-content写如何设计标准，trigger只依据生成前task、实际输入、上下文或领域知识识别，不依赖已观察回答或Judge结果。不放宽task明确约束，不提出总分否决、部分分或修改Judge的指令。
-content不超过150个字符，trigger不超过60个字符，仅输出content/trigger，不输出analysis或案例分组。""",
+    "experience_updater": """你是经验归纳员。根据当前固定文本版本和最近5个不同下游任务的正负使用案例，决定保持或修订供首次设计评分标准使用的方法。
+每条案例含完整任务、两回答、相关有区分标准和两侧Judge解释。positive/negative只是应用方向，不是事实证明；负例可能来自方法缺陷、适用范围或错误应用，不因单例机械否定方法。
+保持有依据的共同方法和必要条件，不以增加要求来容纳无关案例，不沿用原题专名和固定数量，不让最后一例覆盖其他证据。修订应修正方法或其适用范围，不追加独立方法；归纳后由独立原子化器整理。
+只为明确的方法改进而revise，无需润色则keep。trigger从生成前task/输入/上下文识别；content描述标准设计方法。没有充分依据时保持。不要analysis，不修改信用，不输出分类。content≤150字符，trigger≤60字符。""",
 
 }
 
-_ROLE_GUIDANCE["category_organizer"] = """你是经验分类整理员。按核验方法及适用范围组织小经验，类别有名称和描述，不改小经验正文、适用条件或信用。
-读取已有类别、全部小经验及待整理编号，优先保持合理的现有类别及其编号；可将待整理经验归入已有类别、建立新类别、调整归属，并更新受影响类别的名称和描述。名称便于识别，描述应概括成员的核验方法及适用范围，便于检索，不只是宽泛主题。
-对全部小经验给出一次完整分配，每条恰好出现一次。无合适类别时保持未分类，不强凑类别；类别允许只有一个成员，删除空类别。保留类别身份时沿用其编号，新类别编号为null。不新增经验，不合并或改写成员，不输出分析。"""
+_ROLE_GUIDANCE["selector"] += " confidence包含实际应用与继承信用，并计入演化惩罚；evidence_amount为实际与继承P/N的总量，不含惩罚，也不是本版本验证次数。继承信用不能证明修订后的内容已验证，适用性仍优先；零证据表示未知。"
+_ROLE_GUIDANCE["atomizer"] = """你是独立经验原子化器，只拆解草稿中已有方法，不重新诊断任务，不凭空增加规则。
+一条原子经验是一个能独立采用或忽略的核验动作及其必要条件。已经原子化则逐字原样返回；存在可分别采用的方法则直接拆开，为各条生成准确的trigger/content。不要按标点机械拆分，不把方法与必要边界分开，不遗漏必要方法，不将共同前提无条件扩大。
+每条拆出的方法只含一个动作，彼此不重复。禁止把一个条件分支改写成全局要求，禁止为术语、数字或引用方式另造规则。若不需要拆分只返回草稿本身，单条结果不授权改写草稿。
+原创示例一：草稿为“核对告警发送给指定接收人，并核对发送时间是否在指定时段”。两项可以分别采用，应拆成“核对接收对象”和“核对发送时段”，分别保留任务指定参数的条件。
+原创示例二：草稿为“只有任务指定保留标记时，核对标记是否完整保留”。条件与动作共同构成一个方法，应原样保留；不能拆成“必须指定标记”和“所有任务都保留标记”。
+不输出analysis、ID、信用或分类。每条content≤150字符、trigger≤60字符。"""
+_ROLE_GUIDANCE["category_organizer"] = """你是局部经验归类员。只为输入的一条经验选择类别，依据共同核验方法和适用范围，不因宽泛主题相同强凑。
+候选类别由检索产生，成员只展示最相关部分，不代表全部成员。能归入则assign；没有合适类别可create，生成名称和概括共同方法及范围的描述；证据不足可unclassified。不改其他经验归属、正文或信用，不修改已有类别名称和描述，不输出分析。"""
+_ROLE_GUIDANCE["category_describer"] = """你是类别名称和描述更新员。依据旧名称/描述、成员增删及最终成员数更新元数据。
+描述概括当前成员的共同核验方法及范围，正确反映移出成员，避免逐项拼接规则或仅列主题。你无权移动成员、改经验正文或信用。只输出name/description，不输出analysis、成员列表或归属建议。"""
 
 _ROLE_INSTRUCTIONS = {
     "selector": (
@@ -69,14 +75,11 @@ _ROLE_INSTRUCTIONS = {
     "critic": (
         '用 JSON 返回 {"analysis":私有诊断,"candidates":[{"content":设计指导,"trigger":适用条件}]}。analysis为非空中文，简洁组织事实核对、问题定位与方法提炼，候选0到1条，content/trigger为非空中文，无可信经验返回空数组。'
     ),
-    "experience_updater": (
-        '仅返回JSON {"content":"设计方法","trigger":"生成前可识别的适用条件"}。'
-        '两字段为非空中文，content≤150字符、trigger≤60字符；无需修改时保留当前方法。'
-    ),
-
+    "experience_updater": '仅返回JSON {"action":"keep","draft":null} 或 {"action":"revise","draft":{"content":"修订方法","trigger":"适用条件"}}。',
+    "atomizer": '仅返回JSON {"experiences":[{"content":"原子核验方法","trigger":"生成前可识别的必要条件"}]}。数组非空，无重复项。',
+    "category_organizer": '仅返回JSON {"action":"assign","category_id":"输入类别短编号","name":null,"description":null} 或 {"action":"create","category_id":null,"name":"新类别名称","description":"共同方法和范围"} 或 {"action":"unclassified","category_id":null,"name":null,"description":null}。',
+    "category_describer": '仅返回JSON {"name":"类别名称","description":"共同核验方法及范围"}。',
 }
-
-_ROLE_INSTRUCTIONS["category_organizer"] = '仅返回JSON {"categories":[{"category_id":"已有类别编号或null","name":"名称","description":"描述","experience_ids":["小经验编号"]}],"ungrouped_experience_ids":["未分类的小经验编号"]}。新类别category_id使用JSON null；所有编号使用输入中的短数字字符串，全部经验恰好分配一次，类别不得为空。'
 
 # 输入使用自然标题；技术量只在确有出现时集中说明一次。
 _INPUT_TITLES = {
@@ -119,7 +122,13 @@ _INPUT_TITLES = {
     "reason": "判断依据",
     "analysis": "分析",
     "validation_feedback": "本次需修正的问题",
-    "candidate": "待融合经验",
+    "candidate": "方法草稿",
+    "draft": "方法草稿",
+    "previous_experience": "原版本方法",
+    "atomic_feedback": "上轮原子候选与应用反馈",
+    "atomic_candidates": "原子候选集合",
+    "changes": "成员变动",
+    "member_count": "当前成员总数",
     "candidate_id": "候选编号",
     "current_rubric": "当前评分标准",
     "current_judgment": "本次Judge结果",
@@ -212,8 +221,8 @@ def _natural_input(role: str, payload: Mapping[str, Any], *,
         # E/C share one usable list in the actual message; audit fields stay distinct.
         payload = dict(payload)
         available = list(payload.get("selected_experiences", []))
-        if "candidate_experience" in payload:
-            available.append(payload.pop("candidate_experience"))
+        if "candidate_experiences" in payload:
+            available.extend(payload.pop("candidate_experiences"))
         if "selected_experiences" in payload:
             payload["selected_experiences"] = available
         titles["selected_experiences"] = "本次可用经验"
@@ -333,7 +342,7 @@ def _natural_input(role: str, payload: Mapping[str, Any], *,
     notes = []
     if "confidence" in keys or "evidence_amount" in keys:
         notes.append(
-            "经验置信度为历史信用的 Beta 证据分数；证据量为 alpha + beta - 2。"
+            "经验置信度为历史信用及演化惩罚共同计算的 Beta 分数；证据量为实际与继承P/N之和，不含惩罚，不等于本版本验证次数。"
         )
     if "normalized_weights" in keys or "margin" in keys:
         notes.append(
@@ -423,7 +432,7 @@ def generator_payload(
     task: str,
     selected: Sequence[ExperienceView],
     *,
-    candidate: CandidateExperience | None = None,
+    candidates: Sequence[CandidateExperience] = (),
     validation_feedback: str | None = None,
 ) -> dict[str, Any]:
     payload = {
@@ -433,13 +442,9 @@ def generator_payload(
             for item in selected
         ],
     }
-    if candidate is not None:
-        payload["candidate_experience"] = {
-            "experience_id": candidate.candidate_id,
-            "content": candidate.content,
-            "trigger": candidate.trigger,
-            "status": "当前候选、尚未验证，无历史置信度",
-        }
+    if candidates:
+        payload["candidate_experiences"] = [{"experience_id": c.candidate_id, "content": c.content,
+            "trigger": c.trigger, "status": "当前候选、尚未验证，无历史置信度"} for c in candidates]
     if validation_feedback is not None:
         payload["validation_feedback"] = validation_feedback
     return payload
@@ -518,7 +523,7 @@ def critic_payload(
 
 def experience_update_payload(experience: Experience) -> dict[str, Any]:
     cases = []
-    for case in experience.cases:
+    for case in experience.working_cases:
         verdicts = {j.criterion_id: j for j in case.judgment.criterion_judgments}
         card = {
             "sample_id": case.sample_id,
@@ -543,12 +548,9 @@ def experience_update_payload(experience: Experience) -> dict[str, Any]:
     }, "cases": cases}
 
 
-def category_organization_payload(experiences, categories, pending) -> dict[str, Any]:
-    return {"categories": [c.to_dict() for c in categories],
-            "experiences": [{"experience_id": e.experience_id, "content": e.content,
-                             "trigger": e.trigger, "category_id": e.category_id}
-                            for e in experiences],
-            "pending_experience_ids": list(pending)}
+def category_organization_payload(experience, candidates):
+    return {"experience": {"experience_id": experience.experience_id,
+             "content": experience.content, "trigger": experience.trigger}, "categories": candidates}
 
 
 _ID_FIELDS = {
@@ -627,11 +629,8 @@ class NumberedIDCodec:
         """只反解角色协议字段；错误引用直接拒绝，不猜测或按位置悄悄匹配。"""
         result = dict(response)
         if self.role == "category_organizer":
-            result["categories"] = [{**c,
-                "category_id": (self._existing("category", c["category_id"]) if c["category_id"] is not None else None),
-                "experience_ids": [self._existing("experience", key) for key in c["experience_ids"]]}
-                for c in result["categories"]]
-            result["ungrouped_experience_ids"] = [self._existing("experience", key) for key in result["ungrouped_experience_ids"]]
+            if result.get("category_id") is not None:
+                result["category_id"] = self._existing("category", result["category_id"])
         elif self.role == "selector" and isinstance(
             result.get("selected_experience_ids"), list
         ):

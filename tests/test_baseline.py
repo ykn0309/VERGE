@@ -47,7 +47,7 @@ def source_run(tmp_path, count=3):
         "store": {"config": {"root_dir": "artifacts"}},
     }
     manifest = {
-        "format_version": 8,
+        "format_version": 10,
         "config": config,
         "dataset_sha256": {"train": baseline._sha(data)},
         "prompt_versions": {r: PROMPT_VERSION for r in baseline.ROLES},
@@ -94,9 +94,9 @@ def test_baseline_only_two_roles_and_no_source_writes(tmp_path, monkeypatch):
         and not r.downstream_credits
         for r in records
     )
-    assert (
-        output / "artifacts/experience_memory.json"
-    ).read_text() == '{"schema_version": 6, "experiences": [], "categories": [], "pending_organization": {}, "organization_history": []}\n'
+    empty = json.loads((output / "artifacts/experience_memory.json").read_text())
+    assert empty['schema_version']==8 and not empty['experiences']
+
     assert (output / "artifacts/role_io.jsonl").stat().st_mode & 0o777 == 0o600
     assert load_run(output)["experiences"] == []
 

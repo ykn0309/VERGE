@@ -11,6 +11,7 @@ from verge.models import (
     Credit,
     EvidenceRecord,
     Experience,
+    InheritedCredit,
     Rubric,
     RubricJudgment,
     UsageRecord,
@@ -18,6 +19,7 @@ from verge.models import (
 
 
 _TOL = 1e-9
+EVOLUTION_PENALTY_LAMBDA = 0.2
 
 
 def _unit(value: float, name: str) -> None:
@@ -146,6 +148,24 @@ def apply_beta_evidence(experience: Experience, evidence: EvidenceRecord) -> Exp
         beta=experience.beta + evidence.negative_credit,
         evidence_history=[*experience.evidence_history, evidence],
     )
+
+
+def allocate_evolution_credit(experience: Experience, event_id: str,
+                              child_count: int) -> tuple[float, float, list[InheritedCredit]]:
+    """Share cumulative credit and one window-scaled penalty, never the priors."""
+    if type(child_count) is not int or child_count < 1:
+        raise ValueError("evolution requires at least one child")
+    cases = experience.working_cases
+    if len(cases) != 5:
+        raise ValueError("credit allocation requires five downstream cases")
+    window_amount = fsum(c.credit.amount for c in cases)
+    penalty = EVOLUTION_PENALTY_LAMBDA * window_amount
+    allocations = [InheritedCredit(
+        experience.experience_id, event_id,
+        experience.positive_credit / child_count, experience.negative_credit / child_count,
+        experience.penalty_credit / child_count, penalty / child_count,
+    ) for _ in range(child_count)]
+    return window_amount, penalty, allocations
 
 
 def validate_rubric_judgment(rubric: Rubric, judgment: RubricJudgment) -> None:

@@ -105,9 +105,9 @@ def test_pipeline_vector_retrieval_and_read_only_evaluation(
     def sample(sample_id):
         return PreferenceSample(sample_id, "明确回答问题", "合理答复", "不合理答复", {})
 
-    assert train.run_sample(sample("train-1")).admitted_experience_id
+    assert train.run_sample(sample("train-1")).admitted_experience_ids
     assert backend.calls == []
-    assert train.run_sample(sample("train-2")).admitted_experience_id
+    assert train.run_sample(sample("train-2")).admitted_experience_ids
     assert len(memory.all()) == 2
     assert len(backend.calls) == 2  # task and one existing experience; no Fusion retrieval
     original = (tmp_path / "experience_memory.json").read_bytes()

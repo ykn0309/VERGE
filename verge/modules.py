@@ -9,7 +9,11 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from contextvars import copy_context
 from dataclasses import dataclass, replace
-from math import isfinite, sqrt
+from math import isfinite, sqrt, log
+from collections import Counter
+import re
+import json
+import hashlib
 from uuid import uuid4
 from typing import Any, Mapping, Protocol, Sequence
 
@@ -18,6 +22,7 @@ from verge.llm import (
     FakeLLMBackend,
     FakeScenario,
     JUDGE_RESPONSE_SIDE,
+    ROLE_ID_MAPPING,
     LLMBackend,
     LLMFormatError,
     LLMSampleError,
@@ -31,7 +36,10 @@ from verge.models import (
     Experience,
     ExperienceUpdate,
     ExperienceCategory,
-    CategoryOrganization,
+    CategoryAssignment,
+    CategoryDescription,
+    AtomicMethod,
+    AtomicResult,
     Rubric,
     RubricJudgment,
 )
@@ -71,7 +79,7 @@ class InitialRubricGenerator(Protocol):
         self,
         task: str,
         selected: Sequence[ExperienceView],
-        candidate: CandidateExperience,
+        candidates: Sequence[CandidateExperience],
         round_number: int,
     ) -> Rubric: ...
 
@@ -103,8 +111,15 @@ class ExperienceUpdater(Protocol):
 
 
 class CategoryOrganizer(Protocol):
-    def organize(self, experiences: Sequence[Experience], categories: Sequence[ExperienceCategory],
-                 pending: Mapping[str, int]) -> CategoryOrganization: ...
+    def organize(self, experience: Experience, candidates: list[dict]) -> CategoryAssignment: ...
+
+
+class Atomizer(Protocol):
+    def atomize(self, draft: AtomicMethod, *, previous: AtomicMethod | None = None) -> AtomicResult: ...
+
+
+class CategoryDescriber(Protocol):
+    def describe(self, category: ExperienceCategory, changes: list[dict], member_count: int) -> CategoryDescription: ...
 
 
 def _text(value: str, name: str) -> None:
@@ -130,23 +145,18 @@ def _output(
         else None
     )
     projected = codec.project(payload) if codec else payload
-    response = (backend.generate(role, projected, conversation=conversation)
-                if conversation is not None else backend.generate(role, projected))
-    expected = (
-        {"analysis", "criteria"}
-        if codec and role == "initial_generator"
-        else (
-            {field}
-            if field is not None
-            else (
-                {"categories", "ungrouped_experience_ids"}
-                if role == "category_organizer"
-                else {"content", "trigger"}
-                if role == "experience_updater"
-                else {"analysis", "candidates"}
-            )
-        )
-    )
+    mapping_token = ROLE_ID_MAPPING.set(codec.reverse if codec else None)
+    try:
+        response = (backend.generate(role, projected, conversation=conversation)
+                    if conversation is not None else backend.generate(role, projected))
+    finally:
+        ROLE_ID_MAPPING.reset(mapping_token)
+    expected = ({"analysis", "criteria"} if codec and role == "initial_generator" else
+                {field} if field is not None else
+                {"action", "category_id", "name", "description"} if role == "category_organizer" else
+                {"name", "description"} if role == "category_describer" else
+                {"experiences"} if role == "atomizer" else
+                {"action", "draft"} if role == "experience_updater" else {"analysis", "candidates"})
     if not isinstance(response, Mapping) or set(response) != expected:
         raise ValueError(f"{role}: expected structured fields {sorted(expected)}")
     if codec:
@@ -170,6 +180,8 @@ def retrieval_units(experiences: Sequence[Experience], categories: Sequence[Expe
     units = []
     grouped = {}
     for e in experiences:
+        if e.status != "active":
+            continue
         if e.category_id is None:
             units.append(RetrievalUnit(e.experience_id, f"{e.content}\n{e.trigger}", [e]))
         else:
@@ -181,8 +193,7 @@ def retrieval_units(experiences: Sequence[Experience], categories: Sequence[Expe
                 units.append(grouped[e.category_id])
             grouped[e.category_id].members.append(e)
     for unit in grouped.values():
-        unit.text = "\n".join([unit.category.name, unit.category.description,
-                              *(f"{e.trigger}\n{e.content}" for e in unit.members)])
+        unit.text = f"{unit.category.name}\n{unit.category.description}"
     return units
 
 
@@ -199,13 +210,19 @@ class FakeRetriever:
         _text(task, "task")
         return [e for unit in retrieval_units(experiences, categories)[:self.top_l] for e in unit.members]
 
+    def category_candidates(self, experience, experiences, categories):
+        return [{**c.to_dict(), "members": [{"experience_id": e.experience_id, "content": e.content, "trigger": e.trigger}
+                 for e in experiences if e.category_id == c.category_id and e.status == "active" and e.experience_id != experience.experience_id][:3],
+                 "member_count": sum(e.category_id == c.category_id and e.status == "active" for e in experiences)} for c in categories[:10]]
+
+
 
 class EmbeddingBackend(Protocol):
     def embed(self, text: str) -> tuple[float, ...]: ...
 
 
 class VectorRetriever:
-    """进程内缓存经验文本向量，用余弦相似度从 Memory 广召回 Top 20。"""
+    """Pure-vector reference for isolated retrieval comparisons; production uses HybridRetriever."""
 
     def __init__(self, backend: EmbeddingBackend, top_l: int = 20) -> None:
         if type(top_l) is not int or top_l != 20:
@@ -251,6 +268,109 @@ class VectorRetriever:
             scored.append((sum(a * b for a, b in zip(query, vector)), item.unit_id, item))
         scored.sort(key=lambda row: (-row[0], row[1]))
         return [e for row in scored[:self.top_l] for e in row[2].members]
+
+
+class HybridRetriever(VectorRetriever):
+    """Per-document semantic/BM25 RRF, then max-pool documents into units."""
+    TOKENIZER = "unicode-word-cjk-unigram-bigram-v1"
+
+    def __init__(self, backend, top_l=20, *, category_top_k=10, rrf_k=60, member_examples=3):
+        super().__init__(backend, top_l)
+        if type(category_top_k) is not int or category_top_k != 10 or type(rrf_k) is not int or rrf_k < 1 or type(member_examples) is not int or member_examples < 1:
+            raise ValueError("invalid hybrid retrieval settings")
+        self.category_top_k, self.rrf_k, self.member_examples = category_top_k, rrf_k, member_examples
+        self.last_trace = []
+
+    def fork(self):
+        other = HybridRetriever(self.backend, self.top_l, category_top_k=self.category_top_k,
+                                rrf_k=self.rrf_k, member_examples=self.member_examples)
+        other._vectors = self._vectors.copy()
+        return other
+
+    @staticmethod
+    def tokens(text):
+        # No dictionaries or network services; preserve English terms and Chinese local phrases.
+        result = []
+        for token in re.findall(r"[\u3400-\u9fff]+|[^\W_]+", text.casefold(), re.UNICODE):
+            if re.fullmatch(r"[\u3400-\u9fff]+", token):
+                result.extend(token)
+                result.extend(token[i:i+2] for i in range(len(token)-1))
+            else:
+                result.append(token)
+        return result
+
+    @staticmethod
+    def index_version(experiences, categories):
+        data = [(e.experience_id, e.content, e.trigger, e.category_id) for e in experiences if e.status == "active"]
+        return hashlib.sha256(json.dumps([data, [c.to_dict() for c in categories]], sort_keys=True).encode()).hexdigest()
+
+    def rank(self, query_text, experiences, categories, *, category_only=False, exclude=None):
+        self.last_trace = []
+        active = [e for e in experiences if e.status == "active"]
+        occupied = {e.category_id for e in active if e.category_id}
+        docs = [(c.category_id, c.category_id, f"{c.name}\n{c.description}", None)
+                for c in categories if c.category_id in occupied]
+        docs += [(e.experience_id, e.category_id or e.experience_id, f"{e.trigger}\n{e.content}", e)
+                 for e in active if e.experience_id != exclude and (not category_only or e.category_id)]
+        if not docs:
+            self.last_trace = []
+            return [], {}
+        q = self._unit(self.backend.embed(query_text))
+        counts = {key: Counter(self.tokens(text)) for key, _, text, _ in docs}
+        lengths = {key: sum(c.values()) for key,c in counts.items()}
+        average = sum(lengths.values()) / len(docs) or 1
+        df = Counter(t for c in counts.values() for t in c)
+        qt = set(self.tokens(query_text))
+        vs, bs = {}, {}
+        # Do not evict excluded target here; another query can reuse its immutable vector.
+        for key, unit, text, member in docs:
+            cached = self._vectors.get(key)
+            if cached is None or cached[0] != text:
+                cached = (text, self._unit(self.backend.embed(text)))
+                self._vectors[key] = cached
+            v = cached[1]
+            if len(v) != len(q):
+                raise ValueError("retrieval embedding dimensions disagree")
+            vs[key] = sum(a*b for a,b in zip(q,v))
+            score = 0.0
+            for t in qt:
+                frequency = counts[key][t]
+                if frequency:
+                    idf = log(1 + (len(docs)-df[t]+0.5)/(df[t]+0.5))
+                    score += idf * frequency * 2.2 / (frequency + 1.2*(0.25+0.75*lengths[key]/average))
+            if score > 0:
+                bs[key] = score
+        vr = {key:i for i,key in enumerate(sorted(vs,key=lambda k:(-vs[k],k)),1)}
+        br = {key:i for i,key in enumerate(sorted(bs,key=lambda k:(-bs[k],k)),1)}
+        scores, member_scores, trace = {}, {}, []
+        for key,unit,_,member in docs:
+            score = 1/(self.rrf_k+vr[key]) + (1/(self.rrf_k+br[key]) if key in br else 0)
+            scores[unit] = max(scores.get(unit,0),score)
+            if member:
+                member_scores[key] = score
+            trace.append({"document_id":key,"unit_id":unit,"vector_rank":vr[key],
+                          "bm25_rank":br.get(key),"vector_score":vs[key],"bm25_score":bs.get(key,0),"rrf_score":score})
+        self.last_trace = trace
+        return sorted(scores,key=lambda k:(-scores[k],k)), member_scores
+
+    def retrieve(self, task, experiences, *, categories=()):
+        _text(task, "task")
+        order,_ = self.rank(task,experiences,categories)
+        units = {u.unit_id:u for u in retrieval_units(experiences,categories)}
+        return [e for key in order[:self.top_l] for e in units[key].members]
+
+    def category_candidates(self, experience, experiences, categories):
+        order, scores = self.rank(f"{experience.trigger}\n{experience.content}",experiences,categories,
+                                  category_only=True,exclude=experience.experience_id)
+        by_id = {c.category_id:c for c in categories}
+        result=[]
+        for key in order[:self.category_top_k]:
+            members = [e for e in experiences if e.status == "active" and e.category_id == key and e.experience_id != experience.experience_id]
+            members.sort(key=lambda e:(-scores.get(e.experience_id,0),e.experience_id))
+            result.append({**by_id[key].to_dict(), "member_count":sum(e.status=="active" and e.category_id==key for e in experiences),
+                           "members":[{"experience_id":e.experience_id,"content":e.content,"trigger":e.trigger}
+                                      for e in members[:self.member_examples]]})
+        return result
 
 
 class LLMSelector:
@@ -304,37 +424,28 @@ class LLMInitialRubricGenerator:
     def generate(self, task: str, selected: Sequence[ExperienceView]) -> Rubric:
         return self._generate(task, selected)
 
-    def apply(
-        self,
-        task: str,
-        selected: Sequence[ExperienceView],
-        candidate: CandidateExperience,
-        round_number: int,
-    ) -> Rubric:
-        if candidate.experience_id is not None:
-            raise ValueError("application requires a new candidate")
+    def apply(self, task, selected, candidates, round_number) -> Rubric:
+        if not candidates or any(c.experience_id is not None for c in candidates):
+            raise ValueError("application requires new atomic candidates")
         if round_number not in (1, 2):
             raise ValueError("application round must be 1 or 2")
-        return self._generate(task, selected, candidate, round_number)
+        return self._generate(task, selected, candidates, round_number)
 
-    def _generate(self, task, selected, candidate=None, round_number=0) -> Rubric:
+    def _generate(self, task, selected, candidates=(), round_number=0) -> Rubric:
         _text(task, "task")
         _views(selected)
-        allowed = {x.experience_id for x in selected}
-        if len(allowed) != len(selected):
-            raise ValueError("selected IDs must be unique")
-        if candidate:
-            if candidate.candidate_id in allowed:
-                raise ValueError("candidate ID collides with existing experience")
-            allowed.add(candidate.candidate_id)
+        ids = [x.experience_id for x in selected] + [x.candidate_id for x in candidates]
+        allowed = set(ids)
+        if len(allowed) != len(ids):
+            raise ValueError("experience and candidate IDs must be unique")
         feedback = None
         retries = (
-            self.invalid_output_retries if candidate else self.initial_output_retries
+            self.invalid_output_retries if candidates else self.initial_output_retries
         )
         for retry in range(retries + 1):
             try:
                 payload = generator_payload(
-                    task, selected, candidate=candidate, validation_feedback=feedback
+                    task, selected, candidates=candidates, validation_feedback=feedback
                 )
                 # Fake scenario metadata only; never sent in actual Generator messages.
                 if isinstance(self.backend, FakeLLMBackend):
@@ -571,6 +682,7 @@ class LLMCritic:
         previous_rubric=None,
         previous_judgment=None,
         conversation=None,
+        atomic_feedback=None,
     ):
         _text(task, "task")
         if judgment.rubric_id != current.rubric_id or judgment.success:
@@ -590,6 +702,8 @@ class LLMCritic:
             previous_rubric=previous_rubric,
             previous_judgment=previous_judgment,
         )
+        if atomic_feedback is not None:
+            payload["atomic_feedback"] = atomic_feedback
         for retry in range(self.invalid_output_retries + 1):
             try:
                 raw = _output(self.backend, "critic", payload, None, conversation=conversation)
@@ -628,35 +742,43 @@ class LLMCritic:
         raise AssertionError("unreachable")
 
 
-class LLMExperienceUpdater:
-    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 2) -> None:
+class _StructuredRole:
+    def __init__(self, backend, *, invalid_output_retries=2):
         if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
             raise ValueError("invalid_output_retries must be in [0,3]")
-        self.backend = backend
-        self.invalid_output_retries = invalid_output_retries
+        self.backend, self.invalid_output_retries = backend, invalid_output_retries
 
-    def update(self, experience: Experience) -> ExperienceUpdate:
-        if not 2 <= len(experience.cases) <= 10:
-            raise ValueError("experience update requires 2..10 cases")
-        payload = experience_update_payload(experience)
-        # Bound the full request in UTF-8 bytes; never truncate original cases.
-        from verge.prompts import llm_messages
-        budget_payload = (NumberedIDCodec("experience_updater", payload).project(payload)
-                          if isinstance(self.backend, OpenAICompatibleBackend) else payload)
-        if sum(len(m["content"].encode("utf-8")) for m in llm_messages("experience_updater", budget_payload)) > 100_000:
-            raise ValueError("experience update context budget exceeded")
+    def call(self, role, payload, model):
         for retry in range(self.invalid_output_retries + 1):
+            _input_budget(self.backend, role, payload, 100_000)
             try:
-                raw = _output(self.backend, "experience_updater", payload, None)
-                update = ExperienceUpdate.from_dict(dict(raw))
-                return update
+                raw = dict(_output(self.backend, role, payload, None))
+                if len(json.dumps(raw, ensure_ascii=False).encode("utf-8")) > 100_000:
+                    raise ValueError("structured role output budget exceeded")
+                return model.from_dict(raw)
             except LLMFormatError:
                 raise
-            except ValueError as exc:
+            except ValueError:
                 if retry == self.invalid_output_retries:
                     raise
-                payload = {**payload, "validation_feedback": "上次文本校验失败：" + str(exc)[:160]}
+                payload = {**payload, "validation_feedback": "上次结构无效，请按角色规定字段完整返回，不新增字段、未知编号或重复条目。"}
         raise AssertionError("unreachable")
+
+
+class LLMExperienceUpdater(_StructuredRole):
+    def update(self, experience):
+        if len(experience.working_cases) != 5:
+            raise ValueError("experience update requires five downstream cases")
+        return self.call("experience_updater", experience_update_payload(experience), ExperienceUpdate)
+
+
+class LLMAtomizer(_StructuredRole):
+    def atomize(self, draft, *, previous=None):
+        payload = {"draft": draft.to_dict(), "origin": "evolution" if previous else "candidate"}
+        result = self.call("atomizer", payload, AtomicResult)
+        # A one-method verdict authorizes no textual rewrite. Updater owns semantic
+        # corrections; old text must not leak back into its corrected draft here.
+        return AtomicResult([draft]) if len(result.experiences) == 1 else result
 
 
 def _input_budget(backend, role, payload, limit):
@@ -666,28 +788,18 @@ def _input_budget(backend, role, payload, limit):
         raise ValueError(f"{role} context budget exceeded")
 
 
-class LLMCategoryOrganizer:
-    def __init__(self, backend: LLMBackend, *, invalid_output_retries: int = 2) -> None:
-        if type(invalid_output_retries) is not int or not 0 <= invalid_output_retries <= 3:
-            raise ValueError("invalid_output_retries must be in [0,3]")
-        self.backend, self.invalid_output_retries = backend, invalid_output_retries
+class LLMCategoryOrganizer(_StructuredRole):
+    def organize(self, experience, candidates):
+        plan = self.call("category_organizer", category_organization_payload(experience, candidates), CategoryAssignment)
+        if plan.action == "assign" and plan.category_id not in {c["category_id"] for c in candidates}:
+            raise ValueError("assignment must select a retrieved category")
+        return plan
 
-    def organize(self, experiences, categories, pending) -> CategoryOrganization:
-        payload = category_organization_payload(experiences, categories, pending)
-        for retry in range(self.invalid_output_retries + 1):
-            try:
-                _input_budget(self.backend, "category_organizer", payload, 100_000)
-                plan = CategoryOrganization.from_dict(dict(_output(self.backend, "category_organizer", payload, None)))
-                plan.validate_partition({e.experience_id for e in experiences}, {c.category_id for c in categories})
-                return plan
-            except LLMFormatError:
-                raise
-            except ValueError:
-                if retry == self.invalid_output_retries:
-                    raise
-                # Do not echo long internal IDs into correction prompts.
-                payload = {**payload, "validation_feedback": "上次分类结构或分配无效：请确保所有经验恰好分配一次，沿用输入类别编号或用null创建新类别，输出完整方案。"}
-        raise AssertionError("unreachable")
+
+class LLMCategoryDescriber(_StructuredRole):
+    def describe(self, category, changes, member_count):
+        return self.call("category_describer", {"category": category.to_dict(), "changes": changes,
+                                              "member_count": member_count}, CategoryDescription)
 
 
 @dataclass
@@ -702,6 +814,8 @@ class LLMModules:
     critic: LLMCritic
     experience_updater: LLMExperienceUpdater
     category_organizer: LLMCategoryOrganizer
+    atomizer: LLMAtomizer
+    category_describer: LLMCategoryDescriber
 
 
 def make_llm_modules(
@@ -721,6 +835,8 @@ def make_llm_modules(
         LLMCritic(backend),
         LLMExperienceUpdater(backend),
         LLMCategoryOrganizer(backend),
+        LLMAtomizer(backend),
+        LLMCategoryDescriber(backend),
     )
 
 

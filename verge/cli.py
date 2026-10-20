@@ -23,7 +23,8 @@ from verge.config import load_config
 from verge.dataset import CHAT_HARD_SUBSETS, JsonlDataset, prepare_rewardbench_chat_hard
 from verge.llm import FakeLLMBackend, LLMBackend, OpenAICompatibleBackend, OpenAICompatibleEmbedding
 from verge.memory import ExperienceMemory, TrajectoryLog
-from verge.modules import VectorRetriever, make_llm_modules
+from verge.calculator import EVOLUTION_PENALTY_LAMBDA
+from verge.modules import VectorRetriever, HybridRetriever, make_llm_modules
 from verge.pipeline import PipelineRunner
 from verge.prompts import PROMPT_VERSION
 
@@ -35,12 +36,14 @@ _ROLES = (
     "critic",
     "experience_updater",
     "category_organizer",
+    "atomizer",
+    "category_describer",
 )
 _FAKE_SCENARIOS = {"initial_success", "attempt_1_success", "attempt_2_success", "final_failure"}
 _IMPLEMENTATIONS = {
     "retrieval": "fake",
     "selection": "llm",
-    "application": "local_credit_bounded_experience",
+    "application": "immutable_atomic_evolution",
     "reliability": "beta",
 }
 
@@ -119,16 +122,16 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
     for name, implementation in _IMPLEMENTATIONS.items():
         _only_keys(configured[name], {"implementation", "config"}, f"modules.{name}")
         if configured[name]["implementation"] != implementation and not (
-            name == "retrieval" and configured[name]["implementation"] == "vector"
+            name == "retrieval" and configured[name]["implementation"] == "hybrid"
         ):
             raise ValueError(
                 f"modules.{name}.implementation: V1 supports only {implementation}"
-                + (" or vector" if name == "retrieval" else "")
+                + (" or hybrid" if name == "retrieval" else "")
             )
     retrieval = configured["retrieval"]["config"]
-    vector_retrieval = configured["retrieval"]["implementation"] == "vector"
+    vector_retrieval = configured["retrieval"]["implementation"] == "hybrid"
     retrieval_keys = (
-        {"top_l", "embedding_model", "dimensions"} if vector_retrieval else {"top_l"}
+        {"top_l", "embedding_model", "dimensions", "category_top_k", "rrf_k", "member_examples"} if vector_retrieval else {"top_l"}
     )
     if vector_retrieval:
         if models["default"]["backend"] != "openai_compatible":
@@ -218,7 +221,9 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
                 max_retries=default.get("max_retries", 2),
             )
             created.append(embedder)
-            retriever = VectorRetriever(embedder, retrieval.get("top_l", 20))
+            retriever = HybridRetriever(embedder, retrieval.get("top_l", 20),
+                category_top_k=retrieval.get("category_top_k",10),rrf_k=retrieval.get("rrf_k",60),
+                member_examples=retrieval.get("member_examples",3))
         modules = make_llm_modules(
             backend,
             top_l=retrieval.get("top_l", 20),
@@ -229,6 +234,8 @@ def _components(config: dict[str, Any]) -> tuple[JsonlDataset, Any, Path, Path, 
         modules.critic.invalid_output_retries = retries
         modules.experience_updater.invalid_output_retries = retries
         modules.category_organizer.invalid_output_retries = retries
+        modules.atomizer.invalid_output_retries = retries
+        modules.category_describer.invalid_output_retries = retries
         selector_bytes = selection.get("input_bytes", 100_000)
         if type(selector_bytes) is not int or selector_bytes < 1:
             raise ValueError("modules.selection.config.input_bytes: expected positive integer")
@@ -375,8 +382,8 @@ def _resume_checkpoint(
     """只接受有序完整轨迹前缀、且下一样本未改写 Memory 的同协议运行。"""
     old = json.loads((source / "run_manifest.json").read_text(encoding="utf-8"))
     if (
-        old.get("format_version") != 8
-        or old.get("method") != "local_credit_bounded_experience"
+        old.get("format_version") != 10
+        or old.get("method") != "immutable_atomic_evolution"
         or old.get("dataset_version") != manifest["dataset_version"]
         or not isinstance(old.get("code_version"), str)
     ):
@@ -436,6 +443,8 @@ def _resume_checkpoint(
     completed_train = set(train_ids[: min(len(completed), len(train_ids))])
     memory = ExperienceMemory(root, read_only=True)
     for item in memory.all():
+        if any(u.sample_id not in completed_train for u in item.update_history):
+            raise ValueError("resume: evolution beyond completed train prefix")
         if any(key not in completed_train for key in item.source_trajectories) or any(
             ev.sample_id not in completed_train for ev in [*item.evidence_history, *item.usage_history]
         ):
@@ -735,8 +744,8 @@ def run(
             ]
         }
         manifest = {
-            "format_version": 8,
-            "method": "local_credit_bounded_experience",
+            "format_version": 10,
+            "method": "immutable_atomic_evolution",
             "config": config,
             "code_version": _code_version(),
             "execution": {
@@ -749,26 +758,38 @@ def run(
                 ].get("invalid_output_retries", 2),
                 "initial_output_retries": initial_output_retries,
                 "sample_error_policy": "record_and_continue",
-                "candidate_admission": "latest_net_positive_at_sample_end",
-                "experience_case_limit": 10,
+                "candidate_admission": "latest_eligible_round_atomic_set",
+                "experience_working_window": 5,
                 "experience_update_input_bytes": 100_000,
-                "experience_update_input": "discriminating_cases_v4",
-                "experience_update_output": "single_content_trigger",
+                "experience_update_input": "version_downstream_five_cases_v5",
+                "experience_update_output": "keep_or_revise_then_atomize",
                 "experience_length_limits": {"content": 150, "trigger": 60, "enforcement": "prompt_only"},
                 "neutral_feedback": "record_both_true_false_no_credit_no_case",
-                "experience_update_task_interval": 3,
+                "experience_update_task_interval": 5,
                 "experience_case_policy": "discriminating_r0_feedback",
                 "category_organization_batch_size": config["modules"]["application"]["config"].get("organization_batch_size", 5),
-                "category_organization_input": "full_atomic_pool_no_credit",
+                "category_organization_input": "single_target_top10_categories",
                 "selector_input_bytes": modules.selector.input_bytes,
                 "retrieval_units": "categories_and_ungrouped_experiences",
-                "category_embedding": "name_description_all_member_trigger_content",
+                "category_embedding": "separate_category_and_member_documents",
+                "retrieval_algorithm": "vector_bm25_rrf_max_unit",
+                "tokenizer": HybridRetriever.TOKENIZER,
+                "rrf_k": config["modules"]["retrieval"]["config"].get("rrf_k",60),
+                "category_top_k": 10,
+                "category_member_examples": config["modules"]["retrieval"]["config"].get("member_examples",3),
+                "evolution_credit": "inherit_equal_split_window_penalty",
+                "evolution_penalty_lambda": EVOLUTION_PENALTY_LAMBDA,
+                "evolution_penalty_basis": "latest_five_sum_positive_plus_negative",
+                "evidence_amount": "observed_and_inherited_credit_excluding_penalty",
+                "structured_role_output_bytes": 100_000,
+                "atomizer_single_result": "preserve_draft_exactly",
+                "atomizer_previous_text": "not_provided",
             },
             "dataset_version": "jsonl/v1",
             "dataset_sha256": {
                 split: _sha256_file(path) for split, path in dataset.paths.items()
             },
-            "module_versions": {name: "v7" for name in _IMPLEMENTATIONS},
+            "module_versions": {name: "v8" for name in _IMPLEMENTATIONS},
             "backend_versions": {name: "v1" for name in sorted(backend_names)},
             "prompt_versions": {role: PROMPT_VERSION for role in _ROLES},
         }
@@ -953,7 +974,7 @@ def inspect_sample(run_dir: str | Path, sample_id: str) -> dict[str, Any]:
     directory = Path(run_dir)
     manifest_file = directory / "run_manifest.json"
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 8:
+    if manifest.get("format_version") != 10:
         raise ValueError(f"{manifest_file}: unsupported manifest format")
     store_root = Path(
         manifest["config"]["store"]["config"].get("root_dir", "artifacts")

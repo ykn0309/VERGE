@@ -75,8 +75,8 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
     assert summary["train_samples"] == 2 and summary["test_samples"] == 1
     manifest = json.loads((directory / "run_manifest.json").read_text())
     assert (
-        manifest["format_version"] == 8
-        and manifest["method"] == "local_credit_bounded_experience"
+        manifest["format_version"] == 10
+        and manifest["method"] == "immutable_atomic_evolution"
     )
     assert set(manifest["prompt_versions"].values()) == {PROMPT_VERSION}
     assert set(manifest["prompt_versions"]) == {
@@ -86,6 +86,8 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
         "critic",
         "experience_updater",
         "category_organizer",
+        "atomizer",
+        "category_describer",
     }
     assert manifest["execution"]["max_application_rounds"] == 2
     assert manifest["execution"]["critic_proposals_per_round"] == 1
@@ -97,8 +99,8 @@ def test_cli_train_frozen_test_inspect_and_role_manifest(tmp_path, capsys):
         "application_success",
         "initial_failure",
     ]
-    assert all(rs[i]["admitted_experience_id"] for i in (0, 1))
-    assert rs[0]["admitted_experience_id"] != rs[1]["admitted_experience_id"]
+    assert all(rs[i]["admitted_experience_ids"] for i in (0, 1))
+    assert rs[0]["admitted_experience_ids"] != rs[1]["admitted_experience_ids"]
     assert not rs[2]["application_attempts"] and not rs[2]["downstream_credits"]
     pool = json.loads((directory / "artifacts/experience_memory.json").read_text())[
         "experiences"

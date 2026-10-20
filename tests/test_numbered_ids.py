@@ -59,10 +59,10 @@ def test_http_application_sources_retained_and_no_dialogue_history(
         body = json.loads(request.content)
         bodies.append(body)
         p = wire_payload(body)
-        assert set(p) == {"task", "selected_experiences", "candidate_experience"}
+        assert set(p) == {"task", "selected_experiences", "candidate_experiences"}
         assert p["selected_experiences"][0]["experience_id"] == "1"
-        assert p["candidate_experience"]["experience_id"] == "2"
-        assert set(p["candidate_experience"]) == {
+        assert p["candidate_experiences"][0]["experience_id"] == "2"
+        assert set(p["candidate_experiences"][0]) == {
             "experience_id",
             "content",
             "trigger",
@@ -102,11 +102,11 @@ def test_http_application_sources_retained_and_no_dialogue_history(
     backend, client = make_backend(monkeypatch, handler, traces.append)
     try:
         gen = LLMInitialRubricGenerator(backend)
-        a = gen.apply("任务", views(), candidate(), 1)
+        a = gen.apply("任务", views(), [candidate()], 1)
         c2 = CandidateExperience(
             "candidate_new", "第二轮独立指导", "第二轮场景"
         )
-        b = gen.apply("任务", views(), c2, 2)
+        b = gen.apply("任务", views(), [c2], 2)
     finally:
         client.close()
     assert a.criteria[0].source_experiences == ["exp_real", "candidate_current"]
@@ -155,7 +155,7 @@ def test_invalid_application_sources_exhaust_without_clearing(
     try:
         with pytest.raises(ValueError):
             LLMInitialRubricGenerator(backend, invalid_output_retries=1).apply(
-                "任务", views(), candidate(), 1
+                "任务", views(), [candidate()], 1
             )
     finally:
         client.close()

@@ -135,5 +135,5 @@ def test_confidence_derived_and_verified():
 def test_old_trajectory_version_cannot_be_read_as_weighted_application(version):
     old = TrajectoryRecord("s").to_dict()
     old["schema_version"] = version
-    with pytest.raises(ValueError, match="schema_version 8"):
+    with pytest.raises(ValueError, match="schema_version 10"):
         TrajectoryRecord.from_dict(old)

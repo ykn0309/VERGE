@@ -20,6 +20,8 @@ def seed(memory, candidate, sid='seed', p=.2, n=0):
 
 
 def keep_update(experience, content=None, trigger=None):
-    from verge.models import ExperienceUpdate
-    return ExperienceUpdate(experience.content if content is None else content,
-                            experience.trigger if trigger is None else trigger)
+    from verge.models import ExperienceUpdate, AtomicMethod
+    if content is None and trigger is None:
+        return ExperienceUpdate('keep')
+    return ExperienceUpdate('revise', AtomicMethod(experience.content if content is None else content,
+                            experience.trigger if trigger is None else trigger))

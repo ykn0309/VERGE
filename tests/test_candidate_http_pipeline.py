@@ -28,6 +28,8 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
         p = wire_payload(body)
         with lock:
             requests.append((body, p))
+        if "draft" in p:
+            return response({"experiences":[p["draft"]]})
         if "max_selected" in p:
             return response({"selected_experience_ids": ["1"]})
         if "current_rubric" in p:
@@ -54,7 +56,7 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
                 assert "R0问题" not in feedback and "\n优选回答：" not in feedback
                 assert p["adopted"] is True
                 assert p["previous_candidate"]["content"] == "指导1"
-                assert p["previous_candidate"]["candidate_id"] in p["current_rubric"]["criteria"][0]["source_experiences"]
+                assert p["atomic_feedback"]["atomic_candidates"][0]["candidate_id"] in p["current_rubric"]["criteria"][0]["source_experiences"]
                 assert "previous_rubric" in p and "previous_judgment" in p
                 assert p["previous_rubric"]["criteria"][0]["question"] == "R0问题1"
                 assert p["current_rubric"]["criteria"][0]["question"] == "R1问题1"
@@ -71,7 +73,7 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
             assert len(body["messages"]) == 2 and set(p) <= {
                 "task",
                 "selected_experiences",
-                "candidate_experience",
+                "candidate_experiences",
             }
             assert set(p["selected_experiences"][0]) == {"experience_id", "content", "trigger"}
             assert "证据量" not in body["messages"][1]["content"]
@@ -86,8 +88,8 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
             if n:
                 assert "当前候选、尚未验证，无历史置信度" in user
                 assert f"2：指导{n}" in user
-                assert p["candidate_experience"]["content"] == f"指导{n}"
-                assert "confidence" not in p["candidate_experience"]
+                assert p["candidate_experiences"][0]["content"] == f"指导{n}"
+                assert "confidence" not in p["candidate_experiences"]
                 if n == 2:
                     assert "指导1" not in str(body)
                 assert f"R{n-1}问题" not in str(body)
@@ -148,7 +150,7 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
     assert counts == {"critic": 2, "generator": 3}
     saved = list(TrajectoryLog(tmp_path).all())[0]
     assert saved.to_dict() == rec.to_dict()
-    assert saved.schema_version == 8
+    assert saved.schema_version == 10
     for judgment, prefix in [(rec.initial_judgment, "R0")]+[
         (a.judgment, f"R{i}") for i, a in enumerate(rec.application_attempts, 1)
     ]:
@@ -159,11 +161,11 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
     assert rec.application_attempts[0].credit == Credit(0, 0.1)
     assert rec.application_attempts[1].credit == Credit(0.8, 0.1)
     assert rec.proposal_attempts[-1].candidate.content == "指导2"
-    assert rec.admitted_candidate_id == rec.proposal_attempts[-1].candidate.candidate_id
+    assert rec.admitted_candidate_ids == [rec.proposal_attempts[-1].atomic_candidates[0].candidate_id]
     e = memory.get(seeded.experience_id)
     assert (e.alpha, e.beta) == pytest.approx((1.2, 1.2))
     assert len(e.evidence_history) == 2  # original seed and R0 only
-    new = memory.get(rec.admitted_experience_id)
+    new = memory.get(rec.admitted_experience_ids[0])
     assert (new.alpha, new.beta) == pytest.approx((1.8, 1.1))
     assert new.cases[0].credit == Credit(.8, .1)
     assert all("test-secret" not in str(t) for t in traces)
@@ -186,11 +188,11 @@ def test_http_two_candidates_fresh_applications_single_candidate_admission(
     )
     assert json.loads([b for b, p in requests if "current_rubric" in p][1]["messages"][2]["content"])["analysis"] == "PRIVATE诊断1"
     # Check actual messages across selector, generator, both judges and Critic history.
-    internal_ids = {seeded.experience_id, rec.admitted_experience_id}
+    internal_ids = {seeded.experience_id, *rec.admitted_experience_ids}
     internal_ids.update(p.candidate.candidate_id for p in rec.proposal_attempts)
     for rubric in [rec.initial_rubric, *(a.rubric for a in rec.application_attempts)]:
         internal_ids.add(rubric.rubric_id)
         internal_ids.update(c.criterion_id for c in rubric.criteria)
-    assert {t['role'] for t in traces} == {'selector', 'initial_generator', 'judge', 'critic'}
+    assert {t['role'] for t in traces} == {'selector', 'initial_generator', 'judge', 'critic', 'atomizer'}
     assert all(real_id not in json.dumps(body['messages'], ensure_ascii=False)
                for body, _ in requests for real_id in internal_ids)

@@ -322,10 +322,11 @@ def test_chat_hard_config_runs_existing_pipeline_offline(tmp_path, monkeypatch, 
             "round_number": 1,
             "analysis": "分析",
             "candidate": {
-                "candidate_id": "candidate_invalid",
+                "candidate_id": "draft_invalid",
                 "content": "指导",
                 "trigger": "条件",
             },
+            "atomic_candidates": [{"candidate_id":"candidate_invalid","content":"指导","trigger":"条件"}],
         }
     ]
     audited[0]["application_attempts"] = [

@@ -2,95 +2,68 @@
 
 Verified Experience-guided Rubric Generation.
 
+从偏好轨迹中提炼可复用的评分标准设计经验，指导Generator设计rubric，并通过后续应用反馈维护经验与可信度。
+
 ## 当前状态
 
-[计划61](docs/plans/61-延迟归纳与正负案例经验更新.md)已实现：保留Beta正负累计，反向完整负信用、同判25%轻负信用；候选自身P>N，正常结束最多新增一条。已有经验正负案例每3个不同下游任务归纳一次，第10个案例最后归纳，之后冻结文本/案例、继续信用。取消Fusion/MERGE及拆分，Critic样本内多轮和Generator固定E/当前C保持。
+当前代码为[计划68](docs/plans/68-演化信用继承与稳定性惩罚.md)：独立原子化、固定文本版本、混合检索、局部归类、持续演化及信用继承/稳定性惩罚。Memory8、Manifest/Trajectory10，不兼容旧协议或跨方法resume。
 
-最新完整链路实验为[计划62](docs/plans/62-新版200样本完整链路实验.md)：新版空池200题，110初始正确/46救回/156最终正确（78%），3题Judge错误，31经验/31归纳/8冻结。303项测试及信用/窗口/版本/最终池审计通过，运行在200后暂停、test=0；见[简报](docs/实验分析/62-新版200样本完整链路实验.md)。旧日志已清理、报告归档，数据/缓存不变；本次恢复来源及最终日志保留。
-- [方法设计](docs/设计方案.md)
-- [工程设计](docs/工程设计.md)
-- [实施计划48](docs/plans/48-局部正向准入与有限样本经验更新.md)
-- [状态索引](PLAN.md)
+最新完整实验为[计划69](docs/plans/69-信用继承版本200样本完整链路实验.md)：200条处理完成，113条首轮正确、148条最终正确，5条技术错误隔离；54个经验版本（42活跃/12退役）、8个类别。结果只描述该次训练运行，不证明泛化、因果收益或好坏经验已经可靠分化。详见[实验报告](docs/实验分析/69-信用继承版本200样本实验结果.md)。
 
-## 当前机制
+## 文档入口
+
+- [当前实现设计](docs/设计方案.md)及[模块设计](docs/设计方案/14-原子经验版本演化与局部混合检索.md)
+- [工程设计](docs/工程设计.md)、[状态与计划](PLAN.md)
+- [新版完整设计草案](docs/经验模板与贝叶斯网络演化-讨论稿.md)：经验模板、3／6案例窗口与贝叶斯网络的讨论方案；未实现，不替代当前运行协议。
+- [组会材料](docs/组会汇报/2026-10-17/方法流程-分层详细版.html)
+
+## 当前实现流程
 
 ```text
-task → 检索/Selector固定E → Generator R0 → Judge → 训练R0来源P/N写入
-R0失败：最多两轮Critic → 独立Generator(task+固定E+当前C) → Judge
-  候选采用且自身P>N：暂存，与整体成功独立
-正常结束：优先合格C2，否则合格C1，每题最多新增一条
-样本收尾：R0有信用的已有经验收录正负案例 → 每3个不同下游任务归纳 → 第10个案例最后归纳
+task → 向量＋BM25/RRF检索类别/未分类经验 → Selector固定E
+     → Generator(task＋E)生成R0 → 两侧独立Judge → 程序评分及R0来源P/N
+失败 → 最多两轮Critic草稿 → Atomizer候选集合C
+     → 新Generator(task＋固定E＋当前C) → Judge → 逐候选引用及P>N资格
+正常收尾 → 最新合格轮的合格集合入池
+         → 每5个新下游有区分任务，用最近5例调用Updater
+         → keep，或经Atomizer修订/拆分为新版本、退役父版本
+         → 局部归类及类别名称/描述更新
 ```
 
-Critic接续本样本消息/真实回复，Generator仅替换C、不积累旧候选。R0已有经验及被选候选分别累计P/N，alpha加P、beta加N，无折扣、不先抵消；P>N只控制候选入池，同判给25%轻负信用。案例包含初始来源，原题不计3任务窗口；每3个不同下游任务归纳，第10条强制最后一次，之后冻结文本/案例；有变化才增加文本版本，旧信用不认证新文本。
+P/N按实际引用标准的归一化权重分配，多来源均分；同判只计次，不加减信用、不进归纳。修订继承父信用，拆分均分；演化总惩罚为最近5例累计信用量的20%。继承不等于新版本已经验证，实际反馈、继承及惩罚分别记账。
 
-## 已确认的工程边界
+类别与成员分别建索引，任务检索Top20单位、归类Top10类别，Selector最多选5条小经验。类别无信用。Generator不见偏好对或信用，Judge分别评价单份回答且不见偏好标签。held-out冻结所有业务状态，只运行检索、选择及R0评价。
 
-- 删除无经验诊断模式及experience_enabled开关，不保留旧对话修订分支。空池/Selector不选E仍可执行完整新经验学习。
-- 沿用有限纠错与样本/无效轮隔离：格式、类型、引用等错误耗尽不能全局终止；不伪造Judge失败、不额外增加业务机会。网络/鉴权、存储/数据和程序异常仍按既有全局故障策略。
-- 不兼容旧配置、协议、提示词版本、检查点或Web展示。新代码只处理新方案，不为历史增加解析或迁移层。
-- main、准备数据、截图和历史分析报告保留。随后按用户清理指示删除了5个旧实验运行目录；截图及生成图留在本地并加入Git忽略规则。
-- held-out冻结经验池/文本/Beta，仅初始生成评价，不提出候选、不修订、不回写信用。
-- 新实验需新配置/输出目录和明确授权，不自动重复100条或全456条。
+## 环境与运行
 
-Generator按总预算1分配有限正数`weight`，程序归一化；Judge逐项输出`satisfied`和非空`reason`，两侧依据保存到轨迹、传给Critic并在Web默认折叠展示。理由不进入Generator，且不等于事实认证。
-
-## 环境与目录
-
-当前数据切换：[计划46](docs/plans/46-HelpSteer3数据切换与Flash30验证.md)使用HelpSteer3-Preference的General英文单轮强一致偏好任务。RewardBench配置和原产物保留，现有提示词、模型和评分流程保持。
-
-```bash
-# 仅准备固定版本官方训练集；不会读取validation或覆盖已有输出。
-python -m scripts.prepare_helpsteer3
-# 独立空池实验，最多30条；官方validation不参与本次调试。
-python -m verge.cli run --config configs/helpsteer3-general-bounded-experience-qwen-flash-30.yaml
-```
-
-筛选规则与源文件/JSONL哈希保存在`runs/helpsteer3-general-consensus-data/provenance.json`。人工分数、reasoning及附带feedback仅保存在样本metadata用于复核，不进入LLM角色输入。准备脚本与配置独立，不扩充业务协议或为RewardBench增加兼容处理。
-
-需要Python 3.10或更高版本；本机验收使用`/opt/anaconda3/bin/python`（3.12）。
+需要Python 3.10或更高版本；本次离线验证使用Python 3.12。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+pip install pytest
+
+# 离线Fake示例；配置中的输出目录必须不存在。
+python -m verge.cli run --config configs/default.yaml
+python -m pytest -q
+
+# 本地只读WebUI，仅监听127.0.0.1。
+python -m verge.web --runs-dir runs --port 8765
 ```
 
-源码保持扁平，主要文件：
-
-```text
-verge/models.py       数据结构
-verge/config.py       配置
-verge/dataset.py      数据输入
-verge/llm.py          LLM后端
-verge/prompts.py      角色职责与输出协议
-verge/calculator.py   确定性计算
-verge/modules.py      方法模块
-verge/memory.py       记忆、索引与轨迹
-verge/pipeline.py     流程编排
-verge/cli.py          实验入口
-verge/web.py          loopback只读诊断
-verge/web_assets/     页面资源
-configs/             实验配置
-tests/               离线测试
-docs/                方法、工程与计划
-```
-
-新版配置使用 `modules.application.implementation: local_credit_bounded_experience`，`max_rounds: 2`；每轮一次Critic业务提案固定在流程中，`invalid_output_retries`只控制有限结构纠错，不增加业务机会。默认Fake配置及OpenAI/Qwen示例已迁移；历史实验配置保留原样，新CLI拒绝它们。
+真实实验默认Qwen3.5-Flash、关闭思考；参见[配置示例](configs/qwen3.5-flash.yaml)。密钥通过环境变量提供，不写入代码或日志。当前数据为HelpSteer3 General英文单轮强一致偏好任务；准备官方固定版本训练集使用：
 
 ```bash
-# 离线Fake示例；输出目录必须不存在。
-python3 -m verge.cli run --config configs/default.yaml
-python3 -m pytest -q
-python3 -m verge.web --runs-dir runs --port 8765
+python -m scripts.prepare_helpsteer3
 ```
 
-manifest、trajectory使用版本7，Memory使用版本5；提示词标识为 `local-credit-delayed-experience-signed-cases`。Web只列当前协议，展示候选、应用/采用、Judge、局部资格/最终入池、案例数/文本版本及P/N；不解析旧版本，不跨方法resume，历史产物保留。新版Web仅列新协议运行，当前200题新运行可由新版Web读取，本轮未重启Web。
+原始数据、运行日志、经验池及缓存不随仓库发布。数据准备的筛选条件与哈希在运行产物中保存；历史配置与报告保留各自原协议解释，不代表都能由当前CLI直接运行。
 
-历史计划43配置 [rewardbench-chat-hard-qwen-direct-experience-flash-30.yaml](configs/rewardbench-chat-hard-qwen-direct-experience-flash-30.yaml) 已按用户授权完成，使用独立输出目录；结果见[计划43](docs/plans/43-无Admission固定Flash30样本实验.md)，不自动继续剩余样本。
+## 工程约束
 
-离线验证覆盖两轮预算、实际HTTP消息、固定E/替换C、严格来源、未采用成功、候选零/净负不入池、延迟C2/C1选择、10/11条案例和文本冻结、错误边界、冻结/续跑以及前端渲染。Mock和Fake仅验证工程契约。历史100条准入流程结果见[计划32](docs/plans/32-新机制100样本真实验证.md)，最近Flash30条结果见[计划41](docs/plans/41-固定Flash非思考30样本实验.md)。
+源码保持扁平，主要模块位于`verge/`，配置在`configs/`，离线测试在`tests/`，方法及阶段记录在`docs/`。
 
-## 历史结果
+格式/结构和可隔离请求错误采用有限纠错，耗尽后隔离样本或模块并继续；鉴权/配置、存储/数据和程序错误fail-fast。合法R0反馈不因后续错误撤销，不静默截断输入或重复记账。
 
-两次100条仅生成/修订诊断：[计划27](docs/plans/27-100样本仅生成与修订复核.md)、[计划30](docs/plans/30-100样本Critic校准版本结果复核.md)。分别最终90/100与91/100；后者公开偏好身份泄漏35/47，并含负向问题按是加分的假成功。结果不证明经验机制有效，也不能视为新方案评价。历史方法留在main与Git记录，新分支不承担旧运行加载兼容。
+改进模块时，每模块至少20条代表性真实历史输入独立复测，不自动重跑完整流水线。Mock/Fake测试仅验证工程契约，不代表方法有效。研究设计、未解决问题及效果边界以对应文档为准。

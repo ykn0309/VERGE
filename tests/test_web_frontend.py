@@ -61,11 +61,12 @@ def test_actual_text_update_events_render_versions_and_escape_text(tmp_path):
     from verge.web import _evolution
     r, eid = existing_runner(tmp_path / 'update')
     r.modules.experience_updater.update = lambda e: keep_update(e, '共同方法 <img src=x onerror=alert(1)>', '必要条件')
-    r.run_sample(__import__('test_pipeline').sample('warm1'))
-    r.run_sample(__import__('test_pipeline').sample('warm2'))
+    for i in range(4): r.run_sample(__import__('test_pipeline').sample(f'warm{i}'))
     record = r.run_sample(__import__('test_pipeline').sample('next'))
     experience = r.memory.get(eid).to_dict()
     experience.update(case_count=len(experience['cases']), text_frozen=False)
+    experience['content'] += ' <img src=x onerror=alert(1)>' # hostile persisted text must be escaped
+    experience['working_case_ids'] = [c.sample_id for c in r.memory.get(eid).working_cases]
     experience['evolution'] = _evolution(experience, {}, {'seed': 0, 'next': 1}, [])
     source = tmp_path / 'render.js'
     source.write_text(Path('verge/web_assets/app.js').read_text().split('const experiencePreview =')[0])
@@ -78,8 +79,9 @@ vm.runInContext('data='+fs.readFileSync(process.argv[2],'utf8'),ctx);
 console.log(vm.runInContext('experienceDetail(data.experiences[0])',ctx));"""
     rendered = subprocess.run(['node','-e',program,str(source),str(payload)], capture_output=True, text=True)
     assert rendered.returncode == 0, rendered.stderr
-    assert '案例 4/10' in rendered.stdout and '文本 v1 → v2' in rendered.stdout
-    assert '文本重新归纳' in rendered.stdout and '查看原文本' in rendered.stdout
+    assert '归纳工作窗口' in rendered.stdout and '新版本替换' in rendered.stdout
+    assert '后继版本' in rendered.stdout and '已退役' in rendered.stdout
+    assert '触发归纳（已完成）' in rendered.stdout
     assert '&lt;img src=x onerror=alert(1)&gt;' in rendered.stdout
     assert '<img src=x onerror=alert(1)>' not in rendered.stdout
 
@@ -106,7 +108,7 @@ vm.runInContext(`data={warnings:[],experiences:[.4,.9,.9,.6].map((confidence,i)=
     {sample_id:'s3',application_attempts:[{rubric:{criteria:[{source_experiences:['e2']}]}}]}]};
 page='memory';experienceDetail=e=>'DETAIL:'+e.experience_id;`,ctx);
 function order(){return [...app.html.matchAll(/data-action="experience" data-index="(\d+)"/g)].map(m=>Number(m[1]));}
-function sort(value){list.scrollTop=240;listeners.change.forEach(fn=>fn({target:{value,matches:()=>true}}));assert.equal(list.scrollTop,240);}
+function sort(value){list.scrollTop=240;listeners.click.forEach(fn=>fn({target:{closest:()=>({dataset:{action:'experience-sort',value}})}}));assert.equal(list.scrollTop,240);}
 sort('confidence_desc');assert.deepEqual(order(),[1,2,3,0]);
 assert.ok(app.html.includes('data-index="0"') && app.html.includes('DETAIL:e0'));
 const button={dataset:{action:'experience',index:'2'}};
@@ -116,6 +118,22 @@ sort('confidence_asc');assert.deepEqual(order(),[0,3,1,2]);assert.ok(app.html.in
 sort('usage_desc');assert.deepEqual(order(),[0,1,2,3]);assert.ok(app.html.includes('引用 2 次'));
 sort('usage_asc');assert.deepEqual(order(),[2,3,1,0]);assert.ok(app.html.includes('DETAIL:e2'));
 vm.runInContext("expQuery='method1';render()",ctx);assert.deepEqual(order(),[1]);assert.ok(app.html.includes('DETAIL:e1'));
+vm.runInContext("expQuery='';data.categories=[{category_id:'c1',name:'类别一',description:'类别描述'}];data.experiences[0].category_id='c1';data.experiences[1].category_id='c1';render()",ctx);
+assert.equal((app.html.match(/class="category-heading /g)||[]).length,1);
+assert.ok(app.html.includes('独立经验 · 未分类'));
+assert.ok(app.html.includes('aria-label="已分类经验"') && app.html.includes('aria-label="未分类经验"'));
+assert.ok(app.html.indexOf('data-index="0"') < app.html.indexOf('aria-label="未分类经验"'));
+listeners.click.forEach(fn=>fn({target:{closest:()=>({dataset:{action:'category',category:'c1'}})}}));
+assert.ok(app.html.includes('类别描述') && app.html.includes('类别成员 · 2 条'));
+vm.runInContext('selectedCategory=null;render()',ctx);
+list.scrollTop=120;
+listeners.click.forEach(fn=>fn({target:{closest:()=>({dataset:{action:'toggle-category',category:'c1'}})}}));
+assert.equal(list.scrollTop,120);assert.deepEqual(order(),[2,3]);
+listeners.click.forEach(fn=>fn({target:{closest:()=>({dataset:{action:'category-filter',value:'c1'}})}}));
+assert.deepEqual(order(),[]);
+listeners.click.forEach(fn=>fn({target:{closest:()=>({dataset:{action:'toggle-category',category:'c1'}})}}));assert.deepEqual(order(),[1,0]);
+vm.runInContext("data.experiences[0].update_history=[{sample_id:'s1'}]",ctx);
+assert.ok(vm.runInContext("sampleExperienceBadges(data.samples[0])",ctx).includes('触发归纳 1 条'));
 vm.runInContext("expQuery='';memoryTab='candidates';render()",ctx);assert.ok(!app.html.includes('data-experience-sort'));
 console.log('sorting, selection, search and scroll passed');"""
     result = subprocess.run(['node', '-e', program, str(source)], capture_output=True, text=True)

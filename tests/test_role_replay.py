@@ -27,7 +27,7 @@ def test_replay_preserves_actual_critic_history_and_isolates_variants():
 
 def test_updater_converts_only_case_ids_and_keeps_original_text():
     task = '含原始task标识 xyz 的原文'
-    payload = {'current_experience': {'content': '方法', 'trigger': '条件'},
+    payload = {'current_experience': {'action':'keep','draft':None},
                'cases': [{'sample_id': 'helpsteer3:' + 'a' * 64, 'task': task}]}
     event = {'input': payload, 'messages': [{'role': 'system', 'content': 'old'}]}
     projected, messages = replay_messages('experience_updater', event)
@@ -49,7 +49,7 @@ def test_role_contracts_reject_unknown_duplicate_and_missing_ids():
                  {'experiences': [{'content': '方法', 'trigger': '条件', 'sample_ids': ['1', '1']}]})
     # Existing prompt-only length constraints remain prompt-only.
     validate('experience_updater', {'cases': [{'sample_id': '1'}]},
-             {'content': '长' * 200, 'trigger': '条件'})
+             {'action':'revise','draft':{'content': '长' * 200, 'trigger': '条件'}})
 
 
 def test_examples_have_real_role_contracts_and_no_new_schema():
@@ -61,7 +61,7 @@ def test_examples_have_real_role_contracts_and_no_new_schema():
 
 
 def test_simplified_replay_preserves_case_evidence_and_original_audit_values():
-    original = {'current_experience': {'content': '方法', 'trigger': '条件'}, 'cases': [
+    original = {'current_experience': {'action':'keep','draft':None}, 'cases': [
         {'sample_id': '1', 'task': '完整任务', 'chosen': '完整甲', 'rejected': '完整乙',
          'applied_experience': {'content': '实际旧方法', 'trigger': '实际旧条件'},
          'credit': {'positive_credit': .7, 'negative_credit': .1}, 'criteria': [
@@ -79,12 +79,12 @@ def test_simplified_replay_preserves_case_evidence_and_original_audit_values():
 def test_simplified_generator_keeps_current_candidate_and_task():
     original = {'task': '完整比较任务', 'selected_experiences': [
         {'experience_id': '1', 'content': '已有方法', 'trigger': '条件', 'confidence': .8, 'evidence_amount': 5}],
-        'candidate_experience': {'experience_id': '2', 'content': '当前方法', 'trigger': '当前条件',
+        'candidate_experiences': {'experience_id': '2', 'content': '当前方法', 'trigger': '当前条件',
                                  'status': '尚未验证'}}
     previous = deepcopy(original)
     simple = simplified_payload('initial_generator', original)
     assert simple['task'] == original['task']
-    assert simple['candidate_experience'] == original['candidate_experience']
+    assert simple['candidate_experiences'] == original['candidate_experiences']
     assert set(simple['selected_experiences'][0]) == {'experience_id', 'content', 'trigger'}
     assert original == previous
 

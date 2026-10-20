@@ -57,7 +57,7 @@ def test_exhausted_request_is_logged_and_next_sample_runs(tmp_path, role, method
     setattr(component, method, fail_once)
     failed, following = r.run([sample("failed"), sample("following")])
     assert failed.state == "sample_error" and failed.sample_error["stage"] == stage
-    assert failed.admitted_candidate_id is None
+    assert not failed.admitted_candidate_ids
     assert following.state == "application_success"
     assert list(TrajectoryLog(tmp_path).all()) == [failed, following]
     assert TrajectoryRecord.from_json(failed.to_json()) == failed
@@ -83,7 +83,7 @@ def test_application_timeout_saves_r0_credit_once_and_continues(tmp_path):
     r.modules.judge.judge = judge
     first, second = r.run([sample("failed"), sample("following")])
     assert first.state == "sample_error" and first.sample_error["stage"] == "application_1.judge"
-    assert first.initial_judgment and first.downstream_credits and not first.admitted_experience_id
+    assert first.initial_judgment and first.downstream_credits and not first.admitted_experience_ids
     assert first.application_attempts[-1].error
     assert second.state != "sample_error"
     restored = ExperienceMemory(tmp_path).get(eid)

@@ -32,11 +32,11 @@ def test_dedicated_role_instructions_and_no_shared_definition(role):
 def test_generator_projection_no_private_context_and_equal_optional_use():
     c = CandidateExperience("candidate_x", "指导", "适用场景")
     p = generator_payload(
-        "任务", [ExperienceView("e", "原指导", "条件", 0.7, 1)], candidate=c
+        "任务", [ExperienceView("e", "原指导", "条件", 0.7, 1)], candidates=[c]
     )
-    assert set(p) == {"task", "selected_experiences", "candidate_experience"}
+    assert set(p) == {"task", "selected_experiences", "candidate_experiences"}
     assert set(p["selected_experiences"][0]) == {"experience_id", "content", "trigger"}
-    assert "confidence" not in p["candidate_experience"]
+    assert "confidence" not in p["candidate_experiences"]
     assert "admission" not in str(p)
     assert "自主采用" in _ROLE_GUIDANCE["initial_generator"]
     assert "任务要求优先" in _ROLE_GUIDANCE["initial_generator"]
@@ -85,14 +85,14 @@ def test_natural_input_preserves_raw_multiline_and_no_old_conversation_inheritan
 
 def test_generator_actual_message_unifies_e_and_current_candidate():
     candidate = CandidateExperience("candidate_current", "本轮方法", "本轮条件")
-    payload = generator_payload("任务", [ExperienceView("e", "已有方法", "原条件", .7, 1)], candidate=candidate)
+    payload = generator_payload("任务", [ExperienceView("e", "已有方法", "原条件", .7, 1)], candidates=[candidate])
     user = llm_messages("initial_generator", payload)[1]["content"]
     assert user.count("本次可用经验") == 1
     assert user.index("已有方法") < user.index("本轮方法")
     assert "当前候选、尚未验证，无历史置信度" in user
     assert "已准入" not in user and "本次选中的经验" not in user
-    assert "confidence" not in payload["candidate_experience"]
-    assert set(_ROLE_GUIDANCE) == {"selector", "initial_generator", "judge", "critic", "experience_updater", "category_organizer"}
+    assert "confidence" not in payload["candidate_experiences"]
+    assert set(_ROLE_GUIDANCE) == {"selector", "initial_generator", "judge", "critic", "experience_updater", "category_organizer", "atomizer", "category_describer"}
 
 
 def test_role_prompts_use_scoring_standard_language():

@@ -174,6 +174,18 @@ def _evolution(experience, records, order, warnings):
             "has_trajectory": origin in order,
         }
     ]
+    inherited = experience["inherited_credit"]
+    if inherited:
+        alpha += inherited["positive_credit"]
+        beta += inherited["negative_credit"] + inherited["inherited_penalty"] + inherited["evolution_penalty"]
+        # Birth allocations are separate from observations of this version.
+        parent = next((e for r in records for e in r.get("experience_updates", {}).values()
+                       if e["event_id"] == inherited["event_id"]), None)
+        sid = parent["sample_id"] if parent else None
+        timeline[0].update(sample_id=sid, origin_kind="evolution", has_trajectory=sid in order)
+        timeline.append({"kind": "credit_inheritance", "sample_id": sid, **inherited,
+                         "alpha": alpha, "beta": beta, "confidence": alpha / (alpha + beta),
+                         "has_trajectory": sid in order})
     for event in events:
         alpha += event["positive_credit"]
         beta += event["negative_credit"]
@@ -195,8 +207,8 @@ def _evolution(experience, records, order, warnings):
 
 def _run_artifacts(directory: Path) -> tuple[dict[str, Any], Path]:
     manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("format_version") != 8:
-        raise ValueError("unsupported run manifest format; new runs require v8")
+    if manifest.get("format_version") != 10:
+        raise ValueError("unsupported run manifest format; new runs require v10")
     versions = manifest.get("prompt_versions")
     if (
         not isinstance(versions, dict)
@@ -279,9 +291,10 @@ def _overview_metrics(samples, experiences, context, manifest, warnings):
         }
 
     proposals = [p for s in train for p in s.get("proposal_attempts", [])]
-    candidates = [p["candidate"] for p in proposals if p.get("candidate")]
+    candidates = [c for p in proposals for c in p.get("atomic_candidates",[])]
     apps = [a for s in train for a in s.get("application_attempts", [])]
-    successes = [a for a in apps if a.get("judgment", {}) and a["judgment"]["success"]]
+    successes = [next(a for a in s["application_attempts"] if a.get("judgment") and a["judgment"]["success"])
+                 for s in train if any(a.get("judgment") and a["judgment"]["success"] for a in s.get("application_attempts",[]))]
     failures = sum(
         bool(s.get("initial_judgment")) and not s["initial_judgment"]["success"]
         for s in train
@@ -290,7 +303,7 @@ def _overview_metrics(samples, experiences, context, manifest, warnings):
     adds = 0
     for i, s in enumerate(train):
         local = [
-            p["candidate"] for p in s.get("proposal_attempts", []) if p.get("candidate")
+            c for p in s.get("proposal_attempts", []) for c in p.get("atomic_candidates",[])
         ]
         adds += sum(c["experience_id"] is not None for c in local)
         curve.append(
@@ -313,9 +326,9 @@ def _overview_metrics(samples, experiences, context, manifest, warnings):
         "candidates": len(candidates),
         "text_updates": sum(len(e["update_history"]) for e in experiences),
         "frozen_experiences": sum(len(e["cases"]) >= 10 for e in experiences),
-        "active_experiences": len(experiences),
+        "active_experiences": sum(e["status"]=="active" for e in experiences),
         "proposal_calls": len(proposals),
-        "applications": len(apps),
+        "applications": sum(len({a["round_number"] for a in s.get("application_attempts",[])}) for s in train),
         "adopted": sum(a["adopted"] is True for a in apps),
         "success_without_candidate": sum(a["adopted"] is False for a in successes),
         "repair_successes": len(successes),
@@ -365,7 +378,7 @@ def _generation_summaries(root: Path, warnings: list[str]) -> dict[str, dict[str
                 continue
             if entry.get(
                 "role"
-            ) == "initial_generator" and "candidate_experience" not in (
+            ) == "initial_generator" and "candidate_experiences" not in (
                 entry.get("input") or {}
             ):
                 analysis = output.get("analysis")
@@ -390,9 +403,7 @@ def _sample_experience_status(
     sample: dict[str, Any], summary: dict[str, Any]
 ) -> dict[str, Any]:
     candidates = [
-        p["candidate"]
-        for p in sample.get("proposal_attempts", [])
-        if p.get("candidate")
+        c for p in sample.get("proposal_attempts", []) for c in p.get("atomic_candidates",[])
     ]
     referenced = {
         eid
@@ -478,10 +489,20 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
     for experience in pool.all():
         item = experience.to_dict()
         item["evolution"] = _evolution(item, records, order, warnings)
+        inherited = experience.inherited_credit
+        item["credit_breakdown"] = {
+            "observed_positive": sum(e.positive_credit for e in experience.evidence_history),
+            "observed_negative": sum(e.negative_credit for e in experience.evidence_history),
+            "inherited_positive": inherited.positive_credit if inherited else 0,
+            "inherited_negative": inherited.negative_credit if inherited else 0,
+            "inherited_penalty": inherited.inherited_penalty if inherited else 0,
+            "evolution_penalty": inherited.evolution_penalty if inherited else 0,
+        }
+        item["evidence_amount"] = experience.evidence_amount
         item["case_count"] = len(experience.cases)
         item["pending_feedback_count"] = experience.pending_feedback_count
-        item["downstream_task_count"] = len({e.sample_id for e in experience.usage_history if e.sample_id != experience.cases[0].sample_id})
-        item["text_frozen"] = experience.text_frozen
+        item["downstream_task_count"] = len({e.sample_id for e in experience.evidence_history if e.evidence_type == "downstream_credit"})
+        item["working_case_ids"] = [c.sample_id for c in experience.working_cases]
         item["category"] = categories.get(experience.category_id)
         item["usage_counts"] = {kind: sum(getattr(u, kind) for u in experience.usage_history)
                                 for kind in ("positive", "negative", "both_true", "both_false")}
@@ -501,6 +522,7 @@ def load_run(run_dir: str | Path) -> dict[str, Any]:
         "categories": list(categories.values()),
         "pending_organization": dict(pool.pending_organization),
         "organization_history": [e.to_dict() for e in pool.organization_history],
+        "dirty_categories": dict(pool.dirty_categories),
         "counts": dict(counts),
         "warnings": warnings,
         "overview": overview,

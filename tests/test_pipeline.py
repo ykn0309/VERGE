@@ -58,12 +58,12 @@ def test_business_outcomes(tmp_path, scenario, state, rounds, pool):
     assert len(result.proposal_attempts) == rounds
     assert all(role != "admission_checker" for role, _ in r.modules.backend.requests)
     if pool:
-        c = result.proposal_attempts[-1].candidate
+        c = result.proposal_attempts[-1].atomic_candidates[0]
         assert (r.memory.all()[0].content, r.memory.all()[0].trigger) == (
             c.content,
             c.trigger,
         )
-        assert result.admitted_candidate_id == c.candidate_id
+        assert result.admitted_candidate_ids == [c.candidate_id]
         assert r.memory.all()[0].alpha == pytest.approx(1.8)
 
 
@@ -80,21 +80,21 @@ def test_two_proposals_two_direct_applications(tmp_path):
     assert cs[1]["current_rubric"] == rec.application_attempts[0].rubric.to_dict()
     assert cs[1]["current_judgment"] == rec.application_attempts[0].judgment.to_dict()
     assert (
-        cs[1]["previous_candidate"]["candidate_id"]
+        cs[1]["atomic_feedback"]["atomic_candidates"][0]["candidate_id"]
         == rec.application_attempts[0].candidate_id
     )
     assert cs[1]["adopted"] is True and "rejected_candidate" not in cs[1]
     assert "analysis" not in cs[1]
     gs = [p for role, p in r.modules.backend.requests if role == "initial_generator"]
     assert (
-        gs[1]["candidate_experience"]["experience_id"]
-        != gs[2]["candidate_experience"]["experience_id"]
+        gs[1]["candidate_experiences"][0]["experience_id"]
+        != gs[2]["candidate_experiences"][0]["experience_id"]
     )
     for p in gs:
         assert set(p) <= {
             "task",
             "selected_experiences",
-            "candidate_experience",
+            "candidate_experiences",
             "_application_round",
             "validation_feedback",
         }
@@ -312,7 +312,7 @@ def test_r0_credit_survives_later_failure_and_e_is_not_recredited(tmp_path):
     for call in [
         p for role, p in r.modules.backend.requests if role == "initial_generator"
     ]:
-        if "candidate_experience" in call:
+        if "candidate_experiences" in call:
             assert call["selected_experiences"] == [
                 {k: e[k] for k in ("experience_id", "content", "trigger")}
                 for e in nxt.selected_experiences
@@ -327,7 +327,7 @@ def test_success_with_negative_candidate_credit_does_not_admit(tmp_path):
         return Rubric(
             "applied",
             [
-                Criterion("bad", "基础条件", 2, [candidate.candidate_id]),
+                Criterion("bad", "基础条件", 2, [candidate[0].candidate_id]),
                 Criterion("good", "关键条件", 8, []),
             ],
         )
@@ -351,7 +351,7 @@ def test_success_with_negative_candidate_credit_does_not_admit(tmp_path):
     assert rec.state == "application_success"
     assert rec.application_attempts[0].credit == Credit(0, .2)
     assert not rec.application_attempts[0].eligible
-    assert rec.admitted_candidate_id is None and not r.memory.all()
+    assert not rec.admitted_candidate_ids and not r.memory.all()
 
 
 def test_heldout_freezes_memory_text_beta_and_no_candidate_roles(tmp_path):
@@ -420,10 +420,10 @@ def test_r0_balanced_channels_update_before_success_branch(tmp_path):
 
 def test_adopted_zero_candidate_credit_does_not_add(tmp_path):
     r = runner(tmp_path)
-    r.modules.initial_generator.apply = lambda task, e, c, n: Rubric(
+    r.modules.initial_generator.apply = lambda task, e, candidates, n: Rubric(
         "a",
         [
-            Criterion("c", "候选影响的要求", 2, [c.candidate_id]),
+            Criterion("c", "候选影响的要求", 2, [candidates[0].candidate_id]),
             Criterion("t", "task要求", 8, []),
         ],
     )
@@ -443,4 +443,4 @@ def test_adopted_zero_candidate_credit_does_not_add(tmp_path):
     r.modules.judge.judge = judged
     rec = r.run_sample(sample())
     assert rec.state == "application_success" and rec.application_attempts[0].adopted
-    assert not r.memory.all() and rec.admitted_candidate_id is None
+    assert not r.memory.all() and not rec.admitted_candidate_ids

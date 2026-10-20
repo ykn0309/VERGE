@@ -18,6 +18,7 @@ from verge.prompts import PROMPT_VERSION, llm_messages
 
 
 JUDGE_RESPONSE_SIDE: ContextVar[str | None] = ContextVar("judge_response_side", default=None)
+ROLE_ID_MAPPING: ContextVar[dict | None] = ContextVar("role_id_mapping", default=None)
 
 
 class LLMBackend(Protocol):
@@ -51,8 +52,10 @@ _OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
     "initial_generator": ("criteria", list),
     "judge": ("criterion_judgments", list),
     "critic": ("candidates", list),
-    "experience_updater": ("content", str),
-    "category_organizer": ("categories", list),
+    "experience_updater": ("action", str),
+    "category_organizer": ("action", str),
+    "atomizer": ("experiences", list),
+    "category_describer": ("name", str),
 }
 
 
@@ -90,17 +93,15 @@ def _normalize_numeric_ids(role: str, value: Any) -> None:
 
 def _valid_shape(role: str, value: Any) -> bool:
     """缺字段/字段类型不对才重试；ID引用、空候选等语义结果不重试。"""
-    if role == "category_organizer":
-        return (isinstance(value, dict) and set(value) == {"categories", "ungrouped_experience_ids"}
-                and isinstance(value["categories"], list)
-                and isinstance(value["ungrouped_experience_ids"], list)
-                and all(isinstance(c, dict) and set(c) == {"category_id", "name", "description", "experience_ids"}
-                        and (c["category_id"] is None or isinstance(c["category_id"], str))
-                        and all(isinstance(c[k], str) and c[k].strip() for k in ("name", "description"))
-                        and isinstance(c["experience_ids"], list) for c in value["categories"]))
-    if role == "experience_updater":
-        return (isinstance(value, dict) and set(value) == {"content", "trigger"}
-                and all(isinstance(value[k], str) and value[k].strip() for k in ("content", "trigger")))
+    if role in ("category_organizer", "experience_updater", "atomizer", "category_describer"):
+        from verge.models import CategoryAssignment, ExperienceUpdate, AtomicResult, CategoryDescription
+        model = {"category_organizer":CategoryAssignment,"experience_updater":ExperienceUpdate,
+                 "atomizer":AtomicResult,"category_describer":CategoryDescription}[role]
+        try:
+            model.from_dict(value)
+            return True
+        except (ValueError,TypeError):
+            return False
     if role == "critic":
         return (
             isinstance(value, dict)
@@ -245,6 +246,7 @@ class OpenAICompatibleBackend:
             self.trace_hook({"role": role, "backend": "openai_compatible", "model": self.model,
                              "prompt_version": PROMPT_VERSION, "attempt": attempt,
                              **({"response_side": JUDGE_RESPONSE_SIDE.get()} if role == "judge" else {}),
+                             **({"id_mapping": ROLE_ID_MAPPING.get()} if ROLE_ID_MAPPING.get() is not None else {}),
                              "status": status, "input": dict(payload), "messages": messages,
                              "raw_output": raw_output, "output": output, "error": error})
 
@@ -541,14 +543,15 @@ class FakeLLMBackend:
                 ][: request["max_selected"]]
             }
         elif role == "initial_generator":
-            candidate = request.get("candidate_experience")
+            candidates = request.get("candidate_experiences", [])
+            candidate = candidates[0] if candidates else None
             round_number = request.get("_application_round", 0)
             successful = self.scenario == "initial_success" or (
                 self.scenario == f"attempt_{round_number}_success"
                 and candidate is not None
             )
             sources = (
-                [candidate["experience_id"]]
+                [c["experience_id"] for c in candidates]
                 if candidate and self.adopt_candidate
                 else []
             )
@@ -608,16 +611,13 @@ class FakeLLMBackend:
                 ],
             }
         elif role == "experience_updater":
-            result = dict(request["current_experience"])
+            result = {"action":"keep", "draft":None}
+        elif role == "atomizer":
+            result = {"experiences":[dict(request["draft"])]}
         elif role == "category_organizer":
-            groups = {}
-            for e in request["experiences"]:
-                if e["category_id"] is not None:
-                    groups.setdefault(e["category_id"], []).append(e["experience_id"])
-            result = {"categories": [{**c, "experience_ids": groups[c["category_id"]]}
-                                     for c in request["categories"] if c["category_id"] in groups],
-                      "ungrouped_experience_ids": [e["experience_id"] for e in request["experiences"]
-                                                   if e["category_id"] is None]}
+            result = {"action":"unclassified", "category_id":None,"name":None,"description":None}
+        elif role == "category_describer":
+            result = {k:request["category"][k] for k in ("name","description")}
         else:
             raise ValueError(f"unknown LLM role: {role}")
         if conversation is not None:

@@ -1,5 +1,7 @@
 # Rubric Judge
 
+> **当前实现：计划68信用继承与稳定性惩罚，Manifest/Trajectory10、Memory8。** 演化修订继承历史信用，拆分均分，惩罚为最近5例累计(P+N)的20%；详见[计划68](../plans/68-演化信用继承与稳定性惩罚.md)。其余方法承接[方案14](14-原子经验版本演化与局部混合检索.md)；计划67局部结果保留其原协议解释，见[报告67](../实验分析/67-版本演化与混合检索局部验证.md)。最近完整训练仍为计划66。
+
 > 上位文档：[VERGE 设计总览](../设计方案.md)
 >
 > 输入：[Initial Rubric Generation](./03-初始Rubric生成.md)
@@ -8,7 +10,7 @@
 
 归一化 rubric 的 相对权重，并分别评价 chosen 和 rejected response，输出 criterion-level Boolean judgments与依据、加权分数和 margin。
 
-这是流程中第一次处理 preference pair 的阶段。工程上对两份回答分别发起独立的 Judge 调用，并行执行；每次模型接收原始 `task`（指令、用户提供的输入与上下文）、待判断标准和单份 `response`，返回每条标准的 `satisfied` Boolean和必填非空`reason`，简短说明回答中的依据、缺失信息或计数结果。原始task是必需输入，适用于初始、新会话应用、测试和独立baseline判断（历史对话修订同样要求）；外部链接内容不会自动抓取或补造。chosen/rejected 的对应关系仅由系统维护，不进入 Judge 模型输入。两侧都校验成功后，程序合并判断并计算分数；一侧重试时保留另一侧成功结果。原有判断复用规则不变。
+这是流程中第一次处理 preference pair 的阶段。工程上对两份回答分别发起独立的 Judge 调用，并行执行；每次模型接收原始 `task`（指令、用户提供的输入与上下文）、待判断标准和单份 `response`，返回每条标准的 `satisfied` Boolean和必填非空`reason`，简短说明回答中的依据、缺失信息或计数结果。原始task是必需输入，适用于初始、原子候选集合的新会话应用、测试和独立baseline判断；外部链接内容不会自动抓取或补造。chosen/rejected 的对应关系仅由系统维护，不进入 Judge 模型输入。两侧都校验成功后，程序合并判断并计算分数；一侧重试时保留另一侧成功结果。原有判断复用规则不变。
 
 ## 2. Weight Normalization
 

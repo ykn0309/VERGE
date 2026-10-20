@@ -32,7 +32,7 @@ modules:
       max_selected: 5
       exploration_slots: 0
   application:
-    implementation: local_credit_bounded_experience
+    implementation: immutable_atomic_evolution
     config:
       max_rounds: 2
       invalid_output_retries: 2

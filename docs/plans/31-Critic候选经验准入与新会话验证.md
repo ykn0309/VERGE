@@ -110,7 +110,7 @@ d_i为两侧Boolean判别差，S_i为标准声明的来源，多来源均分；P
 
 举例：+0.2与−0.2令alpha/beta各加0.2；+0.3与−0.2分别加0.3/0.2，不能只加净+0.1；只有+0.2只加alpha。双通道均0才不更新。若初始(1,1)，第一种confidence仍0.5，累计证据强度增加0.4；其他初始比例会被均衡证据拉向0.5。
 
-累计强度A=alpha+beta−2，增量P+N，不是|P−N|，也不是独立任务数。新证据存positive_credit/negative_credit，不再只存净credit；展示可派生U。Beta仍是分数证据的平滑累计，不是严格校准概率；统计背景见[Stanford CS109](https://chrispiech.github.io/probabilityForComputerScientists/en/part4/beta/)，规则详见[可靠性模块](../设计方案/11-可靠性更新与噪声证据.md)。
+累计强度A=alpha+beta−2，增量P+N，不是|P−N|，也不是独立任务数。新证据存positive_credit/negative_credit，不再只存净credit；展示可派生U。Beta仍是分数证据的平滑累计，不是严格校准概率；统计背景见[Stanford CS109](https://chrispiech.github.io/probabilityForComputerScientists/en/part4/beta/)，规则详见[可靠性模块](../历史设计/2026-10-24-V1/设计方案/11-可靠性更新与噪声证据.md)。
 
 ### 已确定的工程边界
 

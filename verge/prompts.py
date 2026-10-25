@@ -1,694 +1,245 @@
-"""角色输入投影：Generator不见偏好/轨迹；Critic与归纳员核对实际证据。"""
+"""V2 role contracts, short local identifiers, and visibility projections."""
 
 from __future__ import annotations
+from typing import Any
+import json
 
-from dataclasses import dataclass
-import math
-import re
-from typing import Any, Mapping, Sequence
-
-from verge.models import (
-    CandidateExperience,
-    Criterion,
-    Experience,
-    ExperienceCategory,
-    Rubric,
-    RubricJudgment,
-)
-
-
-PROMPT_VERSION = "immutable-atomic-evolution-inherited-credit-v2"
-
-# 专属身份和任务说明；Generator/Critic 的对象编号由系统分配。
-_ROLE_GUIDANCE = {
-    "selector": """你是经验适用性筛选员。你的任务是针对给定 task，筛选可用于首次生成评价标准的经验。
-结合任务语义、实际输入和上下文分析适用条件，允许合理推理，不要求条件由 task 逐字声明。经验须有实质设计帮助；任务目标和明确约束优先，高置信度不能代替适用性。
-候选可能是类别（含名称、描述与全部成员）或未分类的小经验。类别只用于组织，不代表所有成员适用；逐条判断成员，最终只能选择小经验编号，不选择类别编号，不必整类采用。""",
-    "initial_generator": """你是评分标准设计者。根据task和本次可用经验，设计用于评价回答的是/否标准。
-先理解任务目标、明确约束、实际输入及上下文，确定当前任务中合理的评价要求。任务要求优先；经验是可选的标准设计指导，依据适用条件自主采用、组合或忽略，不因来自Critic而优先。
-把任务要求组织成2到8条可独立核验的正向问题，“是”表示满足要求，避免用缺陷问题搭配正向加分。采用经验时落实其设计动作：可能只改变一项，也可能影响多个问题的表达、关系或权重。检查整套标准与task及所采用经验是否相容，避免相互冲突、重复计权或仅追加引用而保留与经验冲突的要求；不要求每条经验都重构全部标准。
-对整套标准共同分配总预算1，weight表示相对权重。依据task主次权衡核心与辅助要求，允许权重差距较大；拆分同一维度时共同占据该维度的预算，不因条目更多而扩大重要性。所有weight为有限正数，系统按总和归一化。不引入task无依据的要求、阈值、总分否决、部分分或自动跳过。
-来源只标注实质新增或改变问题表达或权重分配的经验；task足以推导且经验未实质改变的标准不挂名，实际采用也不一律删除。analysis简述设计取舍，具体标准与权重应落实这些取舍。""",
-    "judge": """你是逐标准回答核验员。结合task、标准问题与当前这份回答，独立判断每条要求是否满足。
-逐项定位回答中的相关内容或缺失信息，核对问题要求的性质、范围、数量及否定条件，然后给出satisfied和简短reason。reason记录可核对的判断依据：指出相关表述或缺失内容；涉及计数时给出计数结果及必要的计数对象说明，不只复述结论，也不需要长篇推理。
-以原文和task提供的事实为依据，不补造回答内容或外部核验结果。每项按其问题判断，不用其他条目的结论替代当前项。""",
-    "critic": """你从失败证据中提炼供未来首次设计评分标准使用的经验。目标是形成有依据、可复用的设计动作。
-私有analysis先核对task要求、标准文本、回答事实、两侧Judge判断及理由。Judge理由是待核对的模型解释，不是事实证明；区分标准设计缺陷、表达歧义、Judge执行错误、偏好冲突与证据不足。分差不理想本身不意味着标准需要改变；只有Judge误判且没有可信设计动作时返回空候选。
-从可确认的问题中提炼如何设计标准：明确核验性质、澄清语义边界、组织互相一致的要求或分配相对权重。可以使正确要求更明确、更容易被Judge核验，但不能迁就错误事实、放宽task明确约束或为了偏好分差创造无依据要求。保持加权Boolean协议，不提出部分分、总分否决、自动跳过或修改Judge的指令。
-公开content表达面向一类问题的标准设计方法，trigger表达生成前能从task、实际输入、上下文或领域知识识别的条件。把本题主体转换为语义角色，把数量、时长等转换为从新task读取的参数，保留方法必需的专业边界。content与trigger范围一致。每条小经验只表达一个能独立采用或忽略的原子核验方法；若两个要求可以分别采用，不把它们捆绑成一条。本轮仅提最值得验证的一种方法，不必覆盖全部标准。content≤150字符、trigger≤60字符。
-公开经验不依赖已有评分标准、Judge或已观察回答特征，不保留本题专名、答案片段、固定数值、偏好身份或私有分差，也不转成给回答者的成稿/拒绝命令。必要领域条件与通用参数说明可以保留，抽象不等于删除所有专业含义。
-第二轮接续本样本的消息历史，对照自己上一轮的分析和候选、实际标准、来源与前后Judge依据，辨别诊断错误、方法不足、未落实或Judge执行问题；历史分析和来源声明均不证明已落实。根据新增证据重新分析并提出经验，避免仅换说法重复前候选；仍无可信设计动作可返回空候选。""",
-    "experience_updater": """你是经验归纳员。根据当前固定文本版本和最近5个不同下游任务的正负使用案例，决定保持或修订供首次设计评分标准使用的方法。
-每条案例含完整任务、两回答、相关有区分标准和两侧Judge解释。positive/negative只是应用方向，不是事实证明；负例可能来自方法缺陷、适用范围或错误应用，不因单例机械否定方法。
-保持有依据的共同方法和必要条件，不以增加要求来容纳无关案例，不沿用原题专名和固定数量，不让最后一例覆盖其他证据。修订应修正方法或其适用范围，不追加独立方法；归纳后由独立原子化器整理。
-只为明确的方法改进而revise，无需润色则keep。trigger从生成前task/输入/上下文识别；content描述标准设计方法。没有充分依据时保持。不要analysis，不修改信用，不输出分类。content≤150字符，trigger≤60字符。""",
-
+PROMPT_VERSION = "verge-v2-semistructured-bn-4"
+METHOD_SCHEMA = {
+    "trigger": "生成前可识别的适用条件",
+    "principle": "一条独立的标准设计方法",
+    "template": None,
+    "parameters": {},
 }
-
-_ROLE_GUIDANCE["selector"] += " confidence包含实际应用与继承信用，并计入演化惩罚；evidence_amount为实际与继承P/N的总量，不含惩罚，也不是本版本验证次数。继承信用不能证明修订后的内容已验证，适用性仍优先；零证据表示未知。"
-_ROLE_GUIDANCE["atomizer"] = """你是独立经验原子化器，只拆解草稿中已有方法，不重新诊断任务，不凭空增加规则。
-一条原子经验是一个能独立采用或忽略的核验动作及其必要条件。已经原子化则逐字原样返回；存在可分别采用的方法则直接拆开，为各条生成准确的trigger/content。不要按标点机械拆分，不把方法与必要边界分开，不遗漏必要方法，不将共同前提无条件扩大。
-每条拆出的方法只含一个动作，彼此不重复。禁止把一个条件分支改写成全局要求，禁止为术语、数字或引用方式另造规则。若不需要拆分只返回草稿本身，单条结果不授权改写草稿。
-原创示例一：草稿为“核对告警发送给指定接收人，并核对发送时间是否在指定时段”。两项可以分别采用，应拆成“核对接收对象”和“核对发送时段”，分别保留任务指定参数的条件。
-原创示例二：草稿为“只有任务指定保留标记时，核对标记是否完整保留”。条件与动作共同构成一个方法，应原样保留；不能拆成“必须指定标记”和“所有任务都保留标记”。
-不输出analysis、ID、信用或分类。每条content≤150字符、trigger≤60字符。"""
-_ROLE_GUIDANCE["category_organizer"] = """你是局部经验归类员。只为输入的一条经验选择类别，依据共同核验方法和适用范围，不因宽泛主题相同强凑。
-候选类别由检索产生，成员只展示最相关部分，不代表全部成员。能归入则assign；没有合适类别可create，生成名称和概括共同方法及范围的描述；证据不足可unclassified。不改其他经验归属、正文或信用，不修改已有类别名称和描述，不输出分析。"""
-_ROLE_GUIDANCE["category_describer"] = """你是类别名称和描述更新员。依据旧名称/描述、成员增删及最终成员数更新元数据。
-描述概括当前成员的共同核验方法及范围，正确反映移出成员，避免逐项拼接规则或仅列主题。你无权移动成员、改经验正文或信用。只输出name/description，不输出analysis、成员列表或归属建议。"""
-
-_ROLE_INSTRUCTIONS = {
-    "selector": (
-        '选择结果用 JSON 返回 {"selected_experience_ids":[候选经验ID]}。'
-        "选择数量为 0 到 max_selected，ID 使用候选列表中的短数字字符串编号；无适用经验返回空数组。"
-    ),
-    "initial_generator": (
-        '以 JSON 返回 {"analysis":任务分析,"criteria":[{"question":判断问题,'
-        '"weight":相对权重,"source_experiences":[来源经验ID]}]}。'
-        "analysis 和 question 用中文，analysis 非空；生成 2 到 8 条标准，weight为有限正数，按总预算1分配，系统统一归一化。"
-        "source_experiences 填写实质新增或改变该标准的本次提供的经验 ID；仅由 task 推导的标准使用空数组。"
-    ),
-    "judge": (
-        '逐项判断用 JSON 返回 {"criterion_judgments":[{"criterion_id":输入标准ID,"satisfied":true或false,"reason":简短判断依据}]}。'
-        "每个输入编号恰好出现一次，编号原样复制，satisfied为布尔值，reason为非空字符串。"
-    ),
-    "critic": (
-        '用 JSON 返回 {"analysis":私有诊断,"candidates":[{"content":设计指导,"trigger":适用条件}]}。analysis为非空中文，简洁组织事实核对、问题定位与方法提炼，候选0到1条，content/trigger为非空中文，无可信经验返回空数组。'
-    ),
-    "experience_updater": '仅返回JSON {"action":"keep","draft":null} 或 {"action":"revise","draft":{"content":"修订方法","trigger":"适用条件"}}。',
-    "atomizer": '仅返回JSON {"experiences":[{"content":"原子核验方法","trigger":"生成前可识别的必要条件"}]}。数组非空，无重复项。',
-    "category_organizer": '仅返回JSON {"action":"assign","category_id":"输入类别短编号","name":null,"description":null} 或 {"action":"create","category_id":null,"name":"新类别名称","description":"共同方法和范围"} 或 {"action":"unclassified","category_id":null,"name":null,"description":null}。',
-    "category_describer": '仅返回JSON {"name":"类别名称","description":"共同核验方法及范围"}。',
+_GUIDANCE = {
+    "selector": """你是经验适用性筛选员。只根据任务和Trigger选择有实质设计帮助的方法，最多max_selected条；不适用则不选，允许空集合。先看适用性，再参考q_posterior、后续应用与修订回放的独立证据数；未估计不是0分，高Q不能抵消不适用，回放证据不等于后续验证。""",
+    "initial_generator": """你是评分标准设计者。仅根据task和本次可用经验设计2至8条Boolean标准，是表示满足。一个标准最多引用一条经验，也可不引用；仅在方法实质影响标准时引用。经验条件不是当前事实，不为区分未知回答创造任务之外的要求。共同分配相对权重预算1，保留任务主次，不按条数放大维度。可同一次补充任务需要的其他标准。存在模板时用task中的信息绑定全部参数，保留binding_evidence原文，question必须为模板填充后的结果；无模板时自行实现Principle，bindings和binding_evidence均为空。""",
+    "judge": """你是独立的逐标准核验员。只根据task、标准和当前一份回答逐项输出Boolean和简短原文依据，覆盖所有标准，不评价另一个回答，不猜测偏好。核对范围、否定、数量和隐含但等价的表达，不补造事实。""",
+    "critic": """你从真实失败轨迹中提炼可供未来首次生成rubric使用的原子方法。先在简短analysis中核对任务、两回答的内容和Judge实际Boolean；Judge理由可能错误，不能为了符合偏好创造任务未要求的格式或数量。仅Judge误判、两回答均达标或证据不足时可无候选。直接输出0至max_candidates条互相独立的方法，每条一个可独立采用/忽略/修订的动作，保留必要边界。Trigger用于生成前判断，Principle描述rubric设计方法；Template可选，用简单{parameter}占位，每个参数定义description和source，不把专名、固定数值、当前回答片段或偏好身份带入经验。不是给答题者的答案指令。不新增analysis字段到经验中。第二轮沿用本题真实消息，依最新实际反馈纠正先前诊断，重新提出当前候选集合，不要求维持错误提案。文字简洁，Trigger尽量60字内、Principle尽量150字内，仅为提示要求。""",
+    "experience_updater": """你是经验修订员。根据当前固定版本、触发原因及最多6个真实案例决定Keep或Revise。原始反馈和Checker报告均可能错，不能将反向/同判机械当内容缺陷。选择反复错误优先核对Trigger；应用反复错误优先核对Principle/Template/Parameters；Judge报告错误核对歧义与可判定性，不迎合错误事实；Q风险结合内容反证。只修正当前核心方法，不追加独立规则、不拆分、不输出列表。保留已有合理方法和必要边界；明确指令仅被执行者违反或证据不足可以Keep。Revise返回恰好一个完整新方法、目标字段和短理由。""",
+    "selector_checker": """你是独立适用性核对员。核对给定任务是否符合经验Trigger，不看回答偏好或其他Checker报告。仅检查当前单条经验与task的匹配，不判断多经验间依赖或冲突。判断本次选择是否合理，返回correct/error/unknown及简短可核对依据。不能把主题相关当方法适用，不凭经验效果反推适用性。""",
+    "generator_checker": """你是独立应用核对员。逐项检查引用标准是否忠实执行经验的Principle、可选Template和参数绑定，是否增加无依据要求或仅挂名引用。核对对象是Generator生成的criterion本身是否落实方法，不是检查答题者的回答是否达标。因此无需也不会提供实际回答，不能仅因缺少实际回答而报告unknown。只看task、经验及其引用标准，不看回答偏好、实际反馈或其他核对器结论。返回整体correct/error/unknown和短证据，可在details列逐标准问题。清楚指令被错误落实应报应用错误，不能凭空认定原方法错误。""",
+    "judge_checker": """你是独立评价执行核对员。依据task、引用标准、两个匿名回答及Judge实际Boolean和理由，检查Judge是否忠实执行标准。不知道哪个回答被偏好，不看应用正反方向或其他Checker报告。判断的是Judge是否执行正确，不是标准应该如何设计。返回correct/error/unknown、短证据及可选逐标准details。""",
 }
-
-# 输入使用自然标题；技术量只在确有出现时集中说明一次。
-_INPUT_TITLES = {
-    "task": "任务",
-    "response": "待评价回答",
-    "chosen": "优选回答",
-    "rejected": "非优选回答",
-    "candidates": "候选经验",
-    "selected_experiences": "本次选中的经验",
-    "max_selected": "选择上限",
-    "training": "阶段",
-    "experience_id": "经验编号",
-    "category_id": "类别编号",
-    "category": "所属类别",
-    "categories": "现有类别",
-    "name": "名称",
-    "description": "描述",
-    "members": "类别内小经验",
-    "experiences": "全部小经验",
-    "pending_experience_ids": "待整理小经验",
-    "content": "经验原则",
-    "trigger": "适用条件",
-    "confidence": "置信度",
-    "evidence_amount": "证据量",
-    "criteria": "评价标准",
-    "criterion_id": "标准编号",
-    "question": "判断问题",
-    "weight": "分配权重",
-    "source_experiences": "来源经验",
-    "rubric_id": "标准集编号",
-    "normalized_weights": "标准权重",
-    "criterion_judgments": "逐项判断",
-    "chosen_score": "优选回答得分",
-    "rejected_score": "非优选回答得分",
-    "margin": "得分差",
-    "success": "判别成功",
-    "satisfied": "满足标准",
-    "chosen_reason": "优选回答判断依据",
-    "rejected_reason": "非优选回答判断依据",
-    "reason": "判断依据",
-    "analysis": "分析",
-    "validation_feedback": "本次需修正的问题",
-    "candidate": "方法草稿",
-    "draft": "方法草稿",
-    "previous_experience": "原版本方法",
-    "atomic_feedback": "上轮原子候选与应用反馈",
-    "atomic_candidates": "原子候选集合",
-    "changes": "成员变动",
-    "member_count": "当前成员总数",
-    "candidate_id": "候选编号",
-    "current_rubric": "当前评分标准",
-    "current_judgment": "本次Judge结果",
-    "previous_rubric": "上轮应用之前的标准",
-    "previous_judgment": "上轮应用之前的判断",
-    "adopted_criterion_ids": "上条候选声明引用标准",
-    "status": "证据状态",
-}
-
-
-def _inline_critic_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
-    """组织实际失败与应用前的可读证据，不修改内部对象或数字编号映射。"""
-
-    def visit(value: Any) -> Any:
-        if isinstance(value, Mapping):
-            result = {
-                key: visit(child)
-                for key, child in value.items()
-                if key not in {"rubric_id", "normalized_weights"}
+_SCHEMA = {
+    "selector": {"selected_experience_ids": ["短编号"]},
+    "initial_generator": {
+        "analysis": "简短设计取舍",
+        "criteria": [
+            {
+                "question": "是/否标准",
+                "weight": 1,
+                "source_experiences": ["1"],
+                "bindings": {},
+                "binding_evidence": {},
             }
-            for rubric_key, judgment_key in (
-                ("initial_rubric", "initial_judgment"),
-                ("rubric", "judgment"),
-                ("previous_rubric", "previous_judgment"),
-                ("current_rubric", "current_judgment"),
-            ):
-                rubric = result.get(rubric_key)
-                judgment = result.get(judgment_key)
-                if not isinstance(rubric, dict) or not isinstance(judgment, dict):
-                    continue
-                criteria = rubric.get("criteria")
-                answers = judgment.get("criterion_judgments")
-                if not isinstance(criteria, list) or not isinstance(answers, list):
-                    continue
-                by_id = {
-                    answer["criterion_id"]: answer
-                    for answer in answers
-                    if isinstance(answer, dict) and "criterion_id" in answer
-                }
-                rubric["criteria"] = [
-                    (
-                        {
-                            **criterion,
-                            **{
-                                key: by_id.get(criterion.get("criterion_id"), {})[key]
-                                for key in ("chosen", "rejected", "chosen_reason", "rejected_reason")
-                                if key in by_id.get(criterion.get("criterion_id"), {})
-                            },
-                        }
-                        if isinstance(criterion, dict)
-                        else criterion
-                    )
-                    for criterion in criteria
-                ]
-                judgment.pop("criterion_judgments")
-            return result
-        if isinstance(value, (list, tuple)):
-            return [visit(child) for child in value]
-        return value
-
-    return visit(payload)
-
-
-def _natural_input(role: str, payload: Mapping[str, Any], *,
-                   critic_labels: bool = False, critic_boolean: bool = False,
-                   critic_reasons: str = "inline") -> str:
-    """简单标签与紧凑列表；原文、局部编号及历史对象关系保持完整。"""
-    if role == "critic":
-        payload = _inline_critic_evidence(payload)
-    lines: list[str] = []
-    keys: set[str] = set()
-    titles = dict(_INPUT_TITLES)
-    if critic_reasons not in ("inline", "separate", "absent"):
-        raise ValueError("unknown Critic reason presentation")
-    if role == "critic" and critic_labels:
-        titles.update(chosen="回答A", rejected="回答B",
-                      chosen_score="回答A得分", rejected_score="回答B得分")
-    titles.update(
-        {
-            "round_number": "本次应用轮次",
-            "candidate_experience": "本轮可选候选经验",
-            "previous_candidate": "上条候选",
-            "adopted": "上条候选声明采用",
-            "invalid_error": "上次技术错误",
-            "judgment_status": "判断状态",
-        }
-    )
-
-    if role == "initial_generator":
-        # E/C share one usable list in the actual message; audit fields stay distinct.
-        payload = dict(payload)
-        available = list(payload.get("selected_experiences", []))
-        if "candidate_experiences" in payload:
-            available.extend(payload.pop("candidate_experiences"))
-        if "selected_experiences" in payload:
-            payload["selected_experiences"] = available
-        titles["selected_experiences"] = "本次可用经验"
-
-    def scalar(value: Any, field: str) -> str:
-        if value is None:
-            return "未提供"
-        if isinstance(value, bool):
-            if field == "training":
-                return "训练" if value else "测试"
-            if field in ("chosen", "rejected", "satisfied"):
-                if role == "critic" and critic_boolean:
-                    return "true" if value else "false"
-                return "满足" if value else "未满足"
-            return "是" if value else "否"
-        if isinstance(value, float) and not math.isfinite(value):
-            raise ValueError("prompt input must contain finite numbers")
-        if (
-            role == "critic"
-            and field in ("chosen_score", "rejected_score", "margin")
-            and isinstance(value, (int, float))
-        ):
-            # 仅压缩模型输入的展示精度；计算和日志保留原始数值。
-            text = f"{value:.4f}".rstrip("0").rstrip(".")
-            return "0" if text == "-0" else text
-        return str(value)
-
-    def render(value: Any, field: str, indent: str = "", lead: str = "") -> None:
-        if isinstance(value, Mapping):
-            keys.update(value)
-            rest = dict(value)
-            summary = ""
-            if "criterion_id" in value:
-                summary = scalar(rest.pop("criterion_id"), "criterion_id")
-                if "question" in rest:
-                    summary += "：" + scalar(rest.pop("question"), "question")
-            elif "experience_id" in value or "candidate_id" in value:
-                id_field = (
-                    "experience_id" if "experience_id" in value else "candidate_id"
-                )
-                summary = scalar(rest.pop(id_field), id_field)
-                if "content" in rest:
-                    summary += "：" + scalar(rest.pop("content"), "content")
-            if summary:
-                lines.append(indent + lead + summary)
-                indent += "  "
-            elif lead:
-                lines.append(indent + lead.rstrip())
-                indent += "  "
-            if not value:
-                lines.append(indent + "暂无记录")
-            compact: list[str] = []
-            sides = {}
-            if role == "critic" and "criterion_id" in value:
-                for side in ("chosen", "rejected"):
-                    if isinstance(rest.get(side), bool):
-                        sides[side] = (rest.pop(side), rest.pop(side + "_reason", None))
-
-            def flush() -> None:
-                if compact:
-                    lines.append(indent + "；".join(compact))
-                    compact.clear()
-
-            for key, child in rest.items():
-                label = titles.get(key, key)
-                if role == "critic" and key == "attempt_number":
-                    label = "应用轮次"
-                if field == "normalized_weights":
-                    label = key
-                if isinstance(child, (list, tuple)) and all(
-                    not isinstance(item, (Mapping, list, tuple)) for item in child
-                ):
-                    compact.append(
-                        label
-                        + "："
-                        + ("、".join(scalar(item, key) for item in child) or "暂无")
-                    )
-                elif isinstance(child, (Mapping, list, tuple)):
-                    flush()
-                    lines.append(indent + label + "：")
-                    render(child, key, indent + "  ")
-                elif isinstance(child, str) and (
-                    key in ("task", "response", "chosen", "rejected", "analysis")
-                    or "\n" in child
-                ):
-                    flush()
-                    # 原始文本保持不变，资料本身的 Markdown 也按原文保留。
-                    lines.extend([indent + label + "：", child, ""])
-                else:
-                    compact.append(label + "：" + scalar(child, key))
-            flush()
-            for side, (judgment, reason) in sides.items():
-                lines.append(indent + titles[side] + "：")
-                lines.append(indent + "  Judge判定：" + scalar(judgment, side))
-                if reason is not None and critic_reasons == "inline":
-                    lines.extend([indent + "  Judge解释（待核对）：", str(reason)])
-            if sides and critic_reasons == "separate":
-                lines.append(indent + "Judge解释（待核对，分别对应上述判定）：")
-                for side, (_, reason) in sides.items():
-                    if reason is not None:
-                        lines.extend([indent + "  " + titles[side] + "：", str(reason)])
-        elif isinstance(value, (list, tuple)):
-            if not value:
-                lines.append(indent + "暂无")
-            for child in value:
-                lead_in = "- "
-                if isinstance(child, (Mapping, list, tuple)):
-                    render(child, field, indent, lead_in)
-                else:
-                    lines.append(indent + lead_in + scalar(child, field))
-        else:
-            lines.append(indent + lead + scalar(value, field))
-
-    render(payload, "")
-    if role == "critic":
-        return "\n".join(lines).strip()
-    notes = []
-    if "confidence" in keys or "evidence_amount" in keys:
-        notes.append(
-            "经验置信度为历史信用及演化惩罚共同计算的 Beta 分数；证据量为实际与继承P/N之和，不含惩罚，不等于本版本验证次数。"
-        )
-    if "normalized_weights" in keys or "margin" in keys:
-        notes.append(
-            "标准权重由分配权重归一化；得分差为优选回答得分减非优选回答得分，正值表示判别成功。"
-        )
-    if notes:
-        lines.extend(["", "补充说明：", *notes])
-    return "\n".join(lines).strip()
-
-
-def llm_messages(
-    role: str, payload: Mapping[str, Any], *,
-    history: Sequence[Mapping[str, str]] = (),
-) -> list[dict[str, str]]:
-    """Critic接续样本内历史；其他角色保持独立system/user。"""
-    if role not in _ROLE_INSTRUCTIONS:
-        raise ValueError(f"unknown LLM role: {role}")
-    if history:
-        if role != "critic":
-            raise ValueError("only critic accepts conversation history")
-        if "validation_feedback" in payload:
-            feedback = {"validation_feedback": payload["validation_feedback"]}
-            instruction = "请修正上条输出，仍只返回analysis及0到1条候选。"
-        else:
-            feedback = {key: value for key, value in payload.items() if key not in {
-                "task", "chosen", "rejected", "previous_rubric", "previous_judgment",
-            }}
-            instruction = (
-                "上次未形成有效应用结果，没有新的Judge判断。请结合技术错误重新分析并提出经验。"
-                if "invalid_error" in payload else
-                "上条候选的独立应用仍未成功。请对照实际结果重新分析并提出新的经验（0到1条）。"
-            )
-        return [
-            *[dict(message) for message in history],
-            {"role": "user", "content": instruction + "\n\n"
-             + "以下对象编号仅在本条反馈内解释。\n" + _natural_input(role, feedback)},
-        ]
-    return [
-        {
-            "role": "system",
-            "content": _ROLE_GUIDANCE[role] + "\n\n" + _ROLE_INSTRUCTIONS[role],
-        },
-        {"role": "user", "content": _natural_input(role, payload)},
-    ]
-
-
-@dataclass(frozen=True)
-class ExperienceView:
-    """Selector/初始 Generator 可见的经验字段，不暴露来源轨迹或证据记录。"""
-
-    experience_id: str
-    content: str
-    trigger: str
-    confidence: float
-    evidence_amount: float
-    category: ExperienceCategory | None = None
-
-    @classmethod
-    def from_experience(cls, experience: Experience, category: ExperienceCategory | None = None) -> ExperienceView:
-        return cls(experience.experience_id, experience.content, experience.trigger,
-                   experience.confidence, experience.evidence_amount, category)
-
-    def to_dict(self) -> dict[str, Any]:
-        return {"experience_id": self.experience_id, "content": self.content,
-                "trigger": self.trigger, "confidence": self.confidence,
-                "evidence_amount": self.evidence_amount}
-
-
-def selector_payload(task: str, candidates: Sequence[ExperienceView], *,
-                     max_selected: int, training: bool) -> dict[str, Any]:
-    units = []
-    groups = {}
-    for item in candidates:
-        if item.category is None:
-            units.append(item.to_dict())
-        else:
-            key = item.category.category_id
-            if key not in groups:
-                groups[key] = {**item.category.to_dict(), "members": []}
-                units.append(groups[key])
-            groups[key]["members"].append(item.to_dict())
-    return {"task": task, "candidates": units,
-            "max_selected": max_selected, "training": training}
-
-
-def generator_payload(
-    task: str,
-    selected: Sequence[ExperienceView],
-    *,
-    candidates: Sequence[CandidateExperience] = (),
-    validation_feedback: str | None = None,
-) -> dict[str, Any]:
-    payload = {
-        "task": task,
-        "selected_experiences": [
-            {"experience_id": item.experience_id, "content": item.content, "trigger": item.trigger}
-            for item in selected
         ],
-    }
-    if candidates:
-        payload["candidate_experiences"] = [{"experience_id": c.candidate_id, "content": c.content,
-            "trigger": c.trigger, "status": "当前候选、尚未验证，无历史置信度"} for c in candidates]
-    if validation_feedback is not None:
-        payload["validation_feedback"] = validation_feedback
-    return payload
-
-
-def judge_payload(pending: Sequence[Criterion], response: str, *, task: str,
-                  validation_feedback: str | None = None) -> dict[str, Any]:
-    # 修订时只传需要新判断的 criterion，避免模型把复用的旧 ID 也返回。
-    payload = {"task": task, "criteria": [{"criterion_id": item.criterion_id, "question": item.question}
-                            for item in pending], "response": response}
-    if validation_feedback is not None:
-        payload["validation_feedback"] = validation_feedback
-    return payload
-
-
-def _criterion_fields(criterion: Criterion) -> dict[str, Any]:
-    return {"criterion_id": criterion.criterion_id, "question": criterion.question,
-            "weight": criterion.weight}
-
-
-def _rubric_semantics(rubric: Rubric) -> dict[str, Any]:
-    return {
-        "rubric_id": rubric.rubric_id,
-        "criteria": [_criterion_fields(item) for item in rubric.criteria],
+    },
+    "judge": {
+        "criterion_judgments": [
+            {"criterion_id": "短编号", "satisfied": True, "reason": "原文依据"}
+        ]
+    },
+    "critic": {"analysis": "简短事实诊断", "candidates": [METHOD_SCHEMA]},
+    "experience_updater": {
+        "action": "keep或revise",
+        "method": None,
+        "target_fields": [],
+        "reason": "短理由；keep时method为null，revise时为完整四字段方法",
+    },
+}
+for role in ("selector_checker", "generator_checker", "judge_checker"):
+    _SCHEMA[role] = {
+        "status": "correct/error/unknown",
+        "evidence": "短依据",
+        "details": [],
     }
 
 
-def critic_payload(
-    task: str,
-    chosen: str,
-    rejected: str,
-    current: Rubric,
-    judgment: RubricJudgment,
-    round_number: int,
-    *,
-    previous_candidate: CandidateExperience | None = None,
-    adopted: bool | None = None,
-    invalid_error: str | None = None,
-    previous_rubric: Rubric | None = None,
-    previous_judgment: RubricJudgment | None = None,
-) -> dict[str, Any]:
-    payload = {
-        "task": task,
-        "chosen": chosen,
-        "rejected": rejected,
-        "round_number": round_number,
-        "current_rubric": current.to_dict(),
-        "current_judgment": judgment.to_dict(),
-    }
-    if previous_rubric is not None and previous_judgment is not None:
-        payload["previous_rubric"] = previous_rubric.to_dict()
-        payload["previous_judgment"] = previous_judgment.to_dict()
-    if previous_candidate is not None:
-        payload["previous_candidate"] = {
-            "candidate_id": previous_candidate.candidate_id,
-            "content": previous_candidate.content,
-            "trigger": previous_candidate.trigger,
-        }
-        payload["adopted"] = adopted
-        payload["adopted_criterion_ids"] = (
-            [
-                c.criterion_id
-                for c in current.criteria
-                if previous_candidate.candidate_id in c.source_experiences
-            ]
-            if adopted is not None
-            else None
+def llm_messages(role, payload, *, history=None):
+    if role not in _GUIDANCE:
+        raise ValueError("unknown role " + role)
+    schema = json.dumps(_SCHEMA[role], ensure_ascii=False)
+    system = (
+        _GUIDANCE[role]
+        + "\n严格只返回以下字段的JSON，示意值需替换为实际结果："
+        + schema
+    )
+    if role in ("critic", "experience_updater"):
+        system += (
+            "\n方法结构："
+            + json.dumps(METHOD_SCHEMA, ensure_ascii=False)
+            + '；参数值结构：{"description":"含义","source":"task中的绑定来源约束"}。'
         )
-    if invalid_error is not None:
-        payload["invalid_error"] = invalid_error
-        payload["judgment_status"] = "上次未形成有效应用结果，无新的Judge判断"
-    return payload
-
-
-
-
-def experience_update_payload(experience: Experience) -> dict[str, Any]:
-    cases = []
-    for case in experience.working_cases:
-        verdicts = {j.criterion_id: j for j in case.judgment.criterion_judgments}
-        card = {
-            "sample_id": case.sample_id,
-            "task": case.task, "chosen": case.chosen, "rejected": case.rejected,
-            "criteria": [{
-                "question": c.question,
-                "feedback": ("positive" if verdicts[c.criterion_id].chosen > verdicts[c.criterion_id].rejected
-                             else "negative" if verdicts[c.criterion_id].chosen < verdicts[c.criterion_id].rejected
-                             else "neutral"),
-                "chosen": verdicts[c.criterion_id].chosen,
-                "rejected": verdicts[c.criterion_id].rejected,
-                "chosen_reason": verdicts[c.criterion_id].chosen_reason,
-                "rejected_reason": verdicts[c.criterion_id].rejected_reason,
-            } for c in case.rubric.criteria if case.source_id in c.source_experiences
-                and verdicts[c.criterion_id].chosen != verdicts[c.criterion_id].rejected],
-        }
-        if (case.content, case.trigger) != (experience.content, experience.trigger):
-            card["applied_experience"] = {"content": case.content, "trigger": case.trigger}
-        cases.append(card)
-    return {"current_experience": {
-        "content": experience.content, "trigger": experience.trigger,
-    }, "cases": cases}
-
-
-def category_organization_payload(experience, candidates):
-    return {"experience": {"experience_id": experience.experience_id,
-             "content": experience.content, "trigger": experience.trigger}, "categories": candidates}
-
-
-_ID_FIELDS = {
-    "criterion_id": "criterion",
-    "rubric_id": "rubric",
-    "experience_id": "experience",
-    "candidate_id": "experience",
-    "sample_id": "sample",
-    "category_id": "category",
-}
-_ID_LISTS = {
-    "source_experiences": "experience",
-    "selected_experience_ids": "experience",
-    "adopted_criterion_ids": "criterion",
-    "sample_ids": "sample",
-    "experience_ids": "experience",
-    "ungrouped_experience_ids": "experience",
-    "pending_experience_ids": "experience",
-}
-_ID_DICTS = {"normalized_weights": "criterion"}
+    if role == "initial_generator":
+        system += '\nsource_experiences只能为[]或["1"]这样的短编号字符串数组，最多一个元素，绝不能放经验对象或新造编号；没有适用经验就用[]，仍生成2至8条task标准。'
+    if role in ("generator_checker", "judge_checker"):
+        system += '\ndetails可为[]，或[{"criterion_id":"提供的短编号","status":"correct/error/unknown","evidence":"短依据"}]。不得使用其他字段；任一detail为error则整体status必须error；含unknown时不能整体correct。'
+    if role == "selector_checker":
+        system += "\ndetails必须为[]，本角色只做单条经验对任务的适用性判断。"
+    if role == "experience_updater":
+        system += "\ntarget_fields的每项只能是小写英文trigger、principle、template、parameters，不能填content、method、criteria、chosen等。keep用空数组；revise填写实际修改的字段。template为null时parameters必须是{}；只有模板的{参数名}才在parameters中定义。不要为追求区分创造逐字复述或固定数量要求。"
+    clean = {k: v for k, v in payload.items() if not k.startswith("_")}
+    user = "\n\n".join(
+        k + "：\n" + json.dumps(v, ensure_ascii=False, indent=2)
+        for k, v in clean.items()
+    )
+    if history:
+        return [*history, {"role": "user", "content": user}]
+    return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
 
 class NumberedIDCodec:
-    """单次模型调用的局部 ID 表；真实内部 ID 从不进入结构化提示词。
+    """Stable within a Critic conversation; independent for every other request."""
 
-    不跨调用缓存：每次只根据本次白名单输入建立编号，再把模型输出还原到内部 ID。
-    不改写 task、chosen/rejected 或任意自然语言文本。
-    """
+    fields = {
+        "experience_id": "experience",
+        "version_id": "experience",
+        "parent_id": "experience",
+        "source_sample_id": "sample",
+        "sample_id": "sample",
+        "task_id": "task",
+        "criterion_id": "criterion",
+        "rubric_id": "rubric",
+        "trigger_sample_id": "sample",
+        "created_by_event_id": "event",
+        "retired_by_event_id": "event",
+    }
+    lists = {
+        "selected_experience_ids": "experience",
+        "source_experiences": "experience",
+        "case_ids": "sample",
+    }
 
-    def __init__(self, role: str, payload: Mapping[str, Any]) -> None:
-        self.role = role
-        self.forward: dict[str, dict[str, str]] = {
-            name: {} for name in ("criterion", "rubric", "experience", "sample", "category")
-        }
-        self.reverse: dict[str, dict[str, str]] = {name: {} for name in self.forward}
+    def __init__(self, role="", payload=None):
+        self.forward = {}
+        self.reverse = {}
 
-    def _encode(self, name: str, value: str) -> str:
-        known = self.forward[name]
-        if value not in known:
-            number = str(len(known) + 1)
-            known[value] = number
-            self.reverse[name][number] = value
-        return known[value]
+    def _encode(self, namespace, value):
+        f = self.forward.setdefault(namespace, {})
+        r = self.reverse.setdefault(namespace, {})
+        if value not in f:
+            short = str(len(f) + 1)
+            f[value] = short
+            r[short] = value
+        return f[value]
 
-    def project(self, payload: Mapping[str, Any]) -> dict[str, Any]:
-        """递归编号字段及字典键，保持相同命名空间的重复引用一致。"""
-        def visit(value: Any) -> Any:
-            if isinstance(value, dict):
-                result: dict[str, Any] = {}
-                for key, item in value.items():
-                    if key in _ID_FIELDS and isinstance(item, str):
-                        result[key] = self._encode(_ID_FIELDS[key], item)
-                    elif key in _ID_LISTS and isinstance(item, list):
-                        result[key] = [self._encode(_ID_LISTS[key], entry)
-                                       if isinstance(entry, str) else entry for entry in item]
-                    elif key in _ID_DICTS and isinstance(item, dict):
-                        result[key] = {self._encode(_ID_DICTS[key], entry): visit(entry_value)
-                                       for entry, entry_value in item.items()}
-                    else:
-                        result[key] = visit(item)
-                return result
-            if isinstance(value, list):
-                return [visit(item) for item in value]
-            return value
-        return visit(dict(payload))
+    def project(self, payload):
+        def walk(x):
+            if isinstance(x, list):
+                return [walk(v) for v in x]
+            if not isinstance(x, dict):
+                return x
+            out = {}
+            for k, v in x.items():
+                if k in self.fields and isinstance(v, str):
+                    out[k] = self._encode(self.fields[k], v)
+                elif k in self.lists and isinstance(v, list):
+                    out[k] = [self._encode(self.lists[k], n) for n in v]
+                else:
+                    out[k] = walk(v)
+            return out
 
-    def _existing(self, name: str, value: Any) -> str:
-        pattern = r"[1-9][0-9]*"
-        if not isinstance(value, str) or not re.fullmatch(pattern, value):
-            raise ValueError(f"{self.role}: {name} must be a numbered ID")
-        if value not in self.reverse[name]:
-            raise ValueError(f"{self.role}: unknown numbered {name}")
-        return self.reverse[name][value]
+        return walk(payload)
 
-    def restore(self, response: Mapping[str, Any]) -> dict[str, Any]:
-        """只反解角色协议字段；错误引用直接拒绝，不猜测或按位置悄悄匹配。"""
-        result = dict(response)
-        if self.role == "category_organizer":
-            if result.get("category_id") is not None:
-                result["category_id"] = self._existing("category", result["category_id"])
-        elif self.role == "selector" and isinstance(
-            result.get("selected_experience_ids"), list
-        ):
-            result["selected_experience_ids"] = [
-                self._existing("experience", value)
-                for value in result["selected_experience_ids"]
-            ]
-        elif self.role == "initial_generator":
-            if (
-                set(result) != {"analysis", "criteria"}
-                or not isinstance(result.get("analysis"), str)
-                or not result["analysis"].strip()
-                or not isinstance(result["criteria"], list)
+    def restore(self, payload):
+        def lookup(namespace, value):
+            if type(value) is int:
+                value = str(value)
+            if not isinstance(value, str) or value not in self.reverse.get(
+                namespace, {}
             ):
-                raise ValueError(
-                    "initial_generator: expected non-empty analysis and criteria list"
-                )
-            criteria = []
-            for index, item in enumerate(result["criteria"], 1):
-                if not isinstance(item, dict) or set(item) != {
-                    "question",
-                    "weight",
-                    "source_experiences",
-                }:
-                    raise ValueError(
-                        "initial_generator: expected criterion content fields"
+                raise ValueError("unknown short " + namespace + " ID")
+            return self.reverse[namespace][value]
+
+        def walk(x):
+            if isinstance(x, list):
+                return [walk(v) for v in x]
+            if not isinstance(x, dict):
+                return x
+            return {
+                k: (
+                    lookup(self.fields[k], v)
+                    if k in self.fields and v is not None
+                    else (
+                        [lookup(self.lists[k], n) for n in v]
+                        if k in self.lists and isinstance(v, list)
+                        else walk(v)
                     )
-                criterion = {**item, "criterion_id": f"c{index}"}
-                if isinstance(item["source_experiences"], list):
-                    criterion["source_experiences"] = [
-                        self._existing("experience", value)
-                        for value in item["source_experiences"]
-                    ]
-                criteria.append(criterion)
-            result = {"rubric": {"rubric_id": "r1", "criteria": criteria}}
-        elif self.role == "judge" and isinstance(
-            result.get("criterion_judgments"), list
-        ):
-            result["criterion_judgments"] = [
-                (
-                    {
-                        **item,
-                        "criterion_id": self._existing(
-                            "criterion", item.get("criterion_id")
-                        ),
-                    }
-                    if isinstance(item, dict)
-                    else item
                 )
-                for item in result["criterion_judgments"]
-            ]
-        elif self.role == "critic" and isinstance(result.get("candidates"), list):
-            if len(result["candidates"]) > 1:
-                raise ValueError("critic: expected 0..1 candidates")
-            candidates = []
-            for index, item in enumerate(result["candidates"], 1):
-                if not isinstance(item, dict) or set(item) != {"content", "trigger"}:
-                    raise ValueError("critic: expected candidate content fields")
-                candidates.append({**item, "candidate_id": f"candidate_{index}"})
-            result["candidates"] = candidates
-        return result
+                for k, v in x.items()
+            }
+
+        return walk(payload)
+
+
+def experience_payload(e, *, quality=False):
+    data = {"experience_id": e.experience_id, **e.method.to_dict()}
+    if quality:
+        data.update(
+            q_posterior=e.q_posterior,
+            evidence_counts=e.evidence_counts,
+            effective_tasks=len(
+                {
+                    a.sample.task_id
+                    for a in e.applications
+                    if a.phase == "downstream"
+                    and a.update_reason not in ("duplicate", "duplicate_task")
+                    and a.feedback in ("positive", "reverse", "tie")
+                }
+            ),
+            replay_tasks=len(
+                {
+                    a.sample.task_id
+                    for a in e.applications
+                    if a.phase == "replay"
+                    and a.update_reason not in ("duplicate", "duplicate_task")
+                    and a.feedback in ("positive", "reverse", "tie")
+                }
+            ),
+            quality_state=(
+                "unestimated"
+                if e.q_posterior is None
+                else (
+                    "prior_only" if not sum(e.evidence_counts.values()) else "estimated"
+                )
+            ),
+        )
+    return data
+
+
+def evidence_payload(a):
+    """Updater/Critic may see preference; Checkers use separate projections."""
+    answers = {j.criterion_id: j for j in a.judgment.criterion_judgments}
+    criteria = [
+        {**c.to_dict(), **answers[c.criterion_id].to_dict()}
+        for c in a.rubric.criteria
+        if a.version_id in c.source_experiences
+    ]
+    return {
+        "sample_id": a.sample.sample_id,
+        "task": a.sample.task,
+        "chosen": a.sample.chosen,
+        "rejected": a.sample.rejected,
+        "actual_version": {"version_id": a.version_id, **a.method.to_dict()},
+        "criteria": criteria,
+        "feedback": a.feedback,
+        "reports": [r.to_dict() for r in a.reports],
+        "q_before": a.q_before,
+        "q_after": a.q_after,
+        "phase": a.phase,
+        "task_id": a.sample.task_id,
+        "round_number": a.round_number,
+        "observation": a.observation,
+        "outcomes": a.outcomes,
+        "positive_weight": a.positive_weight,
+        "reverse_weight": a.reverse_weight,
+        "update_reason": a.update_reason,
+        "counted_as_quality_evidence": a.update_reason == "updated",
+        "application_state": {
+            "recalled": a.recalled,
+            "selected": a.selected,
+            "cited": a.cited,
+            "no_evidence_reason": a.no_evidence_reason,
+        },
+    }

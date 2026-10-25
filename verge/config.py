@@ -1,186 +1,104 @@
-"""最小实验 YAML 配置加载；组件实现是否合法由后续 Registry 校验。"""
+"""Strict V2 experiment configuration; no legacy protocol fallback."""
 
-from __future__ import annotations
-
-from math import isfinite
-import re
 from pathlib import Path
-from typing import Any
-
 import yaml
 
 
-def _mapping(value: Any, path: str) -> dict[str, Any]:
-    if not isinstance(value, dict) or any(not isinstance(key, str) for key in value):
-        raise ValueError(f"{path}: expected a mapping with string keys")
-    return value
-
-
-def _required(data: dict[str, Any], key: str, path: str) -> Any:
-    if key not in data:
-        raise ValueError(f"{path}.{key}: required field is missing")
-    return data[key]
-
-
-def _text(value: Any, path: str) -> None:
-    if not isinstance(value, str) or not value.strip():
-        raise ValueError(f"{path}: expected a non-empty string")
-
-
-def _integer(value: Any, path: str, lower: int, upper: int | None = None) -> None:
-    if type(value) is not int or value < lower or (upper is not None and value > upper):
-        bound = f"{lower}..{upper}" if upper is not None else f">= {lower}"
-        raise ValueError(f"{path}: expected an integer in {bound}")
-
-
-def _unit(value: Any, path: str) -> None:
-    if type(value) not in (int, float) or not isfinite(value) or not 0 <= value <= 1:
-        raise ValueError(f"{path}: expected a finite number in [0, 1]")
-
-
-def _component(value: Any, path: str) -> dict[str, Any]:
-    component = _mapping(value, path)
-    _text(_required(component, "implementation", path), f"{path}.implementation")
-    _mapping(_required(component, "config", path), f"{path}.config")
-    return component
-
-
-def _model(value: Any, path: str) -> None:
-    model = _mapping(value, path)
-    _text(_required(model, "backend", path), f"{path}.backend")
-    _text(_required(model, "model", path), f"{path}.model")
-
-
-def load_config(path: str | Path) -> dict[str, Any]:
-    """读取配置并校验公共形状；保留组件私有 config 供对应实现检查。"""
-    file = Path(path)
-    try:
-        with file.open(encoding="utf-8") as stream:
-            data = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        raise ValueError(f"{file}: invalid YAML: {exc}") from exc
-    root = _mapping(data, str(file))
-
-    run = _mapping(_required(root, "run", "config"), "run")
-    _integer(_required(run, "seed", "run"), "run.seed", 0)
-    _text(_required(run, "output_dir", "run"), "run.output_dir")
-    if "experience_enabled" in run:
+def load_config(path):
+    data = yaml.safe_load(Path(path).read_text())
+    if not isinstance(data, dict) or set(data) != {
+        "run",
+        "dataset",
+        "models",
+        "modules",
+        "store",
+    }:
+        raise ValueError("V2 requires run/dataset/models/modules/store")
+    run = data["run"]
+    if (
+        set(run) - {"seed", "output_dir", "stop_after_train", "test_workers"}
+        or not {"seed", "output_dir"} <= run.keys()
+    ):
+        raise ValueError("invalid run configuration")
+    if (
+        type(run["seed"]) is not int
+        or not isinstance(run["output_dir"], str)
+        or not run["output_dir"]
+    ):
+        raise ValueError("invalid seed/output directory")
+    if "stop_after_train" in run and (
+        type(run["stop_after_train"]) is not int or run["stop_after_train"] < 1
+    ):
+        raise ValueError("invalid stop_after_train")
+    if run.get("test_workers", 1) != 1:
         raise ValueError(
-            "run.experience_enabled was removed; use the candidate-validation protocol"
+            "V2 currently evaluates frozen tasks sequentially; use test_workers=1"
         )
-    if "stop_after_train" in run:
-        _integer(run["stop_after_train"], "run.stop_after_train", 1)
-
-    dataset = _component(_required(root, "dataset", "config"), "dataset")
-    if "prepare" in dataset["config"]:
-        prepare = _mapping(dataset["config"]["prepare"], "dataset.config.prepare")
-        expected = {
-            "implementation",
-            "output_dir",
-            "revision",
-            "seed",
-            "per_subset",
-            "train_per_subset",
-            "preserve_splits_from",
-            "mode",
-        }
-        if set(prepare) - expected:
-            raise ValueError("dataset.config.prepare: unsupported fields")
-        if prepare.get("implementation") != "rewardbench_chat_hard":
-            raise ValueError(
-                "dataset.config.prepare.implementation: expected rewardbench_chat_hard"
-            )
-        for name in ("output_dir", "revision"):
-            _text(
-                _required(prepare, name, "dataset.config.prepare"),
-                f"dataset.config.prepare.{name}",
-            )
-        if not re.fullmatch(r"[0-9a-f]{40}", prepare["revision"]):
-            raise ValueError(
-                "dataset.config.prepare.revision: expected a 40-character commit SHA"
-            )
-        if "preserve_splits_from" in prepare:
-            _text(
-                prepare["preserve_splits_from"],
-                "dataset.config.prepare.preserve_splits_from",
-            )
-        mode = prepare.get("mode", "split")
-        if mode not in ("split", "full_train"):
-            raise ValueError(
-                "dataset.config.prepare.mode: expected split or full_train"
-            )
-        _integer(
-            _required(prepare, "seed", "dataset.config.prepare"),
-            "dataset.config.prepare.seed",
-            0,
-        )
-        if mode == "full_train":
-            if set(prepare) & {
-                "per_subset",
-                "train_per_subset",
-                "preserve_splits_from",
-            }:
-                raise ValueError("full_train does not accept split sampling fields")
-        else:
-            for name, minimum in (("per_subset", 2), ("train_per_subset", 1)):
-                _integer(
-                    _required(prepare, name, "dataset.config.prepare"),
-                    f"dataset.config.prepare.{name}",
-                    minimum,
-                )
-            if prepare["train_per_subset"] >= prepare["per_subset"]:
-                raise ValueError(
-                    "dataset.config.prepare.train_per_subset: must be less than per_subset"
-                )
-    models = _mapping(_required(root, "models", "config"), "models")
-    _model(_required(models, "default", "models"), "models.default")
-    for role, value in _mapping(models.get("roles", {}), "models.roles").items():
-        _text(role, "models.roles key")
-        _model(value, f"models.roles.{role}")
-
-    modules = _mapping(_required(root, "modules", "config"), "modules")
-    for name, value in modules.items():
-        _text(name, "modules key")
-        component = _component(value, f"modules.{name}")
-        options = component["config"]
-        if name == "retrieval" and "top_l" in options:
-            _integer(options["top_l"], "modules.retrieval.config.top_l", 1)
-            if options["top_l"] != 20:
-                raise ValueError("modules.retrieval.config.top_l: V1 requires 20")
-        elif name == "selection":
-            if "max_selected" in options:
-                _integer(
-                    options["max_selected"],
-                    "modules.selection.config.max_selected",
-                    0,
-                    5,
-                )
-            if "exploration_slots" in options:
-                _integer(
-                    options["exploration_slots"],
-                    "modules.selection.config.exploration_slots",
-                    0,
-                    1,
-                )
-                if (
-                    "max_selected" in options
-                    and options["exploration_slots"] > options["max_selected"]
-                ):
-                    raise ValueError(
-                        "modules.selection.config.exploration_slots: cannot exceed max_selected"
-                    )
-        elif name == "application" and "max_rounds" in options:
-            _integer(
-                options["max_rounds"], "modules.application.config.max_rounds", 1, 2
-            )
-    if set(modules) != {"retrieval", "selection", "application", "reliability"}:
-        raise ValueError(
-            "modules: expected retrieval, selection, application, reliability"
-        )
-    if modules["application"]["implementation"] != "immutable_atomic_evolution":
-        raise ValueError("modules.application: expected immutable_atomic_evolution")
-    _component(_required(root, "store", "config"), "store")
-    store_config = root["store"]["config"]
-    if "root_dir" in store_config:
-        _text(store_config["root_dir"], "store.config.root_dir")
-    return root
+    mods = data["modules"]
+    if set(mods) != {"retrieval", "selection", "application", "reliability"}:
+        raise ValueError("invalid V2 modules")
+    impls = {
+        "retrieval": {"fake", "hybrid"},
+        "selection": {"llm"},
+        "application": {"semistructured_v2"},
+        "reliability": {"bayesian"},
+    }
+    keys = {
+        "retrieval": {"top_l", "rrf_k", "embedding_model", "dimensions"},
+        "selection": {"max_selected"},
+        "application": {
+            "max_rounds",
+            "max_candidates",
+            "invalid_output_retries",
+            "input_bytes",
+            "check_interval",
+            "error_window",
+            "error_threshold",
+            "q_threshold",
+            "min_replay",
+            "revision_enabled",
+        },
+        "reliability": {"parameter_file"},
+    }
+    for name, value in mods.items():
+        if (
+            set(value) != {"implementation", "config"}
+            or value["implementation"] not in impls[name]
+            or not isinstance(value["config"], dict)
+            or set(value["config"]) - keys[name]
+        ):
+            raise ValueError("unsupported V2 component: " + name)
+    opts = mods["application"]["config"]
+    for key, low, high in [
+        ("max_rounds", 1, 2),
+        ("max_candidates", 1, 8),
+        ("invalid_output_retries", 0, 3),
+        ("input_bytes", 1000, 1000000),
+        ("check_interval", 1, 100),
+        ("error_window", 1, 100),
+        ("error_threshold", 1, 100),
+        ("min_replay", 1, 6),
+    ]:
+        if key in opts and (type(opts[key]) is not int or not low <= opts[key] <= high):
+            raise ValueError("invalid " + key)
+    if "revision_enabled" in opts and type(opts["revision_enabled"]) is not bool:
+        raise ValueError("invalid revision_enabled")
+    if "q_threshold" in opts and (
+        type(opts["q_threshold"]) not in (int, float)
+        or not 0 <= opts["q_threshold"] <= 1
+    ):
+        raise ValueError("invalid q_threshold")
+    selected = mods["selection"]["config"].get("max_selected", 5)
+    if type(selected) is not int or not 0 <= selected <= 5:
+        raise ValueError("invalid max_selected")
+    if mods["retrieval"]["config"].get("top_l", 20) != 20:
+        raise ValueError("V2 Top20 retrieval required")
+    if data["store"].get("implementation") != "local" or set(
+        data["store"].get("config", {})
+    ) - {"root_dir"}:
+        raise ValueError("only local store supported")
+    if data["dataset"].get("implementation") != "jsonl" or set(
+        data["dataset"].get("config", {})
+    ) - {"paths", "field_map"}:
+        raise ValueError("prepare datasets separately, then use JSONL")
+    return data

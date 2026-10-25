@@ -17,18 +17,28 @@ import httpx
 from verge.prompts import PROMPT_VERSION, llm_messages
 
 
-JUDGE_RESPONSE_SIDE: ContextVar[str | None] = ContextVar("judge_response_side", default=None)
+JUDGE_RESPONSE_SIDE: ContextVar[str | None] = ContextVar(
+    "judge_response_side", default=None
+)
+APPLICATION_CONTEXT = ContextVar("application_context", default={})
 ROLE_ID_MAPPING: ContextVar[dict | None] = ContextVar("role_id_mapping", default=None)
 
 
 class LLMBackend(Protocol):
-    """Backend返回分配权重、Boolean与依据等结构化字段；归一化及credit由Calculator计算。"""
+    """Backend返回分配权重、Boolean与依据等结构化字段；归一化、反馈及质量推断由Calculator计算。"""
 
-    def generate(self, role: str, payload: Mapping[str, Any], *,
-                 conversation: list[dict[str, str]] | None = None) -> Mapping[str, Any]: ...
+    def generate(
+        self,
+        role: str,
+        payload: Mapping[str, Any],
+        *,
+        conversation: list[dict[str, str]] | None = None,
+    ) -> Mapping[str, Any]: ...
 
 
-FakeScenario = Literal["initial_success", "attempt_1_success", "attempt_2_success", "final_failure"]
+FakeScenario = Literal[
+    "initial_success", "attempt_1_success", "attempt_2_success", "final_failure"
+]
 
 
 class LLMRequestError(RuntimeError):
@@ -47,150 +57,82 @@ class LLMFormatError(ValueError):
     """模型输出不是所需结构，已用尽格式重试。"""
 
 
-_OUTPUT_FIELDS: dict[str, tuple[str, type | tuple[type, ...]]] = {
-    "selector": ("selected_experience_ids", list),
-    "initial_generator": ("criteria", list),
-    "judge": ("criterion_judgments", list),
-    "critic": ("candidates", list),
-    "experience_updater": ("action", str),
-    "category_organizer": ("action", str),
-    "atomizer": ("experiences", list),
-    "category_describer": ("name", str),
+_OUTPUT_FIELDS = {
+    role: None
+    for role in (
+        "selector",
+        "initial_generator",
+        "judge",
+        "critic",
+        "experience_updater",
+        "selector_checker",
+        "generator_checker",
+        "judge_checker",
+    )
 }
 
 
-def _reject_constant(_value: str) -> None:
+def _reject_constant(value):
     raise ValueError("invalid JSON constant")
 
 
-_NUMERIC_ID_FIELDS = frozenset({"rubric_id", "criterion_id", "candidate_id", "category_id"})
-_NUMERIC_ID_LIST_FIELDS = frozenset({"selected_experience_ids", "source_experiences", "sample_ids", "experience_ids", "ungrouped_experience_ids"})
+def _normalize_numeric_ids(role, value):
+    return None  # The V2 codec normalizes IDs only in typed ID fields.
 
 
-def _normalize_numeric_ids(role: str, value: Any) -> None:
-    """只在模型 ID 字段把正整数 1 规范化为 "1"；原始响应仍留在 trace 中。"""
-    if role not in _OUTPUT_FIELDS:
-        return
-
-    def numeric_id(item: Any) -> Any:
-        return str(item) if type(item) is int and item > 0 else item
-
-    def visit(item: Any) -> None:
-        if isinstance(item, list):
-            for child in item:
-                visit(child)
-        elif isinstance(item, dict):
-            for key, child in item.items():
-                if key in _NUMERIC_ID_FIELDS:
-                    item[key] = numeric_id(child)
-                elif key in _NUMERIC_ID_LIST_FIELDS and isinstance(child, list):
-                    item[key] = [numeric_id(value) for value in child]
-                else:
-                    visit(child)
-
-    visit(value)
-
-
-def _valid_shape(role: str, value: Any) -> bool:
-    """缺字段/字段类型不对才重试；ID引用、空候选等语义结果不重试。"""
-    if role in ("category_organizer", "experience_updater", "atomizer", "category_describer"):
-        from verge.models import CategoryAssignment, ExperienceUpdate, AtomicResult, CategoryDescription
-        model = {"category_organizer":CategoryAssignment,"experience_updater":ExperienceUpdate,
-                 "atomizer":AtomicResult,"category_describer":CategoryDescription}[role]
-        try:
-            model.from_dict(value)
-            return True
-        except (ValueError,TypeError):
-            return False
-    if role == "critic":
-        return (
-            isinstance(value, dict)
-            and set(value) == {"analysis", "candidates"}
-            and isinstance(value["analysis"], str)
-            and bool(value["analysis"].strip())
-            and isinstance(value["candidates"], list)
-            and len(value["candidates"]) <= 1
-            and all(
-                isinstance(c, dict)
-                and set(c) == {"content", "trigger"}
-                and all(
-                    isinstance(c[k], str) and c[k].strip()
-                    for k in ("content", "trigger")
-                )
-                for c in value["candidates"]
-            )
-        )
-    if role == "initial_generator":
-        if (
-            not isinstance(value, dict)
-            or set(value) != {"analysis", "criteria"}
-            or not isinstance(value["analysis"], str)
-            or not value["analysis"].strip()
-            or not isinstance(value["criteria"], list)
-        ):
-            return False
-        data = value["criteria"]
-    else:
-        field, expected = _OUTPUT_FIELDS[role]
-        if (
-            not isinstance(value, dict)
-            or set(value) != {field}
-            or not isinstance(value[field], expected)
-        ):
-            return False
-        data = value[field]
-    if role == "selector":
-        return all(isinstance(key, str) for key in data)
-    if role == "initial_generator":
-        return all(
-            isinstance(item, dict)
-            and set(item) == {"question", "weight", "source_experiences"}
-            and isinstance(item["question"], str)
-            and type(item["weight"]) in (int, float)
-            and math.isfinite(item["weight"])
-            and item["weight"] > 0
-            and isinstance(item["source_experiences"], list)
-            and all(isinstance(key, str) for key in item["source_experiences"])
-            for item in data
-        )
-    if role == "judge":
-        return all(
-            isinstance(item, dict)
-            and set(item) == {"criterion_id", "satisfied", "reason"}
-            and isinstance(item["criterion_id"], str)
-            and type(item["satisfied"]) is bool
-            and isinstance(item["reason"], str)
-            and bool(item["reason"].strip())
-            for item in data
-        )
-    return True
+def _valid_shape(role, value):
+    return isinstance(
+        value, dict
+    )  # Full contracts are validated once by the role adapter.
 
 
 class OpenAICompatibleBackend:
     """同步 Chat Completions JSON backend；只返回角色结构字段，绝不返回数值 credit。"""
 
-    def __init__(self, model: str, *, base_url: str = "https://api.openai.com/v1",
-                 api_key_env: str = "OPENAI_API_KEY", timeout_seconds: float = 30,
-                 max_retries: int = 2, enable_thinking: bool | None = None,
-                 client: httpx.Client | None = None,
-                 metadata_hook: Callable[[dict[str, Any]], None] | None = None,
-                 trace_hook: Callable[[dict[str, Any]], None] | None = None,
-                 sleep: Callable[[float], None] = time.sleep) -> None:
+    def __init__(
+        self,
+        model: str,
+        *,
+        base_url: str = "https://api.openai.com/v1",
+        api_key_env: str = "OPENAI_API_KEY",
+        timeout_seconds: float = 30,
+        max_retries: int = 2,
+        enable_thinking: bool | None = None,
+        client: httpx.Client | None = None,
+        metadata_hook: Callable[[dict[str, Any]], None] | None = None,
+        trace_hook: Callable[[dict[str, Any]], None] | None = None,
+        sleep: Callable[[float], None] = time.sleep,
+    ) -> None:
         if not isinstance(model, str) or not model.strip():
             raise ValueError("model must be a non-empty string")
         parsed = urlsplit(base_url)
-        if (not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment
-                or parsed.scheme not in ("https", "http")
-                or (parsed.scheme == "http" and parsed.hostname not in ("localhost", "127.0.0.1", "::1"))):
-            raise ValueError("base_url requires HTTPS (HTTP allowed only on localhost), without credentials or query")
-        if client is not None and (str(client.base_url).rstrip("/") != base_url.rstrip("/")
-                                   or client.follow_redirects):
+        if (
+            not parsed.hostname
+            or parsed.username
+            or parsed.password
+            or parsed.query
+            or parsed.fragment
+            or parsed.scheme not in ("https", "http")
+            or (
+                parsed.scheme == "http"
+                and parsed.hostname not in ("localhost", "127.0.0.1", "::1")
+            )
+        ):
+            raise ValueError(
+                "base_url requires HTTPS (HTTP allowed only on localhost), without credentials or query"
+            )
+        if client is not None and (
+            str(client.base_url).rstrip("/") != base_url.rstrip("/")
+            or client.follow_redirects
+        ):
             raise ValueError("client must use the validated base_url without redirects")
         if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", api_key_env):
             raise ValueError("api_key_env must name an environment variable")
         key = os.environ.get(api_key_env)
         if not key:
-            raise ValueError(f"api_key_env: environment variable {api_key_env} is missing")
+            raise ValueError(
+                f"api_key_env: environment variable {api_key_env} is missing"
+            )
         if type(timeout_seconds) not in (int, float) or not 0 < timeout_seconds <= 300:
             raise ValueError("timeout_seconds must be in (0, 300]")
         if type(max_retries) is not int or not 0 <= max_retries <= 5:
@@ -204,8 +146,14 @@ class OpenAICompatibleBackend:
         self.metadata_hook = metadata_hook
         self.trace_hook = trace_hook
         self._sleep = sleep
-        self._client = client if client is not None else httpx.Client(
-            base_url=base_url.rstrip("/") + "/", timeout=timeout_seconds, follow_redirects=False,
+        self._client = (
+            client
+            if client is not None
+            else httpx.Client(
+                base_url=base_url.rstrip("/") + "/",
+                timeout=timeout_seconds,
+                follow_redirects=False,
+            )
         )
         self._owns_client = client is None
 
@@ -213,52 +161,117 @@ class OpenAICompatibleBackend:
         if self._owns_client:
             self._client.close()
 
-    def _metadata(self, role: str, attempt: int, *, status: int | None = None,
-                  response: httpx.Response | None = None, body: Any = None) -> None:
+    def _metadata(
+        self,
+        role: str,
+        attempt: int,
+        *,
+        status: int | None = None,
+        response: httpx.Response | None = None,
+        body: Any = None,
+    ) -> None:
         if self.metadata_hook is None:
             return
-        event: dict[str, Any] = {"role": role, "model": self.model, "prompt_version": PROMPT_VERSION,
-                                 "attempt": attempt, "status": status}
+        event: dict[str, Any] = {
+            "role": role,
+            "model": self.model,
+            "prompt_version": PROMPT_VERSION,
+            "attempt": attempt,
+            "status": status,
+        }
         if role == "judge":
             event["response_side"] = JUDGE_RESPONSE_SIDE.get()
         if response is not None:
             request_id = response.headers.get("x-request-id", "")
-            if (request_id and self._key not in request_id and len(request_id) <= 128
-                    and request_id.isascii() and request_id.isprintable()):
+            if (
+                request_id
+                and self._key not in request_id
+                and len(request_id) <= 128
+                and request_id.isascii()
+                and request_id.isprintable()
+            ):
                 event["request_id"] = request_id
         if isinstance(body, dict):
             choices = body.get("choices")
             if isinstance(choices, list) and choices and isinstance(choices[0], dict):
                 reason = choices[0].get("finish_reason")
-                if isinstance(reason, str) and self._key not in reason and len(reason) <= 32:
+                if (
+                    isinstance(reason, str)
+                    and self._key not in reason
+                    and len(reason) <= 32
+                ):
                     event["finish_reason"] = reason
             usage = body.get("usage")
             if isinstance(usage, dict):
-                event["usage"] = {key: usage[key] for key in
-                                  ("prompt_tokens", "completion_tokens", "total_tokens")
-                                  if type(usage.get(key)) is int and usage[key] >= 0}
+                event["usage"] = {
+                    key: usage[key]
+                    for key in ("prompt_tokens", "completion_tokens", "total_tokens")
+                    if type(usage.get(key)) is int and usage[key] >= 0
+                }
         self.metadata_hook(event)
 
-    def _trace(self, role: str, payload: Mapping[str, Any], messages: list[dict[str, str]],
-               attempt: int, *, status: int | None = None, raw_output: str | None = None,
-               output: Mapping[str, Any] | None = None, error: str | None = None) -> None:
+    def _trace(
+        self,
+        role: str,
+        payload: Mapping[str, Any],
+        messages: list[dict[str, str]],
+        attempt: int,
+        *,
+        status: int | None = None,
+        raw_output: str | None = None,
+        output: Mapping[str, Any] | None = None,
+        error: str | None = None,
+    ) -> None:
         if self.trace_hook is not None:
-            self.trace_hook({"role": role, "backend": "openai_compatible", "model": self.model,
-                             "prompt_version": PROMPT_VERSION, "attempt": attempt,
-                             **({"response_side": JUDGE_RESPONSE_SIDE.get()} if role == "judge" else {}),
-                             **({"id_mapping": ROLE_ID_MAPPING.get()} if ROLE_ID_MAPPING.get() is not None else {}),
-                             "status": status, "input": dict(payload), "messages": messages,
-                             "raw_output": raw_output, "output": output, "error": error})
+            self.trace_hook(
+                {
+                    "role": role,
+                    "backend": "openai_compatible",
+                    "model": self.model,
+                    "prompt_version": PROMPT_VERSION,
+                    "attempt": attempt,
+                    **(
+                        {"response_side": JUDGE_RESPONSE_SIDE.get()}
+                        if role == "judge"
+                        else {}
+                    ),
+                    **(
+                        {"id_mapping": ROLE_ID_MAPPING.get()}
+                        if ROLE_ID_MAPPING.get() is not None
+                        else {}
+                    ),
+                    "status": status,
+                    "input": dict(payload),
+                    "messages": messages,
+                    "raw_output": raw_output,
+                    "output": output,
+                    "error": error,
+                }
+            )
 
-    def generate(self, role: str, payload: Mapping[str, Any], *,
-                 conversation: list[dict[str, str]] | None = None) -> Mapping[str, Any]:
+    def generate(
+        self,
+        role: str,
+        payload: Mapping[str, Any],
+        *,
+        conversation: list[dict[str, str]] | None = None,
+    ) -> Mapping[str, Any]:
         if role not in _OUTPUT_FIELDS:
             raise ValueError(f"unknown LLM role: {role}")
         if conversation is not None and role != "critic":
             raise ValueError("only critic accepts conversation history")
-        messages = (llm_messages(role, payload, history=conversation)
-                    if conversation is not None else llm_messages(role, payload))
+        messages = (
+            llm_messages(role, payload, history=conversation)
+            if conversation is not None
+            else llm_messages(role, payload)
+        )
         for attempt in range(1, self.max_retries + 2):
+            if sum(len(m["content"].encode("utf-8")) for m in messages) > payload.get(
+                "_message_budget", 100_000
+            ):
+                raise LLMSampleError(
+                    f"{role}: retry context budget exceeded; no truncation"
+                )
             try:
                 request_body: dict[str, Any] = {
                     "model": self.model,
@@ -313,7 +326,9 @@ class OpenAICompatibleBackend:
                     error=f"HTTP {status}",
                 )
                 self._metadata(role, attempt, status=status, response=response)
-                error_type = LLMSampleError if status in (400, 413, 422) else LLMRequestError
+                error_type = (
+                    LLMSampleError if status in (400, 413, 422) else LLMRequestError
+                )
                 raise error_type(f"{role}: HTTP {status}")
             raw_output: str | None = None
             assistant_output: str | None = None
@@ -366,7 +381,10 @@ class OpenAICompatibleBackend:
                 self._metadata(role, attempt, status=status, response=response)
                 if conversation is not None:
                     if assistant_output is not None:
-                        messages = [*messages, {"role": "assistant", "content": assistant_output}]
+                        messages = [
+                            *messages,
+                            {"role": "assistant", "content": assistant_output},
+                        ]
                     conversation[:] = [dict(message) for message in messages]
                 if attempt <= self.max_retries:
                     messages = [
@@ -402,36 +420,83 @@ class OpenAICompatibleBackend:
 class OpenAICompatibleEmbedding:
     """同一 API key 的密集文本向量接口；错误消息不包含正文或凭据。"""
 
-    def __init__(self, model: str, *, base_url: str, api_key_env: str,
-                 dimensions: int = 1024, timeout_seconds: float = 30,
-                 max_retries: int = 2, client: httpx.Client | None = None,
-                 metadata_hook: Callable[[dict[str, Any]], None] | None = None,
-                 sleep: Callable[[float], None] = time.sleep) -> None:
+    def __init__(
+        self,
+        model: str,
+        *,
+        base_url: str,
+        api_key_env: str,
+        dimensions: int = 1024,
+        timeout_seconds: float = 30,
+        max_retries: int = 2,
+        client: httpx.Client | None = None,
+        metadata_hook: Callable[[dict[str, Any]], None] | None = None,
+        sleep: Callable[[float], None] = time.sleep,
+    ) -> None:
         parsed = urlsplit(base_url)
-        if (not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment
-                or parsed.scheme not in ("https", "http")
-                or (parsed.scheme == "http" and parsed.hostname not in ("localhost", "127.0.0.1", "::1"))):
-            raise ValueError("embedding base_url requires HTTPS without credentials or query")
+        if (
+            not parsed.hostname
+            or parsed.username
+            or parsed.password
+            or parsed.query
+            or parsed.fragment
+            or parsed.scheme not in ("https", "http")
+            or (
+                parsed.scheme == "http"
+                and parsed.hostname not in ("localhost", "127.0.0.1", "::1")
+            )
+        ):
+            raise ValueError(
+                "embedding base_url requires HTTPS without credentials or query"
+            )
         if not isinstance(model, str) or not model.strip():
             raise ValueError("embedding model must be non-empty")
         if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", api_key_env):
             raise ValueError("embedding api_key_env must name an environment variable")
         key = os.environ.get(api_key_env)
         if not key:
-            raise ValueError(f"embedding api_key_env: environment variable {api_key_env} is missing")
-        if type(dimensions) is not int or dimensions not in (64, 128, 256, 512, 768, 1024, 1536, 2048):
-            raise ValueError("embedding dimensions must be a supported text-embedding-v4 dimension")
+            raise ValueError(
+                f"embedding api_key_env: environment variable {api_key_env} is missing"
+            )
+        if type(dimensions) is not int or dimensions not in (
+            64,
+            128,
+            256,
+            512,
+            768,
+            1024,
+            1536,
+            2048,
+        ):
+            raise ValueError(
+                "embedding dimensions must be a supported text-embedding-v4 dimension"
+            )
         if type(timeout_seconds) not in (int, float) or not 0 < timeout_seconds <= 300:
             raise ValueError("embedding timeout_seconds must be in (0, 300]")
         if type(max_retries) is not int or not 0 <= max_retries <= 5:
             raise ValueError("embedding max_retries must be in [0, 5]")
-        if client is not None and (str(client.base_url).rstrip("/") != base_url.rstrip("/")
-                                   or client.follow_redirects):
-            raise ValueError("embedding client must use the validated base_url without redirects")
+        if client is not None and (
+            str(client.base_url).rstrip("/") != base_url.rstrip("/")
+            or client.follow_redirects
+        ):
+            raise ValueError(
+                "embedding client must use the validated base_url without redirects"
+            )
+        self.trace_hook = None
         self.model, self.dimensions, self._key = model, dimensions, key
-        self.max_retries, self.metadata_hook, self._sleep = max_retries, metadata_hook, sleep
-        self._client = client if client is not None else httpx.Client(
-            base_url=base_url.rstrip("/") + "/", timeout=timeout_seconds, follow_redirects=False,
+        self.max_retries, self.metadata_hook, self._sleep = (
+            max_retries,
+            metadata_hook,
+            sleep,
+        )
+        self._client = (
+            client
+            if client is not None
+            else httpx.Client(
+                base_url=base_url.rstrip("/") + "/",
+                timeout=timeout_seconds,
+                follow_redirects=False,
+            )
         )
         self._owns_client = client is None
 
@@ -440,6 +505,30 @@ class OpenAICompatibleEmbedding:
             self._client.close()
 
     def embed(self, text: str) -> tuple[float, ...]:
+        try:
+            return self._embed(text)
+        except (LLMSampleError, LLMFormatError) as exc:
+            if self.trace_hook is not None:
+                self.trace_hook(
+                    {
+                        "role": "embedding",
+                        "model": self.model,
+                        "input": {"text": text, "dimensions": self.dimensions},
+                        "error": str(exc),
+                    }
+                )
+            if self.metadata_hook is not None:
+                self.metadata_hook(
+                    {
+                        "role": "embedding",
+                        "model": self.model,
+                        "error": str(exc),
+                        "usage": {},
+                    }
+                )
+            raise
+
+    def _embed(self, text: str) -> tuple[float, ...]:
         if not isinstance(text, str) or not text.strip():
             raise ValueError("embedding input must be non-empty text")
         for attempt in range(1, self.max_retries + 2):
@@ -447,15 +536,22 @@ class OpenAICompatibleEmbedding:
             usage: dict[str, int] = {}
             try:
                 response = self._client.post(
-                    "embeddings", headers={"Authorization": f"Bearer {self._key}"},
-                    json={"model": self.model, "input": text, "dimensions": self.dimensions,
-                          "encoding_format": "float"},
+                    "embeddings",
+                    headers={"Authorization": f"Bearer {self._key}"},
+                    json={
+                        "model": self.model,
+                        "input": text,
+                        "dimensions": self.dimensions,
+                        "encoding_format": "float",
+                    },
                 )
             except (httpx.TimeoutException, httpx.TransportError) as exc:
                 if attempt <= self.max_retries:
                     self._sleep(min(2 ** (attempt - 1), 8))
                     continue
-                raise LLMSampleError(f"embedding: request failed after {attempt} attempts ({type(exc).__name__})") from None
+                raise LLMSampleError(
+                    f"embedding: request failed after {attempt} attempts ({type(exc).__name__})"
+                ) from None
             status = response.status_code
             if status in (408, 429) or 500 <= status < 600:
                 if attempt <= self.max_retries:
@@ -468,49 +564,80 @@ class OpenAICompatibleEmbedding:
                         delay = 2 ** (attempt - 1)
                     self._sleep(min(max(delay, 0), 8))
                     continue
-                raise LLMSampleError(f"embedding: HTTP {status} after {attempt} attempts")
+                raise LLMSampleError(
+                    f"embedding: HTTP {status} after {attempt} attempts"
+                )
             if not 200 <= status < 300:
-                error_type = LLMSampleError if status in (400, 413, 422) else LLMRequestError
+                error_type = (
+                    LLMSampleError if status in (400, 413, 422) else LLMRequestError
+                )
                 raise error_type(f"embedding: HTTP {status}")
             try:
                 body = json.loads(response.text, parse_constant=_reject_constant)
                 data = body["data"]
-                if not isinstance(data, list) or len(data) != 1 or data[0]["index"] != 0:
+                if (
+                    not isinstance(data, list)
+                    or len(data) != 1
+                    or data[0]["index"] != 0
+                ):
                     raise ValueError("invalid embedding data")
                 vector = data[0]["embedding"]
-                if (not isinstance(vector, list) or len(vector) != self.dimensions
-                        or any(type(value) not in (int, float) or not math.isfinite(value)
-                               for value in vector)
-                        or not any(value != 0 for value in vector)):
+                if (
+                    not isinstance(vector, list)
+                    or len(vector) != self.dimensions
+                    or any(
+                        type(value) not in (int, float) or not math.isfinite(value)
+                        for value in vector
+                    )
+                    or not any(value != 0 for value in vector)
+                ):
                     raise ValueError("invalid embedding vector")
                 if isinstance(body.get("usage"), dict):
-                    usage = {key: body["usage"][key] for key in ("prompt_tokens", "total_tokens")
-                             if type(body["usage"].get(key)) is int and body["usage"][key] >= 0}
+                    usage = {
+                        key: body["usage"][key]
+                        for key in ("prompt_tokens", "total_tokens")
+                        if type(body["usage"].get(key)) is int
+                        and body["usage"][key] >= 0
+                    }
             except (ValueError, TypeError, KeyError, IndexError, AttributeError):
                 raise LLMFormatError("embedding: invalid vector response") from None
             if self.metadata_hook is not None:
-                event: dict[str, Any] = {"role": "embedding", "model": self.model,
-                                         "attempt": attempt, "status": status, "usage": usage}
+                event: dict[str, Any] = {
+                    "role": "embedding",
+                    "model": self.model,
+                    "attempt": attempt,
+                    "status": status,
+                    "usage": usage,
+                }
                 request_id = response.headers.get("x-request-id", "")
-                if (request_id and self._key not in request_id and len(request_id) <= 128
-                        and request_id.isascii() and request_id.isprintable()):
+                if (
+                    request_id
+                    and self._key not in request_id
+                    and len(request_id) <= 128
+                    and request_id.isascii()
+                    and request_id.isprintable()
+                ):
                     event["request_id"] = request_id
                 self.metadata_hook(event)
+            if self.trace_hook is not None:
+                self.trace_hook(
+                    {
+                        "role": "embedding",
+                        "model": self.model,
+                        "input": {"text": text, "dimensions": self.dimensions},
+                        "output": vector,
+                        "usage": usage,
+                        "attempt": attempt,
+                    }
+                )
             return tuple(vector)
         raise AssertionError("unreachable embedding retry state")
 
 
 class FakeLLMBackend:
-    """Deterministic offline fixture; no semantic audit claims."""
+    """Deterministic transport fixture; never claims empirical quality."""
 
-    def __init__(
-        self,
-        scenario: FakeScenario = "attempt_1_success",
-        *,
-        candidate_count: int = 1,
-        adopt_candidate: bool = True,
-        trace_hook=None,
-    ) -> None:
+    def __init__(self, scenario="attempt_1_success"):
         if scenario not in (
             "initial_success",
             "attempt_1_success",
@@ -518,131 +645,105 @@ class FakeLLMBackend:
             "final_failure",
         ):
             raise ValueError("unknown fake scenario")
-        if type(candidate_count) is not int or candidate_count not in (0, 1):
-            raise ValueError("candidate_count must be 0 or 1")
-        self.scenario, self.candidate_count = scenario, candidate_count
-        self.adopt_candidate = adopt_candidate
-        self.trace_hook = trace_hook
-        self.requests = []
+        self.scenario = scenario
+        self.trace_hook = None
+        self.metadata_hook = None
+        self.calls = []
 
-    def generate(self, role: str, payload: Mapping[str, Any], *,
-                 conversation: list[dict[str, str]] | None = None) -> Mapping[str, Any]:
-        if conversation is not None and role != "critic":
-            raise ValueError("only critic accepts conversation history")
-        request = deepcopy(dict(payload))
-        self.requests.append((role, request))
+    def generate(self, role, payload, *, conversation=None):
+        self.calls.append((role, payload))
         if role == "selector":
-            candidates = [member for unit in request["candidates"]
-                          for member in unit.get("members", [unit])]
             result = {
                 "selected_experience_ids": [
-                    x["experience_id"]
-                    for x in candidates
-                    if x["trigger"] == "*"
-                    or x["trigger"].casefold() in request["task"].casefold()
-                ][: request["max_selected"]]
+                    e["experience_id"]
+                    for e in payload["candidates"][: payload["max_selected"]]
+                ]
             }
         elif role == "initial_generator":
-            candidates = request.get("candidate_experiences", [])
-            candidate = candidates[0] if candidates else None
-            round_number = request.get("_application_round", 0)
-            successful = self.scenario == "initial_success" or (
-                self.scenario == f"attempt_{round_number}_success"
-                and candidate is not None
+            experiences = payload["experiences"]
+            n = payload.get("_round", 0)
+            success = self.scenario == "initial_success" or n >= (
+                2 if self.scenario == "attempt_2_success" else 1
             )
-            sources = (
-                [c["experience_id"] for c in candidates]
-                if candidate and self.adopt_candidate
-                else []
-            )
-            result = {
-                "rubric": {
-                    "rubric_id": "fake",
-                    "criteria": [
-                        {
-                            "criterion_id": "c1",
-                            "question": "回答是否完整？",
-                            "weight": 0.2,
-                            "source_experiences": (
-                                [request["selected_experiences"][0]["experience_id"]]
-                                if request["selected_experiences"]
-                                else []
-                            ),
-                        },
-                        {
-                            "criterion_id": "c2",
-                            "question": (
-                                "是否逐项满足关键要求？"
-                                if successful
-                                else f"是否概述任务目标（第{round_number}次）？"
-                            ),
-                            "weight": 0.8,
-                            "source_experiences": sources,
-                        },
-                    ],
-                }
-            }
+            if self.scenario == "final_failure":
+                success = False
+            criteria = []
+            for i in range(2):
+                e = experiences[i % len(experiences)] if experiences else None
+                template = e.get("template") if e else None
+                bindings = (
+                    {k: "任务给定材料" for k in e["parameters"]} if template else {}
+                )
+                question = (
+                    template.format(**bindings)
+                    if template
+                    else ("验证通过" if success else "基础核验")
+                )
+                criteria.append(
+                    {
+                        "question": question,
+                        "weight": 0.5,
+                        "source_experiences": [e["experience_id"]] if e else [],
+                        "bindings": bindings,
+                        "binding_evidence": {k: payload["task"] for k in bindings},
+                    }
+                )
+            result = {"analysis": "离线接口示例", "criteria": criteria}
         elif role == "judge":
-            preferred = JUDGE_RESPONSE_SIDE.get() == "chosen"
+            side = JUDGE_RESPONSE_SIDE.get()
             result = {
                 "criterion_judgments": [
                     {
-                        "criterion_id": x["criterion_id"],
-                        "reason": "离线固定场景判断依据，不代表真实语义核验。",
-                        "satisfied": (
-                            x["question"] == "是否逐项满足关键要求？"
-                            and self.scenario != "final_failure"
-                            if preferred
-                            else x["question"] == "回答是否完整？"
-                        ),
+                        "criterion_id": c["criterion_id"],
+                        "satisfied": side == "chosen" and c["question"] == "验证通过",
+                        "reason": "离线固定判断",
                     }
-                    for x in request["criteria"]
+                    for c in payload["criteria"]
                 ]
             }
         elif role == "critic":
             result = {
-                "analysis": "依据实际标准和判断分析任务设计。",
+                "analysis": "离线诊断",
                 "candidates": [
                     {
-                        "content": "为关键任务要求设置独立的正向Boolean标准。",
-                        "trigger": "任务包含明确关键要求。",
+                        "trigger": "任务有明确要求",
+                        "principle": "核对回答是否落实任务要求",
+                        "template": None,
+                        "parameters": {},
                     }
-                    for _ in range(self.candidate_count)
                 ],
             }
+        elif role.endswith("_checker"):
+            result = {"status": "correct", "evidence": "离线核对报告", "details": []}
         elif role == "experience_updater":
-            result = {"action":"keep", "draft":None}
-        elif role == "atomizer":
-            result = {"experiences":[dict(request["draft"])]}
-        elif role == "category_organizer":
-            result = {"action":"unclassified", "category_id":None,"name":None,"description":None}
-        elif role == "category_describer":
-            result = {k:request["category"][k] for k in ("name","description")}
+            result = {
+                "action": "keep",
+                "method": None,
+                "target_fields": [],
+                "reason": "没有已确认的内容缺陷",
+            }
         else:
-            raise ValueError(f"unknown LLM role: {role}")
+            raise ValueError("unknown fake role")
+        messages = llm_messages(role, payload, history=conversation)
         if conversation is not None:
             conversation[:] = [
-                *llm_messages(role, payload, history=conversation),
-                {"role": "assistant", "content": json.dumps(result, ensure_ascii=False)},
+                *messages,
+                {
+                    "role": "assistant",
+                    "content": json.dumps(result, ensure_ascii=False),
+                },
             ]
         if self.trace_hook:
             self.trace_hook(
                 {
                     "role": role,
-                    "backend": "fake",
-                    "model": self.scenario,
-                    "attempt": 1,
-                    "status": None,
-                    "input": request,
-                    **(
-                        {"response_side": JUDGE_RESPONSE_SIDE.get()}
-                        if role == "judge"
-                        else {}
-                    ),
-                    "messages": None,
-                    "raw_output": None,
+                    "input": dict(payload),
+                    "messages": messages,
                     "output": result,
-                    "error": None,
+                    "raw_output": json.dumps(result, ensure_ascii=False),
+                    "model": "fake",
+                    "prompt_version": PROMPT_VERSION,
+                    "id_mapping": ROLE_ID_MAPPING.get(),
                 }
             )
-        return deepcopy(result)
+        return result

@@ -1,15 +1,13 @@
-# 用自己的模型名和 OPENAI_API_KEY 环境变量运行；此示例不会保存密钥。
 run:
   seed: 42
-  output_dir: runs/openai-example
-
+  output_dir: runs/v2-helpsteer3
+  test_workers: 1
 dataset:
   implementation: jsonl
   config:
     paths:
       train: configs/data/demo_train.jsonl
       test: configs/data/demo_test.jsonl
-
 models:
   default:
     backend: openai_compatible
@@ -19,26 +17,31 @@ models:
     timeout_seconds: 30
     max_retries: 2
   roles: {}
-
 modules:
   retrieval:
-    implementation: fake  # 当前仅离线广召回；真实向量检索属于后续模块实现。
+    implementation: fake
     config:
       top_l: 20
   selection:
     implementation: llm
     config:
       max_selected: 5
-      exploration_slots: 0
   application:
-    implementation: immutable_atomic_evolution
+    implementation: semistructured_v2
     config:
       max_rounds: 2
+      max_candidates: 5
       invalid_output_retries: 2
+      input_bytes: 100000
+      check_interval: 3
+      error_window: 6
+      error_threshold: 3
+      q_threshold: 0.5
+      min_replay: 3
+      revision_enabled: true
   reliability:
-    implementation: beta
+    implementation: bayesian
     config: {}
-
 store:
   implementation: local
   config:

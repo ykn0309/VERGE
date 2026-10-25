@@ -1,173 +1,343 @@
-"""不依赖 LLM、存储或外部状态的 VERGE 确定性计算。"""
+"""Deterministic feedback and exact Q/C Bayesian-network inference (no LLM calls)."""
 
 from __future__ import annotations
-
-from dataclasses import replace
+from dataclasses import dataclass
 from fractions import Fraction
-from math import fsum, isclose, isfinite
-
+from math import exp, isclose, isfinite, log, log1p
+from pathlib import Path
+import json
+from typing import Any
 from verge.models import (
-    CriterionJudgment,
-    Credit,
-    EvidenceRecord,
-    Experience,
-    InheritedCredit,
+    Model,
     Rubric,
     RubricJudgment,
-    UsageRecord,
+    CriterionJudgment,
+    ApplicationRecord,
+    CheckerReport,
+    PreferenceSample,
+    Experience,
 )
 
 
-_TOL = 1e-9
-EVOLUTION_PENALTY_LAMBDA = 0.2
-
-
-def _unit(value: float, name: str) -> None:
-    if type(value) not in (int, float) or not isfinite(value) or not 0 <= value <= 1:
-        raise ValueError(f"{name} must be a finite number in [0, 1]")
-
-
-def _weight_ratios(rubric: Rubric) -> dict[str, Fraction]:
-    """按输入数字的十进制表示计算比例，保留精确平分和极小分差。"""
-    if not rubric.criteria:
-        raise ValueError("cannot normalize an empty rubric")
-    weights = {}
-    for criterion in rubric.criteria:
-        value = criterion.weight
-        if type(value) not in (int, float) or not isfinite(value) or value <= 0:
-            raise ValueError("weight must be a finite positive number")
-        weights[criterion.criterion_id] = Fraction(str(value))
+def _weight_ratios(rubric):
+    weights = {c.criterion_id: Fraction(str(c.weight)) for c in rubric.criteria}
     total = sum(weights.values())
-    return {key: value / total for key, value in weights.items()}
+    if total <= 0:
+        raise ValueError("positive weight budget required")
+    return {k: v / total for k, v in weights.items()}
 
 
-def normalize_weights(rubric: Rubric) -> dict[str, float]:
-    """原始相对权重留在Rubric，归一化值由Calculator统一派生。"""
-    return {key: float(value) for key, value in _weight_ratios(rubric).items()}
+def normalize_weights(rubric):
+    return {k: float(v) for k, v in _weight_ratios(rubric).items()}
 
 
-def calculate_rubric_judgment(
-    rubric: Rubric, criterion_judgments: list[CriterionJudgment],
-) -> RubricJudgment:
-    """S_R(y) = Σ_i ω_i J(y,c_i)；M(R) = S_R(y+) - S_R(y-)。
-
-    d_i = J(y+,c_i) - J(y-,c_i) ∈ {-1,0,1}；M(R)>0 才成功，tie 算失败。
-    """
-    ratios = _weight_ratios(rubric)
-    weights = {key: float(value) for key, value in ratios.items()}
-    answers = {item.criterion_id: item for item in criterion_judgments}
+def calculate_rubric_judgment(rubric, criterion_judgments):
+    weights = _weight_ratios(rubric)
+    answers = {j.criterion_id: j for j in criterion_judgments}
     if len(answers) != len(criterion_judgments) or answers.keys() != weights.keys():
-        raise ValueError("criterion judgments must match the rubric exactly")
-    chosen = sum(weight * answers[key].chosen for key, weight in ratios.items())
-    rejected = sum(weight * answers[key].rejected for key, weight in ratios.items())
-    margin = float(chosen - rejected)
-    return RubricJudgment(rubric.rubric_id, weights, list(criterion_judgments),
-                          float(chosen), float(rejected), margin, margin > 0)
-
-
-def _contributions(rubric: Rubric, judgment: RubricJudgment) -> dict[str, float]:
-    """校验 judgment，再计算单条标准的 q_i(R) = ω_i(R) d_i。"""
-    expected = calculate_rubric_judgment(rubric, judgment.criterion_judgments)
-    weights = expected.normalized_weights
-    answers = {item.criterion_id: item for item in judgment.criterion_judgments}
-    if (judgment.rubric_id != rubric.rubric_id
-            or len(answers) != len(judgment.criterion_judgments)
-            or answers.keys() != weights.keys()
-            or judgment.normalized_weights.keys() != weights.keys()
-            or any(not isclose(judgment.normalized_weights[key], weight, abs_tol=_TOL)
-                   for key, weight in weights.items())
-            or not isclose(judgment.chosen_score,
-                           expected.chosen_score,
-                           abs_tol=_TOL)
-            or not isclose(judgment.rejected_score,
-                           expected.rejected_score,
-                           abs_tol=_TOL)
-            or not isclose(judgment.margin, judgment.chosen_score - judgment.rejected_score,
-                           abs_tol=_TOL)
-            or judgment.success != expected.success
-            or (expected.margin == 0 and judgment.margin != 0)
-            or not isclose(judgment.margin,
-                           expected.margin,
-                           abs_tol=_TOL)):
-        raise ValueError("judgment does not match the rubric")
-    return {key: weight * (answers[key].chosen - answers[key].rejected)
-            for key, weight in weights.items()}
-
-
-def _credit_ratios(rubric: Rubric, judgment: RubricJudgment) -> dict[str, list[Fraction]]:
-    _contributions(rubric, judgment)
-    ratios = _weight_ratios(rubric)
-    answers = {item.criterion_id: item for item in judgment.criterion_judgments}
-    totals: dict[str, list[Fraction]] = {}
-    for criterion in rubric.criteria:
-        if not criterion.source_experiences:
-            continue
-        verdict = answers[criterion.criterion_id]
-        direction = verdict.chosen - verdict.rejected
-        share = ratios[criterion.criterion_id] / len(criterion.source_experiences)
-        for source in criterion.source_experiences:
-            pair = totals.setdefault(source, [Fraction(0), Fraction(0)])
-            if direction > 0:
-                pair[0] += share
-            elif direction < 0:
-                pair[1] += share
-    return totals
-
-
-def calculate_experience_credits(rubric: Rubric, judgment: RubricJudgment) -> dict[str, Credit]:
-    """Separate weighted P/N; same verdict carries no numerical evidence."""
-    return {key: Credit(*map(float, pair)) for key, pair in _credit_ratios(rubric, judgment).items()}
-
-
-def positive_experience_sources(rubric: Rubric, judgment: RubricJudgment) -> set[str]:
-    """Use exact ratios for admission, never float net noise."""
-    return {source for source, (positive, negative) in _credit_ratios(rubric, judgment).items()
-            if positive > negative}
-
-
-def calculate_experience_usage(rubric: Rubric, judgment: RubricJudgment,
-                               sample_id: str, versions: dict[str, int]) -> dict[str, UsageRecord]:
-    _contributions(rubric, judgment)
-    verdicts = {j.criterion_id: j for j in judgment.criterion_judgments}
-    counts: dict[str, dict[str, int]] = {}
-    for criterion in rubric.criteria:
-        j = verdicts[criterion.criterion_id]
-        kind = ("positive" if j.chosen and not j.rejected else
-                "negative" if j.rejected and not j.chosen else
-                "both_true" if j.chosen else "both_false")
-        for source in criterion.source_experiences:
-            row = counts.setdefault(source, {})
-            row[kind] = row.get(kind, 0) + 1
-    return {key: UsageRecord(sample_id, versions[key], **row) for key, row in counts.items()}
-
-
-def apply_beta_evidence(experience: Experience, evidence: EvidenceRecord) -> Experience:
-    return replace(
-        experience,
-        alpha=experience.alpha + evidence.positive_credit,
-        beta=experience.beta + evidence.negative_credit,
-        evidence_history=[*experience.evidence_history, evidence],
+        raise ValueError("judgments must cover exactly the rubric criteria")
+    a = sum(w * answers[k].chosen for k, w in weights.items())
+    b = sum(w * answers[k].rejected for k, w in weights.items())
+    return RubricJudgment(
+        rubric.rubric_id,
+        {k: float(v) for k, v in weights.items()},
+        list(criterion_judgments),
+        float(a),
+        float(b),
+        float(a - b),
+        a > b,
     )
 
 
-def allocate_evolution_credit(experience: Experience, event_id: str,
-                              child_count: int) -> tuple[float, float, list[InheritedCredit]]:
-    """Share cumulative credit and one window-scaled penalty, never the priors."""
-    if type(child_count) is not int or child_count < 1:
-        raise ValueError("evolution requires at least one child")
-    cases = experience.working_cases
-    if len(cases) != 5:
-        raise ValueError("credit allocation requires five downstream cases")
-    window_amount = fsum(c.credit.amount for c in cases)
-    penalty = EVOLUTION_PENALTY_LAMBDA * window_amount
-    allocations = [InheritedCredit(
-        experience.experience_id, event_id,
-        experience.positive_credit / child_count, experience.negative_credit / child_count,
-        experience.penalty_credit / child_count, penalty / child_count,
-    ) for _ in range(child_count)]
-    return window_amount, penalty, allocations
+def validate_rubric_judgment(rubric, judgment):
+    expected = calculate_rubric_judgment(rubric, judgment.criterion_judgments)
+    if (
+        expected.rubric_id != judgment.rubric_id
+        or expected.normalized_weights != judgment.normalized_weights
+        or expected.success != judgment.success
+    ):
+        raise ValueError("judgment does not match its rubric")
+    for name in ("chosen_score", "rejected_score", "margin"):
+        if not isclose(
+            getattr(expected, name), getattr(judgment, name), rel_tol=0, abs_tol=1e-12
+        ):
+            raise ValueError("judgment scores do not match Boolean evidence")
 
 
-def validate_rubric_judgment(rubric: Rubric, judgment: RubricJudgment) -> None:
-    """Verify a role result without allocating or persisting credit."""
-    _contributions(rubric, judgment)
+def application(sample, experience, rubric, judgment, phase="downstream"):
+    validate_rubric_judgment(rubric, judgment)
+    weights = _weight_ratios(rubric)
+    answers = {j.criterion_id: j for j in judgment.criterion_judgments}
+    pos = Fraction(0)
+    neg = Fraction(0)
+    counts = dict(positive=0, reverse=0, both_true=0, both_false=0)
+    used = False
+    for c in rubric.criteria:
+        if experience.experience_id not in c.source_experiences:
+            continue
+        j = answers[c.criterion_id]
+        direction = (
+            "positive"
+            if j.chosen and not j.rejected
+            else (
+                "reverse"
+                if j.rejected and not j.chosen
+                else "both_true" if j.chosen else "both_false"
+            )
+        )
+        counts[direction] += 1
+        used |= weights[c.criterion_id] > 0
+        if direction == "positive":
+            pos += weights[c.criterion_id]
+        if direction == "reverse":
+            neg += weights[c.criterion_id]
+    f = (
+        "unused"
+        if not used
+        else ("positive" if pos > neg else "reverse" if neg > pos else "tie")
+    )
+    record = ApplicationRecord(
+        sample,
+        experience.experience_id,
+        experience.method,
+        phase,
+        rubric,
+        judgment,
+        f,
+        float(pos),
+        float(neg),
+        counts,
+        recalled=sum(counts.values()) > 0,
+        selected=sum(counts.values()) > 0,
+        cited=sum(counts.values()) > 0,
+    )
+    record.cited = sum(counts.values()) > 0
+    record.selected = record.recalled = record.cited
+    record.no_evidence_reason = (
+        ("zero_weight_only" if record.cited else "not_cited") if f == "unused" else None
+    )
+    return record
+
+
+def aggregate_reports(reports):
+    stages = {r.stage: r.status for r in reports}
+    if "error" in stages.values():
+        return "error"
+    if set(stages) != {"selector", "generator", "judge"} or "failed" in stages.values():
+        return "unavailable"
+    return "correct" if all(v == "correct" for v in stages.values()) else "unknown"
+
+
+class ProbabilityError(ValueError):
+    """Global parameter/evidence inconsistency; must fail fast, never a negative label."""
+
+
+@dataclass
+class ProbabilityModel(Model):
+    version: str
+    q_prior: float
+    execution_prior: float
+    feedback: dict[str, dict[str, float]]
+    observation: dict[str, dict[str, float]]
+    metadata: dict[str, Any]
+    status: str = "experimental"
+
+    def __post_init__(self):
+        if not self.version or self.status not in ("experimental", "usable"):
+            raise ProbabilityError("invalid parameter identity/status")
+        for v in (self.q_prior, self.execution_prior):
+            if type(v) not in (int, float) or not isfinite(v) or not 0 < v < 1:
+                raise ProbabilityError("priors must be strictly between 0 and 1")
+        if set(self.feedback) != {"0:0", "0:1", "1:0", "1:1"} or set(
+            self.observation
+        ) != {"0", "1"}:
+            raise ProbabilityError("complete Q/C tables required")
+        for table, states in (
+            (self.feedback, {"positive", "reverse", "tie"}),
+            (self.observation, {"correct", "error", "unknown"}),
+        ):
+            for row in table.values():
+                if (
+                    set(row) != states
+                    or any(
+                        type(x) not in (int, float)
+                        or not isfinite(x)
+                        or not 0 <= x <= 1
+                        for x in row.values()
+                    )
+                    or not isclose(sum(row.values()), 1, rel_tol=0, abs_tol=1e-9)
+                ):
+                    raise ProbabilityError("probability rows must sum to one")
+        if self.metadata.get("scope") != "available_reports" or not self.metadata.get(
+            "estimation_source"
+        ):
+            raise ProbabilityError(
+                "record a consistent available-report estimation scope and source"
+            )
+
+        if self.metadata.get("feedback_protocol") != "net_direction_tie_v1":
+            raise ProbabilityError(
+                "parameters require feedback_protocol=net_direction_tie_v1 (tie includes balanced directions)"
+            )
+
+        if self.status == "usable":
+            for q in (0, 1):
+                for f in ("positive", "reverse", "tie"):
+                    for o in ("correct", "error"):
+                        if self.likelihood(q, f, o) == float("-inf"):
+                            raise ProbabilityError(
+                                "usable tables require positive marginal likelihoods; estimate/smooth before activation"
+                            )
+
+    @property
+    def fingerprint(self):
+        import hashlib, json
+
+        return hashlib.sha256(
+            json.dumps(
+                self.to_dict(),
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ).encode()
+        ).hexdigest()
+
+    @classmethod
+    def load(cls, path):
+        return cls.from_json(Path(path).read_text())
+
+    @staticmethod
+    def _logsum(values):
+        values = list(values)
+        if not values:
+            return float("-inf")
+        m = max(values)
+        return m + log(sum(exp(v - m) for v in values))
+
+    def likelihood(self, q, f, o):
+        terms = []
+        for c in (0, 1):
+            pc = self.execution_prior if c else 1 - self.execution_prior
+            pf = self.feedback[f"{q}:{c}"][f]
+            po = self.observation[str(c)][o]
+            if pf and po:
+                terms.append(log(pc) + log(pf) + log(po))
+        return self._logsum(terms)
+
+    def infer(self, prior, f, o):
+        if f not in ("positive", "reverse", "tie") or o not in ("correct", "error"):
+            raise ProbabilityError("inference requires a valid F and explicit O")
+        logs = {str(q): self.likelihood(q, f, o) for q in (0, 1)}
+        a = log(prior) + logs["1"] if prior > 0 else float("-inf")
+        b = log1p(-prior) + logs["0"] if prior < 1 else float("-inf")
+        denom = self._logsum(v for v in (a, b) if v != float("-inf"))
+        if denom == float("-inf"):
+            raise ProbabilityError(
+                "observed evidence has zero probability under parameters"
+            )
+        return exp(a - denom), logs
+
+
+def update_quality(experience, record, parameters):
+    record.q_before = record.q_after = experience.q_posterior
+    record.observation = aggregate_reports(record.reports)
+    if record.phase == "admission":
+        record.update_reason = "admission_prior_only"
+        return
+    if record.feedback not in ("positive", "reverse", "tie"):
+        record.update_reason = record.feedback
+        return
+    if record.observation not in ("correct", "error"):
+        record.update_reason = "observation_" + record.observation
+        return
+    if parameters is None or parameters.status != "usable":
+        record.update_reason = "parameters_unavailable"
+        return
+    if experience.parameter_digest not in (None, parameters.fingerprint):
+        raise ProbabilityError(
+            "parameter change requires rebuilding the posterior from the ledger"
+        )
+    prior = (
+        experience.q_posterior
+        if experience.q_posterior is not None
+        else parameters.q_prior
+    )
+    record.q_before = prior
+    # Retain finite log odds so rounded display probabilities 0/1 do not become absorbing.
+    logs = {
+        str(q): parameters.likelihood(q, record.feedback, record.observation)
+        for q in (0, 1)
+    }
+    if any(v == float("-inf") for v in logs.values()):
+        raise ProbabilityError(
+            "zero likelihood for a quality state; smooth/validate estimated tables before use"
+        )
+    before = (
+        experience.q_log_odds
+        if experience.q_log_odds is not None
+        else log(prior) - log1p(-prior)
+    )
+    after = before + logs["1"] - logs["0"]
+    posterior = 1 / (1 + exp(-after)) if after >= 0 else exp(after) / (1 + exp(after))
+    record.q_log_odds_before = before
+    record.q_log_odds_after = after
+    experience.q_log_odds = after
+    # Save finite, scaled log likelihoods: exp(logL-maxlogL) preserves the ratio.
+    finite = [v for v in logs.values() if v != float("-inf")]
+    scale = max(finite)
+    record.likelihoods = {q: exp(v - scale) for q, v in logs.items()}
+    record.parameter_digest = parameters.fingerprint
+    experience.parameter_digest = parameters.fingerprint
+    record.parameter_version = parameters.version
+    record.q_after = posterior
+    record.update_reason = "updated"
+    experience.q_prior = parameters.q_prior
+    experience.q_posterior = posterior
+    experience.parameter_version = parameters.version
+
+
+def rebuild_quality(experience, parameters):
+    usable = parameters is not None and parameters.status == "usable"
+    experience.q_prior = experience.q_posterior = parameters.q_prior if usable else None
+    experience.parameter_version = parameters.version if usable else None
+    experience.parameter_digest = parameters.fingerprint if parameters else None
+    experience.q_log_odds = None
+    seen = {experience.source_task_id} if experience.source_task_id else set()
+    seen.update(
+        a.sample.task_id
+        for a in experience.applications
+        if a.phase == "admission" or a.sample.sample_id == experience.source_sample_id
+    )
+    for a in experience.applications:
+        skipped = a.update_reason in ("duplicate", "duplicate_task")
+        for name in (
+            "q_before",
+            "q_after",
+            "q_log_odds_before",
+            "q_log_odds_after",
+            "parameter_version",
+            "parameter_digest",
+        ):
+            setattr(a, name, None)
+        a.likelihoods = {}
+        a.observation = aggregate_reports(a.reports)
+        if a.phase == "admission":
+            a.update_reason = "admission_prior_only"
+            continue
+        if (
+            skipped
+            or a.sample.task_id in seen
+            or a.sample.sample_id == experience.source_sample_id
+        ):
+            a.q_before = a.q_after = experience.q_posterior
+            a.update_reason = "duplicate_task"
+            continue
+        seen.add(a.sample.task_id)
+        update_quality(experience, a, parameters)
+    return experience
+
+
+def replay_score(a):
+    if a is None:
+        return None
+    return {"positive": 1, "reverse": -1}.get(a.feedback, 0)

@@ -1,0 +1,53 @@
+run:
+  seed: 42
+  output_dir: runs/helpsteer3-general-v2-prompt-v9-qwen-flash-30
+  test_workers: 1
+  stop_after_train: 30
+  mode: collection
+dataset:
+  implementation: jsonl
+  config:
+    paths:
+      train: runs/helpsteer3-general-v2-collection-30-data/train.jsonl
+models:
+  default:
+    backend: openai_compatible
+    model: qwen3.5-flash
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY_2
+    enable_thinking: false
+    timeout_seconds: 120
+    max_retries: 2
+  roles: {}
+modules:
+  retrieval:
+    implementation: hybrid
+    config:
+      top_l: 20
+      embedding_model: text-embedding-v4
+      dimensions: 1024
+      rrf_k: 60
+  selection:
+    implementation: llm
+    config:
+      max_selected: 5
+  application:
+    implementation: semistructured_v2
+    config:
+      max_rounds: 2
+      max_candidates: 1
+      invalid_output_retries: 2
+      input_bytes: 100000
+      check_interval: 3
+      error_window: 6
+      error_threshold: 3
+      q_threshold: 0.5
+      min_replay: 3
+      revision_enabled: false
+  reliability:
+    implementation: bayesian
+    config: {}
+store:
+  implementation: local
+  config:
+    root_dir: artifacts

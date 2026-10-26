@@ -1,3 +1,5 @@
+from verge.models import ExperienceReview
+
 """Review regressions: independent task identity, ledger rebuilding and revision audit."""
 
 import json
@@ -27,9 +29,9 @@ from verge.prompts import experience_payload, evidence_payload
 def admitted(tmp_path, p=None):
     m = ExperienceMemory(tmp_path, parameters=p)
     e = experience()
-    a = app(e, 0, phase="admission")
+    a = app(e, 0, phase="source_validation")
     a.sample = replace(a.sample, sample_id="source")
-    m.add(e, a)
+    m.add(e, a.sample, ExperienceReview(True, "测试核对通过"))
     return m, m.get(e.experience_id)
 
 
@@ -117,11 +119,10 @@ def test_duplicate_task_and_source_survive_reestimate(tmp_path):
     assert (
         after.evidence_counts
         == before.evidence_counts
-        == {"downstream": 1, "replay": 0}
+        == {"source_validation": 0, "downstream": 1, "replay": 0}
     )
     assert len(after.downstream) == 1
     assert [a.update_reason for a in after.applications] == [
-        "admission_prior_only",
         "duplicate_task",
         "updated",
         "duplicate_task",

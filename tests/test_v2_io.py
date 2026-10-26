@@ -172,7 +172,6 @@ def test_generator_output_cannot_choose_its_own_criterion_ids():
                         "weight": 1,
                         "source_experiences": [],
                         "bindings": {},
-                        "binding_evidence": {},
                     }
                 ]
                 * 2,
@@ -204,7 +203,7 @@ def test_sampler_source_ancestry_and_boundary_fallback():
     from verge.pipeline import select_revision_cases
 
     parent = experience()
-    source = app(parent, 0, phase="admission")
+    source = app(parent, 0, phase="source_validation")
     source.sample = PreferenceSample("source", "原任务", "a", "b", {})
     parent.applications = [source]
     child = Experience(

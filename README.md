@@ -4,7 +4,7 @@ Verified Experience-guided Rubric Generation：从偏好轨迹提炼评分标准
 
 ## 当前状态
 
-V2核心链路已实现：半结构化原子经验、直接混合检索、独立Checker、Q/C贝叶斯网络和Keep/Revise配对回放。参数估计实验尚未开展；无可用参数时Q显示未估计，不使用假设概率决策。实现与验证进度见[PLAN](PLAN.md)。
+V2核心链路已实现：半结构化原子经验、直接混合检索、经验核对准入、来源验证与独立执行Checker、Q/C贝叶斯网络和Keep/Revise配对回放。参数估计实验尚未开展；无可用参数时Q显示未估计，不使用假设概率决策。实现与验证进度见[PLAN](PLAN.md)。
 
 ## 文档
 

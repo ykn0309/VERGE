@@ -19,13 +19,14 @@ from verge.pipeline import PipelineRunner
 from verge.prompts import PROMPT_VERSION
 
 METHOD = "semistructured_bayesian_v2"
-FORMAT = 13
+FORMAT = 15
 CURRENT_SAMPLE = ContextVar("v2_sample", default={})
 ROLES = (
     "selector",
     "initial_generator",
     "judge",
     "critic",
+    "experience_checker",
     "experience_updater",
     "selector_checker",
     "generator_checker",
@@ -92,9 +93,10 @@ def components(config):
         role_backends=bs,
         retriever=r,
         max_selected=config["modules"]["selection"]["config"].get("max_selected", 5),
-        max_candidates=app.get("max_candidates", 5),
+        max_candidates=app.get("max_candidates", 1),
         retries=app.get("invalid_output_retries", 2),
         input_bytes=app.get("input_bytes", 100000),
+        selector_include_quality=config["run"].get("mode") != "collection",
     )
     return modules
 
@@ -192,6 +194,7 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
         "protocol": protocol,
         "config": config,
         "state": "running",
+        "run_mode": config["run"].get("mode", "learning"),
         "evaluation_mode": "train_test" if test else "training_only",
     }
     if parameters:
@@ -219,6 +222,7 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
             modules.judge,
             modules.critic,
             modules.experience_updater,
+            modules.experience_checker,
         )
     }
     backends.update({id(b): b for b in modules.checkers.backends.values()})

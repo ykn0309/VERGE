@@ -175,6 +175,11 @@ class ProbabilityModel(Model):
                 "record a consistent available-report estimation scope and source"
             )
 
+        if self.metadata.get("admission_protocol") != "experience_checker_v1":
+            raise ProbabilityError(
+                "parameters require admission_protocol=experience_checker_v1; reestimate the new admission prior"
+            )
+
         if self.metadata.get("feedback_protocol") != "net_direction_tie_v1":
             raise ProbabilityError(
                 "parameters require feedback_protocol=net_direction_tie_v1 (tie includes balanced directions)"
@@ -241,9 +246,6 @@ class ProbabilityModel(Model):
 def update_quality(experience, record, parameters):
     record.q_before = record.q_after = experience.q_posterior
     record.observation = aggregate_reports(record.reports)
-    if record.phase == "admission":
-        record.update_reason = "admission_prior_only"
-        return
     if record.feedback not in ("positive", "reverse", "tie"):
         record.update_reason = record.feedback
         return
@@ -302,12 +304,7 @@ def rebuild_quality(experience, parameters):
     experience.parameter_version = parameters.version if usable else None
     experience.parameter_digest = parameters.fingerprint if parameters else None
     experience.q_log_odds = None
-    seen = {experience.source_task_id} if experience.source_task_id else set()
-    seen.update(
-        a.sample.task_id
-        for a in experience.applications
-        if a.phase == "admission" or a.sample.sample_id == experience.source_sample_id
-    )
+    seen = set()
     for a in experience.applications:
         skipped = a.update_reason in ("duplicate", "duplicate_task")
         for name in (
@@ -321,13 +318,16 @@ def rebuild_quality(experience, parameters):
             setattr(a, name, None)
         a.likelihoods = {}
         a.observation = aggregate_reports(a.reports)
-        if a.phase == "admission":
-            a.update_reason = "admission_prior_only"
-            continue
         if (
             skipped
             or a.sample.task_id in seen
-            or a.sample.sample_id == experience.source_sample_id
+            or (
+                a.phase != "source_validation"
+                and (
+                    a.sample.sample_id == experience.source_sample_id
+                    or a.sample.task_id == experience.source_task_id
+                )
+            )
         ):
             a.q_before = a.q_after = experience.q_posterior
             a.update_reason = "duplicate_task"

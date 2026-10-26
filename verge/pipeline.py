@@ -264,7 +264,6 @@ class PipelineRunner:
         conversation = []
         codec = NumberedIDCodec()
         feedback = None
-        eligible = []
         for number in range(1, self.max_rounds + 1):
             attempt = ProposalAttempt(number)
             rec.proposal_attempts.append(attempt)
@@ -282,48 +281,47 @@ class PipelineRunner:
                 attempt.proposal = proposal
                 if not proposal.candidates:
                     rec.state = "no_candidate"
-                    break
-                self.stage = "candidate_application"
-                _, _, new, j = self.evaluate(
-                    sample, [], round_number=number, candidates=proposal.candidates
+                    return
+                candidate = proposal.candidates[0]
+                self.stage = "experience_checker"
+                review = self.modules.experience_checker.check(
+                    sample, rubric, judgment, candidate
                 )
-                attempt.rubric = new
-                attempt.judgment = j
-                attempt.applications = [
-                    application(sample, c, new, j, "admission")
-                    for c in proposal.candidates
-                ]
-                for a in attempt.applications:
-                    a.round_number = number
-                    a.recalled = a.selected = True
-                qualified = [
-                    (c, a)
-                    for c, a in zip(proposal.candidates, attempt.applications)
-                    if a.feedback == "positive"
-                ]
-                if qualified:
-                    eligible = qualified
-                rubric, judgment = new, j
-                feedback = {
-                    "candidates": [
-                        {"experience_id": a.version_id, "feedback": a.feedback}
-                        for a in attempt.applications
-                    ],
-                    "overall_success": j.success,
-                }
-                if j.success:
-                    rec.state = "application_success"
-                    break
-                rec.state = "validation_exhausted"
-            except LLMFormatError as exc:
+                attempt.review = review
+            except ISOLATED as exc:
                 attempt.error = str(exc)
-                feedback = {"invalid_output": str(exc)}
-                rec.state = "invalid_application_exhausted"
+                rec.state = "candidate_review_failed"
+                return
+            if not review.approved:
+                feedback = {"experience_review": review.to_dict()}
+                rec.state = "candidate_rejected"
                 continue
-            # Request errors escape to sample isolation and disallow candidate fallback.
-        for e, a in eligible:
-            self.memory.add(e, a)
-            rec.admitted_experience_ids.append(e.experience_id)
+            # Admission is independent of the subsequent Generator/Judge outcome.
+            self.memory.add(candidate, sample, review)
+            rec.admitted_experience_ids.append(candidate.experience_id)
+            self.stage = "source_validation"
+            try:
+                _, _, new, j = self.evaluate(
+                    sample, [], round_number=number, candidates=[candidate]
+                )
+                attempt.rubric, attempt.judgment = new, j
+                a = application(sample, candidate, new, j, "source_validation")
+                a.round_number = number
+                a.recalled = a.selected = True
+                if not a.cited:
+                    a.no_evidence_reason = "selected_not_cited"
+                else:
+                    a.reports = self.modules.checkers.check(a)
+                a.observation = aggregate_reports(a.reports)
+                self.memory.record(a)
+                attempt.applications.append(a)
+                rec.state = (
+                    "application_success" if j.success else "validation_exhausted"
+                )
+            except ISOLATED as exc:
+                attempt.error = str(exc)
+                rec.state = "source_validation_failed"
+            return
 
     def _replay(self, sample, version, pool):
         token = APPLICATION_CONTEXT.set(

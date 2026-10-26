@@ -28,7 +28,7 @@ def atomic_json(path, data):
 
 
 class ExperienceMemory:
-    SCHEMA = 11
+    SCHEMA = 13
 
     def __init__(
         self, root_dir, *, read_only=False, parameters=None, allow_reestimate=False
@@ -54,7 +54,7 @@ class ExperienceMemory:
                 }
                 or data["schema_version"] != self.SCHEMA
             ):
-                raise ValueError("Memory schema 11 required; V1 data cannot be resumed")
+                raise ValueError("Memory schema 13 required; V1 data cannot be resumed")
             self.parameter_snapshot = data["parameters"]
             self.parameter_events = data["parameter_events"]
             items = [Experience.from_dict(x) for x in data["experiences"]]
@@ -97,6 +97,16 @@ class ExperienceMemory:
                     raise ValueError("invalid retirement event")
             if e.parent_id is not None and not e.created_by_event_id:
                 raise ValueError("child requires creation event")
+            if e.parent_id is None and (
+                e.admission_review is None
+                or not e.admission_review.approved
+                or e.source_sample is None
+                or e.source_sample.sample_id != e.source_sample_id
+                or e.source_sample.task_id != e.source_task_id
+            ):
+                raise ValueError(
+                    "root experience requires approved review and source sample"
+                )
             for a in e.applications:
                 if a.version_id != e.experience_id or a.method != e.method:
                     raise ValueError("application version/method mismatch")
@@ -173,25 +183,20 @@ class ExperienceMemory:
     def get(self, eid):
         return deepcopy(self._experiences[eid])
 
-    def add(self, e, source):
+    def add(self, e, sample, review):
         if e.experience_id in self._experiences:
             raise ValueError("version already exists")
-        if (
-            source.phase != "admission"
-            or source.feedback != "positive"
-            or source.version_id != e.experience_id
-            or source.sample.sample_id != e.source_sample_id
-            or source.method != e.method
-        ):
+        if not review.approved or sample.sample_id != e.source_sample_id:
             raise ValueError(
-                "admission requires actually referenced net-positive candidate evidence"
+                "admission requires approved experience review and source sample"
             )
         e = deepcopy(e)
         e.status = "active"
-        e.source_task_id = source.sample.task_id
+        e.source_task_id = sample.task_id
+        e.source_sample = deepcopy(sample)
+        e.admission_review = deepcopy(review)
         e.parameter_digest = self.parameters.fingerprint if self.parameters else None
-        e.applications = [deepcopy(source)]
-        update_quality(e, e.applications[0], self.parameters)
+        e.applications = []
         if self.parameters and self.parameters.status == "usable":
             e.q_prior = e.q_posterior = self.parameters.q_prior
             e.parameter_version = self.parameters.version
@@ -200,24 +205,31 @@ class ExperienceMemory:
         self._commit(versions, self.revisions)
 
     def record(self, app):
-        if app.phase != "downstream":
-            raise ValueError(
-                "admission/replay evidence must use their explicit lifecycle commits"
-            )
+        if app.phase not in ("downstream", "source_validation"):
+            raise ValueError("replay evidence must use its explicit lifecycle commit")
         versions = deepcopy(self._experiences)
         e = versions[app.version_id]
         if e.status != "active" or e.method != app.method:
             raise ValueError("application must use the active immutable version")
+        if app.phase == "source_validation" and (
+            app.sample.sample_id != e.source_sample_id
+            or app.sample.task_id != e.source_task_id
+        ):
+            raise ValueError("source validation must use the admitted source task")
         if any(
             a.phase == app.phase and a.sample.sample_id == app.sample.sample_id
             for a in e.applications
         ):
             app.update_reason = "duplicate"
             return app
-        duplicate = (
-            any(a.sample.task_id == app.sample.task_id for a in e.applications)
-            or app.sample.sample_id == e.source_sample_id
-            or app.sample.task_id == e.source_task_id
+        duplicate = any(
+            a.sample.task_id == app.sample.task_id for a in e.applications
+        ) or (
+            app.phase != "source_validation"
+            and (
+                app.sample.sample_id == e.source_sample_id
+                or app.sample.task_id == e.source_task_id
+            )
         )
         if duplicate:
             app.q_before = app.q_after = e.q_posterior

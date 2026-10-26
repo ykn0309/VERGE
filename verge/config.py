@@ -16,7 +16,7 @@ def load_config(path):
         raise ValueError("V2 requires run/dataset/models/modules/store")
     run = data["run"]
     if (
-        set(run) - {"seed", "output_dir", "stop_after_train", "test_workers"}
+        set(run) - {"seed", "output_dir", "stop_after_train", "test_workers", "mode"}
         or not {"seed", "output_dir"} <= run.keys()
     ):
         raise ValueError("invalid run configuration")
@@ -34,6 +34,8 @@ def load_config(path):
         raise ValueError(
             "V2 currently evaluates frozen tasks sequentially; use test_workers=1"
         )
+    if run.get("mode", "learning") not in ("learning", "collection"):
+        raise ValueError("run.mode must be learning or collection")
     mods = data["modules"]
     if set(mods) != {"retrieval", "selection", "application", "reliability"}:
         raise ValueError("invalid V2 modules")
@@ -71,7 +73,7 @@ def load_config(path):
     opts = mods["application"]["config"]
     for key, low, high in [
         ("max_rounds", 1, 2),
-        ("max_candidates", 1, 8),
+        ("max_candidates", 1, 1),
         ("invalid_output_retries", 0, 3),
         ("input_bytes", 1000, 1000000),
         ("check_interval", 1, 100),
@@ -101,4 +103,11 @@ def load_config(path):
         data["dataset"].get("config", {})
     ) - {"paths", "field_map"}:
         raise ValueError("prepare datasets separately, then use JSONL")
+    if run.get("mode") == "collection":
+        if mods["reliability"]["config"].get("parameter_file"):
+            raise ValueError("collection mode requires no probability parameters")
+        if opts.get("revision_enabled", True):
+            raise ValueError("collection mode requires revision_enabled=false")
+        if "test" in data["dataset"]["config"].get("paths", {}):
+            raise ValueError("collection mode must not inspect a held-out split")
     return data

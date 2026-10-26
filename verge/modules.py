@@ -18,11 +18,13 @@ from verge.models import (
     CheckerReport,
     CriticProposal,
     ExperienceUpdate,
+    ExperienceReview,
 )
 from verge.llm import (
     LLMFormatError,
     LLMSampleError,
     ROLE_ID_MAPPING,
+    ROLE_CALL_ID,
     JUDGE_RESPONSE_SIDE,
     FakeLLMBackend,
 )
@@ -56,11 +58,31 @@ def request(
         token = ROLE_ID_MAPPING.set(
             {"forward": codec.forward, "reverse": codec.reverse}
         )
+        call_id = uuid4().hex
+        call_token = ROLE_CALL_ID.set(call_id)
+
+        def trace_validation(status, error=None):
+            hook = getattr(backend, "trace_hook", None)
+            if hook:
+                hook(
+                    {
+                        "event_type": "contract_validation",
+                        "role": role,
+                        "call_id": call_id,
+                        "contract_attempt": attempt + 1,
+                        "validation_status": status,
+                        "error": error,
+                    }
+                )
+
         try:
             raw = backend.generate(role, projected, conversation=history)
             try:
-                return validate(codec.restore(dict(raw)))
+                value = validate(codec.restore(dict(raw)))
+                trace_validation("valid")
+                return value
             except (ValueError, TypeError, KeyError) as exc:
+                trace_validation("invalid", str(exc))
                 if attempt == retries:
                     raise LLMFormatError(
                         role + ": invalid contract: " + str(exc)[:180]
@@ -72,6 +94,7 @@ def request(
                     + "。请完整返回角色规定的结构。",
                 }
         finally:
+            ROLE_CALL_ID.reset(call_token)
             ROLE_ID_MAPPING.reset(token)
     raise AssertionError("unreachable")
 
@@ -191,9 +214,10 @@ class HybridRetriever:
 
 
 class LLMSelector:
-    def __init__(self, backend, max_selected=5, **options):
+    def __init__(self, backend, max_selected=5, *, include_quality=True, **options):
         self.backend = backend
         self.max_selected = max_selected
+        self.include_quality = include_quality
         self.options = options
         if not 0 <= max_selected <= 5:
             raise ValueError("max_selected must be 0..5")
@@ -221,7 +245,10 @@ class LLMSelector:
             "selector",
             {
                 "task": task,
-                "candidates": [experience_payload(e, quality=True) for e in candidates],
+                "candidates": [
+                    experience_payload(e, quality=self.include_quality)
+                    for e in candidates
+                ],
                 "max_selected": self.max_selected,
             },
             validate,
@@ -252,12 +279,11 @@ class LLMInitialRubricGenerator:
                     "weight",
                     "source_experiences",
                     "bindings",
-                    "binding_evidence",
                 }
                 for c in data["criteria"]
             ):
                 raise ValueError(
-                    "criteria require question, weight, source_experiences, bindings and binding_evidence only"
+                    "criteria require question, weight, source_experiences and bindings only"
                 )
             criteria = [
                 Criterion.from_dict({"criterion_id": f"{rid}_{i}", **c})
@@ -266,20 +292,6 @@ class LLMInitialRubricGenerator:
             for c in criteria:
                 if set(c.source_experiences) - lookup.keys():
                     raise ValueError("unknown experience source")
-                if c.source_experiences:
-                    method = lookup[c.source_experiences[0]].method
-                    if c.bindings.keys() != method.parameters.keys():
-                        raise ValueError("bind every defined parameter exactly once")
-                    if any(v not in task for v in c.binding_evidence.values()):
-                        raise ValueError(
-                            "binding evidence must be a verbatim task fragment"
-                        )
-                    if method.template and c.question != method.template.format(
-                        **c.bindings
-                    ):
-                        raise ValueError(
-                            "question must render the supplied template exactly"
-                        )
             return Rubric(rid, criteria, data["analysis"])
 
         payload = {
@@ -384,8 +396,10 @@ class LLMJudge:
 
 
 class LLMCritic:
-    def __init__(self, backend, max_candidates=5, **options):
+    def __init__(self, backend, max_candidates=1, **options):
         self.backend = backend
+        if type(max_candidates) is not int or max_candidates != 1:
+            raise ValueError("Critic permits at most one candidate per round")
         self.max_candidates = max_candidates
         self.options = options
 
@@ -445,6 +459,31 @@ class LLMCritic:
             validate,
             history=conversation,
             codec=codec,
+            **self.options,
+        )
+
+
+class LLMExperienceChecker:
+    def __init__(self, backend, **options):
+        self.backend = backend
+        self.options = options
+
+    def check(self, sample, rubric, judgment, candidate):
+        answers = {j.criterion_id: j for j in judgment.criterion_judgments}
+        return request(
+            self.backend,
+            "experience_checker",
+            {
+                "task": sample.task,
+                "chosen": sample.chosen,
+                "rejected": sample.rejected,
+                "criteria": [
+                    {**c.to_dict(), **answers[c.criterion_id].to_dict()}
+                    for c in rubric.criteria
+                ],
+                "candidate": experience_payload(candidate),
+            },
+            ExperienceReview.from_dict,
             **self.options,
         )
 
@@ -569,6 +608,7 @@ class LLMModules:
     critic: object
     experience_updater: object
     checkers: object
+    experience_checker: object
 
 
 def make_llm_modules(
@@ -576,10 +616,11 @@ def make_llm_modules(
     *,
     retriever=None,
     max_selected=5,
-    max_candidates=5,
+    max_candidates=1,
     retries=2,
     input_bytes=100000,
     role_backends=None,
+    selector_include_quality=True,
 ):
     role_backends = role_backends or {}
     get = lambda r: role_backends.get(r, backend)
@@ -587,7 +628,12 @@ def make_llm_modules(
     return LLMModules(
         backend,
         retriever or FakeRetriever(),
-        LLMSelector(get("selector"), max_selected, **opts),
+        LLMSelector(
+            get("selector"),
+            max_selected,
+            include_quality=selector_include_quality,
+            **opts,
+        ),
         LLMInitialRubricGenerator(get("initial_generator"), **opts),
         LLMJudge(get("judge"), **opts),
         LLMCritic(get("critic"), max_candidates, **opts),
@@ -595,6 +641,7 @@ def make_llm_modules(
         LLMCheckers(
             {s: get(s + "_checker") for s in ("selector", "generator", "judge")}, **opts
         ),
+        LLMExperienceChecker(get("experience_checker"), **opts),
     )
 
 

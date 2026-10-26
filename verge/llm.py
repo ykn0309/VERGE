@@ -20,6 +20,7 @@ from verge.prompts import PROMPT_VERSION, llm_messages
 JUDGE_RESPONSE_SIDE: ContextVar[str | None] = ContextVar(
     "judge_response_side", default=None
 )
+ROLE_CALL_ID = ContextVar("role_call_id", default=None)
 APPLICATION_CONTEXT = ContextVar("application_context", default={})
 ROLE_ID_MAPPING: ContextVar[dict | None] = ContextVar("role_id_mapping", default=None)
 
@@ -64,6 +65,7 @@ _OUTPUT_FIELDS = {
         "initial_generator",
         "judge",
         "critic",
+        "experience_checker",
         "experience_updater",
         "selector_checker",
         "generator_checker",
@@ -176,6 +178,7 @@ class OpenAICompatibleBackend:
             "role": role,
             "model": self.model,
             "prompt_version": PROMPT_VERSION,
+            "call_id": ROLE_CALL_ID.get(),
             "attempt": attempt,
             "status": status,
         }
@@ -229,6 +232,7 @@ class OpenAICompatibleBackend:
                     "backend": "openai_compatible",
                     "model": self.model,
                     "prompt_version": PROMPT_VERSION,
+                    "call_id": ROLE_CALL_ID.get(),
                     "attempt": attempt,
                     **(
                         {"response_side": JUDGE_RESPONSE_SIDE.get()}
@@ -685,7 +689,6 @@ class FakeLLMBackend:
                         "weight": 0.5,
                         "source_experiences": [e["experience_id"]] if e else [],
                         "bindings": bindings,
-                        "binding_evidence": {k: payload["task"] for k in bindings},
                     }
                 )
             result = {"analysis": "离线接口示例", "criteria": criteria}
@@ -712,6 +715,14 @@ class FakeLLMBackend:
                         "parameters": {},
                     }
                 ],
+            }
+        elif role == "experience_checker":
+            result = {
+                "approved": not (
+                    self.scenario == "attempt_2_success"
+                    and sum(r == "experience_checker" for r, _ in self.calls) == 1
+                ),
+                "reason": "离线候选核对报告",
             }
         elif role.endswith("_checker"):
             result = {"status": "correct", "evidence": "离线核对报告", "details": []}
@@ -743,6 +754,7 @@ class FakeLLMBackend:
                     "raw_output": json.dumps(result, ensure_ascii=False),
                     "model": "fake",
                     "prompt_version": PROMPT_VERSION,
+                    "call_id": ROLE_CALL_ID.get(),
                     "id_mapping": ROLE_ID_MAPPING.get(),
                 }
             )

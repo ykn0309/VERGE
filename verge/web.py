@@ -108,7 +108,7 @@ def discover_runs(root):
             try:
                 data = json.loads((p / "run_manifest.json").read_text())
                 if (
-                    data.get("format_version") == 13
+                    data.get("format_version") in (13, 14, 15)
                     and data.get("method") == "semistructured_bayesian_v2"
                 ):
                     names.append(p.name)
@@ -120,7 +120,10 @@ def discover_runs(root):
 def _run_artifacts(directory):
     directory = Path(directory).resolve()
     m = json.loads((directory / "run_manifest.json").read_text())
-    if m.get("format_version") != 13 or m.get("method") != "semistructured_bayesian_v2":
+    if (
+        m.get("format_version") not in (13, 14, 15)
+        or m.get("method") != "semistructured_bayesian_v2"
+    ):
         raise ValueError("V2 run required")
     artifacts = (
         directory / m["config"]["store"]["config"].get("root_dir", "artifacts")
@@ -148,6 +151,72 @@ def load_role_io(run_dir, sample_id):
                         entries.append(e)
                     elif not warnings:
                         warnings.append("Role log display limit reached")
+    # A backend return and its adapter validation are separate append-only events.
+    validations = {
+        e["call_id"]: e
+        for e in entries
+        if e.get("event_type") == "contract_validation" and e.get("call_id")
+    }
+    entries = [e for e in entries if e.get("event_type") != "contract_validation"]
+    for e in entries:
+        v = validations.get(e.get("call_id"))
+        if v:
+            e.update(
+                validation_status=v["validation_status"],
+                contract_error=v.get("error"),
+                contract_attempt=v["contract_attempt"],
+            )
+    # Old traces did not save validation events. Surface actual stored retry feedback.
+    previous = {}
+    for e in entries:
+        feedback = e.get("input", {}).get("validation_feedback")
+        prior = previous.get(e.get("role"))
+        if feedback and prior is not None and not prior.get("validation_status"):
+            prior.update(
+                validation_status="invalid",
+                contract_error=feedback,
+                validation_source="saved_retry_feedback",
+            )
+        previous[e.get("role")] = e
+    # Terminal Generator failures are recorded on the corresponding proposal round.
+    _, root = _run_artifacts(run_dir)
+    path = root / "trajectories.jsonl"
+    record = (
+        next(
+            (
+                json.loads(line)
+                for line in path.open()
+                if json.loads(line).get("sample_id") == sample_id
+            ),
+            None,
+        )
+        if path.exists()
+        else None
+    )
+    if record:
+        blocks = []
+        for i, e in enumerate(entries):
+            if e.get("role") == "initial_generator":
+                if i == 0 or entries[i - 1].get("role") != "initial_generator":
+                    blocks.append([])
+                blocks[-1].append(e)
+        rounds = [
+            a
+            for a in record.get("proposal_attempts", [])
+            if a.get("rubric")
+            or str(a.get("error") or "").startswith("initial_generator:")
+        ]
+        for block, attempt in zip(blocks[1:], rounds):
+            if attempt.get("error", "") and str(attempt["error"]).startswith(
+                "initial_generator:"
+            ):
+                e = block[-1]
+                if not e.get("validation_status"):
+                    e.update(
+                        validation_status="invalid",
+                        contract_error=attempt["error"],
+                        validation_source="saved_round_error",
+                    )
     return {"entries": entries, "warnings": warnings}
 
 
@@ -155,29 +224,43 @@ def load_run(run_dir):
     from verge.memory import ExperienceMemory, TrajectoryLog
 
     m, root = _run_artifacts(run_dir)
-    memory = ExperienceMemory(root, read_only=True)
-    records = list(TrajectoryLog(root).all())
-    samples = []
-    for r in records:
-        data = r.to_dict()
-        if r.sample:
-            data.update(r.sample.to_dict())
-        samples.append(data)
-    experiences = [e.to_dict() for e in memory.all()]
+    if m["format_version"] == 15:
+        memory = ExperienceMemory(root, read_only=True)
+        records = list(TrajectoryLog(root).all())
+        samples = []
+        for r in records:
+            data = r.to_dict()
+            if r.sample:
+                data.update(r.sample.to_dict())
+            samples.append(data)
+        experiences = [e.to_dict() for e in memory.all()]
+        revisions = [r.to_dict() for r in memory.revisions]
+    else:
+        # Historical display only; no conversion to the current training protocol.
+        raw_memory = json.loads((root / "experience_memory.json").read_text())
+        if raw_memory.get("schema_version") != {13: 11, 14: 12}[m["format_version"]]:
+            raise ValueError("historical V2 memory schema 11 required")
+        experiences = raw_memory["experiences"]
+        revisions = raw_memory["revisions"]
+        records = [json.loads(line) for line in (root / "trajectories.jsonl").open()]
+        if any(r.get("schema_version") != m["format_version"] for r in records):
+            raise ValueError("historical V2 trajectory schema 13 required")
+        samples = [{**r, **(r.get("sample") or {})} for r in records]
     return {
         "name": Path(run_dir).name,
         "manifest": m,
         "samples": samples,
         "experiences": experiences,
-        "revisions": [r.to_dict() for r in memory.revisions],
+        "revisions": revisions,
         "warnings": [],
         "metrics": {
             "tasks": len(samples),
             "initial_correct": sum(
-                bool(r.initial_judgment and r.initial_judgment.success) for r in records
+                bool(r.get("initial_judgment") and r["initial_judgment"]["success"])
+                for r in samples
             ),
-            "active": sum(e.status == "active" for e in memory.all()),
-            "retired": sum(e.status == "retired" for e in memory.all()),
+            "active": sum(e["status"] == "active" for e in experiences),
+            "retired": sum(e["status"] == "retired" for e in experiences),
         },
     }
 

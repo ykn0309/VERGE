@@ -1,3 +1,4 @@
+from verge.models import ExperienceReview
 from copy import deepcopy
 from dataclasses import replace
 from itertools import product
@@ -80,6 +81,7 @@ def params(version="test-parameters"):
             "scope": "available_reports",
             "estimation_source": "fictional TEST fixture",
             "feedback_protocol": "net_direction_tie_v1",
+            "admission_protocol": "experience_checker_v1",
         },
         "usable",
     )
@@ -165,7 +167,7 @@ def test_single_source_and_strict_contract():
         ("{x!r}", {}),
         ("{x:3}", {}),
         ("{x}", {}),
-        ("text", {"x": {"description": "x", "source": "task"}}),
+        ("text", {"x": {"description": "x"}}),
     ],
 )
 def test_template_contract_rejects_ambiguous_bindings(template, parameters):
@@ -186,7 +188,7 @@ def test_template_renderer_and_source_whitelist():
         "指定材料",
         "检查依据",
         "回答是否有{source}支持？",
-        {"source": Parameter("指定材料", "task的材料原文")},
+        {"source": Parameter("指定材料")},
     )
 
     class Backend:
@@ -199,14 +201,12 @@ def test_template_renderer_and_source_whitelist():
                         "weight": 1,
                         "source_experiences": ["1"],
                         "bindings": {"source": "材料2"},
-                        "binding_evidence": {"source": "请概括材料2"},
                     },
                     {
                         "question": "是否清晰？",
                         "weight": 1,
                         "source_experiences": [],
                         "bindings": {},
-                        "binding_evidence": {},
                     },
                 ],
             }
@@ -216,8 +216,9 @@ def test_template_renderer_and_source_whitelist():
         g.generate("请概括材料2", [e]).criteria[0].question == "回答是否有材料2支持？"
     )
     e.method.template = "另一个{source}"
-    with pytest.raises(LLMFormatError):
-        g.generate("请概括材料2", [e])
+    assert (
+        g.generate("请概括材料2", [e]).criteria[0].question == "回答是否有材料2支持？"
+    )
 
 
 def test_bn_matches_eight_state_enumeration():
@@ -308,9 +309,9 @@ def test_memory_roundtrip_dedupe_frozen_and_prior_only(tmp_path):
     p = params()
     m = ExperienceMemory(tmp_path, parameters=p)
     e = experience()
-    a = app(e, "source", phase="admission")
+    a = app(e, "source", phase="source_validation")
     a.sample = replace(a.sample, sample_id="source")
-    m.add(e, a)
+    m.add(e, a.sample, ExperienceReview(True, "测试核对通过"))
     assert m.get(e.experience_id).q_posterior == p.q_prior
     x = app(e, 1)
     x.reports = reports()
@@ -334,7 +335,7 @@ def test_memory_roundtrip_dedupe_frozen_and_prior_only(tmp_path):
 
 def test_unknown_counts_towards_check_and_source_does_not():
     e = experience()
-    source = app(e, "source", phase="admission")
+    source = app(e, "source", phase="source_validation")
     source.sample = replace(source.sample, sample_id=e.source_sample_id)
     e.applications.append(source)
     assert not e.downstream
@@ -363,7 +364,7 @@ def test_three_stage_errors_do_not_combine():
 
 def test_sampler_3_1_1_1_and_dedup():
     e = experience()
-    source = app(e, -1, phase="admission")
+    source = app(e, -1, phase="source_validation")
     source.sample = replace(source.sample, sample_id="source")
     e.applications = [source]
     for n in range(1, 9):
@@ -391,7 +392,7 @@ def test_sampler_3_1_1_1_and_dedup():
         ("initial_success", "initial_success", 0),
         ("attempt_1_success", "application_success", 1),
         ("attempt_2_success", "application_success", 2),
-        ("final_failure", "validation_exhausted", 2),
+        ("final_failure", "validation_exhausted", 1),
     ],
 )
 def test_candidate_only_flow_and_critic_conversation(tmp_path, scenario, state, rounds):
@@ -399,11 +400,9 @@ def test_candidate_only_flow_and_critic_conversation(tmp_path, scenario, state, 
     mem = ExperienceMemory(tmp_path)
     r = PipelineRunner(m, mem, TrajectoryLog(tmp_path)).run_sample(sample())
     assert r.state == state and len(r.proposal_attempts) == rounds
-    assert len(mem.all()) == (
-        1 if scenario in ("attempt_1_success", "attempt_2_success") else 0
-    )
+    assert len(mem.all()) == (0 if scenario == "initial_success" else 1)
     calls = m.backend.calls
-    assert not any(role.endswith("_checker") for role, p in calls)
+    assert sum(role == "experience_checker" for role, p in calls) == rounds
     candidate_calls = [
         p for role, p in calls if role == "initial_generator" and p.get("_round")
     ]
@@ -517,9 +516,9 @@ def test_sample_failure_continues_but_program_error_fails_fast(tmp_path):
 def test_revision_replay_replaces_only_when_strictly_better(tmp_path):
     mem = ExperienceMemory(tmp_path)
     e = experience()
-    source = app(e, 0, phase="admission")
+    source = app(e, 0, phase="source_validation")
     source.sample = replace(source.sample, sample_id="source")
-    mem.add(e, source)
+    mem.add(e, source.sample, ExperienceReview(True, "测试核对通过"))
     for n in range(1, 6):
         a = app(e, n, states=((False, True), (False, True)))
         a.reports = reports(("correct", "error", "correct"))
@@ -563,9 +562,9 @@ def test_revision_replay_replaces_only_when_strictly_better(tmp_path):
 def test_revision_minimum_rejects_and_parent_pool_unchanged(tmp_path):
     mem = ExperienceMemory(tmp_path)
     e = experience()
-    a = app(e, 0, phase="admission")
+    a = app(e, 0, phase="source_validation")
     a.sample = replace(a.sample, sample_id="source")
-    mem.add(e, a)
+    mem.add(e, a.sample, ExperienceReview(True, "测试核对通过"))
     mods = make_fake_modules()
     mods.experience_updater.update = lambda *args, **kwargs: ExperienceUpdate(
         "revise", Method("t", "p"), ["principle"], "修订"
@@ -587,7 +586,7 @@ def test_valid_unselected_replay_scores_zero():
     assert replay_score(a) == 0 and replay_score(None) is None
 
 
-def test_seeded_e_never_leaks_into_candidate_rounds_and_only_latest_set_admitted(
+def test_seeded_e_never_leaks_and_rejected_candidate_is_not_applied(
     tmp_path,
 ):
     class Backend(FakeLLMBackend):
@@ -603,16 +602,16 @@ def test_seeded_e_never_leaks_into_candidate_rounds_and_only_latest_set_admitted
     memory = ExperienceMemory(tmp_path)
     e = experience()
     e.method.principle = "old-E"
-    source = app(e, 0, phase="admission")
+    source = app(e, 0, phase="source_validation")
     source.sample = replace(source.sample, sample_id="source")
-    memory.add(e, source)
+    memory.add(e, source.sample, ExperienceReview(True, "测试核对通过"))
     rec = PipelineRunner(
         mods, memory, TrajectoryLog(tmp_path), revision_enabled=False
     ).run_sample(sample(5))
     calls = [payload for role, payload in backend.calls if role == "initial_generator"]
     assert [x["principle"] for x in calls[0]["experiences"]] == ["old-E"]
-    assert [x["principle"] for x in calls[1]["experiences"]] == ["C1"]
-    assert [x["principle"] for x in calls[2]["experiences"]] == ["C2"]
+    assert len(calls) == 2
+    assert [x["principle"] for x in calls[1]["experiences"]] == ["C2"]
     admitted = memory.get(rec.admitted_experience_ids[0])
     assert admitted.method.principle == "C2"
 
@@ -633,9 +632,9 @@ def test_partial_failure_error_counts_but_unknown_never_counts_as_error():
 def test_updater_or_replay_request_error_keeps_parent_and_records_event(tmp_path):
     memory = ExperienceMemory(tmp_path)
     e = experience()
-    source = app(e, 0, phase="admission")
+    source = app(e, 0, phase="source_validation")
     source.sample = replace(source.sample, sample_id="source")
-    memory.add(e, source)
+    memory.add(e, source.sample, ExperienceReview(True, "测试核对通过"))
     mods = make_fake_modules()
 
     def fail(*a, **kwargs):
@@ -649,7 +648,7 @@ def test_updater_or_replay_request_error_keeps_parent_and_records_event(tmp_path
     assert len(memory.revisions) == 1
 
 
-def test_net_positive_candidate_admitted_even_when_whole_task_fails_and_c2_fails(
+def test_reviewed_candidate_stays_admitted_even_when_whole_task_fails(
     tmp_path,
 ):
     mods = make_fake_modules("final_failure")
@@ -690,7 +689,7 @@ def test_net_positive_candidate_admitted_even_when_whole_task_fails_and_c2_fails
     rec = PipelineRunner(mods, memory, TrajectoryLog(tmp_path)).run_sample(sample())
     assert all(not p.judgment.success for p in rec.proposal_attempts)
     assert rec.proposal_attempts[0].applications[0].feedback == "positive"
-    assert rec.proposal_attempts[1].applications[0].feedback == "reverse"
+    assert len(rec.proposal_attempts) == 1
     assert rec.admitted_experience_ids == [
         rec.proposal_attempts[0].proposal.candidates[0].experience_id
     ]

@@ -95,7 +95,12 @@ class Model:
                 f"{cls.__name__}: missing {sorted(required - data.keys())}, unknown {sorted(data.keys() - names)}"
             )
         try:
-            kwargs = {name: _decode(data[name], annotations[name]) for name in data}
+            kwargs = {}
+            for name in data:
+                try:
+                    kwargs[name] = _decode(data[name], annotations[name])
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(f"{name}: {exc}") from exc
             return cls(**kwargs)
         except (TypeError, ValueError) as exc:
             raise ValueError(f"{cls.__name__}: {exc}") from exc
@@ -148,11 +153,9 @@ class PreferenceSample(Model):
 @dataclass
 class Parameter(Model):
     description: str
-    source: str
 
     def __post_init__(self):
         _id(self.description, "parameter description")
-        _id(self.source, "parameter source")
 
 
 @dataclass
@@ -190,7 +193,6 @@ class Criterion(Model):
     weight: float
     source_experiences: list[str] = field(default_factory=list)
     bindings: dict[str, str] = field(default_factory=dict)
-    binding_evidence: dict[str, str] = field(default_factory=dict)
 
     def __post_init__(self):
         _id(self.criterion_id, "criterion_id")
@@ -200,10 +202,8 @@ class Criterion(Model):
             raise ValueError("one criterion can cite at most one experience")
         for value in self.source_experiences:
             _id(value, "experience reference")
-        if self.bindings.keys() != self.binding_evidence.keys():
-            raise ValueError("bindings require source evidence for every parameter")
-        for value in [*self.bindings.values(), *self.binding_evidence.values()]:
-            _id(value, "binding/evidence")
+        for value in self.bindings.values():
+            _id(value, "binding")
         if not self.source_experiences and self.bindings:
             raise ValueError("unreferenced criterion cannot bind experience parameters")
 
@@ -319,7 +319,7 @@ class ApplicationRecord(Model):
     sample: PreferenceSample
     version_id: str
     method: Method
-    phase: Literal["downstream", "admission", "replay"]
+    phase: Literal["downstream", "source_validation", "replay"]
     rubric: Rubric
     judgment: RubricJudgment
     feedback: Literal["positive", "reverse", "tie", "unused"]
@@ -348,7 +348,7 @@ class ApplicationRecord(Model):
         _id(self.version_id, "version_id")
         if len({x.stage for x in self.reports}) != len(self.reports):
             raise ValueError("duplicate checker stage")
-        if self.phase not in ("downstream", "admission", "replay"):
+        if self.phase not in ("downstream", "source_validation", "replay"):
             raise ValueError("invalid evidence phase")
         from verge.calculator import validate_rubric_judgment, _weight_ratios
 
@@ -408,11 +408,24 @@ class ApplicationRecord(Model):
 
 
 @dataclass
+class ExperienceReview(Model):
+    approved: bool
+    reason: str
+
+    def __post_init__(self):
+        if type(self.approved) is not bool:
+            raise ValueError("approved must be JSON boolean")
+        _id(self.reason, "review reason")
+
+
+@dataclass
 class Experience(Model):
     experience_id: str
     method: Method
     source_sample_id: str
     source_task_id: str | None = None
+    source_sample: PreferenceSample | None = None
+    admission_review: ExperienceReview | None = None
     parent_id: str | None = None
     status: Literal["candidate", "active", "retired"] = "active"
     q_prior: float | None = None
@@ -473,7 +486,7 @@ class Experience(Model):
                 a.phase == phase and a.update_reason == "updated"
                 for a in self.applications
             )
-            for phase in ("downstream", "replay")
+            for phase in ("source_validation", "downstream", "replay")
         }
 
 
@@ -536,6 +549,7 @@ class RevisionRecord(Model):
 class ProposalAttempt(Model):
     round_number: int
     proposal: CriticProposal | None = None
+    review: ExperienceReview | None = None
     rubric: Rubric | None = None
     judgment: RubricJudgment | None = None
     applications: list[ApplicationRecord] = field(default_factory=list)
@@ -558,15 +572,15 @@ class TrajectoryRecord(Model):
     admitted_experience_ids: list[str] = field(default_factory=list)
     experience_updates: list[RevisionRecord] = field(default_factory=list)
     sample_error: dict[str, str] | None = None
-    schema_version: int = 13
+    schema_version: int = 15
 
     def __post_init__(self):
         _id(self.sample_id, "sample_id")
-        if self.schema_version != 13:
+        if self.schema_version != 15:
             raise ValueError("unsupported trajectory schema; no V1 compatibility")
 
     @classmethod
     def from_dict(cls, data):
-        if data.get("schema_version") != 13:
-            raise ValueError("explicit trajectory schema 13 required")
+        if data.get("schema_version") != 15:
+            raise ValueError("explicit trajectory schema 15 required")
         return super().from_dict(data)

@@ -107,8 +107,6 @@ const document = {
 const method = {
   trigger: "任务包含可核验事实",
   principle: "核验数字是否有依据",
-  template: null,
-  parameters: {},
 };
 const r = {
   rubric_id: "rubric-long",
@@ -119,14 +117,12 @@ const r = {
       question: "事实有依据吗？",
       weight: 1,
       source_experiences: ["e1"],
-      bindings: {},
     },
     {
       criterion_id: "c2-long",
       question: "覆盖要求吗？",
       weight: 1,
       source_experiences: [],
-      bindings: {},
     },
   ],
 };
@@ -270,7 +266,7 @@ const context = vm.createContext({
                     attempt: 1,
                     raw_output: "原始回复",
                     validation_status: "invalid",
-                    contract_error: "Criterion.bindings: expected a dictionary",
+                    contract_error: "Criterion.weight: expected a dictionary",
                     messages: [
                       { role: "system", content: "真实系统提示词" },
                       { role: "user", content: "真实消息" },
@@ -373,7 +369,7 @@ setImmediate(async () => {
     assert.ok(content().includes("用户输入 · User"));
     assert.ok(content().includes("真实系统提示词"));
     const failedCall = walk(nodes["#app"], (e) => e.tagName === "SUMMARY" && e.textContent.includes("结构校验失败"));
-    assert.ok(failedCall && failedCall.textContent.includes("Criterion.bindings"));
+    assert.ok(failedCall && failedCall.textContent.includes("Criterion.weight"));
     const prompt = walk(
       nodes["#app"],
       (e) =>

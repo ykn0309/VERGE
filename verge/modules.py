@@ -11,7 +11,6 @@ import hashlib, json, re
 from verge.models import (
     Experience,
     Method,
-    Parameter,
     Criterion,
     Rubric,
     CriterionJudgment,
@@ -278,12 +277,11 @@ class LLMInitialRubricGenerator:
                     "question",
                     "weight",
                     "source_experiences",
-                    "bindings",
                 }
                 for c in data["criteria"]
             ):
                 raise ValueError(
-                    "criteria require question, weight, source_experiences and bindings only"
+                    "criteria require question, weight and source_experiences only"
                 )
             criteria = [
                 Criterion.from_dict({"criterion_id": f"{rid}_{i}", **c})

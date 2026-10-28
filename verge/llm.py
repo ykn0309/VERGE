@@ -674,21 +674,12 @@ class FakeLLMBackend:
             criteria = []
             for i in range(2):
                 e = experiences[i % len(experiences)] if experiences else None
-                template = e.get("template") if e else None
-                bindings = (
-                    {k: "任务给定材料" for k in e["parameters"]} if template else {}
-                )
-                question = (
-                    template.format(**bindings)
-                    if template
-                    else ("验证通过" if success else "基础核验")
-                )
+                question = "验证通过" if success else "基础核验"
                 criteria.append(
                     {
                         "question": question,
                         "weight": 0.5,
                         "source_experiences": [e["experience_id"]] if e else [],
-                        "bindings": bindings,
                     }
                 )
             result = {"analysis": "离线接口示例", "criteria": criteria}
@@ -711,8 +702,6 @@ class FakeLLMBackend:
                     {
                         "trigger": "任务有明确要求",
                         "principle": "核对回答是否落实任务要求",
-                        "template": None,
-                        "parameters": {},
                     }
                 ],
             }

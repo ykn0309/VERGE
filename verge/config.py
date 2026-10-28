@@ -16,7 +16,7 @@ def load_config(path):
         raise ValueError("V2 requires run/dataset/models/modules/store")
     run = data["run"]
     if (
-        set(run) - {"seed", "output_dir", "stop_after_train", "test_workers", "mode"}
+        set(run) - {"seed", "output_dir", "stop_after_train", "test_workers", "train_workers", "mode"}
         or not {"seed", "output_dir"} <= run.keys()
     ):
         raise ValueError("invalid run configuration")
@@ -30,6 +30,8 @@ def load_config(path):
         type(run["stop_after_train"]) is not int or run["stop_after_train"] < 1
     ):
         raise ValueError("invalid stop_after_train")
+    if type(run.get("train_workers", 1)) is not int or run.get("train_workers", 1) < 1:
+        raise ValueError("train_workers must be a positive integer")
     if run.get("test_workers", 1) != 1:
         raise ValueError(
             "V2 currently evaluates frozen tasks sequentially; use test_workers=1"

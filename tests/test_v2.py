@@ -160,36 +160,15 @@ def test_single_source_and_strict_contract():
         ExperienceUpdate.from_dict({"action": "split", "method": None, "reason": "x"})
 
 
-@pytest.mark.parametrize(
-    "template,parameters",
-    [
-        ("{source.x}", {}),
-        ("{x!r}", {}),
-        ("{x:3}", {}),
-        ("{x}", {}),
-        ("text", {"x": {"description": "x"}}),
-    ],
-)
-def test_template_contract_rejects_ambiguous_bindings(template, parameters):
-    with pytest.raises(ValueError):
-        Method.from_dict(
-            {
-                "trigger": "t",
-                "principle": "p",
-                "template": template,
-                "parameters": parameters,
-            }
-        )
+@pytest.mark.parametrize("extra", [{"template": None}, {"parameters": {}}])
+def test_method_rejects_removed_fields(extra):
+    with pytest.raises(ValueError, match="unknown"):
+        Method.from_dict({"trigger": "t", "principle": "p", **extra})
 
 
-def test_template_renderer_and_source_whitelist():
+def test_two_field_method_and_source_whitelist():
     e = experience()
-    e.method = Method(
-        "指定材料",
-        "检查依据",
-        "回答是否有{source}支持？",
-        {"source": Parameter("指定材料")},
-    )
+    e.method = Method("指定材料", "核对回答事实是否得到指定材料支持")
 
     class Backend:
         def generate(self, role, payload, **kw):
@@ -198,24 +177,14 @@ def test_template_renderer_and_source_whitelist():
                 "criteria": [
                     {
                         "question": "回答是否有材料2支持？",
-                        "weight": 1,
+                        "weight": 0.8,
                         "source_experiences": ["1"],
-                        "bindings": {"source": "材料2"},
                     },
-                    {
-                        "question": "是否清晰？",
-                        "weight": 1,
-                        "source_experiences": [],
-                        "bindings": {},
-                    },
+                    {"question": "是否清晰？", "weight": 0.2, "source_experiences": []},
                 ],
             }
 
     g = LLMInitialRubricGenerator(Backend(), retries=0)
-    assert (
-        g.generate("请概括材料2", [e]).criteria[0].question == "回答是否有材料2支持？"
-    )
-    e.method.template = "另一个{source}"
     assert (
         g.generate("请概括材料2", [e]).criteria[0].question == "回答是否有材料2支持？"
     )

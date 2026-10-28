@@ -43,7 +43,13 @@ def rconvert(old):
     return Rubric(
         old["rubric_id"],
         [
-            Criterion(**{**c, "bindings": {}, "binding_evidence": {}})
+            Criterion(
+                **{
+                    k: v
+                    for k, v in c.items()
+                    if k not in ("bindings", "binding_evidence")
+                }
+            )
             for c in old["criteria"]
         ],
     )

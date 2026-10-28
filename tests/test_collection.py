@@ -27,8 +27,6 @@ def test_selector_collection_never_exposes_quality_or_usage():
         "experience_id",
         "trigger",
         "principle",
-        "template",
-        "parameters",
     }
     LLMSelector(b).select("任务", [e])
     assert (

@@ -108,7 +108,7 @@ def discover_runs(root):
             try:
                 data = json.loads((p / "run_manifest.json").read_text())
                 if (
-                    data.get("format_version") in (13, 14, 15)
+                    data.get("format_version") in (13, 14, 15, 16)
                     and data.get("method") == "semistructured_bayesian_v2"
                 ):
                     names.append(p.name)
@@ -121,7 +121,7 @@ def _run_artifacts(directory):
     directory = Path(directory).resolve()
     m = json.loads((directory / "run_manifest.json").read_text())
     if (
-        m.get("format_version") not in (13, 14, 15)
+        m.get("format_version") not in (13, 14, 15, 16)
         or m.get("method") != "semistructured_bayesian_v2"
     ):
         raise ValueError("V2 run required")
@@ -224,7 +224,7 @@ def load_run(run_dir):
     from verge.memory import ExperienceMemory, TrajectoryLog
 
     m, root = _run_artifacts(run_dir)
-    if m["format_version"] == 15:
+    if m["format_version"] == 16:
         memory = ExperienceMemory(root, read_only=True)
         records = list(TrajectoryLog(root).all())
         samples = []
@@ -238,7 +238,10 @@ def load_run(run_dir):
     else:
         # Historical display only; no conversion to the current training protocol.
         raw_memory = json.loads((root / "experience_memory.json").read_text())
-        if raw_memory.get("schema_version") != {13: 11, 14: 12}[m["format_version"]]:
+        if (
+            raw_memory.get("schema_version")
+            != {13: 11, 14: 12, 15: 13}[m["format_version"]]
+        ):
             raise ValueError("historical V2 memory schema 11 required")
         experiences = raw_memory["experiences"]
         revisions = raw_memory["revisions"]

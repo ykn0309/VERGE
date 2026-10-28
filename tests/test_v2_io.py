@@ -171,7 +171,6 @@ def test_generator_output_cannot_choose_its_own_criterion_ids():
                         "question": "q",
                         "weight": 1,
                         "source_experiences": [],
-                        "bindings": {},
                     }
                 ]
                 * 2,

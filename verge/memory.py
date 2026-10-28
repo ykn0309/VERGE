@@ -28,7 +28,7 @@ def atomic_json(path, data):
 
 
 class ExperienceMemory:
-    SCHEMA = 13
+    SCHEMA = 14
 
     def __init__(
         self, root_dir, *, read_only=False, parameters=None, allow_reestimate=False
@@ -54,7 +54,7 @@ class ExperienceMemory:
                 }
                 or data["schema_version"] != self.SCHEMA
             ):
-                raise ValueError("Memory schema 13 required; V1 data cannot be resumed")
+                raise ValueError("Memory schema 14 required; V1 data cannot be resumed")
             self.parameter_snapshot = data["parameters"]
             self.parameter_events = data["parameter_events"]
             items = [Experience.from_dict(x) for x in data["experiences"]]

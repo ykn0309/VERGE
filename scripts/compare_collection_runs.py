@@ -48,8 +48,6 @@ def extras(run):
         "methods": [
             {"id": e.experience_id, **e.method.to_dict()} for e in memory.all()
         ],
-        "with_template": sum(e.method.template is not None for e in memory.all()),
-        "with_parameters": sum(bool(e.method.parameters) for e in memory.all()),
         "generator_outputs": len(weights),
         "generator_nonnumeric_weight_outputs": invalid_weights,
         "generator_sum_one": sum(w["sum_one"] for w in weights),
@@ -117,8 +115,6 @@ def compare(old, new, output):
             {
                 k: {
                     "summary": v["summary"],
-                    "with_template": v["extras"]["with_template"],
-                    "with_parameters": v["extras"]["with_parameters"],
                     "generator_sum_one": v["extras"]["generator_sum_one"],
                     "generator_outputs": v["extras"]["generator_outputs"],
                     "generator_all_one": v["extras"]["generator_all_one"],

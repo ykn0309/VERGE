@@ -29,7 +29,7 @@ def audit(run_dir):
     traces = [json.loads(l) for l in (root / "role_io.jsonl").read_text().splitlines()]
     traces = [r for r in traces if r.get("event_type") != "contract_validation"]
     selector_traces = [r for r in traces if r["role"] == "selector"]
-    selector_keys = {"experience_id", "trigger", "principle", "template", "parameters"}
+    selector_keys = {"experience_id", "trigger", "principle"}
     hidden = all(
         set(e) == selector_keys
         for r in selector_traces

@@ -15,11 +15,11 @@ from verge.llm import (
 from verge.modules import make_llm_modules, HybridRetriever
 from verge.calculator import ProbabilityModel
 from verge.memory import ExperienceMemory, TrajectoryLog, atomic_json
-from verge.pipeline import PipelineRunner
+from verge.pipeline import PipelineRunner, run_training_batch
 from verge.prompts import PROMPT_VERSION
 
 METHOD = "semistructured_bayesian_v2"
-FORMAT = 15
+FORMAT = 16
 CURRENT_SAMPLE = ContextVar("v2_sample", default={})
 ROLES = (
     "selector",
@@ -259,17 +259,47 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
     records = list(old_records)
     try:
         runner = PipelineRunner(modules, memory, log, **kwargs)
-        for i, sample in enumerate(train[n:], n + 1):
-            if limit is not None and i > limit:
-                break
-            token = CURRENT_SAMPLE.set(
-                {"sample_id": sample.sample_id, "split": "train"}
-            )
-            try:
-                records.append(runner.run_sample(sample))
-            finally:
-                CURRENT_SAMPLE.reset(token)
-            print(f"train {i}/{len(train)} {records[-1].state}", flush=True)
+        workers = config["run"].get("train_workers", 1)
+        def batch_factory(sample):
+            token = CURRENT_SAMPLE.set({"sample_id": sample.sample_id, "split": "train"})
+            m = components(config)
+            bs = {id(x.backend): x.backend for x in (
+                m.selector, m.initial_generator, m.judge, m.critic,
+                m.experience_updater, m.experience_checker)}
+            bs.update({id(b): b for b in m.checkers.backends.values()})
+            if isinstance(m.retriever, HybridRetriever):
+                bs[id(m.retriever.backend)] = m.retriever.backend
+                with lock:
+                    m.retriever.cache.update(modules.retriever.cache)
+            for b in bs.values():
+                b.trace_hook = lambda e: append("role_io.jsonl", e)
+                b.metadata_hook = lambda e: append("llm_requests.jsonl", e)
+            def cleanup():
+                try:
+                    if isinstance(m.retriever, HybridRetriever):
+                        with lock:
+                            modules.retriever.cache.update(m.retriever.cache)
+                    for b in bs.values():
+                        if hasattr(b, "close"): b.close()
+                finally:
+                    CURRENT_SAMPLE.reset(token)
+            return m, cleanup
+        remaining = train[n:limit] if limit is not None else train[n:]
+        for offset in range(0, len(remaining), workers):
+            batch = remaining[offset:offset + workers]
+            if workers == 1:
+                sample = batch[0]
+                token = CURRENT_SAMPLE.set({"sample_id": sample.sample_id, "split": "train"})
+                try:
+                    new_records = [runner.run_sample(sample)]
+                finally:
+                    CURRENT_SAMPLE.reset(token)
+            else:
+                new_records = run_training_batch(batch, batch_factory, memory, log,
+                                                 runner_options=kwargs)
+            records.extend(new_records)
+            for i, rec in enumerate(new_records, n + offset + 1):
+                print(f"train {i}/{len(train)} {rec.state}", flush=True)
         paused = limit is not None and len(records) < len(train)
         if not paused and test:
             frozen = ExperienceMemory(store, read_only=True, parameters=parameters)

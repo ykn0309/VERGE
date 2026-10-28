@@ -72,7 +72,7 @@ const ROLES = {
   embedding: "Embedding · 检索向量",
 };
 const REASONS = {
-  parameters_unavailable: "参数尚未估计，本次不更新Q",
+  parameters_unavailable: "概率参数尚未估计，本次不更新Q",
   admission_prior_only: "来源准入不重复更新Q",
   updated: "已更新Q",
   unused: "没有正权重引用，本次不更新Q",
@@ -654,7 +654,7 @@ function overview(root) {
     review.append(row);
   }
   root.append(review);
-  raw(root, "运行配置与参数来源", state.data.manifest);
+  raw(root, "运行配置与概率参数来源", state.data.manifest);
 }
 function listFilters(sidebar, title) {
   const filters = el("div", "", "filters"),
@@ -1006,17 +1006,7 @@ function rubricView(parent, r, j, onlySource = null) {
         }
         body.append(pair);
       });
-    if (Object.keys(c.bindings || {}).length)
-      disclosure(node, "模板参数绑定", (body) =>
-        table(
-          body,
-          ["参数", "填充值"],
-          Object.entries(c.bindings).map(([key, value]) => [
-            key,
-            value,
-          ]),
-        ),
-      );
+
   }
 }
 function checksView(parent, s) {
@@ -1177,21 +1167,7 @@ function methodView(parent, m) {
   section(parent, "适用条件");
   const trigger = card(parent);
   bodyText(trigger, m.trigger);
-  if (m.template) {
-    section(parent, "标准模板");
-    card(parent).append(el("p", m.template, "method-principle"));
-  }
-  if (Object.keys(m.parameters || {}).length) {
-    section(parent, "模板参数");
-    table(
-      parent,
-      ["参数名", "含义"],
-      Object.entries(m.parameters).map(([key, p]) => [
-        key,
-        p.description || "—",
-      ]),
-    );
-  }
+
 }
 function criticView(parent, s) {
   if (s.sample_error)
@@ -1261,18 +1237,6 @@ function criticView(parent, s) {
         el("p", e.method.principle),
         el("p", "适用条件：" + e.method.trigger, "trigger"),
       );
-      if (e.method.template)
-        disclosure(c, "查看可选模板与参数", (body) => {
-          body.append(el("p", e.method.template));
-          table(
-            body,
-            ["参数", "说明"],
-            Object.entries(e.method.parameters || {}).map(([k, p]) => [
-              k,
-              p.description,
-            ]),
-          );
-        });
       grid.append(c);
     });
     round.append(grid);
@@ -1465,7 +1429,7 @@ function experienceDetail(panel, e) {
     if (e.parent_id)
       links.append(el("span", "父版本：", "muted"), sourceLink(e.parent_id));
     body.append(links);
-    raw(body, "版本标识与参数来源", {
+    raw(body, "版本标识与概率参数来源", {
       experience_id: e.experience_id,
       parent_id: e.parent_id,
       q_prior: e.q_prior,

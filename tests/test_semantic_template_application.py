@@ -1,73 +1,57 @@
-"""Template adherence is Checker evidence, not a generation hard gate."""
+"""Natural-language methods are applied semantically, with no template contract."""
 
 import pytest
-from verge.models import Method, Parameter, Criterion
+from verge.models import Method, Criterion
 from verge.modules import LLMInitialRubricGenerator
 from verge.prompts import llm_messages
 from test_v2 import experience
 
 
-@pytest.mark.parametrize(
-    "bindings,evidence",
-    [
-        ({}, {}),
-        ({"other": "12"}, {}),
-        ({"count": "12"}, {"source": "由输入列表计数得到12项"}),
-    ],
-)
-def test_semantic_binding_deviations_are_preserved_for_checker(bindings, evidence):
+def test_generator_specializes_method_without_binding_fields():
     e = experience()
-    e.method = Method(
-        "列出项目",
-        "核对数量",
-        "回答是否提供{count}项？",
-        {"count": Parameter("数量")},
-    )
+    e.method = Method("要求基于指定材料概括", "核对事实是否得到指定材料支持")
 
     class Backend:
         def generate(self, *args, **kwargs):
             return {
-                "analysis": "设计标准",
+                "analysis": "任务指定材料2",
                 "criteria": [
                     {
-                        "question": "是否列出十二个项目？",
+                        "question": "回答是否只包含材料2支持的事实？",
                         "weight": 0.8,
                         "source_experiences": ["1"],
-                        "bindings": bindings,
                     },
                     {
-                        "question": "是否清晰？",
+                        "question": "表达是否清晰？",
                         "weight": 0.2,
                         "source_experiences": [],
-                        "bindings": {},
                     },
                 ],
             }
 
-    c = (
-        LLMInitialRubricGenerator(Backend(), retries=0)
-        .generate("请提供12项", [e])
-        .criteria[0]
-    )
-    assert c.bindings == bindings
-    assert c.question == "是否列出十二个项目？"
+    result = LLMInitialRubricGenerator(Backend(), retries=0).generate("概括材料2", [e])
+    assert result.criteria[0].source_experiences == [e.experience_id]
+    assert "bindings" not in result.criteria[0].to_dict()
 
 
-def test_structure_types_still_rejected():
-    with pytest.raises(ValueError):
+@pytest.mark.parametrize("field", ["bindings", "binding_evidence"])
+def test_removed_criterion_fields_rejected(field):
+    with pytest.raises(ValueError, match="unknown"):
         Criterion.from_dict(
-            {
-                "criterion_id": "1",
-                "question": "达标？",
-                "weight": 1,
-                "source_experiences": ["e"],
-                "bindings": [],
-            }
+            {"criterion_id": "1", "question": "符合？", "weight": 1, field: {}}
         )
 
 
 def test_checker_semantics_and_generator_guidance():
     checker = llm_messages("generator_checker", {})[0]["content"]
-    assert "允许等价改写" in checker and "参数遗漏" in checker
+    assert "核验动作遗漏" in checker and "等价改写" in checker
     generator = llm_messages("initial_generator", {})[0]["content"]
-    assert "无需逐字复现模板" in generator
+    assert "将Principle落实为具体" in generator and "bindings" not in generator
+
+
+@pytest.mark.parametrize("field", ["template", "parameters"])
+def test_updater_no_longer_accepts_removed_target_fields(field):
+    from verge.models import ExperienceUpdate
+
+    with pytest.raises(ValueError, match="revision field"):
+        ExperienceUpdate("revise", Method("t", "p"), [field], "理由")

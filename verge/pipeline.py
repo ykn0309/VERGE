@@ -241,6 +241,11 @@ class PipelineRunner:
                 "type": type(exc).__name__,
                 "message": str(exc)[:500],
             }
+        self.revise_pending(rec)
+        self.trajectories.append(rec)
+        return rec
+
+    def revise_pending(self, rec):
         if self.training and self.revision_enabled:
             for e in self.memory.all(active_only=True):
                 reasons = revision_reasons(
@@ -255,10 +260,8 @@ class PipelineRunner:
                 self.memory.mark_checked(e.experience_id, reasons, self.window)
                 if reasons:
                     rec.experience_updates.append(
-                        self._revise(e, sample.sample_id, reasons)
+                        self._revise(e, rec.sample_id, reasons)
                     )
-        self.trajectories.append(rec)
-        return rec
 
     def _correct(self, sample, rec, rubric, judgment):
         conversation = []
@@ -456,3 +459,59 @@ class PipelineRunner:
             event.error = str(exc)
             event.decision = "parent_kept"
         return self.memory.finish_revision(event)
+
+
+def run_training_batch(samples, modules_factory, memory, trajectories, *, runner_options=None):
+    """Batch snapshot isolation; deterministic merge, then serial evolution.
+
+    The factory supplies context-isolated modules and cleanup for each worker.
+    Worker ledger changes are never copied over the live ledger wholesale.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+    from tempfile import TemporaryDirectory
+    from pathlib import Path
+    from verge.memory import ExperienceMemory, TrajectoryLog
+
+    options = dict(runner_options or {})
+    snapshot = memory.path.read_bytes()
+    initial_ids = {e.experience_id for e in memory.all()}
+    def worker(sample):
+        with TemporaryDirectory(prefix="verge-batch-worker-") as root:
+            Path(root, "experience_memory.json").write_bytes(snapshot)
+            local = ExperienceMemory(root, parameters=memory.parameters)
+            modules, cleanup = modules_factory(sample)
+            try:
+                runner = PipelineRunner(modules, local, TrajectoryLog(root),
+                    **{**options, "revision_enabled": False})
+                record = runner.run_sample(sample)
+                added = [e for e in local.all() if e.experience_id not in initial_ids]
+                return record, added
+            finally:
+                cleanup()
+    with ThreadPoolExecutor(max_workers=len(samples)) as executor:
+        results = list(executor.map(worker, samples))
+    # Stage the entire merge before publishing any batch evidence.
+    with TemporaryDirectory(prefix="verge-batch-merge-") as root:
+        Path(root, "experience_memory.json").write_bytes(snapshot)
+        merged = ExperienceMemory(root, parameters=memory.parameters)
+        for rec, added in results:
+            for e in added:
+                merged.add(e, e.source_sample, e.admission_review)
+            for app in rec.applications:
+                merged.record(app)
+            for attempt in rec.proposal_attempts:
+                for app in attempt.applications:
+                    merged.record(app)
+        memory._commit(merged._experiences, merged.revisions)
+    records = [rec for rec, _ in results]
+    # Batch end is the only point at which revision sees shared new evidence.
+    if options.get("revision_enabled", True):
+        modules, cleanup = modules_factory(samples[-1])
+        try:
+            runner = PipelineRunner(modules, memory, trajectories, **options)
+            runner.revise_pending(records[-1])
+        finally:
+            cleanup()
+    for rec in records:
+        trajectories.append(rec)
+    return records

@@ -151,39 +151,13 @@ class PreferenceSample(Model):
 
 
 @dataclass
-class Parameter(Model):
-    description: str
-
-    def __post_init__(self):
-        _id(self.description, "parameter description")
-
-
-@dataclass
 class Method(Model):
     trigger: str
     principle: str
-    template: str | None = None
-    parameters: dict[str, Parameter] = field(default_factory=dict)
 
     def __post_init__(self):
-        from string import Formatter
-        import re
-
         _id(self.trigger, "trigger")
         _id(self.principle, "principle")
-        if self.template is None:
-            if self.parameters:
-                raise ValueError("parameters require a template")
-            return
-        _id(self.template, "template")
-        names = set()
-        for _, name, spec, conv in Formatter().parse(self.template):
-            if name is not None:
-                if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name) or spec or conv:
-                    raise ValueError("template permits only simple named placeholders")
-                names.add(name)
-        if names != self.parameters.keys():
-            raise ValueError("template placeholders must match parameter definitions")
 
 
 @dataclass
@@ -192,7 +166,6 @@ class Criterion(Model):
     question: str
     weight: float
     source_experiences: list[str] = field(default_factory=list)
-    bindings: dict[str, str] = field(default_factory=dict)
 
     def __post_init__(self):
         _id(self.criterion_id, "criterion_id")
@@ -202,10 +175,6 @@ class Criterion(Model):
             raise ValueError("one criterion can cite at most one experience")
         for value in self.source_experiences:
             _id(value, "experience reference")
-        for value in self.bindings.values():
-            _id(value, "binding")
-        if not self.source_experiences and self.bindings:
-            raise ValueError("unreferenced criterion cannot bind experience parameters")
 
 
 @dataclass
@@ -510,7 +479,7 @@ class ExperienceUpdate(Model):
             raise ValueError(
                 "keep requires no method; revise requires exactly one method"
             )
-        if set(self.target_fields) - {"trigger", "principle", "template", "parameters"}:
+        if set(self.target_fields) - {"trigger", "principle"}:
             raise ValueError("unknown revision field")
         if self.action == "revise" and not self.target_fields:
             raise ValueError("revise requires target_fields")
@@ -572,15 +541,15 @@ class TrajectoryRecord(Model):
     admitted_experience_ids: list[str] = field(default_factory=list)
     experience_updates: list[RevisionRecord] = field(default_factory=list)
     sample_error: dict[str, str] | None = None
-    schema_version: int = 15
+    schema_version: int = 16
 
     def __post_init__(self):
         _id(self.sample_id, "sample_id")
-        if self.schema_version != 15:
+        if self.schema_version != 16:
             raise ValueError("unsupported trajectory schema; no V1 compatibility")
 
     @classmethod
     def from_dict(cls, data):
-        if data.get("schema_version") != 15:
-            raise ValueError("explicit trajectory schema 15 required")
+        if data.get("schema_version") != 16:
+            raise ValueError("explicit trajectory schema 16 required")
         return super().from_dict(data)

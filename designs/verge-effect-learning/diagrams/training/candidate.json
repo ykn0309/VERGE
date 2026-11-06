@@ -1,0 +1,192 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "训练：比较使用与不使用经验",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "designs/verge-effect-learning/diagrams/training/训练流程.html"
+  },
+  "lanes": [
+    {
+      "id": "prepare",
+      "label": "程序准备"
+    },
+    {
+      "id": "none",
+      "label": "不使用经验"
+    },
+    {
+      "id": "one",
+      "label": "只使用E1"
+    },
+    {
+      "id": "two",
+      "label": "只使用E2"
+    },
+    {
+      "id": "score",
+      "label": "程序记结果"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "task",
+      "lane": "prepare",
+      "col": 0,
+      "type": "external",
+      "label": "训练任务",
+      "sublabel": "任务与两份回答"
+    },
+    {
+      "id": "retrieve",
+      "lane": "prepare",
+      "col": 1,
+      "type": "backend",
+      "label": "检索候选经验",
+      "sublabel": "例如E1、E2"
+    },
+    {
+      "id": "gen0",
+      "lane": "none",
+      "col": 2,
+      "type": "backend",
+      "label": "生成Rubric",
+      "sublabel": "只看任务"
+    },
+    {
+      "id": "judge0",
+      "lane": "none",
+      "col": 3,
+      "type": "backend",
+      "label": "独立评判",
+      "sublabel": "每次只看一份回答"
+    },
+    {
+      "id": "gen1",
+      "lane": "one",
+      "col": 2,
+      "type": "backend",
+      "label": "生成Rubric",
+      "sublabel": "任务＋E1"
+    },
+    {
+      "id": "judge1",
+      "lane": "one",
+      "col": 3,
+      "type": "backend",
+      "label": "独立评判",
+      "sublabel": "每次只看一份回答"
+    },
+    {
+      "id": "gen2",
+      "lane": "two",
+      "col": 2,
+      "type": "backend",
+      "label": "生成Rubric",
+      "sublabel": "任务＋E2"
+    },
+    {
+      "id": "judge2",
+      "lane": "two",
+      "col": 3,
+      "type": "backend",
+      "label": "独立评判",
+      "sublabel": "每次只看一份回答"
+    },
+    {
+      "id": "label",
+      "lane": "score",
+      "col": 3,
+      "type": "security",
+      "label": "训练偏好标签",
+      "sublabel": "仅评分程序读取"
+    },
+    {
+      "id": "compare",
+      "lane": "score",
+      "col": 4,
+      "type": "backend",
+      "label": "比较各次预测",
+      "sublabel": "与训练标签核对"
+    },
+    {
+      "id": "save",
+      "lane": "score",
+      "col": 5,
+      "type": "database",
+      "label": "保存效果记录",
+      "sublabel": "关联经验版本与轨迹"
+    }
+  ],
+  "edges": [
+    {
+      "id": "start",
+      "from": "task",
+      "to": "retrieve"
+    },
+    {
+      "id": "branch0",
+      "from": "retrieve",
+      "to": "gen0"
+    },
+    {
+      "id": "branch1",
+      "from": "retrieve",
+      "to": "gen1"
+    },
+    {
+      "id": "branch2",
+      "from": "retrieve",
+      "to": "gen2"
+    },
+    {
+      "id": "g0j0",
+      "from": "gen0",
+      "to": "judge0"
+    },
+    {
+      "id": "g1j1",
+      "from": "gen1",
+      "to": "judge1"
+    },
+    {
+      "id": "g2j2",
+      "from": "gen2",
+      "to": "judge2"
+    },
+    {
+      "id": "j0out",
+      "from": "judge0",
+      "to": "compare"
+    },
+    {
+      "id": "j1out",
+      "from": "judge1",
+      "to": "compare"
+    },
+    {
+      "id": "j2out",
+      "from": "judge2",
+      "to": "compare"
+    },
+    {
+      "id": "truth",
+      "from": "label",
+      "to": "compare"
+    },
+    {
+      "id": "persist",
+      "from": "compare",
+      "to": "save"
+    }
+  ],
+  "mainPath": [
+    "task",
+    "retrieve",
+    "gen1",
+    "judge1",
+    "compare",
+    "save"
+  ]
+}

@@ -3,6 +3,9 @@
 from __future__ import annotations
 from copy import deepcopy
 from uuid import uuid4
+import time, hashlib, json
+from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from verge.models import (
     Experience,
     TrajectoryRecord,
@@ -140,6 +143,7 @@ class PipelineRunner:
         q_threshold=0.5,
         min_replay=3,
         revision_enabled=True,
+        margin_threshold=0.1,
     ):
         if training and memory.read_only:
             raise ValueError("training requires writable memory")
@@ -162,15 +166,97 @@ class PipelineRunner:
         self.q_threshold = q_threshold
         self.min_replay = min_replay
         self.revision_enabled = revision_enabled
+        if not 0 < margin_threshold <= 2:
+            raise ValueError("invalid margin_threshold")
+        self.margin_threshold = margin_threshold
         self.stage = "idle"
+
+    @property
+    def stage(self):
+        return getattr(self, "_stage", "idle")
+
+    @stage.setter
+    def stage(self, value):
+        now = time.monotonic()
+        record = getattr(self, "_active_record", None)
+        if record is not None and hasattr(self, "_stage_started"):
+            key = "stage:" + getattr(self, "_stage", "idle")
+            record.timings[key] = record.timings.get(key, 0) + now - self._stage_started
+        self._stage, self._stage_started = value, now
 
     def run(self, samples):
         return [self.run_sample(s) for s in samples]
+
+    def evaluation_fingerprint(self, sample, pool):
+        from pathlib import Path
+        from verge.prompts import PROMPT_VERSION
+
+        m = self.modules
+        bs = [
+            m.selector.backend,
+            m.initial_generator.backend,
+            m.judge.backend,
+            *m.checkers.backends.values(),
+        ]
+        specs = [
+            {
+                "class": type(b).__name__,
+                "model": getattr(b, "model", None),
+                "thinking": getattr(b, "enable_thinking", None),
+                "scenario": getattr(b, "scenario", None),
+                "url": str(getattr(getattr(b, "_client", None), "base_url", "")),
+            }
+            for b in bs
+        ]
+        payload = {
+            "task": sample.task,
+            "chosen": sample.chosen,
+            "rejected": sample.rejected,
+            "sample_id": sample.sample_id,
+            "pool": [
+                experience_payload(e, quality=m.selector.include_quality)
+                for e in sorted(pool, key=lambda x: x.experience_id)
+            ],
+            "models": specs,
+            "prompt": PROMPT_VERSION,
+            "retriever": {k: getattr(m.retriever, k, None) for k in ("top_l", "rrf_k")},
+            "embedding": {
+                "class": type(getattr(m.retriever, "backend", None)).__name__,
+                "url": str(
+                    getattr(
+                        getattr(getattr(m.retriever, "backend", None), "_client", None),
+                        "base_url",
+                        "",
+                    )
+                ),
+                **{
+                    k: getattr(getattr(m.retriever, "backend", None), k, None)
+                    for k in ("model", "dimensions")
+                },
+            },
+            "selection": {
+                "max_selected": m.selector.max_selected,
+                "include_quality": m.selector.include_quality,
+            },
+            "options": m.initial_generator.options,
+            "training": self.training,
+            "code": hashlib.sha256(
+                b"".join(
+                    p.read_bytes() for p in sorted(Path(__file__).parent.glob("*.py"))
+                )
+            ).hexdigest(),
+        }
+        return hashlib.sha256(
+            json.dumps(payload, ensure_ascii=False, sort_keys=True).encode()
+        ).hexdigest()
 
     def evaluate(
         self, sample, pool, *, round_number=0, candidates=None, retriever=None
     ):
         m = self.modules
+        self.last_evaluation_digest = (
+            self.evaluation_fingerprint(sample, pool) if candidates is None else None
+        )
         if candidates is None:
             recalled = (retriever or m.retriever).retrieve(sample.task, pool)
             selected = m.selector.select(sample.task, recalled, training=self.training)
@@ -195,9 +281,11 @@ class PipelineRunner:
         return recalled, selected, rubric, judgment
 
     def run_sample(self, sample):
+        started = time.monotonic()
         rec = TrajectoryRecord(
             sample.sample_id, sample=sample, split="train" if self.training else "test"
         )
+        self._active_record = rec
         try:
             self.stage = "initial"
             recalled, selected, rubric, judgment = self.evaluate(
@@ -212,7 +300,8 @@ class PipelineRunner:
             rec.initial_judgment = judgment
             if self.training:
                 self.stage = "downstream"
-                for e in selected:
+
+                def prepare(e):
                     a = application(sample, e, rubric, judgment)
                     a.recalled = a.selected = True
                     a.retrieval_rank = next(
@@ -226,11 +315,33 @@ class PipelineRunner:
                     a.retrieval_trace = deepcopy(rec.retrieval_trace)
                     if not a.cited:
                         a.no_evidence_reason = "selected_not_cited"
+                    a.evaluation_digest = self.last_evaluation_digest
+                    a.selection_reason = getattr(
+                        self.modules.selector, "last_reasons", {}
+                    ).get(e.experience_id)
+                    a.usage_reason = next(
+                        (
+                            u["reason"]
+                            for u in rubric.experience_usage
+                            if u["experience_id"] == e.experience_id
+                        ),
+                        None,
+                    )
                     if a.cited:
                         a.reports = self.modules.checkers.check(a)
                     a.observation = aggregate_reports(a.reports)
-                    self.memory.record(a)
-                    rec.applications.append(a)
+                    return a
+
+                if selected:
+                    with ThreadPoolExecutor(max_workers=min(5, len(selected))) as pool:
+                        fs = [
+                            pool.submit(copy_context().run, prepare, e)
+                            for e in selected
+                        ]
+                        prepared = [f.result() for f in fs]
+                    for a in prepared:
+                        self.memory.record(a)
+                        rec.applications.append(a)
             rec.state = "initial_success" if judgment.success else "initial_failure"
             if self.training and not judgment.success:
                 self._correct(sample, rec, rubric, judgment)
@@ -242,6 +353,9 @@ class PipelineRunner:
                 "message": str(exc)[:500],
             }
         self.revise_pending(rec)
+        self.stage = "idle"
+        self._active_record = None
+        rec.timings["sample_seconds"] = time.monotonic() - started
         self.trajectories.append(rec)
         return rec
 
@@ -264,67 +378,211 @@ class PipelineRunner:
                     )
 
     def _correct(self, sample, rec, rubric, judgment):
-        conversation = []
-        codec = NumberedIDCodec()
-        feedback = None
+        conversation, codec, feedback = [], NumberedIDCodec(), None
+        baseline = None
         for number in range(1, self.max_rounds + 1):
             attempt = ProposalAttempt(number)
             rec.proposal_attempts.append(attempt)
-            self.stage = "critic"
             try:
-                proposal = self.modules.critic.propose(
-                    sample,
-                    rubric,
-                    judgment,
-                    number,
-                    conversation=conversation,
-                    codec=codec,
-                    feedback=feedback,
-                )
-                attempt.proposal = proposal
-                if not proposal.candidates:
-                    rec.state = "no_candidate"
-                    return
-                candidate = proposal.candidates[0]
-                self.stage = "experience_checker"
-                review = self.modules.experience_checker.check(
-                    sample, rubric, judgment, candidate
-                )
-                attempt.review = review
-            except ISOLATED as exc:
-                attempt.error = str(exc)
-                rec.state = "candidate_review_failed"
-                return
-            if not review.approved:
-                feedback = {"experience_review": review.to_dict()}
-                rec.state = "candidate_rejected"
-                continue
-            # Admission is independent of the subsequent Generator/Judge outcome.
-            self.memory.add(candidate, sample, review)
-            rec.admitted_experience_ids.append(candidate.experience_id)
-            self.stage = "source_validation"
-            try:
-                _, _, new, j = self.evaluate(
-                    sample, [], round_number=number, candidates=[candidate]
-                )
-                attempt.rubric, attempt.judgment = new, j
-                a = application(sample, candidate, new, j, "source_validation")
-                a.round_number = number
-                a.recalled = a.selected = True
-                if not a.cited:
-                    a.no_evidence_reason = "selected_not_cited"
+                self.stage = "critic_repair"
+                if number == 1:
+                    baseline, rec.baseline_assessment, repaired, changes = (
+                        self.modules.critic.start(
+                            sample,
+                            rubric,
+                            judgment,
+                            conversation=conversation,
+                            codec=codec,
+                        )
+                    )
+                    rec.baseline_judgment = baseline
+                    rec.baseline_diagnosis = deepcopy(
+                        getattr(self.modules.critic, "last_diagnosis", {})
+                    )
                 else:
-                    a.reports = self.modules.checkers.check(a)
-                a.observation = aggregate_reports(a.reports)
-                self.memory.record(a)
-                attempt.applications.append(a)
-                rec.state = (
-                    "application_success" if j.success else "validation_exhausted"
+                    repaired, changes = self.modules.critic.repair(
+                        sample,
+                        rubric,
+                        baseline,
+                        number,
+                        conversation=conversation,
+                        codec=codec,
+                        feedback={
+                            "raw_judgment": feedback["raw_judgment"],
+                            "final_judgment": feedback["final_judgment"],
+                            "assessment": feedback["assessment"],
+                            "margin_gain": feedback["margin_gain"],
+                            "threshold": feedback["threshold"],
+                            "previous_criteria": [
+                                {"criterion_id": c.criterion_id, "question_index": i}
+                                for i, c in enumerate(
+                                    rec.proposal_attempts[-2].repair_rubric.criteria
+                                )
+                            ],
+                        },
+                    )
+                attempt.repair_rubric, attempt.changes = repaired, changes
+                attempt.diagnosis["repair"] = deepcopy(
+                    getattr(self.modules.critic, "last_diagnosis", {})
                 )
+                if not changes:
+                    rec.state = "no_rubric_revision"
+                    return
+                self.stage = "repair_judge"
+                raw = self.modules.judge.judge(
+                    repaired, sample.chosen, sample.rejected, task=sample.task
+                )
+                attempt.repair_judgment = raw
+                final, assessment = self.modules.critic.assess(sample, repaired, raw)
+                attempt.final_judgment, attempt.assessment = final, assessment
+                attempt.diagnosis["judge_review"] = deepcopy(
+                    getattr(self.modules.critic, "last_diagnosis", {})
+                )
+                attempt.margin_before, attempt.margin_after = (
+                    baseline.margin,
+                    final.margin,
+                )
+                attempt.margin_gain = final.margin - baseline.margin
+                feedback = {
+                    "initial_rubric": rubric.to_dict(),
+                    "initial_raw_judgment": judgment.to_dict(),
+                    "initial_final_judgment": baseline.to_dict(),
+                    "rubric": repaired.to_dict(),
+                    "raw_judgment": raw.to_dict(),
+                    "final_judgment": final.to_dict(),
+                    "assessment": assessment,
+                    "diagnosis": deepcopy(attempt.diagnosis),
+                    "margin_gain": attempt.margin_gain,
+                    "threshold": self.margin_threshold,
+                }
+                # Decimal fractions avoid a boundary failure such as .3-.2 < .1.
+                from fractions import Fraction
+
+                def exact_margin(r, j):
+                    from verge.calculator import _weight_ratios
+
+                    w = _weight_ratios(r)
+                    return sum(
+                        w[x.criterion_id] * (int(x.chosen) - int(x.rejected))
+                        for x in j.criterion_judgments
+                    )
+
+                gain = exact_margin(repaired, final) - exact_margin(rubric, baseline)
+                if gain < Fraction(str(self.margin_threshold)):
+                    rec.state = "repair_not_improved"
+                    continue
+                self.stage = "critic_extract"
+                extracted = self.modules.critic.extract(
+                    sample, repaired, final, changes, feedback
+                )
+                from verge.models import CriticProposal
+
+                attempt.proposal = CriticProposal(assessment, [x[0] for x in extracted])
+                admitted = []
+                if not extracted:
+                    rec.state = "no_admitted_experience"
+                    return
+                entries = {}
+                for candidate, refs, reason in extracted:
+                    entry = {
+                        "experience_id": candidate.experience_id,
+                        "change_indices": refs,
+                        "reason": reason,
+                        "reviews": [],
+                        "methods": [candidate.method.to_dict()],
+                        "admitted": False,
+                        "error": None,
+                    }
+                    attempt.extractions.append(entry)
+                    entries[candidate.experience_id] = entry
+                feedback["candidate_support"] = [
+                    {
+                        "experience_id": c.experience_id,
+                        "change_indices": refs,
+                        "reason": reason,
+                    }
+                    for c, refs, reason in extracted
+                ]
+                active = [x[0] for x in extracted]
+                self.stage = "experience_checker"
+                reviews = self.modules.experience_checker.check_many(
+                    sample, feedback, active
+                )
+                rejected = []
+                for candidate in active:
+                    entry = entries[candidate.experience_id]
+                    review = reviews[candidate.experience_id]
+                    if review is None:
+                        entry["error"] = getattr(
+                            self.modules.experience_checker, "last_errors", {}
+                        ).get(candidate.experience_id, "invalid batch review item")
+                        continue
+                    entry["reviews"].append(review.to_dict())
+                    if not review.approved:
+                        rejected.append(candidate)
+                # Retain first-pass approvals even if a rejected sibling fails its rewrite.
+                if rejected:
+                    try:
+                        self.stage = "critic_rewrite"
+                        methods = self.modules.critic.rewrite_many(
+                            rejected,
+                            reviews,
+                            {
+                                "task": sample.task,
+                                "chosen": sample.chosen,
+                                "rejected": sample.rejected,
+                                "repair_evidence": feedback,
+                            },
+                        )
+                        for c in rejected:
+                            c.method = methods[c.experience_id]
+                            entries[c.experience_id]["methods"].append(
+                                c.method.to_dict()
+                            )
+                        self.stage = "experience_checker"
+                        second = self.modules.experience_checker.check_many(
+                            sample, feedback, rejected
+                        )
+                        for c in rejected:
+                            result = second[c.experience_id]
+                            if result is None:
+                                entries[c.experience_id]["error"] = getattr(
+                                    self.modules.experience_checker, "last_errors", {}
+                                ).get(c.experience_id, "invalid batch review item")
+                            else:
+                                reviews[c.experience_id] = result
+                                entries[c.experience_id]["reviews"].append(
+                                    result.to_dict()
+                                )
+                    except ISOLATED as exc:
+                        for c in rejected:
+                            entries[c.experience_id]["error"] = str(exc)
+                for candidate, refs, reason in extracted:
+                    entry = entries[candidate.experience_id]
+                    review = reviews[candidate.experience_id]
+                    if entry["error"] or review is None or not review.approved:
+                        continue
+                    candidate.admission_evidence = {
+                        **feedback,
+                        "change_indices": refs,
+                        "extraction_reason": reason,
+                    }
+                    self.memory.add(candidate, sample, review)
+                    attempt.review = review
+                    entry["admitted"] = True
+                    rec.admitted_experience_ids.append(candidate.experience_id)
+                    admitted.append(candidate)
+                if not admitted:
+                    rec.state = "no_admitted_experience"
+                    return
+                # Admission ends this task: the new method has not been applied.
+                # Its Q remains at the configured prior until a later actual use.
+                rec.state = "experience_admitted"
+                return
             except ISOLATED as exc:
                 attempt.error = str(exc)
-                rec.state = "source_validation_failed"
-            return
+                rec.state = "repair_failed"
+                return
 
     def _replay(self, sample, version, pool):
         token = APPLICATION_CONTEXT.set(
@@ -351,8 +609,32 @@ class PipelineRunner:
         target.status = "active"
         arm.append(target)
         retriever = self.modules.retriever.fork()
+        fingerprint = self.evaluation_fingerprint(sample, arm)
+        for old in version.applications:
+            if (
+                old.evaluation_digest == fingerprint
+                and old.sample.to_dict() == sample.to_dict()
+            ):
+                cached = deepcopy(old)
+                cached.phase = "replay"
+                cached.q_before = cached.q_after = None
+                cached.update_reason = "not_evaluated"
+                cached._cache_hit = True
+                return cached
         recalled, selected, r, j = self.evaluate(sample, arm, retriever=retriever)
         a = application(sample, target, r, j, "replay")
+        a.evaluation_digest = fingerprint
+        a.selection_reason = getattr(self.modules.selector, "last_reasons", {}).get(
+            target.experience_id
+        )
+        a.usage_reason = next(
+            (
+                u["reason"]
+                for u in r.experience_usage
+                if u["experience_id"] == target.experience_id
+            ),
+            None,
+        )
         a.recalled = target.experience_id in {e.experience_id for e in recalled}
         a.selected = target.experience_id in {e.experience_id for e in selected}
         a.retrieval_rank = next(
@@ -375,13 +657,13 @@ class PipelineRunner:
         a.observation = aggregate_reports(a.reports)
         return a
 
-    def _revise(self, e, sample_id, reasons):
+    def _revise(self, e, sample_id, reasons, *, event_id=None):
         versions = {v.experience_id: v for v in self.memory.all()}
         cases, kinds = select_revision_cases(
             e, versions, reasons=reasons, window=self.window
         )
         event = RevisionRecord(
-            "revision_" + uuid4().hex,
+            event_id or "revision_" + uuid4().hex,
             e.experience_id,
             sample_id,
             reasons,
@@ -425,26 +707,55 @@ class PipelineRunner:
                 child.parameter_version = parameters.version
                 child.parameter_digest = parameters.fingerprint
             pool = self.memory.all(active_only=True)
-            for case in cases:
-                pair = ReplayResult(case.sample.sample_id, None, None)
-                for name, version in (("old", e), ("new", child)):
-                    try:
-                        a = self._replay(case.sample, version, pool)
-                        setattr(pair, name + "_application", a)
-                        setattr(pair, name + "_score", replay_score(a))
-                        if name == "new":
-                            if a.sample.task_id == child.source_task_id:
-                                a.q_before = a.q_after = child.q_posterior
-                                a.update_reason = "duplicate_task"
+
+            def run_arm(case, version):
+                factory = getattr(self, "replay_factory", None)
+                if factory is None:
+                    return self._replay(case.sample, version, pool)
+                modules, cleanup = factory(case.sample)
+                try:
+                    runner = PipelineRunner(
+                        modules,
+                        self.memory,
+                        self.trajectories,
+                        training=self.training,
+                        revision_enabled=False,
+                    )
+                    return runner._replay(case.sample, version, pool)
+                finally:
+                    cleanup()
+
+            # Each concurrent arm owns its adapters; apply Q in fixed case order afterwards.
+            tasks = {}
+            with ThreadPoolExecutor(
+                max_workers=4 if getattr(self, "replay_factory", None) else 1
+            ) as executor:
+                for i, case in enumerate(cases):
+                    for name, version in (("old", e), ("new", child)):
+                        tasks[i, name] = executor.submit(
+                            copy_context().run, run_arm, case, deepcopy(version)
+                        )
+                for i, case in enumerate(cases):
+                    pair = ReplayResult(case.sample.sample_id, None, None)
+                    for name in ("old", "new"):
+                        try:
+                            a = tasks[i, name].result()
+                            setattr(pair, name + "_application", a)
+                            setattr(pair, name + "_score", replay_score(a))
+                            if name == "old":
+                                pair.old_cache_hit = getattr(a, "_cache_hit", False)
+                                a.q_before = a.q_after = e.q_posterior
+                                a.update_reason = "parent_replay_no_update"
                             else:
-                                update_quality(child, a, parameters)
-                            child.applications.append(a)
-                        else:
-                            a.q_before = a.q_after = e.q_posterior
-                            a.update_reason = "parent_replay_no_update"
-                    except ISOLATED as exc:
-                        pair.errors[name] = str(exc)
-                event.replays.append(pair)
+                                if a.sample.task_id == child.source_task_id:
+                                    a.q_before = a.q_after = child.q_posterior
+                                    a.update_reason = "duplicate_task"
+                                else:
+                                    update_quality(child, a, parameters)
+                                child.applications.append(a)
+                        except ISOLATED as exc:
+                            pair.errors[name] = str(exc)
+                    event.replays.append(pair)
             valid = [
                 p
                 for p in event.replays
@@ -461,7 +772,9 @@ class PipelineRunner:
         return self.memory.finish_revision(event)
 
 
-def run_training_batch(samples, modules_factory, memory, trajectories, *, runner_options=None):
+def run_training_batch(
+    samples, modules_factory, memory, trajectories, *, runner_options=None
+):
     """Batch snapshot isolation; deterministic merge, then serial evolution.
 
     The factory supplies context-isolated modules and cleanup for each worker.
@@ -475,19 +788,25 @@ def run_training_batch(samples, modules_factory, memory, trajectories, *, runner
     options = dict(runner_options or {})
     snapshot = memory.path.read_bytes()
     initial_ids = {e.experience_id for e in memory.all()}
+
     def worker(sample):
         with TemporaryDirectory(prefix="verge-batch-worker-") as root:
             Path(root, "experience_memory.json").write_bytes(snapshot)
             local = ExperienceMemory(root, parameters=memory.parameters)
             modules, cleanup = modules_factory(sample)
             try:
-                runner = PipelineRunner(modules, local, TrajectoryLog(root),
-                    **{**options, "revision_enabled": False})
+                runner = PipelineRunner(
+                    modules,
+                    local,
+                    TrajectoryLog(root),
+                    **{**options, "revision_enabled": False},
+                )
                 record = runner.run_sample(sample)
                 added = [e for e in local.all() if e.experience_id not in initial_ids]
                 return record, added
             finally:
                 cleanup()
+
     with ThreadPoolExecutor(max_workers=len(samples)) as executor:
         results = list(executor.map(worker, samples))
     # Stage the entire merge before publishing any batch evidence.

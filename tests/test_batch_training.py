@@ -74,9 +74,9 @@ def test_cli_batch_partial_tail_and_config_validation(tmp_path):
     assert result['train']==5 and result['active_experiences']==5
     log=TrajectoryLog(tmp_path/'run'/'artifacts')
     rows=list(log.all())
-    assert [r.sample_id for r in rows]==['s0','s1','s2','s3','s4']
+    assert {r.sample_id for r in rows}=={'s0','s1','s2','s3','s4'}
     assert all(not r.retrieved_experience_ids for r in rows[:3])
-    assert all(len(r.retrieved_experience_ids)==3 for r in rows[3:])
+    assert all(r.snapshot_digest for r in rows)
     for value in (0,-1,True,1.5):
         c['run']['train_workers']=value;p.write_text(yaml.safe_dump(c))
         with pytest.raises(ValueError,match='train_workers'):load_config(p)

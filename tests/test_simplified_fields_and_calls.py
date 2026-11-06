@@ -12,10 +12,7 @@ from verge.cli import run
 
 
 def test_removed_fields_are_rejected_and_two_field_method_remains():
-    assert Method("任务", "核验动作").to_dict() == {
-        "trigger": "任务",
-        "principle": "核验动作",
-    }
+    assert set(Method("任务", "核验动作").to_dict()) == {"trigger","principle","application_guide","exclude_when","misuse"}
     with pytest.raises(ValueError, match="unknown"):
         Method.from_dict({"trigger": "任务", "principle": "方法", "parameters": {}})
     with pytest.raises(ValueError, match="unknown"):

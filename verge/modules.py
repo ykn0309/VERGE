@@ -1,7 +1,8 @@
 """V2 role adapters and direct per-version hybrid retrieval."""
 
 from __future__ import annotations
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, Future
+from threading import Lock
 from contextvars import copy_context
 from collections import Counter
 from dataclasses import dataclass
@@ -87,7 +88,11 @@ def request(
                         role + ": invalid contract: " + str(exc)[:180]
                     ) from exc
                 current = {
-                    **payload,
+                    **(
+                        {k: payload[k] for k in ("round",) if k in payload}
+                        if history
+                        else payload
+                    ),
                     "validation_feedback": "上次结构无效："
                     + str(exc)[:160]
                     + "。请完整返回角色规定的结构。",
@@ -123,11 +128,13 @@ class HybridRetriever:
         self.top_l = top_l
         self.rrf_k = rrf_k
         self.cache = {}
+        self._cache_lock = Lock()
+        self._pending = {}
         self.last_trace = []
 
     def fork(self):
         result = HybridRetriever(self.backend, self.top_l, rrf_k=self.rrf_k)
-        result.cache = dict(self.cache)
+        result.share_cache(self)
         return result
 
     @staticmethod
@@ -139,14 +146,37 @@ class HybridRetriever:
             )
         return result
 
+    def share_cache(self, other):
+        self.cache, self._cache_lock, self._pending = (
+            other.cache,
+            other._cache_lock,
+            other._pending,
+        )
+
     def _vector(self, text):
-        if text not in self.cache:
+        with self._cache_lock:
+            if text in self.cache:
+                return self.cache[text]
+            owner = text not in self._pending
+            pending = self._pending.setdefault(text, Future())
+        if not owner:
+            return pending.result()
+        try:
             v = tuple(self.backend.embed(text))
             norm = sqrt(sum(x * x for x in v))
             if not v or not all(isfinite(x) for x in v) or norm == 0:
                 raise ValueError("invalid embedding")
-            self.cache[text] = tuple(x / norm for x in v)
-        return self.cache[text]
+            result = tuple(x / norm for x in v)
+            with self._cache_lock:
+                self.cache[text] = result
+            pending.set_result(result)
+            return result
+        except BaseException as exc:
+            pending.set_exception(exc)
+            raise
+        finally:
+            with self._cache_lock:
+                self._pending.pop(text, None)
 
     def retrieve(self, task, experiences):
         items = sorted(
@@ -222,11 +252,12 @@ class LLMSelector:
             raise ValueError("max_selected must be 0..5")
 
     def select(self, task, candidates, *, training=True):
+        self.last_reasons = {}
         if not candidates or not self.max_selected:
             return []
 
         def validate(data):
-            if set(data) != {"selected_experience_ids"}:
+            if set(data) != {"selected_experience_ids", "selection_reasons"}:
                 raise ValueError("expected selected_experience_ids")
             ids = data["selected_experience_ids"]
             lookup = {e.experience_id: e for e in candidates}
@@ -237,6 +268,20 @@ class LLMSelector:
                 or set(ids) - lookup.keys()
             ):
                 raise ValueError("select distinct supplied IDs only")
+            reasons = data["selection_reasons"]
+            if (
+                not isinstance(reasons, list)
+                or len(reasons) != len(ids)
+                or any(
+                    set(r) != {"experience_id", "reason"}
+                    or not isinstance(r["reason"], str)
+                    or not r["reason"].strip()
+                    for r in reasons
+                )
+                or {r["experience_id"] for r in reasons} != set(ids)
+            ):
+                raise ValueError("selection reasons must cover selected experiences")
+            self.last_reasons = {r["experience_id"]: r["reason"] for r in reasons}
             return [lookup[n] for n in ids]
 
         return request(
@@ -265,7 +310,7 @@ class LLMInitialRubricGenerator:
 
         def validate(data):
             if (
-                set(data) != {"analysis", "criteria"}
+                set(data) != {"analysis", "criteria", "experience_usage"}
                 or not isinstance(data["analysis"], str)
                 or not data["analysis"].strip()
             ):
@@ -290,7 +335,25 @@ class LLMInitialRubricGenerator:
             for c in criteria:
                 if set(c.source_experiences) - lookup.keys():
                     raise ValueError("unknown experience source")
-            return Rubric(rid, criteria, data["analysis"])
+            usage = data["experience_usage"]
+            cited = {x for c in criteria for x in c.source_experiences}
+            if (
+                not isinstance(usage, list)
+                or len(usage) != len(lookup)
+                or any(
+                    set(u) != {"experience_id", "used", "reason"}
+                    or type(u["used"]) is not bool
+                    or not isinstance(u["reason"], str)
+                    or not u["reason"].strip()
+                    or u["used"] != (u["experience_id"] in cited)
+                    for u in usage
+                )
+                or {u["experience_id"] for u in usage} != lookup.keys()
+            ):
+                raise ValueError(
+                    "usage must cover every experience and match citations"
+                )
+            return Rubric(rid, criteria, data["analysis"], usage)
 
         payload = {
             "task": task,
@@ -314,8 +377,50 @@ class LLMJudge:
     def __init__(self, backend, **options):
         self.backend = backend
         self.options = options
+        self.cache = {}
+        self.cache_lock = Lock()
+
+    def share_cache(self, other):
+        self.cache, self.cache_lock = other.cache, other.cache_lock
 
     def judge(self, rubric, chosen, rejected, *, task):
+        from verge.prompts import PROMPT_VERSION
+
+        b = self.backend
+        key = json.dumps(
+            {
+                "task": task,
+                "chosen": chosen,
+                "rejected": rejected,
+                "questions": [c.question for c in rubric.criteria],
+                "model": getattr(b, "model", None),
+                "backend": type(b).__name__,
+                "thinking": getattr(b, "enable_thinking", None),
+                "url": str(getattr(getattr(b, "_client", None), "base_url", "")),
+                "scenario": getattr(b, "scenario", None),
+                "prompt": PROMPT_VERSION,
+            },
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        with self.cache_lock:
+            cached = self.cache.get(key)
+        if cached is not None:
+            if getattr(b, "trace_hook", None):
+                b.trace_hook(
+                    {
+                        "event_type": "judge_cache_hit",
+                        "role": "judge",
+                        "cache_digest": hashlib.sha256(key.encode()).hexdigest(),
+                    }
+                )
+            return calculate_rubric_judgment(
+                rubric,
+                [
+                    CriterionJudgment(c.criterion_id, *values)
+                    for c, values in zip(rubric.criteria, cached)
+                ],
+            )
         criteria = [
             {"criterion_id": c.criterion_id, "question": c.question}
             for c in rubric.criteria
@@ -378,7 +483,7 @@ class LLMJudge:
                     errors[0],
                 )
         a, b = results
-        return calculate_rubric_judgment(
+        result = calculate_rubric_judgment(
             rubric,
             [
                 CriterionJudgment(
@@ -392,14 +497,356 @@ class LLMJudge:
             ],
         )
 
+        with self.cache_lock:
+            self.cache[key] = [
+                (j.chosen, j.rejected, j.chosen_reason, j.rejected_reason)
+                for j in result.criterion_judgments
+            ]
+        return result
+
+
+def review_judge_evidence(rubric, judgment, data, *, additional_ids=()):
+    """Apply only explicit, evidenced error corrections; leave all other Judge results intact."""
+    from copy import deepcopy
+
+    allowed = {c.criterion_id for c in rubric.criteria} | set(additional_ids)
+    if not isinstance(data["issues"], list) or not isinstance(
+        data["judge_corrections"], list
+    ):
+        raise ValueError("diagnosis issues/corrections must be arrays")
+    for issue in data["issues"]:
+        if (
+            set(issue) != {"kind", "criterion_ids", "reason"}
+            or issue["kind"] not in ("rubric_defect", "judge_error", "uncertain")
+            or not isinstance(issue["criterion_ids"], list)
+            or len(set(issue["criterion_ids"])) != len(issue["criterion_ids"])
+            or set(issue["criterion_ids"]) - allowed
+            or not isinstance(issue["reason"], str)
+            or not issue["reason"].strip()
+        ):
+            raise ValueError("invalid diagnosis kind, criterion reference or reason")
+    js = deepcopy(judgment.criterion_judgments)
+    lookup = {j.criterion_id: j for j in js}
+    seen = set()
+    error_ids = {
+        cid
+        for issue in data["issues"]
+        if issue["kind"] == "judge_error"
+        for cid in issue["criterion_ids"]
+    }
+    for c in data["judge_corrections"]:
+        if (
+            set(c) != {"criterion_id", "side", "satisfied", "reason"}
+            or c["criterion_id"] not in error_ids
+            or c["side"] not in ("chosen", "rejected")
+            or type(c["satisfied"]) is not bool
+            or not isinstance(c["reason"], str)
+            or not c["reason"].strip()
+        ):
+            raise ValueError(
+                "correction requires a specific diagnosed Judge error and evidence"
+            )
+        key = (c["criterion_id"], c["side"])
+        if key in seen:
+            raise ValueError("duplicate Judge correction")
+        seen.add(key)
+        j = lookup[c["criterion_id"]]
+        if getattr(j, c["side"]) == c["satisfied"]:
+            raise ValueError(
+                "only changed Judge errors belong in corrections; do not repeat unchanged judgments"
+            )
+        setattr(j, c["side"], c["satisfied"])
+        setattr(j, c["side"] + "_reason", c["reason"])
+    return calculate_rubric_judgment(rubric, js)
+
 
 class LLMCritic:
     def __init__(self, backend, max_candidates=1, **options):
         self.backend = backend
-        if type(max_candidates) is not int or max_candidates != 1:
-            raise ValueError("Critic permits at most one candidate per round")
+        if type(max_candidates) is not int or max_candidates < 1:
+            raise ValueError("invalid candidate setting")
         self.max_candidates = max_candidates
         self.options = options
+
+    @staticmethod
+    def _method(data):
+        if set(data) != {
+            "trigger",
+            "principle",
+            "application_guide",
+            "exclude_when",
+            "misuse",
+        }:
+            raise ValueError("complete five-field method required")
+        return Method.from_dict(data)
+
+    @staticmethod
+    def evidence(sample, rubric, judgment):
+        return {
+            "task": sample.task,
+            "chosen": sample.chosen,
+            "rejected": sample.rejected,
+            "rubric": rubric.to_dict(),
+            "judgment": judgment.to_dict(),
+        }
+
+    def _repair(
+        self, sample, rubric, judgment, number, *, conversation, codec, feedback=None
+    ):
+        def validate(data):
+            if (
+                set(data)
+                != {"analysis", "issues", "judge_corrections", "changes", "criteria"}
+                or not isinstance(data["analysis"], str)
+                or not data["analysis"].strip()
+            ):
+                raise ValueError(
+                    "diagnosis, sparse corrections, changes and criteria required"
+                )
+            # First attempt diagnoses the original Judge. Later attempts retain that baseline.
+            if number != 1 and data["judge_corrections"]:
+                raise ValueError(
+                    "second modification must not change fixed initial Judge results"
+                )
+            previous_ids = {
+                j["criterion_id"]
+                for j in (feedback or {})
+                .get("raw_judgment", {})
+                .get("criterion_judgments", [])
+            }
+            baseline = review_judge_evidence(
+                rubric, judgment, data, additional_ids=previous_ids
+            )
+            changes = data["changes"]
+            if not isinstance(changes, list) or any(
+                set(c) != {"change", "basis"}
+                or any(not isinstance(v, str) or not v.strip() for v in c.values())
+                for c in changes
+            ):
+                raise ValueError(
+                    "each change requires a concrete change and task basis"
+                )
+            if not changes:
+                if data["criteria"] != []:
+                    raise ValueError("without a rubric change, criteria must be []")
+                from copy import deepcopy
+
+                result = deepcopy(rubric)
+            else:
+                rid = "repair_" + uuid4().hex
+                if not isinstance(data["criteria"], list) or any(
+                    set(c) != {"question", "weight"} for c in data["criteria"]
+                ):
+                    raise ValueError(
+                        "repair criteria require only question and weight; source IDs are program-owned"
+                    )
+                result = Rubric(
+                    rid,
+                    [
+                        Criterion.from_dict(
+                            {
+                                "criterion_id": f"{rid}_{i}",
+                                **c,
+                                "source_experiences": [],
+                            }
+                        )
+                        for i, c in enumerate(data["criteria"])
+                    ],
+                    data["analysis"],
+                )
+            self.last_diagnosis = {
+                "analysis": data["analysis"],
+                "issues": data["issues"],
+                "judge_corrections": data["judge_corrections"],
+            }
+            return result, changes, baseline, data["analysis"]
+
+        payload = (
+            {
+                "task": sample.task,
+                "chosen": sample.chosen,
+                "rejected": sample.rejected,
+                "initial_rubric": rubric.to_dict(),
+                "initial_judgment": judgment.to_dict(),
+                "round": number,
+            }
+            if not conversation
+            else {"round": number, "previous_feedback": feedback}
+        )
+        return request(
+            self.backend,
+            "critic_repair",
+            payload,
+            validate,
+            history=conversation,
+            codec=codec,
+            **self.options,
+        )
+
+    def start(self, sample, rubric, judgment, *, conversation, codec):
+        repaired, changes, baseline, reason = self._repair(
+            sample, rubric, judgment, 1, conversation=conversation, codec=codec
+        )
+        return baseline, reason, repaired, changes
+
+    def repair(
+        self, sample, rubric, judgment, number, *, conversation, codec, feedback=None
+    ):
+        repaired, changes, _, _ = self._repair(
+            sample,
+            rubric,
+            judgment,
+            number,
+            conversation=conversation,
+            codec=codec,
+            feedback=feedback,
+        )
+        return repaired, changes
+
+    def assess(self, sample, rubric, judgment, checker=None):
+        def validate(data):
+            if (
+                set(data) != {"analysis", "issues", "judge_corrections"}
+                or not isinstance(data["analysis"], str)
+                or not data["analysis"].strip()
+            ):
+                raise ValueError("Judge result diagnosis required, not full re-judging")
+            final = review_judge_evidence(rubric, judgment, data)
+            self.last_diagnosis = data
+            return final, data["analysis"]
+
+        return request(
+            self.backend,
+            "critic_assess",
+            self.evidence(sample, rubric, judgment),
+            validate,
+            **self.options,
+        )
+
+    def extract(self, sample, rubric, judgment, changes, evidence):
+        def validate(data):
+            if (
+                set(data) != {"analysis", "candidates"}
+                or not isinstance(data["analysis"], str)
+                or not data["analysis"].strip()
+                or not isinstance(data["candidates"], list)
+                or len(data["candidates"]) > 2
+            ):
+                raise ValueError("extraction requires 0..2 candidates")
+            out = []
+            for item in data["candidates"]:
+                if (
+                    set(item) != {"method", "change_indices", "reason"}
+                    or not isinstance(item["reason"], str)
+                    or not item["reason"].strip()
+                ):
+                    raise ValueError("extraction requires method/change_indices/reason")
+                refs = item["change_indices"]
+                if (
+                    not isinstance(refs, list)
+                    or not refs
+                    or any(
+                        type(i) is not int or i < 0 or i >= len(changes) for i in refs
+                    )
+                    or len(set(refs)) != len(refs)
+                ):
+                    raise ValueError("invalid supported change indices")
+                m = self._method(item["method"])
+                out.append(
+                    (
+                        Experience(
+                            "exp_" + uuid4().hex,
+                            m,
+                            sample.sample_id,
+                            status="candidate",
+                        ),
+                        refs,
+                        item["reason"],
+                    )
+                )
+            if len({e.method.to_json() for e, _, _ in out}) != len(out):
+                raise ValueError("duplicate extracted method")
+            return out
+
+        return request(
+            self.backend,
+            "critic_extract",
+            {
+                "task": sample.task,
+                "chosen": sample.chosen,
+                "rejected": sample.rejected,
+                "repair_evidence": {
+                    **evidence,
+                    "rubric": rubric.to_dict(),
+                    "final_judgment": judgment.to_dict(),
+                    "changes": changes,
+                },
+            },
+            validate,
+            **self.options,
+        )
+
+    def rewrite(self, candidate, review, context):
+        def validate(data):
+            if (
+                set(data) != {"method", "reason"}
+                or not isinstance(data["reason"], str)
+                or not data["reason"].strip()
+            ):
+                raise ValueError("rewrite method/reason required")
+            return self._method(data["method"])
+
+        return request(
+            self.backend,
+            "critic_rewrite",
+            {
+                "candidate": experience_payload(candidate),
+                "review": review.to_dict(),
+                "repair_evidence": context,
+            },
+            validate,
+            **self.options,
+        )
+
+    def rewrite_many(self, candidates, reviews, context):
+        lookup = {e.experience_id: e for e in candidates}
+
+        def validate(data):
+            if (
+                set(data) != {"rewrites"}
+                or not isinstance(data["rewrites"], list)
+                or len(data["rewrites"]) != len(lookup)
+            ):
+                raise ValueError("rewrite must cover every rejected experience")
+            out = {}
+            for x in data["rewrites"]:
+                if (
+                    set(x) != {"experience_id", "method", "reason"}
+                    or x["experience_id"] not in lookup
+                    or x["experience_id"] in out
+                    or not isinstance(x["reason"], str)
+                    or not x["reason"].strip()
+                ):
+                    raise ValueError("invalid rewrite identity/reason")
+                out[x["experience_id"]] = self._method(x["method"])
+            return out
+
+        return request(
+            self.backend,
+            "critic_rewrite_batch",
+            {
+                "repair_evidence": context,
+                "candidates": [
+                    {
+                        "experience": experience_payload(e),
+                        "review": reviews[e.experience_id].to_dict(),
+                    }
+                    for e in candidates
+                ],
+            },
+            validate,
+            **self.options,
+        )
 
     def propose(
         self,
@@ -466,7 +913,70 @@ class LLMExperienceChecker:
         self.backend = backend
         self.options = options
 
-    def check(self, sample, rubric, judgment, candidate):
+    def check_many(self, sample, evidence, candidates):
+        lookup = {e.experience_id: e for e in candidates}
+        self.last_errors = {}
+        if not lookup or len(lookup) > 2 or len(lookup) != len(candidates):
+            raise ValueError("review needs 1..2 distinct candidates")
+
+        def validate(data):
+            if set(data) != {"reviews"} or not isinstance(data["reviews"], list):
+                raise ValueError("reviews must cover supplied candidates")
+            rows = data["reviews"]
+            if any(not isinstance(x, dict) or "experience_id" not in x for x in rows):
+                raise ValueError("invalid review ID coverage")
+            ids = [x["experience_id"] for x in rows]
+            if (
+                len(ids) != len(lookup)
+                or len(set(ids)) != len(ids)
+                or set(ids) != set(lookup)
+            ):
+                raise ValueError("invalid review ID coverage")
+            out = {}
+            errors = {}
+            for x in rows:
+                eid = x["experience_id"]
+                try:
+                    if set(x) != {"experience_id", "approved", "reason"}:
+                        raise ValueError(
+                            "review fields must be experience_id/approved/reason"
+                        )
+                    out[eid] = ExperienceReview.from_dict(
+                        {k: x[k] for k in ("approved", "reason")}
+                    )
+                except (ValueError, TypeError, KeyError) as exc:
+                    out[eid] = None
+                    errors[eid] = str(exc)
+                    hook = getattr(self.backend, "trace_hook", None)
+                    if hook:
+                        hook(
+                            {
+                                "event_type": "batch_item_validation",
+                                "role": "experience_checker_batch",
+                                "experience_id": eid,
+                                "validation_status": "invalid",
+                                "error": str(exc),
+                                "call_id": ROLE_CALL_ID.get(),
+                            }
+                        )
+            self.last_errors = errors
+            return out
+
+        return request(
+            self.backend,
+            "experience_checker_batch",
+            {
+                "task": sample.task,
+                "chosen": sample.chosen,
+                "rejected": sample.rejected,
+                "repair_evidence": evidence,
+                "candidates": [experience_payload(e) for e in candidates],
+            },
+            validate,
+            **self.options,
+        )
+
+    def check(self, sample, rubric, judgment, candidate, *, repair_evidence=None):
         answers = {j.criterion_id: j for j in judgment.criterion_judgments}
         return request(
             self.backend,
@@ -480,6 +990,7 @@ class LLMExperienceChecker:
                     for c in rubric.criteria
                 ],
                 "candidate": experience_payload(candidate),
+                "repair_evidence": repair_evidence,
             },
             ExperienceReview.from_dict,
             **self.options,
@@ -492,6 +1003,21 @@ class LLMExperienceUpdater:
         self.options = options
 
     def update(self, experience, cases, reasons, *, case_kinds=None):
+        def validate(data):
+            update = ExperienceUpdate.from_dict(data)
+            if update.action == "revise":
+                LLMCritic._method(data["method"])
+                actual = {
+                    k
+                    for k in experience.method.to_dict()
+                    if experience.method.to_dict()[k] != update.method.to_dict()[k]
+                }
+                if actual != set(update.target_fields):
+                    raise ValueError(
+                        "target_fields must exactly match actual method changes"
+                    )
+            return update
+
         return request(
             self.backend,
             "experience_updater",
@@ -508,7 +1034,7 @@ class LLMExperienceUpdater:
                     for c in cases
                 ],
             },
-            ExperienceUpdate.from_dict,
+            validate,
             **self.options,
         )
 
@@ -518,6 +1044,62 @@ class LLMCheckers:
         self.backends = backends
         self.options = options
 
+    def check_judgment(self, sample, rubric, judgment):
+        app = type("JudgeEvidence", (), {})()
+        app.rubric, app.judgment, app.sample = rubric, judgment, sample
+        return self._judge_only(app)
+
+    def _judge_only(self, app):
+        swap = int(hashlib.sha256(app.sample.sample_id.encode()).hexdigest(), 16) % 2
+        responses = [app.sample.chosen, app.sample.rejected]
+        if swap:
+            responses.reverse()
+        answers = {j.criterion_id: j for j in app.judgment.criterion_judgments}
+        criteria = []
+        for c in app.rubric.criteria:
+            j = answers[c.criterion_id]
+            sides = [(j.chosen, j.chosen_reason), (j.rejected, j.rejected_reason)]
+            if swap:
+                sides.reverse()
+            criteria.append(
+                {
+                    "criterion_id": c.criterion_id,
+                    "question": c.question,
+                    "a": {"satisfied": sides[0][0], "reason": sides[0][1]},
+                    "b": {"satisfied": sides[1][0], "reason": sides[1][1]},
+                }
+            )
+
+        def validate(data):
+            if set(data) != {"status", "evidence", "details"} or data["status"] not in (
+                "correct",
+                "error",
+                "unknown",
+            ):
+                raise ValueError("invalid judge checker report")
+            r = CheckerReport.from_dict({"stage": "judge", **data})
+            if {d.criterion_id for d in r.details} - {
+                c.criterion_id for c in app.rubric.criteria
+            }:
+                raise ValueError("unknown checker criterion")
+            return r
+
+        try:
+            return request(
+                self.backends["judge"],
+                "judge_checker",
+                {
+                    "task": app.sample.task,
+                    "response_a": responses[0],
+                    "response_b": responses[1],
+                    "criteria": criteria,
+                },
+                validate,
+                **self.options,
+            )
+        except (LLMFormatError, LLMSampleError) as exc:
+            return CheckerReport("judge", "failed", str(exc))
+
     def check(self, app):
         related = [
             c for c in app.rubric.criteria if app.version_id in c.source_experiences
@@ -525,7 +1107,12 @@ class LLMCheckers:
         if not related:
             return []
         method = {"experience_id": app.version_id, **app.method.to_dict()}
-        basic = {"task": app.sample.task, "experience": method}
+        basic = {
+            "task": app.sample.task,
+            "experience": method,
+            "selection_reason": app.selection_reason,
+            "usage_reason": app.usage_reason,
+        }
         criteria = [c.to_dict() for c in related]
         answers = {j.criterion_id: j for j in app.judgment.criterion_judgments}
         # Anonymous side assignment is deterministic per task, and never includes preference labels.

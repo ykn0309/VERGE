@@ -6,7 +6,7 @@ from verge.prompts import METHOD_SCHEMA, llm_messages
 
 
 def test_example_has_only_trigger_and_principle():
-    assert set(METHOD_SCHEMA) == {"trigger", "principle"}
+    assert set(METHOD_SCHEMA) == {"trigger", "principle", "application_guide", "exclude_when", "misuse"}
     assert Method.from_dict(METHOD_SCHEMA).principle
 
 
@@ -29,13 +29,11 @@ def test_critic_reminder_is_present_on_each_turn_without_changing_payload(monkey
     )
 
 
-@pytest.mark.parametrize("role", ["critic", "experience_updater"])
+@pytest.mark.parametrize("role", ["critic_extract", "experience_updater"])
 def test_method_roles_only_propose_two_fields(role):
     system = llm_messages(role, {})[0]["content"]
-    assert "完整双字段" in system
-    assert "trigger写适用条件" in system
-    assert "principle写一个可独立采用的核验动作" in system
-    assert "Template" not in system and "description" not in system
+    assert "application_guide" in system
+    assert "exclude_when" in system and "misuse" in system
 
 
 def test_critic_single_candidate_limit_is_enforced():
@@ -56,5 +54,4 @@ def test_critic_single_candidate_limit_is_enforced():
         LLMCritic(TooMany(), retries=0).propose(
             sample(), r, judged(r), 1, conversation=[], codec=NumberedIDCodec()
         )
-    with pytest.raises(ValueError, match="one candidate"):
-        LLMCritic(FakeLLMBackend(), max_candidates=2)
+    assert LLMCritic(FakeLLMBackend(), max_candidates=2).max_candidates == 2

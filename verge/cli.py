@@ -16,16 +16,23 @@ from verge.modules import make_llm_modules, HybridRetriever
 from verge.calculator import ProbabilityModel
 from verge.memory import ExperienceMemory, TrajectoryLog, atomic_json
 from verge.pipeline import PipelineRunner, run_training_batch
+from verge.scheduling import run_training_stream
 from verge.prompts import PROMPT_VERSION
 
 METHOD = "semistructured_bayesian_v2"
-FORMAT = 16
+FORMAT = 17
 CURRENT_SAMPLE = ContextVar("v2_sample", default={})
 ROLES = (
     "selector",
     "initial_generator",
     "judge",
     "critic",
+    "critic_repair",
+    "critic_assess",
+    "critic_extract",
+    "critic_rewrite",
+    "experience_checker_batch",
+    "critic_rewrite_batch",
     "experience_checker",
     "experience_updater",
     "selector_checker",
@@ -36,6 +43,15 @@ ROLES = (
 
 class ConfigError(ValueError):
     pass
+
+
+def _completed_judgment(record):
+    """Latest completed judgment, including Critic reviews; never infer from admission."""
+    for attempt in reversed(record.proposal_attempts):
+        judgment = attempt.final_judgment or attempt.judgment
+        if judgment is not None:
+            return judgment
+    return record.baseline_judgment or record.initial_judgment
 
 
 def digest(path):
@@ -107,6 +123,9 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
     ):
         raise ConfigError("stop_after_train must be a positive integer")
     config = load_config(config_path)
+    from verge.llm import configure_request_limit
+
+    configure_request_limit(config["run"].get("max_inflight_requests", 16))
     out = Path(config["run"]["output_dir"]).resolve()
     if out.exists():
         raise ConfigError("output directory already exists; use a new directory")
@@ -158,10 +177,15 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
             )
         old_records = list(TrajectoryLog(source / store_rel).all())
         training_records = [r for r in old_records if r.split == "train"]
-        if [r.sample_id for r in training_records] != [
-            s.sample_id for s in train[: len(training_records)]
-        ] or any(r.split != "train" for r in old_records):
-            raise ConfigError("resume requires an ordered train-only prefix")
+        ids = [r.sample_id for r in training_records]
+        if (
+            len(set(ids)) != len(ids)
+            or set(ids) - {s.sample_id for s in train}
+            or any(r.split != "train" for r in old_records)
+        ):
+            raise ConfigError(
+                "resume requires unique train-only records from the same dataset"
+            )
         if manifest.get("memory_sha256") != digest(
             source / store_rel / "experience_memory.json"
         ) or manifest.get("trajectory_sha256") != digest(
@@ -178,10 +202,16 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
             "trajectories.jsonl",
             "role_io.jsonl",
             "llm_requests.jsonl",
+            "revision_jobs.json",
+            "pending_sample_commit.json",
         ):
             p = source / store_rel / name
             if p.exists():
                 shutil.copy2(p, store / name)
+    if source and (source / store_rel / "revision_results").exists():
+        shutil.copytree(
+            source / store_rel / "revision_results", store / "revision_results"
+        )
     # Snapshot executed code/config; never credentials or environment values.
     shutil.copytree(
         Path(__file__).parent,
@@ -234,6 +264,7 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
             "llm_requests.jsonl", e
         )
         modules.retriever.backend.trace_hook = lambda e: append("role_io.jsonl", e)
+    atomic_json(out / "run.lock", {"pid": __import__("os").getpid()})
     memory = ExperienceMemory(store, parameters=parameters)
     log = TrajectoryLog(store)
     opts = config["modules"]["application"]["config"]
@@ -247,6 +278,7 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
             ("q_threshold", "q_threshold"),
             ("min_replay", "min_replay"),
             ("revision_enabled", "revision_enabled"),
+            ("margin_threshold", "margin_threshold"),
         ]
         if name in opts
     }
@@ -260,47 +292,77 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
     try:
         runner = PipelineRunner(modules, memory, log, **kwargs)
         workers = config["run"].get("train_workers", 1)
+
         def batch_factory(sample):
-            token = CURRENT_SAMPLE.set({"sample_id": sample.sample_id, "split": "train"})
+            token = CURRENT_SAMPLE.set(
+                {"sample_id": sample.sample_id, "split": "train"}
+            )
             m = components(config)
-            bs = {id(x.backend): x.backend for x in (
-                m.selector, m.initial_generator, m.judge, m.critic,
-                m.experience_updater, m.experience_checker)}
+            m.judge.share_cache(modules.judge)
+            bs = {
+                id(x.backend): x.backend
+                for x in (
+                    m.selector,
+                    m.initial_generator,
+                    m.judge,
+                    m.critic,
+                    m.experience_updater,
+                    m.experience_checker,
+                )
+            }
             bs.update({id(b): b for b in m.checkers.backends.values()})
             if isinstance(m.retriever, HybridRetriever):
                 bs[id(m.retriever.backend)] = m.retriever.backend
                 with lock:
-                    m.retriever.cache.update(modules.retriever.cache)
+                    m.retriever.share_cache(modules.retriever)
             for b in bs.values():
                 b.trace_hook = lambda e: append("role_io.jsonl", e)
                 b.metadata_hook = lambda e: append("llm_requests.jsonl", e)
+
             def cleanup():
                 try:
                     if isinstance(m.retriever, HybridRetriever):
                         with lock:
                             modules.retriever.cache.update(m.retriever.cache)
                     for b in bs.values():
-                        if hasattr(b, "close"): b.close()
+                        if hasattr(b, "close"):
+                            b.close()
                 finally:
                     CURRENT_SAMPLE.reset(token)
+
             return m, cleanup
-        remaining = train[n:limit] if limit is not None else train[n:]
-        for offset in range(0, len(remaining), workers):
-            batch = remaining[offset:offset + workers]
-            if workers == 1:
-                sample = batch[0]
-                token = CURRENT_SAMPLE.set({"sample_id": sample.sample_id, "split": "train"})
-                try:
-                    new_records = [runner.run_sample(sample)]
-                finally:
-                    CURRENT_SAMPLE.reset(token)
-            else:
-                new_records = run_training_batch(batch, batch_factory, memory, log,
-                                                 runner_options=kwargs)
-            records.extend(new_records)
-            for i, rec in enumerate(new_records, n + offset + 1):
-                print(f"train {i}/{len(train)} {rec.state}", flush=True)
-        paused = limit is not None and len(records) < len(train)
+
+        completed_ids = {r.sample_id for r in records}
+        remaining = [
+            s
+            for s in (train[:limit] if limit is not None else train)
+            if s.sample_id not in completed_ids
+        ]
+        import signal
+
+        stopping = threading.Event()
+        previous_handler = None
+        if threading.current_thread() is threading.main_thread():
+            previous_handler = signal.signal(signal.SIGINT, lambda *_: stopping.set())
+        try:
+            new_records = run_training_stream(
+                remaining,
+                batch_factory,
+                memory,
+                log,
+                workers=workers,
+                revision_workers=config["run"].get("revision_workers", 1),
+                runner_options=kwargs,
+                stop_event=stopping,
+                on_complete=lambda rec, i: print(
+                    f"train {i}/{len(train)} {rec.state}", flush=True
+                ),
+            )
+        finally:
+            if previous_handler is not None:
+                signal.signal(signal.SIGINT, previous_handler)
+        records.extend(new_records)
+        paused = len(records) < len(train)
         if not paused and test:
             frozen = ExperienceMemory(store, read_only=True, parameters=parameters)
             runner = PipelineRunner(modules, frozen, log, training=False)
@@ -326,30 +388,7 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
                 bool(r.initial_judgment and r.initial_judgment.success) for r in records
             ),
             "final_correct": sum(
-                bool(
-                    (
-                        next(
-                            (
-                                p.judgment
-                                for p in reversed(r.proposal_attempts)
-                                if p.judgment
-                            ),
-                            None,
-                        )
-                        or r.initial_judgment
-                    )
-                    and (
-                        next(
-                            (
-                                p.judgment
-                                for p in reversed(r.proposal_attempts)
-                                if p.judgment
-                            ),
-                            None,
-                        )
-                        or r.initial_judgment
-                    ).success
-                )
+                bool(_completed_judgment(r) and _completed_judgment(r).success)
                 for r in records
             ),
             "sample_errors": sum(r.sample_error is not None for r in records),
@@ -358,11 +397,139 @@ def run(config_path, *, resume_from=None, stop_after_train=None):
         atomic_json(out / "summary.json", summary)
         return summary
     finally:
+        (out / "run.lock").unlink(missing_ok=True)
         for b in backends.values():
             if hasattr(b, "close"):
                 b.close()
         if isinstance(modules.retriever, HybridRetriever):
             modules.retriever.backend.close()
+
+
+def recover_run(run_dir, output_dir):
+    """Certify a new copy from durable completed work only. Never repeats model calls."""
+    from verge.scheduling import recover_sample_commit, commit_sample
+    from verge.models import Experience, RevisionRecord, TrajectoryRecord
+    import os
+
+    source, target = Path(run_dir).resolve(), Path(output_dir).resolve()
+    if target.exists() or source == target or source in target.parents:
+        raise ConfigError("recovery needs a new output outside source")
+    manifest = json.loads((source / "run_manifest.json").read_text())
+    protocol = manifest.get("protocol", {})
+    if (
+        manifest.get("format_version") != FORMAT
+        or protocol.get("code_version") != code_version()
+        or protocol.get("prompt_version") != PROMPT_VERSION
+    ):
+        raise ConfigError("recovery requires identical current code and prompt")
+    lock = source / "run.lock"
+    if lock.exists():
+        pid = json.loads(lock.read_text())["pid"]
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            pass
+        else:
+            raise ConfigError("source process is alive; recovery refused")
+    relative = Path(manifest["config"]["store"]["config"].get("root_dir", "artifacts"))
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ConfigError("invalid recovery store")
+    store = source / relative
+    # Check before copying. Unfinished calls cannot be safely reconstructed or replayed.
+    for kind in ("sample", "revision"):
+        jobs_path = store / (kind + "_jobs.json")
+        jobs = json.loads(jobs_path.read_text()) if jobs_path.exists() else []
+        for job in jobs:
+            if job["state"] != "running":
+                continue
+            name = (
+                __import__("hashlib").sha256(job["sample_id"].encode()).hexdigest()
+                if kind == "sample"
+                else job["job_id"]
+            )
+            if not (store / (kind + "_results") / (name + ".json")).exists():
+                raise ConfigError(
+                    kind
+                    + " has unfinished calls without a durable result; refusing repeat calls"
+                )
+    parameter_path = source / "probability_model.json"
+    parameters = (
+        ProbabilityModel.load(parameter_path) if parameter_path.exists() else None
+    )
+    if parameters and digest(parameter_path) != protocol.get("parameters_sha256"):
+        raise ConfigError("parameter snapshot differs")
+    shutil.copytree(source, target)
+    (target / "run.lock").unlink(missing_ok=True)
+    root = target / relative
+    memory = ExperienceMemory(root, parameters=parameters)
+    log = TrajectoryLog(root)
+    recover_sample_commit(memory, log)
+    sample_jobs = (
+        json.loads((root / "sample_jobs.json").read_text())
+        if (root / "sample_jobs.json").exists()
+        else []
+    )
+    for job in sample_jobs:
+        if job["state"] != "running":
+            continue
+        result = json.loads(
+            (
+                root
+                / "sample_results"
+                / (
+                    __import__("hashlib").sha256(job["sample_id"].encode()).hexdigest()
+                    + ".json"
+                )
+            ).read_text()
+        )
+        rec = TrajectoryRecord.from_dict(result["record"])
+        if log.get(rec.sample_id) is None:
+            rec.completion_sequence = sum(1 for _ in log.all()) + 1
+            commit_sample(
+                memory, log, rec, [Experience.from_dict(e) for e in result["added"]]
+            )
+        job["state"] = "completed"
+    atomic_json(root / "sample_jobs.json", sample_jobs)
+    jobs = (
+        json.loads((root / "revision_jobs.json").read_text())
+        if (root / "revision_jobs.json").exists()
+        else []
+    )
+    for job in jobs:
+        if job["state"] != "running":
+            continue
+        event = RevisionRecord.from_dict(
+            json.loads(
+                (root / "revision_results" / (job["job_id"] + ".json")).read_text()
+            )
+        )
+        if event.event_id not in {r.event_id for r in memory.revisions}:
+            if memory.get(event.parent_id).status == "active":
+                memory.finish_revision(event)
+            else:
+                job["state"] = "stale_parent"
+        if job["state"] == "running":
+            job["state"] = "completed"
+            job["event_id"] = event.event_id
+    atomic_json(root / "revision_jobs.json", jobs)
+    records = list(log.all())
+    if any(r.split != "train" for r in records) or len(
+        {r.sample_id for r in records}
+    ) != len(records):
+        raise ConfigError("recovery needs unique train-only completed records")
+    manifest.update(
+        state="paused",
+        memory_sha256=digest(memory.path),
+        trajectory_sha256=digest(log.path) if log.path.exists() else None,
+        recovered_from=str(source),
+    )
+    atomic_json(target / "run_manifest.json", manifest)
+    return {
+        "state": "paused",
+        "train": len(records),
+        "output_dir": str(target),
+        "model_calls": 0,
+    }
 
 
 def reestimate_run(run_dir, parameter_file, output_dir):
@@ -459,8 +626,20 @@ def main(argv=None):
     e.add_argument("--run-dir", required=True)
     e.add_argument("--parameter-file", required=True)
     e.add_argument("--output-dir", required=True)
+    recover = sub.add_parser("recover")
+    recover.add_argument("--run-dir", required=True)
+    recover.add_argument("--output-dir", required=True)
     args = p.parse_args(argv)
     try:
+        if args.command == "recover":
+            print(
+                json.dumps(
+                    recover_run(args.run_dir, args.output_dir),
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+            return 0
         if args.command == "reestimate":
             print(
                 json.dumps(

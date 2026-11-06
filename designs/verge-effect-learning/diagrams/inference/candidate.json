@@ -1,0 +1,156 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "推理：用历史效果选择经验",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "output": "designs/verge-effect-learning/diagrams/inference/推理流程.html"
+  },
+  "lanes": [
+    {
+      "id": "selection",
+      "label": "程序选择"
+    },
+    {
+      "id": "stored",
+      "label": "训练产物"
+    },
+    {
+      "id": "model",
+      "label": "模型执行"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "newtask",
+      "lane": "selection",
+      "col": 0,
+      "type": "external",
+      "label": "新任务",
+      "sublabel": "没有偏好标签"
+    },
+    {
+      "id": "neighbors",
+      "lane": "selection",
+      "col": 1,
+      "type": "backend",
+      "label": "检索相近历史任务",
+      "sublabel": "向量检索提供线索"
+    },
+    {
+      "id": "effects",
+      "lane": "selection",
+      "col": 2,
+      "type": "backend",
+      "label": "读取实测效果",
+      "sublabel": "保留改善与退化"
+    },
+    {
+      "id": "choose",
+      "lane": "selection",
+      "col": 3,
+      "type": "backend",
+      "label": "程序选择经验",
+      "sublabel": "证据不足可不用"
+    },
+    {
+      "id": "store",
+      "lane": "stored",
+      "col": 2,
+      "type": "database",
+      "label": "历史任务与效果",
+      "sublabel": "只供程序查询"
+    },
+    {
+      "id": "method",
+      "lane": "stored",
+      "col": 3,
+      "type": "database",
+      "label": "经验正文及版本",
+      "sublabel": "读取所选版本"
+    },
+    {
+      "id": "generator",
+      "lane": "model",
+      "col": 3,
+      "type": "backend",
+      "label": "生成Rubric",
+      "sublabel": "新任务＋所选经验"
+    },
+    {
+      "id": "judge",
+      "lane": "model",
+      "col": 4,
+      "type": "backend",
+      "label": "独立评判",
+      "sublabel": "新任务与当前回答"
+    },
+    {
+      "id": "prediction",
+      "lane": "model",
+      "col": 5,
+      "type": "external",
+      "label": "输出比较结果",
+      "sublabel": "不写回训练记录"
+    }
+  ],
+  "edges": [
+    {
+      "id": "query",
+      "from": "newtask",
+      "to": "neighbors"
+    },
+    {
+      "id": "lookup",
+      "from": "neighbors",
+      "to": "effects"
+    },
+    {
+      "id": "records",
+      "from": "store",
+      "to": "effects"
+    },
+    {
+      "id": "decide",
+      "from": "effects",
+      "to": "choose"
+    },
+    {
+      "id": "selected",
+      "from": "choose",
+      "to": "method"
+    },
+    {
+      "id": "supply",
+      "from": "method",
+      "to": "generator"
+    },
+    {
+      "id": "genjudge",
+      "from": "generator",
+      "to": "judge"
+    },
+    {
+      "id": "judgeout",
+      "from": "judge",
+      "to": "prediction"
+    },
+    {
+      "id": "taskcontext",
+      "from": "newtask",
+      "to": "generator",
+      "label": "任务"
+    }
+  ],
+  "mainPath": [
+    "newtask",
+    "neighbors",
+    "effects",
+    "choose",
+    "method",
+    "generator",
+    "judge",
+    "prediction"
+  ]
+}

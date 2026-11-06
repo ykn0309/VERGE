@@ -15,6 +15,7 @@ def test_generator_specializes_method_without_binding_fields():
         def generate(self, *args, **kwargs):
             return {
                 "analysis": "任务指定材料2",
+                "experience_usage":[{"experience_id":"1","used":True,"reason":"核对指定材料"}],
                 "criteria": [
                     {
                         "question": "回答是否只包含材料2支持的事实？",

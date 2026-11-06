@@ -9,6 +9,8 @@ import math
 import os
 import re
 import time
+import threading
+from datetime import datetime, timezone
 from typing import Any, Callable, Literal, Mapping, Protocol
 from urllib.parse import urlsplit
 
@@ -65,6 +67,12 @@ _OUTPUT_FIELDS = {
         "initial_generator",
         "judge",
         "critic",
+        "critic_repair",
+        "critic_assess",
+        "critic_extract",
+        "critic_rewrite",
+        "experience_checker_batch",
+        "critic_rewrite_batch",
         "experience_checker",
         "experience_updater",
         "selector_checker",
@@ -88,7 +96,40 @@ def _valid_shape(role, value):
     )  # Full contracts are validated once by the role adapter.
 
 
-class OpenAICompatibleBackend:
+_REQUEST_GATE = threading.BoundedSemaphore(16)
+
+
+def configure_request_limit(limit):
+    global _REQUEST_GATE
+    if type(limit) is not int or limit < 1:
+        raise ValueError("positive request limit required")
+    _REQUEST_GATE = threading.BoundedSemaphore(limit)
+
+
+class LimitedTransport:
+    def _post(self, *args, **kwargs):
+        queued = time.monotonic()
+        gate = _REQUEST_GATE
+        with gate:
+            started = time.monotonic()
+            try:
+                return self._client.post(*args, **kwargs)
+            finally:
+                hook = getattr(self, "trace_hook", None)
+                if hook:
+                    hook(
+                        {
+                            "event_type": "request_timing",
+                            "call_id": ROLE_CALL_ID.get(),
+                            "model": self.model,
+                            "finished_at": datetime.now(timezone.utc).isoformat(),
+                            "queue_seconds": started - queued,
+                            "request_seconds": time.monotonic() - started,
+                        }
+                    )
+
+
+class OpenAICompatibleBackend(LimitedTransport):
     """同步 Chat Completions JSON backend；只返回角色结构字段，绝不返回数值 credit。"""
 
     def __init__(
@@ -211,6 +252,26 @@ class OpenAICompatibleBackend:
                     for key in ("prompt_tokens", "completion_tokens", "total_tokens")
                     if type(usage.get(key)) is int and usage[key] >= 0
                 }
+                details = usage.get("prompt_tokens_details", {})
+                if (
+                    isinstance(details, dict)
+                    and type(details.get("cached_tokens")) is int
+                    and details["cached_tokens"] >= 0
+                ):
+                    event["cache"] = {
+                        "reported": True,
+                        "cached_input_tokens": details["cached_tokens"],
+                    }
+                elif (
+                    type(usage.get("prompt_cache_hit_tokens")) is int
+                    and usage["prompt_cache_hit_tokens"] >= 0
+                ):
+                    event["cache"] = {
+                        "reported": True,
+                        "cached_input_tokens": usage["prompt_cache_hit_tokens"],
+                    }
+                else:
+                    event["cache"] = {"reported": False, "cached_input_tokens": None}
         self.metadata_hook(event)
 
     def _trace(
@@ -262,7 +323,7 @@ class OpenAICompatibleBackend:
     ) -> Mapping[str, Any]:
         if role not in _OUTPUT_FIELDS:
             raise ValueError(f"unknown LLM role: {role}")
-        if conversation is not None and role != "critic":
+        if conversation is not None and role not in ("critic", "critic_repair"):
             raise ValueError("only critic accepts conversation history")
         messages = (
             llm_messages(role, payload, history=conversation)
@@ -284,7 +345,7 @@ class OpenAICompatibleBackend:
                 }
                 if self.enable_thinking is not None:
                     request_body["enable_thinking"] = self.enable_thinking
-                response = self._client.post(
+                response = self._post(
                     "chat/completions",
                     headers={"Authorization": f"Bearer {self._key}"},
                     json=request_body,
@@ -336,6 +397,7 @@ class OpenAICompatibleBackend:
                 raise error_type(f"{role}: HTTP {status}")
             raw_output: str | None = None
             assistant_output: str | None = None
+            body = None
             try:
                 body = json.loads(response.text, parse_constant=_reject_constant)
                 choices = body["choices"]
@@ -382,7 +444,9 @@ class OpenAICompatibleBackend:
                     raw_output=raw_output if raw_output is not None else response.text,
                     error="invalid structured output",
                 )
-                self._metadata(role, attempt, status=status, response=response)
+                self._metadata(
+                    role, attempt, status=status, response=response, body=body
+                )
                 if conversation is not None:
                     if assistant_output is not None:
                         messages = [
@@ -421,7 +485,7 @@ class OpenAICompatibleBackend:
         raise AssertionError("unreachable retry state")
 
 
-class OpenAICompatibleEmbedding:
+class OpenAICompatibleEmbedding(LimitedTransport):
     """同一 API key 的密集文本向量接口；错误消息不包含正文或凭据。"""
 
     def __init__(
@@ -539,7 +603,7 @@ class OpenAICompatibleEmbedding:
             status = None
             usage: dict[str, int] = {}
             try:
-                response = self._client.post(
+                response = self._post(
                     "embeddings",
                     headers={"Authorization": f"Bearer {self._key}"},
                     json={
@@ -663,6 +727,10 @@ class FakeLLMBackend:
                     for e in payload["candidates"][: payload["max_selected"]]
                 ]
             }
+            result["selection_reasons"] = [
+                {"experience_id": i, "reason": "离线选择依据"}
+                for i in result["selected_experience_ids"]
+            ]
         elif role == "initial_generator":
             experiences = payload["experiences"]
             n = payload.get("_round", 0)
@@ -682,7 +750,18 @@ class FakeLLMBackend:
                         "source_experiences": [e["experience_id"]] if e else [],
                     }
                 )
-            result = {"analysis": "离线接口示例", "criteria": criteria}
+            result = {
+                "analysis": "离线接口示例",
+                "criteria": criteria,
+                "experience_usage": [
+                    {
+                        "experience_id": e["experience_id"],
+                        "used": True,
+                        "reason": "离线方法应用",
+                    }
+                    for e in experiences
+                ],
+            }
         elif role == "judge":
             side = JUDGE_RESPONSE_SIDE.get()
             result = {
@@ -694,6 +773,95 @@ class FakeLLMBackend:
                     }
                     for c in payload["criteria"]
                 ]
+            }
+        elif role == "critic_repair":
+            number = payload["round"]
+            success = self.scenario != "final_failure" and number >= (
+                2 if self.scenario == "attempt_2_success" else 1
+            )
+            result = {
+                "issues": [],
+                "judge_corrections": [],
+                "analysis": "离线修订",
+                "changes": [{"change": "改核验", "basis": "任务依据"}],
+                "criteria": [
+                    {
+                        "question": "验证通过" if success else "基础核验",
+                        "weight": 0.5,
+                    }
+                    for _ in range(2)
+                ],
+            }
+        elif role == "critic_assess":
+            result = {
+                "analysis": "依逐项证据确认",
+                "issues": [],
+                "judge_corrections": [],
+            }
+        elif role == "critic_extract":
+            result = {
+                "analysis": "提炼核验关系",
+                "candidates": [
+                    {
+                        "method": {
+                            "trigger": "任务有明确要求",
+                            "principle": "核对回答是否落实任务要求",
+                            "application_guide": "按本题要求设计可判定的标准",
+                            "exclude_when": None,
+                            "misuse": None,
+                        },
+                        "change_indices": [0],
+                        "reason": "对应改动",
+                    }
+                ],
+            }
+        elif role == "experience_checker_batch":
+            first = sum(r == "experience_checker_batch" for r, _ in self.calls) == 1
+            result = {
+                "reviews": [
+                    {
+                        "experience_id": e["experience_id"],
+                        "approved": not (
+                            self.scenario == "attempt_2_success" and first
+                        ),
+                        "reason": "离线逐条核对",
+                    }
+                    for e in payload["candidates"]
+                ]
+            }
+        elif role == "critic_rewrite_batch":
+            result = {
+                "rewrites": [
+                    {
+                        "experience_id": x["experience"]["experience_id"],
+                        "method": {
+                            k: x["experience"][k]
+                            for k in (
+                                "trigger",
+                                "principle",
+                                "application_guide",
+                                "exclude_when",
+                                "misuse",
+                            )
+                        },
+                        "reason": "修正该条缺陷",
+                    }
+                    for x in payload["candidates"]
+                ]
+            }
+        elif role == "critic_rewrite":
+            result = {
+                "method": {
+                    k: payload["candidate"][k]
+                    for k in (
+                        "trigger",
+                        "principle",
+                        "application_guide",
+                        "exclude_when",
+                        "misuse",
+                    )
+                },
+                "reason": "修正明确问题",
             }
         elif role == "critic":
             result = {

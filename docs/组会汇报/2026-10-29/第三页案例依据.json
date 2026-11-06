@@ -1,0 +1,2153 @@
+{
+  "source_hashes": {
+    "runs/midterm-general-v2-assumed-early-stop-paired200/results.jsonl": "2ac885587cce29ce3becdfb34165420817b436e5b9a97273652de3af148745e7",
+    "runs/midterm-general-v2-assumed-early-stop-paired200/role_io.jsonl": "4374a07ac0c82d0b35bc819836ee2d6a087d24de48aa2971fe68a236370a8771",
+    "runs/midterm-general-v2-assumed-early-stop-paired200/frozen_experience_memory.json": "7c864cc7789782da3c858af9abef5772110bfdc61e7b1f292d0a9867b40c6ecc"
+  },
+  "counts": {
+    "regressed": 34,
+    "improved": 25
+  },
+  "cases": [
+    {
+      "sample_id": "helpsteer3:train:7c5b8236a15080ebd8a5ddfd1974b889d2ac115db49ac370e3ab97c799068d33",
+      "pair": {
+        "baseline": {
+          "sample_id": "helpsteer3:train:7c5b8236a15080ebd8a5ddfd1974b889d2ac115db49ac370e3ab97c799068d33",
+          "task_id": "2e3dd77b9798fc2c1452cfb88dddbe8050ce40ddbc895ea44a2c5d5cf7a748f5",
+          "arm": "baseline",
+          "valid": true,
+          "correct": true,
+          "rubric": {
+            "rubric_id": "rubric_0c1008c622394b67b25c8c66a573ac68",
+            "criteria": [
+              {
+                "criterion_id": "rubric_0c1008c622394b67b25c8c66a573ac68_1",
+                "question": "回答是否明确定义了NEFA（非酯化脂肪酸/游离脂肪酸）并指出‘低’意味着低于正常参考范围？",
+                "weight": 0.5,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_0c1008c622394b67b25c8c66a573ac68_2",
+                "question": "回答是否解释了低NEFA水平的常见生理或病理原因（如胰岛素过量、营养状态等）？",
+                "weight": 0.3,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_0c1008c622394b67b25c8c66a573ac68_3",
+                "question": "回答是否提及了低NEFA水平可能导致的临床后果或需要关注的症状？",
+                "weight": 0.2,
+                "source_experiences": []
+              }
+            ],
+            "analysis": "任务询问低NEFA的含义，核心在于解释其医学定义、正常范围对比及潜在临床意义。由于无可用经验，标准完全基于通用医学知识构建，重点区分数值定义与病理关联，权重分配侧重基础定义（0.5）和临床影响（0.3），剩余用于确认上下文完整性（0.2）。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_0c1008c622394b67b25c8c66a573ac68",
+            "normalized_weights": {
+              "rubric_0c1008c622394b67b25c8c66a573ac68_1": 0.5,
+              "rubric_0c1008c622394b67b25c8c66a573ac68_2": 0.3,
+              "rubric_0c1008c622394b67b25c8c66a573ac68_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_0c1008c622394b67b25c8c66a573ac68_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答明确定义了NEFA，但未明确指出‘低’是指低于正常参考范围。",
+                "rejected_reason": "回答未定义NEFA，反而声称该术语不存在，因此未说明‘低’的含义。"
+              },
+              {
+                "criterion_id": "rubric_0c1008c622394b67b25c8c66a573ac68_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答解释了多种常见原因，包括胰岛素作用、空腹/饥饿状态及特定疾病等。",
+                "rejected_reason": "由于未确认NEFA概念，回答中完全缺失对低水平生理或病理原因的解释。"
+              },
+              {
+                "criterion_id": "rubric_0c1008c622394b67b25c8c66a573ac68_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答仅列出了导致低NEFA的原因，未提及低水平本身可能导致的临床后果或具体症状。",
+                "rejected_reason": "回答未提及任何关于低NEFA水平的临床后果或相关症状。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 0.0,
+            "margin": 0.3,
+            "success": true
+          },
+          "recalled": [],
+          "selected": [],
+          "retrieval_trace": [],
+          "seconds": 7.110780954360962
+        },
+        "experience": {
+          "sample_id": "helpsteer3:train:7c5b8236a15080ebd8a5ddfd1974b889d2ac115db49ac370e3ab97c799068d33",
+          "task_id": "2e3dd77b9798fc2c1452cfb88dddbe8050ce40ddbc895ea44a2c5d5cf7a748f5",
+          "arm": "experience",
+          "valid": true,
+          "correct": false,
+          "rubric": {
+            "rubric_id": "rubric_d49fbb83590a4234b96711340e11d5e7",
+            "criteria": [
+              {
+                "criterion_id": "rubric_d49fbb83590a4234b96711340e11d5e7_1",
+                "question": "回答是否明确指出'nefa'可能为拼写错误或未证实的实体，而非将其作为既定事实直接陈述？",
+                "weight": 0.7,
+                "source_experiences": [
+                  "exp_b24db90597604d25b26f71e5f81f7459"
+                ]
+              },
+              {
+                "criterion_id": "rubric_d49fbb83590a4234b96711340e11d5e7_2",
+                "question": "回答是否在指出原词存疑后，提供了正确的术语（如NEFA）及其在医学/生物学语境下的真实含义？",
+                "weight": 0.3,
+                "source_experiences": []
+              }
+            ],
+            "analysis": "任务核心在于确认'nefa'是否为有效术语。经验1明确触发：该词疑似拼写错误（应为NEFA）且在权威来源无此确切定义，必须首先标注非既定事实并提供修正。经验2不适用，因'low'是状态描述而非判断工具属性。因此设计两条标准：首要核验是否识别了拼写错误并声明不确定性（权重0.7），其次核验是否提供了正确的修正术语及其含义（权重0.3）。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_d49fbb83590a4234b96711340e11d5e7",
+            "normalized_weights": {
+              "rubric_d49fbb83590a4234b96711340e11d5e7_1": 0.7,
+              "rubric_d49fbb83590a4234b96711340e11d5e7_2": 0.3
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_d49fbb83590a4234b96711340e11d5e7_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答直接将'NEFA'作为既定事实进行解释，未指出用户输入的'nefa'（小写）可能为拼写不规范或需确认的实体，也未表现出对术语存疑的提示。",
+                "rejected_reason": "回答明确指出'nefa'不是标准术语，并建议其可能是拼写错误或需澄清的实体，未将其作为既定事实陈述。"
+              },
+              {
+                "criterion_id": "rubric_d49fbb83590a4234b96711340e11d5e7_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "由于回答未在第一步指出原词存疑或纠正大小写问题，因此不符合'在指出原词存疑后提供正确术语'这一逻辑顺序要求；尽管它解释了含义，但缺失了关键的质疑与引导步骤。",
+                "rejected_reason": "回答虽然指出原词存疑，但未提供正确的术语（如NEFA）及其在医学或生物学语境下的真实含义，仅要求用户提供更多信息。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.7,
+            "margin": -0.7,
+            "success": false
+          },
+          "recalled": [
+            "exp_827c6bfa58be4590bf304c4489dc8c01",
+            "exp_6acdf6e20b8e46a284a3ff450f8522bb",
+            "exp_186835208b204171bf3a5b8d33c19602",
+            "exp_92e8e28783ee430cabe8c56c1fd70ced",
+            "exp_69948a9e1cf348af9989f77dd5937998",
+            "exp_223936b0208348b7bc531624a528e973",
+            "exp_77d01e9b133e4d40bd99193f603ffabe",
+            "exp_fa12e05905fd4c3b956f7676cdf41cc6",
+            "exp_87ca71896e8d4522a908dd5f396546b0",
+            "exp_c6341db814ed484d830e64d3eaffb951",
+            "exp_658ede1cb3e148fca5bb8611451ee9a3",
+            "exp_390bb5a7a85a47678695691636b40588",
+            "exp_4c4cf7c9f3c8463e83720e70de686b81",
+            "exp_acbb0d731c804e1c8a5226e4d4f70953",
+            "exp_b24db90597604d25b26f71e5f81f7459",
+            "exp_cf68cf170e6244bfa8adae6d9eb2b374",
+            "exp_37110f6d727c4050aff6433426a8ac02",
+            "exp_bc4709f168d34fabac6f40049f8f365c",
+            "exp_ba710fa90cb042569ee9baed47333d82",
+            "exp_298c07a927114edcb970e1e121dee452"
+          ],
+          "selected": [
+            "exp_b24db90597604d25b26f71e5f81f7459",
+            "exp_92e8e28783ee430cabe8c56c1fd70ced"
+          ],
+          "retrieval_trace": [
+            {
+              "experience_id": "exp_827c6bfa58be4590bf304c4489dc8c01",
+              "vector_rank": 1,
+              "keyword_rank": null,
+              "score": 0.01639344262295082
+            },
+            {
+              "experience_id": "exp_6acdf6e20b8e46a284a3ff450f8522bb",
+              "vector_rank": 2,
+              "keyword_rank": null,
+              "score": 0.016129032258064516
+            },
+            {
+              "experience_id": "exp_186835208b204171bf3a5b8d33c19602",
+              "vector_rank": 3,
+              "keyword_rank": null,
+              "score": 0.015873015873015872
+            },
+            {
+              "experience_id": "exp_92e8e28783ee430cabe8c56c1fd70ced",
+              "vector_rank": 4,
+              "keyword_rank": null,
+              "score": 0.015625
+            },
+            {
+              "experience_id": "exp_69948a9e1cf348af9989f77dd5937998",
+              "vector_rank": 5,
+              "keyword_rank": null,
+              "score": 0.015384615384615385
+            },
+            {
+              "experience_id": "exp_223936b0208348b7bc531624a528e973",
+              "vector_rank": 6,
+              "keyword_rank": null,
+              "score": 0.015151515151515152
+            },
+            {
+              "experience_id": "exp_77d01e9b133e4d40bd99193f603ffabe",
+              "vector_rank": 7,
+              "keyword_rank": null,
+              "score": 0.014925373134328358
+            },
+            {
+              "experience_id": "exp_fa12e05905fd4c3b956f7676cdf41cc6",
+              "vector_rank": 8,
+              "keyword_rank": null,
+              "score": 0.014705882352941176
+            },
+            {
+              "experience_id": "exp_87ca71896e8d4522a908dd5f396546b0",
+              "vector_rank": 9,
+              "keyword_rank": null,
+              "score": 0.014492753623188406
+            },
+            {
+              "experience_id": "exp_c6341db814ed484d830e64d3eaffb951",
+              "vector_rank": 10,
+              "keyword_rank": null,
+              "score": 0.014285714285714285
+            },
+            {
+              "experience_id": "exp_658ede1cb3e148fca5bb8611451ee9a3",
+              "vector_rank": 11,
+              "keyword_rank": null,
+              "score": 0.014084507042253521
+            },
+            {
+              "experience_id": "exp_390bb5a7a85a47678695691636b40588",
+              "vector_rank": 12,
+              "keyword_rank": null,
+              "score": 0.013888888888888888
+            },
+            {
+              "experience_id": "exp_4c4cf7c9f3c8463e83720e70de686b81",
+              "vector_rank": 13,
+              "keyword_rank": null,
+              "score": 0.0136986301369863
+            },
+            {
+              "experience_id": "exp_acbb0d731c804e1c8a5226e4d4f70953",
+              "vector_rank": 14,
+              "keyword_rank": null,
+              "score": 0.013513513513513514
+            },
+            {
+              "experience_id": "exp_b24db90597604d25b26f71e5f81f7459",
+              "vector_rank": 15,
+              "keyword_rank": null,
+              "score": 0.013333333333333334
+            },
+            {
+              "experience_id": "exp_cf68cf170e6244bfa8adae6d9eb2b374",
+              "vector_rank": 16,
+              "keyword_rank": null,
+              "score": 0.013157894736842105
+            },
+            {
+              "experience_id": "exp_37110f6d727c4050aff6433426a8ac02",
+              "vector_rank": 17,
+              "keyword_rank": null,
+              "score": 0.012987012987012988
+            },
+            {
+              "experience_id": "exp_bc4709f168d34fabac6f40049f8f365c",
+              "vector_rank": 18,
+              "keyword_rank": null,
+              "score": 0.01282051282051282
+            },
+            {
+              "experience_id": "exp_ba710fa90cb042569ee9baed47333d82",
+              "vector_rank": 19,
+              "keyword_rank": null,
+              "score": 0.012658227848101266
+            },
+            {
+              "experience_id": "exp_298c07a927114edcb970e1e121dee452",
+              "vector_rank": 20,
+              "keyword_rank": null,
+              "score": 0.0125
+            },
+            {
+              "experience_id": "exp_4bc5bbed279e439abe1a883a154538c4",
+              "vector_rank": 21,
+              "keyword_rank": null,
+              "score": 0.012345679012345678
+            },
+            {
+              "experience_id": "exp_62ceaabda42b471885624331a8350d60",
+              "vector_rank": 22,
+              "keyword_rank": null,
+              "score": 0.012195121951219513
+            },
+            {
+              "experience_id": "exp_e831ca069e4e4c4cad0656a02f5cfbe7",
+              "vector_rank": 23,
+              "keyword_rank": null,
+              "score": 0.012048192771084338
+            },
+            {
+              "experience_id": "exp_27f1791cc8b24dfa96c4af1cd3d6f02d",
+              "vector_rank": 24,
+              "keyword_rank": null,
+              "score": 0.011904761904761904
+            },
+            {
+              "experience_id": "exp_ad014352e2fb418fb9b69e52bde8c766",
+              "vector_rank": 25,
+              "keyword_rank": null,
+              "score": 0.011764705882352941
+            },
+            {
+              "experience_id": "exp_7ec4450051fe4fad8ea36c8e29927d2f",
+              "vector_rank": 26,
+              "keyword_rank": null,
+              "score": 0.011627906976744186
+            },
+            {
+              "experience_id": "exp_a32b4e5a70b64a8798958ffe9e757ebc",
+              "vector_rank": 27,
+              "keyword_rank": null,
+              "score": 0.011494252873563218
+            },
+            {
+              "experience_id": "exp_b103a873967c4e8fa81fba0c256e0817",
+              "vector_rank": 28,
+              "keyword_rank": null,
+              "score": 0.011363636363636364
+            },
+            {
+              "experience_id": "exp_a52c626f521f4838b22e087fd3fd6d0c",
+              "vector_rank": 29,
+              "keyword_rank": null,
+              "score": 0.011235955056179775
+            },
+            {
+              "experience_id": "exp_00580754c5054967b484af2469762289",
+              "vector_rank": 30,
+              "keyword_rank": null,
+              "score": 0.011111111111111112
+            },
+            {
+              "experience_id": "exp_126e5e3e7bd44c9bb304ee58d39b27d8",
+              "vector_rank": 31,
+              "keyword_rank": null,
+              "score": 0.01098901098901099
+            },
+            {
+              "experience_id": "exp_dab6b99589df4a9b8d6d158f0d8a6564",
+              "vector_rank": 32,
+              "keyword_rank": null,
+              "score": 0.010869565217391304
+            },
+            {
+              "experience_id": "exp_5bf79dc9ca3a474fa882d439b59b6407",
+              "vector_rank": 33,
+              "keyword_rank": null,
+              "score": 0.010752688172043012
+            },
+            {
+              "experience_id": "exp_a15ec4aacc174fb2809795f61d645283",
+              "vector_rank": 34,
+              "keyword_rank": null,
+              "score": 0.010638297872340425
+            },
+            {
+              "experience_id": "exp_982b2c1b90c74ddc86b1072d7680a32d",
+              "vector_rank": 35,
+              "keyword_rank": null,
+              "score": 0.010526315789473684
+            },
+            {
+              "experience_id": "exp_4b34421e73db44288a24f983d411de36",
+              "vector_rank": 36,
+              "keyword_rank": null,
+              "score": 0.010416666666666666
+            },
+            {
+              "experience_id": "exp_9ca743dfe67c47b19857c0576e6bb231",
+              "vector_rank": 37,
+              "keyword_rank": null,
+              "score": 0.010309278350515464
+            },
+            {
+              "experience_id": "exp_6fe09b39de124421a5bedb1f2356b6d3",
+              "vector_rank": 38,
+              "keyword_rank": null,
+              "score": 0.01020408163265306
+            },
+            {
+              "experience_id": "exp_efbe3693622d4c95a368e6c4236d149d",
+              "vector_rank": 39,
+              "keyword_rank": null,
+              "score": 0.010101010101010102
+            },
+            {
+              "experience_id": "exp_acb9221ac0d1467f8ab0c6128afe29f0",
+              "vector_rank": 40,
+              "keyword_rank": null,
+              "score": 0.01
+            },
+            {
+              "experience_id": "exp_b27d1a2e16524240bce8353b513b9642",
+              "vector_rank": 41,
+              "keyword_rank": null,
+              "score": 0.009900990099009901
+            },
+            {
+              "experience_id": "exp_f74712249423465398c3728410786348",
+              "vector_rank": 42,
+              "keyword_rank": null,
+              "score": 0.00980392156862745
+            },
+            {
+              "experience_id": "exp_d39a6763d9df468ebef669a2a6b2e14a",
+              "vector_rank": 43,
+              "keyword_rank": null,
+              "score": 0.009708737864077669
+            },
+            {
+              "experience_id": "exp_f5a01d6a037c4ce0a73d78cff238ab7c",
+              "vector_rank": 44,
+              "keyword_rank": null,
+              "score": 0.009615384615384616
+            },
+            {
+              "experience_id": "exp_ff9c1646a05149a1843566f7f2460113",
+              "vector_rank": 45,
+              "keyword_rank": null,
+              "score": 0.009523809523809525
+            },
+            {
+              "experience_id": "exp_4a3dd00abc7c440ea2fa812f561afe4f",
+              "vector_rank": 46,
+              "keyword_rank": null,
+              "score": 0.009433962264150943
+            },
+            {
+              "experience_id": "exp_a676ef6aac0345d7892c346f77778dee",
+              "vector_rank": 47,
+              "keyword_rank": null,
+              "score": 0.009345794392523364
+            },
+            {
+              "experience_id": "exp_6e94ba97a75a4f67abd0fde774748fd2",
+              "vector_rank": 48,
+              "keyword_rank": null,
+              "score": 0.009259259259259259
+            },
+            {
+              "experience_id": "exp_37f2a657942d43fa8211b880262e2793",
+              "vector_rank": 49,
+              "keyword_rank": null,
+              "score": 0.009174311926605505
+            },
+            {
+              "experience_id": "exp_4d29ec72418748b19a58a79f6067748b",
+              "vector_rank": 50,
+              "keyword_rank": null,
+              "score": 0.00909090909090909
+            },
+            {
+              "experience_id": "exp_b22fc75c652c45769204d8f6b12ba045",
+              "vector_rank": 51,
+              "keyword_rank": null,
+              "score": 0.009009009009009009
+            },
+            {
+              "experience_id": "exp_381c270837784b56838e0c508f354ee7",
+              "vector_rank": 52,
+              "keyword_rank": null,
+              "score": 0.008928571428571428
+            },
+            {
+              "experience_id": "exp_c54b7d098c7b48b581609f60bc0a12d2",
+              "vector_rank": 53,
+              "keyword_rank": null,
+              "score": 0.008849557522123894
+            },
+            {
+              "experience_id": "exp_869086f22c3f4f9ea46423986e875698",
+              "vector_rank": 54,
+              "keyword_rank": null,
+              "score": 0.008771929824561403
+            },
+            {
+              "experience_id": "exp_e8ca982e69db467fafe2721138a46a64",
+              "vector_rank": 55,
+              "keyword_rank": null,
+              "score": 0.008695652173913044
+            },
+            {
+              "experience_id": "exp_218ef19cf8024db38e7c27ab05e26352",
+              "vector_rank": 56,
+              "keyword_rank": null,
+              "score": 0.008620689655172414
+            },
+            {
+              "experience_id": "exp_57c058dd2eb245c0a938fb3db82d0b13",
+              "vector_rank": 57,
+              "keyword_rank": null,
+              "score": 0.008547008547008548
+            },
+            {
+              "experience_id": "exp_31fb052c80e2487296feaafcd217588f",
+              "vector_rank": 58,
+              "keyword_rank": null,
+              "score": 0.00847457627118644
+            },
+            {
+              "experience_id": "exp_e99a6d39517a4b449b5d5b0867d2b177",
+              "vector_rank": 59,
+              "keyword_rank": null,
+              "score": 0.008403361344537815
+            },
+            {
+              "experience_id": "exp_dc7f003185ab4700acd91d80a608caaf",
+              "vector_rank": 60,
+              "keyword_rank": null,
+              "score": 0.008333333333333333
+            },
+            {
+              "experience_id": "exp_1edd24edfb7e4f03833e0d602a724b5d",
+              "vector_rank": 61,
+              "keyword_rank": null,
+              "score": 0.008264462809917356
+            },
+            {
+              "experience_id": "exp_d370d18cc2be4e97b75cafb49b3fc2d9",
+              "vector_rank": 62,
+              "keyword_rank": null,
+              "score": 0.00819672131147541
+            },
+            {
+              "experience_id": "exp_587ebbda9d434ff7b350b97a5cf669e7",
+              "vector_rank": 63,
+              "keyword_rank": null,
+              "score": 0.008130081300813009
+            },
+            {
+              "experience_id": "exp_14ab51ff17df45f49a0174bec2153936",
+              "vector_rank": 64,
+              "keyword_rank": null,
+              "score": 0.008064516129032258
+            },
+            {
+              "experience_id": "exp_b08dac8537e84c0b905a0ace6893be61",
+              "vector_rank": 65,
+              "keyword_rank": null,
+              "score": 0.008
+            },
+            {
+              "experience_id": "exp_f94df779ba284cb2b862dd21169899b2",
+              "vector_rank": 66,
+              "keyword_rank": null,
+              "score": 0.007936507936507936
+            },
+            {
+              "experience_id": "exp_4a292e4223cb42b2b047bef98f3f694f",
+              "vector_rank": 67,
+              "keyword_rank": null,
+              "score": 0.007874015748031496
+            },
+            {
+              "experience_id": "exp_e491ce31d5724a7699d82e639cc4cb02",
+              "vector_rank": 68,
+              "keyword_rank": null,
+              "score": 0.0078125
+            },
+            {
+              "experience_id": "exp_58b5b69be7de4d89b35fb9465fba244d",
+              "vector_rank": 69,
+              "keyword_rank": null,
+              "score": 0.007751937984496124
+            },
+            {
+              "experience_id": "exp_a8a9c1da3a4440b4bf7e79014eca904e",
+              "vector_rank": 70,
+              "keyword_rank": null,
+              "score": 0.007692307692307693
+            },
+            {
+              "experience_id": "exp_7b26b711486d414f98bf1801790951ba",
+              "vector_rank": 71,
+              "keyword_rank": null,
+              "score": 0.007633587786259542
+            },
+            {
+              "experience_id": "exp_8505aeb9aea6415d8a8b699ebf30b474",
+              "vector_rank": 72,
+              "keyword_rank": null,
+              "score": 0.007575757575757576
+            },
+            {
+              "experience_id": "exp_99fe7214ce4249c694d399eecf753c9d",
+              "vector_rank": 73,
+              "keyword_rank": null,
+              "score": 0.007518796992481203
+            },
+            {
+              "experience_id": "exp_dfb0280659f9402c8f7ac432f5587446",
+              "vector_rank": 74,
+              "keyword_rank": null,
+              "score": 0.007462686567164179
+            },
+            {
+              "experience_id": "exp_6bf40180ee0849fe8322bff18222f22e",
+              "vector_rank": 75,
+              "keyword_rank": null,
+              "score": 0.007407407407407408
+            },
+            {
+              "experience_id": "exp_e87c26a0cc044a45963bc85005f1bc31",
+              "vector_rank": 76,
+              "keyword_rank": null,
+              "score": 0.007352941176470588
+            },
+            {
+              "experience_id": "exp_0c49077e922845d08db772d8c16b4d99",
+              "vector_rank": 77,
+              "keyword_rank": null,
+              "score": 0.0072992700729927005
+            },
+            {
+              "experience_id": "exp_a1a5106564dd458497c8839aaf7e897b",
+              "vector_rank": 78,
+              "keyword_rank": null,
+              "score": 0.007246376811594203
+            },
+            {
+              "experience_id": "exp_deec3a81d4b64b46930e624dffd9ad95",
+              "vector_rank": 79,
+              "keyword_rank": null,
+              "score": 0.007194244604316547
+            },
+            {
+              "experience_id": "exp_296ffed76b5e424d82c519b575e843e2",
+              "vector_rank": 80,
+              "keyword_rank": null,
+              "score": 0.007142857142857143
+            },
+            {
+              "experience_id": "exp_6fb1fc5693d84c0894c23c36dc8ca997",
+              "vector_rank": 81,
+              "keyword_rank": null,
+              "score": 0.0070921985815602835
+            },
+            {
+              "experience_id": "exp_0462154d189b49ee9d680f3443f1e63f",
+              "vector_rank": 82,
+              "keyword_rank": null,
+              "score": 0.007042253521126761
+            },
+            {
+              "experience_id": "exp_3ffcbeea9a454f6f9d7d2765928249f2",
+              "vector_rank": 83,
+              "keyword_rank": null,
+              "score": 0.006993006993006993
+            },
+            {
+              "experience_id": "exp_1ece8fd9a045450d9885dd861dc8e676",
+              "vector_rank": 84,
+              "keyword_rank": null,
+              "score": 0.006944444444444444
+            },
+            {
+              "experience_id": "exp_3bde785a35b4498d8aec50353694e9da",
+              "vector_rank": 85,
+              "keyword_rank": null,
+              "score": 0.006896551724137931
+            },
+            {
+              "experience_id": "exp_97af3ffa818d4b5c847f44a61d38cfb4",
+              "vector_rank": 86,
+              "keyword_rank": null,
+              "score": 0.00684931506849315
+            }
+          ],
+          "seconds": 8.407072305679321
+        }
+      },
+      "selected_methods": {
+        "exp_b24db90597604d25b26f71e5f81f7459": {
+          "trigger": "任务涉及对模糊、生僻、疑似拼写错误或属性存疑的专有名词进行事实确认，且该名词在权威来源中无明确存在记录或属性定义；排除用户明确要求虚构命名、创意写作或假设性描述的场景，以及明显为常识性拼写错误（如将'Amur'误作'Amer'）需直接纠正而非标注虚构的场景。",
+          "principle": "若核验发现该实体在权威来源中不存在、仅为推测名称、疑似拼写错误或属性未定义，回答必须首先明确指出其非既定事实属性（如标注为'可能拼写错误'、'未证实'或'虚构'），严禁将其作为已知真实实体直接陈述或命名；若存在高度可能的正确实体，应在指出原词无效后提供修正后的事实信息；若经核实该名称虽有误但实指特定虚构作品中的角色/事物，则按虚构内容处理，不强制要求修正为现实实体。"
+        },
+        "exp_92e8e28783ee430cabe8c56c1fd70ced": {
+          "trigger": "句子包含易混淆的专业术语且需判断其功能属性",
+          "principle": "核验该术语在语境中是否指代执行核心动作的具体工具，而非描述状态、程度或无关概念。"
+        }
+      }
+    },
+    {
+      "sample_id": "helpsteer3:train:037fb41c95272b1ef3070d5fb7c1f96fb7b36010e9d0211e2f9bce509cbdc0d9",
+      "pair": {
+        "baseline": {
+          "sample_id": "helpsteer3:train:037fb41c95272b1ef3070d5fb7c1f96fb7b36010e9d0211e2f9bce509cbdc0d9",
+          "task_id": "ca0fdb4ea4c261c256a11c3ec14a19feb7b9f9544503879133e078510286ef84",
+          "arm": "baseline",
+          "valid": true,
+          "correct": true,
+          "rubric": {
+            "rubric_id": "rubric_95226c1e7ede48eb90b14f052cef90ba",
+            "criteria": [
+              {
+                "criterion_id": "rubric_95226c1e7ede48eb90b14f052cef90ba_1",
+                "question": "回答是否明确将IOU定义为一种记录债务关系的书面或电子凭证？",
+                "weight": 0.4,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_95226c1e7ede48eb90b14f052cef90ba_2",
+                "question": "回答是否指出了IOU涉及至少两方当事人（债权人和债务人）？",
+                "weight": 0.3,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_95226c1e7ede48eb90b14f052cef90ba_3",
+                "question": "回答是否说明了IOU必须包含具体的借款金额或明确的还款义务？",
+                "weight": 0.3,
+                "source_experiences": []
+              }
+            ],
+            "analysis": "任务为定义'IOU'，核心在于准确性、清晰度及关键要素（借据性质、金额、还款义务）的覆盖。由于无可用经验，所有标准均基于通用知识构建。权重分配侧重：1. 是否明确定义为债务凭证 (0.4)；2. 是否提及涉及借贷双方 (0.3)；3. 是否包含具体金额或还款承诺 (0.3)。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_95226c1e7ede48eb90b14f052cef90ba",
+            "normalized_weights": {
+              "rubric_95226c1e7ede48eb90b14f052cef90ba_1": 0.4,
+              "rubric_95226c1e7ede48eb90b14f052cef90ba_2": 0.3,
+              "rubric_95226c1e7ede48eb90b14f052cef90ba_3": 0.3
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_95226c1e7ede48eb90b14f052cef90ba_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确将IOU定义为'a document that acknowledges a debt'（承认债务的文档），符合书面凭证的定义。",
+                "rejected_reason": "回答明确将IOU定义为一种书面或口头（涵盖电子/非正式形式）的债务或义务承认，符合记录债务关系的凭证定义。"
+              },
+              {
+                "criterion_id": "rubric_95226c1e7ede48eb90b14f052cef90ba_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答在列举内容时明确提到了'debtor'（债务人）和'creditor'（债权人）两方当事人。",
+                "rejected_reason": "回答指出IOU是在两方当事人之间产生的债务或义务，隐含并明确了债权人与债务人的关系。"
+              },
+              {
+                "criterion_id": "rubric_95226c1e7ede48eb90b14f052cef90ba_3",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答指出IOU包含'The amount of money owed'（所欠金额）以及'debtor promises to pay'（债务人承诺支付）的陈述，说明了具体的借款金额和还款义务。",
+                "rejected_reason": "回答仅说明IOU是承诺支付“一定金额”或“明确的还款义务”，但未具体说明该文书必须包含具体的借款金额数值或详细条款作为其构成要件。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 0.7,
+            "margin": 0.3,
+            "success": true
+          },
+          "recalled": [],
+          "selected": [],
+          "retrieval_trace": [],
+          "seconds": 7.078510999679565
+        },
+        "experience": {
+          "sample_id": "helpsteer3:train:037fb41c95272b1ef3070d5fb7c1f96fb7b36010e9d0211e2f9bce509cbdc0d9",
+          "task_id": "ca0fdb4ea4c261c256a11c3ec14a19feb7b9f9544503879133e078510286ef84",
+          "arm": "experience",
+          "valid": true,
+          "correct": false,
+          "rubric": {
+            "rubric_id": "rubric_471647614f654452825b80424295cda7",
+            "criteria": [
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_1",
+                "question": "回答是否明确定义了IOU为一种债务或欠款凭证？",
+                "weight": 0.3,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_2",
+                "question": "回答是否清晰描述了IOU的核心属性（如债权债务关系、金额、当事人）？",
+                "weight": 0.2,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_3",
+                "question": "回答是否严格限定于概念属性描述，未包含任何创建、签署或使用IOU的操作步骤或建议？",
+                "weight": 0.4,
+                "source_experiences": [
+                  "exp_00580754c5054967b484af2469762289"
+                ]
+              },
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_4",
+                "question": "回答是否提及了IOU通常用于非正式或特定场景下的债务确认这一背景？",
+                "weight": 0.1,
+                "source_experiences": []
+              }
+            ],
+            "analysis": "任务要求解释IOU概念，核心在于定义准确性与边界清晰度。引用经验1确保回答仅描述属性构成，排除操作指南。权重分配侧重定义完整性（0.5）和范围纯粹性（0.4），辅以术语识别（0.1）。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_471647614f654452825b80424295cda7",
+            "normalized_weights": {
+              "rubric_471647614f654452825b80424295cda7_1": 0.3,
+              "rubric_471647614f654452825b80424295cda7_2": 0.2,
+              "rubric_471647614f654452825b80424295cda7_3": 0.4,
+              "rubric_471647614f654452825b80424295cda7_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确将IOU定义为承认债务或负债的文件（'document that acknowledges a debt or liability'）。",
+                "rejected_reason": "回答开篇明确定义IOU为'debt or an unpaid obligation'（债务或未付义务）的书面或口头承认，符合债务凭证的定义。"
+              },
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答清晰描述了核心属性，包括债务人、债权人、金额及还款承诺等关键要素。",
+                "rejected_reason": "回答清晰描述了债权债务关系（promise to pay）、金额（certain amount of money）以及当事人（between two parties）等核心属性。"
+              },
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答包含了关于使用场景的建议（如'cash is not immediately available...not necessary'）以及使用时的警告（'should be used with caution'），超出了纯概念属性的描述范围。",
+                "rejected_reason": "回答仅描述概念、用途和法律性质，未包含任何关于如何创建、签署或使用IOU的具体操作步骤或建议。"
+              },
+              {
+                "criterion_id": "rubric_471647614f654452825b80424295cda7_4",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答提及IOU常用于现金不可立即获得且不需要正式借据的非正式场景。",
+                "rejected_reason": "回答明确指出IOUs常用于非正式或个人交易场景（如亲友间借贷），并提及在商业交易中用于未即时结算的情况。"
+              }
+            ],
+            "chosen_score": 0.6,
+            "rejected_score": 1.0,
+            "margin": -0.4,
+            "success": false
+          },
+          "recalled": [
+            "exp_bc4709f168d34fabac6f40049f8f365c",
+            "exp_dc7f003185ab4700acd91d80a608caaf",
+            "exp_00580754c5054967b484af2469762289",
+            "exp_223936b0208348b7bc531624a528e973",
+            "exp_b103a873967c4e8fa81fba0c256e0817",
+            "exp_f5a01d6a037c4ce0a73d78cff238ab7c",
+            "exp_4d29ec72418748b19a58a79f6067748b",
+            "exp_acb9221ac0d1467f8ab0c6128afe29f0",
+            "exp_fa12e05905fd4c3b956f7676cdf41cc6",
+            "exp_acbb0d731c804e1c8a5226e4d4f70953",
+            "exp_cf68cf170e6244bfa8adae6d9eb2b374",
+            "exp_92e8e28783ee430cabe8c56c1fd70ced",
+            "exp_5bf79dc9ca3a474fa882d439b59b6407",
+            "exp_deec3a81d4b64b46930e624dffd9ad95",
+            "exp_218ef19cf8024db38e7c27ab05e26352",
+            "exp_f94df779ba284cb2b862dd21169899b2",
+            "exp_0c49077e922845d08db772d8c16b4d99",
+            "exp_37f2a657942d43fa8211b880262e2793",
+            "exp_69948a9e1cf348af9989f77dd5937998",
+            "exp_1edd24edfb7e4f03833e0d602a724b5d"
+          ],
+          "selected": [
+            "exp_00580754c5054967b484af2469762289"
+          ],
+          "retrieval_trace": [
+            {
+              "experience_id": "exp_bc4709f168d34fabac6f40049f8f365c",
+              "vector_rank": 1,
+              "keyword_rank": null,
+              "score": 0.01639344262295082
+            },
+            {
+              "experience_id": "exp_dc7f003185ab4700acd91d80a608caaf",
+              "vector_rank": 2,
+              "keyword_rank": null,
+              "score": 0.016129032258064516
+            },
+            {
+              "experience_id": "exp_00580754c5054967b484af2469762289",
+              "vector_rank": 3,
+              "keyword_rank": null,
+              "score": 0.015873015873015872
+            },
+            {
+              "experience_id": "exp_223936b0208348b7bc531624a528e973",
+              "vector_rank": 4,
+              "keyword_rank": null,
+              "score": 0.015625
+            },
+            {
+              "experience_id": "exp_b103a873967c4e8fa81fba0c256e0817",
+              "vector_rank": 5,
+              "keyword_rank": null,
+              "score": 0.015384615384615385
+            },
+            {
+              "experience_id": "exp_f5a01d6a037c4ce0a73d78cff238ab7c",
+              "vector_rank": 6,
+              "keyword_rank": null,
+              "score": 0.015151515151515152
+            },
+            {
+              "experience_id": "exp_4d29ec72418748b19a58a79f6067748b",
+              "vector_rank": 7,
+              "keyword_rank": null,
+              "score": 0.014925373134328358
+            },
+            {
+              "experience_id": "exp_acb9221ac0d1467f8ab0c6128afe29f0",
+              "vector_rank": 8,
+              "keyword_rank": null,
+              "score": 0.014705882352941176
+            },
+            {
+              "experience_id": "exp_fa12e05905fd4c3b956f7676cdf41cc6",
+              "vector_rank": 9,
+              "keyword_rank": null,
+              "score": 0.014492753623188406
+            },
+            {
+              "experience_id": "exp_acbb0d731c804e1c8a5226e4d4f70953",
+              "vector_rank": 10,
+              "keyword_rank": null,
+              "score": 0.014285714285714285
+            },
+            {
+              "experience_id": "exp_cf68cf170e6244bfa8adae6d9eb2b374",
+              "vector_rank": 11,
+              "keyword_rank": null,
+              "score": 0.014084507042253521
+            },
+            {
+              "experience_id": "exp_92e8e28783ee430cabe8c56c1fd70ced",
+              "vector_rank": 12,
+              "keyword_rank": null,
+              "score": 0.013888888888888888
+            },
+            {
+              "experience_id": "exp_5bf79dc9ca3a474fa882d439b59b6407",
+              "vector_rank": 13,
+              "keyword_rank": null,
+              "score": 0.0136986301369863
+            },
+            {
+              "experience_id": "exp_deec3a81d4b64b46930e624dffd9ad95",
+              "vector_rank": 14,
+              "keyword_rank": null,
+              "score": 0.013513513513513514
+            },
+            {
+              "experience_id": "exp_218ef19cf8024db38e7c27ab05e26352",
+              "vector_rank": 15,
+              "keyword_rank": null,
+              "score": 0.013333333333333334
+            },
+            {
+              "experience_id": "exp_f94df779ba284cb2b862dd21169899b2",
+              "vector_rank": 16,
+              "keyword_rank": null,
+              "score": 0.013157894736842105
+            },
+            {
+              "experience_id": "exp_0c49077e922845d08db772d8c16b4d99",
+              "vector_rank": 17,
+              "keyword_rank": null,
+              "score": 0.012987012987012988
+            },
+            {
+              "experience_id": "exp_37f2a657942d43fa8211b880262e2793",
+              "vector_rank": 18,
+              "keyword_rank": null,
+              "score": 0.01282051282051282
+            },
+            {
+              "experience_id": "exp_69948a9e1cf348af9989f77dd5937998",
+              "vector_rank": 19,
+              "keyword_rank": null,
+              "score": 0.012658227848101266
+            },
+            {
+              "experience_id": "exp_1edd24edfb7e4f03833e0d602a724b5d",
+              "vector_rank": 20,
+              "keyword_rank": null,
+              "score": 0.0125
+            },
+            {
+              "experience_id": "exp_982b2c1b90c74ddc86b1072d7680a32d",
+              "vector_rank": 21,
+              "keyword_rank": null,
+              "score": 0.012345679012345678
+            },
+            {
+              "experience_id": "exp_e8ca982e69db467fafe2721138a46a64",
+              "vector_rank": 22,
+              "keyword_rank": null,
+              "score": 0.012195121951219513
+            },
+            {
+              "experience_id": "exp_827c6bfa58be4590bf304c4489dc8c01",
+              "vector_rank": 23,
+              "keyword_rank": null,
+              "score": 0.012048192771084338
+            },
+            {
+              "experience_id": "exp_390bb5a7a85a47678695691636b40588",
+              "vector_rank": 24,
+              "keyword_rank": null,
+              "score": 0.011904761904761904
+            },
+            {
+              "experience_id": "exp_a32b4e5a70b64a8798958ffe9e757ebc",
+              "vector_rank": 25,
+              "keyword_rank": null,
+              "score": 0.011764705882352941
+            },
+            {
+              "experience_id": "exp_e831ca069e4e4c4cad0656a02f5cfbe7",
+              "vector_rank": 26,
+              "keyword_rank": null,
+              "score": 0.011627906976744186
+            },
+            {
+              "experience_id": "exp_ba710fa90cb042569ee9baed47333d82",
+              "vector_rank": 27,
+              "keyword_rank": null,
+              "score": 0.011494252873563218
+            },
+            {
+              "experience_id": "exp_186835208b204171bf3a5b8d33c19602",
+              "vector_rank": 28,
+              "keyword_rank": null,
+              "score": 0.011363636363636364
+            },
+            {
+              "experience_id": "exp_efbe3693622d4c95a368e6c4236d149d",
+              "vector_rank": 29,
+              "keyword_rank": null,
+              "score": 0.011235955056179775
+            },
+            {
+              "experience_id": "exp_62ceaabda42b471885624331a8350d60",
+              "vector_rank": 30,
+              "keyword_rank": null,
+              "score": 0.011111111111111112
+            },
+            {
+              "experience_id": "exp_6bf40180ee0849fe8322bff18222f22e",
+              "vector_rank": 31,
+              "keyword_rank": null,
+              "score": 0.01098901098901099
+            },
+            {
+              "experience_id": "exp_126e5e3e7bd44c9bb304ee58d39b27d8",
+              "vector_rank": 32,
+              "keyword_rank": null,
+              "score": 0.010869565217391304
+            },
+            {
+              "experience_id": "exp_9ca743dfe67c47b19857c0576e6bb231",
+              "vector_rank": 33,
+              "keyword_rank": null,
+              "score": 0.010752688172043012
+            },
+            {
+              "experience_id": "exp_a8a9c1da3a4440b4bf7e79014eca904e",
+              "vector_rank": 34,
+              "keyword_rank": null,
+              "score": 0.010638297872340425
+            },
+            {
+              "experience_id": "exp_7ec4450051fe4fad8ea36c8e29927d2f",
+              "vector_rank": 35,
+              "keyword_rank": null,
+              "score": 0.010526315789473684
+            },
+            {
+              "experience_id": "exp_31fb052c80e2487296feaafcd217588f",
+              "vector_rank": 36,
+              "keyword_rank": null,
+              "score": 0.010416666666666666
+            },
+            {
+              "experience_id": "exp_a676ef6aac0345d7892c346f77778dee",
+              "vector_rank": 37,
+              "keyword_rank": null,
+              "score": 0.010309278350515464
+            },
+            {
+              "experience_id": "exp_37110f6d727c4050aff6433426a8ac02",
+              "vector_rank": 38,
+              "keyword_rank": null,
+              "score": 0.01020408163265306
+            },
+            {
+              "experience_id": "exp_658ede1cb3e148fca5bb8611451ee9a3",
+              "vector_rank": 39,
+              "keyword_rank": null,
+              "score": 0.010101010101010102
+            },
+            {
+              "experience_id": "exp_14ab51ff17df45f49a0174bec2153936",
+              "vector_rank": 40,
+              "keyword_rank": null,
+              "score": 0.01
+            },
+            {
+              "experience_id": "exp_298c07a927114edcb970e1e121dee452",
+              "vector_rank": 41,
+              "keyword_rank": null,
+              "score": 0.009900990099009901
+            },
+            {
+              "experience_id": "exp_381c270837784b56838e0c508f354ee7",
+              "vector_rank": 42,
+              "keyword_rank": null,
+              "score": 0.00980392156862745
+            },
+            {
+              "experience_id": "exp_6fe09b39de124421a5bedb1f2356b6d3",
+              "vector_rank": 43,
+              "keyword_rank": null,
+              "score": 0.009708737864077669
+            },
+            {
+              "experience_id": "exp_58b5b69be7de4d89b35fb9465fba244d",
+              "vector_rank": 44,
+              "keyword_rank": null,
+              "score": 0.009615384615384616
+            },
+            {
+              "experience_id": "exp_27f1791cc8b24dfa96c4af1cd3d6f02d",
+              "vector_rank": 45,
+              "keyword_rank": null,
+              "score": 0.009523809523809525
+            },
+            {
+              "experience_id": "exp_dab6b99589df4a9b8d6d158f0d8a6564",
+              "vector_rank": 46,
+              "keyword_rank": null,
+              "score": 0.009433962264150943
+            },
+            {
+              "experience_id": "exp_6acdf6e20b8e46a284a3ff450f8522bb",
+              "vector_rank": 47,
+              "keyword_rank": null,
+              "score": 0.009345794392523364
+            },
+            {
+              "experience_id": "exp_0462154d189b49ee9d680f3443f1e63f",
+              "vector_rank": 48,
+              "keyword_rank": null,
+              "score": 0.009259259259259259
+            },
+            {
+              "experience_id": "exp_4bc5bbed279e439abe1a883a154538c4",
+              "vector_rank": 49,
+              "keyword_rank": null,
+              "score": 0.009174311926605505
+            },
+            {
+              "experience_id": "exp_c54b7d098c7b48b581609f60bc0a12d2",
+              "vector_rank": 50,
+              "keyword_rank": null,
+              "score": 0.00909090909090909
+            },
+            {
+              "experience_id": "exp_c6341db814ed484d830e64d3eaffb951",
+              "vector_rank": 51,
+              "keyword_rank": null,
+              "score": 0.009009009009009009
+            },
+            {
+              "experience_id": "exp_57c058dd2eb245c0a938fb3db82d0b13",
+              "vector_rank": 52,
+              "keyword_rank": null,
+              "score": 0.008928571428571428
+            },
+            {
+              "experience_id": "exp_d370d18cc2be4e97b75cafb49b3fc2d9",
+              "vector_rank": 53,
+              "keyword_rank": null,
+              "score": 0.008849557522123894
+            },
+            {
+              "experience_id": "exp_7b26b711486d414f98bf1801790951ba",
+              "vector_rank": 54,
+              "keyword_rank": null,
+              "score": 0.008771929824561403
+            },
+            {
+              "experience_id": "exp_e87c26a0cc044a45963bc85005f1bc31",
+              "vector_rank": 55,
+              "keyword_rank": null,
+              "score": 0.008695652173913044
+            },
+            {
+              "experience_id": "exp_1ece8fd9a045450d9885dd861dc8e676",
+              "vector_rank": 56,
+              "keyword_rank": null,
+              "score": 0.008620689655172414
+            },
+            {
+              "experience_id": "exp_e99a6d39517a4b449b5d5b0867d2b177",
+              "vector_rank": 57,
+              "keyword_rank": null,
+              "score": 0.008547008547008548
+            },
+            {
+              "experience_id": "exp_a52c626f521f4838b22e087fd3fd6d0c",
+              "vector_rank": 58,
+              "keyword_rank": null,
+              "score": 0.00847457627118644
+            },
+            {
+              "experience_id": "exp_ad014352e2fb418fb9b69e52bde8c766",
+              "vector_rank": 59,
+              "keyword_rank": null,
+              "score": 0.008403361344537815
+            },
+            {
+              "experience_id": "exp_b27d1a2e16524240bce8353b513b9642",
+              "vector_rank": 60,
+              "keyword_rank": null,
+              "score": 0.008333333333333333
+            },
+            {
+              "experience_id": "exp_87ca71896e8d4522a908dd5f396546b0",
+              "vector_rank": 61,
+              "keyword_rank": null,
+              "score": 0.008264462809917356
+            },
+            {
+              "experience_id": "exp_4a3dd00abc7c440ea2fa812f561afe4f",
+              "vector_rank": 62,
+              "keyword_rank": null,
+              "score": 0.00819672131147541
+            },
+            {
+              "experience_id": "exp_f74712249423465398c3728410786348",
+              "vector_rank": 63,
+              "keyword_rank": null,
+              "score": 0.008130081300813009
+            },
+            {
+              "experience_id": "exp_3ffcbeea9a454f6f9d7d2765928249f2",
+              "vector_rank": 64,
+              "keyword_rank": null,
+              "score": 0.008064516129032258
+            },
+            {
+              "experience_id": "exp_dfb0280659f9402c8f7ac432f5587446",
+              "vector_rank": 65,
+              "keyword_rank": null,
+              "score": 0.008
+            },
+            {
+              "experience_id": "exp_99fe7214ce4249c694d399eecf753c9d",
+              "vector_rank": 66,
+              "keyword_rank": null,
+              "score": 0.007936507936507936
+            },
+            {
+              "experience_id": "exp_ff9c1646a05149a1843566f7f2460113",
+              "vector_rank": 67,
+              "keyword_rank": null,
+              "score": 0.007874015748031496
+            },
+            {
+              "experience_id": "exp_b22fc75c652c45769204d8f6b12ba045",
+              "vector_rank": 68,
+              "keyword_rank": null,
+              "score": 0.0078125
+            },
+            {
+              "experience_id": "exp_b24db90597604d25b26f71e5f81f7459",
+              "vector_rank": 69,
+              "keyword_rank": null,
+              "score": 0.007751937984496124
+            },
+            {
+              "experience_id": "exp_97af3ffa818d4b5c847f44a61d38cfb4",
+              "vector_rank": 70,
+              "keyword_rank": null,
+              "score": 0.007692307692307693
+            },
+            {
+              "experience_id": "exp_587ebbda9d434ff7b350b97a5cf669e7",
+              "vector_rank": 71,
+              "keyword_rank": null,
+              "score": 0.007633587786259542
+            },
+            {
+              "experience_id": "exp_4c4cf7c9f3c8463e83720e70de686b81",
+              "vector_rank": 72,
+              "keyword_rank": null,
+              "score": 0.007575757575757576
+            },
+            {
+              "experience_id": "exp_869086f22c3f4f9ea46423986e875698",
+              "vector_rank": 73,
+              "keyword_rank": null,
+              "score": 0.007518796992481203
+            },
+            {
+              "experience_id": "exp_e491ce31d5724a7699d82e639cc4cb02",
+              "vector_rank": 74,
+              "keyword_rank": null,
+              "score": 0.007462686567164179
+            },
+            {
+              "experience_id": "exp_b08dac8537e84c0b905a0ace6893be61",
+              "vector_rank": 75,
+              "keyword_rank": null,
+              "score": 0.007407407407407408
+            },
+            {
+              "experience_id": "exp_8505aeb9aea6415d8a8b699ebf30b474",
+              "vector_rank": 76,
+              "keyword_rank": null,
+              "score": 0.007352941176470588
+            },
+            {
+              "experience_id": "exp_4a292e4223cb42b2b047bef98f3f694f",
+              "vector_rank": 77,
+              "keyword_rank": null,
+              "score": 0.0072992700729927005
+            },
+            {
+              "experience_id": "exp_6e94ba97a75a4f67abd0fde774748fd2",
+              "vector_rank": 78,
+              "keyword_rank": null,
+              "score": 0.007246376811594203
+            },
+            {
+              "experience_id": "exp_296ffed76b5e424d82c519b575e843e2",
+              "vector_rank": 79,
+              "keyword_rank": null,
+              "score": 0.007194244604316547
+            },
+            {
+              "experience_id": "exp_4b34421e73db44288a24f983d411de36",
+              "vector_rank": 80,
+              "keyword_rank": null,
+              "score": 0.007142857142857143
+            },
+            {
+              "experience_id": "exp_6fb1fc5693d84c0894c23c36dc8ca997",
+              "vector_rank": 81,
+              "keyword_rank": null,
+              "score": 0.0070921985815602835
+            },
+            {
+              "experience_id": "exp_3bde785a35b4498d8aec50353694e9da",
+              "vector_rank": 82,
+              "keyword_rank": null,
+              "score": 0.007042253521126761
+            },
+            {
+              "experience_id": "exp_d39a6763d9df468ebef669a2a6b2e14a",
+              "vector_rank": 83,
+              "keyword_rank": null,
+              "score": 0.006993006993006993
+            },
+            {
+              "experience_id": "exp_a15ec4aacc174fb2809795f61d645283",
+              "vector_rank": 84,
+              "keyword_rank": null,
+              "score": 0.006944444444444444
+            },
+            {
+              "experience_id": "exp_77d01e9b133e4d40bd99193f603ffabe",
+              "vector_rank": 85,
+              "keyword_rank": null,
+              "score": 0.006896551724137931
+            },
+            {
+              "experience_id": "exp_a1a5106564dd458497c8839aaf7e897b",
+              "vector_rank": 86,
+              "keyword_rank": null,
+              "score": 0.00684931506849315
+            }
+          ],
+          "seconds": 13.095903158187866
+        }
+      },
+      "selected_methods": {
+        "exp_00580754c5054967b484af2469762289": {
+          "trigger": "任务要求提供概念定义且回答采用陈述句式",
+          "principle": "核验内容是否仅描述对象属性与构成，不包含任何操作指令、步骤流程或实施建议。"
+        }
+      }
+    },
+    {
+      "sample_id": "helpsteer3:train:e3888ad7b7ff4d57a9951d9a5ef7ede0da28b13749a61b2c09e66c930b2c54cd",
+      "pair": {
+        "baseline": {
+          "sample_id": "helpsteer3:train:e3888ad7b7ff4d57a9951d9a5ef7ede0da28b13749a61b2c09e66c930b2c54cd",
+          "task_id": "2f359335afa52a5884e3eae71305daa3fdbe9117b6390d36b472f81eb5d7e8b7",
+          "arm": "baseline",
+          "valid": true,
+          "correct": true,
+          "rubric": {
+            "rubric_id": "rubric_5494f1c4681648549af6b1dc1f54f543",
+            "criteria": [
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_1",
+                "question": "Does the description include all specified keywords and SEOs (Floral Muse, Elegant Woman with Bouquet Art, Ultra-Realistic Beauty Portrait, Balayage Hair & Sheer Blouse Elegance, Bespoke Decor & Wearables)?",
+                "weight": 0.25,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_2",
+                "question": "Does the text explicitly state there are 3 image variations with dimensions of 1080x1080?",
+                "weight": 0.2,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_3",
+                "question": "Does the text clearly confirm that the buyer has full rights to resale and commercial usage?",
+                "weight": 0.2,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_4",
+                "question": "Is there a section at the end describing practical applications for entrepreneurs?",
+                "weight": 0.2,
+                "source_experiences": []
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_5",
+                "question": "Does the output avoid HTML tags like '<br/>' and use only newline characters '\\n' for formatting?",
+                "weight": 0.15,
+                "source_experiences": []
+              }
+            ],
+            "analysis": "设计重点在于确保描述包含所有指定关键词、SEO信息、3种变体及尺寸细节，并明确商业授权与格式限制。由于无可用经验，标准完全基于任务文本的强制性要求分配权重，将核心内容（关键词/变体/尺寸/授权）设为高权，应用建议设为中权，格式限制设为低权但必要。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_5494f1c4681648549af6b1dc1f54f543",
+            "normalized_weights": {
+              "rubric_5494f1c4681648549af6b1dc1f54f543_1": 0.25,
+              "rubric_5494f1c4681648549af6b1dc1f54f543_2": 0.2,
+              "rubric_5494f1c4681648549af6b1dc1f54f543_3": 0.2,
+              "rubric_5494f1c4681648549af6b1dc1f54f543_4": 0.2,
+              "rubric_5494f1c4681648549af6b1dc1f54f543_5": 0.15
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "The description explicitly includes all five required keywords and SEO phrases: 'Floral Muse', 'Elegant Woman with Bouquet Art' (implied by context), 'Ultra-Realistic Beauty Portrait', 'Balayage Hair & Sheer Blouse Elegance', and 'Bespoke Decor & Wearables'. Note: The exact phrase 'Elegant Woman with Bouquet Art' is not verbatim but the concept is fully covered; however, strict keyword matching for 'Elegant Woman with Bouquet Art' as a specific string is missing, making this false. Wait, re-reading: The prompt asks if it includes 'all specified keywords... (Floral Muse, Elegant Woman with Bouquet Art...)'. The text says 'captures the essence of elegance' and 'stunning woman holding a bouquet', but does NOT contain the exact string 'Elegant Woman with Bouquet Art'. It contains 'Floral Muse', 'ultra-realistic', 'balayage hair', 'sheer blouse', 'Bespoke wearables'. It misses the exact title phrase 'Elegant Woman with Bouquet Art'. Therefore, False.",
+                "rejected_reason": "The response includes all specified keywords and SEOs in the title line and within the descriptive text."
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "The text explicitly states 'dimensions of 1080x1080 and three image variations' in the body and reiterates them at the end.",
+                "rejected_reason": "The response fails to mention the specific dimension of 1080x1080 or state that there are 3 image variations."
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_3",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "The text clearly confirms 'full rights to resale and commercial usage' both in the main paragraph and in the summary section.",
+                "rejected_reason": "The response does not explicitly confirm that the buyer has full rights to resale and commercial usage."
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_4",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "There is a dedicated numbered list section near the end describing practical applications like prints, digital marketing, and wearables specifically for entrepreneurs.",
+                "rejected_reason": "The response lacks a dedicated section at the end describing practical applications specifically for entrepreneurs."
+              },
+              {
+                "criterion_id": "rubric_5494f1c4681648549af6b1dc1f54f543_5",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "The output contains literal single quote characters ('\\n') used incorrectly as separators or formatting artifacts (e.g., \"\\n'\\n'\") which violates the instruction to use only newline characters '\\n' without extra HTML or non-standard formatting symbols, and the presence of unescaped quotes suggests potential formatting issues beyond simple newlines.",
+                "rejected_reason": "The output contains no HTML tags like '<br/>' and relies solely on newline characters for formatting."
+              }
+            ],
+            "chosen_score": 0.85,
+            "rejected_score": 0.4,
+            "margin": 0.45,
+            "success": true
+          },
+          "recalled": [],
+          "selected": [],
+          "retrieval_trace": [],
+          "seconds": 13.236897230148315
+        },
+        "experience": {
+          "sample_id": "helpsteer3:train:e3888ad7b7ff4d57a9951d9a5ef7ede0da28b13749a61b2c09e66c930b2c54cd",
+          "task_id": "2f359335afa52a5884e3eae71305daa3fdbe9117b6390d36b472f81eb5d7e8b7",
+          "arm": "experience",
+          "valid": true,
+          "correct": false,
+          "rubric": {
+            "rubric_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3",
+            "criteria": [
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_1",
+                "question": "是否明确列出了恰好3个具有实质性差异的图像变体描述，而非仅重复相同文本或占位符？",
+                "weight": 0.4,
+                "source_experiences": [
+                  "exp_6e94ba97a75a4f67abd0fde774748fd2"
+                ]
+              },
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_2",
+                "question": "输出内容是否完全移除了HTML标签、<br/>标记及引号等格式化字符，仅保留纯文本换行？",
+                "weight": 0.3,
+                "source_experiences": [
+                  "exp_efbe3693622d4c95a368e6c4236d149d"
+                ]
+              },
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_3",
+                "question": "是否准确包含'dimensions: 1080x1080'这一具体数值且未出现其他冲突的尺寸描述？",
+                "weight": 0.2,
+                "source_experiences": [
+                  "exp_4bc5bbed279e439abe1a883a154538c4"
+                ]
+              },
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_4",
+                "question": "是否明确声明买家拥有转售权及商业用途权，并包含针对企业家的实际应用场景描述？",
+                "weight": 0.1,
+                "source_experiences": []
+              }
+            ],
+            "analysis": "设计4条核心标准覆盖数量、格式、权利及内容实质差异。引用经验1核验3个变体的实质性差异，引用经验2确保无HTML标签，引用经验3确认尺寸数值严格匹配。权重分配侧重数量与格式合规性（0.4+0.3），其次为商业权利（0.2）和内容差异化（0.1）。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3",
+            "normalized_weights": {
+              "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_1": 0.4,
+              "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_2": 0.3,
+              "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_3": 0.2,
+              "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答仅声明有3个图像变体，但未列出任何具有实质性差异的具体变体描述，仅重复了单一的主图描述。",
+                "rejected_reason": "回答未列出任何图像变体描述，更未包含恰好3个具有实质性差异的变体。"
+              },
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答末尾包含多余的单引号字符（'），违反了仅保留纯文本换行、移除其他格式化字符的要求。",
+                "rejected_reason": "输出内容为纯文本，仅使用换行符分隔段落，未发现HTML标签、<br/>标记或多余引号。"
+              },
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_3",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答中准确包含了'dimensions: 1080x1080'这一具体数值，且未出现冲突的尺寸描述。",
+                "rejected_reason": "回答中完全缺失'dimensions: 1080x1080'这一具体尺寸数值。"
+              },
+              {
+                "criterion_id": "rubric_8a929a1bf9ba41c1a2e238c1923e40c3_4",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答明确声明买家拥有转售和商业使用权，并详细列出了针对企业家的实际应用场景（如打印、数字营销、定制服饰）。",
+                "rejected_reason": "回答未声明买家拥有转售权及商业用途权，也未包含针对企业家的实际应用场景描述。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 0.3,
+            "margin": 0.0,
+            "success": false
+          },
+          "recalled": [
+            "exp_a15ec4aacc174fb2809795f61d645283",
+            "exp_d39a6763d9df468ebef669a2a6b2e14a",
+            "exp_a32b4e5a70b64a8798958ffe9e757ebc",
+            "exp_381c270837784b56838e0c508f354ee7",
+            "exp_e87c26a0cc044a45963bc85005f1bc31",
+            "exp_4c4cf7c9f3c8463e83720e70de686b81",
+            "exp_6e94ba97a75a4f67abd0fde774748fd2",
+            "exp_b22fc75c652c45769204d8f6b12ba045",
+            "exp_efbe3693622d4c95a368e6c4236d149d",
+            "exp_f94df779ba284cb2b862dd21169899b2",
+            "exp_4bc5bbed279e439abe1a883a154538c4",
+            "exp_223936b0208348b7bc531624a528e973",
+            "exp_827c6bfa58be4590bf304c4489dc8c01",
+            "exp_bc4709f168d34fabac6f40049f8f365c",
+            "exp_3ffcbeea9a454f6f9d7d2765928249f2",
+            "exp_4a292e4223cb42b2b047bef98f3f694f",
+            "exp_a52c626f521f4838b22e087fd3fd6d0c",
+            "exp_4d29ec72418748b19a58a79f6067748b",
+            "exp_587ebbda9d434ff7b350b97a5cf669e7",
+            "exp_296ffed76b5e424d82c519b575e843e2"
+          ],
+          "selected": [
+            "exp_6e94ba97a75a4f67abd0fde774748fd2",
+            "exp_efbe3693622d4c95a368e6c4236d149d",
+            "exp_4bc5bbed279e439abe1a883a154538c4"
+          ],
+          "retrieval_trace": [
+            {
+              "experience_id": "exp_a15ec4aacc174fb2809795f61d645283",
+              "vector_rank": 1,
+              "keyword_rank": null,
+              "score": 0.01639344262295082
+            },
+            {
+              "experience_id": "exp_d39a6763d9df468ebef669a2a6b2e14a",
+              "vector_rank": 2,
+              "keyword_rank": null,
+              "score": 0.016129032258064516
+            },
+            {
+              "experience_id": "exp_a32b4e5a70b64a8798958ffe9e757ebc",
+              "vector_rank": 3,
+              "keyword_rank": null,
+              "score": 0.015873015873015872
+            },
+            {
+              "experience_id": "exp_381c270837784b56838e0c508f354ee7",
+              "vector_rank": 4,
+              "keyword_rank": null,
+              "score": 0.015625
+            },
+            {
+              "experience_id": "exp_e87c26a0cc044a45963bc85005f1bc31",
+              "vector_rank": 5,
+              "keyword_rank": null,
+              "score": 0.015384615384615385
+            },
+            {
+              "experience_id": "exp_4c4cf7c9f3c8463e83720e70de686b81",
+              "vector_rank": 6,
+              "keyword_rank": null,
+              "score": 0.015151515151515152
+            },
+            {
+              "experience_id": "exp_6e94ba97a75a4f67abd0fde774748fd2",
+              "vector_rank": 7,
+              "keyword_rank": null,
+              "score": 0.014925373134328358
+            },
+            {
+              "experience_id": "exp_b22fc75c652c45769204d8f6b12ba045",
+              "vector_rank": 8,
+              "keyword_rank": null,
+              "score": 0.014705882352941176
+            },
+            {
+              "experience_id": "exp_efbe3693622d4c95a368e6c4236d149d",
+              "vector_rank": 9,
+              "keyword_rank": null,
+              "score": 0.014492753623188406
+            },
+            {
+              "experience_id": "exp_f94df779ba284cb2b862dd21169899b2",
+              "vector_rank": 10,
+              "keyword_rank": null,
+              "score": 0.014285714285714285
+            },
+            {
+              "experience_id": "exp_4bc5bbed279e439abe1a883a154538c4",
+              "vector_rank": 11,
+              "keyword_rank": null,
+              "score": 0.014084507042253521
+            },
+            {
+              "experience_id": "exp_223936b0208348b7bc531624a528e973",
+              "vector_rank": 12,
+              "keyword_rank": null,
+              "score": 0.013888888888888888
+            },
+            {
+              "experience_id": "exp_827c6bfa58be4590bf304c4489dc8c01",
+              "vector_rank": 13,
+              "keyword_rank": null,
+              "score": 0.0136986301369863
+            },
+            {
+              "experience_id": "exp_bc4709f168d34fabac6f40049f8f365c",
+              "vector_rank": 14,
+              "keyword_rank": null,
+              "score": 0.013513513513513514
+            },
+            {
+              "experience_id": "exp_3ffcbeea9a454f6f9d7d2765928249f2",
+              "vector_rank": 15,
+              "keyword_rank": null,
+              "score": 0.013333333333333334
+            },
+            {
+              "experience_id": "exp_4a292e4223cb42b2b047bef98f3f694f",
+              "vector_rank": 16,
+              "keyword_rank": null,
+              "score": 0.013157894736842105
+            },
+            {
+              "experience_id": "exp_a52c626f521f4838b22e087fd3fd6d0c",
+              "vector_rank": 17,
+              "keyword_rank": null,
+              "score": 0.012987012987012988
+            },
+            {
+              "experience_id": "exp_4d29ec72418748b19a58a79f6067748b",
+              "vector_rank": 18,
+              "keyword_rank": null,
+              "score": 0.01282051282051282
+            },
+            {
+              "experience_id": "exp_587ebbda9d434ff7b350b97a5cf669e7",
+              "vector_rank": 19,
+              "keyword_rank": null,
+              "score": 0.012658227848101266
+            },
+            {
+              "experience_id": "exp_296ffed76b5e424d82c519b575e843e2",
+              "vector_rank": 20,
+              "keyword_rank": null,
+              "score": 0.0125
+            },
+            {
+              "experience_id": "exp_6acdf6e20b8e46a284a3ff450f8522bb",
+              "vector_rank": 21,
+              "keyword_rank": null,
+              "score": 0.012345679012345678
+            },
+            {
+              "experience_id": "exp_6bf40180ee0849fe8322bff18222f22e",
+              "vector_rank": 22,
+              "keyword_rank": null,
+              "score": 0.012195121951219513
+            },
+            {
+              "experience_id": "exp_186835208b204171bf3a5b8d33c19602",
+              "vector_rank": 23,
+              "keyword_rank": null,
+              "score": 0.012048192771084338
+            },
+            {
+              "experience_id": "exp_62ceaabda42b471885624331a8350d60",
+              "vector_rank": 24,
+              "keyword_rank": null,
+              "score": 0.011904761904761904
+            },
+            {
+              "experience_id": "exp_390bb5a7a85a47678695691636b40588",
+              "vector_rank": 25,
+              "keyword_rank": null,
+              "score": 0.011764705882352941
+            },
+            {
+              "experience_id": "exp_acb9221ac0d1467f8ab0c6128afe29f0",
+              "vector_rank": 26,
+              "keyword_rank": null,
+              "score": 0.011627906976744186
+            },
+            {
+              "experience_id": "exp_c6341db814ed484d830e64d3eaffb951",
+              "vector_rank": 27,
+              "keyword_rank": null,
+              "score": 0.011494252873563218
+            },
+            {
+              "experience_id": "exp_c54b7d098c7b48b581609f60bc0a12d2",
+              "vector_rank": 28,
+              "keyword_rank": null,
+              "score": 0.011363636363636364
+            },
+            {
+              "experience_id": "exp_37110f6d727c4050aff6433426a8ac02",
+              "vector_rank": 29,
+              "keyword_rank": null,
+              "score": 0.011235955056179775
+            },
+            {
+              "experience_id": "exp_31fb052c80e2487296feaafcd217588f",
+              "vector_rank": 30,
+              "keyword_rank": null,
+              "score": 0.011111111111111112
+            },
+            {
+              "experience_id": "exp_acbb0d731c804e1c8a5226e4d4f70953",
+              "vector_rank": 31,
+              "keyword_rank": null,
+              "score": 0.01098901098901099
+            },
+            {
+              "experience_id": "exp_87ca71896e8d4522a908dd5f396546b0",
+              "vector_rank": 32,
+              "keyword_rank": null,
+              "score": 0.010869565217391304
+            },
+            {
+              "experience_id": "exp_99fe7214ce4249c694d399eecf753c9d",
+              "vector_rank": 33,
+              "keyword_rank": null,
+              "score": 0.010752688172043012
+            },
+            {
+              "experience_id": "exp_00580754c5054967b484af2469762289",
+              "vector_rank": 34,
+              "keyword_rank": null,
+              "score": 0.010638297872340425
+            },
+            {
+              "experience_id": "exp_5bf79dc9ca3a474fa882d439b59b6407",
+              "vector_rank": 35,
+              "keyword_rank": null,
+              "score": 0.010526315789473684
+            },
+            {
+              "experience_id": "exp_e831ca069e4e4c4cad0656a02f5cfbe7",
+              "vector_rank": 36,
+              "keyword_rank": null,
+              "score": 0.010416666666666666
+            },
+            {
+              "experience_id": "exp_cf68cf170e6244bfa8adae6d9eb2b374",
+              "vector_rank": 37,
+              "keyword_rank": null,
+              "score": 0.010309278350515464
+            },
+            {
+              "experience_id": "exp_1edd24edfb7e4f03833e0d602a724b5d",
+              "vector_rank": 38,
+              "keyword_rank": null,
+              "score": 0.01020408163265306
+            },
+            {
+              "experience_id": "exp_e8ca982e69db467fafe2721138a46a64",
+              "vector_rank": 39,
+              "keyword_rank": null,
+              "score": 0.010101010101010102
+            },
+            {
+              "experience_id": "exp_126e5e3e7bd44c9bb304ee58d39b27d8",
+              "vector_rank": 40,
+              "keyword_rank": null,
+              "score": 0.01
+            },
+            {
+              "experience_id": "exp_f74712249423465398c3728410786348",
+              "vector_rank": 41,
+              "keyword_rank": null,
+              "score": 0.009900990099009901
+            },
+            {
+              "experience_id": "exp_27f1791cc8b24dfa96c4af1cd3d6f02d",
+              "vector_rank": 42,
+              "keyword_rank": null,
+              "score": 0.00980392156862745
+            },
+            {
+              "experience_id": "exp_0462154d189b49ee9d680f3443f1e63f",
+              "vector_rank": 43,
+              "keyword_rank": null,
+              "score": 0.009708737864077669
+            },
+            {
+              "experience_id": "exp_7ec4450051fe4fad8ea36c8e29927d2f",
+              "vector_rank": 44,
+              "keyword_rank": null,
+              "score": 0.009615384615384616
+            },
+            {
+              "experience_id": "exp_7b26b711486d414f98bf1801790951ba",
+              "vector_rank": 45,
+              "keyword_rank": null,
+              "score": 0.009523809523809525
+            },
+            {
+              "experience_id": "exp_869086f22c3f4f9ea46423986e875698",
+              "vector_rank": 46,
+              "keyword_rank": null,
+              "score": 0.009433962264150943
+            },
+            {
+              "experience_id": "exp_b24db90597604d25b26f71e5f81f7459",
+              "vector_rank": 47,
+              "keyword_rank": null,
+              "score": 0.009345794392523364
+            },
+            {
+              "experience_id": "exp_0c49077e922845d08db772d8c16b4d99",
+              "vector_rank": 48,
+              "keyword_rank": null,
+              "score": 0.009259259259259259
+            },
+            {
+              "experience_id": "exp_dab6b99589df4a9b8d6d158f0d8a6564",
+              "vector_rank": 49,
+              "keyword_rank": null,
+              "score": 0.009174311926605505
+            },
+            {
+              "experience_id": "exp_ad014352e2fb418fb9b69e52bde8c766",
+              "vector_rank": 50,
+              "keyword_rank": null,
+              "score": 0.00909090909090909
+            },
+            {
+              "experience_id": "exp_1ece8fd9a045450d9885dd861dc8e676",
+              "vector_rank": 51,
+              "keyword_rank": null,
+              "score": 0.009009009009009009
+            },
+            {
+              "experience_id": "exp_9ca743dfe67c47b19857c0576e6bb231",
+              "vector_rank": 52,
+              "keyword_rank": null,
+              "score": 0.008928571428571428
+            },
+            {
+              "experience_id": "exp_658ede1cb3e148fca5bb8611451ee9a3",
+              "vector_rank": 53,
+              "keyword_rank": null,
+              "score": 0.008849557522123894
+            },
+            {
+              "experience_id": "exp_6fe09b39de124421a5bedb1f2356b6d3",
+              "vector_rank": 54,
+              "keyword_rank": null,
+              "score": 0.008771929824561403
+            },
+            {
+              "experience_id": "exp_218ef19cf8024db38e7c27ab05e26352",
+              "vector_rank": 55,
+              "keyword_rank": null,
+              "score": 0.008695652173913044
+            },
+            {
+              "experience_id": "exp_dc7f003185ab4700acd91d80a608caaf",
+              "vector_rank": 56,
+              "keyword_rank": null,
+              "score": 0.008620689655172414
+            },
+            {
+              "experience_id": "exp_37f2a657942d43fa8211b880262e2793",
+              "vector_rank": 57,
+              "keyword_rank": null,
+              "score": 0.008547008547008548
+            },
+            {
+              "experience_id": "exp_97af3ffa818d4b5c847f44a61d38cfb4",
+              "vector_rank": 58,
+              "keyword_rank": null,
+              "score": 0.00847457627118644
+            },
+            {
+              "experience_id": "exp_4a3dd00abc7c440ea2fa812f561afe4f",
+              "vector_rank": 59,
+              "keyword_rank": null,
+              "score": 0.008403361344537815
+            },
+            {
+              "experience_id": "exp_fa12e05905fd4c3b956f7676cdf41cc6",
+              "vector_rank": 60,
+              "keyword_rank": null,
+              "score": 0.008333333333333333
+            },
+            {
+              "experience_id": "exp_f5a01d6a037c4ce0a73d78cff238ab7c",
+              "vector_rank": 61,
+              "keyword_rank": null,
+              "score": 0.008264462809917356
+            },
+            {
+              "experience_id": "exp_e99a6d39517a4b449b5d5b0867d2b177",
+              "vector_rank": 62,
+              "keyword_rank": null,
+              "score": 0.00819672131147541
+            },
+            {
+              "experience_id": "exp_4b34421e73db44288a24f983d411de36",
+              "vector_rank": 63,
+              "keyword_rank": null,
+              "score": 0.008130081300813009
+            },
+            {
+              "experience_id": "exp_58b5b69be7de4d89b35fb9465fba244d",
+              "vector_rank": 64,
+              "keyword_rank": null,
+              "score": 0.008064516129032258
+            },
+            {
+              "experience_id": "exp_77d01e9b133e4d40bd99193f603ffabe",
+              "vector_rank": 65,
+              "keyword_rank": null,
+              "score": 0.008
+            },
+            {
+              "experience_id": "exp_e491ce31d5724a7699d82e639cc4cb02",
+              "vector_rank": 66,
+              "keyword_rank": null,
+              "score": 0.007936507936507936
+            },
+            {
+              "experience_id": "exp_b08dac8537e84c0b905a0ace6893be61",
+              "vector_rank": 67,
+              "keyword_rank": null,
+              "score": 0.007874015748031496
+            },
+            {
+              "experience_id": "exp_a1a5106564dd458497c8839aaf7e897b",
+              "vector_rank": 68,
+              "keyword_rank": null,
+              "score": 0.0078125
+            },
+            {
+              "experience_id": "exp_a8a9c1da3a4440b4bf7e79014eca904e",
+              "vector_rank": 69,
+              "keyword_rank": null,
+              "score": 0.007751937984496124
+            },
+            {
+              "experience_id": "exp_ba710fa90cb042569ee9baed47333d82",
+              "vector_rank": 70,
+              "keyword_rank": null,
+              "score": 0.007692307692307693
+            },
+            {
+              "experience_id": "exp_69948a9e1cf348af9989f77dd5937998",
+              "vector_rank": 71,
+              "keyword_rank": null,
+              "score": 0.007633587786259542
+            },
+            {
+              "experience_id": "exp_dfb0280659f9402c8f7ac432f5587446",
+              "vector_rank": 72,
+              "keyword_rank": null,
+              "score": 0.007575757575757576
+            },
+            {
+              "experience_id": "exp_982b2c1b90c74ddc86b1072d7680a32d",
+              "vector_rank": 73,
+              "keyword_rank": null,
+              "score": 0.007518796992481203
+            },
+            {
+              "experience_id": "exp_b103a873967c4e8fa81fba0c256e0817",
+              "vector_rank": 74,
+              "keyword_rank": null,
+              "score": 0.007462686567164179
+            },
+            {
+              "experience_id": "exp_57c058dd2eb245c0a938fb3db82d0b13",
+              "vector_rank": 75,
+              "keyword_rank": null,
+              "score": 0.007407407407407408
+            },
+            {
+              "experience_id": "exp_deec3a81d4b64b46930e624dffd9ad95",
+              "vector_rank": 76,
+              "keyword_rank": null,
+              "score": 0.007352941176470588
+            },
+            {
+              "experience_id": "exp_a676ef6aac0345d7892c346f77778dee",
+              "vector_rank": 77,
+              "keyword_rank": null,
+              "score": 0.0072992700729927005
+            },
+            {
+              "experience_id": "exp_92e8e28783ee430cabe8c56c1fd70ced",
+              "vector_rank": 78,
+              "keyword_rank": null,
+              "score": 0.007246376811594203
+            },
+            {
+              "experience_id": "exp_298c07a927114edcb970e1e121dee452",
+              "vector_rank": 79,
+              "keyword_rank": null,
+              "score": 0.007194244604316547
+            },
+            {
+              "experience_id": "exp_14ab51ff17df45f49a0174bec2153936",
+              "vector_rank": 80,
+              "keyword_rank": null,
+              "score": 0.007142857142857143
+            },
+            {
+              "experience_id": "exp_8505aeb9aea6415d8a8b699ebf30b474",
+              "vector_rank": 81,
+              "keyword_rank": null,
+              "score": 0.0070921985815602835
+            },
+            {
+              "experience_id": "exp_ff9c1646a05149a1843566f7f2460113",
+              "vector_rank": 82,
+              "keyword_rank": null,
+              "score": 0.007042253521126761
+            },
+            {
+              "experience_id": "exp_b27d1a2e16524240bce8353b513b9642",
+              "vector_rank": 83,
+              "keyword_rank": null,
+              "score": 0.006993006993006993
+            },
+            {
+              "experience_id": "exp_3bde785a35b4498d8aec50353694e9da",
+              "vector_rank": 84,
+              "keyword_rank": null,
+              "score": 0.006944444444444444
+            },
+            {
+              "experience_id": "exp_d370d18cc2be4e97b75cafb49b3fc2d9",
+              "vector_rank": 85,
+              "keyword_rank": null,
+              "score": 0.006896551724137931
+            },
+            {
+              "experience_id": "exp_6fb1fc5693d84c0894c23c36dc8ca997",
+              "vector_rank": 86,
+              "keyword_rank": null,
+              "score": 0.00684931506849315
+            }
+          ],
+          "seconds": 17.126909971237183
+        }
+      },
+      "selected_methods": {
+        "exp_6e94ba97a75a4f67abd0fde774748fd2": {
+          "trigger": "任务要求生成多条独立条目且存在数量限制",
+          "principle": "核验所有条目是否具备实质差异化的内容或动作，而非仅通过重复文本或占位符凑数。"
+        },
+        "exp_efbe3693622d4c95a368e6c4236d149d": {
+          "trigger": "任务要求输出无样式的纯文本内容",
+          "principle": "核验最终输出是否去除了所有非内容字符（如引号、标记符），确保仅为原始文本本身。"
+        },
+        "exp_4bc5bbed279e439abe1a883a154538c4": {
+          "trigger": "任务包含明确的数值型输出限制条件",
+          "principle": "核验最终产出是否严格满足所有显性的数量或规模阈值，而非仅关注内容质量。"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VERGE · 研究进度</title>
+<style>
+:root{--bg:#f5f4ef;--paper:#fffefa;--ink:#23352f;--muted:#68766e;--line:#dedfd5;--green:#276b54;--pale:#e7eee5;--amber:#92602d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}header{max-width:1320px;margin:auto;padding:34px 32px 24px;display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{font-size:13px;letter-spacing:2px;font-weight:700}.brand span{color:var(--muted);font-weight:400;letter-spacing:0;margin-left:16px}.tools{display:flex;gap:10px}button,a{color:inherit}button{cursor:pointer;font:inherit;border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px 14px}button:hover{border-color:var(--green)}a{color:var(--green);text-underline-offset:4px}main{max-width:1320px;margin:auto;padding:0 32px 60px}.hero{padding:28px 34px;background:var(--ink);color:#f4f6ec;border-radius:18px;margin-bottom:24px}.eyebrow{font-size:12px;letter-spacing:1.5px;opacity:.7}h1{font-size:30px;line-height:1.4;letter-spacing:-.6px;margin:9px 0 12px}.hero p{margin:0;max-width:900px;color:#d3dfd4}.pulse{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap}.pulse span{border:1px solid #52645b;border-radius:6px;padding:4px 11px;font-size:12px}.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:24px;align-items:start}aside{position:sticky;top:18px}.navhead{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin:0 0 12px}.navhead input{width:170px;border:1px solid var(--line);border-radius:7px;background:var(--paper);padding:8px;font:inherit;color:var(--ink)}nav{display:grid;gap:5px}.navitem{display:block;text-align:left;border-color:transparent;background:transparent;padding:10px 12px;width:100%;position:relative}.navitem .label{display:block;font-size:14px;font-weight:600}.navitem small{font-size:11px;color:var(--muted)}.navitem.active{background:var(--pale);border-color:#b7cbbb}.navitem.branch{margin-left:13px;width:calc(100% - 13px);border-left:2px solid var(--line);border-radius:0 8px 8px 0}.asidefoot{font-size:12px;color:var(--muted);padding:18px 12px}.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:28px 32px}.breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin-bottom:18px}.breadcrumb button{padding:0;border:0;border-radius:0;background:none;font-size:12px}.status{display:inline-block;padding:3px 9px;background:var(--pale);color:var(--green);font-size:12px;border-radius:5px}.status.future{background:#f5ebda;color:var(--amber)}h2{font-size:25px;line-height:1.45;margin:12px 0 8px}h3{font-size:14px;margin:0 0 7px}.question{font-size:17px;line-height:1.7;margin:0 0 26px;color:#465c50}.facts{display:grid;grid-template-columns:1fr 1fr;gap:22px}.facts p{margin:0;color:#526359;font-size:14px}.hypothesis{border-left:3px solid #c8b58e;padding-left:16px}.section{margin-top:26px;border-top:1px solid var(--line);padding-top:23px}.attempt{display:grid;grid-template-columns:155px 1fr;gap:18px;border-bottom:1px solid #e9e9df;padding:14px 0}.attempt:last-child{border:0}.attempt strong{font-size:14px}.attempt p{margin:0;font-size:14px;color:#526359}.tag{display:block;font-size:11px;color:var(--amber);margin-top:4px}.decision{border-left:3px solid var(--green);padding-left:16px;margin:26px 0}.decision p,.next p{margin:0;font-size:14px}.next{padding:17px 19px;border-radius:9px;background:#f0f2e9}.sources{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px}.children{display:grid;gap:8px}.children button{text-align:left;display:flex;justify-content:space-between;gap:15px;font-size:13px}.note{font-size:12px;color:var(--muted);margin-top:20px}.empty{padding:12px;color:var(--muted)}footer{font-size:12px;color:var(--muted);margin-top:24px}@media(max-width:850px){header{padding:24px 20px;align-items:start}.brand span{display:block;margin:2px 0;letter-spacing:0}main{padding:0 16px 32px}.hero{padding:24px}h1{font-size:24px}.layout{grid-template-columns:1fr}aside{position:static}nav{grid-template-columns:1fr 1fr}.navitem.branch{margin:0;width:100%}.asidefoot{display:none}.card{padding:23px}.facts{grid-template-columns:1fr}.attempt{grid-template-columns:1fr;gap:4px}.tools{flex-wrap:wrap}.tools a{font-size:12px}.navhead input{width:65%}}@media print{header,.hero,aside,.tools,.children,.note{display:none}.layout{display:block}.card{border:0}body{background:white}}
+
+.layout{grid-template-columns:minmax(0,1.35fr) minmax(350px,1fr);gap:20px}aside{position:sticky;top:15px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 16px}.navhead{font-weight:600;color:var(--ink);font-size:14px}.navhead input{width:190px}.graphlegend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin:10px 0 0}.focuslegend{color:#ab7134}.graphscroll{overflow:auto}svg#nav{display:block;width:100%;height:auto;min-height:360px}.edge{fill:none;stroke:#b5c4b8;stroke-width:2}.edgeactive{stroke:#286e52;stroke-width:3}.graphnode{cursor:pointer;outline:none}.graphnode rect{fill:#f8f9f3;stroke:#c7d2c6;stroke-width:1.4}.graphnode circle{fill:#608570}.graphnode .nodestatus{font-size:11px;fill:#6b7c6f}.graphnode .nodetitle{font-size:15px;fill:#283f32;font-weight:600}.graphnode:hover rect,.graphnode:focus rect{stroke:#276b54;stroke-width:3}.graphnode.selected rect{fill:#e4eee2;stroke:#276b54;stroke-width:2.5}.graphnode.currentnode rect{fill:#fcf0da;stroke:#bd985e}.graphnode.currentnode circle{fill:#ae7130}.graphnode.dim{opacity:.2}.graphhint{font-size:11px;color:var(--muted);margin:10px 0 0}.asidefoot{display:none}.card{padding:24px}.hero{padding:23px 28px}h1{font-size:26px}.facts{grid-template-columns:1fr;gap:18px}.attempt{grid-template-columns:1fr;gap:4px}
+@media(min-width:1100px){.card{max-height:calc(100vh - 40px);overflow:auto}}@media(max-width:1000px){.layout{grid-template-columns:1fr}aside{position:static}.facts{grid-template-columns:1fr 1fr}.card{max-height:none}svg#nav{max-height:650px}}@media(max-width:600px){.facts{grid-template-columns:1fr}.graphscroll{overflow-x:auto}svg#nav{min-width:650px;min-height:470px}.navhead input{width:58%}.hero h1{font-size:22px}}@media print{aside{display:block;position:static;page-break-after:always}.layout{display:block}.card{max-height:none}}
+
+.layout{grid-template-columns:1fr}.layout aside{position:static}svg#nav{max-height:520px;min-height:240px}.card{max-height:none;overflow:visible;padding:34px 42px}.story{max-width:800px;margin:0 auto}.story p{font-size:16px;line-height:1.95;margin:23px 0;color:#40564a}.story blockquote{margin:28px 0;padding:20px 24px;background:#eaf0e5;border-left:3px solid #477c58;font-size:19px;line-height:1.8;color:#284b35}.storytop{display:flex;justify-content:space-between;align-items:center}.storycount{font-size:12px;color:var(--muted)}.arrival{font-size:13px;color:var(--muted);padding-bottom:12px;border-bottom:1px solid var(--line)}.journeybuttons{display:flex;justify-content:space-between;gap:18px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}.journeybuttons button{max-width:48%;text-align:left;font-size:13px}.journeybuttons small{display:block;font-size:11px;color:var(--muted)}.evidence{margin-top:25px;font-size:12px;color:var(--muted)}.evidence summary{cursor:pointer}.evidence .sources{padding-top:14px}.edgenumber{font-size:11px;fill:#718472;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}.waiting{font-size:13px;color:var(--muted)}@media(max-width:600px){.card{padding:23px}.story p{font-size:15px}.story blockquote{font-size:17px}svg#nav{min-width:750px}.journeybuttons{flex-direction:column}.journeybuttons button{max-width:100%}}
+
+.branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
+</style>
+<header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>已明确目标：从使用／不使用经验的实际结果中学习适用范围，推理时据此选择。新任务如何关联历史任务、是否采用贝叶斯网络仍在讨论；基础大模型参数固定，不追加实验。</p><div class="pulse"><span>当前：任务与经验共同学习，方案讨论中</span><span>正式参数估计：暂停</span><span>暂不追加实验 · 非留出测试</span></div></section>
+<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1560 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-06</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
+<script id="research-data" type="application/json">[
+  {
+    "id": "main",
+    "title": "主线：经验能否改善评分标准？",
+    "status": "主线",
+    "parent": null,
+    "question": "从偏好轨迹学习可迁移的核验方法，能否改善新任务的首次偏好判断？",
+    "sources": [
+      [
+        "设计方案",
+        "设计方案.md"
+      ],
+      [
+        "当前计划",
+        "../PLAN.md"
+      ],
+      [
+        "报告92",
+        "实验分析/92-提前冻结相似留出200题配对对照.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "我们希望从过去设计评分标准的成败中学到方法，让模型在新任务上少犯类似错误。经验不是答案库，而是帮助设计核验标准的知识。"
+      },
+      {
+        "type": "p",
+        "text": "这条主线经历了两类探索：怎样让经验本身更可靠，以及怎样在新任务里正确使用它。前者带来了原子化、分类、信用与版本演化；后者在200题对照没有净收益以后成为当前焦点。"
+      },
+      {
+        "type": "callout",
+        "text": "现在要回答的是：给定一组经验，Generator能否使用其中有帮助的部分，又不替用户增加要求？"
+      },
+      {
+        "type": "p",
+        "text": "正式概率参数估计暂时搁置。我们先把应用问题测清楚，再回到“经验是否改善新任务首次判断”的总体对照。"
+      }
+    ],
+    "previous": null,
+    "following": "early",
+    "transition": "从经验的粒度开始"
+  },
+  {
+    "id": "early",
+    "title": "早期探索：原子化、分类与继承信用",
+    "status": "历史路线",
+    "parent": "main",
+    "question": "如何让经验保持原子性，便于检索，并在演化后保留历史信息？",
+    "sources": [
+      [
+        "计划67",
+        "plans/67-原子经验版本演化与局部混合检索.md"
+      ],
+      [
+        "计划68",
+        "plans/68-演化信用继承与稳定性惩罚.md"
+      ],
+      [
+        "报告69",
+        "实验分析/69-原子化与演化信用后续审查.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "最初，我们希望允许经验有错，再靠后续使用的正负反馈逐渐分辨好坏。但审查发现，一条经验可能混着多个方法：Generator只用对其中一部分，整条经验却一起升分。"
+      },
+      {
+        "type": "p",
+        "text": "于是探索逐渐扩展到原子化、类别组织、版本修订与拆分。为了不丢失过去积累的信息，又加入信用继承和稳定性惩罚。"
+      },
+      {
+        "type": "callout",
+        "text": "这些机制让系统更丰富，却没有自动解决“这次成功到底支持了哪一条方法”。"
+      },
+      {
+        "type": "p",
+        "text": "200题后的审查也提醒我们：子版本出生后多数升分，只说明观察到的应用反馈偏正，不能直接说经验变好了。接下来的重构因此更关注证据与执行错误的区分。"
+      }
+    ],
+    "previous": "main",
+    "following": "v2",
+    "transition": "归因问题推动重构"
+  },
+  {
+    "id": "v2",
+    "title": "V2：把反馈与经验演化显式化",
+    "status": "已实现",
+    "parent": "early",
+    "question": "如何保存经验、积累应用证据，并据此修订？",
+    "sources": [
+      [
+        "设计方案",
+        "设计方案.md"
+      ],
+      [
+        "旧设计归档",
+        "历史设计/2026-10-24-V1/设计方案.md"
+      ],
+      [
+        "计划70",
+        "plans/70-V2核心链路与独立模块验证.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "沿着归因问题，我们重新梳理了方法：经验合理，却选错题、用错方式或被Judge误判，也会收到负反馈。把这些原因压进一个信用分数，难以指导下一步改哪里。"
+      },
+      {
+        "type": "p",
+        "text": "V2保留原始应用账本和版本关系，引入三个执行Checker，以及Q/C贝叶斯推断接口；类别、Atomizer、Split和长期P/N不再沿用。"
+      },
+      {
+        "type": "p",
+        "text": "这是方法结构上的取舍，不是效果已经成立。Checker仍可能出错，概率表仍需要估计。后来的中期预实验使用了用户授权的假设参数，不能当作校准结果。"
+      }
+    ],
+    "previous": "early",
+    "following": "admission",
+    "transition": "候选纠错暴露执行噪声"
+  },
+  {
+    "id": "admission",
+    "title": "调整准入：由经验核对器反馈Critic",
+    "status": "已采用",
+    "parent": "v2",
+    "question": "如何避免把Generator/Judge的执行失败当成候选经验不好？",
+    "sources": [
+      [
+        "计划82",
+        "plans/82-经验核对准入与来源验证.md"
+      ],
+      [
+        "计划83",
+        "plans/83-经验核对准入30题在线采集.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "候选经验原先需要重新生成rubric，再看Judge结果决定是否纠错。但这暴露出一个循环：候选可能没问题，只是Generator没有用好，或者Judge判错，Critic却继续改经验。"
+      },
+      {
+        "type": "callout",
+        "text": "我们决定把“经验内容能否入池”与“这次应用是否成功”分开。"
+      },
+      {
+        "type": "p",
+        "text": "新增经验核对器检查合理性、原子性、通用性和原题泄露；未通过就把内容意见交回Critic。通过后先入池，再以task＋当前候选重新应用，用这次来源案例积累反馈。"
+      },
+      {
+        "type": "p",
+        "text": "这避免用整题成败直接驱动Critic，但没有让核对器成为真值。之后的实际采集仍观察到误放和误拒。"
+      }
+    ],
+    "previous": "v2",
+    "following": "simple",
+    "transition": "模板带来额外复杂度"
+  },
+  {
+    "id": "simple",
+    "title": "简化表示：移除模板与参数",
+    "status": "已采用",
+    "parent": "v2",
+    "question": "模板和参数是否带来不必要的结构复杂度？",
+    "sources": [
+      [
+        "计划84",
+        "plans/84-移除经验模板与参数机制.md"
+      ],
+      [
+        "报告84",
+        "实验分析/84-移除经验模板与参数机制.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "为了让经验更像可复用核验方法，我们曾让它带模板和参数。但运行时逐渐出现绑定、渲染与字段错误；严格结构也无法保证实际语义正确。"
+      },
+      {
+        "type": "p",
+        "text": "用户提出简化：只保留适用条件与核验方法。于是删除模板和参数，让Generator结合任务形成标准。"
+      },
+      {
+        "type": "callout",
+        "text": "当前的trigger＋principle来自这次取舍：先降低结构复杂度，再用内容审查验证它是否真的更好用。"
+      },
+      {
+        "type": "p",
+        "text": "这也给现在的方案一个约束：重新增加“任务依据”字段，需要证明值得增加这份复杂度，不能换个名字就默认有效。"
+      }
+    ],
+    "previous": "admission",
+    "following": "critic",
+    "transition": "开始审查候选内容"
+  },
+  {
+    "id": "critic",
+    "title": "Critic：减少举例与原题残留",
+    "status": "阶段结束",
+    "parent": "simple",
+    "question": "候选如何适度抽象，而不泄露原题或变成空话？",
+    "sources": [
+      [
+        "报告87",
+        "实验分析/87-Critic逐轮泛化优化.md"
+      ],
+      [
+        "报告88",
+        "实验分析/88-Critic语言精简与思考对照.md"
+      ],
+      [
+        "报告89",
+        "实验分析/89-Critic简短中文继续优化.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "结构简化以后，注意力转向候选内容。Critic喜欢举例，例子容易带回原题中的人名、数字或故事模式；去掉专名以后，也可能仍只适合原题。"
+      },
+      {
+        "type": "p",
+        "text": "我们进行了多轮独立复测，先改英文提示，再比较语言、长度与思考开关。显式举例和原题残留有所改善，但开启思考没有稳定内容优势，也没有证明长英文比短中文更好。"
+      },
+      {
+        "type": "p",
+        "text": "最后用户决定采用R10中文短版，保持关闭思考。这个决定是在已知仍有适用范围偏窄风险下作出的，不是把原先未全达标的审阅结果改成通过。"
+      },
+      {
+        "type": "callout",
+        "text": "不再继续围着同20题调措辞，转回完整采集，观察这些经验真正进入系统以后会发生什么。"
+      }
+    ],
+    "previous": "simple",
+    "following": "collect",
+    "transition": "回到完整采集"
+  },
+  {
+    "id": "collect",
+    "title": "30题在线采集：验证当前链路",
+    "status": "已完成",
+    "parent": "main",
+    "question": "完整链路能否运行，实际候选及Checker表现如何？",
+    "sources": [
+      [
+        "报告90",
+        "实验分析/90-中文Critic当前版General30题完整链路.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "当前版本从空池跑完固定30个General任务：首次正确15题，最终正确17题，得到8条经验；没有样本级技术失败。"
+      },
+      {
+        "type": "p",
+        "text": "这次收齐了实际应用和45份执行Checker报告，但没有估计Q，也没有自动修订。它说明链路能运行，不能说明经验已经改善独立任务。"
+      },
+      {
+        "type": "p",
+        "text": "逐条内容审阅仍发现特殊故事模式残留；核对器也会给出错误解释。因此“没有举例”与“通过核对”都不足以证明经验质量。"
+      },
+      {
+        "type": "p",
+        "text": "本来接下来要做参数估计，但中期汇报临近，用户需要一个有无经验的简单结果，研究路径因此临时转向规模更大的冻结对照。"
+      }
+    ],
+    "previous": "critic",
+    "following": "negative",
+    "transition": "汇报需求转向冻结对照"
+  },
+  {
+    "id": "negative",
+    "title": "冻结200题：有经验反而更差",
+    "status": "已完成",
+    "parent": "main",
+    "question": "经过训练形成经验后，是否改善首次判断？",
+    "sources": [
+      [
+        "计划92",
+        "plans/92-假设参数批次并行训练300与相似留出200.md"
+      ],
+      [
+        "报告92",
+        "实验分析/92-提前冻结相似留出200题配对对照.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "为得到冻结对照，用户授权使用人工假设概率参数，并把训练改为每批3样本并行：批内共享批前经验快照，批末再合并。"
+      },
+      {
+        "type": "p",
+        "text": "原计划300题，但批末串行修订逐渐变慢。用户决定提前停止，用已有经验测试。冻结时有213题完整轨迹、216题已提交证据，86条活跃经验。"
+      },
+      {
+        "type": "callout",
+        "text": "固定200道相似留出任务：无经验101题正确，有经验92题正确，差值−4.5个百分点；25题改善，34题退化。"
+      },
+      {
+        "type": "p",
+        "text": "这次没有净收益，但不能把退化直接归罪于经验文字、Selector、Generator、Judge或贝叶斯机制中的某一个。参数未校准，任务又是相似筛选的留出子集，结论范围有限。"
+      },
+      {
+        "type": "p",
+        "text": "于是主线暂时停在这里：先不要继续扩大训练，转去查看经验究竟怎样影响了这些题目的标准。"
+      }
+    ],
+    "previous": "collect",
+    "following": "audit",
+    "transition": "负结果引出排查支线"
+  },
+  {
+    "id": "audit",
+    "title": "排查支线：经验为何被用错？",
+    "status": "已完成",
+    "parent": "negative",
+    "question": "退化中有哪些反复出现的经验利用问题？",
+    "sources": [
+      [
+        "计划93",
+        "plans/93-经验利用配对审查与独立复测.md"
+      ],
+      [
+        "报告93",
+        "实验分析/93-经验利用问题审查与独立复测.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "从退化题和正常对照回看，我们看到了反复出现的迁移错误：名称陌生被当成名称有问题；核验概念被写成禁止建议；历史格式变成硬要求；背景属性被升级成新的交付任务。"
+      },
+      {
+        "type": "p",
+        "text": "接着做了十轮独立复测：追加提示、任务优先、拆开前提、开启思考、草稿锚点、独立核对修复。它们没有表现出稳定优势。"
+      },
+      {
+        "type": "p",
+        "text": "真正改写经验正文、去掉过强义务后，出现了较有希望的局部改善。但25题确认仍有基础任务理解错误，两臂各16题被标记；候选还出现5个新增严重问题标记。"
+      },
+      {
+        "type": "callout",
+        "text": "我们没有把规范化副本写回经验池，也没有替换生产提示词。减少误用标记，不等于整体准确率提高。"
+      },
+      {
+        "type": "p",
+        "text": "后来外部审查还发现了重试输入污染，因此Selector确认数字需要复核。这使下一步既要改应用机制，也要先确保实验本身可信。"
+      }
+    ],
+    "previous": "negative",
+    "following": "review",
+    "transition": "局部改善仍未达标"
+  },
+  {
+    "id": "review",
+    "title": "外部模型讨论：收敛下一步",
+    "status": "已讨论",
+    "parent": "audit",
+    "question": "是增加结构字段，还是改经验在当前任务中的应用方式？",
+    "sources": [
+      [
+        "外部咨询上下文",
+        "研究讨论/经验表示与利用问题-外部模型咨询提示词.md"
+      ],
+      [
+        "复测脚本",
+        "../scripts/replay_experience_utilization.py"
+      ],
+      [
+        "回放实现",
+        "../verge/pipeline.py"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "反复尝试之后，我们把上下文、代码位置和负结果整理给三个外部模型。它们的共同关注点是：历史上有用的核验方法，为什么会在新任务中变成额外评分义务？"
+      },
+      {
+        "type": "p",
+        "text": "分歧在于怎么动手：第一份倾向增加条件门控字段，第二份倾向保留双字段、显式记录本次应用依据，第三份强调语义契约、反例检查和随机波动测量。它们都是建议，尚未成为生产方案。"
+      },
+      {
+        "type": "p",
+        "text": "只读核对确认了一个实验脚本疏漏：重试会恢复原始经验文本。确认集有5个候选Selector案例经过此路径，4个最终有效、1个失败。原200题配对不受这个脚本问题影响。另一个规则风险是新版未引用也可能靠避开旧负分通过回放，实际发生次数尚未核查。"
+      },
+      {
+        "type": "callout",
+        "text": "综合讨论后，我们把下一步缩小：固定经验文字与选中集合，只改变Generator怎样把经验用于本题。这样才能看出应用接口本身是否有帮助。"
+      }
+    ],
+    "previous": "audit",
+    "following": "next",
+    "transition": "收敛到应用接口验证"
+  },
+  {
+    "id": "next",
+    "title": "当前焦点：应用对照未达预期",
+    "status": "迭代研究中",
+    "parent": "review",
+    "question": "固定经验文字和选中集合，改应用方式能否减少额外要求，同时保留有益作用？",
+    "sources": [
+      [
+        "执行计划94",
+        "plans/94-研究进度看板与经验应用验证.md"
+      ],
+      [
+        "报告93",
+        "实验分析/93-经验利用问题审查与独立复测.md"
+      ],
+      [
+        "报告94",
+        "实验分析/94-Generator应用独立对照与重试修复.md"
+      ],
+      [
+        "计划95",
+        "plans/95-经验前提污染自动迭代研究.md"
+      ]
+    ],
+    "story": [
+      {
+        "type": "p",
+        "text": "独立复测重试输入已修复，另补上debiased投影丢失纠错说明的修复；两个回归通过，全套230项测试通过。历史确认5个候选Selector案例受到该路径影响，原记录保留，17→6不能视作完全干净的方案对照。"
+      },
+      {
+        "type": "p",
+        "text": "固定30个开发任务、原经验正文与选中集合，原版／任务依据候选各独立生成两次，120份全部结构有效；没有连接Selector、Judge或更新池。"
+      },
+      {
+        "type": "callout",
+        "text": "候选仍把“low nefa”当成必须先纠错，把简短回复变成必须延续动作；商品3变体有一次改好、另一次仍扩成3份描述。先写任务分析，没有稳定阻止经验带偏分析本身。"
+      },
+      {
+        "type": "p",
+        "text": "匿名Qwen内容初筛也把经验义务误当task要求，不能以其通过标记证明方案有效。主代理逐题查看标准，保留不确定和外部事实核验边界。"
+      },
+      {
+        "type": "p",
+        "text": "因此不采用候选，不启动确认，不改生产提示和原池。接下来可讨论先修过强经验内容的单独干预，但该新方案尚未执行；正式参数估计继续暂停。"
+      },
+      {
+        "type": "p",
+        "text": "用户授权新分支自动研究。现位于codex/experience-premise-research：首轮比较原版、仅看经验的操作编译，以及无经验任务要求先行的槽位绑定。每轮先看反例再调整，原产物保留，未改变生产行为。"
+      }
+    ],
+    "previous": "review",
+    "following": "research95",
+    "transition": "单提示未达预期，转向新分支机制研究"
+  },
+  {
+    "id": "research95",
+    "title": "自动研究：隔离事实与历史义务",
+    "status": "开发未达标",
+    "parent": "next",
+    "previous": "next",
+    "following": "consult96",
+    "transition": "多轮尝试都顾此失彼，换两个新会话重新诊断",
+    "question": "怎样减少经验污染，又不靠不用经验或删掉必要检查？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户授权创建codex/experience-premise-research，在分支自动执行假设、实现、独立实验、内容审查与下一轮改进。固定30个历史真实任务，重复调用不充作新任务；原提示和冻结池保持不变。"
+      },
+      {
+        "type": "p",
+        "text": "简单改提示没有解决，于是尝试任务无关经验编译、任务要求先行、槽位绑定、只看任务与草案的隔离修订。部分错误禁令和未知实体前提减少，但也出现漏体裁、缩范围、额外数字和主体错误。旧Terra规范化副本不是免费格式化，也不是可靠自动编译器。"
+      },
+      {
+        "type": "p",
+        "text": "固定草案后换Plus及思考开关，典型NEFA、建议禁令等有所改善，仍会预定第四次失败、把全部变成主要。逐条构造具体反例可以放宽限制，却可能把明确尺寸与数量删掉。字面数值保护仅修复该类删除，未解决精确100字符变成最多100。"
+      },
+      {
+        "type": "p",
+        "text": "再做竞争方案：更强模型直接使用原经验、强模型只修订经验再交原Flash、前置过滤经验。直接升级模型仍照搬过强方法；任务无关编辑后Flash仍推断陌生名称存疑；普通过滤又会因其中一部分有用而放行整条错误策略。"
+      },
+      {
+        "type": "callout",
+        "text": "严格反例过滤在一些题里拦住了错误前提，但会大量拒绝经验，甚至把“剧情引用错误”的文章当成合理反例而删掉事实核验。拒选更多不是迁移成功。没有候选同时保住有益方法、核心覆盖和正常任务安全。"
+      },
+      {
+        "type": "p",
+        "text": "本轮18个编号实验及重复均留档，开发尚未达到候选冻结门槛，因此没有动用预选20题确认，没有更新生产。模型分派错误的一次运行已明确排除；数值保护轮是确定性重放，不算新任务。本次结论是排除若干简单方案，尚未解决问题。下一步应重新界定可验证的核验知识与回答策略，而非继续叠同类审查。"
+      },
+      {
+        "type": "p",
+        "text": "这次碰壁还带来了研究流程的调整：把实验中学到的认识整理进EXPERIENCE.md，后续有新证据就更新。用户授权在多种尝试仍不奏效时，让两个空白上下文的模型分别读取完整材料，提出不同思路，再由主代理核对、汇总并继续实验。本次只建立规则，尚未咨询，不把流程调整算成方法改善。"
+      }
+    ],
+    "sources": [
+      [
+        "计划95",
+        "plans/95-经验前提污染自动迭代研究.md"
+      ],
+      [
+        "研究报告95",
+        "实验分析/95-经验前提污染迭代研究.md"
+      ],
+      [
+        "研究经验与教训",
+        "../EXPERIENCE.md"
+      ]
+    ]
+  },
+  {
+    "id": "consult96",
+    "title": "请两个新会话重新分析原因",
+    "status": "分析完成，待验证",
+    "parent": "research95",
+    "previous": "research95",
+    "following": "redesign97",
+    "transition": "用户要求从局部诊断转向经验组织与使用流程的整体改法",
+    "question": "哪些原因有证据，下一步怎样避免重复失败？",
+    "story": [
+      {
+        "type": "p",
+        "text": "两模型各完成首轮和一次澄清。首轮同材料、空白会话、只读代码，互不看回答；澄清由主代理核对案例和代码后分别追问。Sol原通道502失败后换同模型通道，错误保留。"
+      },
+      {
+        "type": "p",
+        "text": "两方都认为，经验里会混入过强策略，选择与应用也会让一种可行做法变成必答要求；但不能断定全因最初提炼丢了原因。主代理纠正了“缺analysis所以无法理解why”等过强推断，以及凭空假定局部实验已有Judge结果的建议。"
+      },
+      {
+        "type": "callout",
+        "text": "核对两条版本链发现，部分“必须先声明”和“固定角色标签”是在被接受的修订中加重的。这是新线索，不等于已证明修订版跨任务更差。下一步更值得先比较初始版与最终版，而不是马上换复杂结构。"
+      },
+      {
+        "type": "p",
+        "text": "Sol提出受限修改、对比案例和工具检查，DeepSeek提出记录标准容易误判之处等路线；追问后双方都承认改字段或叠审查不保证有效。推荐固定任务和Generator，比较不提供目标经验、初始版、最终版，排除修订已见案例并检查正常方法保留。当前咨询结束，尚未抽样、实现或运行新实验。"
+      }
+    ],
+    "sources": [
+      [
+        "诊断与建议报告96",
+        "实验分析/96-干净上下文双模型诊断.md"
+      ],
+      [
+        "计划96",
+        "plans/96-干净上下文双模型诊断.md"
+      ],
+      [
+        "研究经验",
+        "../EXPERIENCE.md"
+      ],
+      [
+        "实验报告95",
+        "实验分析/95-经验前提污染迭代研究.md"
+      ]
+    ]
+  },
+  {
+    "id": "redesign97",
+    "title": "经验组织与使用流程重设计",
+    "status": "方案待讨论",
+    "parent": "research95",
+    "previous": "consult96",
+    "following": "roles98",
+    "transition": "用户希望保留经验直接帮助生成，改议角色指南与渐进完善",
+    "question": "经验保存什么、怎样起作用，才能不把策略变成义务？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户认为局部提示词优化不足，要求更大胆地改变经验本身及选择、使用流程。原始版与修订版的对照建议仍保留，但不再作为当前优先任务。"
+      },
+      {
+        "type": "p",
+        "text": "两个新会话分别提出方案并澄清，GPT与DeepSeek全程使用magpie。建议把适用情境、判断关系、边界、最小对照和证据分开保存；运行内容与离线原始答案、标签和历史分开，不能因为字段更多就认为问题已解决。"
+      },
+      {
+        "type": "callout",
+        "text": "推荐更大胆地改变经验的位置：Generator只看任务生成候选rubric，经验帮助Selector选ID，程序原样取出。经验不能直接写入新标准，但仍可能让模型选错；候选全部漏必要检查时，这条路线救不了。"
+      },
+      {
+        "type": "p",
+        "text": "DeepSeek的附着检查方案在追问中承认：无独立权重的坏检查仍能否决整个标准，不能当硬保证。因此本版优先讨论可由程序限制写入的候选选择，保留其能力上限，不声称已经实现方法迁移。"
+      },
+      {
+        "type": "p",
+        "text": "若采用，先比较同一候选池上的无经验、原经验、修正普通文本和同内容新结构；检验内容改善、结构额外价值及候选是否够好。不把多生成候选或人工修正的收益归给结构。本次只有建议，没有改代码、重写池或启动实验。"
+      }
+    ],
+    "sources": [
+      [
+        "完整建议方案97",
+        "研究讨论/97-经验组织与使用流程重设计建议.md"
+      ],
+      [
+        "计划97",
+        "plans/97-经验组织与使用流程重设计.md"
+      ],
+      [
+        "此前诊断96",
+        "实验分析/96-干净上下文双模型诊断.md"
+      ]
+    ]
+  },
+  {
+    "id": "roles98",
+    "title": "角色指南与经验渐进完善",
+    "status": "建议待讨论",
+    "parent": "research95",
+    "previous": "redesign97",
+    "following": "critic99",
+    "transition": "用户要求候选实际验证，又担心严格准入导致经验太少",
+    "question": "如何按角色指导使用，又不要求初始经验猜全边界？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户希望经验仍直接帮助生成评分标准，建议分别给Selector和Generator正反操作指南，并根据下游案例逐渐完善，不强迫Critic猜全尚未见过的边界。两模型均通过magpie独立分析并接受追问。"
+      },
+      {
+        "type": "p",
+        "text": "两方支持共同核心、选择指南、应用指南，以及可空的“不应选择”和“选了不该这样用”。Selector应看完整方法；反向知识未知不等于永远适用。失败原因不必强填，原始轨迹与核对状态保留在离线证据中。"
+      },
+      {
+        "type": "callout",
+        "text": "Checker报错只说明值得检查哪里，不自动证明该字段有错。已有清楚指南却没执行，应查执行；忠实执行仍错罚，应查内容；反例自身错误则查Checker。原因不清就保留待判。核心错误时允许重写，不只堆例外。"
+      },
+      {
+        "type": "p",
+        "text": "核对代码发现，当前Updater本就提示选择错查Trigger、应用错查Principle，因此新增字段本身不等于新机制。要观察具体选择依据、实际使用与逐条修改证据是否让判断变好。已有召回／选中／未引用记录可以复用，不重复当新功能。"
+      },
+      {
+        "type": "p",
+        "text": "两方均不建议立即默认两步生成。先固定输入比较原经验、修正内容平铺、同内容角色指南，另测选择；之后再比较共享初稿的无经验修订和指南修订，并独立验证下游补边界。当前只有建议，无新代码、训练或实验。"
+      },
+      {
+        "type": "p",
+        "text": "后续用户要求先讨论方法，并指出候选需要有效性反馈。代码核对：现有Generator已有分析和逐标准引用，来源验证也实际运行；缺口是先入池、后验证且结果不影响准入。新方向是区分暂存候选与正式激活，加入实际使用检验；具体门槛未定，未实施。"
+      }
+    ],
+    "sources": [
+      [
+        "双模型建议98",
+        "研究讨论/98-角色指南与渐进完善建议.md"
+      ],
+      [
+        "计划98",
+        "plans/98-角色指南与渐进完善讨论.md"
+      ],
+      [
+        "此前整体建议97",
+        "研究讨论/97-经验组织与使用流程重设计建议.md"
+      ],
+      [
+        "研究经验",
+        "../EXPERIENCE.md"
+      ]
+    ]
+  },
+  {
+    "id": "critic99",
+    "title": "Critic先修标准，再提炼经验",
+    "status": "准入流程已确认 · 待实现",
+    "parent": "roles98",
+    "previous": "roles98",
+    "following": "implementation100",
+    "transition": "方案确认后，实现并检查账本、速度和内容",
+    "question": "怎样提高有用提案比例，不靠宽准入凑数量？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户确认Selector和Generator逐经验说明原因，方便解释与核验。同时指出，只经经验核对就入池质量难保证，但必须整题修好才准入又可能太少，提出提高Critic实际修复能力的目标。"
+      },
+      {
+        "type": "p",
+        "text": "两模型均通过magpie，在干净上下文独立分析并澄清。共同建议先定位有任务依据的具体标准缺陷、提出最小改法，再抽象经验；可在同次输出中做，不把未执行的补丁称已验证成功。"
+      },
+      {
+        "type": "callout",
+        "text": "建议区分候选区与活跃区，内容初核不等于效果准入。来源实际使用有可信正向证据才考虑激活，整题不必翻转；同判、未引用或关键依据未知先暂存。正向F仍非净收益和泛化证明，严格条件可能仍使活跃少，不能靠改名掩盖。"
+      },
+      {
+        "type": "p",
+        "text": "应用反馈可以回到Critic，但提供具体轨迹与不确定性。清晰指南没执行先纠正执行，忠实执行仍暴露内容问题才改候选；不让一句Judge失败反复驱动改经验。建议继续0—1候选／轮、最多两轮，预算具体值未定。"
+      },
+      {
+        "type": "p",
+        "text": "报告90中来源整体成功2次、候选自身F正向1次，表明两种口径不同；核对器误拒也可能减少候选。两方意见没有证明修复率提升。当前只有方法建议，没有新增代码、经验或实验。"
+      },
+      {
+        "type": "p",
+        "text": "用户进一步确认：先由Critic直接输出完整新rubric，一次可修改多条，最多两次尝试；实际检查后再抽象经验，先避开Selector和Generator对具体修复的影响。此前每次只提一处最小改法的建议已调整。"
+      },
+      {
+        "type": "callout",
+        "text": "用户提出由Critic根据Judge理由识别误判。建议要求具体标准、原文和核验依据，并分别保存原判与复核意见；Critic自我认可不等于独立验证。争议证据怎样影响入池和Q尚未确定，未实现、未实验。"
+      },
+      {
+        "type": "p",
+        "text": "随后放弃局部有效准入，统一按整份rubric的margin改善判断：Δmargin达到可配置阈值，暂定0.1，即可提炼；是否转正另记修复成功。修改仍需任务依据，不能以迎合chosen调权重冒充有效。"
+      },
+      {
+        "type": "callout",
+        "text": "用户已确认：margin明显改善→提炼经验→轻量核对忠实、合理、通用集中和指南自洽→通过即入池。取消早期两区准入；随后task＋C重新应用只积累证据，失败不自动撤销。Judge Checker用于复核判定，不是经验内容真值。流程未实现、未实验；margin基准、争议采用和Q衔接细节仍需明确。"
+      },
+      {
+        "type": "p",
+        "text": "两项细节已确认：两次修改均与初始rubric比较margin；经验核对不通过只给一次重写机会。用户担心最多一条经验会把多个方法挤在一起，提炼数量尚未定；Judge争议处理和新准入Q口径仍在解释讨论中。"
+      },
+      {
+        "type": "callout",
+        "text": "三项进一步确定：Judge与Checker分歧由Critic结合证据最终裁定，保留原判和理由；Critic自行分析哪些改动有效并提炼相应的多条原子经验，不把整体改善冒称每条独立有效；新经验统一初始Q，入池后有效来源应用更新一次，margin改善不额外记账。先验具体值与接口仍待细化，代码和实验未动。"
+      },
+      {
+        "type": "p",
+        "text": "讨论实现速度时确认：从固定三题一批改为最多五题持续运行，有案例完成提交即补下一题；各题启动时读已提交快照，应用证据统一更新当前Q。修订单独排队，固定输入但不停止检索旧版，验证通过再切换；历史旧版评价只在输入与配置匹配时复用。调度目标已定，尚未实现或启动实验。"
+      }
+    ],
+    "sources": [
+      [
+        "Critic与准入建议99",
+        "研究讨论/99-Critic与实际准入建议.md"
+      ],
+      [
+        "计划99",
+        "plans/99-Critic与实际准入讨论.md"
+      ],
+      [
+        "角色指南98",
+        "研究讨论/98-角色指南与渐进完善建议.md"
+      ],
+      [
+        "已有采集报告90",
+        "实验分析/90-中文Critic当前版General30题完整链路.md"
+      ],
+      [
+        "调度改造与工程约束",
+        "工程设计.md"
+      ]
+    ]
+  },
+  {
+    "id": "implementation100",
+    "title": "实现并验证Critic与持续并行",
+    "status": "精简已实现 · 内容仍有失败",
+    "parent": "critic99",
+    "previous": "critic99",
+    "following": "flow103",
+    "transition": "用户要求用100题观察精简后的完整流程",
+    "question": "新准入能否保留有依据的经验，持续调度能否减少等待？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户授权实现完整方案，并要求两个模型先审查代码、修正后做模块复测与小样本全流程。保持已有研究分支，历史产物不改，不扩大正式实验。"
+      },
+      {
+        "type": "p",
+        "text": "已接通五字段角色指南、逐经验理由、Critic直接修rubric并最终逐项裁定、margin门槛、多条经验逐条核对后入池。训练改为最多五题持续补位，修订独立队列，主端提交证据，旧在途反馈仍归旧版。"
+      },
+      {
+        "type": "callout",
+        "text": "两模型审查发现真实HTTP角色历史守卫、来源Q重复计算、修订子版来源与触发证据等缺陷，已针对性修复并补测试。真实模块每角色20题结构通过，但旧坏经验仍能诱导错误要求，解释变长不是语义改善。当前正在检查内容及同20题旧／新全流程，不宣称效果已成立。"
+      },
+      {
+        "type": "p",
+        "text": "完成257项Python测试、前端DOM检查和真实模块每角色20题；内容发现运行时信息依赖后，固定20提炼＋20核对复测，并保留首次失败。两个模型分工审查内容，主代理发现审阅本身也会混淆选择错误与应用忠实，不把疑似缺陷数当真值。"
+      },
+      {
+        "type": "callout",
+        "text": "同20题旧版167秒、最终16题正确、入池2条；新版最终轮482秒、13题正确、活跃9条，0样本技术错误。新增调用与两次真实修订（一次采用）抵消并行收益；部分经验仍依赖源rubric等未来不可见信息。流程跑通与Q重算一致，不等于效果改善。本轮完成，停止扩跑，保留负结果。"
+      },
+      {
+        "type": "p",
+        "text": "控制模拟延迟对照显示持续补题能减少批次等待，但不当作云API加速倍率。浏览器宿主不可用，未完成真实截图；苹果翻译缺本机语言包返回503。下一步应先解决经验提炼与核对质量、串行调用成本，再讨论新实验；参数估计和正式扩跑仍暂停。"
+      },
+      {
+        "type": "p",
+        "text": "用户随后明确取消经验入池后再task＋C重新生成和Judge。已删除这条执行分支，核对通过即结束本题，新经验只保留初始Q，等待后续真实任务使用才更新。保留来源任务作追溯，不伪造应用证据。原20题实验是删除前协议，结果不改写，尚无删除后的真实耗时结果。"
+      },
+      {
+        "type": "p",
+        "text": "用户确认整套调用精简：删Critic修复阶段Judge Checker、初始复核与第一次修改合并、最多两条重要原子经验、经验合并核对但逐条决定、未过项只重写一次、冻结前仍等修订完成、减少重复上下文并利用实际支持的缓存、运行模型继续关闭思考。主代理曾误记为仅两项确认，已修正。除来源重跑已删除，其余精简待实现与独立复测。"
+      },
+      {
+        "type": "p",
+        "text": "调用精简实施中，主代理误将初始复核设计为Critic重判整套初始标准，并在100项模块复测出现对象混淆。用户纠正：应分析Judge结果与理由，区分rubric缺陷和误判后修订，不重新承担完整Judge职责。旧接口结果保留并标注偏离意图；该部分待纠正，不能称精简已验收。"
+      },
+      {
+        "type": "p",
+        "text": "整套精简现已实现：Critic读取Judge理由并诊断，只更正明确误判，不重做整套Judge；取消修复链路Judge Checker，最多两条、合并核对与一次重写、消息去重均完成。持续五题、独立修订与冻结前等待保留。"
+      },
+      {
+        "type": "p",
+        "text": "两个全新模型审查后修复二轮标准ID映射、同批失败污染通过项、非法JSON漏记缓存三个问题；278项Python测试和前端DOM通过。五角色各20个真实任务独立复测，另用同20题验证首次修订；诊断与更正并非全通过，失败原样保留。"
+      },
+      {
+        "type": "callout",
+        "text": "内容仍有关键反例：Critic把坏标准误当Judge误判；提炼会增加完整复述等义务，核对器把来源专名错归候选正文。因此只确认整套精简已实现，不宣称经验更可靠或整体更快。未扩跑、未提交；下一步应先处理这些具体失败。"
+      }
+    ],
+    "sources": [
+      [
+        "计划100",
+        "plans/100-Critic准入与持续并行实现验证.md"
+      ],
+      [
+        "报告100",
+        "实验分析/100-Critic准入与持续并行实现验证.md"
+      ],
+      [
+        "工程设计",
+        "工程设计.md"
+      ],
+      [
+        "取消来源重新应用101",
+        "plans/101-取消准入后的来源重新应用.md"
+      ],
+      [
+        "精简计划102",
+        "plans/102-Critic调用精简与批量经验核对.md"
+      ],
+      [
+        "精简验证102",
+        "实验分析/102-Critic调用精简与批量核对验证.md"
+      ],
+      [
+        "组会汇报：框架、贝叶斯网络与近期问题",
+        "组会汇报/2026-10-29/VERGE-两周研究进展.html"
+      ]
+    ]
+  },
+  {
+    "id": "flow103",
+    "title": "精简流程100题完整试跑",
+    "status": "已完成 · 整体增益未验证",
+    "parent": "implementation100",
+    "previous": "implementation100",
+    "following": "audit104",
+    "transition": "直接审查100题内容，不再用缺对照阻止现象分析",
+    "question": "整套精简后的链路在100题中怎样运行，瓶颈和内容问题是否仍出现？",
+    "story": [
+      {
+        "type": "p",
+        "text": "模块复测各自20题并不是完整训练。用户因此要求跑100个样本，本轮从空池开始，让经验在后续任务实际参与选择、使用、反馈和修订。"
+      },
+      {
+        "type": "p",
+        "text": "固定General历史训练100题，五题持续补位、修订单独运行，模型关闭思考。沿用人工假设概率表，不在运行中调参数或提示。Critic仍可看到偏好标签，所以训练修复结果不能当留出准确率。"
+      },
+      {
+        "type": "p",
+        "text": "100题和8个后台修订任务均已结束，耗时17分49秒。首轮55题正确；最后已完成判断86题，其中3题后续Critic链路失败；若流程失败题全部记错则83题。35条根经验入池，修订采用2次。Critic知道偏好标签，这些是训练内结果。"
+      },
+      {
+        "type": "p",
+        "text": "57题引用经验，共78次正权重应用：23正向、4反向、51净平局；实际涉及22个版本。各Checker错误报告汇总在报告中，仍是有噪声的模型观察，不当实际语义错误率。用户提醒不能用某次“避免复述变成禁止复述”的案例概括整体，已将案例与全量统计明确分开。"
+      },
+      {
+        "type": "p",
+        "text": "发现CLI和Web汇总仍读旧字段，原文件误写最终正确55。试验结束后修复并独立重算100条轨迹为86，保留原summary和运行源码快照；282项Python测试及前端DOM通过，37版本Q可从账本重建。"
+      },
+      {
+        "type": "callout",
+        "text": "整条链路能够运行并积累经验，仍有8题Critic链路失败、2次Updater校验失败。没有同题无经验或旧版对照，因此既不凭单例宣布失败，也不拿55到86宣称迁移有效。试跑结束，不再追加实验，先讨论整体证据。"
+      }
+    ],
+    "sources": [
+      [
+        "计划103",
+        "plans/103-精简流程General100题完整试跑.md"
+      ],
+      [
+        "报告103",
+        "实验分析/103-精简流程General100题完整试跑.md"
+      ]
+    ]
+  },
+  {
+    "id": "audit104",
+    "title": "审查100题是否达到设计预期",
+    "status": "审查完成 · 核心问题仍在",
+    "parent": "flow103",
+    "previous": "flow103",
+    "following": "joint105",
+    "transition": "用户指出任务归类本身也应从经验效果中学习，转向共同学习的方案讨论",
+    "question": "之前的错误还出现多少，角色指南和Critic修订是否被正确执行，有没有新问题？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户指出，无需先对照旧版，也能分析当前是否还发生旧问题、是否符合预期。把没有对照当作不能继续分析的理由不合适。此次只审已完成的100题，不新跑训练。"
+      },
+      {
+        "type": "p",
+        "text": "三个干净Luna会话通过magpie，分配34、33、33题，覆盖正常与失败。逐题看选择、应用、普通理解、Critic、提炼和Checker，要求引用具体依据。"
+      },
+      {
+        "type": "p",
+        "text": "Luna初审有身份错位与环节漏看，未直接用作结论；改为10题小批复核全部100题。DeepSeek前30题完成后遇DNS／502，保留错误并由同magpie供应商的Luna复核其余70题。主代理撤回或降级14项应用指控，保留分歧而不是强行给错误率。"
+      },
+      {
+        "type": "p",
+        "text": "当前已有正常应用和显式拒用：Generator在10道任务明确全部弃用所选经验，续写、润色和数量检查有符合任务的方法使用；Critic也能删掉设计反转等额外义务。角色指南和使用说明提高了可追查性，但不保证判断正确。"
+      },
+      {
+        "type": "callout",
+        "text": "核心问题仍跨任务重复：假设创作被当事实纠错，改写被当回答原文问题，允许第三人称被用成必须第三人称。35条活跃经验中还出现“每项”提炼成“只需一项”、trigger需要未来回答／原标准的风险。margin验证整份修订不能保证提炼正文忠实。"
+      },
+      {
+        "type": "p",
+        "text": "第87题的早先归因已纠正：完整标准限定机械照搬且无反应，实际回答有后续对话，直接证据更支持Judge误判而非Generator禁止所有引用。分析当前行为不必等待旧版对照，但同样不能由单例概括总体。报告104区分正常、重复问题、新风险与不确定。"
+      },
+      {
+        "type": "p",
+        "text": "只读审查结束，未启动新训练或改提示／经验池。下一步先讨论提炼忠实性与可见信息，再决定改法；原运行和所有失败摘要均保留。"
+      }
+    ],
+    "sources": [
+      [
+        "内容审查计划104",
+        "plans/104-当前100题内容分片审查.md"
+      ],
+      [
+        "内容审查报告104",
+        "实验分析/104-当前100题内容审查.md"
+      ]
+    ]
+  },
+  {
+    "id": "joint105",
+    "title": "任务归类与经验适用性共同学习",
+    "status": "方向讨论中",
+    "parent": "negative",
+    "previous": "audit104",
+    "following": null,
+    "transition": "细化真实效果观测与共同学习模型，尚未实施",
+    "question": "相关任务不易预先获得时，能否由经验使用效果共同学习任务关系与适用性？",
+    "story": [
+      {
+        "type": "p",
+        "text": "此前对话候选预设任务条件，按经验与条件独立统计收益，并预备同类校准任务。用户指出同类题难以事先取得，分类本身就是训练内容，不应固定为学习前提。"
+      },
+      {
+        "type": "callout",
+        "text": "新方向：经验依据下游任务验证，任务依据经验的效果修正关系；混合检索与LLM仍提供初始线索。共同有效只支持某个方法维度上的相似，不自动证明任务属于唯一类别。"
+      },
+      {
+        "type": "p",
+        "text": "候选以稀疏的任务—经验效果记录为基础，学习可重叠的任务需求与经验作用。实际观测、语义判断和模型预测分别保存；预测关系不能当作已验证证据，已有正向引用反馈也不等于净收益。"
+      },
+      {
+        "type": "p",
+        "text": "此轮记录方向与候选机制，尚未选择最终概率模型、反馈口径、预算或阈值。未改运行时设计、提示或经验池，未启动训练；此前固定分类HTML仅表示已撤回前提的旧候选。"
+      },
+      {
+        "type": "p",
+        "text": "用户进一步提出，训练和推理主体都是选择经验、应用生成Rubric、按Rubric评判；训练应改善整条流程，而不只维护经验质量。任务—经验关系也要结合应用方式与评判看待。下一步先明确三步分别学习什么、如何实际影响推理，再选具体模型；尚无新算法或实验。"
+      },
+      {
+        "type": "p",
+        "text": "11月6日，用户明确不训练模型参数，并指出上一轮候选漏了经验本身、假设开放任务可硬核验、低估环节联合影响。候选106改为允许经验与配套执行联合修改，以后续完整流程反馈决定采用，语义争议保留不确定。当前pi没有magpie模型，未完成双模型咨询；仍待讨论，未实施。"
+      },
+      {
+        "type": "p",
+        "text": "2026-11-06用户确认要学的是：任务条件下使用或不使用某条经验，对最终结果有什么影响，并在推理时据此选择，而不是只把Q交给LLM参考。新任务如何关联历史任务仍未解决。候选106第7节记录了程序指定执行配置、比较实际结果的讨论；任务表示和贝叶斯结构尚未确定，未实施或追加实验。"
+      },
+      {
+        "type": "p",
+        "text": "用户同意先复用向量检索寻找相近历史任务。接下来需明确保存经验版本、任务与配对效果记录，以及推理时怎样据此选择；简单统计还是贝叶斯汇总尚待讨论，未实现或追加实验。"
+      },
+      {
+        "type": "p",
+        "text": "为说明方案，新增简洁HTML：训练与推理两张流程图、同一任务使用不同经验的切换演示、可展开的JSON文件，以及贝叶斯推断可能接入的位置。示例均为虚构，未实施或启动实验；细节仍待讨论。"
+      },
+      {
+        "type": "p",
+        "text": "最新讨论中，用户提出Critic直接生成经验，候选分别经过Generator和Judge，与不用经验的运行比较；不再以先修改Rubric后提炼作为必经步骤。这样直接验证最终使用的经验，可选多个Critic独立提出候选。来源题收益仍不是迁移证据，准入和预算未定；只更新候选方向，未实施。"
+      },
+      {
+        "type": "p",
+        "text": "用户确认由Critic直接提出经验，统一负责新增与内容修订。多路运行即时保存完整轨迹，Critic结合本题与相关历史提出候选，候选返回相同实测流程；程序更新效果，Critic不自行提高可信度或宣布采用。HTML补齐这个循环、父版本与来源运行ID，并按要求将两张图改为手工SVG。仅方向确认和说明文档更新，预算、统计与采用未定，未实施实验。"
+      },
+      {
+        "type": "p",
+        "text": "用户指出讨论仍空泛、逐环节正确性无法自动核验，且偏离有噪声流程中演化经验的原始动机。按最新授权，与无上下文继承的gpt-6-astra完成两轮咨询。Astra撤回与试用预算不相容的8条近邻／0.9门槛；主代理另暂不采用把远任务最大相似权重归一成1的做法。执行候选107具体规定有限候选与试用机会、来源证据隔离、效果统计和程序选择。仅为候选，未采用、未实现、未运行模型实验。"
+      },
+      {
+        "type": "p",
+        "text": "用户确认：贝叶斯更新和贝叶斯网络都应按具体作用、逻辑自洽性与相对简单方法的收益来决定是否引入，不能为了用而用。先设计经验生成、验证、演化与选择的核心机制，不将某个数学工具设为必须保留的目标。已同步候选106／107；尚未决定运行模块增删。"
+      },
+      {
+        "type": "p",
+        "text": "按用户要求，将HTML整理为已确认方案说明，删除虚构案例、统计与JSON演示。三张手工流程图分别展开训练循环、每路Generator／Judge隔离执行及推理选择；正文统一说明Critic新增修订、版本历史与作用记录，未定预算、统计和采用规则另列。未修改执行代码或启动实验。"
+      },
+      {
+        "type": "p",
+        "text": "用户确认简化为有／无经验两路，未选择经验时仅一路；实际使用路径判错触发Critic，有经验时附无经验对照，无论对照是否正确。实际路径判对仅记录；触发不强迫修改。两份HTML补充触发表及流程门控，107原三路等数字规则标为未采用的咨询候选。"
+      },
+      {
+        "type": "p",
+        "text": "用户确认按适用范围字段区分新经验与新版本，并加入当前任务即时修复：Critic提草稿→Generator／Judge实际重跑→程序比较固定基准，未修复可有限次重试；通过后再冻结做后续验证，明显退化可提前停止并修订。HTML按论文方法图的模块与数据流重画A正常训练、B即时修复、C版本验证，替换自然语言步骤框。说明文档更新，未实现或运行实验。"
+      },
+      {
+        "type": "p",
+        "text": "用户确认暂不加入评判指南，Judge仅按task与Rubric评价回答。经验主体围绕适用范围、核心方法和生成指南；Critic能否可靠定位修订字段仍待讨论，不预设模型诊断是真值。仅同步说明文档，未改执行代码。"
+      },
+      {
+        "type": "p",
+        "text": "用户确认Critic不必先准确定位失败字段：它提出完整经验候选，程序记录新旧字段差异并确定经验／版本身份，实际运行检验整份修改；字段改动不等于错误归因，多字段修改不分别归功。已补充两份HTML，未改执行代码或启动实验。"
+      },
+      {
+        "type": "p",
+        "text": "2026-11-06用户要求先归档旧设计并提交现有代码，再编写新设计。旧方法及工程文档迁入历史设计/2026-11-06-旧实现，既有代码与实验保留；新设计尚未实现。"
+      }
+    ],
+    "sources": [
+      [
+        "共同学习讨论105",
+        "研究讨论/105-任务归类与经验适用性共同学习.md"
+      ],
+      [
+        "内容审查104",
+        "实验分析/104-当前100题内容审查.md"
+      ],
+      [
+        "不训练模型的整流程候选106",
+        "研究讨论/106-不训练模型的整流程优化候选.md"
+      ],
+      [
+        "方案图解：训练产物与推理使用",
+        "../designs/verge-effect-learning/方案图解.html"
+      ],
+      [
+        "有限预算的执行候选107",
+        "研究讨论/107-固定模型下的经验文本优化执行候选.md"
+      ],
+      [
+        "Critic独立工作流程图",
+        "../designs/verge-effect-learning/Critic工作流程.html"
+      ],
+      [
+        "旧实现设计归档",
+        "历史设计/2026-11-06-旧实现/README.md"
+      ]
+    ]
+  }
+]</script>
+<script>
+const nodes=JSON.parse(document.getElementById('research-data').textContent), byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CURRENT='joint105';let current=CURRENT;
+function path(n){let a=[];while(n){a.unshift(n);n=byId[n.parent]}return a}
+function oldRenderNav(){const q=document.getElementById('search').value.trim().toLowerCase();document.getElementById('nav').innerHTML=nodes.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).map(n=>`<button class="navitem ${n.parent&&n.parent!=='main'?'branch':''} ${n.id===current?'active':''}" data-id="${n.id}" ${n.id===current?'aria-current="page"':''}><span class="label">${esc(n.title)}</span><small>${esc(n.status)}${n.parent?' · '+esc(byId[n.parent].title.replace(/^.*：/,'')):''}</small></button>`).join('')||'<div class="empty">没有匹配的研究节点</div>'}
+const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280]};
+function wrap(text,limit=13){const chars=Array.from(text),lines=[];while(chars.length)lines.push(chars.splice(0,limit).join(''));return lines.slice(0,2)}
+function renderNav(){
+ const q=document.getElementById('search').value.trim().toLowerCase(),matches=n=>!q||JSON.stringify(n).toLowerCase().includes(q); const W=245,H=78;
+ const ancestry=new Set(path(byId[current]).map(n=>n.id));
+ const branchNames={early:'经验表示与演化',collect:'完整链路采集',negative:'整体效果与失效排查'};
+ const edges=nodes.filter(n=>n.parent).map(n=>{const [x,y]=positions[n.parent],[tx,ty]=positions[n.id];const sx=x+W/2,sy=y+H,ex=tx+W/2,ey=ty,mid=(sy+ey)/2;const d=sx===ex?`M${sx},${sy} L${ex},${ey}`:`M${sx},${sy} V${mid} H${ex} V${ey}`;return `<path d="${d}" class="edge ${ancestry.has(n.id)?'edgeactive':''}" marker-end="url(#arrow)"/>${branchNames[n.id]?`<text x="${ex}" y="${ey-9}" class="branchname">${branchNames[n.id]}</text>`:''}`}).join('');
+ const items=nodes.map(n=>{const [x,y]=positions[n.id];const title=n.title.replace(/^(主线|当前焦点|早期探索|排查支线|外部模型讨论|调整准入|简化表示|冻结200题|30题在线采集|Critic|V2)[：] ?/,'');return `<g transform="translate(${x},${y})" class="graphnode ${n.id===current?'selected':''} ${n.id===CURRENT?'currentnode':''} ${matches(n)?'':'dim'}" tabindex="0" role="button" aria-label="${esc(n.title+'，'+n.status)}" ${n.id===current?'aria-pressed="true"':'aria-pressed="false"'} data-id="${n.id}"><title>${esc(n.title+' · '+n.status)}</title><rect width="${W}" height="${H}" rx="10"/><circle cx="15" cy="18" r="3"/><text class="nodestatus" x="26" y="22">${esc(n.id===CURRENT?'当前焦点 · '+n.status:n.status)}</text>${wrap(title).map((l,i)=>`<text class="nodetitle" x="14" y="${43+i*19}">${esc(l)}</text>`).join('')}</g>`}).join('');
+ document.getElementById('nav').innerHTML=`<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#9baea0"/></marker></defs>${edges}${items}`;
+}
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.graphnode')){e.preventDefault();location.hash=e.target.dataset.id}});
+function show(id){const n=byId[id]||byId[CURRENT];current=n.id;renderNav();const index=nodes.indexOf(n);document.getElementById('detail').innerHTML=`<div class="storytop"><span class="status ${['下一步','进行中'].includes(n.status)?'future':''}">${esc(n.status)}</span><span class="storycount">探索记录 ${index+1} / ${nodes.length}</span></div><h2>${esc(n.title)}</h2>${n.previous?`<p class="arrival">接续：${esc(byId[n.previous].transition)}</p>`:''}<div class="story">${n.story.map(b=>b.type==='callout'?`<blockquote>${esc(b.text)}</blockquote>`:`<p>${esc(b.text)}</p>`).join('')}</div><div class="journeybuttons">${n.previous?`<button data-id="${n.previous}">← ${esc(byId[n.previous].title)}</button>`:'<span></span>'}${n.following?`<button data-id="${n.following}"><small>${esc(n.transition)}</small>${esc(byId[n.following].title)} →</button>`:'<span class="waiting">这里是当前进度，等待新证据。</span>'}</div><details class="evidence"><summary>展开依据与原始记录 · ${n.sources.length}份</summary><div class="sources">${n.sources.map(v=>`<a href="${encodeURI(v[1])}">${esc(v[0])} ↗</a>`).join('')}</div></details>`;}
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b){location.hash=b.dataset.id}});document.getElementById('search').addEventListener('input',renderNav);document.getElementById('home').onclick=()=>{document.getElementById('search').value='';location.hash=CURRENT;show(CURRENT)};window.addEventListener('hashchange',()=>show(location.hash.slice(1)));show(location.hash.slice(1)||CURRENT);
+</script></html>

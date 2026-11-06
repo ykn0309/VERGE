@@ -26,6 +26,12 @@ const experiences = () => list(state.data?.experiences);
 const SAMPLE_STATES = {
   initial_failure: ["首次未成功", "warn"],
   candidate_rejected: ["经验核对未通过", "warn"],
+  experience_admitted: ["经验已入池 · 尚未应用", "good"],
+  repair_not_improved: ["修订改善未达阈值", "warn"],
+  no_rubric_revision: ["未提出标准修改", "neutral"],
+  no_admitted_experience: ["没有经验通过准入", "warn"],
+  baseline_review_failed: ["初始判定复核失败", "bad"],
+  repair_failed: ["rubric修订失败", "bad"],
   candidate_review_failed: ["经验核对失败", "bad"],
   source_validation_failed: ["来源验证失败（已入池）", "bad"],
   initial_success: ["首次正确", "good"],
@@ -61,6 +67,11 @@ const STAGES = {
 };
 const ROLES = {
   experience_checker: "经验核对器 · 候选质量",
+  experience_checker_batch: "经验核对器 · 合并核对、逐条结论",
+  critic_repair: "Critic · 分析Judge并修订标准",
+  critic_assess: "Critic · 分析修订后的Judge结果",
+  critic_extract: "Critic · 提炼最多两条经验",
+  critic_rewrite_batch: "Critic · 合并重写未通过经验",
   selector: "Selector · 经验选择",
   initial_generator: "Generator · 标准生成",
   judge: "Judge · 逐项判断",
@@ -146,8 +157,9 @@ function referenceCount(e) {
 }
 function finalJudgment(s) {
   return (
-    [...list(s.proposal_attempts)].reverse().find((a) => a.judgment)
-      ?.judgment || s.initial_judgment
+    [...list(s.proposal_attempts)].reverse()
+      .map((a) => a.final_judgment || a.judgment).find(Boolean)
+      || s.baseline_judgment || s.initial_judgment
   );
 }
 function hasCheckerError(s) {
@@ -550,9 +562,9 @@ function overview(root) {
   );
   metric(
     metrics,
-    "纠错后判断正确",
+    "最后已完成判断正确",
     `${final} / ${ss.length}`,
-    "取最后一次有效判断",
+    "含已完成中间判定；流程失败另见样本状态",
   );
   metric(
     metrics,
@@ -1167,6 +1179,9 @@ function methodView(parent, m) {
   section(parent, "适用条件");
   const trigger = card(parent);
   bodyText(trigger, m.trigger);
+  for (const [key,title] of [["application_guide","使用指南"],["exclude_when","已知不适用条件"],["misuse","已知误用"]]) {
+    if (key in m) { section(parent,title); bodyText(card(parent),m[key] || "尚无已知边界"); }
+  }
 
 }
 function criticView(parent, s) {
@@ -1189,8 +1204,9 @@ function criticView(parent, s) {
   }
   notice(
     parent,
-    "经验核对未通过才反馈Critic；通过即入池，再仅用task＋C做来源验证。来源验证结果不再触发重提。历史实验按当时协议查看。",
+    s.schema_version >= 17 ? "Critic先修订完整rubric，以最终逐项判定计算margin改善；达到门槛后提炼经验，逐条核对最多一次重写。新流程核对通过即结束本题，Q从先验等待后续应用更新；历史来源应用仍按原协议展示。" : "历史协议：经验核对通过即入池，再用task＋C来源验证。",
   );
+  if (s.baseline_judgment) raw(parent,"初始Judge结果与Critic诊断（未更正项保留原判）", {raw:s.initial_judgment,diagnosis:s.baseline_diagnosis,final:s.baseline_judgment,reason:s.baseline_assessment,...(s.initial_checker ? {historical_checker:s.initial_checker} : {})});
   const admitted = new Set(list(s.admitted_experience_ids));
   for (const attempt of attempts) {
     const round = el("section", "", "round"),
@@ -1207,6 +1223,14 @@ function criticView(parent, s) {
         ),
       );
     round.append(head);
+    if (attempt.repair_rubric) {
+      notice(round, `初始margin ${attempt.margin_before ?? "—"} → 修订后 ${attempt.margin_after ?? "—"}；改善 ${attempt.margin_gain ?? "—"}`);
+      bodyText(round, attempt.assessment || "尚未完成最终判定");
+      disclosure(round,"Critic直接修订与最终判断",body=>rubricView(body,attempt.repair_rubric,attempt.final_judgment));
+      raw(round,"原始Judge、Critic诊断与改动依据", {raw:attempt.repair_judgment,diagnosis:attempt.diagnosis,changes:attempt.changes,...(attempt.repair_checker ? {historical_checker:attempt.repair_checker} : {})});
+      raw(round,"逐条经验核对及重写记录",attempt.extractions);
+    }
+
     if (attempt.proposal?.analysis) {
       const analysis = el("div", "", "analysis");
       analysis.append(el("h4", "Critic诊断"), rich(attempt.proposal.analysis));

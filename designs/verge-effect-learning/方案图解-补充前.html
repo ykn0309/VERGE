@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1"><title>VERGE方案图解：训练留下什么，推理怎样使用</title>
+<style>
+:root{--ink:#202624;--muted:#555d59;--line:#d9dfda;--paper:#fff;--soft:#f6f8f6;--accent:#265f4b}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:60px}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.8 -apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC",sans-serif}main{max-width:1040px;margin:auto;padding:36px 28px 64px}header{padding-bottom:24px;border-bottom:1px solid var(--line)}.meta{font-size:13px;color:var(--muted);margin:0 0 12px}h1{font-size:29px;line-height:1.5;margin:0 0 16px;font-weight:650}h2{font-size:23px;line-height:1.5;margin:0 0 16px}h3{font-size:18px;margin:20px 0 8px}p{margin:10px 0}a{color:var(--accent);text-underline-offset:4px}nav{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:20px}nav a{font-size:14px}section{padding-top:36px;margin-top:12px}section+section{border-top:1px solid var(--line);margin-top:36px}.note{font-size:14px;color:var(--muted)}.important{padding:14px 18px;background:var(--soft);margin:18px 0}.figure{margin:18px 0;border:1px solid var(--line);padding:12px;background:#fff}.diagram{overflow:auto}.diagram svg{display:block;width:100%;max-width:860px;height:auto;margin:auto;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}.diagram svg text{fill:#252b28}.diagram .c-lane{fill:#fbfcfb;stroke:#d8ddd9;stroke-dasharray:none}.diagram .c-backend,.diagram .c-external,.diagram .c-database{fill:white;stroke:#65716b}.diagram .c-security{fill:#f2f5f2;stroke:#65716b}.diagram .c-mask{fill:white;stroke:none}.diagram .s-backend,.diagram .s-external,.diagram .s-database,.diagram .s-security{fill:none;stroke:#65716b}.diagram .semantic-sigil{stroke:#65716b}.diagram .a-default{fill:none;stroke:#5c6d63}.diagram .m-default,.diagram .m-emphasis,.diagram .m-security,.diagram .m-dashed{fill:#5c6d63}.diagram .c-grid{fill:none;stroke:transparent}.diagram .t-muted{fill:#505b55}.figure figcaption{border-top:1px solid var(--line);padding:10px 4px 0;color:var(--muted);font-size:14px}.plain-list{padding-left:24px}.plain-list li{margin:7px 0}.example{border:1px solid var(--line);padding:20px;margin-top:18px}.task{font-weight:600}.answers{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:12px 0}.answers p{margin:0}.answers small{display:block;color:var(--muted)}button{font:inherit;background:#fff;border:1px solid #9ba89f;color:var(--ink);padding:7px 13px;border-radius:3px;cursor:pointer;min-height:42px}button:hover{background:var(--soft)}button[aria-pressed="true"]{background:#e9f0eb;border-color:#4e715d;font-weight:600}button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #315f4c;outline-offset:3px}.controls{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.result{padding-top:12px;border-top:1px solid var(--line)}.result dl{display:grid;grid-template-columns:100px 1fr;gap:8px 16px;margin:10px 0}.result dt{color:var(--muted)}.result dd{margin:0}.files{display:grid;gap:12px;margin:18px 0}details{border:1px solid var(--line);padding:12px 16px}summary{cursor:pointer;font-weight:600}details p{font-size:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);padding:16px;margin:12px 0 0;tab-size:2}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em}.tablewrap{overflow:auto;margin:16px 0}table{border-collapse:collapse;width:100%;font-size:15px}caption{text-align:left;color:var(--muted);font-size:14px;padding-bottom:8px}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:var(--soft);font-weight:600}.num{font-variant-numeric:tabular-nums;white-space:nowrap}.linkrow{display:flex;flex-wrap:wrap;gap:12px 24px}.divider{margin:24px 0;border:0;border-top:1px solid var(--line)}footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:40px;padding-top:18px}[hidden]{display:none!important}@media(max-width:650px){main{padding:22px 18px 40px}h1{font-size:24px}h2{font-size:21px}.answers{grid-template-columns:1fr;gap:10px}.example{padding:15px}.result dl{grid-template-columns:1fr;gap:2px}.result dd{margin-bottom:10px}.diagram svg{min-width:680px}.figure{padding:5px}.figure figcaption{padding:10px}.note{font-size:13px}th,td{padding:8px;font-size:14px}button{font-size:14px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{main{max-width:none;padding:0}nav,.controls,.linkrow button{display:none}section{break-before:auto}.figure,details{break-inside:avoid}.diagram svg{min-width:0}.diagram{overflow:visible}pre{font-size:10px}header{padding-top:0}}
+</style></head><body><main>
+<header><p class="meta">VERGE · 方案说明 · 2026-11-06</p><h1>训练留下什么，<br>新任务怎样用这些结果选经验？</h1><p><strong>核心变化：</strong>不只保存“应该怎么做”的经验，还保存“这条经验在哪些任务上有帮助、在哪些任务上有损害”的实际记录。新任务先找相近的历史任务，再由程序依据记录选择经验。</p><p class="note">这是待讨论方案的图解，尚未实现。下面所有任务、输出与统计都是演示数据；大模型参数不变。</p><nav aria-label="阅读顺序"><a href="#training">1. 训练怎么做</a><a href="#saved">2. 保存什么</a><a href="#inference">3. 推理怎么用</a><a href="#bayes">4. 贝叶斯网络放哪里</a></nav></header>
+<section id="training" data-screen-label="训练"><h2>1. 同一道题，比较使用与不使用经验</h2><p>程序检索少量候选经验，再安排不同的运行。下面用两条候选举例：不用经验、只用E1、只用E2。每次都完整生成Rubric，再评判两份回答。</p>
+<figure class="figure"><div class="diagram"><svg role="img" viewBox="0 0 784 668" data-reader-fit="width-first" data-layout-contract="readable-v2" lang="zh-CN" aria-label="拟议训练流程" data-preset="classic" data-quality-profile="showcase" data-node-ui="">
+        <title id="training-archify-diagram-title">训练：比较使用与不使用经验</title>
+        <desc id="training-archify-diagram-description">由 Archify 生成的工作流图。</desc>
+        
+        <defs>
+          <marker id="training-arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+          </marker>
+          <marker id="training-arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+          </marker>
+          <marker id="training-arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+          </marker>
+          <marker id="training-arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+          </marker>
+          <pattern id="training-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5" />
+          </pattern>
+        </defs>
+        
+
+        
+        <rect width="100%" height="100%" fill="url(#training-grid)" />
+
+        
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="training-lane-0" x="40" y="52" width="728" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="74" class="t-muted" font-size="10" font-weight="600">01 / 程序准备</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="training-lane-1" x="40" y="176" width="728" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="198" class="t-muted" font-size="10" font-weight="600">02 / 不使用经验</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="training-lane-2" x="40" y="300" width="728" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="322" class="t-muted" font-size="10" font-weight="600">03 / 只使用E1</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="training-lane-3" x="40" y="424" width="728" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="446" class="t-muted" font-size="10" font-weight="600">04 / 只使用E2</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="training-lane-4" x="40" y="548" width="728" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="570" class="t-muted" font-size="10" font-weight="600">05 / 程序记结果</text>
+
+        
+
+
+        
+
+
+        
+        <path data-edge-from="retrieve" data-edge-to="gen0" data-edge-key="0" data-edge-id="training-branch0" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="264,119;338,119;338,217" d="M 264 119 L 330 119 Q 338 119 338 127 L 338 217" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="retrieve" data-edge-to="gen1" data-edge-key="1" data-edge-id="training-branch1" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="218,145;218,367;292,367" d="M 218 145 L 218 359 Q 218 367 226 367 L 292 367" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="retrieve" data-edge-to="gen2" data-edge-key="2" data-edge-id="training-branch2" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="194,145;194,491;292,491" d="M 194 145 L 194 483 Q 194 491 202 491 L 292 491" class="a-default" data-animate="edge" style="--step:8" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="gen0" data-edge-to="judge0" data-edge-key="3" data-edge-id="training-g0j0" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="384,243;416,243" d="M 384 243 L 416 243" class="a-default" data-animate="edge" style="--step:9" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="gen1" data-edge-to="judge1" data-edge-key="4" data-edge-id="training-g1j1" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="384,367;416,367" d="M 384 367 L 416 367" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="gen2" data-edge-to="judge2" data-edge-key="5" data-edge-id="training-g2j2" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="384,491;416,491" d="M 384 491 L 416 491" class="a-default" data-animate="edge" style="--step:11" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="judge0" data-edge-to="compare" data-edge-key="6" data-edge-id="training-j0out" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="508,243;572,243;572,589" d="M 508 243 L 564 243 Q 572 243 572 251 L 572 589" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="judge1" data-edge-to="compare" data-edge-key="7" data-edge-id="training-j1out" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="508,367;524,367;524,615;540,615" d="M 508 367 L 516 367 Q 524 367 524 375 L 524 607 Q 524 615 532 615 L 540 615" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="judge2" data-edge-to="compare" data-edge-key="8" data-edge-id="training-j2out" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="462,517;462,533;20,533;20,657;586,657;586,641" d="M 462 517 L 462 525 Q 462 533 454 533 L 28 533 Q 20 533 20 541 L 20 649 Q 20 657 28 657 L 578 657 Q 586 657 586 649 L 586 641" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="compare" data-edge-to="save" data-edge-key="9" data-edge-id="training-persist" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="632,615;664,615" d="M 632 615 L 664 615" class="a-default" data-animate="edge" style="--step:4" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="task" data-edge-to="retrieve" data-edge-key="10" data-edge-id="training-start" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="140,119;172,119" d="M 140 119 L 172 119" class="a-default" data-animate="edge" style="--step:0" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+        <path data-edge-from="label" data-edge-to="compare" data-edge-key="11" data-edge-id="training-truth" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="508,615;540,615" d="M 508 615 L 540 615" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.4" marker-end="url(#training-arrowhead)" />
+
+        
+        <g id="training-node-task" data-node-id="training-task" data-node-label="训练任务" aria-label="训练任务，任务与两份回答, 程序准备" data-node-kind="external" data-node-sublabel="任务与两份回答" data-node-context="程序准备">
+          <title>训练任务 · 任务与两份回答 · 程序准备</title>
+          <rect x="48" y="93" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="48" y="93" width="92" height="52" rx="8" class="c-external" data-animate="node" style="--step:0" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(54 99) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5" />
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="94" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">训练任务</text>
+          <text data-detail="context" x="94" y="131" class="t-muted" font-size="8" text-anchor="middle">任务与两份回答</text>
+        </g>
+
+        <g id="training-node-retrieve" data-node-id="training-retrieve" data-node-label="检索候选经验" aria-label="检索候选经验，例如E1、E2, 程序准备" data-node-kind="backend" data-node-sublabel="例如E1、E2" data-node-context="程序准备">
+          <title>检索候选经验 · 例如E1、E2 · 程序准备</title>
+          <rect x="172" y="93" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="172" y="93" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:1" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(178 99) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="218" y="125.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">检索候选经验</text>
+          <text data-detail="context" x="218" y="140.1" class="t-muted" font-size="8" text-anchor="middle">例如E1、E2</text>
+        </g>
+
+        <g id="training-node-gen0" data-node-id="training-gen0" data-node-label="生成Rubric" aria-label="生成Rubric，只看任务, 不使用经验" data-node-kind="backend" data-node-sublabel="只看任务" data-node-context="不使用经验">
+          <title>生成Rubric · 只看任务 · 不使用经验</title>
+          <rect x="292" y="217" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="292" y="217" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:8" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(298 223) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="344" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">生成Rubric</text>
+          <text data-detail="context" x="338" y="255" class="t-muted" font-size="8" text-anchor="middle">只看任务</text>
+        </g>
+
+        <g id="training-node-judge0" data-node-id="training-judge0" data-node-label="独立评判" aria-label="独立评判，每次只看一份回答, 不使用经验" data-node-kind="backend" data-node-sublabel="每次只看一份回答" data-node-context="不使用经验">
+          <title>独立评判 · 每次只看一份回答 · 不使用经验</title>
+          <rect x="416" y="217" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="416" y="217" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:9" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(422 223) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="462" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">独立评判</text>
+          <text data-detail="context" x="462" y="255" class="t-muted" font-size="8" text-anchor="middle">每次只看一份回答</text>
+        </g>
+
+        <g id="training-node-gen1" data-node-id="training-gen1" data-node-label="生成Rubric" aria-label="生成Rubric，任务＋E1, 只使用E1" data-node-kind="backend" data-node-sublabel="任务＋E1" data-node-context="只使用E1">
+          <title>生成Rubric · 任务＋E1 · 只使用E1</title>
+          <rect x="292" y="341" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="292" y="341" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:2" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(298 347) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="344" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">生成Rubric</text>
+          <text data-detail="context" x="338" y="379" class="t-muted" font-size="8" text-anchor="middle">任务＋E1</text>
+        </g>
+
+        <g id="training-node-judge1" data-node-id="training-judge1" data-node-label="独立评判" aria-label="独立评判，每次只看一份回答, 只使用E1" data-node-kind="backend" data-node-sublabel="每次只看一份回答" data-node-context="只使用E1">
+          <title>独立评判 · 每次只看一份回答 · 只使用E1</title>
+          <rect x="416" y="341" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="416" y="341" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:3" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(422 347) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="462" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">独立评判</text>
+          <text data-detail="context" x="462" y="379" class="t-muted" font-size="8" text-anchor="middle">每次只看一份回答</text>
+        </g>
+
+        <g id="training-node-gen2" data-node-id="training-gen2" data-node-label="生成Rubric" aria-label="生成Rubric，任务＋E2, 只使用E2" data-node-kind="backend" data-node-sublabel="任务＋E2" data-node-context="只使用E2">
+          <title>生成Rubric · 任务＋E2 · 只使用E2</title>
+          <rect x="292" y="465" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="292" y="465" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(298 471) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="344" y="486" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">生成Rubric</text>
+          <text data-detail="context" x="338" y="503" class="t-muted" font-size="8" text-anchor="middle">任务＋E2</text>
+        </g>
+
+        <g id="training-node-judge2" data-node-id="training-judge2" data-node-label="独立评判" aria-label="独立评判，每次只看一份回答, 只使用E2" data-node-kind="backend" data-node-sublabel="每次只看一份回答" data-node-context="只使用E2">
+          <title>独立评判 · 每次只看一份回答 · 只使用E2</title>
+          <rect x="416" y="465" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="416" y="465" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(422 471) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="462" y="486" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">独立评判</text>
+          <text data-detail="context" x="462" y="503" class="t-muted" font-size="8" text-anchor="middle">每次只看一份回答</text>
+        </g>
+
+        <g id="training-node-label" data-node-id="training-label" data-node-label="训练偏好标签" aria-label="训练偏好标签，仅评分程序读取, 程序记结果" data-node-kind="security" data-node-sublabel="仅评分程序读取" data-node-context="程序记结果">
+          <title>训练偏好标签 · 仅评分程序读取 · 程序记结果</title>
+          <rect x="416" y="589" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="416" y="589" width="92" height="52" rx="8" class="c-security" data-animate="node" style="--step:12" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(422 595) scale(0.6875)">
+            <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z" />
+            <path d="m5.8 8 1.5 1.5 3-3" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="462" y="621.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">训练偏好标签</text>
+          <text data-detail="context" x="462" y="636.1" class="t-muted" font-size="8" text-anchor="middle">仅评分程序读取</text>
+        </g>
+
+        <g id="training-node-compare" data-node-id="training-compare" data-node-label="比较各次预测" aria-label="比较各次预测，与训练标签核对, 程序记结果" data-node-kind="backend" data-node-sublabel="与训练标签核对" data-node-context="程序记结果">
+          <title>比较各次预测 · 与训练标签核对 · 程序记结果</title>
+          <rect x="540" y="589" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="540" y="589" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:4" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(546 595) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="586" y="621.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">比较各次预测</text>
+          <text data-detail="context" x="586" y="636.1" class="t-muted" font-size="8" text-anchor="middle">与训练标签核对</text>
+        </g>
+
+        <g id="training-node-save" data-node-id="training-save" data-node-label="保存效果记录" aria-label="保存效果记录，关联经验版本与轨迹, 程序记结果" data-node-kind="database" data-node-sublabel="关联经验版本与轨迹" data-node-context="程序记结果">
+          <title>保存效果记录 · 关联经验版本与轨迹 · 程序记结果</title>
+          <rect x="664" y="589" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="664" y="589" width="92" height="52" rx="8" class="c-database" data-animate="node" style="--step:5" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(670 595) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2" />
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="710" y="621.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">保存效果记录</text>
+          <text data-detail="context" x="710" y="635.8" class="t-muted" font-size="7.7" text-anchor="middle">关联经验版本与轨迹</text>
+        </g>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </svg></div><figcaption>三条路径使用同一任务、同一对回答和相同执行设置。Generator只看任务与本次提供的经验；Judge每次独立看任务、标准和一份回答。训练标签只进入最后的程序核对。</figcaption></figure>
+<div class="example"><p class="note">贯穿示例 · 点击切换不同运行，查看可能产生的区别。这里不调用模型。</p><p class="task">T001：请把这句话改得更礼貌：“你们银行的代码是多少？”</p><div class="answers"><p><small>回答A</small>您好，请问贵行的银行代码是什么？谢谢。</p><p><small>回答B</small>银行代码通常可以在银行官方网站查询。</p></div><p class="note">训练标签：A更好。它完成了改写；B提供了查询建议。</p><div class="controls" role="group" aria-label="切换演示运行"><button type="button" data-run="none" aria-pressed="true">不用经验</button><button type="button" data-run="rewrite" aria-pressed="false">只用E1：改写核验</button><button type="button" data-run="fact" aria-pressed="false">只用E2：事实核验</button></div><div class="result" aria-live="polite"><dl><dt>提供的经验</dt><dd id="demo-experience"></dd><dt>生成的标准</dt><dd id="demo-rubric"></dd><dt>实际预测</dt><dd id="demo-prediction"></dd><dt>程序记录</dt><dd id="demo-effect"></dd></dl></div><p class="note">这组例子刻意展示“用错经验”和“用对经验”的区别，不代表不用经验一定出错，也不代表使用E1一定正确。</p></div>
+<p><strong>为什么要有“不用经验”？</strong>只有“用了以后判对”，还不知道不用是否也能判对。记录两边结果，才能区分改善、退化和无变化。一次改善只是一次观测，需要继续积累不同任务及重复运行的证据。</p>
+</section>
+<section id="saved" data-screen-label="训练产物"><h2>2. 保存方法，也保存它的实测记录</h2><p>经验给Generator看；历史效果给程序查询。两者通过经验ID和版本对应起来。</p><p class="note">以下是拟议文件名和JSON内容，便于说明，不是项目当前的数据格式。JSONL文件中每条记录占一行；这里展开显示。</p>
+<div class="files"><details><summary>① experiences.jsonl — 经验正文：具体检查什么？</summary><p>E1在文件中使用ID“E001”。这段正文可以交给Generator，但正文自身不能证明有效。</p><pre>{
+  &quot;experience_id&quot;: &quot;E001&quot;,
+  &quot;version&quot;: 1,
+  &quot;trigger&quot;: &quot;用户要求改写已有文本&quot;,
+  &quot;principle&quot;: &quot;核验改写是否保留原意，并满足用户要求的语气。&quot;,
+  &quot;application_guide&quot;: &quot;围绕改写质量设计标准。原文中的询问不自动成为要求回答的问题。&quot;
+}</pre></details><details><summary>② tasks.jsonl — 历史任务：在哪道题上测试的？</summary><p>历史任务原文用于检索。回答与偏好留作训练证据；偏好不提供给执行中的模型。</p><pre>{
+  &quot;task_id&quot;: &quot;T001&quot;,
+  &quot;task&quot;: &quot;请把这句话改得更礼貌：你们银行的代码是多少？&quot;,
+  &quot;answer_a&quot;: &quot;您好，请问贵行的银行代码是什么？谢谢。&quot;,
+  &quot;answer_b&quot;: &quot;银行代码通常可以在银行官方网站查询。&quot;,
+  &quot;preferred_answer&quot;: &quot;A&quot;
+}</pre></details><details open><summary>③ effects.jsonl — 配对结果：用了以后改变了什么？</summary><p>下面对应示例中的“不用经验”与“只用E1”。同一任务、同一经验版本和同一执行设置才能明确对应。</p><pre>{
+  &quot;task_id&quot;: &quot;T001&quot;,
+  &quot;experience_id&quot;: &quot;E001&quot;,
+  &quot;experience_version&quot;: 1,
+  &quot;execution_version&quot;: &quot;generator-v1_judge-v1&quot;,
+  &quot;without_experience&quot;: {
+    &quot;run_id&quot;: &quot;R001&quot;,
+    &quot;predicted_answer&quot;: &quot;B&quot;,
+    &quot;correct&quot;: false
+  },
+  &quot;with_experience&quot;: {
+    &quot;run_id&quot;: &quot;R002&quot;,
+    &quot;predicted_answer&quot;: &quot;A&quot;,
+    &quot;correct&quot;: true
+  },
+  &quot;difference&quot;: 1
+}</pre><p><code>difference = 1</code>：从错变对；<code>-1</code>：从对变错；<code>0</code>：两边同对或同错，原始结果仍保留。调用失败单独记，不能假装成0；没测试过的关系也不能填成0。</p></details><details><summary>④ runs/R002.json — 完整轨迹：结果为什么变了？</summary><p>这是只用E1的简化轨迹。正式记录还需保存实际请求、回复、模型配置、重试与错误。模型的判断理由是审查材料，不是真值。</p><pre>{
+  &quot;run_id&quot;: &quot;R002&quot;,
+  &quot;visible_experiences&quot;: [
+    &quot;E001@1&quot;
+  ],
+  &quot;rubric&quot;: [
+    {
+      &quot;criterion_id&quot;: &quot;c1&quot;,
+      &quot;question&quot;: &quot;回答是否将原句改写得更礼貌，并保留询问银行代码的原意？&quot;,
+      &quot;weight&quot;: 1.0
+    }
+  ],
+  &quot;judge_a&quot;: {
+    &quot;criterion_id&quot;: &quot;c1&quot;,
+    &quot;satisfied&quot;: true,
+    &quot;reason&quot;: &quot;给出了礼貌的询问，保留了原问题。&quot;
+  },
+  &quot;judge_b&quot;: {
+    &quot;criterion_id&quot;: &quot;c1&quot;,
+    &quot;satisfied&quot;: false,
+    &quot;reason&quot;: &quot;回答了查询途径，没有改写原句。&quot;
+  },
+  &quot;score_a&quot;: 1.0,
+  &quot;score_b&quot;: 0.0,
+  &quot;predicted_answer&quot;: &quot;A&quot;
+}</pre></details></div>
+<p><strong>训练最终留下的：</strong>经验及版本、历史任务、配对效果和完整轨迹。任务向量索引由历史任务生成，用于后续检索；它不等于学到了可靠的任务类别。</p>
+<p class="note">经验可以来自已有经验池，或Critic提出的新版本。Critic的产生、修改与准入机制仍需另行确定。这一页不把“提炼出经验”视作已经验证有效；新版本也不能直接继承旧版本的效果。</p>
+</section>
+<section id="inference" data-screen-label="推理"><h2>3. 新任务先查历史效果，再决定用哪条经验</h2><p>新任务没有训练标签，不能现场知道哪种运行一定正确。因此使用训练阶段留下的证据做选择，而不是在推理时把所有历史题重新跑一遍。</p>
+<figure class="figure"><div class="diagram"><svg role="img" viewBox="0 0 800 420" data-reader-fit="width-first" data-layout-contract="readable-v2" lang="zh-CN" aria-label="拟议推理流程" data-preset="classic" data-quality-profile="showcase" data-node-ui="">
+        <title id="inference-archify-diagram-title">推理：用历史效果选择经验</title>
+        <desc id="inference-archify-diagram-description">由 Archify 生成的工作流图。</desc>
+        
+        <defs>
+          <marker id="inference-arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+          </marker>
+          <marker id="inference-arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+          </marker>
+          <marker id="inference-arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+          </marker>
+          <marker id="inference-arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+          </marker>
+          <pattern id="inference-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5" />
+          </pattern>
+        </defs>
+        
+
+        
+        <rect width="100%" height="100%" fill="url(#inference-grid)" />
+
+        
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="inference-lane-0" x="40" y="52" width="744" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="74" class="t-muted" font-size="10" font-weight="600">01 / 程序选择</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="inference-lane-1" x="40" y="176" width="744" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="198" class="t-muted" font-size="10" font-weight="600">02 / 训练产物</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="inference-lane-2" x="40" y="300" width="744" height="104" rx="10" class="c-lane" stroke-width="1" />
+        <text x="54" y="322" class="t-muted" font-size="10" font-weight="600">03 / 模型执行</text>
+
+        
+
+
+        
+
+
+        
+        <path data-edge-from="effects" data-edge-to="choose" data-edge-key="0" data-edge-id="inference-decide" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="400,119;432,119" d="M 400 119 L 432 119" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="generator" data-edge-to="judge" data-edge-key="1" data-edge-id="inference-genjudge" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="524,367;556,367" d="M 524 367 L 556 367" class="a-default" data-animate="edge" style="--step:5" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="judge" data-edge-to="prediction" data-edge-key="2" data-edge-id="inference-judgeout" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="648,367;680,367" d="M 648 367 L 680 367" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="neighbors" data-edge-to="effects" data-edge-key="3" data-edge-id="inference-lookup" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="276,119;308,119" d="M 276 119 L 308 119" class="a-default" data-animate="edge" style="--step:1" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="newtask" data-edge-to="neighbors" data-edge-key="4" data-edge-id="inference-query" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="140,119;172,119" d="M 140 119 L 172 119" class="a-default" data-animate="edge" style="--step:0" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="store" data-edge-to="effects" data-edge-key="5" data-edge-id="inference-records" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="354,217;354,145" d="M 354 217 L 354 145" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="choose" data-edge-to="method" data-edge-key="6" data-edge-id="inference-selected" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="478,145;478,217" d="M 478 145 L 478 217" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="method" data-edge-to="generator" data-edge-key="7" data-edge-id="inference-supply" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="478,269;478,341" d="M 478 269 L 478 341" class="a-default" data-animate="edge" style="--step:4" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+        <path data-edge-from="newtask" data-edge-to="generator" data-edge-label="任务" data-edge-key="8" data-edge-id="inference-taskcontext" data-composition-routing="workflow-v2-auto" data-edge-role="" data-composition-points="94,145;94,161;251,161;251,367;432,367" d="M 94 145 L 94 153 Q 94 161 102 161 L 243 161 Q 251 161 251 169 L 251 359 Q 251 367 259 367 L 432 367" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.4" marker-end="url(#inference-arrowhead)" />
+
+        
+        <g id="inference-node-newtask" data-node-id="inference-newtask" data-node-label="新任务" aria-label="新任务，没有偏好标签, 程序选择" data-node-kind="external" data-node-sublabel="没有偏好标签" data-node-context="程序选择">
+          <title>新任务 · 没有偏好标签 · 程序选择</title>
+          <rect x="48" y="93" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="48" y="93" width="92" height="52" rx="8" class="c-external" data-animate="node" style="--step:0" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(54 99) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5" />
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="94" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">新任务</text>
+          <text data-detail="context" x="94" y="131" class="t-muted" font-size="8" text-anchor="middle">没有偏好标签</text>
+        </g>
+
+        <g id="inference-node-neighbors" data-node-id="inference-neighbors" data-node-label="检索相近历史任务" aria-label="检索相近历史任务，向量检索提供线索, 程序选择" data-node-kind="backend" data-node-sublabel="向量检索提供线索" data-node-context="程序选择">
+          <title>检索相近历史任务 · 向量检索提供线索 · 程序选择</title>
+          <rect x="172" y="93" width="104" height="52" rx="8" class="c-mask" />
+          <rect x="172" y="93" width="104" height="52" rx="8" class="c-backend" data-animate="node" style="--step:1" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(178 99) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="224" y="124" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">检索相近历史任务</text>
+          <text data-detail="context" x="224" y="138.6" class="t-muted" font-size="8" text-anchor="middle">向量检索提供线索</text>
+        </g>
+
+        <g id="inference-node-effects" data-node-id="inference-effects" data-node-label="读取实测效果" aria-label="读取实测效果，保留改善与退化, 程序选择" data-node-kind="backend" data-node-sublabel="保留改善与退化" data-node-context="程序选择">
+          <title>读取实测效果 · 保留改善与退化 · 程序选择</title>
+          <rect x="308" y="93" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="308" y="93" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:2" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(314 99) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="354" y="125.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">读取实测效果</text>
+          <text data-detail="context" x="354" y="140.1" class="t-muted" font-size="8" text-anchor="middle">保留改善与退化</text>
+        </g>
+
+        <g id="inference-node-choose" data-node-id="inference-choose" data-node-label="程序选择经验" aria-label="程序选择经验，证据不足可不用, 程序选择" data-node-kind="backend" data-node-sublabel="证据不足可不用" data-node-context="程序选择">
+          <title>程序选择经验 · 证据不足可不用 · 程序选择</title>
+          <rect x="432" y="93" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="432" y="93" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:3" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(438 99) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="478" y="125.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">程序选择经验</text>
+          <text data-detail="context" x="478" y="140.1" class="t-muted" font-size="8" text-anchor="middle">证据不足可不用</text>
+        </g>
+
+        <g id="inference-node-store" data-node-id="inference-store" data-node-label="历史任务与效果" aria-label="历史任务与效果，只供程序查询, 训练产物" data-node-kind="database" data-node-sublabel="只供程序查询" data-node-context="训练产物">
+          <title>历史任务与效果 · 只供程序查询 · 训练产物</title>
+          <rect x="308" y="217" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="308" y="217" width="92" height="52" rx="8" class="c-database" data-animate="node" style="--step:12" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(314 223) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2" />
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="354" y="248" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">历史任务与效果</text>
+          <text data-detail="context" x="354" y="262.6" class="t-muted" font-size="8" text-anchor="middle">只供程序查询</text>
+        </g>
+
+        <g id="inference-node-method" data-node-id="inference-method" data-node-label="经验正文及版本" aria-label="经验正文及版本，读取所选版本, 训练产物" data-node-kind="database" data-node-sublabel="读取所选版本" data-node-context="训练产物">
+          <title>经验正文及版本 · 读取所选版本 · 训练产物</title>
+          <rect x="432" y="217" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="432" y="217" width="92" height="52" rx="8" class="c-database" data-animate="node" style="--step:4" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(438 223) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2" />
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="478" y="248" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">经验正文及版本</text>
+          <text data-detail="context" x="478" y="262.6" class="t-muted" font-size="8" text-anchor="middle">读取所选版本</text>
+        </g>
+
+        <g id="inference-node-generator" data-node-id="inference-generator" data-node-label="生成Rubric" aria-label="生成Rubric，新任务＋所选经验, 模型执行" data-node-kind="backend" data-node-sublabel="新任务＋所选经验" data-node-context="模型执行">
+          <title>生成Rubric · 新任务＋所选经验 · 模型执行</title>
+          <rect x="432" y="341" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="432" y="341" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:5" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(438 347) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="484" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">生成Rubric</text>
+          <text data-detail="context" x="478" y="379" class="t-muted" font-size="8" text-anchor="middle">新任务＋所选经验</text>
+        </g>
+
+        <g id="inference-node-judge" data-node-id="inference-judge" data-node-label="独立评判" aria-label="独立评判，新任务与当前回答, 模型执行" data-node-kind="backend" data-node-sublabel="新任务与当前回答" data-node-context="模型执行">
+          <title>独立评判 · 新任务与当前回答 · 模型执行</title>
+          <rect x="556" y="341" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="556" y="341" width="92" height="52" rx="8" class="c-backend" data-animate="node" style="--step:6" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(562 347) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="602" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">独立评判</text>
+          <text data-detail="context" x="602" y="379" class="t-muted" font-size="8" text-anchor="middle">新任务与当前回答</text>
+        </g>
+
+        <g id="inference-node-prediction" data-node-id="inference-prediction" data-node-label="输出比较结果" aria-label="输出比较结果，不写回训练记录, 模型执行" data-node-kind="external" data-node-sublabel="不写回训练记录" data-node-context="模型执行">
+          <title>输出比较结果 · 不写回训练记录 · 模型执行</title>
+          <rect x="680" y="341" width="92" height="52" rx="8" class="c-mask" />
+          <rect x="680" y="341" width="92" height="52" rx="8" class="c-external" data-animate="node" style="--step:7" stroke-width="1.5" />
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(686 347) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5" />
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5" />
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="726" y="373.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">输出比较结果</text>
+          <text data-detail="context" x="726" y="388.1" class="t-muted" font-size="8" text-anchor="middle">不写回训练记录</text>
+        </g>
+
+        
+
+
+
+
+
+
+
+
+        <g data-detail="context" data-edge-from="newtask" data-edge-to="generator" data-edge-label="任务" data-edge-key="8" data-edge-id="inference-taskcontext">
+          <rect x="326.5" y="347" width="30" height="14" rx="3" class="c-mask" />
+          <text x="341.5" y="357" class="t-muted" font-size="8" text-anchor="middle">任务</text>
+        </g>
+
+        
+        </svg></div><figcaption>历史回答、历史偏好和成败说明不交给新任务的Generator／Judge。程序查询效果，Generator读取所选经验正文；若不用经验，就只根据当前任务生成标准。</figcaption></figure>
+<div class="example"><p class="task">新任务：请把这段向医生咨询检查结果的话改得更礼貌。</p><ol class="plain-list"><li><strong>检索相近历史任务。</strong>例如银行询问改写、邮件语气修改。主题不同，要求执行的动作相近。</li><li><strong>读取这些任务的效果记录。</strong>未测试过的经验保持“无记录”，不能认为无效。</li><li><strong>程序汇总并选择。</strong>以下数字仅演示汇总长什么样，不代表真实实验或已经确定的选择门槛。</li></ol>
+<div class="tablewrap"><table><caption>同一批10道相近历史任务上的虚构结果</caption><thead><tr><th scope="col">经验版本</th><th scope="col">改善</th><th scope="col">退化</th><th scope="col">无变化</th></tr></thead><tbody><tr><th scope="row">E001@1：改写核验</th><td class="num">6</td><td class="num">1</td><td class="num">3</td></tr><tr><th scope="row">E002@1：事实核验</th><td class="num">1</td><td class="num">5</td><td class="num">4</td></tr></tbody></table></div>
+<p>这组证据支持<strong>优先考虑E001@1</strong>。假设程序选它，Generator就读取“新任务＋E001@1正文”，生成改写质量标准；Judge再评价当前两份回答。</p><p class="note">这不是新任务的正确率预测。正式程序怎样兼顾相似度、证据量、波动和成本，还没有确定。证据不足时允许不用经验；多个经验组合的收益不能直接用单条收益相加。</p></div>
+<div class="important"><strong>向量检索是线索，不是可靠分类。</strong><br>它可能只看见“医生”，找来医疗答疑任务，却忽略“改写”。需要检验检索到的历史证据能否帮助新任务选经验，不能把主题相近直接当成适用。</div>
+</section>
+<section id="bayes" data-screen-label="贝叶斯与边界"><h2>4. 贝叶斯网络可以接在“程序选择”之前</h2><p>上图中的“读取实测效果 → 程序选择经验”，就是以后可以加入贝叶斯推断的位置。</p><ul class="plain-list"><li><strong>输入：</strong>新任务的信息，以及历史任务上使用／不使用经验的记录。</li><li><strong>估计：</strong>不同经验及使用方式，在这个任务上各自获得正确结果的可能性与不确定性。</li><li><strong>执行：</strong>程序根据估计、成本及证据要求选择经验，或者不用经验。</li></ul><p>原始记录无论采用简单统计还是贝叶斯网络，都需要保存。“先把记录定义清楚”不是放弃贝叶斯网络，而是先弄清它要处理什么数据、影响哪个决定。</p><div class="tablewrap"><table><thead><tr><th scope="col">已经明确的方向</th><th scope="col">还没确定的设计</th></tr></thead><tbody><tr><td>基础大模型参数固定</td><td>怎样表示任务、哪些历史证据能共享</td></tr><tr><td>根据实际使用效果选择经验</td><td>贝叶斯节点、概率估计与选择门槛</td></tr><tr><td>先用向量检索找相近历史任务</td><td>采样预算、重复次数、多经验组合</td></tr></tbody></table></div>
+<p><strong>当前范围：</strong>这版首先解决“根据实测证据选经验”。它还不是选择、应用和评判的完整联合优化方案。最终偏好判对也不能证明每条标准合理；Critic如何改善经验、Generator和Judge怎样更新外部执行规则，需要继续讨论。</p>
+</section>
+<footer><p>单文件HTML，可离线打开；页面不调用模型、不运行训练。示例和统计均为说明用途。</p><div class="linkrow"><a href="../../docs/研究讨论/106-不训练模型的整流程优化候选.md">讨论稿106</a><a href="../../docs/研究进度.html#joint105">研究进度</a><button type="button" id="print">打印 / 保存PDF</button></div></footer>
+</main><script>
+const examples={none:{experience:'不提供经验；只根据任务生成标准。',rubric:'回答是否提供了查询银行代码的具体途径？',prediction:'偏好B，与训练标签A不一致。',effect:'保存基准运行R001：correct = false。这个坏标准误把改写任务当成答疑。'},rewrite:{experience:'E1／E001@1：核验改写是否保留原意、符合目标语气。',rubric:'回答是否将原句改写得更礼貌，并保留询问银行代码的原意？',prediction:'偏好A，与训练标签一致。',effect:'保存R002：correct = true。相对R001，从错变对，difference = +1。'},fact:{experience:'E2／E002@1：核验事实性答复是否准确、对问题有帮助。',rubric:'回答是否给出有帮助的银行代码查询建议？',prediction:'偏好B，与训练标签A不一致。',effect:'保存另一条配对记录：两次均错，difference = 0。这次没有观察到改善。'}};
+function showRun(key){const d=examples[key];document.getElementById('demo-experience').textContent=d.experience;document.getElementById('demo-rubric').textContent=d.rubric;document.getElementById('demo-prediction').textContent=d.prediction;document.getElementById('demo-effect').textContent=d.effect;document.querySelectorAll('[data-run]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.run===key)));}
+document.querySelectorAll('[data-run]').forEach(b=>b.addEventListener('click',()=>showRun(b.dataset.run)));document.getElementById('print').addEventListener('click',()=>window.print());showRun('none');
+</script></body></html>

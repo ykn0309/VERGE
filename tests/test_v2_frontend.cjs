@@ -476,6 +476,13 @@ setImmediate(async () => {
     );
     assert.ok(content().includes("本题触发的版本修订"));
     assert.ok(content().includes("保留原方法"));
+    run("state.data.samples[49].baseline_judgment={};state.data.samples[49].baseline_diagnosis={analysis:'只分析明确误判'};state.data.samples[49].proposal_attempts=[{round_number:1,error:'没有必要修改标准'}];selectSample('s49','critic')");
+    assert.ok(content().includes("初始Judge结果与Critic诊断"));
+    assert.ok(content().includes("只分析明确误判"));
+    assert.equal(run("SAMPLE_STATES.no_rubric_revision[0]"), "未提出标准修改");
+    assert.ok(run("ROLES.experience_checker_batch").includes("逐条结论"));
+    assert.equal(run("finalJudgment({initial_judgment:{success:false},proposal_attempts:[{final_judgment:{success:true}},{error:'unfinished'}]}).success"), true);
+    assert.equal(run("finalJudgment({initial_judgment:{success:false},baseline_judgment:{success:true},proposal_attempts:[]}).success"), true);
     console.log(
       "DOM contract checks passed: deep links, structured criteria/checkers, rich text safety, long text, filters, scroll preservation, history and lazy role IO.",
     );

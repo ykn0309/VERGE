@@ -28,7 +28,7 @@ def atomic_json(path, data):
 
 
 class ExperienceMemory:
-    SCHEMA = 14
+    SCHEMA = 15
 
     def __init__(
         self, root_dir, *, read_only=False, parameters=None, allow_reestimate=False
@@ -54,7 +54,7 @@ class ExperienceMemory:
                 }
                 or data["schema_version"] != self.SCHEMA
             ):
-                raise ValueError("Memory schema 14 required; V1 data cannot be resumed")
+                raise ValueError("Memory schema 15 required; V1 data cannot be resumed")
             self.parameter_snapshot = data["parameters"]
             self.parameter_events = data["parameter_events"]
             items = [Experience.from_dict(x) for x in data["experiences"]]
@@ -197,6 +197,8 @@ class ExperienceMemory:
         e.admission_review = deepcopy(review)
         e.parameter_digest = self.parameters.fingerprint if self.parameters else None
         e.applications = []
+        e.q_log_odds = None
+        e.q_prior = e.q_posterior = e.parameter_version = None
         if self.parameters and self.parameters.status == "usable":
             e.q_prior = e.q_posterior = self.parameters.q_prior
             e.parameter_version = self.parameters.version
@@ -209,8 +211,8 @@ class ExperienceMemory:
             raise ValueError("replay evidence must use its explicit lifecycle commit")
         versions = deepcopy(self._experiences)
         e = versions[app.version_id]
-        if e.status != "active" or e.method != app.method:
-            raise ValueError("application must use the active immutable version")
+        if e.status not in ("active", "retired") or e.method != app.method:
+            raise ValueError("application must match its immutable version")
         if app.phase == "source_validation" and (
             app.sample.sample_id != e.source_sample_id
             or app.sample.task_id != e.source_task_id
@@ -271,6 +273,8 @@ class ExperienceMemory:
             ):
                 raise ValueError("invalid revision child")
             child.source_task_id = parent.source_task_id
+            child.source_sample = deepcopy(parent.source_sample)
+            child.admission_review = deepcopy(parent.admission_review)
             child.status = "active"
             child.created_by_event_id = event.event_id
             parent.status = "retired"

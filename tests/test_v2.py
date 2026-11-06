@@ -81,7 +81,7 @@ def params(version="test-parameters"):
             "scope": "available_reports",
             "estimation_source": "fictional TEST fixture",
             "feedback_protocol": "net_direction_tie_v1",
-            "admission_protocol": "experience_checker_v1",
+            "admission_protocol": "rubric_margin_guides_v2",
         },
         "usable",
     )
@@ -174,6 +174,9 @@ def test_two_field_method_and_source_whitelist():
         def generate(self, role, payload, **kw):
             return {
                 "analysis": "取舍",
+                "experience_usage": [
+                    {"experience_id": "1", "used": True, "reason": "指定材料核验"}
+                ],
                 "criteria": [
                     {
                         "question": "回答是否有材料2支持？",
@@ -359,9 +362,9 @@ def test_sampler_3_1_1_1_and_dedup():
     "scenario,state,rounds",
     [
         ("initial_success", "initial_success", 0),
-        ("attempt_1_success", "application_success", 1),
-        ("attempt_2_success", "application_success", 2),
-        ("final_failure", "validation_exhausted", 1),
+        ("attempt_1_success", "experience_admitted", 1),
+        ("attempt_2_success", "experience_admitted", 2),
+        ("final_failure", "repair_not_improved", 2),
     ],
 )
 def test_candidate_only_flow_and_critic_conversation(tmp_path, scenario, state, rounds):
@@ -369,9 +372,11 @@ def test_candidate_only_flow_and_critic_conversation(tmp_path, scenario, state, 
     mem = ExperienceMemory(tmp_path)
     r = PipelineRunner(m, mem, TrajectoryLog(tmp_path)).run_sample(sample())
     assert r.state == state and len(r.proposal_attempts) == rounds
-    assert len(mem.all()) == (0 if scenario == "initial_success" else 1)
+    assert len(mem.all()) == (
+        0 if scenario in ("initial_success", "final_failure") else 1
+    )
     calls = m.backend.calls
-    assert sum(role == "experience_checker" for role, p in calls) == rounds
+    assert sum(role == "critic_repair" for role, p in calls) == rounds
     candidate_calls = [
         p for role, p in calls if role == "initial_generator" and p.get("_round")
     ]
@@ -456,7 +461,7 @@ def test_hybrid_direct_active_only_and_no_keyword_arbitrary_bonus():
     found = r.retrieve("unmatchedenglishword", es)
     assert [e.experience_id for e in found] == ["a", "b"]
     assert all(t["keyword_rank"] is None for t in r.last_trace)
-    assert r.fork().cache == r.cache and r.fork().cache is not r.cache
+    assert r.fork().cache == r.cache and r.fork().cache is r.cache
 
 
 def test_sample_failure_continues_but_program_error_fails_fast(tmp_path):
@@ -472,7 +477,7 @@ def test_sample_failure_continues_but_program_error_fails_fast(tmp_path):
     rs = PipelineRunner(mods, ExperienceMemory(tmp_path), TrajectoryLog(tmp_path)).run(
         [sample(0), sample(1)]
     )
-    assert rs[0].state == "sample_error" and rs[1].state == "application_success"
+    assert rs[0].state == "sample_error" and rs[1].state == "experience_admitted"
     mods.initial_generator.generate = lambda *a, **kw: (_ for _ in ()).throw(
         RuntimeError("bug")
     )
@@ -560,9 +565,9 @@ def test_seeded_e_never_leaks_and_rejected_candidate_is_not_applied(
 ):
     class Backend(FakeLLMBackend):
         def generate(self, role, payload, **kw):
-            if role == "critic":
+            if role == "critic_extract":
                 answer = super().generate(role, payload, **kw)
-                answer["candidates"][0]["principle"] = "C" + str(payload["round"])
+                answer["candidates"][0]["method"]["principle"] = "C2"
                 return answer
             return super().generate(role, payload, **kw)
 
@@ -579,8 +584,7 @@ def test_seeded_e_never_leaks_and_rejected_candidate_is_not_applied(
     ).run_sample(sample(5))
     calls = [payload for role, payload in backend.calls if role == "initial_generator"]
     assert [x["principle"] for x in calls[0]["experiences"]] == ["old-E"]
-    assert len(calls) == 2
-    assert [x["principle"] for x in calls[1]["experiences"]] == ["C2"]
+    assert len(calls) == 1  # newly admitted C is not applied on its source task
     admitted = memory.get(rec.admitted_experience_ids[0])
     assert admitted.method.principle == "C2"
 
@@ -617,49 +621,20 @@ def test_updater_or_replay_request_error_keeps_parent_and_records_event(tmp_path
     assert len(memory.revisions) == 1
 
 
-def test_reviewed_candidate_stays_admitted_even_when_whole_task_fails(
-    tmp_path,
-):
-    mods = make_fake_modules("final_failure")
+def test_admission_does_not_generate_a_new_rubric(tmp_path):
+    mods = make_fake_modules("attempt_1_success")
+    original = mods.initial_generator.generate
 
     def generate(task, selected, *, round_number=0):
-        eid = selected[0].experience_id if selected else None
-        return Rubric(
-            "round" + str(round_number),
-            [
-                Criterion(
-                    "a",
-                    "pass" if round_number == 1 else "fail",
-                    0.2,
-                    [eid] if eid else [],
-                ),
-                Criterion("b", "fail", 0.8, []),
-            ],
-        )
-
-    def judge(r, chosen, rejected, *, task):
-        return calculate_rubric_judgment(
-            r,
-            [
-                CriterionJudgment(
-                    c.criterion_id,
-                    c.question == "pass",
-                    c.question != "pass",
-                    "原文a",
-                    "原文b",
-                )
-                for c in r.criteria
-            ],
-        )
+        assert round_number == 0, "source generation was removed"
+        return original(task, selected, round_number=round_number)
 
     mods.initial_generator.generate = generate
-    mods.judge.judge = judge
-    memory = ExperienceMemory(tmp_path)
-    rec = PipelineRunner(mods, memory, TrajectoryLog(tmp_path)).run_sample(sample())
-    assert all(not p.judgment.success for p in rec.proposal_attempts)
-    assert rec.proposal_attempts[0].applications[0].feedback == "positive"
-    assert len(rec.proposal_attempts) == 1
-    assert rec.admitted_experience_ids == [
-        rec.proposal_attempts[0].proposal.candidates[0].experience_id
-    ]
-    assert len(memory.all()) == 1
+    mem = ExperienceMemory(tmp_path)
+    r = PipelineRunner(
+        mods, mem, TrajectoryLog(tmp_path), revision_enabled=False
+    ).run_sample(sample())
+    assert r.state == "experience_admitted" and len(mem.all()) == 1
+    assert r.proposal_attempts[0].margin_gain > 0
+    assert r.proposal_attempts[0].judgment is None
+    assert not mem.all()[0].applications

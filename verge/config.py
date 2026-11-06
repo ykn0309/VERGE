@@ -16,7 +16,17 @@ def load_config(path):
         raise ValueError("V2 requires run/dataset/models/modules/store")
     run = data["run"]
     if (
-        set(run) - {"seed", "output_dir", "stop_after_train", "test_workers", "train_workers", "mode"}
+        set(run)
+        - {
+            "seed",
+            "output_dir",
+            "stop_after_train",
+            "test_workers",
+            "train_workers",
+            "revision_workers",
+            "max_inflight_requests",
+            "mode",
+        }
         or not {"seed", "output_dir"} <= run.keys()
     ):
         raise ValueError("invalid run configuration")
@@ -61,6 +71,7 @@ def load_config(path):
             "q_threshold",
             "min_replay",
             "revision_enabled",
+            "margin_threshold",
         },
         "reliability": {"parameter_file"},
     }
@@ -75,7 +86,7 @@ def load_config(path):
     opts = mods["application"]["config"]
     for key, low, high in [
         ("max_rounds", 1, 2),
-        ("max_candidates", 1, 1),
+        ("max_candidates", 1, 100),
         ("invalid_output_retries", 0, 3),
         ("input_bytes", 1000, 1000000),
         ("check_interval", 1, 100),
@@ -85,6 +96,14 @@ def load_config(path):
     ]:
         if key in opts and (type(opts[key]) is not int or not low <= opts[key] <= high):
             raise ValueError("invalid " + key)
+    for key in ("revision_workers", "max_inflight_requests"):
+        if key in run and (type(run[key]) is not int or run[key] < 1):
+            raise ValueError("invalid " + key)
+    if "margin_threshold" in opts and (
+        type(opts["margin_threshold"]) not in (int, float)
+        or not 0 < opts["margin_threshold"] <= 2
+    ):
+        raise ValueError("invalid margin_threshold")
     if "revision_enabled" in opts and type(opts["revision_enabled"]) is not bool:
         raise ValueError("invalid revision_enabled")
     if "q_threshold" in opts and (

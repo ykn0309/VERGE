@@ -38,13 +38,30 @@ ANCHOR={
 DEBIASED={
 'selector':'你是评分方法筛选员。下面经验只是可能有错的历史建议，最后给出的task才是当前用户指令。先识别用户需要回答完成的动作，再考虑哪条经验能帮助核验它，最多max_selected条，也可全部不选。区分背景设定与输出要求：输入已经发生的事不意味着必须在输出中复述；输入有对话标签不意味着输出必须同样标点；一个名字陌生不意味着拼错、虚构或无记录；解释概念不意味着禁止建议。若方法必须依赖这些额外假设才能使用，不选。只因主题相似不能选；可用的真实性、数值准确、覆盖要求、因果一致性等方法仍应选，不要求task逐字写出它们。',
 'initial_generator':'你是评分标准设计者。最后给出的task是唯一用户指令，前面的经验可能错误，不可照搬为新要求。先在analysis区分task中的背景/材料、需要回答完成的动作、输出限制，再设计2至8条true表示满足的标准，总权重1。只核验回答应该完成的动作，输入材料中已经完成的情节不要求再次复述，未完的最后一句才需要衔接。经验只能提醒核验方法：核验事实准确而非强制声明实体有问题；核验语义衔接而非强制标签或括号；核验定义准确而非禁止合理建议；用户仅说明背景属性不等于要求生成或逐项展示它。缺乏证据时不要编造实体身份或声称已核验。保留任务核心与必要事实准确性，允许完全忽略经验；只有确实采用其合理方法时引用，不为了引用而新增标准，一条标准最多一条经验。'}
+APPLICATION_GUIDANCE = '你是评分标准设计者。task给出当前要完成的任务，已选经验提供可能有误的历史核验方法。先在analysis简要说明任务核心动作、对象和必要限制，再说明实际采用的方法帮助核验哪项要求。选择适用性已由上游完成，你不重新执行Selector；但生成每条标准时，要检查该标准是否忠实落实方法、是否有当前任务或完成任务所必需的质量依据。不得把历史方法中的策略或限制直接当成用户义务，也不得替任务补造事实前提。对没有合理依据的经验要求不生成标准，必要时不引用；同时保留任务核心要求及合理的事实准确、完整和一致性核验。标准的重要性和权重由当前任务决定。输出2至8条Boolean标准，true表示满足，总权重1，每条最多引用一条实际影响其设计的经验。沿用analysis和criteria输出，不增加字段。'
+
+def retry_payload(transformed_input):
+    """Retry the SAME intervention, never restore the historical input."""
+    return {**deepcopy(transformed_input), 'validation_feedback': '请完整返回规定字段、类型和有效的输入编号。'}
+
+def generate_validated(b, role, transformed_input):
+    payload=deepcopy(transformed_input)
+    for attempt in range(3):
+        result=b.generate(role,payload)
+        try:
+            valid(role,result,payload)
+            return result
+        except (AssertionError,KeyError,TypeError) as exc:
+            if attempt==2:raise ValueError('invalid role contract') from exc
+            payload=retry_payload(transformed_input)
+
 def messages(role,payload,**kwargs):
     variant=VARIANT.get()
     if variant in ('reasoned','normalized_debiased'):variant='debiased'
     shown=deepcopy(payload)
     if variant=='debiased':
         field='candidates' if role=='selector' else 'experiences'
-        shown={field:[{k:v for k,v in e.items() if k in ('experience_id','trigger','principle')} for e in payload[field]],**({'max_selected':payload['max_selected']} if role=='selector' else {}),'task':payload['task'],'_message_budget':payload.get('_message_budget',100000)}
+        shown={field:[{k:v for k,v in e.items() if k in ('experience_id','trigger','principle')} for e in payload[field]],**({'max_selected':payload['max_selected']} if role=='selector' else {}),'task':payload['task'],**({'validation_feedback':payload['validation_feedback']} if 'validation_feedback' in payload else {}),'_message_budget':payload.get('_message_budget',100000)}
     if variant=='operations':
         for e in shown.get('candidates',shown.get('experiences',[])):
             if 'trigger' in e:e['required_context_not_current_fact']=e.pop('trigger')
@@ -54,6 +71,9 @@ def messages(role,payload,**kwargs):
         tail=result[0]['content'].split('\n字段取值规则：',1)[1]
         result[0]['content']=DEBIASED[role]+'\n字段取值规则：'+tail
         if role=='selector':result[0]['content']=result[0]['content'].replace('{\"selected_experience_ids\": [\"短编号\"]}','{\"selected_experience_ids\": []}')
+    if variant=='application_grounded':
+        tail=result[0]['content'].split('\n字段取值规则：',1)[1]
+        result[0]['content']=APPLICATION_GUIDANCE+'\n字段取值规则：'+tail
     if variant=='anchor':
         tail=result[0]['content'].split('\n字段取值规则：',1)[1]
         result[0]['content']=ANCHOR[role]+'\n字段取值规则：'+tail
@@ -116,17 +136,17 @@ def valid(role,result,payload):
             assert isinstance(c['source_experiences'],list) and len(c['source_experiences'])<=1 and set(c['source_experiences'])<=allowed
         assert sum(c['weight'] for c in result['criteria'])>0
 
-def run(split,variants,output,workers):
-    cases=json.loads((ROOT/'fixed_inputs.json').read_text()); cases=[c for c in cases if c['split']==split]
+def run(split,variants,output,workers,roles=None,repeats=1):
+    cases=json.loads((ROOT/'fixed_inputs.json').read_text()); cases=[c for c in cases if c['split']==split and (not roles or c['role'] in roles)]
     spec=load_config('configs/midterm-general-v2-assumed-train-300-batch3.yaml')['models']['default']
     out=Path(output);out.mkdir(parents=True,exist_ok=False);lock=threading.Lock()
     def append(name,row):
         with lock:
             with (out/name).open('a') as f:f.write(json.dumps(row,ensure_ascii=False)+'\n')
-    def one(case,variant):
+    def one(case,variant,repetition):
         current_spec=deepcopy(spec)
         if variant=='reasoned':current_spec.update(enable_thinking=True,timeout_seconds=180)
-        b=backend(current_spec);ctx={'sample_id':case['sample_id'],'role':case['role'],'variant':variant,'split':split}
+        b=backend(current_spec);ctx={'sample_id':case['sample_id'],'role':case['role'],'variant':variant,'split':split,'repetition':repetition}
         b.trace_hook=lambda event:append('role_io.jsonl',{**ctx,**event})
         b.metadata_hook=lambda event:append('llm_requests.jsonl',{**ctx,**event})
         token=VARIANT.set(variant)
@@ -142,18 +162,13 @@ def run(split,variants,output,workers):
             payload['task_only_rubric']=[{'question':c['question'],'weight':c['weight']} for c in base['rubric']['criteria']]
         row={**ctx,'group':case['group']}
         try:
-            for attempt in range(3):
-                result=b.generate(case['role'],payload)
-                try:valid(case['role'],result,payload);break
-                except (AssertionError,KeyError,TypeError) as exc:
-                    if attempt==2:raise ValueError('invalid role contract') from exc
-                    payload={**case['input'],'validation_feedback':'请完整返回规定字段、类型和有效的输入编号。'}
+            result=generate_validated(b,case['role'],payload)
             row.update(valid=True,output=result)
         except Exception as exc:row.update(valid=False,error={'type':type(exc).__name__,'message':str(exc)})
         finally:VARIANT.reset(token);b.close()
         append('results.jsonl',row);return row
-    tasks=[(c,v) for c in cases for v in variants]
-    (out/'protocol.json').write_text(json.dumps({'split':split,'variants':variants,'cases_per_role':len(cases)//2,'fixed_input_sha256':hashlib.sha256((ROOT/'fixed_inputs.json').read_bytes()).hexdigest(),'models':spec,'guidance_additions':EXTRA,'replacement_guidance':REPLACEMENT,'operations_guidance':OPERATIONS,'anchor_guidance':ANCHOR,'debiased_guidance':DEBIASED,'reasoned_change':'same payload/prompt as debiased; enable_thinking=True, timeout180; no extra role calls','debiased_input_change':'Selector strips Q/history metadata; methods unchanged, task moves last; empty selection format example; no extra calls','normalized_input_change':'method text normalized by Terra in isolated copy; Selector Q/history removed in normalized and plain_noquality control; candidate IDs/ranks fixed; not pure use/prompt effect, not deployable automatic normalization', 'anchor_input_change':'Adds original paired baseline task-only rubric (question,weight), no answers or judge/preference; deployment requires one extra generation call','operations_projection':'trigger=>required_context_not_current_fact; principle=>historical_method_suggestion; values unchanged','synthetic_examples':EXAMPLES,'source_code_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'no_pipeline':True,'outputs_never_forwarded':True},ensure_ascii=False,indent=2))
+    tasks=[(c,v,r) for c in cases for v in variants for r in range(repeats)]
+    (out/'protocol.json').write_text(json.dumps({'split':split,'variants':variants,'cases_per_role':{r:sum(c['role']==r for c in cases) for r in set(c['role'] for c in cases)},'repeats':repeats,'application_guidance':APPLICATION_GUIDANCE,'retry_protocol':'preserve_transformed_input_v2','fixed_input_sha256':hashlib.sha256((ROOT/'fixed_inputs.json').read_bytes()).hexdigest(),'models':spec,'guidance_additions':EXTRA,'replacement_guidance':REPLACEMENT,'operations_guidance':OPERATIONS,'anchor_guidance':ANCHOR,'debiased_guidance':DEBIASED,'reasoned_change':'same payload/prompt as debiased; enable_thinking=True, timeout180; no extra role calls','debiased_input_change':'Selector strips Q/history metadata; methods unchanged, task moves last; empty selection format example; no extra calls','normalized_input_change':'method text normalized by Terra in isolated copy; Selector Q/history removed in normalized and plain_noquality control; candidate IDs/ranks fixed; not pure use/prompt effect, not deployable automatic normalization', 'anchor_input_change':'Adds original paired baseline task-only rubric (question,weight), no answers or judge/preference; deployment requires one extra generation call','operations_projection':'trigger=>required_context_not_current_fact; principle=>historical_method_suggestion; values unchanged','synthetic_examples':EXAMPLES,'source_code_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'no_pipeline':True,'outputs_never_forwarded':True},ensure_ascii=False,indent=2))
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures=[pool.submit(one,*t) for t in tasks]
         for i,f in enumerate(as_completed(futures),1):
@@ -162,4 +177,5 @@ def run(split,variants,output,workers):
     for path,digest in json.loads((ROOT/'source_hashes.json').read_text()).items():assert hashlib.sha256(Path(path).read_bytes()).hexdigest()==digest
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('command',choices=['prepare','run']);p.add_argument('--split',default='development');p.add_argument('--variants',nargs='+',default=['baseline','premise','task_first']);p.add_argument('--output',default=str(ROOT/'round1'));p.add_argument('--workers',type=int,default=8)
-    a=p.parse_args();prepare() if a.command=='prepare' else run(a.split,a.variants,a.output,a.workers)
+    p.add_argument('--roles',nargs='+');p.add_argument('--repeats',type=int,default=1)
+    a=p.parse_args();prepare() if a.command=='prepare' else run(a.split,a.variants,a.output,a.workers,a.roles,a.repeats)

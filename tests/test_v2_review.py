@@ -403,8 +403,8 @@ def test_embedding_trace_preserves_success_and_failure(monkeypatch):
     emb.trace_hook = traces.append
     emb.metadata_hook = metadata.append
     assert emb.embed("原始文本") == (1.0, 2.0) + (0.0,) * 62
-    assert traces[0]["input"]["text"] == "原始文本"
-    assert traces[0]["output"] == [1.0, 2.0] + [0.0] * 62
+    assert next(e for e in traces if "input" in e)["input"]["text"] == "原始文本"
+    assert next(e for e in traces if "output" in e)["output"] == [1.0, 2.0] + [0.0] * 62
     client.close()
     client = httpx.Client(
         base_url="https://example.com/v1/",

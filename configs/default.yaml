@@ -2,6 +2,9 @@ run:
   seed: 42
   output_dir: runs/v2-fake
   test_workers: 1
+  train_workers: 5
+  revision_workers: 1
+  max_inflight_requests: 16
 dataset:
   implementation: jsonl
   config:
@@ -26,7 +29,7 @@ modules:
     implementation: semistructured_v2
     config:
       max_rounds: 2
-      max_candidates: 1
+      margin_threshold: 0.1
       invalid_output_retries: 2
       input_bytes: 100000
       check_interval: 3

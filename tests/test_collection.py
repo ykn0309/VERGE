@@ -26,7 +26,7 @@ def test_selector_collection_never_exposes_quality_or_usage():
     assert set(candidate) == {
         "experience_id",
         "trigger",
-        "principle",
+        "principle", "application_guide", "exclude_when", "misuse",
     }
     LLMSelector(b).select("任务", [e])
     assert (

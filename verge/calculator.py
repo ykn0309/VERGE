@@ -175,9 +175,9 @@ class ProbabilityModel(Model):
                 "record a consistent available-report estimation scope and source"
             )
 
-        if self.metadata.get("admission_protocol") != "experience_checker_v1":
+        if self.metadata.get("admission_protocol") != "rubric_margin_guides_v2":
             raise ProbabilityError(
-                "parameters require admission_protocol=experience_checker_v1; reestimate the new admission prior"
+                "parameters require admission_protocol=rubric_margin_guides_v2; reestimate the new admission prior"
             )
 
         if self.metadata.get("feedback_protocol") != "net_direction_tie_v1":

@@ -29,8 +29,8 @@ def test_updater_example_is_an_actual_branch_not_a_combined_enum():
     example = ExperienceUpdate.from_dict(_SCHEMA["experience_updater"])
     assert example.action == "keep" and example.method is None
     system = llm_messages("experience_updater", {})[0]["content"]
-    assert 'action只能是小写字符串"keep"或"revise"' in system
-    assert "target_fields为非空字符串数组" in system
+    assert 'action仅keep/revise' in system
+    assert "target_fields是实际改动字段的非空不重复数组" in system
 
 
 @pytest.mark.parametrize(

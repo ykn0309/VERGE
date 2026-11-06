@@ -154,10 +154,19 @@ class PreferenceSample(Model):
 class Method(Model):
     trigger: str
     principle: str
+    application_guide: str = (
+        "结合任务将核验关系落实为可判断的标准，不把适用条件当已知事实。"
+    )
+    exclude_when: str | None = None
+    misuse: str | None = None
 
     def __post_init__(self):
         _id(self.trigger, "trigger")
         _id(self.principle, "principle")
+        _id(self.application_guide, "application_guide")
+        for v in (self.exclude_when, self.misuse):
+            if v is not None:
+                _id(v, "optional boundary")
 
 
 @dataclass
@@ -182,6 +191,7 @@ class Rubric(Model):
     rubric_id: str
     criteria: list[Criterion]
     analysis: str = ""
+    experience_usage: list[dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self):
         _id(self.rubric_id, "rubric_id")
@@ -312,6 +322,9 @@ class ApplicationRecord(Model):
     retrieval_trace: list[dict[str, Any]] = field(default_factory=list)
     no_evidence_reason: str | None = None
     round_number: int = 0
+    evaluation_digest: str | None = None
+    selection_reason: str | None = None
+    usage_reason: str | None = None
 
     def __post_init__(self):
         _id(self.version_id, "version_id")
@@ -395,6 +408,7 @@ class Experience(Model):
     source_task_id: str | None = None
     source_sample: PreferenceSample | None = None
     admission_review: ExperienceReview | None = None
+    admission_evidence: dict[str, Any] = field(default_factory=dict)
     parent_id: str | None = None
     status: Literal["candidate", "active", "retired"] = "active"
     q_prior: float | None = None
@@ -479,7 +493,13 @@ class ExperienceUpdate(Model):
             raise ValueError(
                 "keep requires no method; revise requires exactly one method"
             )
-        if set(self.target_fields) - {"trigger", "principle"}:
+        if set(self.target_fields) - {
+            "trigger",
+            "principle",
+            "application_guide",
+            "exclude_when",
+            "misuse",
+        }:
             raise ValueError("unknown revision field")
         if self.action == "revise" and not self.target_fields:
             raise ValueError("revise requires target_fields")
@@ -494,6 +514,7 @@ class ReplayResult(Model):
     old_application: ApplicationRecord | None = None
     new_application: ApplicationRecord | None = None
     errors: dict[str, str] = field(default_factory=dict)
+    old_cache_hit: bool = False
 
 
 @dataclass
@@ -517,6 +538,17 @@ class RevisionRecord(Model):
 @dataclass
 class ProposalAttempt(Model):
     round_number: int
+    repair_rubric: Rubric | None = None
+    repair_judgment: RubricJudgment | None = None
+    repair_checker: CheckerReport | None = None
+    final_judgment: RubricJudgment | None = None
+    changes: list[dict[str, Any]] = field(default_factory=list)
+    assessment: str = ""
+    diagnosis: dict[str, Any] = field(default_factory=dict)
+    margin_before: float | None = None
+    margin_after: float | None = None
+    margin_gain: float | None = None
+    extractions: list[dict[str, Any]] = field(default_factory=list)
     proposal: CriticProposal | None = None
     review: ExperienceReview | None = None
     rubric: Rubric | None = None
@@ -536,20 +568,27 @@ class TrajectoryRecord(Model):
     retrieval_trace: list[dict[str, Any]] = field(default_factory=list)
     initial_rubric: Rubric | None = None
     initial_judgment: RubricJudgment | None = None
+    initial_checker: CheckerReport | None = None
+    baseline_judgment: RubricJudgment | None = None
+    baseline_assessment: str = ""
+    baseline_diagnosis: dict[str, Any] = field(default_factory=dict)
+    snapshot_digest: str | None = None
+    completion_sequence: int | None = None
+    timings: dict[str, float] = field(default_factory=dict)
     applications: list[ApplicationRecord] = field(default_factory=list)
     proposal_attempts: list[ProposalAttempt] = field(default_factory=list)
     admitted_experience_ids: list[str] = field(default_factory=list)
     experience_updates: list[RevisionRecord] = field(default_factory=list)
     sample_error: dict[str, str] | None = None
-    schema_version: int = 16
+    schema_version: int = 17
 
     def __post_init__(self):
         _id(self.sample_id, "sample_id")
-        if self.schema_version != 16:
+        if self.schema_version != 17:
             raise ValueError("unsupported trajectory schema; no V1 compatibility")
 
     @classmethod
     def from_dict(cls, data):
-        if data.get("schema_version") != 16:
-            raise ValueError("explicit trajectory schema 16 required")
+        if data.get("schema_version") != 17:
+            raise ValueError("explicit trajectory schema 17 required")
         return super().from_dict(data)

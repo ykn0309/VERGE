@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+<title id="title">研究方法：经验引导的 Rubric 生成与持续演化</title><desc id="desc">从经验池检索设计经验，生成评分标准并评价回答，结合偏好反馈与执行核对，积累候选经验、估计质量并通过回放验证修订，服务后续任务。此图为方法设计概览。</desc>
+<defs><marker id="arrow" markerWidth="15" markerHeight="14" refX="13" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,6 L0,12 Z" fill="#111111"/></marker></defs>
+<rect x="0" y="0" width="1920" height="1080" fill="#ffffff" stroke="none" stroke-width="0"/>
+<rect x="84" y="73" width="38" height="38" fill="#315795" stroke="none" stroke-width="0"/>
+<text x="148" y="116" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="58" font-weight="700" fill="#315795" text-anchor="start">研究方法：经验引导的 Rubric 生成与持续演化</text>
+<rect x="91" y="169" width="1738" height="112" fill="#d9e2f3" stroke="#233b65" stroke-width="1.8"/>
+<text x="112" y="216" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="700" fill="#111111" text-anchor="start">方法概览：从偏好轨迹中提炼设计经验，指导新任务的 Rubric 生成；</text>
+<text x="112" y="259" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="700" fill="#111111" text-anchor="start">在后续应用中积累反馈，持续维护经验质量与适用范围。</text>
+<text x="106" y="341" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="33" font-weight="700" fill="#c00000" text-anchor="start">核心流程：生成—反馈—维护，形成跨任务的经验闭环</text>
+<rect x="100" y="385" width="530" height="337" fill="white" stroke="#17243a" stroke-width="1.8"/>
+<rect x="170" y="361" width="390" height="55" fill="#315795" stroke="#233b65" stroke-width="1.8"/>
+<text x="365" y="400" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="white" text-anchor="middle">① 经验引导生成</text>
+<rect x="695" y="385" width="530" height="337" fill="white" stroke="#17243a" stroke-width="1.8"/>
+<rect x="765" y="361" width="390" height="55" fill="#315795" stroke="#233b65" stroke-width="1.8"/>
+<text x="960" y="400" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="white" text-anchor="middle">② 应用与反馈</text>
+<rect x="1290" y="385" width="530" height="337" fill="white" stroke="#17243a" stroke-width="1.8"/>
+<rect x="1360" y="361" width="390" height="55" fill="#548235" stroke="#233b65" stroke-width="1.8"/>
+<text x="1555" y="400" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="white" text-anchor="middle">③ 经验积累与演化</text>
+<text x="365" y="462" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="#111111" text-anchor="middle">新任务</text>
+<path d="M365 478 V504" fill="none" stroke="#111111" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="133" y="519" width="464" height="65" fill="#eef1f6" stroke="#315795" stroke-width="1.4"/>
+<text x="365" y="562" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="29" font-weight="400" fill="#111111" text-anchor="middle">检索并选择适用的设计经验</text>
+<path d="M365 594 V619" fill="none" stroke="#111111" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="365" y="660" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="#111111" text-anchor="middle">生成细粒度 Rubric</text>
+<text x="365" y="700" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#666666" text-anchor="middle">评价要求 ＋ 相对权重</text>
+<text x="960" y="465" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="31" font-weight="700" fill="#111111" text-anchor="middle">Judge 独立评价两份回答</text>
+<text x="960" y="508" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#555555" text-anchor="middle">使用同一套 Rubric 逐项判断</text>
+<path d="M960 524 V550" fill="none" stroke="#111111" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="728" y="565" width="464" height="99" fill="#eef1f6" stroke="#315795" stroke-width="1.4"/>
+<text x="960" y="605" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#111111" text-anchor="middle">与数据集偏好对照</text>
+<text x="960" y="645" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#111111" text-anchor="middle">正向／反向／平局反馈</text>
+<text x="960" y="701" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#555555" text-anchor="middle">执行核对：经验选择／生成／判断</text>
+<text x="1315" y="462" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#111111" text-anchor="start">失败诊断</text>
+<text x="1315" y="501" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#111111" text-anchor="start">提炼候选经验，核对后入池</text>
+<text x="1315" y="553" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#111111" text-anchor="start">质量估计</text>
+<text x="1315" y="592" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#111111" text-anchor="start">结合反馈与执行核对，贝叶斯更新</text>
+<text x="1315" y="644" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#111111" text-anchor="start">经验修订</text>
+<text x="1315" y="683" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="26" font-weight="400" fill="#111111" text-anchor="start">调整内容与边界，配对回放验证</text>
+<path d="M630 552 H682" fill="none" stroke="#111111" stroke-width="4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M1225 552 H1277" fill="none" stroke="#111111" stroke-width="4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="255" y="794" width="1410" height="104" fill="#eef3e8" stroke="#548235" stroke-width="2"/>
+<rect x="255" y="794" width="190" height="104" fill="#548235" stroke="#548235" stroke-width="2"/>
+<text x="350" y="857" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="37" font-weight="700" fill="white" text-anchor="middle">经验池</text>
+<text x="488" y="837" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="31" font-weight="700" fill="#111111" text-anchor="start">适用条件（何时使用） ＋ 核验方法（如何设计标准）</text>
+<text x="488" y="879" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="27" font-weight="400" fill="#555555" text-anchor="start">保存可复用的设计方法，供后续任务检索与使用</text>
+<path d="M365 794 V734" fill="none" stroke="#111111" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="391" y="767" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#315795" text-anchor="start">检索复用</text>
+<path d="M1555 722 V782" fill="none" stroke="#111111" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1582" y="767" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#548235" text-anchor="start">积累／更新</text>
+<text x="107" y="976" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="#111111" text-anchor="start">关键机制：</text>
+<text x="274" y="976" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif" font-size="32" font-weight="400" fill="#111111" text-anchor="start">不将一次失败直接视为经验错误；修订后需经新旧版本回放比较。</text>
+</svg>

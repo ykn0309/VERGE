@@ -11,7 +11,7 @@ import re
 import time
 import threading
 from datetime import datetime, timezone
-from typing import Any, Callable, Literal, Mapping, Protocol
+from typing import Any, Callable, Mapping, Protocol
 from urllib.parse import urlsplit
 
 import httpx
@@ -39,11 +39,6 @@ class LLMBackend(Protocol):
     ) -> Mapping[str, Any]: ...
 
 
-FakeScenario = Literal[
-    "initial_success", "attempt_1_success", "attempt_2_success", "final_failure"
-]
-
-
 class LLMRequestError(RuntimeError):
     """网络/API 调用失败；信息不包含 URL、请求正文或凭据。"""
 
@@ -60,34 +55,11 @@ class LLMFormatError(ValueError):
     """模型输出不是所需结构，已用尽格式重试。"""
 
 
-_OUTPUT_FIELDS = {
-    role: None
-    for role in (
-        "selector",
-        "initial_generator",
-        "judge",
-        "critic",
-        "critic_repair",
-        "critic_assess",
-        "critic_extract",
-        "critic_rewrite",
-        "experience_checker_batch",
-        "critic_rewrite_batch",
-        "experience_checker",
-        "experience_updater",
-        "selector_checker",
-        "generator_checker",
-        "judge_checker",
-    )
-}
+_OUTPUT_FIELDS = {role: None for role in ("selector", "generator", "judge", "critic")}
 
 
 def _reject_constant(value):
     raise ValueError("invalid JSON constant")
-
-
-def _normalize_numeric_ids(role, value):
-    return None  # The V2 codec normalizes IDs only in typed ID fields.
 
 
 def _valid_shape(role, value):
@@ -323,7 +295,7 @@ class OpenAICompatibleBackend(LimitedTransport):
     ) -> Mapping[str, Any]:
         if role not in _OUTPUT_FIELDS:
             raise ValueError(f"unknown LLM role: {role}")
-        if conversation is not None and role not in ("critic", "critic_repair"):
+        if conversation is not None and role != "critic":
             raise ValueError("only critic accepts conversation history")
         messages = (
             llm_messages(role, payload, history=conversation)
@@ -429,7 +401,6 @@ class OpenAICompatibleBackend(LimitedTransport):
                 if not isinstance(content, str):
                     raise ValueError("missing message content")
                 result = json.loads(content, parse_constant=_reject_constant)
-                _normalize_numeric_ids(role, result)
                 if not _valid_shape(role, result):
                     raise ValueError("unexpected response fields")
             except LLMRequestError:
@@ -447,13 +418,6 @@ class OpenAICompatibleBackend(LimitedTransport):
                 self._metadata(
                     role, attempt, status=status, response=response, body=body
                 )
-                if conversation is not None:
-                    if assistant_output is not None:
-                        messages = [
-                            *messages,
-                            {"role": "assistant", "content": assistant_output},
-                        ]
-                    conversation[:] = [dict(message) for message in messages]
                 if attempt <= self.max_retries:
                     messages = [
                         *messages,
@@ -476,11 +440,6 @@ class OpenAICompatibleBackend(LimitedTransport):
                 output=result,
             )
             self._metadata(role, attempt, status=status, response=response, body=body)
-            if conversation is not None:
-                conversation[:] = [
-                    *[dict(message) for message in messages],
-                    {"role": "assistant", "content": content},
-                ]
             return result
         raise AssertionError("unreachable retry state")
 
@@ -703,216 +662,117 @@ class OpenAICompatibleEmbedding(LimitedTransport):
 
 
 class FakeLLMBackend:
-    """Deterministic transport fixture; never claims empirical quality."""
+    """Deterministic transport fixture, not a language-model evaluation."""
 
-    def __init__(self, scenario="attempt_1_success"):
-        if scenario not in (
-            "initial_success",
-            "attempt_1_success",
-            "attempt_2_success",
-            "final_failure",
-        ):
-            raise ValueError("unknown fake scenario")
+    model = "fake"
+    enable_thinking = False
+
+    def __init__(self, scenario="repairable"):
+        if scenario not in ("repairable", "correct", "unrepairable"):
+            raise ValueError("unknown offline fixture scenario")
         self.scenario = scenario
         self.trace_hook = None
         self.metadata_hook = None
         self.calls = []
 
-    def generate(self, role, payload, *, conversation=None):
+    def _generate(self, role, payload, *, conversation=None):
         self.calls.append((role, payload))
         if role == "selector":
-            result = {
-                "selected_experience_ids": [
-                    e["experience_id"]
-                    for e in payload["candidates"][: payload["max_selected"]]
-                ]
-            }
-            result["selection_reasons"] = [
-                {"experience_id": i, "reason": "离线选择依据"}
-                for i in result["selected_experience_ids"]
+            ids = [
+                e["experience_id"]
+                for e in payload["candidates"][: payload["max_selected"]]
             ]
-        elif role == "initial_generator":
-            experiences = payload["experiences"]
-            n = payload.get("_round", 0)
-            success = self.scenario == "initial_success" or n >= (
-                2 if self.scenario == "attempt_2_success" else 1
-            )
-            if self.scenario == "final_failure":
-                success = False
-            criteria = []
-            for i in range(2):
-                e = experiences[i % len(experiences)] if experiences else None
-                question = "验证通过" if success else "基础核验"
-                criteria.append(
-                    {
-                        "question": question,
-                        "weight": 0.5,
-                        "source_experiences": [e["experience_id"]] if e else [],
-                    }
-                )
-            result = {
-                "analysis": "离线接口示例",
-                "criteria": criteria,
-                "experience_usage": [
-                    {
-                        "experience_id": e["experience_id"],
-                        "used": True,
-                        "reason": "离线方法应用",
-                    }
-                    for e in experiences
+            return {
+                "selected_experience_ids": ids,
+                "selection_reasons": [
+                    {"experience_id": eid, "reason": "offline screening fixture"}
+                    for eid in ids
                 ],
             }
-        elif role == "judge":
-            side = JUDGE_RESPONSE_SIDE.get()
-            result = {
+        if role == "generator":
+            experiences = payload["experiences"]
+            return {
+                "analysis": "offline fixture",
+                "criteria": [
+                    {
+                        "question": (
+                            "offline_with_experience"
+                            if experiences
+                            else "offline_baseline"
+                        ),
+                        "weight": 1.0,
+                    }
+                ],
+
+            }
+        if role == "judge":
+            return {
                 "criterion_judgments": [
                     {
                         "criterion_id": c["criterion_id"],
-                        "satisfied": side == "chosen" and c["question"] == "验证通过",
-                        "reason": "离线固定判断",
+                        "satisfied": self.scenario != "unrepairable"
+                        and (
+                            self.scenario == "correct"
+                            or c["question"] == "offline_with_experience"
+                        )
+                        and JUDGE_RESPONSE_SIDE.get() == "chosen",
+                        "reason": "offline Boolean fixture",
                     }
                     for c in payload["criteria"]
                 ]
             }
-        elif role == "critic_repair":
-            number = payload["round"]
-            success = self.scenario != "final_failure" and number >= (
-                2 if self.scenario == "attempt_2_success" else 1
-            )
-            result = {
-                "issues": [],
-                "judge_corrections": [],
-                "analysis": "离线修订",
-                "changes": [{"change": "改核验", "basis": "任务依据"}],
-                "criteria": [
-                    {
-                        "question": "验证通过" if success else "基础核验",
-                        "weight": 0.5,
-                    }
-                    for _ in range(2)
-                ],
-            }
-        elif role == "critic_assess":
-            result = {
-                "analysis": "依逐项证据确认",
-                "issues": [],
-                "judge_corrections": [],
-            }
-        elif role == "critic_extract":
-            result = {
-                "analysis": "提炼核验关系",
+        if role == "critic":
+            return {
+                "analysis": "offline proposal fixture",
                 "candidates": [
                     {
                         "method": {
-                            "trigger": "任务有明确要求",
-                            "principle": "核对回答是否落实任务要求",
-                            "application_guide": "按本题要求设计可判定的标准",
-                            "exclude_when": None,
-                            "misuse": None,
+                            "trigger": "任务要求比较内容是否满足明确条件",
+                            "principle": "核验回答是否满足任务明确的必要条件。",
+                            "application_guide": "依据当前任务具体化，不新增条件。",
                         },
-                        "change_indices": [0],
-                        "reason": "对应改动",
+                        "parent_ids": [],
                     }
                 ],
             }
-        elif role == "experience_checker_batch":
-            first = sum(r == "experience_checker_batch" for r, _ in self.calls) == 1
-            result = {
-                "reviews": [
-                    {
-                        "experience_id": e["experience_id"],
-                        "approved": not (
-                            self.scenario == "attempt_2_success" and first
-                        ),
-                        "reason": "离线逐条核对",
-                    }
-                    for e in payload["candidates"]
-                ]
-            }
-        elif role == "critic_rewrite_batch":
-            result = {
-                "rewrites": [
-                    {
-                        "experience_id": x["experience"]["experience_id"],
-                        "method": {
-                            k: x["experience"][k]
-                            for k in (
-                                "trigger",
-                                "principle",
-                                "application_guide",
-                                "exclude_when",
-                                "misuse",
-                            )
-                        },
-                        "reason": "修正该条缺陷",
-                    }
-                    for x in payload["candidates"]
-                ]
-            }
-        elif role == "critic_rewrite":
-            result = {
-                "method": {
-                    k: payload["candidate"][k]
-                    for k in (
-                        "trigger",
-                        "principle",
-                        "application_guide",
-                        "exclude_when",
-                        "misuse",
-                    )
-                },
-                "reason": "修正明确问题",
-            }
-        elif role == "critic":
-            result = {
-                "analysis": "离线诊断",
-                "candidates": [
-                    {
-                        "trigger": "任务有明确要求",
-                        "principle": "核对回答是否落实任务要求",
-                    }
-                ],
-            }
-        elif role == "experience_checker":
-            result = {
-                "approved": not (
-                    self.scenario == "attempt_2_success"
-                    and sum(r == "experience_checker" for r, _ in self.calls) == 1
-                ),
-                "reason": "离线候选核对报告",
-            }
-        elif role.endswith("_checker"):
-            result = {"status": "correct", "evidence": "离线核对报告", "details": []}
-        elif role == "experience_updater":
-            result = {
-                "action": "keep",
-                "method": None,
-                "target_fields": [],
-                "reason": "没有已确认的内容缺陷",
-            }
-        else:
-            raise ValueError("unknown fake role")
-        messages = llm_messages(role, payload, history=conversation)
-        if conversation is not None:
-            conversation[:] = [
-                *messages,
-                {
-                    "role": "assistant",
-                    "content": json.dumps(result, ensure_ascii=False),
-                },
-            ]
+        raise ValueError("unknown fixture role")
+
+    def generate(self, role, payload, *, conversation=None):
+        result = self._generate(role, payload, conversation=conversation)
         if self.trace_hook:
             self.trace_hook(
                 {
                     "role": role,
-                    "input": dict(payload),
-                    "messages": messages,
-                    "output": result,
-                    "raw_output": json.dumps(result, ensure_ascii=False),
+                    "backend": "fake",
                     "model": "fake",
-                    "prompt_version": PROMPT_VERSION,
                     "call_id": ROLE_CALL_ID.get(),
-                    "id_mapping": ROLE_ID_MAPPING.get(),
+                    "messages": llm_messages(role, payload, history=conversation),
+                    "input": payload,
+                    "output": result,
+                    "error": None,
                 }
             )
         return result
+
+    def close(self):
+        pass
+
+
+class FakeEmbedding:
+    """Stable vectors solely for deterministic transport/ledger tests."""
+
+    model = "fake-hash"
+    dimensions = 16
+
+    def __init__(self):
+        self.trace_hook = None
+        self.metadata_hook = None
+
+    def embed(self, text):
+        import hashlib
+
+        raw = hashlib.sha256(text.encode()).digest()
+        return tuple((n - 127.5) / 127.5 for n in raw[: self.dimensions])
+
+    def close(self):
+        pass

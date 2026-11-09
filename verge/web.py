@@ -1,32 +1,17 @@
-"""Read-only, loopback-only dashboard for completed or in-progress VERGE runs."""
+"""Read-only loopback viewer for the current history-learning checkpoint."""
 
 from __future__ import annotations
-
-import argparse
-from collections import Counter, defaultdict
-from hashlib import sha256
+from dataclasses import asdict
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-import json
-import platform
 from pathlib import Path
-import shutil
-import subprocess
-import sys
-import tempfile
 from threading import Lock
-from typing import Any
 from urllib.parse import parse_qs, urlsplit
-
-from verge.models import Experience, TrajectoryRecord
-from verge.prompts import PROMPT_VERSION
+import argparse, json, platform, shutil, subprocess, sys, tempfile
+from verge.models import task_identity
+from verge.memory import ExperienceMemory
+from verge.web_observation import load_observation
 
 ASSETS = Path(__file__).with_name("web_assets")
-_MAX_ROLE_IO_BYTES = (
-    1024 * 1024 * 1024
-)  # Do not scan multi-gigabyte artifacts per HTTP request.
-_MAX_ROLE_LINE_BYTES = 4 * 1024 * 1024
-_MAX_ROLE_ENTRIES = 256
-_MAX_ROLE_WARNINGS = 12
 _TRANSLATOR_SOURCE = Path(__file__).with_name("apple_translate.swift")
 _translator_lock = Lock()
 _translator_dir: tempfile.TemporaryDirectory[str] | None = None
@@ -99,392 +84,248 @@ def _translate_apple(text: str) -> str:
 
 
 def discover_runs(root):
-    root = Path(root)
-    if not root.is_dir():
-        return []
-    names = []
-    for p in root.iterdir():
-        if p.is_dir() and (p / "run_manifest.json").is_file():
-            try:
-                data = json.loads((p / "run_manifest.json").read_text())
-                if (
-                    data.get("format_version") in (13, 14, 15, 16, 17)
-                    and data.get("method") == "semistructured_bayesian_v2"
-                ):
-                    names.append(p.name)
-            except (OSError, ValueError):
-                pass
-    return sorted(names, reverse=True)
-
-
-def _run_artifacts(directory):
-    directory = Path(directory).resolve()
-    m = json.loads((directory / "run_manifest.json").read_text())
-    if (
-        m.get("format_version") not in (13, 14, 15, 16, 17)
-        or m.get("method") != "semistructured_bayesian_v2"
+    rows = []
+    for path in sorted(
+        Path(root).glob("*/manifest.json"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
     ):
-        raise ValueError("V2 run required")
-    artifacts = (
-        directory / m["config"]["store"]["config"].get("root_dir", "artifacts")
-    ).resolve()
-    if directory not in artifacts.parents:
-        raise ValueError("store path escapes run")
-    return m, artifacts
+        if (path.parent / "checkpoint.json").exists():
+            try:
+                manifest = json.loads(path.read_text())
+                rows.append(
+                    {
+                        "name": path.parent.name,
+                        "status": manifest.get("status", "unknown"),
+                    }
+                )
+            except (ValueError, OSError):
+                continue
+    return rows
 
 
-def load_role_io(run_dir, sample_id):
-    m, root = _run_artifacts(run_dir)
-    p = root / "role_io.jsonl"
-    entries = []
-    warnings = []
-    if p.exists():
-        if p.stat().st_size > _MAX_ROLE_IO_BYTES:
-            raise ValueError("role log too large")
-        with p.open() as f:
-            for line in f:
-                if len(line.encode()) > _MAX_ROLE_LINE_BYTES:
-                    continue
-                e = json.loads(line)
-                if e.get("sample_id") == sample_id:
-                    if len(entries) < _MAX_ROLE_ENTRIES:
-                        entries.append(e)
-                    elif not warnings:
-                        warnings.append("Role log display limit reached")
-    # A backend return and its adapter validation are separate append-only events.
-    validations = {
-        e["call_id"]: e
-        for e in entries
-        if e.get("event_type") == "contract_validation" and e.get("call_id")
-    }
-    entries = [e for e in entries if e.get("event_type") != "contract_validation"]
-    for e in entries:
-        v = validations.get(e.get("call_id"))
-        if v:
-            e.update(
-                validation_status=v["validation_status"],
-                contract_error=v.get("error"),
-                contract_attempt=v["contract_attempt"],
-            )
-    # Old traces did not save validation events. Surface actual stored retry feedback.
-    previous = {}
-    for e in entries:
-        feedback = e.get("input", {}).get("validation_feedback")
-        prior = previous.get(e.get("role"))
-        if feedback and prior is not None and not prior.get("validation_status"):
-            prior.update(
-                validation_status="invalid",
-                contract_error=feedback,
-                validation_source="saved_retry_feedback",
-            )
-        previous[e.get("role")] = e
-    # Terminal Generator failures are recorded on the corresponding proposal round.
-    _, root = _run_artifacts(run_dir)
-    path = root / "trajectories.jsonl"
-    record = (
-        next(
-            (
-                json.loads(line)
-                for line in path.open()
-                if json.loads(line).get("sample_id") == sample_id
-            ),
-            None,
+def load_run(directory):
+    directory = Path(directory)
+    checkpoint = directory / "checkpoint.json"
+    saved = json.loads(checkpoint.read_text())
+    schema = saved.get("schema")
+    if schema == "verge-history-learning-v1":
+        # Archival projection only. Legacy data never enters the training loader.
+        samples, experiences, feedback = (
+            saved[k] for k in ("trajectories", "experiences", "feedback")
         )
-        if path.exists()
-        else None
-    )
-    if record:
-        blocks = []
-        for i, e in enumerate(entries):
-            if e.get("role") == "initial_generator":
-                if i == 0 or entries[i - 1].get("role") != "initial_generator":
-                    blocks.append([])
-                blocks[-1].append(e)
-        rounds = [
-            a
-            for a in record.get("proposal_attempts", [])
-            if a.get("rubric")
-            or str(a.get("error") or "").startswith("initial_generator:")
-        ]
-        for block, attempt in zip(blocks[1:], rounds):
-            if attempt.get("error", "") and str(attempt["error"]).startswith(
-                "initial_generator:"
-            ):
-                e = block[-1]
-                if not e.get("validation_status"):
-                    e.update(
-                        validation_status="invalid",
-                        contract_error=attempt["error"],
-                        validation_source="saved_round_error",
+        clusters = saved["clustering"]
+        task_groups = clusters["assignments"]["task"]
+        experience_groups = clusters["assignments"]["experience"]
+        references = {tid: [] for tid in task_groups}
+        for tid, eid in clusters["citations"]:
+            references[tid].append(eid)
+        grouped = {}
+        seen = set()
+        for row in feedback:
+            if row.get("phase") != "downstream" or row.get("error"):
+                continue
+            for eid in row["experience_ids"]:
+                key = (row["task_id"], eid)
+                if key in seen:
+                    continue
+                seen.add(key)
+                group = task_groups.get(row["task_id"])
+                if group:
+                    grouped.setdefault((group, eid), []).append(
+                        int(row["actual_correct"]) - int(row["baseline_correct"])
                     )
-    return {"entries": entries, "warnings": warnings}
-
-
-def load_run(run_dir):
-    from verge.memory import ExperienceMemory, TrajectoryLog
-
-    m, root = _run_artifacts(run_dir)
-    if m["format_version"] == 17:
-        memory = ExperienceMemory(root, read_only=True)
-        records = list(TrajectoryLog(root).all())
-        samples = []
-        for r in records:
-            data = r.to_dict()
-            if r.sample:
-                data.update(r.sample.to_dict())
-            samples.append(data)
-        experiences = [e.to_dict() for e in memory.all()]
-        revisions = [r.to_dict() for r in memory.revisions]
+        statistics = [
+            {
+                "task_group": g,
+                "experience_id": eid,
+                "mean_reward": sum(values) / len(values),
+                "tasks": len(values),
+            }
+            for (g, eid), values in grouped.items()
+        ]
     else:
-        # Historical display only; no conversion to the current training protocol.
-        raw_memory = json.loads((root / "experience_memory.json").read_text())
-        if (
-            raw_memory.get("schema_version")
-            != {13: 11, 14: 12, 15: 13, 16: 14}[m["format_version"]]
-        ):
-            raise ValueError("historical V2 memory schema 11 required")
-        experiences = raw_memory["experiences"]
-        revisions = raw_memory["revisions"]
-        records = [json.loads(line) for line in (root / "trajectories.jsonl").open()]
-        if any(r.get("schema_version") != m["format_version"] for r in records):
-            raise ValueError("historical V2 trajectory schema 13 required")
-        samples = [{**r, **(r.get("sample") or {})} for r in records]
+        memory = ExperienceMemory.load(checkpoint)
+        samples = [r.to_dict() for r in memory.trajectories.values()]
+        experiences = [e.to_dict() for e in memory.experiences.values()]
+        feedback = [
+            {**asdict(r), "phase": "downstream", "credits": r.credits}
+            for r in memory.ledger.records
+        ]
+        task_groups = memory.clusters.assignments("task")
+        experience_groups = memory.clusters.assignments("experience")
+        references = {
+            tid: sorted(memory.clusters.references("task", tid)) for tid in task_groups
+        }
+        statistics = [
+            {
+                "task_group": g,
+                "experience_id": eid,
+                "mean_reward": value.mean_reward,
+                "tasks": value.tasks,
+            }
+            for (g, eid), value in memory.ledger.by_task_group(task_groups).items()
+        ]
     return {
-        "name": Path(run_dir).name,
-        "manifest": m,
+        "name": directory.name,
+        "schema": schema,
+        "manifest": json.loads((directory / "manifest.json").read_text()),
         "samples": samples,
         "experiences": experiences,
-        "revisions": revisions,
-        "warnings": [],
-        "metrics": {
-            "tasks": len(samples),
-            "initial_correct": sum(
-                bool(r.get("initial_judgment") and r["initial_judgment"]["success"])
-                for r in samples
-            ),
-            "active": sum(e["status"] == "active" for e in experiences),
-            "retired": sum(e["status"] == "retired" for e in experiences),
+        "feedback": feedback,
+        "task_groups": task_groups,
+        "experience_groups": experience_groups,
+        "task_index": {
+            task_identity(r["sample"]["task"]): r["sample"]["sample_id"]
+            for r in samples
         },
+        "references": references,
+        "group_statistics": statistics,
     }
+
+
+def load_role_io(directory, sample_id):
+    path = Path(directory) / "role_io.jsonl"
+    if not path.exists():
+        return {"entries": [], "warnings": []}
+    if path.stat().st_size > 1024**3:
+        raise ValueError("调用记录过大，暂不扫描")
+    entries = []
+    warnings = []
+    with path.open() as stream:
+        while True:
+            line = stream.readline(4 * 1024**2 + 1)
+            if not line:
+                break
+            if len(line) > 4 * 1024**2:
+                while line and not line.endswith("\n"):
+                    line = stream.readline(4 * 1024**2)
+                warnings.append("已跳过超大记录")
+                continue
+            try:
+                row = json.loads(line)
+            except ValueError:
+                warnings.append("已跳过不完整日志行")
+                continue
+            if row.get("sample_id") == sample_id:
+                entries.append(row)
+                if len(entries) >= 512:
+                    warnings.append("已达单题记录上限")
+                    break
+    return {"entries": entries, "warnings": warnings[:10]}
 
 
 class DashboardHandler(BaseHTTPRequestHandler):
-    run_dir: Path
-    runs_root: Path | None = None
+    def log_message(self, *args):
+        pass
 
-    def do_POST(self) -> None:
-        """Translate only a verified sample field; do not accept arbitrary text from the browser."""
-        host = self.headers.get("Host", "").split(":")[0]
+    def send_json(self, code, value):
+        body = json.dumps(value, ensure_ascii=False).encode()
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def resolve_run(self, name):
+        root = self.server.runs_root.resolve()
+        directory = (root / name).resolve()
+        if directory.parent != root or not (directory / "checkpoint.json").is_file():
+            raise ValueError("运行不存在")
+        return directory
+
+    def do_GET(self):
+        parsed = urlsplit(self.path)
+        query = parse_qs(parsed.query)
+        try:
+            if parsed.path == "/favicon.ico":
+                self.send_response(204)
+                self.end_headers()
+                return
+            if parsed.path == "/api/runs":
+                return self.send_json(
+                    200, {"runs": discover_runs(self.server.runs_root)}
+                )
+            if parsed.path in ("/api/run", "/api/role-io", "/api/observation"):
+                directory = self.resolve_run(query.get("run", [""])[0])
+                if parsed.path == "/api/run":
+                    result = load_run(directory)
+                elif parsed.path == "/api/observation":
+                    result = load_observation(directory)
+                else:
+                    result = load_role_io(directory, query.get("sample_id", [""])[0])
+                return self.send_json(200, result)
+            files = {
+                "/": "index.html",
+                "/index.html": "index.html",
+                "/style.css": "style.css",
+                "/app.js": "app.js",
+                "/ui.mjs": "ui.mjs",
+                "/metrics.mjs": "metrics.mjs",
+                "/calls.mjs": "calls.mjs",
+                "/trace.mjs": "trace.mjs",
+                "/views.mjs": "views.mjs",
+            }
+            if parsed.path not in files:
+                return self.send_json(404, {"error": "未找到页面"})
+            path = ASSETS / files[parsed.path]
+            body = path.read_bytes()
+            self.send_response(200)
+            self.send_header(
+                "Content-Type",
+                {
+                    ".html": "text/html; charset=utf-8",
+                    ".css": "text/css; charset=utf-8",
+                    ".js": "text/javascript; charset=utf-8",
+                    ".mjs": "text/javascript; charset=utf-8",
+                }[path.suffix],
+            )
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "no-store")
+            self.send_header(
+                "Content-Security-Policy",
+                "default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'",
+            )
+            self.end_headers()
+            self.wfile.write(body)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            self.send_json(400, {"error": str(exc)})
+
+    def do_POST(self):
+        if self.path != "/api/translate":
+            return self.send_json(404, {"error": "未找到接口"})
         origin = self.headers.get("Origin")
-        if host not in ("127.0.0.1", "localhost") or (
-            origin and origin != f"http://{self.headers['Host']}"
-        ):
-            self.send_error(403, "invalid origin")
-            return
-        if urlsplit(self.path).path != "/api/translate" or urlsplit(self.path).query:
-            self.send_error(404)
-            return
+        if origin and origin != f"http://127.0.0.1:{self.server.server_port}":
+            return self.send_json(403, {"error": "不允许跨域请求"})
         try:
             size = int(self.headers.get("Content-Length", "0"))
-        except ValueError:
-            size = 0
-        if (
-            self.headers.get("Content-Type", "").split(";")[0].strip().lower()
-            != "application/json"
-            or not 0 < size <= 4096
-        ):
-            self._json_error(400, "请求格式无效。")
-            return
-        try:
-            request = json.loads(self.rfile.read(size))
-        except (UnicodeError, ValueError):
-            self._json_error(400, "请求 JSON 无效。")
-            return
-        if not isinstance(request, dict) or set(request) != {
-            "run",
-            "sample_id",
-            "field",
-        }:
-            self._json_error(400, "请求字段无效。")
-            return
-        name, sample_id, field = (
-            request.get(key) for key in ("run", "sample_id", "field")
-        )
-        root = self.runs_root or self.run_dir.parent
-        if (
-            not isinstance(name, str)
-            or name not in discover_runs(root)
-            or not isinstance(sample_id, str)
-            or field not in ("task", "chosen", "rejected")
-        ):
-            self._json_error(404, "未找到运行或样本。")
-            return
-        try:
-            sample = next(
-                (
-                    item
-                    for item in load_run(root / name)["samples"]
-                    if item["sample_id"] == sample_id
-                ),
-                None,
-            )
-            text = sample.get(field) if sample else None
-            if not isinstance(text, str) or not text.strip():
-                self._json_error(404, "该样本原文不可用或尚未验证。")
-                return
-            if len(text) > 20000:
-                self._json_error(413, "原文超过单次翻译的 20000 字符上限。")
-                return
-            translated = _translate_apple(text)
+            if not 0 < size <= 65536:
+                raise ValueError("请求大小无效")
+            data = json.loads(self.rfile.read(size))
+            text = data.get("text")
+            if not isinstance(text, str) or not text.strip() or len(text) > 12000:
+                raise ValueError("翻译文本须为1至12000字符")
+            self.send_json(200, {"translation": _translate_apple(text)})
         except TranslationUnavailable as exc:
-            self._json_error(503, str(exc))
-            return
-        except (OSError, ValueError, KeyError, TypeError):
-            self._json_error(500, "运行数据暂时无法读取。")
-            return
-        body = json.dumps({"translation": translated}, ensure_ascii=False).encode(
-            "utf-8"
-        )
-        self._send(200, "application/json; charset=utf-8", body)
-
-    def _json_error(self, status: int, message: str) -> None:
-        body = json.dumps({"error": message}, ensure_ascii=False).encode("utf-8")
-        self._send(status, "application/json; charset=utf-8", body)
-
-    def do_GET(self) -> None:
-        host = self.headers.get("Host", "").split(":")[0]
-        if host not in ("127.0.0.1", "localhost"):
-            self.send_error(403, "invalid host")
-            return
-        parsed = urlsplit(self.path)
-        route = parsed.path
-        root = self.runs_root or self.run_dir.parent
-        if route == "/api/role-io":
-            values = parse_qs(parsed.query, keep_blank_values=True)
-            if set(values) != {"name", "sample_id"} or any(
-                len(values[key]) != 1 for key in values
-            ):
-                self._json_error(400, "需要唯一的运行名称与样本 ID。")
-                return
-            name, sample_id = values["name"][0], values["sample_id"][0]
-            if name not in discover_runs(root) or not sample_id or len(sample_id) > 512:
-                self._json_error(404, "未找到运行或样本。")
-                return
-            try:
-                directory = root / name
-                if not any(
-                    item["sample_id"] == sample_id
-                    for item in load_run(directory)["samples"]
-                ):
-                    self._json_error(404, "未找到该样本。")
-                    return
-                result = load_role_io(directory, sample_id)
-            except (OSError, ValueError, KeyError, TypeError):
-                self._json_error(500, "运行数据暂时无法读取。")
-                return
-            self._send(
-                200,
-                "application/json; charset=utf-8",
-                json.dumps(result, ensure_ascii=False, allow_nan=False).encode("utf-8"),
-            )
-        elif route == "/api/runs":
-            names = discover_runs(root)
-            self._send(
-                200,
-                "application/json; charset=utf-8",
-                json.dumps(
-                    {"runs": names, "default": self.run_dir.name}, ensure_ascii=False
-                ).encode("utf-8"),
-            )
-        elif route == "/api/run":
-            values = parse_qs(parsed.query).get("name", [])
-            if len(values) > 1:
-                self.send_error(400, "only one run name allowed")
-                return
-            name = values[0] if values else self.run_dir.name
-            if name not in discover_runs(root):
-                self.send_error(404, "run not found")
-                return
-            try:
-                data = json.dumps(
-                    load_run(root / name), ensure_ascii=False, allow_nan=False
-                ).encode("utf-8")
-            except (OSError, ValueError, KeyError, TypeError) as exc:
-                data = json.dumps({"error": str(exc)}, ensure_ascii=False).encode(
-                    "utf-8"
-                )
-                self._send(500, "application/json; charset=utf-8", data)
-                return
-            self._send(200, "application/json; charset=utf-8", data)
-        elif route == "/favicon.ico":
-            self._send(204, "image/x-icon", b"")
-        elif route in ("/", "/index.html", "/app.js", "/style.css"):
-            name = "index.html" if route == "/" else route[1:]
-            content_type = (
-                "text/html"
-                if name.endswith(".html")
-                else "text/javascript" if name.endswith(".js") else "text/css"
-            )
-            self._send(
-                200, f"{content_type}; charset=utf-8", (ASSETS / name).read_bytes()
-            )
-        else:
-            self.send_error(404)
-
-    def _send(self, status: int, content_type: str, data: bytes) -> None:
-        self.send_response(status)
-        self.send_header("Content-Type", content_type)
-        self.send_header("Content-Length", str(len(data)))
-        self.send_header("Cache-Control", "no-store")
-        self.send_header("X-Content-Type-Options", "nosniff")
-        self.send_header(
-            "Content-Security-Policy",
-            "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'",
-        )
-        self.end_headers()
-        self.wfile.write(data)
+            self.send_json(503, {"error": str(exc)})
+        except (ValueError, TypeError) as exc:
+            self.send_json(400, {"error": str(exc)})
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Read-only VERGE run dashboard")
-    source = parser.add_mutually_exclusive_group(required=True)
-    source.add_argument("--run-dir", help="initial run; also discover sibling runs")
-    source.add_argument(
-        "--runs-dir", help="directory containing multiple run directories"
-    )
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--runs-root", default="runs")
     parser.add_argument("--port", type=int, default=8765)
-    args = parser.parse_args()
-    root = (
-        Path(args.runs_dir).expanduser().resolve()
-        if args.runs_dir
-        else Path(args.run_dir).expanduser().resolve().parent
-    )
-    if not root.is_dir():
-        parser.error(f"runs directory does not exist: {root}")
-    names = discover_runs(root)
-    directory = (
-        Path(args.run_dir).expanduser().resolve()
-        if args.run_dir
-        else root / (names[0] if names else "__pending__")
-    )
-    # Fail early, before accepting requests; --run-dir must be a direct child.
-    if args.run_dir and (directory.parent != root or directory.name not in names):
-        parser.error(
-            "--run-dir must contain a manifest and be an immediate child of the runs directory"
-        )
-    if names:
-        load_run(directory)
-    handler = type(
-        "RunDashboardHandler",
-        (DashboardHandler,),
-        {"run_dir": directory, "runs_root": root},
-    )
-    with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as server:
-        print(f"VERGE dashboard: http://127.0.0.1:{server.server_port}/", flush=True)
-        try:
-            server.serve_forever()
-        except KeyboardInterrupt:
-            pass
+    args = parser.parse_args(argv)
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), DashboardHandler)
+    server.daemon_threads = True
+    server.runs_root = Path(args.runs_root)
+    print(f"http://127.0.0.1:{server.server_port}", flush=True)
+    try:
+        server.serve_forever()
+    finally:
+        server.server_close()
 
 
 if __name__ == "__main__":

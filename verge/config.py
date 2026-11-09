@@ -1,134 +1,91 @@
-"""Strict V2 experiment configuration; no legacy protocol fallback."""
+"""Explicit configuration for the history-learning protocol; no V2 adapters."""
 
+from copy import deepcopy
 from pathlib import Path
 import yaml
 
+_DEFAULTS = {
+    "run": {
+        "output_dir": "runs/learning-demo",
+        "train_workers": 5,
+        "test_workers": 5,
+        "max_inflight_requests": 16,
+    },
+    "dataset": {"paths": {"train": "configs/data/demo_train.jsonl"}},
+    "model": {"backend": "fake", "model": "repairable"},
+    "embedding": {"backend": "fake"},
+    "roles": {},
+    "clustering": {
+        "reference_weight": 0.5,
+        "task_threshold": 0.75,
+        "experience_threshold": 0.75,
+        "max_rounds": 5,
+    },
+    "retrieval": {"task_group_limit": 3, "historical": 6, "semantic": 4},
+    "selection": {"max_selected": 2},
+    "critic": {"max_candidates": 2, "max_rounds": 2},
+    "requests": {"retries": 2, "input_bytes": 100000},
+}
+
 
 def load_config(path):
-    data = yaml.safe_load(Path(path).read_text())
-    if not isinstance(data, dict) or set(data) != {
-        "run",
-        "dataset",
-        "models",
-        "modules",
-        "store",
-    }:
-        raise ValueError("V2 requires run/dataset/models/modules/store")
-    run = data["run"]
-    if (
-        set(run)
-        - {
-            "seed",
-            "output_dir",
-            "stop_after_train",
-            "test_workers",
-            "train_workers",
-            "revision_workers",
-            "max_inflight_requests",
-            "mode",
-        }
-        or not {"seed", "output_dir"} <= run.keys()
-    ):
-        raise ValueError("invalid run configuration")
-    if (
-        type(run["seed"]) is not int
-        or not isinstance(run["output_dir"], str)
-        or not run["output_dir"]
-    ):
-        raise ValueError("invalid seed/output directory")
-    if "stop_after_train" in run and (
-        type(run["stop_after_train"]) is not int or run["stop_after_train"] < 1
-    ):
-        raise ValueError("invalid stop_after_train")
-    if type(run.get("train_workers", 1)) is not int or run.get("train_workers", 1) < 1:
-        raise ValueError("train_workers must be a positive integer")
-    if run.get("test_workers", 1) != 1:
-        raise ValueError(
-            "V2 currently evaluates frozen tasks sequentially; use test_workers=1"
-        )
-    if run.get("mode", "learning") not in ("learning", "collection"):
-        raise ValueError("run.mode must be learning or collection")
-    mods = data["modules"]
-    if set(mods) != {"retrieval", "selection", "application", "reliability"}:
-        raise ValueError("invalid V2 modules")
-    impls = {
-        "retrieval": {"fake", "hybrid"},
-        "selection": {"llm"},
-        "application": {"semistructured_v2"},
-        "reliability": {"bayesian"},
-    }
-    keys = {
-        "retrieval": {"top_l", "rrf_k", "embedding_model", "dimensions"},
-        "selection": {"max_selected"},
-        "application": {
-            "max_rounds",
-            "max_candidates",
-            "invalid_output_retries",
-            "input_bytes",
-            "check_interval",
-            "error_window",
-            "error_threshold",
-            "q_threshold",
-            "min_replay",
-            "revision_enabled",
-            "margin_threshold",
-        },
-        "reliability": {"parameter_file"},
-    }
-    for name, value in mods.items():
+    raw = yaml.safe_load(Path(path).read_text())
+    if not isinstance(raw, dict) or set(raw) - _DEFAULTS.keys():
+        raise ValueError("unsupported learning configuration sections")
+    config = deepcopy(_DEFAULTS)
+    for section, value in raw.items():
+        if not isinstance(value, dict):
+            raise ValueError(f"{section} must be an object")
         if (
-            set(value) != {"implementation", "config"}
-            or value["implementation"] not in impls[name]
-            or not isinstance(value["config"], dict)
-            or set(value["config"]) - keys[name]
+            section not in ("model", "embedding", "roles")
+            and set(value) - config[section].keys()
         ):
-            raise ValueError("unsupported V2 component: " + name)
-    opts = mods["application"]["config"]
-    for key, low, high in [
-        ("max_rounds", 1, 2),
-        ("max_candidates", 1, 100),
-        ("invalid_output_retries", 0, 3),
-        ("input_bytes", 1000, 1000000),
-        ("check_interval", 1, 100),
-        ("error_window", 1, 100),
-        ("error_threshold", 1, 100),
-        ("min_replay", 1, 6),
+            raise ValueError(f"unknown {section} settings")
+        config[section].update(value)
+    for section, key in [
+        ("run", "train_workers"),
+        ("run", "test_workers"),
+        ("run", "max_inflight_requests"),
+        ("critic", "max_candidates"),
+        ("critic", "max_rounds"),
+        ("retrieval", "task_group_limit"),
     ]:
-        if key in opts and (type(opts[key]) is not int or not low <= opts[key] <= high):
-            raise ValueError("invalid " + key)
-    for key in ("revision_workers", "max_inflight_requests"):
-        if key in run and (type(run[key]) is not int or run[key] < 1):
-            raise ValueError("invalid " + key)
-    if "margin_threshold" in opts and (
-        type(opts["margin_threshold"]) not in (int, float)
-        or not 0 < opts["margin_threshold"] <= 2
+        if type(config[section][key]) is not int or config[section][key] < 1:
+            raise ValueError(f"{section}.{key} must be positive integer")
+    if config["critic"]["max_candidates"] > 2 or config["critic"]["max_rounds"] > 2:
+        raise ValueError("Critic is limited to two candidates and two rounds")
+    if (
+        type(config["selection"]["max_selected"]) is not int
+        or not 0 <= config["selection"]["max_selected"] <= 2
     ):
-        raise ValueError("invalid margin_threshold")
-    if "revision_enabled" in opts and type(opts["revision_enabled"]) is not bool:
-        raise ValueError("invalid revision_enabled")
-    if "q_threshold" in opts and (
-        type(opts["q_threshold"]) not in (int, float)
-        or not 0 <= opts["q_threshold"] <= 1
+        raise ValueError("selection.max_selected must be 0..2")
+    if (
+        type(config["requests"]["retries"]) is not int
+        or not 0 <= config["requests"]["retries"] <= 5
     ):
-        raise ValueError("invalid q_threshold")
-    selected = mods["selection"]["config"].get("max_selected", 5)
-    if type(selected) is not int or not 0 <= selected <= 5:
-        raise ValueError("invalid max_selected")
-    if mods["retrieval"]["config"].get("top_l", 20) != 20:
-        raise ValueError("V2 Top20 retrieval required")
-    if data["store"].get("implementation") != "local" or set(
-        data["store"].get("config", {})
-    ) - {"root_dir"}:
-        raise ValueError("only local store supported")
-    if data["dataset"].get("implementation") != "jsonl" or set(
-        data["dataset"].get("config", {})
-    ) - {"paths", "field_map"}:
-        raise ValueError("prepare datasets separately, then use JSONL")
-    if run.get("mode") == "collection":
-        if mods["reliability"]["config"].get("parameter_file"):
-            raise ValueError("collection mode requires no probability parameters")
-        if opts.get("revision_enabled", True):
-            raise ValueError("collection mode requires revision_enabled=false")
-        if "test" in data["dataset"]["config"].get("paths", {}):
-            raise ValueError("collection mode must not inspect a held-out split")
-    return data
+        raise ValueError("requests.retries must be 0..5")
+    if (
+        type(config["requests"]["input_bytes"]) is not int
+        or config["requests"]["input_bytes"] < 1000
+    ):
+        raise ValueError("requests.input_bytes must be at least 1000")
+    from verge.clustering import OnlineClustering
+    from verge.retrieval import CandidateQuota
+
+    OnlineClustering(**config["clustering"])
+    CandidateQuota(config["retrieval"]["historical"], config["retrieval"]["semantic"])
+    if not config["dataset"]["paths"] or set(config["dataset"]["paths"]) - {
+        "train",
+        "test",
+    }:
+        raise ValueError("dataset needs train and optional test paths")
+    if "train" not in config["dataset"]["paths"]:
+        raise ValueError("training path required")
+    for spec in [config["model"], config["embedding"], *config["roles"].values()]:
+        if not isinstance(spec, dict) or "api_key" in spec:
+            raise ValueError(
+                "model settings use api_key_env, never plaintext credentials"
+            )
+    if set(config["roles"]) - {"selector", "generator", "judge", "critic"}:
+        raise ValueError("unknown role override")
+    return config

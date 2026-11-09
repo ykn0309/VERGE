@@ -6,13 +6,13 @@
 .layout{grid-template-columns:minmax(0,1.35fr) minmax(350px,1fr);gap:20px}aside{position:sticky;top:15px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 16px}.navhead{font-weight:600;color:var(--ink);font-size:14px}.navhead input{width:190px}.graphlegend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin:10px 0 0}.focuslegend{color:#ab7134}.graphscroll{overflow:auto}svg#nav{display:block;width:100%;height:auto;min-height:360px}.edge{fill:none;stroke:#b5c4b8;stroke-width:2}.edgeactive{stroke:#286e52;stroke-width:3}.graphnode{cursor:pointer;outline:none}.graphnode rect{fill:#f8f9f3;stroke:#c7d2c6;stroke-width:1.4}.graphnode circle{fill:#608570}.graphnode .nodestatus{font-size:11px;fill:#6b7c6f}.graphnode .nodetitle{font-size:15px;fill:#283f32;font-weight:600}.graphnode:hover rect,.graphnode:focus rect{stroke:#276b54;stroke-width:3}.graphnode.selected rect{fill:#e4eee2;stroke:#276b54;stroke-width:2.5}.graphnode.currentnode rect{fill:#fcf0da;stroke:#bd985e}.graphnode.currentnode circle{fill:#ae7130}.graphnode.dim{opacity:.2}.graphhint{font-size:11px;color:var(--muted);margin:10px 0 0}.asidefoot{display:none}.card{padding:24px}.hero{padding:23px 28px}h1{font-size:26px}.facts{grid-template-columns:1fr;gap:18px}.attempt{grid-template-columns:1fr;gap:4px}
 @media(min-width:1100px){.card{max-height:calc(100vh - 40px);overflow:auto}}@media(max-width:1000px){.layout{grid-template-columns:1fr}aside{position:static}.facts{grid-template-columns:1fr 1fr}.card{max-height:none}svg#nav{max-height:650px}}@media(max-width:600px){.facts{grid-template-columns:1fr}.graphscroll{overflow-x:auto}svg#nav{min-width:650px;min-height:470px}.navhead input{width:58%}.hero h1{font-size:22px}}@media print{aside{display:block;position:static;page-break-after:always}.layout{display:block}.card{max-height:none}}
 
-.layout{grid-template-columns:1fr}.layout aside{position:static}svg#nav{max-height:520px;min-height:240px}.card{max-height:none;overflow:visible;padding:34px 42px}.story{max-width:800px;margin:0 auto}.story p{font-size:16px;line-height:1.95;margin:23px 0;color:#40564a}.story blockquote{margin:28px 0;padding:20px 24px;background:#eaf0e5;border-left:3px solid #477c58;font-size:19px;line-height:1.8;color:#284b35}.storytop{display:flex;justify-content:space-between;align-items:center}.storycount{font-size:12px;color:var(--muted)}.arrival{font-size:13px;color:var(--muted);padding-bottom:12px;border-bottom:1px solid var(--line)}.journeybuttons{display:flex;justify-content:space-between;gap:18px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}.journeybuttons button{max-width:48%;text-align:left;font-size:13px}.journeybuttons small{display:block;font-size:11px;color:var(--muted)}.evidence{margin-top:25px;font-size:12px;color:var(--muted)}.evidence summary{cursor:pointer}.evidence .sources{padding-top:14px}.edgenumber{font-size:11px;fill:#718472;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}.waiting{font-size:13px;color:var(--muted)}@media(max-width:600px){.card{padding:23px}.story p{font-size:15px}.story blockquote{font-size:17px}svg#nav{min-width:750px}.journeybuttons{flex-direction:column}.journeybuttons button{max-width:100%}}
+.layout{grid-template-columns:1fr}.layout>aside,.layout>section{min-width:0}.layout aside{position:static}svg#nav{max-height:520px;min-height:240px}.card{max-height:none;overflow:visible;padding:34px 42px}.story{max-width:800px;margin:0 auto}.story p{font-size:16px;line-height:1.95;margin:23px 0;color:#40564a}.story blockquote{margin:28px 0;padding:20px 24px;background:#eaf0e5;border-left:3px solid #477c58;font-size:19px;line-height:1.8;color:#284b35}.storytop{display:flex;justify-content:space-between;align-items:center}.storycount{font-size:12px;color:var(--muted)}.arrival{font-size:13px;color:var(--muted);padding-bottom:12px;border-bottom:1px solid var(--line)}.journeybuttons{display:flex;justify-content:space-between;gap:18px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}.journeybuttons button{max-width:48%;text-align:left;font-size:13px}.journeybuttons small{display:block;font-size:11px;color:var(--muted)}.evidence{margin-top:25px;font-size:12px;color:var(--muted)}.evidence summary{cursor:pointer}.evidence .sources{padding-top:14px}.edgenumber{font-size:11px;fill:#718472;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}.waiting{font-size:13px;color:var(--muted)}@media(max-width:600px){.card{padding:23px}.story p{font-size:15px}.story blockquote{font-size:17px}svg#nav{min-width:750px}.journeybuttons{flex-direction:column}.journeybuttons button{max-width:100%}}
 
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>最新方案：经验独立入池，用文本与引用在线分组；历史任务只归一组，选择时参考多个相近类别，收益排序后由LLM筛选。Critic候选通过即时修复后积累下游证据；具体算法未定，新方法尚未实现。</p><div class="pulse"><span>当前：聚类算法候选已设计，等待真实轨迹验证</span><span>正式参数估计：暂停</span><span>暂不追加实验 · 非留出测试</span></div></section>
-<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1560 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-07</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>最新方案：经验独立入池，用文本与引用在线分组；历史任务只归一组，选择时参考多个相近任务组，按单条经验收益排序后由LLM筛选；经验聚类仅作分析。Critic候选通过即时修复后积累下游证据；收益记账、聚类、排序与候选检索已实现；无匹配组时全部走全池语义。完整100题重跑已结束：初始实际路径59对，入池30条经验；训练观察尚不能证明泛化改善。WebUI可追溯完整过程。最新确认：初始与Critic统一四路验证，最多提供两条经验；取消Generator自报引用，按加入经验后的平均结果变化分配信用。仅组合成功也允许两条一起入池。来源只决定准入，不记收益、不建关联；协议实现与局部验证已完成。193项Python测试、5个Node测试文件及三个角色各20任务复测结构通过，语义问题仍存在，整体效果待验证。关联权重上限已暂设0.5，门槛未改。</p><div class="pulse"><span>当前：四路协议已实现，整体效果待验证</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-09</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">[
   {
     "id": "main",
@@ -384,8 +384,8 @@
         "研究讨论/经验表示与利用问题-外部模型咨询提示词.md"
       ],
       [
-        "复测脚本",
-        "../scripts/replay_experience_utilization.py"
+        "复测脚本（旧快照）",
+        "历史设计/2026-11-06-旧实现/README.md"
       ],
       [
         "回放实现",
@@ -939,11 +939,11 @@
   {
     "id": "joint105",
     "title": "新方案：独立经验、在线分组与历史选择",
-    "status": "首轮聚类算法已设计，尚未实测",
+    "status": "方案已落地",
     "parent": "negative",
     "previous": "audit104",
-    "following": null,
-    "transition": "审阅109规则并做历史回放；组合收益另行设计",
+    "following": "learning110",
+    "transition": "接入实际流程，检查实现和内容",
     "question": "相关任务不易预先获得时，能否由经验使用效果共同学习任务关系与适用性？",
     "story": [
       {
@@ -1061,6 +1061,30 @@
       {
         "type": "p",
         "text": "用户指出只在已有任务类—经验类连接内选经验会反复强化原关系，确认类别只影响优先级，不是候选硬边界。利用阶段优先已有收益，探索阶段从整个经验池按语义相关性检索，允许尚未建立联系的类别进入；仍由LLM核查适用性并可不选。新引用与效果来自实际运行，比例未定。已同步主方案、训练流程图和109，未改代码或追加实验。"
+      },
+      {
+        "type": "p",
+        "text": "用户授权开始实现、删除旧方法兼容，并要求软件工程质量；遇到未定设计必须停下讨论。已将全部当前非忽略改动提交9faede2（未推送），282项Python及前端检查通过。检查旧calculator／memory／pipeline后，发现旧逐经验F／Q不能直接替代新组合配对收益，单条经验排序定义仍未确定，按要求暂停；尚未改运行代码或删除旧方法。计划110记录待确认建议与实施边界。"
+      },
+      {
+        "type": "p",
+        "text": "2026-11-07，用户确认：组合改善／退化／持平分别给实际引用经验记录+1／−1／0，统计参与时的平均表现，不称为独立贡献；保留组合，每任务每经验一次，类别汇总也去重。已实现收益账本与聚类核心，330项Python测试通过；20题历史缓存离线回放涉及17条经验、28条参与记录，记账一致且原文件未变。最终20个任务组、16个经验组，不代表分组有效。CLI尚未接入；下一处待确认是多个相近任务组的收益怎样加权，未擅设排序规则。"
+      },
+      {
+        "type": "p",
+        "text": "随后讨论明确了排序：先算各任务组内单条经验的平均参与收益，再按新任务与各组的相似度加权；无记录不算0，样本量另存。用户指出，若展开所有关联经验组后统一排序，经验组没有独立选择作用；因此确认第一版仅用任务组＋单条经验收益选择，经验聚类只保留为分析，不先选组、不按组评分或自动合并经验。已同步方案，尚未实现排序，未产生新的效果证据。"
+      },
+      {
+        "type": "p",
+        "text": "继续实现单条经验排序，明确组均值先算、相似度后加权，未知与0／负收益分开，样本量单列。新增21项测试，全套351项及前端检查通过。20题真实查询先排除自身反馈，再用另外177题构建历史：暂定0.75门槛下仅5题有达标组，13条经验分数与独立计算一致；15题无覆盖。覆盖主要是角色续写／反应，不能宣称整体有效或据此调参。首次读取缺失缓存失败、第二次候选误含退役经验的产物都保留，v3已修正。按未定规则先讨论的要求，暂停运行层接入，询问无达标任务组时是否回退全池语义检索。"
+      },
+      {
+        "type": "p",
+        "text": "用户指出，历史收益与全池语义本就是两种候选来源，无达标任务组时全部用语义即可；不必重复讨论是否回退。已补全只读候选检索：全池语义不受经验组或引用限制，经验组仍仅分析。17项新增测试，全套368项及前端检查通过；20题离线检索中15题仅语义、5题同时有历史排序，原文件未变。人工查看首条候选发现彩票问答被匹配到无结果查询、角色反应匹配到免费策略，说明曝光覆盖不等于适用，尚需Selector。现待候选配额确认，建议20条中16历史＋4语义、去重不足由语义补齐，最多实际选5条；尚未设为默认或运行全流程。"
+      },
+      {
+        "type": "p",
+        "text": "用户认为20条总数过多、4条全池语义占比偏少，确定改为最多10条：6条历史收益＋4条全池语义。已实现按来源去重、缺额语义补齐，无达标组时全语义，池小则返回实际数量；保留来源及已知／未知分数。全套378项Python及前端检查通过。20题离线各得到10个不同候选，共13条历史来源、187条语义来源，反映本样本历史稀疏，不是方法有效的证据。旧产物保留、原数据未变、未调用模型；下一步接入Selector，完整训练入口未切换。"
       }
     ],
     "sources": [
@@ -1107,6 +1131,282 @@
       [
         "聚类算法109候选",
         "研究讨论/109-混合相似度在线聚类算法.md"
+      ],
+      [
+        "新方法重构计划110",
+        "plans/110-新方法重构与未定规则确认.md"
+      ],
+      [
+        "核心计算验证110",
+        "实验分析/110-新方法核心记账与聚类验证.md"
+      ]
+    ]
+  },
+  {
+    "id": "learning110",
+    "title": "新流程实现与独立复测",
+    "status": "已实现，待效果验证",
+    "parent": "joint105",
+    "previous": "joint105",
+    "following": "full112",
+    "transition": "用新经验池检验下游收益",
+    "question": "历史收益是否真正影响经验使用，并减少后续任务退化？",
+    "story": [
+      {
+        "type": "p",
+        "text": "实现从参与收益与聚类开始。用户逐步确认：先算任务组内单条经验均值，再按相似度加权；经验组仅分析；候选最多10条、6历史＋4全池语义，无匹配组时全语义。此前每完成一小段就结束，用户要求继续接完整流程。"
+      },
+      {
+        "type": "p",
+        "text": "现已接通选择、生成、独立评判、Critic直接提案与即时验证、滚动5并发、原子保存及冻结推理。Critic最多2轮、每轮最多2条，逐条验证；实际引用且判对才入池。旧Q、版本和Checker链路已移除，旧数据保留。"
+      },
+      {
+        "type": "p",
+        "text": "150项程序测试通过；离线后端跑通20题训练和冻结文件加载评价。真实四角色各20题独立复测最终结构通过，其中有格式重试；Judge复用提示和adapter未变的首轮记录。旧经验采用统一生成指南投影，不是新训练池。Web实测能展开提示词、无横向溢出，苹果翻译最终复核可用。"
+      },
+      {
+        "type": "callout",
+        "text": "仍未解决：经验过强、Generator把条件当事实、Critic夹带来源细节。用户指出它们是旧问题的延续，不能包装成新发现或效果改善。当前只完成实现与程序验证，没有真实完整流程收益或速度提升结论。"
+      },
+      {
+        "type": "p",
+        "text": "下一步观察新经验经下游反馈后，排序、实际使用与退化是否改善。用户已要求运行100题真实完整流程；不能靠结构合法或离线夹具宣布方法有效。"
+      }
+    ],
+    "sources": [
+      [
+        "完整设计",
+        "设计方案.md"
+      ],
+      [
+        "工程设计",
+        "工程设计.md"
+      ],
+      [
+        "计划110",
+        "plans/110-新方法重构与未定规则确认.md"
+      ],
+      [
+        "实现与验证111",
+        "实验分析/111-历史收益驱动完整流程实现与验证.md"
+      ],
+      [
+        "核心计算110",
+        "实验分析/110-新方法核心记账与聚类验证.md"
+      ]
+    ]
+  },
+  {
+    "id": "full112",
+    "title": "100题真实流程与人工分析",
+    "status": "100题完成 · 可追溯浏览",
+    "parent": "learning110",
+    "previous": "learning110",
+    "following": "cluster118",
+    "transition": "分组几乎都是单成员，转而核对相似度与实际检索",
+    "question": "历史反馈能否帮助选择与使用经验；旧的过强要求是否仍反复出现？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户要求运行100题完整流程。首次误加了自动停机：空经验输入下，模型虚构usage ID导致0题提交即停止。用户明确：这类幻觉应有限重试，不能拖停其他题；应由主代理定期分析流程和方法。"
+      },
+      {
+        "type": "p",
+        "text": "已撤掉自动停机，153项程序检查通过；原现场保留，同一批100题在新目录运行。模型、提示和方法不变，滚动5并发。每约10题或1分钟人工查看经验选择、标准、Judge与Critic，明确缺陷时暂停讨论。"
+      },
+      {
+        "type": "callout",
+        "text": "格式或虚构ID有限重试，耗尽只记录当前路径并继续。本次不是技术错误导致的全局停机；原误设停机的现场也保留。"
+      },
+      {
+        "type": "p",
+        "text": "实际53题提交后，入池11条经验；58题启动过，余5题未完整提交。3题下游使用中，Chloe Warm只有两个词，却被套入角色扮演与恋爱阶段，Generator把这些未给定条件写成评分要求。人工据此暂停，未由格式错误触发。"
+      },
+      {
+        "type": "callout",
+        "text": "只有1题有效下游配对且均错，不能判断整体效果。还看到1条准入经验被引用但未贡献分差。下一步先讨论适用条件如何被跳过，不自动重跑，也不把单例当整体失效。"
+      },
+      {
+        "type": "p",
+        "text": "11月9日用户要求先修技术失败。13条无经验路径错误集中在空输入却写占位usage。明确空数组、给出输入对应的纠错，保留严格校验与原预算；提示词源码改为多行。20任务22输入同期独立复测失败4→0，161项程序测试通过。"
+      },
+      {
+        "type": "callout",
+        "text": "这只是输出接口修复。内容仍有任务遗漏、经验前提当事实和Boolean方向错误，不算方法改善。原53题运行继续暂停，先讨论误用问题。"
+      },
+      {
+        "type": "p",
+        "text": "用户指出提示词短句拼接生硬，随后又指出Selector示例只有空数组。已把四角色指导改成连贯段落，补全选中项与理由示例，并用当前候选编号避免编造示例ID。Selector同组20题最终通过，其他角色独立20题仍有Judge1题技术失败；空经验22输入回归无失败。只完成表达及示例修订，不宣称误用问题解决，原实验仍暂停。"
+      },
+      {
+        "type": "p",
+        "text": "外部建议提出区分适用前提与核查对象、保护任务范围。用户同意后，115.1按建议实现，并固定Selector21题、Generator24题对照。结构都有效，Chloe Warm、全部角色缩小和术语先纠错等主要问题却仍出现；新理由甚至把适用前提本身留待后续核查。"
+      },
+      {
+        "type": "callout",
+        "text": "这轮没有达到语义目标，新增语义提示已撤回，候选与失败证据保留。当前115.2只保留完整Generator示例，同组24题结构通过；169项程序测试通过，不代表内容改善。原100题继续暂停，下一步讨论强经验如何覆盖task，不继续堆同类提醒。"
+      },
+      {
+        "type": "p",
+        "text": "用户决定先不管这些已知错误，重新跑100题。计划116沿用同一固定输入，以115.2从空经验池启动，滚动5样本。旧53题现场保持不动；不以已知语义误用暂停本轮，技术失败仍有限重试并记录，运行中不换代码、提示或参数，完成后看实际下游证据。"
+      },
+      {
+        "type": "p",
+        "text": "116已完成100题，运行22分29秒，初始实际路径59对／40错／1技术失败，无经验55对；30条经验入池。全部提供经验的43有效配对中11改善、6退化；实际引用38有效配对中11改善、5退化。两种口径不能混用，来源修复不能算下游效果。"
+      },
+      {
+        "type": "callout",
+        "text": "这是训练过程的观察，不是冻结池独立测试。形成97个任务组，其中95个为单成员，尚不能声称分组有效或旧误用已解决。原53题现场保持不变。"
+      },
+      {
+        "type": "p",
+        "text": "用户希望直接看清流程、聚类和原始输入输出，因此重做WebUI：总览可切换提供／引用口径；单题按选择、生成、Judge、Critic与原始调用展开；经验和任务分组可追溯成员、引用、来源及收益。展示完整保存消息与回复，解析结果另列，失败和重试保留。界面简化导航、提高字号行距；浏览器、窄屏和苹果翻译验证通过。 随后按用户反馈将样本列表改为紧凑状态卡，不显示task正文；并排显示无经验基线与已有经验路径，逐条列出Critic候选的判断、引用和准入，包括提案失败。候选通过不改写初始结果。后续又将每轮Critic→Generator→Judge独立展开，当前轮次、候选的标准和判断分开查看，URL保留选择，不把多轮混在一起。点击样本也保留列表滚动位置，便于连续查看。 随后将全局导航移到顶部，取消侧边栏，内容区使用完整宽度。 界面后续统一阅读字号和层级，经验列表补齐来源验证、下游引用、改善退化及收益；无证据与0收益分开。本轮只验证桌面布局。"
+      }
+    ],
+    "sources": [
+      [
+        "监控计划112",
+        "plans/112-General100题真实完整流程监控.md"
+      ],
+      [
+        "人工审查与暂停报告112",
+        "实验分析/112-General100题人工监控与暂停.md"
+      ],
+      [
+        "空经验输出修复计划113",
+        "plans/113-空经验输出与格式纠错修复.md"
+      ],
+      [
+        "空经验输出修复报告113",
+        "实验分析/113-空经验输出与格式纠错修复.md"
+      ],
+      [
+        "提示词表达修订计划114",
+        "plans/114-角色提示词连贯表达重写.md"
+      ],
+      [
+        "提示词表达与选择示例报告114",
+        "实验分析/114-角色提示词表达与选择示例修订.md"
+      ],
+      [
+        "适用前提与任务覆盖计划115",
+        "plans/115-适用前提与任务覆盖改进.md"
+      ],
+      [
+        "适用前提与任务覆盖对照报告115",
+        "实验分析/115-适用前提与任务覆盖独立对照.md"
+      ],
+      [
+        "100题重新运行计划116",
+        "plans/116-General100题重新完整运行.md"
+      ],
+      [
+        "100题完成报告116",
+        "实验分析/116-General100题完整运行结果.md"
+      ],
+      [
+        "WebUI计划117",
+        "plans/117-WebUI可观测性与布局改进.md"
+      ],
+      [
+        "WebUI与聚类浏览报告117",
+        "实验分析/117-WebUI可观测性与聚类浏览.md"
+      ]
+    ]
+  },
+  {
+    "id": "cluster118",
+    "title": "聚类为何几乎未合并？",
+    "status": "已诊断 · 待定改进",
+    "parent": "full112",
+    "previous": "full112",
+    "following": null,
+    "transition": "先验证相似关系与门槛，不盲目降阈值",
+    "question": "是数据少，还是相似度与引用机制让分组及历史排序难以生效？",
+    "story": [
+      {
+        "type": "p",
+        "text": "界面显示100任务97组、30经验28组。只读核对保存向量与引用后发现：每题最近文本近邻的相似度中位数只有0.37，而门槛设为0.75；4950对任务仅2对文本达标。现有原始任务向量未必对应应共享评分方法的关系，不能只凭分数判断任务本就不同。"
+      },
+      {
+        "type": "p",
+        "text": "经验侧16条只有1个引用任务；未共同引用时Jaccard为0，会压低文本相似度。本轮7对经验文本达标，混合后仅剩2对。缺少共同尝试不等于方法不同；任务侧引用却增加了达标对，不能一概否定引用。"
+      },
+      {
+        "type": "callout",
+        "text": "100题只有2题检索到达标任务组、1题出现历史收益候选，说明116几乎都依靠全池语义检索。原参数最终快照增加至20轮仍97/28，不支持把主要原因归为迭代次数不足。"
+      },
+      {
+        "type": "p",
+        "text": "离线降到0.65门槛仍96个任务组；取消引用可减少经验组，但未检查合并是否正确。下一步建议先检查应共享评分方法的任务对、确认文本表示，再分别校准门槛及稀疏引用处理。没有改原参数、方法或检查点，也没有启动新训练。"
+      }
+    ],
+    "sources": [
+      [
+        "聚类算法109",
+        "研究讨论/109-混合相似度在线聚类算法.md"
+      ],
+      [
+        "只读诊断计划118",
+        "plans/118-聚类稀疏与历史检索诊断.md"
+      ],
+      [
+        "聚类与历史检索诊断118",
+        "实验分析/118-聚类稀疏与历史检索诊断.md"
+      ]
+    ]
+  },
+  {
+    "id": "credit119",
+    "title": "统一四路验证，按提供经验分配信用",
+    "status": "已实现 · 效果待验证",
+    "parent": "learning110",
+    "previous": "full112",
+    "following": null,
+    "transition": "从模型自报引用转向程序控制的输入比较",
+    "question": "两条经验可能共同起效，且未声明引用也可能产生影响，如何统一分配信用？",
+    "story": [
+      {
+        "type": "p",
+        "text": "初始与Critic统一最多两条经验，训练比较无经验、两条单独和组合。初始全部选中经验为事前固定的实际路径；实际判错才触发Critic。取消Generator自报引用，按程序控制的提供集合计算信用。"
+      },
+      {
+        "type": "p",
+        "text": "后续独立任务上，每条信用为单独加入和与另一条搭配加入后的结果变化平均；未知与0分开、技术失败不补0。单条候选判对可入池；只有组合判对时两条一起入池，保留共同成功记录。"
+      },
+      {
+        "type": "callout",
+        "text": "用户明确纠正：Critic来源验证只决定准入，不计算候选收益、不建立候选关联，避免同批候选因共同来源被人为拉近。新经验关联为空、收益未知，后续独立任务经Selector选中并实际提供后才建立边和积累信用。"
+      },
+      {
+        "type": "p",
+        "text": "先更新方案，再实现执行、信用、关联与WebUI。193项Python测试、5个Node测试文件、离线暂停续跑和冻结检查通过；旧116产物保持不变。关联权重上限暂设0.5、门槛不变，参数效果未验证。"
+      },
+      {
+        "type": "p",
+        "text": "Qwen3.5-Flash关闭思考，Selector、Generator、Critic各20个历史真实任务独立复测最终结构通过；Critic有4次首次合同失败并纠错恢复。逐条审查仍发现错误适用、过强要求、反向Boolean与依赖候选回答的trigger。模块输出没有在新协议下准入，不能当作效果改善证据。"
+      },
+      {
+        "type": "callout",
+        "text": "协议已接通，整体效果仍未知。本轮不自动启动新100题训练，也不从旧两路结果补算缺失子集信用。下一步需要新协议的真实流程实验。"
+      }
+    ],
+    "sources": [
+      [
+        "方法设计",
+        "设计方案.md"
+      ],
+      [
+        "统一信用计划119",
+        "plans/119-四路验证与统一信用分配.md"
+      ],
+      [
+        "实现验证119",
+        "实验分析/119-四路信用与来源排除实现验证.md"
+      ],
+      [
+        "聚类诊断118",
+        "实验分析/118-聚类稀疏与历史检索诊断.md"
       ]
     ]
   }
@@ -1114,10 +1414,10 @@
 <script>
 const nodes=JSON.parse(document.getElementById('research-data').textContent), byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const CURRENT='joint105';let current=CURRENT;
+const CURRENT='credit119';let current=CURRENT;
 function path(n){let a=[];while(n){a.unshift(n);n=byId[n.parent]}return a}
 function oldRenderNav(){const q=document.getElementById('search').value.trim().toLowerCase();document.getElementById('nav').innerHTML=nodes.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).map(n=>`<button class="navitem ${n.parent&&n.parent!=='main'?'branch':''} ${n.id===current?'active':''}" data-id="${n.id}" ${n.id===current?'aria-current="page"':''}><span class="label">${esc(n.title)}</span><small>${esc(n.status)}${n.parent?' · '+esc(byId[n.parent].title.replace(/^.*：/,'')):''}</small></button>`).join('')||'<div class="empty">没有匹配的研究节点</div>'}
-const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280]};
+const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540]};
 function wrap(text,limit=13){const chars=Array.from(text),lines=[];while(chars.length)lines.push(chars.splice(0,limit).join(''));return lines.slice(0,2)}
 function renderNav(){
  const q=document.getElementById('search').value.trim().toLowerCase(),matches=n=>!q||JSON.stringify(n).toLowerCase().includes(q); const W=245,H=78;

@@ -2,25 +2,44 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>VERGE · 实验观察台</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <header class="topbar">
-      <div class="brand">VERGE<span>实验观察台</span></div>
-      <nav aria-label="主导航">
-        <button data-page="overview">运行概览</button>
-        <button data-page="samples">样本流水线</button>
-        <button data-page="experiences">经验池</button>
-      </nav>
-      <label class="run-picker"
-        >运行日志
-        <select id="run" aria-label="运行日志"></select
-      ></label>
-      <button id="refresh" class="quiet">刷新数据</button>
-    </header>
-    <main id="app" aria-live="polite"></main>
-    <script src="/app.js"></script>
+    <div class="workspace">
+      <header class="topbar">
+        <div class="brand" aria-label="VERGE实验观察台">
+          <span class="brand-mark">V</span>
+          <div>VERGE<small>实验观察台</small></div>
+        </div>
+        <nav class="primary-nav" aria-label="实验导航">
+          <button data-page="overview">运行总览</button>
+          <button data-page="samples">单题追踪</button>
+          <button data-page="experiences">经验池</button>
+          <button data-page="clusters">任务与经验分组</button>
+        </nav>
+        <div class="run-control">
+          <label for="run">当前实验</label
+          ><select id="run" aria-label="当前实验"></select
+          ><span id="run-status" class="run-status">读取中</span>
+        </div>
+      </header>
+      <div class="toolbar">
+        <div class="page-context">
+          <h1 id="page-title">运行总览</h1>
+          <span id="freshness" role="status">正在连接本地数据…</span>
+        </div>
+        <div>
+          <button id="auto-refresh" aria-pressed="true">自动刷新 · 5秒</button
+          ><button id="refresh">立即刷新</button>
+        </div>
+      </div>
+      <main id="app" aria-label="实验内容"></main>
+      <footer class="page-footer">
+        本地只读 · 来源验证与下游效果分别统计 · 模型解释不等于事实
+      </footer>
+    </div>
+    <script type="module" src="/app.js"></script>
   </body>
 </html>

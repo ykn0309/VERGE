@@ -55,7 +55,7 @@ def _decode(value: Any, annotation: Any) -> Any:
 def _encode(value: Any) -> Any:
     if isinstance(value, Model):
         return value.to_dict()
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         return [_encode(item) for item in value]
     if isinstance(value, dict):
         return {key: _encode(item) for key, item in value.items()}
@@ -150,23 +150,15 @@ class PreferenceSample(Model):
         return task_identity(self.task)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Method(Model):
     trigger: str
     principle: str
-    application_guide: str = (
-        "结合任务将核验关系落实为可判断的标准，不把适用条件当已知事实。"
-    )
-    exclude_when: str | None = None
-    misuse: str | None = None
+    application_guide: str
 
     def __post_init__(self):
-        _id(self.trigger, "trigger")
-        _id(self.principle, "principle")
-        _id(self.application_guide, "application_guide")
-        for v in (self.exclude_when, self.misuse):
-            if v is not None:
-                _id(v, "optional boundary")
+        for name in ("trigger", "principle", "application_guide"):
+            _id(getattr(self, name), name)
 
 
 @dataclass
@@ -174,16 +166,11 @@ class Criterion(Model):
     criterion_id: str
     question: str
     weight: float
-    source_experiences: list[str] = field(default_factory=list)
 
     def __post_init__(self):
         _id(self.criterion_id, "criterion_id")
         _id(self.question, "question")
         _number(self.weight, "weight", minimum=0)
-        if len(self.source_experiences) > 1:
-            raise ValueError("one criterion can cite at most one experience")
-        for value in self.source_experiences:
-            _id(value, "experience reference")
 
 
 @dataclass
@@ -191,14 +178,13 @@ class Rubric(Model):
     rubric_id: str
     criteria: list[Criterion]
     analysis: str = ""
-    experience_usage: list[dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self):
         _id(self.rubric_id, "rubric_id")
-        if not 2 <= len(self.criteria) <= 8 or not any(
+        if not 1 <= len(self.criteria) <= 8 or not any(
             c.weight > 0 for c in self.criteria
         ):
-            raise ValueError("rubric needs 2..8 criteria and a positive weight budget")
+            raise ValueError("rubric needs 1..8 criteria and a positive weight budget")
         if len({c.criterion_id for c in self.criteria}) != len(self.criteria):
             raise ValueError("duplicate criterion IDs")
 
@@ -253,342 +239,67 @@ class RubricJudgment(Model):
             raise ValueError("success must equal margin > 0")
 
 
-@dataclass
-class CheckerDetail(Model):
-    criterion_id: str
-    status: Literal["correct", "error", "unknown"]
-    evidence: str
-
-    def __post_init__(self):
-        _id(self.criterion_id, "criterion_id")
-        _id(self.evidence, "detail evidence")
-        if self.status not in ("correct", "error", "unknown"):
-            raise ValueError("invalid detail status")
-
-
-@dataclass
-class CheckerReport(Model):
-    stage: Literal["selector", "generator", "judge"]
-    status: Literal["correct", "error", "unknown", "failed"]
-    evidence: str
-    details: list[CheckerDetail] = field(default_factory=list)
-
-    def __post_init__(self):
-        if self.stage not in ("selector", "generator", "judge") or self.status not in (
-            "correct",
-            "error",
-            "unknown",
-            "failed",
-        ):
-            raise ValueError("invalid checker stage/status")
-        _id(self.evidence, "checker evidence")
-        if len({d.criterion_id for d in self.details}) != len(self.details):
-            raise ValueError("duplicate checker detail")
-        if any(d.status == "error" for d in self.details) and self.status != "error":
-            raise ValueError("detail error requires top-level error")
-        if (
-            any(d.status == "unknown" for d in self.details)
-            and self.status == "correct"
-        ):
-            raise ValueError("unknown detail cannot be reported correct")
-
-
-@dataclass
-class ApplicationRecord(Model):
-    sample: PreferenceSample
-    version_id: str
-    method: Method
-    phase: Literal["downstream", "source_validation", "replay"]
-    rubric: Rubric
-    judgment: RubricJudgment
-    feedback: Literal["positive", "reverse", "tie", "unused"]
-    positive_weight: float
-    reverse_weight: float
-    outcomes: dict[str, int]
-    reports: list[CheckerReport] = field(default_factory=list)
-    observation: Literal["correct", "error", "unknown", "unavailable"] = "unavailable"
-    q_before: float | None = None
-    q_after: float | None = None
-    parameter_version: str | None = None
-    q_log_odds_before: float | None = None
-    q_log_odds_after: float | None = None
-    likelihoods: dict[str, float] = field(default_factory=dict)
-    update_reason: str = "not_evaluated"
-    parameter_digest: str | None = None
-    recalled: bool = False
-    selected: bool = False
-    cited: bool = False
-    retrieval_rank: int | None = None
-    retrieval_trace: list[dict[str, Any]] = field(default_factory=list)
-    no_evidence_reason: str | None = None
-    round_number: int = 0
-    evaluation_digest: str | None = None
-    selection_reason: str | None = None
-    usage_reason: str | None = None
-
-    def __post_init__(self):
-        _id(self.version_id, "version_id")
-        if len({x.stage for x in self.reports}) != len(self.reports):
-            raise ValueError("duplicate checker stage")
-        if self.phase not in ("downstream", "source_validation", "replay"):
-            raise ValueError("invalid evidence phase")
-        from verge.calculator import validate_rubric_judgment, _weight_ratios
-
-        validate_rubric_judgment(self.rubric, self.judgment)
-        answers = {j.criterion_id: j for j in self.judgment.criterion_judgments}
-        weights = _weight_ratios(self.rubric)
-        pos = neg = 0
-        used = False
-        counts = dict(positive=0, reverse=0, both_true=0, both_false=0)
-        for c in self.rubric.criteria:
-            if self.version_id not in c.source_experiences:
-                continue
-            j = answers[c.criterion_id]
-            used |= weights[c.criterion_id] > 0
-            kind = (
-                "positive"
-                if j.chosen and not j.rejected
-                else (
-                    "reverse"
-                    if j.rejected and not j.chosen
-                    else "both_true" if j.chosen else "both_false"
-                )
-            )
-            counts[kind] += 1
-            if kind == "positive":
-                pos += weights[c.criterion_id]
-            if kind == "reverse":
-                neg += weights[c.criterion_id]
-        f = (
-            "unused"
-            if not used
-            else ("positive" if pos > neg else "reverse" if neg > pos else "tie")
-        )
-        if (
-            self.cited != bool(sum(counts.values()))
-            or (self.cited and not self.selected)
-            or (self.selected and not self.recalled)
-        ):
-            raise ValueError("inconsistent recalled/selected/cited state")
-        if type(self.round_number) is not int or self.round_number < 0:
-            raise ValueError("invalid application round")
-        if self.retrieval_rank is not None and (
-            type(self.retrieval_rank) is not int
-            or self.retrieval_rank < 1
-            or not self.recalled
-        ):
-            raise ValueError("invalid retrieval rank")
-        if (
-            self.feedback != f
-            or self.positive_weight != float(pos)
-            or self.reverse_weight != float(neg)
-            or self.outcomes != counts
-        ):
-            raise ValueError(
-                "application feedback must match actual cited Boolean evidence"
-            )
-
-
-@dataclass
-class ExperienceReview(Model):
-    approved: bool
-    reason: str
-
-    def __post_init__(self):
-        if type(self.approved) is not bool:
-            raise ValueError("approved must be JSON boolean")
-        _id(self.reason, "review reason")
-
-
-@dataclass
+@dataclass(frozen=True)
 class Experience(Model):
     experience_id: str
     method: Method
-    source_sample_id: str
-    source_task_id: str | None = None
-    source_sample: PreferenceSample | None = None
-    admission_review: ExperienceReview | None = None
-    admission_evidence: dict[str, Any] = field(default_factory=dict)
-    parent_id: str | None = None
-    status: Literal["candidate", "active", "retired"] = "active"
-    q_prior: float | None = None
-    q_posterior: float | None = None
-    q_log_odds: float | None = None
-    parameter_version: str | None = None
-    applications: list[ApplicationRecord] = field(default_factory=list)
-    last_checked_count: int = 0
-    consumed_error_tasks: dict[str, list[str]] = field(default_factory=dict)
-    parameter_digest: str | None = None
-    created_by_event_id: str | None = None
-    retired_by_event_id: str | None = None
+    source_task_id: str
+    parent_ids: list[str] = field(default_factory=list)
 
     def __post_init__(self):
         _id(self.experience_id, "experience_id")
-        _id(self.source_sample_id, "source_sample_id")
-        if self.status not in ("candidate", "active", "retired"):
-            raise ValueError("invalid version status")
-        for q in (self.q_prior, self.q_posterior):
-            if q is not None and (
-                type(q) not in (int, float) or not isfinite(q) or not 0 <= q <= 1
-            ):
-                raise ValueError("quality probability must be in [0,1] or null")
-        if self.q_log_odds is not None:
-            _number(self.q_log_odds, "q_log_odds")
-        if self.q_prior is not None and (
-            type(self.q_prior) not in (int, float) or not 0 < self.q_prior < 1
-        ):
-            raise ValueError("version prior must be strictly between 0 and 1")
-        if (self.q_posterior is None) != (self.parameter_version is None):
-            raise ValueError("quality requires parameter provenance")
-        if self.status == "retired" and not self.retired_by_event_id:
-            raise ValueError("retirement needs event")
-        keys = [(a.sample.sample_id, a.phase) for a in self.applications]
-        if len(keys) != len(set(keys)):
-            raise ValueError("duplicate task/phase evidence")
-        if not 0 <= self.last_checked_count <= len(self.downstream):
-            raise ValueError("invalid check cursor")
-
-    @property
-    def downstream(self):
-        unique = {}
-        for a in self.applications:
-            if (
-                a.phase == "downstream"
-                and a.sample.sample_id != self.source_sample_id
-                and a.sample.task_id != self.source_task_id
-                and a.update_reason not in ("duplicate", "duplicate_task")
-                and a.feedback in ("positive", "reverse", "tie")
-            ):
-                unique.setdefault(a.sample.task_id, a)
-        return list(unique.values())
-
-    @property
-    def evidence_counts(self):
-        return {
-            phase: sum(
-                a.phase == phase and a.update_reason == "updated"
-                for a in self.applications
-            )
-            for phase in ("source_validation", "downstream", "replay")
-        }
+        _id(self.source_task_id, "source_task_id")
+        if len(set(self.parent_ids)) != len(self.parent_ids):
+            raise ValueError("duplicate parent IDs")
+        for parent in self.parent_ids:
+            _id(parent, "parent_id")
 
 
 @dataclass
-class CriticProposal(Model):
-    analysis: str
-    candidates: list[Experience]
-
-
-@dataclass
-class ExperienceUpdate(Model):
-    action: Literal["keep", "revise"]
-    method: Method | None = None
-    target_fields: list[str] = field(default_factory=list)
-    reason: str = ""
-
-    def __post_init__(self):
-        if self.action not in ("keep", "revise") or (self.action == "revise") != (
-            self.method is not None
-        ):
-            raise ValueError(
-                "keep requires no method; revise requires exactly one method"
-            )
-        if set(self.target_fields) - {
-            "trigger",
-            "principle",
-            "application_guide",
-            "exclude_when",
-            "misuse",
-        }:
-            raise ValueError("unknown revision field")
-        if self.action == "revise" and not self.target_fields:
-            raise ValueError("revise requires target_fields")
-        _id(self.reason, "update reason")
-
-
-@dataclass
-class ReplayResult(Model):
-    sample_id: str
-    old_score: int | None
-    new_score: int | None
-    old_application: ApplicationRecord | None = None
-    new_application: ApplicationRecord | None = None
-    errors: dict[str, str] = field(default_factory=dict)
-    old_cache_hit: bool = False
-
-
-@dataclass
-class RevisionRecord(Model):
-    event_id: str
-    parent_id: str
-    trigger_sample_id: str
-    reasons: list[str]
-    case_ids: list[str]
-    case_kinds: dict[str, str]
-    case_refs: list[dict[str, Any]] = field(default_factory=list)
-    action: str = "pending"
-    update: ExperienceUpdate | None = None
-    candidate: Experience | None = None
-    replays: list[ReplayResult] = field(default_factory=list)
-    accepted: bool = False
-    decision: str = ""
-    error: str | None = None
-
-
-@dataclass
-class ProposalAttempt(Model):
-    round_number: int
-    repair_rubric: Rubric | None = None
-    repair_judgment: RubricJudgment | None = None
-    repair_checker: CheckerReport | None = None
-    final_judgment: RubricJudgment | None = None
-    changes: list[dict[str, Any]] = field(default_factory=list)
-    assessment: str = ""
-    diagnosis: dict[str, Any] = field(default_factory=dict)
-    margin_before: float | None = None
-    margin_after: float | None = None
-    margin_gain: float | None = None
-    extractions: list[dict[str, Any]] = field(default_factory=list)
-    proposal: CriticProposal | None = None
-    review: ExperienceReview | None = None
+class ExecutionPath(Model):
+    provided_experience_ids: list[str]
     rubric: Rubric | None = None
     judgment: RubricJudgment | None = None
-    applications: list[ApplicationRecord] = field(default_factory=list)
     error: str | None = None
+
+    @property
+    def correct(self):
+        return (
+            self.judgment.success
+            if self.judgment is not None and self.error is None
+            else None
+        )
+
+
+@dataclass
+class CandidateAttempt(Model):
+    experience: Experience
+    path: ExecutionPath
+    admitted: bool
+    reason: str
+    admission_subset: list[str] = field(default_factory=list)
+
+
+@dataclass
+class CriticRound(Model):
+    round_number: int
+    analysis: str
+    attempts: list[CandidateAttempt]
+    error: str | None = None
+    subset_paths: list[ExecutionPath] = field(default_factory=list)
 
 
 @dataclass
 class TrajectoryRecord(Model):
-    sample_id: str
-    state: str = "in_progress"
-    sample: PreferenceSample | None = None
-    split: str = "train"
-    retrieved_experience_ids: list[str] = field(default_factory=list)
-    selected_experiences: list[dict[str, Any]] = field(default_factory=list)
-    retrieval_trace: list[dict[str, Any]] = field(default_factory=list)
-    initial_rubric: Rubric | None = None
-    initial_judgment: RubricJudgment | None = None
-    initial_checker: CheckerReport | None = None
-    baseline_judgment: RubricJudgment | None = None
-    baseline_assessment: str = ""
-    baseline_diagnosis: dict[str, Any] = field(default_factory=dict)
-    snapshot_digest: str | None = None
-    completion_sequence: int | None = None
-    timings: dict[str, float] = field(default_factory=dict)
-    applications: list[ApplicationRecord] = field(default_factory=list)
-    proposal_attempts: list[ProposalAttempt] = field(default_factory=list)
-    admitted_experience_ids: list[str] = field(default_factory=list)
-    experience_updates: list[RevisionRecord] = field(default_factory=list)
-    sample_error: dict[str, str] | None = None
-    schema_version: int = 17
+    sample: PreferenceSample
+    retrieval: dict[str, Any]
+    selection_reasons: dict[str, str]
+    baseline: ExecutionPath | None
+    actual: ExecutionPath | None
+    critic_rounds: list[CriticRound] = field(default_factory=list)
+    error: str | None = None
+    subset_paths: list[ExecutionPath] = field(default_factory=list)
 
-    def __post_init__(self):
-        _id(self.sample_id, "sample_id")
-        if self.schema_version != 17:
-            raise ValueError("unsupported trajectory schema; no V1 compatibility")
-
-    @classmethod
-    def from_dict(cls, data):
-        if data.get("schema_version") != 17:
-            raise ValueError("explicit trajectory schema 17 required")
-        return super().from_dict(data)
+    @property
+    def used_path(self):
+        return self.actual if self.actual is not None else self.baseline

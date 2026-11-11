@@ -11,8 +11,8 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>500题固定协议实测未见净收益，随后只读审查全部11个多成员任务组与15个经验组。已合并内容多数存在相近需求或方法，但部分任务只共享角色/场景，部分经验只共享宽泛叙事主题。14个经验组至少一条没有下游关联，尚不能说已学到共同使用效果；同组不认证经验正确，也不直接继承收益。下一步先讨论类别粒度与关联证据，未调参或自动合并。</p><div class="pulse"><span>当前：26个多成员组已逐组审查，方法相近不等于收益相同</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
-<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-10</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>500题未见净收益后，已完成多成员分组与全部114个标签变化案例的审阅。退化37题变平局、25题反向；净损失10题中9题发生在双经验那批。轨迹既显示拆分数值核验、排除编造附件等有用检查，也显示任务前提被臆造、方法变硬义务、经验被反向应用和计数误读。当前不能强行分配模块责任或认证经验好坏；修复方案尚待讨论，原评分和经验池未改。</p><div class="pulse"><span>当前：114题审查完成，组合干扰与任务标准偏移需优先验证</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-11</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
   {
@@ -1445,8 +1445,8 @@
     "status": "逐组审查完成",
     "parent": "cluster118",
     "previous": "credit119",
-    "following": null,
-    "transition": "从分组数量转向任务需求、经验方法与使用证据",
+    "following": "cases122",
+    "transition": "分组有部分内容依据，继续检查52个改善与62个退化的实际链路",
     "question": "多成员组共享的是评分需求、经验方法，还是只有相近写法与相同选择？",
     "story": [
       {
@@ -1488,16 +1488,66 @@
         "研究讨论/109-混合相似度在线聚类算法.md"
       ]
     ]
+  },
+  {
+    "id": "cases122",
+    "title": "改善和退化分别发生了什么？",
+    "status": "114题审查完成",
+    "parent": "credit119",
+    "previous": "cluster121",
+    "following": null,
+    "transition": "从观察标签变化转向核对具体标准、计分与执行",
+    "question": "为什么提供经验既会改善也会退化，哪些变化能被轨迹直接支持？",
+    "story": [
+      {
+        "type": "p",
+        "text": "用户授权完整分析120中52改善和62退化。固定原检查点，114题均有匿名辅助索引和逐题主审记录；程序核对分差，主审阅读摘要与关键条目，并对明确矛盾及代表案例回看完整原文。第一版辅助误读不用于分类统计，开放判断与外部事实保留未决。"
+      },
+      {
+        "type": "p",
+        "text": "52改善中36题从平局转正、16题从反向转正；62退化中37题变平局、25题反向。391有效配对按实际提供数量拆开：一条经验28改善/29退化，净−1；两条24改善/33退化，净−9。两批任务不同，不能将差异当随机对照。"
+      },
+      {
+        "type": "callout",
+        "text": "32个四路完整的双经验退化中，23题至少一条单独判对、组合未判对。回看全部177个完整双经验任务，36题组合不如至少一条单独，7题只有组合判对。四路发现了干扰和收益，但不能用标签事后挑最优路径或宣布稳定冲突。"
+      },
+      {
+        "type": "p",
+        "text": "第248题拆分数字核验、第473题识别凭空附件带来具体区分；第90题虽判对却缩小角色范围。第193题把Shrek臆造为Shrak并要求纠错，477题把经验允许的困惑写成禁止，86题实际173/302词却被都判135–165内。任务标准和执行噪声必须一起看。"
+      },
+      {
+        "type": "p",
+        "text": "没有把114题强行归入互斥的Selector/Generator/Judge责任数。相同经验可同时出现于改善与退化；更细的检查不总更好，未逐字要求也不等于不合理。后续先讨论组合、确定性检查和未知前提的边界，未实施修复、调参或新训练。"
+      }
+    ],
+    "sources": [
+      [
+        "114题内容汇总122",
+        "实验分析/122-改善与退化114题内容分析.md"
+      ],
+      [
+        "全部逐题主审记录",
+        "实验分析/122-改善退化逐题记录.md"
+      ],
+      [
+        "审查计划122",
+        "plans/122-改善与退化114题完整内容审查.md"
+      ],
+      [
+        "500题总体结果120",
+        "实验分析/120-General500题四路流程实测.md"
+      ]
+    ]
   }
 ]
 </script>
 <script>
 const nodes=JSON.parse(document.getElementById('research-data').textContent), byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const CURRENT='cluster121';let current=CURRENT;
+const CURRENT='cases122';let current=CURRENT;
 function path(n){let a=[];while(n){a.unshift(n);n=byId[n.parent]}return a}
 function oldRenderNav(){const q=document.getElementById('search').value.trim().toLowerCase();document.getElementById('nav').innerHTML=nodes.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).map(n=>`<button class="navitem ${n.parent&&n.parent!=='main'?'branch':''} ${n.id===current?'active':''}" data-id="${n.id}" ${n.id===current?'aria-current="page"':''}><span class="label">${esc(n.title)}</span><small>${esc(n.status)}${n.parent?' · '+esc(byId[n.parent].title.replace(/^.*：/,'')):''}</small></button>`).join('')||'<div class="empty">没有匹配的研究节点</div>'}
-const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800]};
+const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800],cases122:[1590,670]};
 function wrap(text,limit=13){const chars=Array.from(text),lines=[];while(chars.length)lines.push(chars.splice(0,limit).join(''));return lines.slice(0,2)}
 function renderNav(){
  const q=document.getElementById('search').value.trim().toLowerCase(),matches=n=>!q||JSON.stringify(n).toLowerCase().includes(q); const W=245,H=78;

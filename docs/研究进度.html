@@ -11,9 +11,10 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>最新方案：经验独立入池，用文本与引用在线分组；历史任务只归一组，选择时参考多个相近任务组，按单条经验收益排序后由LLM筛选；经验聚类仅作分析。Critic候选通过即时修复后积累下游证据；收益记账、聚类、排序与候选检索已实现；无匹配组时全部走全池语义。完整100题重跑已结束：初始实际路径59对，入池30条经验；训练观察尚不能证明泛化改善。WebUI可追溯完整过程。最新确认：初始与Critic统一四路验证，最多提供两条经验；取消Generator自报引用，按加入经验后的平均结果变化分配信用。仅组合成功也允许两条一起入池。来源只决定准入，不记收益、不建关联；协议实现与局部验证已完成。193项Python测试、5个Node测试文件及三个角色各20任务复测结构通过，语义问题仍存在，整体效果待验证。关联权重上限已暂设0.5，门槛未改。</p><div class="pulse"><span>当前：四路协议已实现，整体效果待验证</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
-<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-09</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
-<script id="research-data" type="application/json">[
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>500题固定协议实测未见净收益，随后只读审查全部11个多成员任务组与15个经验组。已合并内容多数存在相近需求或方法，但部分任务只共享角色/场景，部分经验只共享宽泛叙事主题。14个经验组至少一条没有下游关联，尚不能说已学到共同使用效果；同组不认证经验正确，也不直接继承收益。下一步先讨论类别粒度与关联证据，未调参或自动合并。</p><div class="pulse"><span>当前：26个多成员组已逐组审查，方法相近不等于收益相同</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-10</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
+<script id="research-data" type="application/json">
+[
   {
     "id": "main",
     "title": "主线：经验能否改善评分标准？",
@@ -1359,11 +1360,11 @@
   {
     "id": "credit119",
     "title": "统一四路验证，按提供经验分配信用",
-    "status": "已实现 · 效果待验证",
+    "status": "500题实测完成",
     "parent": "learning110",
     "previous": "full112",
-    "following": null,
-    "transition": "从模型自报引用转向程序控制的输入比较",
+    "following": "cluster121",
+    "transition": "500题未见净收益，先逐组核对已合并内容是否真的相关",
     "question": "两条经验可能共同起效，且未声明引用也可能产生影响，如何统一分配信用？",
     "story": [
       {
@@ -1388,7 +1389,27 @@
       },
       {
         "type": "callout",
-        "text": "协议已接通，整体效果仍未知。本轮不自动启动新100题训练，也不从旧两路结果补算缺失子集信用。下一步需要新协议的真实流程实验。"
+        "text": "实现阶段协议已接通，当时尚无新100题训练；随后用户授权500题实测，结果如下。不能从旧两路结果补算缺失子集信用。"
+      },
+      {
+        "type": "p",
+        "text": "用户授权500题四路流程实测：固定提交6ff0e57，从空池运行现有General数据前500题，Qwen3.5-Flash关闭思考，5样本并发；在25／100／250／500累计进度人工审查。网络与格式问题保持有限重试及局部失败，发现方法或记账缺陷再暂停讨论。前100题为已使用历史诊断题，本轮不能称独立泛化测试。"
+      },
+      {
+        "type": "p",
+        "text": "120前100题人工检查完成：63条有效经验配对9改善／9退化，净收益为0；初始55对／44错／1未知，无经验54对／44错／2未知。35条经验入池，历史收益候选仅命中1题。来源排除与固定代码摘要通过，技术失败局部保留，已按原配置续跑至250题，未在本轮调参。"
+      },
+      {
+        "type": "p",
+        "text": "120前250题检查：180条有效经验配对23改善／29退化，尚无净收益；实际138对／107错／5未知，无经验145对／100错／5未知。72条经验入池，历史收益候选命中14题。来源排除、固定代码配置及旧116保护摘要通过。隔夜停在计划检查点，用户继续后保持原配置续跑至500题，不以暂停时长充当运行耗时。"
+      },
+      {
+        "type": "callout",
+        "text": "120完成500题：实际277对／217未判对／6未知，无经验287／203／10；391有效经验配对52改善／62退化，净减少10题。169条入池，217题触发Critic、127题来源修复；即时成功没有转化为整体下游收益。代码、配置、输入、来源排除及旧116保护校验通过，原始失败全部保留。"
+      },
+      {
+        "type": "p",
+        "text": "历史任务组仅命中28题，最终选历史分数经验20题（0改善／4退化）。499任务形成484组、169经验形成154组。无共同尝试的稀疏关联压低混合分数；新任务检索又受0.75文本门槛约束，两种问题需分开讨论。经验分组仅分析，不直接决定检索。尚未采用改法，未运行独立冻结测试；本轮前100题为已用诊断数据。"
       }
     ],
     "sources": [
@@ -1407,17 +1428,76 @@
       [
         "聚类诊断118",
         "实验分析/118-聚类稀疏与历史检索诊断.md"
+      ],
+      [
+        "500题实测计划120",
+        "plans/120-General500题四路流程实测.md"
+      ],
+      [
+        "500题运行报告120",
+        "实验分析/120-General500题四路流程实测.md"
+      ]
+    ]
+  },
+  {
+    "id": "cluster121",
+    "title": "聚到一起的内容是否真同类？",
+    "status": "逐组审查完成",
+    "parent": "cluster118",
+    "previous": "credit119",
+    "following": null,
+    "transition": "从分组数量转向任务需求、经验方法与使用证据",
+    "question": "多成员组共享的是评分需求、经验方法，还是只有相近写法与相同选择？",
+    "story": [
+      {
+        "type": "p",
+        "text": "固定120最终快照，逐组阅读全部11个多成员任务组（26题）和15个多成员经验组（30条），核对原文、三字段、提供边及成对分数。不改原池、不重新分组、不调参，也没有新增模型调用。"
+      },
+      {
+        "type": "p",
+        "text": "内容审阅认为任务7组同类依据较强、4组只支持宽类；经验12组相近或有明确互补关系、3组联系较宽。这不是聚类准确率；单成员遗漏未全量审查，经验本身正确性与同组合理性分开。"
+      },
+      {
+        "type": "p",
+        "text": "多品牌联名广告、指定架空历史章节有共同交付与约束；社团对话中临产、问候与寻找成员则可能只共享人物/形式，不宜转移具体剧情要求。经验中历史工具时代适配存在近重复，假设续作的推测边界与增量创作则可互补。"
+      },
+      {
+        "type": "callout",
+        "text": "14个经验组至少一条没有下游关联，实际靠文本形成；唯一共同后续任务的一组baseline技术失败，没有完整收益比较。9个任务组成员选择集合完全相同，但Selector选择不是独立适用标签。相似文本、相同选择、相同效果不能混为一谈。"
+      },
+      {
+        "type": "p",
+        "text": "没有发现大量明显的跨类型误合，但目前只能支持部分相近写法/方法集合，不能认证收益同质。后续先讨论任务组粒度与关联证据解释；未采用新规则或自动合并经验。"
+      }
+    ],
+    "sources": [
+      [
+        "500题多成员内容审查121",
+        "实验分析/121-500题多成员聚类内容审查.md"
+      ],
+      [
+        "只读审查计划121",
+        "plans/121-500题多成员聚类内容审查.md"
+      ],
+      [
+        "500题结果120",
+        "实验分析/120-General500题四路流程实测.md"
+      ],
+      [
+        "聚类算法109",
+        "研究讨论/109-混合相似度在线聚类算法.md"
       ]
     ]
   }
-]</script>
+]
+</script>
 <script>
 const nodes=JSON.parse(document.getElementById('research-data').textContent), byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const CURRENT='credit119';let current=CURRENT;
+const CURRENT='cluster121';let current=CURRENT;
 function path(n){let a=[];while(n){a.unshift(n);n=byId[n.parent]}return a}
 function oldRenderNav(){const q=document.getElementById('search').value.trim().toLowerCase();document.getElementById('nav').innerHTML=nodes.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).map(n=>`<button class="navitem ${n.parent&&n.parent!=='main'?'branch':''} ${n.id===current?'active':''}" data-id="${n.id}" ${n.id===current?'aria-current="page"':''}><span class="label">${esc(n.title)}</span><small>${esc(n.status)}${n.parent?' · '+esc(byId[n.parent].title.replace(/^.*：/,'')):''}</small></button>`).join('')||'<div class="empty">没有匹配的研究节点</div>'}
-const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540]};
+const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800]};
 function wrap(text,limit=13){const chars=Array.from(text),lines=[];while(chars.length)lines.push(chars.splice(0,limit).join(''));return lines.slice(0,2)}
 function renderNav(){
  const q=document.getElementById('search').value.trim().toLowerCase(),matches=n=>!q||JSON.stringify(n).toLowerCase().includes(q); const W=245,H=78;

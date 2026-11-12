@@ -11,8 +11,8 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>500题未见净收益后，已完成多成员分组与全部114个标签变化案例的审阅。退化37题变平局、25题反向；净损失10题中9题发生在双经验那批。轨迹既显示拆分数值核验、排除编造附件等有用检查，也显示任务前提被臆造、方法变硬义务、经验被反向应用和计数误读。当前不能强行分配模块责任或认证经验好坏；修复方案尚待讨论，原评分和经验池未改。</p><div class="pulse"><span>当前：114题审查完成，组合干扰与任务标准偏移需优先验证</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
-<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-11</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>500题与114个变化案例审阅完成后，转向方法层面复核：较宽的来源准入，需要下游证据筛选；但历史反馈实际参与少、局部证据薄，经验仍多由语义与LLM选用。四路记录尚未充分转为不用/单用/组合的策略，经验又可重构整份评分标准。这些机制可能共同削弱预期收益；尚未隔离因果贡献，未采用修复或改变原评分。</p><div class="pulse"><span>当前：从逐题清单转向方法断点，反馈如何约束使用待讨论</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-12</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
   {
@@ -1492,7 +1492,7 @@
   {
     "id": "cases122",
     "title": "改善和退化分别发生了什么？",
-    "status": "114题审查完成",
+    "status": "方法断点待讨论",
     "parent": "credit119",
     "previous": "cluster121",
     "following": null,
@@ -1518,6 +1518,14 @@
       {
         "type": "p",
         "text": "没有把114题强行归入互斥的Selector/Generator/Judge责任数。相同经验可同时出现于改善与退化；更细的检查不总更好，未逐字要求也不等于不合理。后续先讨论组合、确定性检查和未知前提的边界，未实施修复、调参或新训练。"
+      },
+      {
+        "type": "callout",
+        "text": "2026-11-12用户指出逐题错误清单没有回答方法哪里出问题。新增核对：127次来源修复中42题无经验本已对，60条准入经验未由来源证明增量；21次历史经验提供中14次仅一题证据。宽准入依赖后续强筛选，但后续反馈实际参与少。四路结果虽已保存，排序仅使用单条平均边际，未学习何时不用/单用/组合；经验同时可重构整份Rubric。它们是方法层面待验证的断点，尚未隔离各自损失，不自动修改方案。"
+      },
+      {
+        "type": "p",
+        "text": "2026-11-12按更新后的仓库规则整理日志：保留500题及121／122审查原始文件，完整压缩包纳入Git；旧实验日志归档并忽略，保留原路径映射和逐文件摘要。未改变实验数据、结果或方法。"
       }
     ],
     "sources": [
@@ -1536,6 +1544,10 @@
       [
         "500题总体结果120",
         "实验分析/120-General500题四路流程实测.md"
+      ],
+      [
+        "最新实验原始日志与归档索引",
+        "../logs/latest/README.md"
       ]
     ]
   }

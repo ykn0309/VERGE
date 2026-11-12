@@ -11,7 +11,7 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3的500题实验未显示净收益，聚类与114个变化案例的审阅已保留。v3.1目前暂定聚类修改：任务比较关联经验的类别分布，经验比较关联任务的类别分布；计数归一化后用加权Jaccard融合文本相似度，两侧交替更新。此项尚未实现或实测，权重、门槛与初始化继续讨论，其他模块方案尚待确定。</p><div class="pulse"><span>当前：v3.1聚类方向暂定，类别分布与交替更新尚未实现</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1目前暂定两项修改：聚类使用归一化的对侧类别关联分布，融合文本并交替更新；Critic使用人工偏好理由，在同次调用中先核对有依据的Rubric缺陷，能提炼才提出经验，归因不清时允许放弃。两项均未实现或实测，人工理由与模型诊断不是真值，候选准入和下游信用规则本次未改。</p><div class="pulse"><span>当前：v3.1聚类与Critic方向暂定，尚未实现</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
 <div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-13</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
@@ -1557,8 +1557,8 @@
     "status": "方向暂定 · 未实现",
     "parent": "cluster118",
     "previous": "cases122",
-    "following": null,
-    "transition": "继续讨论v3.1其他环节与验证边界",
+    "following": "critic31",
+    "transition": "在聚类方向暂定后，继续讨论Critic提案的依据",
     "question": "如何利用对侧类别，减少具体对象关联稀疏造成的信息损失？",
     "story": [
       {
@@ -1600,16 +1600,66 @@
         "实验分析/121-500题多成员聚类内容审查.md"
       ]
     ]
+  },
+  {
+    "id": "critic31",
+    "title": "v3.1：有依据的Rubric缺陷才提经验",
+    "status": "方向暂定 · 未实现",
+    "parent": "main",
+    "previous": "clustering31",
+    "following": null,
+    "transition": "继续讨论v3.1其他环节与验证方式",
+    "question": "怎样减少围绕来源回答差异提出具体甚至错误要求的风险？",
+    "story": [
+      {
+        "type": "p",
+        "text": "v3的Critic看到失败轨迹与chosen/rejected，容易围绕来源题修复来提案；即时判对仍不证明经验可跨任务复用。用户提出先判断Rubric是否有问题，依据不足就不生成经验，并使用HelpSteer3人工偏好理由。"
+      },
+      {
+        "type": "p",
+        "text": "核对本地500题：每题metadata都已保留individual_preference[].reasoning，但v3调用没有将其传给Critic。这确认了输入缺口，未证明人工理由可以消除错误归因或过拟合。"
+      },
+      {
+        "type": "callout",
+        "text": "2026-11-13用户暂定：同一次Critic调用先结合任务、回答、人工理由和现有轨迹核对具体Rubric缺陷，再决定是否能提炼经验。有依据且可复用才提案，归因不清或主要是Judge执行错误时不生成。Rubric和Judge同时有问题时，可以只针对有依据的Rubric缺陷提案，不强求唯一归因。"
+      },
+      {
+        "type": "p",
+        "text": "人工理由是线索，需要与task和回答核对，保留标注者分歧，不把受表扬的表达形式升级为所有合格回答的必要条件。理由只提供给训练阶段Critic，执行角色继续遵守原有可见性边界，Critic不自行更正Judge结果宣布成功。"
+      },
+      {
+        "type": "p",
+        "text": "方案尚未实现或实测；本次不改候选准入、预算和下游信用规则。Critic及人工理由都可能出错，来源通过不证明泛化，后续独立任务验证继续必要；候选减少本身不是成功，还需审查是否遗漏有价值的方法。"
+      }
+    ],
+    "sources": [
+      [
+        "v3.1 Critic暂定方案",
+        "设计方案/v3.1-Critic修改暂定方案.md"
+      ],
+      [
+        "v3.1聚类暂定方案",
+        "设计方案/v3.1-聚类修改暂定方案.md"
+      ],
+      [
+        "114题内容审查122",
+        "实验分析/122-改善与退化114题内容分析.md"
+      ],
+      [
+        "HelpSteer3人工偏好数据",
+        "https://huggingface.co/datasets/nvidia/HelpSteer3/blob/main/README.md#preference"
+      ]
+    ]
   }
 ]
 </script>
 <script>
 const nodes=JSON.parse(document.getElementById('research-data').textContent), byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const CURRENT='clustering31';let current=CURRENT;
+const CURRENT='critic31';let current=CURRENT;
 function path(n){let a=[];while(n){a.unshift(n);n=byId[n.parent]}return a}
 function oldRenderNav(){const q=document.getElementById('search').value.trim().toLowerCase();document.getElementById('nav').innerHTML=nodes.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).map(n=>`<button class="navitem ${n.parent&&n.parent!=='main'?'branch':''} ${n.id===current?'active':''}" data-id="${n.id}" ${n.id===current?'aria-current="page"':''}><span class="label">${esc(n.title)}</span><small>${esc(n.status)}${n.parent?' · '+esc(byId[n.parent].title.replace(/^.*：/,'')):''}</small></button>`).join('')||'<div class="empty">没有匹配的研究节点</div>'}
-const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800],cases122:[1590,670],clustering31:[1280,930]};
+const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800],cases122:[1590,670],clustering31:[1280,930],critic31:[1590,150]};
 function wrap(text,limit=13){const chars=Array.from(text),lines=[];while(chars.length)lines.push(chars.splice(0,limit).join(''));return lines.slice(0,2)}
 function renderNav(){
  const q=document.getElementById('search').value.trim().toLowerCase(),matches=n=>!q||JSON.stringify(n).toLowerCase().includes(q); const W=245,H=78;

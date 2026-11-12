@@ -11,7 +11,7 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1目前暂定两项修改：聚类使用归一化的对侧类别关联分布，融合文本并交替更新；Critic使用人工偏好理由，在同次调用中先核对有依据的Rubric缺陷，能提炼才提出经验，归因不清时允许放弃。两项均未实现或实测，人工理由与模型诊断不是真值，候选准入和下游信用规则本次未改。</p><div class="pulse"><span>当前：v3.1聚类与Critic方向暂定，尚未实现</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1暂定三项方向：聚类使用对侧类别关联分布并交替更新；Critic结合人工理由检查选择、生成和评判，依据不足时放弃提案；Generator先生成任务初稿，再按经验修订，各初始子集共享初稿。均未实现或实测。Judge误判仍未解决，无经验路是否也作同等修订仍待讨论，候选准入和信用规则本次未改。</p><div class="pulse"><span>当前：v3.1三项方向暂定，Judge噪声与修订对照待讨论</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
 <div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-13</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
@@ -1603,12 +1603,12 @@
   },
   {
     "id": "critic31",
-    "title": "v3.1：有依据的Rubric缺陷才提经验",
+    "title": "v3.1：按失败证据决定是否提经验",
     "status": "方向暂定 · 未实现",
     "parent": "main",
     "previous": "clustering31",
-    "following": null,
-    "transition": "继续讨论v3.1其他环节与验证方式",
+    "following": "generator31",
+    "transition": "进一步讨论经验怎样改变标准，以及Judge误判的边界",
     "question": "怎样减少围绕来源回答差异提出具体甚至错误要求的风险？",
     "story": [
       {
@@ -1630,6 +1630,10 @@
       {
         "type": "p",
         "text": "方案尚未实现或实测；本次不改候选准入、预算和下游信用规则。Critic及人工理由都可能出错，来源通过不证明泛化，后续独立任务验证继续必要；候选减少本身不是成功，还需审查是否遗漏有价值的方法。"
+      },
+      {
+        "type": "p",
+        "text": "随后确认Critic可检查Selector前提、Generator落实和Judge执行三类问题，允许混合原因或不确定判断。经验误选只有能提炼可复用适用边界时才提案，只有Judge问题时不提评分标准设计经验；这仍不是可靠的模块归因标签。"
       }
     ],
     "sources": [
@@ -1650,16 +1654,70 @@
         "https://huggingface.co/datasets/nvidia/HelpSteer3/blob/main/README.md#preference"
       ]
     ]
+  },
+  {
+    "id": "generator31",
+    "title": "v3.1：先生成任务初稿，再按经验修订",
+    "status": "方向暂定 · 未实现",
+    "parent": "main",
+    "previous": "critic31",
+    "following": null,
+    "transition": "继续确定修订对照与Judge噪声的处理",
+    "question": "先建立任务本身的评价要求，再用经验修订，能否减少额外义务？",
+    "story": [
+      {
+        "type": "p",
+        "text": "v3每个经验子集独立生成一份Rubric。此前审查反复观察到经验变成硬性要求、任务范围被改写，也存在初稿或无经验路径本身有错；不能认为原稿必然正确。"
+      },
+      {
+        "type": "callout",
+        "text": "2026-11-13用户暂定：Generator先只看task生成无经验初稿，再按所选经验修订；初始四路共享同一初稿，分别保留原稿、用E1修订、用E2修订、用两条共同修订。训练和推理采用同样的两阶段方式，推理只走所选集合一路。"
+      },
+      {
+        "type": "p",
+        "text": "修订需要任务或合理评价依据，经验不适用可保留初稿；初稿错误或遗漏可以纠正，仍需检查新增义务、遗漏要求和评价目标变化。实际路径仍事前固定，不借标签挑最优子集，未更改信用公式或候选准入规则。"
+      },
+      {
+        "type": "p",
+        "text": "Critic在同次调用中分析经验选择前提、Generator是否强化或反向应用经验、Judge是否读错或算错。诊断需要文本支持，允许混合与不确定，不能保证准确；只有Judge问题不生成评分标准设计经验。"
+      },
+      {
+        "type": "p",
+        "text": "Judge单次误判尚未解决。Critic只在实际路径最终判错时触发，不能覆盖所有误判，候选准入仍可能受Judge噪声影响；本次未采用重复评分、投票或自动更正。"
+      },
+      {
+        "type": "p",
+        "text": "另记待讨论点：当前暂定无经验路直接使用初稿，有经验路多一次修订，结果差异会同时包含经验与额外修订步骤的影响。是否让无经验路作同等修订尚未决定，不自动增加对照。所有改动均未实现或实测。"
+      }
+    ],
+    "sources": [
+      [
+        "Generator与Judge暂定方案",
+        "设计方案/v3.1-Generator与Judge暂定方案.md"
+      ],
+      [
+        "Critic暂定方案",
+        "设计方案/v3.1-Critic修改暂定方案.md"
+      ],
+      [
+        "114题内容审查122",
+        "实验分析/122-改善与退化114题内容分析.md"
+      ],
+      [
+        "v3.1聚类暂定方案",
+        "设计方案/v3.1-聚类修改暂定方案.md"
+      ]
+    ]
   }
 ]
 </script>
 <script>
 const nodes=JSON.parse(document.getElementById('research-data').textContent), byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const CURRENT='critic31';let current=CURRENT;
+const CURRENT='generator31';let current=CURRENT;
 function path(n){let a=[];while(n){a.unshift(n);n=byId[n.parent]}return a}
 function oldRenderNav(){const q=document.getElementById('search').value.trim().toLowerCase();document.getElementById('nav').innerHTML=nodes.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).map(n=>`<button class="navitem ${n.parent&&n.parent!=='main'?'branch':''} ${n.id===current?'active':''}" data-id="${n.id}" ${n.id===current?'aria-current="page"':''}><span class="label">${esc(n.title)}</span><small>${esc(n.status)}${n.parent?' · '+esc(byId[n.parent].title.replace(/^.*：/,'')):''}</small></button>`).join('')||'<div class="empty">没有匹配的研究节点</div>'}
-const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800],cases122:[1590,670],clustering31:[1280,930],critic31:[1590,150]};
+const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800],cases122:[1590,670],clustering31:[1280,930],critic31:[1590,150],generator31:[1280,150]};
 function wrap(text,limit=13){const chars=Array.from(text),lines=[];while(chars.length)lines.push(chars.splice(0,limit).join(''));return lines.slice(0,2)}
 function renderNav(){
  const q=document.getElementById('search').value.trim().toLowerCase(),matches=n=>!q||JSON.stringify(n).toLowerCase().includes(q); const W=245,H=78;

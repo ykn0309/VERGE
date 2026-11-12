@@ -11,7 +11,7 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1暂定三项方向：聚类使用对侧类别关联分布并交替更新；Critic结合人工理由检查选择、生成和评判，依据不足时放弃提案；Generator先生成任务初稿，再按经验修订，各初始子集共享初稿。均未实现或实测。Judge误判仍未解决，无经验路是否也作同等修订仍待讨论，候选准入和信用规则本次未改。</p><div class="pulse"><span>当前：v3.1三项方向暂定，Judge噪声与修订对照待讨论</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1暂定三项方向：聚类使用对侧类别关联分布并交替更新；Critic结合人工理由检查选择、生成和评判，依据不足时放弃提案；Generator先生成任务初稿，再按经验修订，各初始子集共享初稿。均未实现或实测。已确认无经验路也修订一次；Judge误判仍未解决，候选准入和信用规则本次未改。</p><div class="pulse"><span>当前：v3.1三项方向暂定，四路同等修订已确认</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
 <div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-13</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
@@ -1662,7 +1662,7 @@
     "parent": "main",
     "previous": "critic31",
     "following": null,
-    "transition": "继续确定修订对照与Judge噪声的处理",
+    "transition": "继续讨论Judge噪声和v3.1其余细节",
     "question": "先建立任务本身的评价要求，再用经验修订，能否减少额外义务？",
     "story": [
       {
@@ -1671,7 +1671,7 @@
       },
       {
         "type": "callout",
-        "text": "2026-11-13用户暂定：Generator先只看task生成无经验初稿，再按所选经验修订；初始四路共享同一初稿，分别保留原稿、用E1修订、用E2修订、用两条共同修订。训练和推理采用同样的两阶段方式，推理只走所选集合一路。"
+        "text": "2026-11-13用户暂定：Generator先只看task生成共享初稿，各初始子集都从同一初稿出发修订一次。随后明确无经验路也只根据task与初稿修订；E1、E2及组合路各带对应经验共同修订。训练和推理同用两阶段，推理只走所选集合一路。"
       },
       {
         "type": "p",
@@ -1687,7 +1687,7 @@
       },
       {
         "type": "p",
-        "text": "另记待讨论点：当前暂定无经验路直接使用初稿，有经验路多一次修订，结果差异会同时包含经验与额外修订步骤的影响。是否让无经验路作同等修订尚未决定，不自动增加对照。所有改动均未实现或实测。"
+        "text": "此前担心无经验直接用初稿、有经验多一次修订会混入额外修订步骤的影响。用户已确认无经验路也修订一次，四路数量不变，统一修订指令与设置；该问题不再作为待定项。此举只控制这一处流程差异，不认证经验收益或消除Judge噪声，代码和实验尚未开始。"
       }
     ],
     "sources": [

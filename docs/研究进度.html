@@ -11,8 +11,8 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>500题与114个变化案例审阅完成后，转向方法层面复核：较宽的来源准入，需要下游证据筛选；但历史反馈实际参与少、局部证据薄，经验仍多由语义与LLM选用。四路记录尚未充分转为不用/单用/组合的策略，经验又可重构整份评分标准。这些机制可能共同削弱预期收益；尚未隔离因果贡献，未采用修复或改变原评分。</p><div class="pulse"><span>当前：从逐题清单转向方法断点，反馈如何约束使用待讨论</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
-<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-12</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3的500题实验未显示净收益，聚类与114个变化案例的审阅已保留。v3.1目前暂定聚类修改：任务比较关联经验的类别分布，经验比较关联任务的类别分布；计数归一化后用加权Jaccard融合文本相似度，两侧交替更新。此项尚未实现或实测，权重、门槛与初始化继续讨论，其他模块方案尚待确定。</p><div class="pulse"><span>当前：v3.1聚类方向暂定，类别分布与交替更新尚未实现</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-13</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
   {
@@ -1495,8 +1495,8 @@
     "status": "方法断点待讨论",
     "parent": "credit119",
     "previous": "cluster121",
-    "following": null,
-    "transition": "从观察标签变化转向核对具体标准、计分与执行",
+    "following": "clustering31",
+    "transition": "从方法复核转向v3.1聚类机制",
     "question": "为什么提供经验既会改善也会退化，哪些变化能被轨迹直接支持？",
     "story": [
       {
@@ -1550,16 +1550,66 @@
         "../logs/latest/README.md"
       ]
     ]
+  },
+  {
+    "id": "clustering31",
+    "title": "v3.1：用对侧类别改进关联聚类",
+    "status": "方向暂定 · 未实现",
+    "parent": "cluster118",
+    "previous": "cases122",
+    "following": null,
+    "transition": "继续讨论v3.1其他环节与验证边界",
+    "question": "如何利用对侧类别，减少具体对象关联稀疏造成的信息损失？",
+    "story": [
+      {
+        "type": "p",
+        "text": "此前实现及500题实验统一称为v3，下一版称为v3.1。v3同时维护任务组和经验组，但成对关联相似度只比较具体对象ID，多轮换组未让对侧类别参与计算。不同任务使用了不同经验，即便这些经验功能相近，也无法通过类别关系形成联系。"
+      },
+      {
+        "type": "callout",
+        "text": "2026-11-13用户暂定：底层继续保存具体提供边，聚类时汇总对侧类别的关联次数并归一化，以加权Jaccard比较分布，再与文本相似度融合。任务类别和经验类别交替更新。"
+      },
+      {
+        "type": "p",
+        "text": "经验按关联任务在各任务类中的比例比较；任务按实际提供经验在各经验类中的比例比较。次数先转成比例，使总使用次数不同而分布相近的对象仍可相近。分布表示使用模式，不是收益、适用概率或多重归属。"
+      },
+      {
+        "type": "p",
+        "text": "初始化依靠文本，在线沿用已有分组，每轮先更新任务再更新经验，重新汇总分布；暂沿用最多5轮并允许提前停止。没有关联时仍用文本，来源验证继续排除，收益另用于验证与选择，经验组不新增直接排序作用。"
+      },
+      {
+        "type": "p",
+        "text": "这是方向暂定，尚未实现或实验。对侧全为单成员时没有新增的共享类别信号，新任务无关联时仍按文本查询；权重、门槛和初始化细节继续讨论。不能用组数减少认证类别合理或最终收益改善，原v3数据与实现保持不变。"
+      }
+    ],
+    "sources": [
+      [
+        "v3.1聚类暂定方案",
+        "设计方案/v3.1-聚类修改暂定方案.md"
+      ],
+      [
+        "v3稀疏诊断118",
+        "实验分析/118-聚类稀疏与历史检索诊断.md"
+      ],
+      [
+        "500题报告120",
+        "实验分析/120-General500题四路流程实测.md"
+      ],
+      [
+        "多成员审查121",
+        "实验分析/121-500题多成员聚类内容审查.md"
+      ]
+    ]
   }
 ]
 </script>
 <script>
 const nodes=JSON.parse(document.getElementById('research-data').textContent), byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const CURRENT='cases122';let current=CURRENT;
+const CURRENT='clustering31';let current=CURRENT;
 function path(n){let a=[];while(n){a.unshift(n);n=byId[n.parent]}return a}
 function oldRenderNav(){const q=document.getElementById('search').value.trim().toLowerCase();document.getElementById('nav').innerHTML=nodes.filter(n=>JSON.stringify(n).toLowerCase().includes(q)).map(n=>`<button class="navitem ${n.parent&&n.parent!=='main'?'branch':''} ${n.id===current?'active':''}" data-id="${n.id}" ${n.id===current?'aria-current="page"':''}><span class="label">${esc(n.title)}</span><small>${esc(n.status)}${n.parent?' · '+esc(byId[n.parent].title.replace(/^.*：/,'')):''}</small></button>`).join('')||'<div class="empty">没有匹配的研究节点</div>'}
-const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800],cases122:[1590,670]};
+const positions={main:[515,20],early:[210,150],v2:[210,280],admission:[60,410],simple:[360,410],critic:[360,540],collect:[650,150],negative:[960,150],audit:[960,280],review:[960,410],next:[960,540],research95:[960,670],consult96:[960,800],redesign97:[650,800],roles98:[340,800],critic99:[340,930],implementation100:[340,1060],flow103:[340,1190],audit104:[340,1320],joint105:[1280,280],learning110:[1280,410],full112:[1280,540],cluster118:[1280,670],credit119:[1590,540],cluster121:[1590,800],cases122:[1590,670],clustering31:[1280,930]};
 function wrap(text,limit=13){const chars=Array.from(text),lines=[];while(chars.length)lines.push(chars.splice(0,limit).join(''));return lines.slice(0,2)}
 function renderNav(){
  const q=document.getElementById('search').value.trim().toLowerCase(),matches=n=>!q||JSON.stringify(n).toLowerCase().includes(q); const W=245,H=78;

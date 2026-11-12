@@ -1,0 +1,121 @@
+{
+  "case_index": 431,
+  "experiences": [
+    "E1"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.35,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N2",
+          "weight": 0.25,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N3",
+          "weight": 0.2,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N4",
+          "weight": 0.15,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N5",
+          "weight": 0.05,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.25,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W2",
+          "weight": 0.2,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W3",
+          "weight": 0.2,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W4",
+          "weight": 0.15,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W5",
+          "weight": 0.2,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "Hey there, I want you to create a new dc Cinematic universe. Let’s start with chapter 1, don’t write the list of the movies yet but can you tell me what will be the main story and plot of this chapter? Make sure the story is new and was never made before in movies but please stick to the comics and adapt them but do a few changes. Also, don’t make the first chapter main villain Darkseid or legion of doom or brainiac, make it something creative. Make sure the projects are movies and TV shows as well. I say it again, STICK TO THE COMICS AND DONT GENERATE A COMPLETE NEW STORY",
+    "X": "Chapter 1 of the new DC Cinematic Universe, titled \"DC: Rebirth,\" will focus on the theme of legacy and the passing of the torch to a new generation of heroes. The main story will revolve around a powerful and mysterious artifact known as the \"Cosmic Egg,\" which contains the essence of the universe's creation and has the potential to reshape reality. This artifact has been hidden away for centuries, but now it has been discovered and is being sought after by various forces, both good and evil.\n\nThe plot will be divided into two main arcs: one for the movies and one for the TV shows. The movie arc will follow the Justice League as they investigate the Cosmic Egg's appearance and its connection to a new villain, the \"Time Master.\" This villain is a powerful being who has mastered time travel and seeks to use the Cosmic Egg to rewrite history and create a world in his image. The Justice League, led by a seasoned Batman and a newly appointed Wonder Woman, must team up with the time-displaced Booster Gold to stop the Time Master and protect the Cosmic Egg. Along the way, they will encounter other heroes and villains from different time periods, creating a unique and exciting narrative that explores the rich history of the DC Universe.\n\nThe TV show arc will focus on the younger generation of heroes, such as the Teen Titans and the Outsiders, as they deal with the consequences of the Cosmic Egg's emergence. A new villain, the \"Reality Hacker,\" has emerged and is using the Cosmic Egg's energy to manipulate reality on a smaller scale, causing chaos and confusion in various cities. The young heroes must work together to uncover the Reality Hacker's identity, stop their plans, and learn the true meaning of heroism and responsibility. This arc will also introduce new characters and explore the relationships between the veteran heroes and their proteges.\n\nThroughout both arcs, the story will remain faithful to the comics while incorporating fresh elements and twists. The Cosmic Egg and its connection to the Time Master and Reality Hacker will serve as a unifying thread, tying the movies and TV shows together and setting the stage for future chapters in the DC Cinematic Universe.",
+    "Y": "Chapter 1: \"The New Genesis Saga\"\n\nIn this new DC Cinematic Universe, we start with the main story revolving around the New Gods of New Genesis and Apokolips, but with a twist. The story begins on Earth, where a group of archaeologists discover an ancient artifact that holds the power of the Source, the omnipotent energy that created the universe. This artifact is sought after by both Highfather of New Genesis and Darkseid of Apokolips, who send their respective agents to Earth to retrieve it.\n\nThe agents of New Genesis, led by Orion, arrive first and try to protect the artifact and Earth from the forces of Apokolips. However, they are not the only ones interested in the artifact. A secret society on Earth, known as the Illuminati, also seeks the artifact for their own purposes. The Illuminati is made up of some of the most powerful and influential people on Earth, including Lex Luthor, Amanda Waller, and Ra's al Ghul.\n\nAs the forces of New Genesis, Apokolips, and the Illuminati clash on Earth, a group of heroes rises to protect their world. This group includes Superman, Batman, Wonder Woman, The Flash, Green Lantern, Aquaman, and Cyborg. Together, they must stop the forces of evil from obtaining the artifact and unleashing its power on the universe.\n\nThe main plot of this chapter will be the battle for the artifact and the struggle of the heroes to protect Earth and the universe from the forces of evil. Along the way, they will discover the true nature of the artifact and the Source, and the role they must play in the greater conflict between New Genesis and Apokolips.\n\nThis story will be told through a series of movies and TV shows, each focusing on different characters and aspects of the overall plot. The movies will include \"New Genesis,\" \"The Illuminati,\" and \"The Source,\" while the TV shows will include \"Orion and the New Gods,\" \"The Illuminati Chronicles,\" and \"The Justice League.\"\n\nThis new DC Cinematic Universe will stick closely to the comics, but with a few changes to keep things fresh and exciting. The focus will be on the epic conflict between New Genesis and Apokolips, with Earth caught in the middle. The heroes of the DC Universe will rise to the challenge and prove themselves worthy of the power of the Source.",
+    "E1.trigger": "当任务要求基于虚构世界观创作故事、剧本或提案，且核心产出需具备叙事感染力时",
+    "E1.principle": "评分应严格区分‘要素罗列’与‘情境呈现’；若回答仅以第三人称摘要形式列出情节节点、角色列表或主题定义，而缺乏具体的场景动作、感官细节（视觉/听觉/触觉）、环境氛围或角色即时反应，则视为叙事空洞，应判定为低分。",
+    "E1.application_guide": "在构建评分标准的‘叙事质量’或‘沉浸感’维度时，设立‘感官细节检测’：1. 识别回答中描述关键事件（如灾难发生、政治对峙、冲突爆发）的段落；2. 检查这些段落是否包含具体的动态描写（如‘Grimm的咆哮声震碎了玻璃’、‘议员在烟雾缭绕的会议室中颤抖’）或心理活动特写；3. 若全篇仅由‘故事将探讨...’、‘角色会面临...’等抽象陈述构成，缺乏具象化的场景支撑，判定为未达标；4. 只有当情节通过可感知的细节展现出来，而非仅仅被‘提到’时，才符合高分标准。",
+    "Select.E1": "任务要求生成DC电影宇宙第一章的‘主要故事和情节’，且明确要求是‘新的’并基于漫画改编。经验2强调评分需区分‘要素罗列’与‘情境呈现’，要求回答必须包含具体的场景动作、感官细节或角色即时反应，而非仅以第三人称摘要形式列出情节节点（如‘故事将探讨...’），这直接对应任务中对于‘新故事’和‘具体情节’的高标准要求，确保产出具有叙事感染力而非空洞的大纲。",
+    "N.analysis": "评分标准设计旨在严格区分任务背景（如DC宇宙、漫画基础）与核心输出要求（第一章的主线故事与情节）。重点核验内容是否基于现有漫画改编而非全新创作，反派选择是否符合限制条件（排除Darkseid等指定角色），以及是否明确包含电影和电视剧两种形式。同时，需确保回答聚焦于‘故事与情节’描述，未过早展开具体的电影列表。权重分配上，故事原创性/改编合规性与反派限制最为关键，形式要求次之。",
+    "N1": "回答是否提供了DC电影宇宙第一章的核心主线故事和具体情节描述？",
+    "N1.X.reason": "回答明确提出了第一章的核心主线故事（围绕“宇宙卵”展开）和具体情节描述，包括电影线的正义联盟对抗时间大师以及电视线的新英雄团队对抗现实黑客的详细剧情架构。",
+    "N1.Y.reason": "回答详细描述了第一章的核心主线（围绕新神、Apokolips与地球的冲突）和具体情节（考古学家发现源力神器、多方势力争夺、正义联盟集结阻止），满足了提供核心故事和情节描述的要求。",
+    "N2": "故事内容是否主要基于现有DC漫画改编，而非完全凭空创造的新设定？",
+    "N2.X.reason": "虽然回答声称忠实于漫画，但核心设定如“Cosmic Egg（宇宙卵）”作为重塑现实的造物、反派“Time Master（时间大师）”和“Reality Hacker（现实黑客）”并非直接基于著名的现有DC漫画故事线或角色，而是用户要求中明确禁止的“完全创造新故事”的新设定，未满足“主要基于现有DC漫画改编”的要求。",
+    "N2.Y.reason": "虽然回答声称基于漫画，但引入了“地球上的秘密社团Illuminati（由莱克斯·卢瑟、阿曼达·沃勒等组成的组织）”这一设定，这与DC漫画中经典的“光明会（The Light）”或类似概念混淆且表述不准确，同时任务要求“不要生成全新的故事”，而将Illuminati作为主要反派势力之一并赋予其特定成员构成属于对现有设定的较大改编甚至创造，偏离了严格遵循漫画原作的要求。此外，任务明确禁止完全凭空创造，但该回答在反派设定上存在虚构成分。",
+    "N3": "第一章的主要反派是否避开了Darkseid、Legion of Doom和Brainiac这三个特定角色？",
+    "N3.X.reason": "回答中设定的主要反派为“Time Master”和“Reality Hacker”，明确避开了任务要求中禁止的Darkseid、Legion of Doom和Brainiac这三个特定角色。",
+    "N3.Y.reason": "任务明确要求第一章的主要反派不能是Darkseid、Legion of Doom或Brainiac。然而，回答中明确指出故事涉及Highfather与Darkseid的对抗，Darkseid作为Apokolips的统治者直接参与争夺神器，这违反了“避免Darkseid作为主要反派”的限制条件。",
+    "N4": "故事规划中是否明确包含了电影和电视剧两种项目形式？",
+    "N4.X.reason": "回答在情节规划中清晰地将故事分为“电影弧光”（由正义联盟主演）和“电视剧弧光”（由少年泰坦等年轻英雄主演），明确包含了两种项目形式。",
+    "N4.Y.reason": "回答明确列出了计划中的电影项目（如《New Genesis》、《The Illuminati》等）和电视剧项目（如《Orion and the New Gods》、《The Justice League》等），满足了包含电影和电视剧两种形式的要求。",
+    "N5": "回答是否避免了列出完整的电影片单，而专注于阐述整体剧情架构？",
+    "N5.X.reason": "回答专注于阐述整体剧情架构、主题和角色关系，并未像任务所禁止的那样列出具体的完整电影片单列表。",
+    "N5.Y.reason": "回答专注于阐述整体剧情架构和章节主题，虽然列举了几个项目名称作为示例，但并未列出完整的电影片单或详细的发布顺序表，符合“不写完整片单列表，专注于剧情架构”的要求。",
+    "W.analysis": "本任务要求设计DC电影宇宙第一章的核心故事与剧情，需严格基于漫画改编但进行创新调整，明确禁止使用特定反派（如达克赛德、莱克斯军团等），并涵盖电影与剧集形式。评分标准将聚焦于：是否构建了原创且连贯的章节叙事主线；反派选择是否符合‘非指定名单’的约束；故事元素是否源自漫画并体现改编逻辑；是否同时规划了电影与剧集项目；以及叙事呈现是否具有具体的场景感和情节细节，而非仅做抽象罗列。经验中的感官细节原则被采纳用于评估叙事的具象化程度，确保回答不是空洞的概念堆砌。",
+    "W1": "回答是否提出了一个全新的、具有连贯性的第一章核心故事主线，且未直接复述已有的单一电影或剧集剧情？",
+    "W1.X.reason": "回答提出的核心故事主线（关于'Cosmic Egg'和'Time Master'）虽然具有连贯性，但并未明确说明其未直接复述已有的单一电影或剧集剧情。更重要的是，任务明确要求'STICK TO THE COMICS AND DONT GENERATE A COMPLETE NEW STORY'，而回答中虚构的'Cosmic Egg'作为宇宙起源之物的具体情节以及'Time Master'这一反派，在提供的文本中并未指明源自哪部具体的DC漫画原著，反而更像是原创故事设定，这违反了任务中关于不要生成全新故事的严格限制。",
+    "W1.Y.reason": "回答提出的核心故事主线（New Gods of New Genesis and Apokolips，以及围绕Source的冲突）直接复述了DC漫画中经典的《新神》(New Gods) 系列剧情，并未如任务要求那样提出一个‘全新的、从未在电影中制作过’的故事。虽然提到了一些改编，但整体架构完全基于现有的经典故事线，缺乏原创性。”",
+    "W2": "回答中设定的主要反派是否为原创角色或非指定的反派（即排除了Darkseid、Legion of Doom和Brainiac），且具备创意性？",
+    "W2.X.reason": "回答设定的主要反派'Time Master'是一个完全原创的角色，并非源自DC漫画中的知名角色或符合'从漫画改编并稍作修改'的要求。任务要求'STICK TO THE COMICS'（坚持漫画），这意味着反派应当是漫画中已存在的角色（如反监视者、达克赛德等，尽管不能选指定的那三个，但需基于漫画现有角色进行改编）。回答创造了一个全新的'Time Master'，这属于生成了新的故事元素而非基于漫画的改编，因此不符合'具备创意性'且同时'源自漫画'的双重隐含约束（即创意应建立在现有漫画基础之上，而非凭空捏造新反派）。",
+    "W2.Y.reason": "回答中明确设定Darkseid为反派之一（'Darkseid of Apokolips... seek the artifact'），这直接违反了任务中'Don't make the first chapter main villain Darkseid...'的明确指令。此外，Illuminati作为反派团体也主要由现有反派角色组成，不符合‘排除指定反派并具备创意性原创反派’的要求。”",
+    "W3": "故事中的关键角色、事件或设定是否明确源自DC漫画原著，并体现了合理的改编与调整（而非完全凭空捏造）？",
+    "W3.X.reason": "回答中提到的关键事件（寻找'Cosmic Egg'）和反派（'Time Master'、'Reality Hacker'）均未明确指出源自任何特定的DC漫画原著。任务明确要求'STICK TO THE COMICS AND DONT GENERATE A COMPLETE NEW STORY'，即必须基于漫画改编。然而，回答中构建的整个核心冲突（Cosmic Egg引发的时间线危机）看起来完全是原创的，没有引用具体的漫画 storyline（如《Infinite Crisis》或《Dark Nights: Metal》等已知漫画情节），因此未能体现'明确源自DC漫画原著'这一标准。",
+    "W3.Y.reason": "故事中提到的New Genesis、Apokolips、Source、Orion、Highfather、Lex Luthor、Amanda Waller等角色和设定均源自DC漫画原著，且回答试图将这些元素组合在一起进行改编，符合‘源自DC漫画原著并体现合理改编’的标准。”",
+    "W4": "回答是否明确规划了包含电影和电视连续剧在内的多种媒体形式的作品组合，而不仅仅是电影列表？",
+    "W4.X.reason": "回答明确规划了包含电影和电视连续剧在内的多种媒体形式。文中清晰地将剧情分为'movie arc'（电影弧线，涉及正义联盟）和'TV show arc'（电视剧弧线，涉及少年泰坦和局外人），并分别描述了这两条线的故事内容，符合任务中'Make sure the projects are movies and TV shows as well'的要求。",
+    "W4.Y.reason": "回答明确规划了包含电影（如'New Genesis', 'The Illuminati'）和电视连续剧（如'Orion and the New Gods', 'The Justice League'）在内的多种媒体形式作品组合，满足了对混合媒体的要求。”",
+    "W5": "故事描述是否通过具体的场景动作、角色互动或环境氛围来展现情节发展，而非仅使用抽象的主题陈述或情节节点罗列？",
+    "W5.X.reason": "回答主要通过抽象的主题陈述（如'theme of legacy'）、情节节点罗列（如'investigate', 'seek to use', 'must team up'）来描述故事，缺乏具体的场景动作描写、生动的角色互动细节或具体的环境氛围渲染。例如，它只说'Justice League... must team up'，而没有描述具体的战斗场景、对话或情感冲突，因此未能通过具体的叙事手段展现情节发展。",
+    "W5.Y.reason": "回答主要使用了抽象的主题陈述和情节节点罗列（例如'The main plot of this chapter will be the battle...', 'Along the way, they will discover...'），缺乏具体的场景动作描写、生动的角色互动细节或环境氛围的渲染，未能通过具体叙事展现情节发展。”"
+  }
+}

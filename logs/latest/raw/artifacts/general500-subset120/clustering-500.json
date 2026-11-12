@@ -1,0 +1,112 @@
+{
+  "completed": 500,
+  "parameters": {
+    "reference_weight": 0.5,
+    "task_threshold": 0.75,
+    "experience_threshold": 0.75,
+    "max_rounds": 5
+  },
+  "kinds": {
+    "task": {
+      "objects": 499,
+      "groups": 484,
+      "singletons": 473,
+      "size_distribution": {
+        "1": 473,
+        "2": 10,
+        "6": 1
+      },
+      "text_pairs_ge_075": 88,
+      "of_those_hybrid_ge_075": 18,
+      "all_hybrid_pairs_ge_075": 30,
+      "both_nonempty_reference_pairs": 81003,
+      "of_those_no_common_reference": 77939,
+      "no_references": 96,
+      "examples_of_suppression": [
+        {
+          "left": "0ae9656301696e3c3eb474c900f59783f54fadb6a32c0711e55011cdfbba335b",
+          "right": "02de9a7f130a52f10ea52e3b5d2288350f98c1ad509a1b3479e78f0fdf5d4604",
+          "text": 0.8108841598919618,
+          "hybrid": 0.5405894399279746,
+          "references": [
+            2,
+            2
+          ],
+          "common": 0
+        },
+        {
+          "left": "10f213bf804ad2ffe167da786f39d343edaba6abdc8a615f51b3cbafe6297fad",
+          "right": "02de9a7f130a52f10ea52e3b5d2288350f98c1ad509a1b3479e78f0fdf5d4604",
+          "text": 0.8004984913185842,
+          "hybrid": 0.7253738684889381,
+          "references": [
+            1,
+            2
+          ],
+          "common": 1
+        },
+        {
+          "left": "10f213bf804ad2ffe167da786f39d343edaba6abdc8a615f51b3cbafe6297fad",
+          "right": "0ae9656301696e3c3eb474c900f59783f54fadb6a32c0711e55011cdfbba335b",
+          "text": 0.8536087583381292,
+          "hybrid": 0.6402065687535969,
+          "references": [
+            1,
+            2
+          ],
+          "common": 0
+        }
+      ]
+    },
+    "experience": {
+      "objects": 169,
+      "groups": 154,
+      "singletons": 139,
+      "size_distribution": {
+        "1": 139,
+        "2": 15
+      },
+      "text_pairs_ge_075": 103,
+      "of_those_hybrid_ge_075": 28,
+      "all_hybrid_pairs_ge_075": 28,
+      "both_nonempty_reference_pairs": 5886,
+      "of_those_no_common_reference": 5737,
+      "no_references": 60,
+      "examples_of_suppression": [
+        {
+          "left": "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+          "right": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+          "text": 0.7513478826351283,
+          "hybrid": 0.4544525273898861,
+          "references": [
+            18,
+            8
+          ],
+          "common": 2
+        },
+        {
+          "left": "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+          "right": "exp_33fe10ea5cd147c4b399ead199015824",
+          "text": 0.7805875783840248,
+          "hybrid": 0.4336481074676323,
+          "references": [
+            18,
+            13
+          ],
+          "common": 1
+        },
+        {
+          "left": "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+          "right": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+          "text": 0.7538553134236162,
+          "hybrid": 0.5653914850677122,
+          "references": [
+            1,
+            8
+          ],
+          "common": 0
+        }
+      ]
+    }
+  }
+}

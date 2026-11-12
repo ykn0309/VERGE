@@ -1,0 +1,64 @@
+{
+  "status": "valid",
+  "input_index": 241,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 241,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "mixed",
+        "reason": "任务要求基于角色独特设定（秘密身份、怪力）推演，但回答中部分情节（如Ep9公开警告）违背了‘保密’这一核心独有属性约束。",
+        "refs": [
+          "TASK",
+          "W2.X.reason"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "unsupported",
+        "reason": "经验要求互动细节必须依赖角色特有属性，但回答大量使用通用浪漫桥段（如‘共享和平时刻’），未体现Kayama的幻觉能力或Kanna的怪力对互动的具体影响。",
+        "refs": [
+          "TASK",
+          "W2.Y.reason"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "N3.X.reason",
+          "W1.Y.reason"
+        ],
+        "note": "任务明确要求Kanna需‘假装不认识’以配合保密，但路径X和Y在第9集均描写Kanna主动警告并直接交流，导致保密设定失效，属于关键约束丢失。"
+      },
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "W2.X.reason",
+          "W2.Y.reason"
+        ],
+        "note": "评分标准指出回答未利用Kayama的‘幻觉能力’或Kanna的‘怪力’构建互动，仅使用通用对话，说明回答未能满足任务对‘角色排他性’的深度绑定要求。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "N1.X.reason",
+          "N1.Y.reason"
+        ],
+        "note": "Judge对N1的判断存在矛盾：X被判定为明确描述了拯救情节，而Y被判定为未描述具体动作（小巷、扛肩等），但Y的文本同样未提及这些具体动作细节，需核对是否误判了Y的文本内容。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "W3.X.reason",
+          "W3.Y.reason"
+        ],
+        "note": "关于第9集剧情逻辑是否被破坏的判断依赖于对原剧‘Ohgami被捕获’场景的具体理解，若原剧中该场景本身包含Kanna介入的可能，则当前判断可能不准确，需外部事实确认。"
+      }
+    ],
+    "limit": "无法确认原剧第9集具体情节是否允许Kanna在众目睽睽下警告Kayama而不暴露其身份，需查阅原作剧本验证逻辑前提。"
+  }
+}

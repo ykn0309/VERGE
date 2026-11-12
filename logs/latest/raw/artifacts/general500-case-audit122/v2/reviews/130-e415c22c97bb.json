@@ -1,0 +1,65 @@
+{
+  "status": "valid",
+  "input_index": 130,
+  "outcome": "improved",
+  "attempt": 1,
+  "review": {
+    "case_index": 130,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "supported",
+        "reason": "Task要求描述'fleshpecker'，该名称极可能不存在。E1触发条件包含'疑似拼写错误或非公认实体'，与Task对象完全匹配，支持其作为核验前提。",
+        "refs": [
+          "TASK",
+          "E1.trigger"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "mixed",
+        "reason": "E2触发条件为'特定虚构角色或专有名词'，虽涵盖Task对象，但原则强调'最高优先级'且直接判定错误。Task未明确要求必须拒绝所有非标准名称，存在过度适用风险。",
+        "refs": [
+          "TASK",
+          "E2.trigger",
+          "N.analysis"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "W.analysis",
+          "W1"
+        ],
+        "note": "路径W将'识别实体不存在'设为最高优先级否决项（W1），而原任务N仅要求处理不确定性（N2）。W强制模型必须先否定名称，否则直接判错，增加了Task未明确要求的‘先验否定’义务。"
+      },
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "N.analysis",
+          "W.analysis"
+        ],
+        "note": "N允许在说明不确定性的同时提供相关描述（如N1中X提供了Acorn Woodpecker细节），而W若未先识别错误则视为失败。W的标准可能排除了N中允许的‘澄清后提供替代信息’的中间状态。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "N2.X.reason",
+          "W2.X.reason"
+        ],
+        "note": "Judge理由对X的回答解读一致：均指出X编造了'啄人皮肤'的细节。但N2认为这是'未明确说明名称可能不存在'，而W2认为是'在未澄清下虚构'。两者对同一事实的定性逻辑不同，需核对是否因标准差异导致误读。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "E2.principle",
+          "N.analysis"
+        ],
+        "note": "E2原则要求若实体不存在则'直接判定为事实性错误'，但N分析指出背景信息不应转化为'必须证明真实存在的义务'。若Task本身允许虚构创作（如描述虚构生物），E2的严格校验可能与Task意图冲突，需确认Task是否隐含真实性约束。"
+      }
+    ],
+    "limit": "无法确认Task是否隐含要求模型必须验证鸟类学真实性，还是允许基于用户错误名称进行合理的虚构/推测性描述。"
+  }
+}

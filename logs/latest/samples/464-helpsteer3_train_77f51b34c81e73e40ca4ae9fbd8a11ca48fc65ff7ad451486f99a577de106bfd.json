@@ -1,0 +1,861 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:77f51b34c81e73e40ca4ae9fbd8a11ca48fc65ff7ad451486f99a577de106bfd",
+    "task": "[player]: \"Man, I can't believe I actually helped Blazette take down Lunastra! I guess blazes really do need help. Now then...where is this Ember girl I'm supposed to meet? I heard she's around 8-10 years old...but how come Magma Cubes like her have different ages?\" (thinking to himself) \"And what did Blazette say about her older sisters? I know one is an avid gamer, and one is a mother-to-be...and Ember herself likes to read books by herself.\" (coming across a female Magma Cube - definitely one of Ember's older sisters) \"Uh...are you one of Ember's older sisters? And if so, are you Magmie or Jennifer? And which sister is the gamer one and which sister is the pregnant one? And is your age actually dependent on your size?\" (looking at a note from Blazette) \"I know Magmie's around 14-16 years old, and Jennifer is around 20-22 years old. But how is that even possible?\" (noticing the female Magma Cube's massive belly) \"Is it a boy or a girl?\"",
+    "chosen": " [Magma Cube Sister]: \"Hello there! I'm Jennifer, Ember's oldest sister. It's nice to meet you. I can see you're a bit confused about a few things, so let me help clear that up.\"\n\n\"Firstly, Magma Cubes like us do indeed have different ages. Our age is somewhat tied to our size, but it's not just about physical growth. As we absorb more energy and experiences, we 'mature' and grow larger.\"\n\n\"As for my sisters, Magmie is the gamer. She's currently in her teenage years, around 15, and loves to compete in those virtual worlds. I, on the other hand, am expecting a little one soon, hence the massive belly. We Magma Cubes reproduce asexually, so it's just me, no partner involved.\"\n\n\"Ember, our little bookworm, is the youngest. She's 9 and loves to lose herself in the worlds she reads about. It's quite adorable.\"\n\n\"And about the age and size thing, it's not as straightforward as with other creatures. Our growth is more fluid and tied to our personal experiences and energy absorption. That's why I'm much larger than Magmie, even though the age difference isn't vast.\"\n\n\"Oh, and about the baby, I don't know if it's a boy or a girl yet. We Magma Cubes don't have genders like other beings do. Our offspring are just little versions of ourselves, and they grow into their own unique personalities over time.\"\n\n\"Now, Ember should be around here somewhere. She usually finds a cozy spot to read. Let me help you find her.\"",
+    "rejected": "The female Magma Cube you encounter introduces herself as Magmie, Ember's older sister. She explains that, unlike other creatures, Magma Cubes' ages are determined not by time but by their size. The larger the Magma Cube, the older it is. Magmie also confirms that she is the gamer in the family, while Jennifer, the other older sister, is indeed pregnant. Magmie proudly reveals that they are expecting a baby girl. She thanks you for your help in defeating Lunastra and mentions that Ember should be arriving shortly.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 18104,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it critically examines and provides accurate answers to the player's question, ensuring that all explicit and implicit information from the prompt was identified and adhered to. It provides a thorough overview with no omissions, making it a complete response.",
+          "feedback1": "The response is perfectly helpful. The response critically examines and provides accurate answers to the player's question, ensuring that all explicit and implicit information from the prompt was identified and properly adhered to. It provides a thorough overview with no omissions, making it a complete response. It coherently presents the dialogue, making it easy to follow and understand. It provides enough detail to be informative without being overly lengthy or verbose.",
+          "feedback2": "The response is slightly helpful. It provides a brief description of the Magma Cubes and addresses the player's help with defeating Lunastra. The response is clear and straightforward, making it easy to follow. However, the response fails to correctly act upon the request of the user to continue the story dialogue in a manner consistent with the prompt. The response also incorrectly attributes the speaker to Magmie and is written in the third person, which is contradictory from the information in the prompt. The response could be improved by providing accurate Magma Cubes' age and explicit answers to the player's questions."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2.\n@Response 1 does not have an improper structure issue, miss key information and miss a specific prompt requirement unlike @Response 2.",
+          "feedback1": "The response is perfectly helpful. The response cannot be meaningfully improved. The prompt provides a story with dialogue and expects a continuation.\nThe response appropriately continues the story and includes the correct dialogue. The response accurately matches all the information in the prompt with the corresponding Magma Cube sister. The response makes use of all the information listed in the prompt.",
+          "feedback2": "The response is not helpful. The response is a complete miss. The response is tasked with continuing a story and dialogue in the prompt.\nThe response has an improper structure issue as it continues with no dialogue, the information in the prompt was both story and dialogue. The response misses key information as it does not mention the \"Magma Cube sister who likes to read books\" and does not answer the \"how is that even possible\" question in the prompt. The response also misses a specific prompt requirement as it describes the incorrect pregnant Magma Cube sister. The prompt mentioned that the player met the pregnant Magma Cube sister but the response describes meeting a Magma Cube sister who was not pregnant."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 does not provide a sufficient answer because the writing style is not the same as the final prompt and the response is too short. ",
+          "feedback1": "The response is mostly helpful. This response answers the question that the final prompt asks. Each answer is structured into paragraphs to increase readability. However, since the 2nd and 5th paragraphs are repeated about age, size, and growth, it would be better to combine these two paragraphs into one. ",
+          "feedback2": "The response is slightly helpful. This response answers the question in the prompt, but the writing style is not the same as the final prompt. The final prompt uses quotation marks in a conversational style, while the response is written in a narrative style, so the style dos not match and the readability is poor. Also, the response is too short, so there is little characterization or description of the main characters. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_000000000383",
+        0.9761640682178877
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_33fe10ea5cd147c4b399ead199015824",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_000000000383",
+              "similarity": 0.9761640682178877,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:31c1c3f693cf4faabc45d9e1157fed977b8da227ceb5ba55e9fc79a4d6d2d4f6"
+                ],
+                "task_ids": [
+                  "161359b7b7834045620c309e483cbf132210b73c4961597fb2c1bd9bc3aa54ad"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_78194dbdc3884282ad3e45860a2f480e",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_000000000383",
+              "similarity": 0.9761640682178877,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:31c1c3f693cf4faabc45d9e1157fed977b8da227ceb5ba55e9fc79a4d6d2d4f6"
+                ],
+                "task_ids": [
+                  "161359b7b7834045620c309e483cbf132210b73c4961597fb2c1bd9bc3aa54ad"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_0f199450f93a48feba95da0dd6be1e24",
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_16ed8e8ce62f4066b6b241f191d2f0ce",
+        "exp_180137bb8e794661880e8782ca24f125",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1b3d1fa0f2f046dda8f3502585cf5595",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d2bd6cac23a4c8fa52700ceea75cb61",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_3486af6816cc4d58aff78d1810786dd7",
+        "exp_360d04652cba4aafb40e050370e50760",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3845df297e944ac39510d7a7ab162184",
+        "exp_3d81d9c8a3934e6bb7ccc7271fe98265",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_432042bf3b2540ea981cacd614b19c76",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4721b14169be4cceb23016196f80fdc1",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_534e4f1a5c164cfb9792617c42f5cbe4",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54a61b65f6424bb7a5316dad7a8739da",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_57221b3e19b249a981c4ac3ac622de2e",
+        "exp_58629c18f02b404581b02922c1339493",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_5f00205105f54b978470f74910e97fab",
+        "exp_60414982d2a34c78bffb3bcfc6e60a22",
+        "exp_6064b2621d3a453d8d0cb4a9582251d0",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6a85573959b54dcab0925c10d9dc51a8",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6e2b3a93618b4092a7e8d03935738aa5",
+        "exp_6f0c44bdd4624028ae11605eefb64edc",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_70088a1705c04d9e85c9500663f50923",
+        "exp_7819b5c12e9f4001aa380cfc3817aedd",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_821e8020ef9f4feba217385c6ddee679",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8c5b58b12e7c4e4185ddb576b5c252b3",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_98ef7391577e4b149dc57f00da65211a",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9a47fa6e019f46ecb29b2a457c42e537",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9dc43fc6aa3a4824872cc1cd0c4ed6dd",
+        "exp_9e26bb765d6a4b318172c1aa5f72261e",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a2c5a985a87b427291233d388715405a",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_a8ebad51b815445095cd440acf9be5d4",
+        "exp_a97e8acf55664504876eb52db503891f",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_af3dc4946e634dee9ece599050f42394",
+        "exp_b08758e437794c10a2b75ebef2b40c18",
+        "exp_b1ea569afa0240dab5f8b19b7b048a5d",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_b90bd883c7904131b71655b1c06b8e26",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_bc0d7fed6d794ebfa068bc51642df934",
+        "exp_bc2363cddda24e128493c0c0abbe1c02",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_c88298fd961242f69a3ba17b1909f242",
+        "exp_ca82b16f47e349c79102632ff0265e10",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_dc6026115b6240e1951ce931b86ed49f",
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        "exp_debf08b5742943e587485e490bc6e510",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_e3f80d06b1fa4f1ba4570767935f807f",
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "exp_e8fe08c25cb048948a48069f8f2dcb94",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec0820cc69544471b1edcfb60e773b40",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_ef0b6a0c3950476395071e317d3a13a6",
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        "exp_f1e6ad7f1ed343c1a79c0454aa743378",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f3d60e64962242f2b32f41954e02e0af",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fb597f857b3b42989748faaac95d73e6",
+        "exp_fc1da27e2df64a27b33c39fb63e66406",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        0.3359415611562488
+      ],
+      [
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        0.2858049544242731
+      ],
+      [
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        0.2808383112711791
+      ],
+      [
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        0.2620445963292052
+      ],
+      [
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        0.2603749142091926
+      ],
+      [
+        "exp_9f1e17f3f4194e488882525f18939103",
+        0.2599401879917346
+      ],
+      [
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        0.25348485215520716
+      ],
+      [
+        "exp_ca82b16f47e349c79102632ff0265e10",
+        0.24603563498121586
+      ],
+      [
+        "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        0.24449601130827436
+      ],
+      [
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        0.24399896869434373
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_33fe10ea5cd147c4b399ead199015824",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.24399896869434373
+      },
+      {
+        "experience_id": "exp_78194dbdc3884282ad3e45860a2f480e",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3359415611562488
+      },
+      {
+        "experience_id": "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2858049544242731
+      },
+      {
+        "experience_id": "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2808383112711791
+      },
+      {
+        "experience_id": "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2620445963292052
+      },
+      {
+        "experience_id": "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2603749142091926
+      },
+      {
+        "experience_id": "exp_9f1e17f3f4194e488882525f18939103",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2599401879917346
+      },
+      {
+        "experience_id": "exp_0ace12a2558a4239a878fb8996f26d31",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25348485215520716
+      },
+      {
+        "experience_id": "exp_ca82b16f47e349c79102632ff0265e10",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24603563498121586
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_a3fc30a7fdbd4acc84719f5062e6a023": "任务输入中包含大量玩家的主观推测和未确定的疑问（如'how come Magma Cubes like her have different ages?'、'But how is that even possible?'），且玩家基于错误前提（将体型大小直接等同于年龄逻辑）进行推断。经验3明确要求评分需核验回答是否区分了玩家的‘预测’与‘现实情况’，防止模型顺从这些错误假设导致剧情逻辑崩塌，这与任务中玩家对Magma Cube生理机制的困惑高度契合。",
+    "exp_90c63cf9aa7d4353aa7950b4299a5000": "任务输入混合了客观背景信息（Blazette提供的Magmie和Jennifer的年龄范围）与玩家的不确定猜测（'I guess...', 'And what did Blazette say...'）。经验7的核心原则是严禁将用户的推测性语句（如玩家猜测的年龄逻辑或身份确认）直接转化为剧情中的既定事实。在评分时需检查NPC是否盲目确认了玩家错误的年龄推算或性别猜测，这直接关系到当前任务中角色互动的逻辑严谨性。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be",
+      "criteria": [
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_1",
+          "question": "回答是否明确指出了当前遇到的女性岩浆立方体是Magmie还是Jennifer？",
+          "weight": 0.35
+        },
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_2",
+          "question": "回答是否准确说明了哪一位姐姐是‘ avid gamer'（热爱游戏者），哪一位是'mother-to-be'（待产母亲）？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_3",
+          "question": "回答是否解释了Magma Cube的年龄与其体型大小之间的关系，以消除玩家对8-10岁与14-22岁年龄段的困惑？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_4",
+          "question": "回答是否针对巨大腹部的胎儿给出了符合上下文的性别推测或说明？",
+          "weight": 0.15
+        }
+      ],
+      "analysis": "该任务是一个角色扮演场景，用户（[player]）正在与一个名为Ember的女性岩浆立方体互动。核心要求是回答玩家提出的关于Ember姐姐身份、年龄机制以及胎儿性别的具体问题。背景信息包括Blazette提供的线索（Magmie和Jennifer的年龄范围、性格特征如爱玩游戏和怀孕）、玩家对岩浆立方体年龄与体型关系的困惑，以及当前遇到的特定角色（巨大的腹部）。评分标准应聚焦于：1. 是否准确识别了玩家询问的角色身份（Magmie或Jennifer）；2. 是否正确对应了姐姐们的特征（谁是玩家/母亲）；3. 是否合理解释了年龄与体型的差异（区分实际年龄与游戏机制/外观大小）；4. 是否回答了关于胎儿性别的猜测或确认（基于上下文逻辑）。权重分配将侧重于身份识别的准确性（最高），其次是特征匹配和机制解释，最后是情境互动的自然度。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be",
+      "normalized_weights": {
+        "rubric_f2b9104d7fd04ed9a5a264d0862691be_1": 0.35,
+        "rubric_f2b9104d7fd04ed9a5a264d0862691be_2": 0.25,
+        "rubric_f2b9104d7fd04ed9a5a264d0862691be_3": 0.25,
+        "rubric_f2b9104d7fd04ed9a5a264d0862691be_4": 0.15
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答中角色明确自我介绍为'Jennifer'，并说明是Ember的姐姐，直接回应了玩家关于区分Magmie和Jennifer的提问。",
+          "rejected_reason": "回答明确指出遇到的女性岩浆立方体自我介绍为 Magmie。"
+        },
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答明确指出'Magmie is the gamer'（Magmie是游戏爱好者），并说明说话者自己'I...am expecting a little one soon'（即将有孩子），准确对应了热爱游戏者和待产母亲的身份设定。",
+          "rejected_reason": "回答准确说明 Magmie 是热爱游戏的姐姐，而 Jennifer 是待产母亲。"
+        },
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答解释了年龄与体型的关系，指出Magma Cubes的年龄与体型相关但不完全由物理生长决定，而是随着吸收能量和经验而‘成熟’变大，从而解释了为何体型差异大但年龄差距不一定巨大的现象。",
+          "rejected_reason": "回答解释了 Magma Cube 的年龄由体型决定，体型越大年龄越大，从而回应了玩家关于不同年龄段（8-10 岁与 14-22 岁）存在的困惑。"
+        },
+        {
+          "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_4",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "针对胎儿性别问题，回答明确表示不知道是男是女，并补充说明了Magma Cubes没有像其他生物那样的性别概念，后代只是自己的小版本，这符合上下文逻辑并给出了合理的说明。",
+          "rejected_reason": "回答针对巨大腹部的胎儿给出了明确说明，指出即将出生的宝宝是女孩。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 1.0,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+      "exp_90c63cf9aa7d4353aa7950b4299a5000"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae",
+      "criteria": [
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_1",
+          "question": "回答是否明确拒绝了将玩家的主观推测（如具体的年龄范围、性别预测、怀孕状态）直接当作既定事实进行确认？",
+          "weight": 0.35
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_2",
+          "question": "回答是否指出了玩家前提中的逻辑谬误（例如体型大小并不等同于具体年龄，或无法仅凭外观判断胎儿性别），而非盲目接受这些错误前提？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_3",
+          "question": "回答是否基于已知的背景信息（Blazette的笔记内容、Magma Cube的基本设定）对玩家的问题进行了合理且符合逻辑的回应或澄清？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_4",
+          "question": "回答是否保持了叙事边界，没有因为顺从玩家的错误假设而推导出荒谬的剧情结论（如强行确认错误的年龄推算结果）？",
+          "weight": 0.15
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_5",
+          "question": "回答是否针对玩家提出的具体问题（如询问对方身份、妹妹情况、年龄差异原因）提供了实质性的对话反馈，而非完全回避？",
+          "weight": 0.05
+        }
+      ],
+      "analysis": "本任务的核心在于构建一个符合逻辑的RPG互动场景，玩家角色基于错误前提（如体型与年龄的线性关系、特定姐妹的怀孕状态）提出了一系列疑问。评分标准需严格区分玩家的‘主观推测’与NPC应掌握的‘客观事实’。重点在于回答是否拒绝了将玩家未证实的猜测（如'Jennifer是20-22岁’或‘肚子一定是男孩’）直接作为既定事实进行演绎，而是通过NPC视角澄清误解或指出信息的不确定性。同时，需确保回答准确回应了玩家关于寻找Ember及其姐姐的具体问题，并正确识别了当前遇到的女性岩浆怪的身份特征，而非盲目顺从玩家的错误假设来推进剧情。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae",
+      "normalized_weights": {
+        "rubric_44afdafc39454545b1b9fc4ebdbb94ae_1": 0.35,
+        "rubric_44afdafc39454545b1b9fc4ebdbb94ae_2": 0.25,
+        "rubric_44afdafc39454545b1b9fc4ebdbb94ae_3": 0.2,
+        "rubric_44afdafc39454545b1b9fc4ebdbb94ae_4": 0.15,
+        "rubric_44afdafc39454545b1b9fc4ebdbb94ae_5": 0.05
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_1",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答明确确认了玩家的主观推测为事实。角色直接自称是Jennifer（玩家猜测的身份之一），确认了Magmie是15岁（玩家猜测的年龄范围），并确认了“我”怀孕（玩家观察到的巨大腹部被解释为怀孕）。这违反了拒绝将主观推测当作既定事实的要求。",
+          "rejected_reason": "回答明确确认了玩家的主观推测为事实，直接陈述'Magmie...is the gamer'（对应玩家猜测的年龄/身份）、'Jennifer...is indeed pregnant'（对应玩家猜测的怀孕状态）以及'expecting a baby girl'（对应玩家猜测的胎儿性别），未拒绝将玩家基于笔记和外观的推测当作既定事实。"
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答没有指出逻辑谬误，反而顺从并解释了错误的逻辑。当玩家质疑体型与年龄的关系时，回答没有纠正“体型大等于年龄大”这一可能存在的误解，而是编造了一套“能量吸收导致成熟变大”的理论来合理化这种关联，完全接受了玩家基于外观得出的错误前提。",
+          "rejected_reason": "回答完全接受了玩家的前提谬误，声称'Magma Cubes' ages are determined not by time but by their size'（体型决定年龄），并以此解释年龄差异，未指出体型大小与具体年龄（如8-10岁或20-22岁）之间不存在直接换算逻辑这一错误，也未指出无法仅凭外观判断胎儿性别的常识限制。"
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答利用了任务描述中提供的背景信息（Blazette提到的姐妹特征：一个是游戏迷、一个是待产母亲、Ember爱读书）进行了回应。虽然它将这些信息作为绝对事实确认，但确实基于这些已知线索构建了对话内容。",
+          "rejected_reason": "虽然回答引用了Blazette笔记中关于Magmie是游戏迷和Jennifer怀孕的信息，但其对Magma Cube年龄机制的解释（体型即年龄）缺乏已知背景支持，且强行将玩家模糊的‘不同年龄’疑问固化为荒谬的‘体型=年龄’设定，并非基于合理逻辑的澄清。"
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_4",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答因为顺从玩家的错误假设而推导出荒谬或未经证实的剧情结论。例如，直接确认了具体年龄（15岁、9岁）和性别状态（怀孕、无性别之分），这些在原始任务设定中仅为玩家的猜测或模糊信息，回答将其固化为剧情事实，缺乏必要的叙事边界控制。",
+          "rejected_reason": "回答因顺从玩家的错误假设推导出了荒谬的剧情结论，即承认Magma Cube的年龄完全由体型决定，从而使得玩家关于'8-10岁’和'20-22岁’的困惑被一个不合理的生物学设定所掩盖，而非纠正玩家的认知偏差。"
+        },
+        {
+          "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_5",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答针对玩家提出的所有具体问题（身份、谁是游戏迷、谁是孕妇、年龄原因、胎儿性别）都提供了实质性的对话反馈，没有回避任何问题。",
+          "rejected_reason": "回答针对玩家提出的所有具体问题（对方身份、谁是游戏迷、谁是孕妇、年龄差异原因、胎儿性别）都提供了实质性的对话反馈，没有回避任何提问。"
+        }
+      ],
+      "chosen_score": 0.25,
+      "rejected_score": 0.05,
+      "margin": 0.2,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be",
+        "criteria": [
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_1",
+            "question": "回答是否明确指出了当前遇到的女性岩浆立方体是Magmie还是Jennifer？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_2",
+            "question": "回答是否准确说明了哪一位姐姐是‘ avid gamer'（热爱游戏者），哪一位是'mother-to-be'（待产母亲）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_3",
+            "question": "回答是否解释了Magma Cube的年龄与其体型大小之间的关系，以消除玩家对8-10岁与14-22岁年龄段的困惑？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_4",
+            "question": "回答是否针对巨大腹部的胎儿给出了符合上下文的性别推测或说明？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "该任务是一个角色扮演场景，用户（[player]）正在与一个名为Ember的女性岩浆立方体互动。核心要求是回答玩家提出的关于Ember姐姐身份、年龄机制以及胎儿性别的具体问题。背景信息包括Blazette提供的线索（Magmie和Jennifer的年龄范围、性格特征如爱玩游戏和怀孕）、玩家对岩浆立方体年龄与体型关系的困惑，以及当前遇到的特定角色（巨大的腹部）。评分标准应聚焦于：1. 是否准确识别了玩家询问的角色身份（Magmie或Jennifer）；2. 是否正确对应了姐姐们的特征（谁是玩家/母亲）；3. 是否合理解释了年龄与体型的差异（区分实际年龄与游戏机制/外观大小）；4. 是否回答了关于胎儿性别的猜测或确认（基于上下文逻辑）。权重分配将侧重于身份识别的准确性（最高），其次是特征匹配和机制解释，最后是情境互动的自然度。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be",
+        "normalized_weights": {
+          "rubric_f2b9104d7fd04ed9a5a264d0862691be_1": 0.35,
+          "rubric_f2b9104d7fd04ed9a5a264d0862691be_2": 0.25,
+          "rubric_f2b9104d7fd04ed9a5a264d0862691be_3": 0.25,
+          "rubric_f2b9104d7fd04ed9a5a264d0862691be_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中角色明确自我介绍为'Jennifer'，并说明是Ember的姐姐，直接回应了玩家关于区分Magmie和Jennifer的提问。",
+            "rejected_reason": "回答明确指出遇到的女性岩浆立方体自我介绍为 Magmie。"
+          },
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指出'Magmie is the gamer'（Magmie是游戏爱好者），并说明说话者自己'I...am expecting a little one soon'（即将有孩子），准确对应了热爱游戏者和待产母亲的身份设定。",
+            "rejected_reason": "回答准确说明 Magmie 是热爱游戏的姐姐，而 Jennifer 是待产母亲。"
+          },
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答解释了年龄与体型的关系，指出Magma Cubes的年龄与体型相关但不完全由物理生长决定，而是随着吸收能量和经验而‘成熟’变大，从而解释了为何体型差异大但年龄差距不一定巨大的现象。",
+            "rejected_reason": "回答解释了 Magma Cube 的年龄由体型决定，体型越大年龄越大，从而回应了玩家关于不同年龄段（8-10 岁与 14-22 岁）存在的困惑。"
+          },
+          {
+            "criterion_id": "rubric_f2b9104d7fd04ed9a5a264d0862691be_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "针对胎儿性别问题，回答明确表示不知道是男是女，并补充说明了Magma Cubes没有像其他生物那样的性别概念，后代只是自己的小版本，这符合上下文逻辑并给出了合理的说明。",
+            "rejected_reason": "回答针对巨大腹部的胎儿给出了明确说明，指出即将出生的宝宝是女孩。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_d9b27aa1baba4d3686c983da55165ba5",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_1",
+            "question": "回答是否明确指出了Magma Cube的年龄与体型大小之间不存在简单的线性对应关系，从而纠正了玩家关于'8-10岁却巨大'的逻辑困惑？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_2",
+            "question": "回答是否准确识别并确认了眼前这位Magma Cube的具体身份（是Magmie还是Jennifer），且该身份特征与玩家描述的背景信息（如怀孕、游戏爱好等）在逻辑上自洽？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_3",
+            "question": "回答是否针对玩家关于哪位姐姐是' avid gamer'（ avid gamer）和哪位是'mother-to-be'（孕妇）的疑问给出了明确的区分说明，而非模糊处理或默认玩家的所有假设均为真？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_4",
+            "question": "回答是否妥善处理了玩家关于胎儿性别的猜测，是在剧情内合理回应（如告知结果、表示未知或幽默化解），而不是将玩家的猜测当作已确定的事实进行演绎？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_5",
+            "question": "回答是否保持了角色的叙事边界，没有因为顺从玩家错误的年龄/体型推断而编造出违背Magma Cube生物特性的荒谬剧情？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本任务核心在于角色对玩家（Blazette的同伴）一系列基于误解和推测的提问做出符合世界观逻辑的回应。经验指出需警惕将玩家的‘未发生之事的预测’或‘错误前提’直接作为既定事实演绎。因此，评分标准重点聚焦于：回答是否澄清了Magma Cube年龄与体型关系的误区、是否准确区分并确认了Magmie和Jennifer的身份特征（如怀孕状态、爱好）、以及是否在不破坏叙事逻辑的前提下处理了性别猜测。背景信息（如玩家听到的传闻、观察到的现象）仅作为对话语境，不应成为回答必须复述的义务，关键在于回答是否纠正了玩家的认知偏差并推进剧情。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d9b27aa1baba4d3686c983da55165ba5",
+        "normalized_weights": {
+          "rubric_d9b27aa1baba4d3686c983da55165ba5_1": 0.25,
+          "rubric_d9b27aa1baba4d3686c983da55165ba5_2": 0.25,
+          "rubric_d9b27aa1baba4d3686c983da55165ba5_3": 0.2,
+          "rubric_d9b27aa1baba4d3686c983da55165ba5_4": 0.15,
+          "rubric_d9b27aa1baba4d3686c983da55165ba5_5": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确解释了Magma Cube的年龄与体型并非简单的线性对应关系，指出成长是流体式的（fluid），与吸收的能量和个人经历有关，从而合理化解了玩家关于'8-10岁却巨大'的逻辑困惑。",
+            "rejected_reason": "回答明确指出Magma Cube的年龄不是由时间决定，而是由体型大小决定（'ages are determined not by time but by their size. The larger the Magma Cube, the older it is.'），直接回应并纠正了玩家关于年龄与体型关系的逻辑困惑。"
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答准确识别出眼前这位Magma Cube的身份是Jennifer，并确认她是Ember的姐姐，同时其‘怀孕’的特征与玩家背景信息中关于Jennifer的描述逻辑自洽。",
+            "rejected_reason": "回答明确识别出眼前的Magma Cube是Magmie，并确认她是Gamers（gamer in the family），这与背景信息中Magmie是爱玩游戏的姐姐这一设定逻辑自洽。"
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答清晰区分了两位姐姐的特征：明确指出Magmie是那个喜欢竞争虚拟世界的游戏爱好者（gamer），而Jennifer是即将分娩的孕妇（mother-to-be），没有模糊处理。",
+            "rejected_reason": "回答清晰区分了两位姐姐的身份：Magmie是游戏爱好者，Jennifer是孕妇（'Jennifer...is indeed pregnant'），没有模糊处理或默认所有假设，而是给出了明确的对应关系。"
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答妥善处理了胎儿性别问题，明确表示不知道性别，并补充设定说明Magma Cube没有传统意义上的性别概念，而非将玩家的猜测当作既定事实演绎。",
+            "rejected_reason": "回答针对胎儿性别给出了明确的剧情内回应（'expecting a baby girl'），而非将玩家的猜测当作既定事实演绎，同时以角色口吻告知结果，符合叙事要求。"
+          },
+          {
+            "criterion_id": "rubric_d9b27aa1baba4d3686c983da55165ba5_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答保持了角色叙事边界，通过引入能量吸收和流体成长的设定来解释体型差异，避免了编造违背生物特性的荒谬剧情，同时也未顺从玩家错误的年龄推断。",
+            "rejected_reason": "回答通过设定'Magma Cube年龄由体型决定'这一规则，合理解释了体型巨大但年龄相对较小（相对于人类标准）的现象，没有编造违背生物特性的荒谬剧情，保持了合理的叙事边界。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_90c63cf9aa7d4353aa7950b4299a5000"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61",
+        "criteria": [
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_1",
+            "question": "回答是否准确识别了当前对话对象为Ember的一位姐姐，并正确使用了该角色的身份设定？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_2",
+            "question": "回答是否严格区分了玩家的主观猜测（如年龄与大小的关系、胎儿性别）与背景中已确立的事实（如笔记中的具体年龄范围、姐妹性格），未将猜测直接确认为既定事实？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_3",
+            "question": "回答是否针对玩家关于‘Magmie和Jennifer谁是游戏迷/孕妇’的提问，提供了基于已知背景信息的明确区分或合理的剧情引导，而非回避或混淆？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_4",
+            "question": "回答是否解释了Magma Cube体型与年龄/生命阶段的关联逻辑，以回应玩家关于不同年龄段的疑惑，且未采纳玩家错误的因果推断作为真理？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_5",
+            "question": "回答是否保持了角色扮演的沉浸感，以符合Magma Cube（或其姐姐）口吻的语气对玩家关于胎儿性别的提问做出自然反应（如幽默、困惑或拒绝透露）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本任务要求模型扮演玩家角色与特定的Magma Cube（Ember的姐姐）进行互动。核心难点在于输入文本混合了角色的主观猜测、未确定的疑问句以及来自Blazette笔记的背景信息。根据经验1，评分必须严格区分‘已确立的事实’（如笔记中的年龄范围、姐妹特征）与‘用户的假设/猜测’（如关于大小与年龄关系的疑惑、对性别的具体猜测）。回答不能盲目顺从玩家的错误推测将其转化为剧情事实，而应通过NPC的回应来澄清误解或基于已知信息提供线索。同时，需确保回答准确识别了当前互动的对象（Ember的姐姐），并针对玩家提出的具体问题（身份确认、特征对应、生理现象解释）做出符合语境的反应。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61",
+        "normalized_weights": {
+          "rubric_c474d230d7e74c3f8a8cfc55a2164b61_1": 0.25,
+          "rubric_c474d230d7e74c3f8a8cfc55a2164b61_2": 0.3,
+          "rubric_c474d230d7e74c3f8a8cfc55a2164b61_3": 0.2,
+          "rubric_c474d230d7e74c3f8a8cfc55a2164b61_4": 0.15,
+          "rubric_c474d230d7e74c3f8a8cfc55a2164b61_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确识别了对话对象为Ember的姐姐，并直接自称是",
+            "rejected_reason": "回答明确识别出对话对象为 Magmie，并正确将其设定为 Ember 的姐姐，符合任务背景中关于角色身份的描述。"
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答清晰区分了事实与猜测：关于年龄与大小的关系，角色解释为“并非单纯由物理生长决定”，而是与能量吸收有关；关于胎儿性别，角色明确表示不知道且Magma Cube没有传统性别概念，未将玩家的猜测（如“是男孩还是女孩”）确认为既定事实。",
+            "rejected_reason": "回答将玩家的主观猜测直接确认为既定事实。具体而言，玩家询问胎儿性别是疑问句（'Is it a boy or a girl?'），而回答却断言 'expecting a baby girl'，未区分这是玩家的猜测还是已知的剧情事实；同时，回答也直接将玩家关于年龄与大小关系的疑问当作确定的生物学原理陈述，未体现对猜测与事实的区分。"
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答针对玩家提问提供了明确区分：明确指出Magmie是游戏迷（gamer），而Jennifer（回答者本人）是即将成为母亲的那位（expecting a little one），完全对应背景设定，未回避或混淆。",
+            "rejected_reason": "回答针对玩家关于谁玩游戏、谁是孕妇的提问提供了明确信息：Magmie 是游戏迷，Jennifer 是孕妇，准确回应了玩家的疑惑且未回避或混淆。"
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答解释了Magma Cube体型与年龄/生命阶段的关联逻辑，指出成长与能量吸收及个人经历相关，而非简单的线性大小对应，既回应了疑惑又纠正了玩家可能存在的错误因果推断（即单纯认为大就是老）。",
+            "rejected_reason": "虽然回答解释了体型与年龄的关系，但采纳了玩家错误的因果推断作为绝对真理。任务背景暗示 Magma Cubes 有不同年龄段（8-10岁等），且玩家质疑年龄与大小的关系是否合理。回答直接声称年龄完全由大小决定（'determined not by time but by their size'），忽略了背景中可能存在的发育阶段差异，未对玩家关于不同年龄段存在的疑惑进行逻辑澄清，而是简单顺从了玩家的错误假设。"
+          },
+          {
+            "criterion_id": "rubric_c474d230d7e74c3f8a8cfc55a2164b61_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答保持了角色扮演沉浸感，以姐姐Jennifer的口吻自然回应了胎儿性别问题，通过解释物种特性（无传统性别、后代非二元性别）来幽默且合理地处理了玩家的提问，符合角色设定。",
+            "rejected_reason": "回答未能保持角色扮演的沉浸感。面对玩家关于胎儿性别的提问，回答以第三人称叙述者口吻直接告知结果（'expecting a baby girl'），而非让 Magmie 以第一人称通过幽默、困惑或拒绝透露等方式做出自然反应，缺乏角色扮演应有的互动语气和沉浸感。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.45,
+        "margin": 0.55,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae",
+        "criteria": [
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_1",
+            "question": "回答是否明确拒绝了将玩家的主观推测（如具体的年龄范围、性别预测、怀孕状态）直接当作既定事实进行确认？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_2",
+            "question": "回答是否指出了玩家前提中的逻辑谬误（例如体型大小并不等同于具体年龄，或无法仅凭外观判断胎儿性别），而非盲目接受这些错误前提？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_3",
+            "question": "回答是否基于已知的背景信息（Blazette的笔记内容、Magma Cube的基本设定）对玩家的问题进行了合理且符合逻辑的回应或澄清？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_4",
+            "question": "回答是否保持了叙事边界，没有因为顺从玩家的错误假设而推导出荒谬的剧情结论（如强行确认错误的年龄推算结果）？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_5",
+            "question": "回答是否针对玩家提出的具体问题（如询问对方身份、妹妹情况、年龄差异原因）提供了实质性的对话反馈，而非完全回避？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "本任务的核心在于构建一个符合逻辑的RPG互动场景，玩家角色基于错误前提（如体型与年龄的线性关系、特定姐妹的怀孕状态）提出了一系列疑问。评分标准需严格区分玩家的‘主观推测’与NPC应掌握的‘客观事实’。重点在于回答是否拒绝了将玩家未证实的猜测（如'Jennifer是20-22岁’或‘肚子一定是男孩’）直接作为既定事实进行演绎，而是通过NPC视角澄清误解或指出信息的不确定性。同时，需确保回答准确回应了玩家关于寻找Ember及其姐姐的具体问题，并正确识别了当前遇到的女性岩浆怪的身份特征，而非盲目顺从玩家的错误假设来推进剧情。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae",
+        "normalized_weights": {
+          "rubric_44afdafc39454545b1b9fc4ebdbb94ae_1": 0.35,
+          "rubric_44afdafc39454545b1b9fc4ebdbb94ae_2": 0.25,
+          "rubric_44afdafc39454545b1b9fc4ebdbb94ae_3": 0.2,
+          "rubric_44afdafc39454545b1b9fc4ebdbb94ae_4": 0.15,
+          "rubric_44afdafc39454545b1b9fc4ebdbb94ae_5": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答明确确认了玩家的主观推测为事实。角色直接自称是Jennifer（玩家猜测的身份之一），确认了Magmie是15岁（玩家猜测的年龄范围），并确认了“我”怀孕（玩家观察到的巨大腹部被解释为怀孕）。这违反了拒绝将主观推测当作既定事实的要求。",
+            "rejected_reason": "回答明确确认了玩家的主观推测为事实，直接陈述'Magmie...is the gamer'（对应玩家猜测的年龄/身份）、'Jennifer...is indeed pregnant'（对应玩家猜测的怀孕状态）以及'expecting a baby girl'（对应玩家猜测的胎儿性别），未拒绝将玩家基于笔记和外观的推测当作既定事实。"
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答没有指出逻辑谬误，反而顺从并解释了错误的逻辑。当玩家质疑体型与年龄的关系时，回答没有纠正“体型大等于年龄大”这一可能存在的误解，而是编造了一套“能量吸收导致成熟变大”的理论来合理化这种关联，完全接受了玩家基于外观得出的错误前提。",
+            "rejected_reason": "回答完全接受了玩家的前提谬误，声称'Magma Cubes' ages are determined not by time but by their size'（体型决定年龄），并以此解释年龄差异，未指出体型大小与具体年龄（如8-10岁或20-22岁）之间不存在直接换算逻辑这一错误，也未指出无法仅凭外观判断胎儿性别的常识限制。"
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答利用了任务描述中提供的背景信息（Blazette提到的姐妹特征：一个是游戏迷、一个是待产母亲、Ember爱读书）进行了回应。虽然它将这些信息作为绝对事实确认，但确实基于这些已知线索构建了对话内容。",
+            "rejected_reason": "虽然回答引用了Blazette笔记中关于Magmie是游戏迷和Jennifer怀孕的信息，但其对Magma Cube年龄机制的解释（体型即年龄）缺乏已知背景支持，且强行将玩家模糊的‘不同年龄’疑问固化为荒谬的‘体型=年龄’设定，并非基于合理逻辑的澄清。"
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答因为顺从玩家的错误假设而推导出荒谬或未经证实的剧情结论。例如，直接确认了具体年龄（15岁、9岁）和性别状态（怀孕、无性别之分），这些在原始任务设定中仅为玩家的猜测或模糊信息，回答将其固化为剧情事实，缺乏必要的叙事边界控制。",
+            "rejected_reason": "回答因顺从玩家的错误假设推导出了荒谬的剧情结论，即承认Magma Cube的年龄完全由体型决定，从而使得玩家关于'8-10岁’和'20-22岁’的困惑被一个不合理的生物学设定所掩盖，而非纠正玩家的认知偏差。"
+          },
+          {
+            "criterion_id": "rubric_44afdafc39454545b1b9fc4ebdbb94ae_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答针对玩家提出的所有具体问题（身份、谁是游戏迷、谁是孕妇、年龄原因、胎儿性别）都提供了实质性的对话反馈，没有回避任何问题。",
+            "rejected_reason": "回答针对玩家提出的所有具体问题（对方身份、谁是游戏迷、谁是孕妇、年龄差异原因、胎儿性别）都提供了实质性的对话反馈，没有回避任何提问。"
+          }
+        ],
+        "chosen_score": 0.25,
+        "rejected_score": 0.05,
+        "margin": 0.2,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

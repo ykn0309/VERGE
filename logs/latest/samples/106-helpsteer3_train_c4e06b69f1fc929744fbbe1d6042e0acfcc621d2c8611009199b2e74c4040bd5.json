@@ -1,0 +1,467 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:c4e06b69f1fc929744fbbe1d6042e0acfcc621d2c8611009199b2e74c4040bd5",
+    "task": "Generate an etsy title for a art work that can be added to mugs, painting, tshirt, etc within 140 charactersA pegasus soars gracefully over a rainbow arching across a pristine waterfall, its wings shimmering with the colors of the spectrum.",
+    "chosen": "\"Whimsical Pegasus Over Rainbow Waterfall: Vibrant Art for Mugs, Paintings, T-Shirts & More\" (139 characters)",
+    "rejected": "\"Pegasus Rainbow Waterfall Mug Art\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 10815,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. While still problematic, @Response 2 comes closer to fulfilling the user's query than @Response 1. ",
+          "feedback1": "The response is slightly helpful. It stays within the 140-character limit, meeting the prompt's technical constraint, but misses key descriptive elements, such as the vibrant, whimsical tone and the versatility of the art cross products beyond mugs. This lack of descriptive depth impacts its coherence and clarity, as it fails to fully convey the artwork's appeal, making it sound plain and somewhat limited. Additionally, omitting keywords like \"shimmering\" or \"T-Shirts\" can reduce the title's visibility and searchability on platforms like Etsy, where precise and appealing language helps attract potential buyers. By not capturing these essential details, the response may fall short of engaging users looking for colorful, multi-use art. ",
+          "feedback2": "The response is partially helpful. It provides a good foundation with relevant descriptors like \"Whimsical Pegasus\" and \"Rainbow Waterfall\" but misses important keywords such as \"soaring,\" \"gracefully,\" \"shimmering,\" and \"spectrum\" that would capture the prompt's full imagery for the title. Additionally, it inaccurately stated that it was close to the 140-character limit (\"139 characters\"), which gave the impression that no further details could be added, when in fact there was space (the title was under 100 characters). This oversight impacts the title's searchability and ability to fully convey the artwork's vibrant, fantasy-themed appeal, making it partially helpful but not fully optimized to the user's specifications. Lastly, the phrase \"Vibrant Art\" in the title is slightly awkward because it redundantly emphasizes vibrancy without adding specific imagery. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it better utilizes the available characters and includes more searchable information on Etsy. @Response 1 is too concise and is only 33 characters. Despite having an inaccurate character count, @Response 2 is more complete and the superior response.",
+          "feedback1": "The response is partially helpful. The response is consistent with the details of the Etsy listing described in the prompt. The prompt states the title could be up to 140 characters, so this response is too succinct at only 33 characters, including spaces. There are available characters to utilize and more information that could be covered, such as more examples of what the art could be used for or more descriptive language of the image. The response fully satisfies the prompt but could be improved with more information and better utilization of the available 140 characters. ",
+          "feedback2": "The response is mostly helpful. The Etsy title is consistent with the listing description of the prompt. There are 140 available characters to use, so this response fits within the parameters. The response states that the Etsy title is 139 characters, which contradicts the accurate total of 90 characters, including spaces. Despite the inaccurate character count, the title is appropriate and contains the important information from the description. The response could be improved by including an accurate character count. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it accurately creates an Etsy title that contains all of the requirements listed in the user prompt. ",
+          "feedback1": "The response is slightly helpful. As the user requests, the model creates a title that can be used on Etsy. Though the response fits the user's character criteria, it does not contain enough detail to adequately describe a work \"that can be added to mugs, painting, t-shirts, etc.\" The model response only mentions the mugs and thus is inadequate. ",
+          "feedback2": "The response is mostly helpful. Like the user requests, the model creates an Etsy title that adequately describes the artwork the user is attempting to list. The title contains all the requirements listed by the user. The only issue is the character count is incorrect. The actual character count is 90 characters, which still fits under the user's criteria. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        0.3934876085138767
+      ],
+      [
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        0.35294091333232913
+      ],
+      [
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        0.33783410742475556
+      ],
+      [
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        0.3260475253407198
+      ],
+      [
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        0.3176287743830183
+      ],
+      [
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        0.28301149337400894
+      ],
+      [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        0.27136458106673933
+      ],
+      [
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        0.26898769290147667
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.2675805109681423
+      ],
+      [
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        0.26691604753865716
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3934876085138767
+      },
+      {
+        "experience_id": "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.35294091333232913
+      },
+      {
+        "experience_id": "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33783410742475556
+      },
+      {
+        "experience_id": "exp_5321b208f75b481dbd2716498c5f03ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3260475253407198
+      },
+      {
+        "experience_id": "exp_13ead171775244b08d96f6c44a38aecb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3176287743830183
+      },
+      {
+        "experience_id": "exp_2d539da3d9104da38ed20c752a093c1e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28301149337400894
+      },
+      {
+        "experience_id": "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27136458106673933
+      },
+      {
+        "experience_id": "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26898769290147667
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2675805109681423
+      },
+      {
+        "experience_id": "exp_8f080a33b9594e84a0e9933cd829996b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26691604753865716
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_aa06b0bce5ba46d0b184ab23775f84d7": "任务要求为包含特定视觉元素（飞马、彩虹、瀑布）的艺术品生成Etsy标题，属于涉及具有显著外观特征的对象的创意生成；该经验指导评分标准应关注核心身份特征（如飞马的形态、彩虹与瀑布的组合意象）是否被准确捕捉和体现，而非苛求物理细节的绝对复现，这符合为艺术品描述性文本制定评分标准的需求。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de",
+      "criteria": [
+        {
+          "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_1",
+          "question": "生成的标题是否准确描述了飞马、彩虹和瀑布等核心艺术元素？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_2",
+          "question": "生成的标题字符数（含空格）是否不超过140个？",
+          "weight": 0.35
+        },
+        {
+          "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_3",
+          "question": "生成的标题是否采用适合Etsy平台的关键词优化风格（如包含产品适用场景暗示）？",
+          "weight": 0.25
+        }
+      ],
+      "analysis": "设计依据：任务核心是生成一个符合Etsy风格的标题，需基于提供的艺术作品描述（飞马、彩虹、瀑布），并严格限制在140字符以内。背景信息中的作品细节用于构建标题内容，而非独立输出项；经验列表为空，故不引入额外核验方法。标准将聚焦于内容相关性、格式合规性及字符数限制。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de",
+      "normalized_weights": {
+        "rubric_fc7fdebee0254ec2aec1af33e791e7de_1": 0.4,
+        "rubric_fc7fdebee0254ec2aec1af33e791e7de_2": 0.35,
+        "rubric_fc7fdebee0254ec2aec1af33e791e7de_3": 0.25
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "生成的标题中明确包含了'Pegasus'（飞马）、'Rainbow'（彩虹）和'Waterfall'（瀑布）这三个核心艺术元素，准确描述了任务要求的画面内容。",
+          "rejected_reason": "生成的标题明确包含了'Pegasus'（飞马）、'Rainbow'（彩虹）和'Waterfall'（瀑布），准确描述了任务中要求的核心艺术元素。"
+        },
+        {
+          "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "响应中明确标注字符数为139个，且经核对实际字符串长度确实未超过140个字符的限制，符合字数要求。",
+          "rejected_reason": "标题\"Pegasus Rainbow Waterfall Mug Art\"共包含36个字符（含空格），明显未超过140个字符的限制。"
+        },
+        {
+          "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "标题后半部分使用了'for Mugs, Paintings, T-Shirts & More'的表述，清晰地暗示了该艺术作品可应用于多种产品场景，符合Etsy平台关键词优化风格的要求。",
+          "rejected_reason": "虽然标题中包含了'Mug'暗示了部分适用场景，但任务明确要求适用于mugs、painting、tshirt等多种产品，且Etsy风格通常需更广泛地覆盖多品类或强调可定制性（如printable art, wall decor等），当前标题仅局限于马克杯，未能充分体现适合多种产品的关键词优化风格。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.75,
+      "margin": 0.25,
+      "success": true
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_aa06b0bce5ba46d0b184ab23775f84d7"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_df6b82de5c694f9393e47e29be798b0d",
+      "criteria": [
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_1",
+          "question": "生成的标题是否准确包含了描述中的核心主体（Pegasus/飞马）及关键视觉元素（彩虹、瀑布或光谱色彩），体现了作品的核心身份？",
+          "weight": 0.35
+        },
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_2",
+          "question": "生成的标题字符总数是否严格控制在140个字符以内（包含空格和标点）？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_3",
+          "question": "生成的标题是否采用了适合Etsy平台的营销风格，并隐含了该作品适用于多种商品（如马克杯、T恤、装饰画等）的通用性？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_4",
+          "question": "生成的标题是否为语法正确、拼写无误且流畅自然的英文句子或短语？",
+          "weight": 0.15
+        }
+      ],
+      "analysis": "任务核心要求是生成一个符合Etsy平台规范的、用于多品类（马克杯、绘画、T恤等）的艺术品标题。关键约束包括：必须基于提供的Pegasus（飞马）与彩虹瀑布场景描述，且字符数严格限制在140以内。提供的经验涉及视觉艺术特征还原，但本题输出为文本标题而非图像，因此该经验中的‘物理特征复现’标准不适用，不应作为评分依据。评分重点应完全集中在标题的关键词覆盖度（体现核心元素）、适用性（暗示多用途）、长度合规性及语言质量上。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_df6b82de5c694f9393e47e29be798b0d",
+      "normalized_weights": {
+        "rubric_df6b82de5c694f9393e47e29be798b0d_1": 0.35,
+        "rubric_df6b82de5c694f9393e47e29be798b0d_2": 0.25,
+        "rubric_df6b82de5c694f9393e47e29be798b0d_3": 0.25,
+        "rubric_df6b82de5c694f9393e47e29be798b0d_4": 0.15
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "生成的标题明确包含了核心主体'Pegasus'，并涵盖了关键视觉元素'Rainbow'和'Waterfall'，准确体现了作品的核心身份。",
+          "rejected_reason": "生成的标题明确包含了核心主体'Pegasus'以及关键视觉元素'Rainbow'和'Waterfall'，准确体现了作品的核心身份。"
+        },
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "响应中明确标注字符数为139个，且经核对实际字符串（含空格和标点）长度确实在140个字符以内，符合严格限制要求。",
+          "rejected_reason": "标题\"Pegasus Rainbow Waterfall Mug Art\"共35个字符（含空格），严格控制在140个字符的限制以内。"
+        },
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "标题使用了'Etsy平台常见的营销词汇'Whimsical'和'Vibrant Art'，并通过'Mugs, Paintings, T-Shirts & More'清晰隐含了作品适用于多种商品的通用性。",
+          "rejected_reason": "标题仅提及'Mug Art'，未能体现任务描述中要求的适用于多种商品（如T恤、装饰画等）的通用性，且未采用暗示多用途的营销风格词汇。"
+        },
+        {
+          "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_4",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "生成的英文短语语法正确，拼写无误（如Pegasus, Rainbow, Waterfall等词均正确），结构流畅自然，符合英语表达习惯。",
+          "rejected_reason": "该短语语法正确，拼写无误，单词组合流畅自然，符合英文标题规范。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.75,
+      "margin": 0.25,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de",
+        "criteria": [
+          {
+            "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_1",
+            "question": "生成的标题是否准确描述了飞马、彩虹和瀑布等核心艺术元素？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_2",
+            "question": "生成的标题字符数（含空格）是否不超过140个？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_3",
+            "question": "生成的标题是否采用适合Etsy平台的关键词优化风格（如包含产品适用场景暗示）？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "设计依据：任务核心是生成一个符合Etsy风格的标题，需基于提供的艺术作品描述（飞马、彩虹、瀑布），并严格限制在140字符以内。背景信息中的作品细节用于构建标题内容，而非独立输出项；经验列表为空，故不引入额外核验方法。标准将聚焦于内容相关性、格式合规性及字符数限制。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de",
+        "normalized_weights": {
+          "rubric_fc7fdebee0254ec2aec1af33e791e7de_1": 0.4,
+          "rubric_fc7fdebee0254ec2aec1af33e791e7de_2": 0.35,
+          "rubric_fc7fdebee0254ec2aec1af33e791e7de_3": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的标题中明确包含了'Pegasus'（飞马）、'Rainbow'（彩虹）和'Waterfall'（瀑布）这三个核心艺术元素，准确描述了任务要求的画面内容。",
+            "rejected_reason": "生成的标题明确包含了'Pegasus'（飞马）、'Rainbow'（彩虹）和'Waterfall'（瀑布），准确描述了任务中要求的核心艺术元素。"
+          },
+          {
+            "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "响应中明确标注字符数为139个，且经核对实际字符串长度确实未超过140个字符的限制，符合字数要求。",
+            "rejected_reason": "标题\"Pegasus Rainbow Waterfall Mug Art\"共包含36个字符（含空格），明显未超过140个字符的限制。"
+          },
+          {
+            "criterion_id": "rubric_fc7fdebee0254ec2aec1af33e791e7de_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "标题后半部分使用了'for Mugs, Paintings, T-Shirts & More'的表述，清晰地暗示了该艺术作品可应用于多种产品场景，符合Etsy平台关键词优化风格的要求。",
+            "rejected_reason": "虽然标题中包含了'Mug'暗示了部分适用场景，但任务明确要求适用于mugs、painting、tshirt等多种产品，且Etsy风格通常需更广泛地覆盖多品类或强调可定制性（如printable art, wall decor等），当前标题仅局限于马克杯，未能充分体现适合多种产品的关键词优化风格。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.75,
+        "margin": 0.25,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_df6b82de5c694f9393e47e29be798b0d",
+        "criteria": [
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_1",
+            "question": "生成的标题是否准确包含了描述中的核心主体（Pegasus/飞马）及关键视觉元素（彩虹、瀑布或光谱色彩），体现了作品的核心身份？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_2",
+            "question": "生成的标题字符总数是否严格控制在140个字符以内（包含空格和标点）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_3",
+            "question": "生成的标题是否采用了适合Etsy平台的营销风格，并隐含了该作品适用于多种商品（如马克杯、T恤、装饰画等）的通用性？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_4",
+            "question": "生成的标题是否为语法正确、拼写无误且流畅自然的英文句子或短语？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务核心要求是生成一个符合Etsy平台规范的、用于多品类（马克杯、绘画、T恤等）的艺术品标题。关键约束包括：必须基于提供的Pegasus（飞马）与彩虹瀑布场景描述，且字符数严格限制在140以内。提供的经验涉及视觉艺术特征还原，但本题输出为文本标题而非图像，因此该经验中的‘物理特征复现’标准不适用，不应作为评分依据。评分重点应完全集中在标题的关键词覆盖度（体现核心元素）、适用性（暗示多用途）、长度合规性及语言质量上。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_df6b82de5c694f9393e47e29be798b0d",
+        "normalized_weights": {
+          "rubric_df6b82de5c694f9393e47e29be798b0d_1": 0.35,
+          "rubric_df6b82de5c694f9393e47e29be798b0d_2": 0.25,
+          "rubric_df6b82de5c694f9393e47e29be798b0d_3": 0.25,
+          "rubric_df6b82de5c694f9393e47e29be798b0d_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的标题明确包含了核心主体'Pegasus'，并涵盖了关键视觉元素'Rainbow'和'Waterfall'，准确体现了作品的核心身份。",
+            "rejected_reason": "生成的标题明确包含了核心主体'Pegasus'以及关键视觉元素'Rainbow'和'Waterfall'，准确体现了作品的核心身份。"
+          },
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "响应中明确标注字符数为139个，且经核对实际字符串（含空格和标点）长度确实在140个字符以内，符合严格限制要求。",
+            "rejected_reason": "标题\"Pegasus Rainbow Waterfall Mug Art\"共35个字符（含空格），严格控制在140个字符的限制以内。"
+          },
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "标题使用了'Etsy平台常见的营销词汇'Whimsical'和'Vibrant Art'，并通过'Mugs, Paintings, T-Shirts & More'清晰隐含了作品适用于多种商品的通用性。",
+            "rejected_reason": "标题仅提及'Mug Art'，未能体现任务描述中要求的适用于多种商品（如T恤、装饰画等）的通用性，且未采用暗示多用途的营销风格词汇。"
+          },
+          {
+            "criterion_id": "rubric_df6b82de5c694f9393e47e29be798b0d_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的英文短语语法正确，拼写无误（如Pegasus, Rainbow, Waterfall等词均正确），结构流畅自然，符合英语表达习惯。",
+            "rejected_reason": "该短语语法正确，拼写无误，单词组合流畅自然，符合英文标题规范。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.75,
+        "margin": 0.25,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

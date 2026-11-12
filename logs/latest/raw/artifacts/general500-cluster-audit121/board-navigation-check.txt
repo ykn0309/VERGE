@@ -1,0 +1,9 @@
+### Result
+{
+  "hash": "#cluster121",
+  "heading": "聚到一起的内容是否真同类？"
+}
+### Ran Playwright code
+```js
+await page.evaluate('() => ({hash:location.hash,heading:document.querySelector("article h2").textContent})');
+```

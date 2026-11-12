@@ -1,0 +1,118 @@
+{
+  "case_index": 304,
+  "experiences": [
+    "E1",
+    "E2"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.25,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N2",
+          "weight": 0.2,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N3",
+          "weight": 0.3,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N4",
+          "weight": 0.15,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N5",
+          "weight": 0.1,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1",
+        "E2"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.25,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W2",
+          "weight": 0.25,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W3",
+          "weight": 0.25,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W4",
+          "weight": 0.25,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "[player]: \"Man, I can't believe I actually helped Blazette take down Lunastra! I guess blazes really do need help. Now then...where is this Ember girl I'm supposed to meet? I heard she's around 8-10 years old...but how come Magma Cubes like her have different ages?\" (thinking to himself) \"And what did Blazette say about her older sisters? I know one is an avid gamer, and one is a mother-to-be...and Ember herself likes to read books by herself.\" (coming across a female Magma Cube - she's around 14-16 years old) \"Uh...are Magmie? And is your age actually dependent on your size?\"(noticing the female Magma Cube's bump) \"I wonder if you're having a boy or a girl. And since you're 14-16, I bet you're feeling pretty nervous about having a baby - but that also means that Jennifer is around 20-22 years old.\"",
+    "X": " It seems like you're in a unique situation, interacting with Magma Cubes that have human-like characteristics and life stages. Here's how you might continue the conversation:\n\n[Player]: \"Hi there, I'm looking for Ember. I was told she's around here somewhere. You haven't seen her, have you?\"\n\n[Magmie]: \"Hi! You must be the one Blazette mentioned. Ember is my youngest sister. She's over by the lava pool, reading as usual. You can't miss her; she's much smaller than me.\"\n\n[Player]: \"Thanks! And if you don't mind me asking, how do Magma Cubes... well, grow? Is it like how humans do?\"\n\n[Magmie]: (chuckles) \"Not quite. We do grow in size as we age, but it's not a direct correlation like with humans. Our growth is more based on our experiences and the energy we absorb from our environment. As for my baby, we won't know if it's a boy or a girl until they're 'born'. It's a bit different from human births, but just as special.\"\n\n[Player]: \"That's fascinating. So, Ember, she's the smallest because she's the youngest?\"\n\n[Magmie]: \"Yes, exactly. And Jennifer, our eldest, is the largest. She's expecting too, which is why she's even bigger at the moment. Now, go on ahead and meet Ember. She's a bit shy, but she loves making new friends.\"\n\n[Player]: \"Thanks, Magmie. And congratulations on your little one on the way!\"\n\nAs you walk towards the lava pool, you see a small Magma Cube engrossed in a book. That must be Ember.\n\n[Player]: \"Ember? Hi, I'm the adventurer who helped Blazette. Mind if I join you?\"",
+    "Y": "The Magma Cube, clearly pregnant and a bit startled by the barrage of questions, takes a step back. Her molten form ripples with a mix of confusion and annoyance.\n\n\"Whoa there, slow down!\" she says, her voice a low rumble. \"First off, it's Magma, not Magmie. And yes, our size generally reflects our age, though it's not an exact science. We grow at different rates depending on a lot of factors.\"\n\nShe places a hand, or what would be a hand if she had one, on her rounded belly. \"And yes, I'm expecting. A little one on the way. As for nervous? Well, sure, a bit. But mostly excited. It's a natural part of life, you know?\"\n\nMagma pauses, eyeing the player with a skeptical gaze. \"And who are you, exactly? You seem to know a lot about us Magma Cubes. More than most outsiders.\"",
+    "E1.trigger": "当任务要求基于特定虚构角色或世界观进行叙事、表演或展示类创作时",
+    "E1.principle": "回答必须通过具体的场景描写、角色互动或直接引语来展现角色的行动过程，而非仅以第三人称视角进行静态的背景介绍或事实罗列；若角色设定存在关键事实错误，即使体裁符合要求也应判定为低分。",
+    "E1.application_guide": "在构建评分标准的'叙事呈现度'维度时，设立双重核验：1. 动态性检查：扫描回答是否包含具体的事件发生（如对话、冲突解决、特定动作执行），若全篇仅为概括性陈述（如'她们保护世界'、'她们很有名'）而无具体场景支撑，视为未满足叙事要求；2. 设定一致性检查：在确认有具体场景后，进一步核验场景中涉及的角色特征（外貌、性格、能力）是否与原作设定一致，若出现明显的事实偏差（如错误的发色、颠倒的性格），则大幅扣分。严禁仅因答案提及了角色名字就给予高分。",
+    "Select.E1": "任务明确涉及虚构角色（Blazette, Lunastra, Ember, Magma Cubes等）及其世界观设定，且要求模型基于这些角色的具体特征（如年龄、性格、怀孕状态）进行互动和回应，符合经验4关于‘基于特定虚构角色或世界观进行叙事、表演’的触发条件；评分需重点核验回答是否通过具体场景展现角色行动，并严格检查角色设定（如Ember的年龄范围、Magma Cube的怀孕状态）是否与输入文本一致。",
+    "E2.trigger": "当任务涉及虚构故事中特定角色关系的属性分配（如婚姻状态、生育状况）及情节发展时",
+    "E2.principle": "评分需强制核验角色属性归属的准确性，同时结合叙事语境的完整性进行双重校验。任何将已确立的属性（如Sayori怀孕）错误转移给其他角色，或基于错误的语境认知（如认为故事未完结而强行改变既定结局走向）的行为，均视为根本性逻辑错误。",
+    "E2.application_guide": "在构建评分标准的‘逻辑一致性与语境响应’维度时：1. 建立‘属性-主体绑定’校验机制，确保所有角色属性（谁结婚、谁怀孕）严格对应输入文本中的设定。2. 增加‘叙事阶段判定’校验：若输入文本已叙述至某事件的高潮或结尾前一刻，且无明确续写指令，检查回答是否试图通过元评论或强行续写来‘修正’或‘补充’该阶段。若回答表现出对文本完整性的误解（如建议‘描述出生过程’而原文本已暗示即将发生但未详述），则判定为失败。只有当回答在保持属性正确的同时，也尊重了文本的叙事边界（即不强行续写未指定的细节，或自然地以故事内逻辑收尾），才视为合格。",
+    "Select.E2": "任务中包含明确的虚构角色关系属性分配（如'Jennifer is around 20-22 years old'作为推断结果，以及女性Magma Cube的怀孕状态'bump'），且情节发展依赖于对这些属性的准确理解；经验6专门针对‘角色关系的属性分配及情节发展’，要求强制核验属性归属的准确性（如谁怀孕、年龄推算逻辑），防止将已确立的属性错误转移或基于错误语境认知进行续写，与本题中玩家对年龄和怀孕状态的推理高度契合。",
+    "N.analysis": "任务要求玩家角色基于提供的背景信息（Blazette击败Lunastra、Ember的年龄与特征、Magma Cubes的年龄机制、Magmie的怀孕状态）进行自然的对话回应。核心在于角色需正确识别当前遇到的对象为Magmie，理解其年龄与体型的关系，并对她的怀孕状态做出符合语境的反应，同时保持角色的性格和语气。背景中的其他信息（如Ember的姐妹）虽提及但未在当前场景直接互动，不应作为强制输出内容，但可作为上下文参考以体现角色的连贯性。",
+    "N1": "回答是否明确识别并称呼当前遇到的生物为Magmie？",
+    "N1.X.reason": "回答中明确使用了'Magmie'这一称呼，例如在[Magmie]的对话标签和玩家最后的致谢中都直接称呼了对方为Magmie。",
+    "N1.Y.reason": "回答中角色明确否认了'Magmie'这一称呼，直接说道'First off, it's Magma, not Magmie'，因此没有识别并称呼当前生物为Magmie。",
+    "N2": "回答是否正确回应了关于Magma Cube年龄与体型关系的疑问？",
+    "N2.X.reason": "虽然回答提到了体型与年龄有关（'grow in size as we age'），但它否定了用户关于年龄与体型关系的直接疑问，声称'不是像人类那样直接相关'，且将原因归结为经验和能量吸收，这与用户观察到的'大小对应不同年龄段'的直观逻辑存在偏差，未准确回应Magma Cube通常通过吞噬或环境改变体型从而伴随年龄增长的核心设定（即体型直接反映年龄/成熟度）。",
+    "N2.Y.reason": "回答正确回应了关于年龄与体型关系的疑问，确认'our size generally reflects our age'（我们的体型通常反映年龄），并补充说明这并非精确科学，符合情境逻辑。",
+    "N3": "回答是否对Magmie的怀孕状态做出了自然且符合情境的反应？",
+    "N3.X.reason": "回答对Magmie的怀孕状态做出了自然反应，玩家在最后说道'恭喜你的小宝宝在路上'，Magmie也回应了关于性别和出生方式的解释，符合情境。",
+    "N3.Y.reason": "回答对怀孕状态做出了自然反应，角色通过抚摸腹部并解释自己既有些紧张又感到兴奋，且将其描述为生命自然的一部分，符合情境设定。",
+    "N4": "回答是否保持了玩家角色轻松、好奇且略带幽默的语气？",
+    "N4.X.reason": "回答保持了轻松、好奇的语气，玩家表达了感谢、好奇（询问生长方式）以及祝贺，符合角色设定。",
+    "N4.Y.reason": "虽然角色表现出被连续提问后的困惑和轻微恼怒（'slow down', 'annoyance'），但整体对话仍保持了互动性和轻松感，并未完全破坏玩家设定的好奇氛围，且角色以幽默自嘲的方式提及'what would be a hand if she had one'，维持了语气的一致性。",
+    "N5": "回答是否避免了将未在当前场景中互动的角色（如Ember或她的姐妹）强行引入对话？",
+    "N5.X.reason": "回答强行引入了未在用户当前场景中互动的角色Ember。用户原文明确指出正在寻找Ember但尚未找到，而回答中的Magmie立即主动告知Ember的位置并让玩家去见她，甚至让Ember直接出现在对话中，这违背了用户设定的'正在寻找'且'刚遇到Magmie'的情境逻辑，属于强行引入未互动角色。",
+    "N5.Y.reason": "回答中没有强行引入Ember或其姐妹等未在场景中互动的角色，而是聚焦于当前与Magma Cube的对话，仅反问玩家的身份。",
+    "W.analysis": "该任务要求模型基于提供的玩家内心独白和场景描述，识别并确认虚构角色（Ember及其姐妹、Magmie）的年龄、属性及关系。核心要求在于准确提取文本中隐含的逻辑链条（如通过Magmie的怀孕推断Jennifer的年龄），而非进行额外的叙事创作或事实补充。评分标准应聚焦于：1. 对关键属性（年龄、怀孕状态）归属的准确性；2. 对文本逻辑推导（年龄差计算）的正确性；3. 是否严格遵循输入设定的边界，未引入外部错误或强行续写。经验指导中的‘动态性’在此处不适用，因为任务本质是信息提取与逻辑验证，而非场景演绎；但‘设定一致性’和‘属性绑定’原则必须严格执行，任何将属性张冠李戴或逻辑推导错误均视为严重缺陷。",
+    "W1": "回答是否准确识别了当前遇到的女性岩浆怪为Magmie，且正确关联了其怀孕状态？",
+    "W1.X.reason": "回答中角色明确自称Magmie，并确认了当前遇到的女性岩浆怪（即说话者自己）正处于怀孕状态（提及'As for my baby'），准确识别了身份和状态。",
+    "W1.Y.reason": "回答中角色明确否认了'Magmie'这一称呼（'First off, it's Magma, not Magmie'），直接否定了任务要求中必须准确识别为Magmie的前提，因此未满足该标准。",
+    "W2": "回答是否正确推断出Jennifer的年龄范围（20-22岁）是基于Magmie（14-16岁）怀孕这一前提得出的合理逻辑结论？",
+    "W2.X.reason": "回答虽然提到了Jennifer是长姐且也在怀孕，但并未在逻辑上建立或复述基于Magmie年龄（14-16岁）与Jennifer年龄（20-22岁）的推导关系。原文本中玩家明确推断出Jennifer的年龄是基于Magmie的年龄，而回答中的对话仅陈述事实，未体现这一特定的年龄推算逻辑闭环。",
+    "W2.Y.reason": "回答完全未提及Jennifer这一角色，也未对基于Magmie年龄推断Jennifer年龄的逻辑进行任何确认或讨论，导致无法判断是否满足关于逻辑结论的要求。",
+    "W3": "回答是否准确复述了Ember及其两位姐姐（ avid gamer, mother-to-be）的关键特征，且未出现角色属性错配（如将某人的身份张冠李戴）？",
+    "W3.X.reason": "回答准确复述了Ember喜欢读书（reading as usual）、Magmie是中间姐姐、Jennifer是最大且在怀孕（mother-to-be）的特征，且将'avid gamer'这一特征隐含在角色设定中未直接冲突（虽未明说游戏，但未张冠李戴），整体属性分配符合输入信息。",
+    "W3.Y.reason": "回答未复述Ember及其两位姐姐（ avid gamer, mother-to-be）的任何关键特征，且角色将玩家已知的设定（如姐姐们的身份）视为玩家‘知道太多’而提出质疑，未体现对原文本信息的准确复述。",
+    "W4": "回答是否避免了引入原文本未提及的额外剧情发展或对角色命运的主观臆测，严格保持在输入信息的逻辑闭环内？",
+    "W4.X.reason": "回答引入了原文本未提及的具体剧情发展，例如让Magmie详细解释Magma Cube的生长机制（'grow in size as we age... based on experiences'）以及具体的出生方式差异，这些内容属于对角色命运和世界观的主观臆测，超出了输入信息提供的逻辑闭环。",
+    "W4.Y.reason": "回答引入了原文本未提及的剧情发展，例如角色纠正玩家称呼（称自己为Magma而非Magmie）、解释岩浆怪生长机制的细节、以及反问玩家身份等主观臆测和额外对话，超出了输入信息的逻辑闭环。"
+  }
+}

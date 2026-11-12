@@ -1,0 +1,11 @@
+### Result
+{
+  "nodes": 26,
+  "overlaps": 0,
+  "width": 1440,
+  "scroll": 1440
+}
+### Ran Playwright code
+```js
+await page.evaluate('() => {const n=[...document.querySelectorAll(".graphnode")],b=n.map(e=>e.querySelector("rect").getBoundingClientRect());let overlaps=0;for(let i=0;i<b.length;i++)for(let j=0;j<i;j++)if(Math.min(b[i].right,b[j].right)>Math.max(b[i].left,b[j].left)+0.5&&Math.min(b[i].bottom,b[j].bottom)>Math.max(b[i].top,b[j].top)+0.5)overlaps++;return {nodes:n.length,overlaps,width:innerWidth,scroll:document.documentElement.scrollWidth};}');
+```

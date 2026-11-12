@@ -1,0 +1,73 @@
+{
+  "status": "valid",
+  "input_index": 285,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 285,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "supported",
+        "reason": "Task 明确设定 Yuri 怀孕且即将分娩，Amatsu 为弟弟。经验 E1 要求核验属性归属，此前提与任务文本完全一致，可直接用于评分逻辑校验。",
+        "refs": [
+          "TASK",
+          "Select.E1"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "mixed",
+        "reason": "Task 涉及角色关系与生育情节，支持 E2 的触发条件。但 E2 强调‘尊重叙事边界’（不强行续写），而 Task 结尾已明确‘被带回俱乐部’，若回答跳过此节点则属违背边界，需结合具体回答判断是否违规。",
+        "refs": [
+          "TASK",
+          "Select.E2",
+          "W2.X.reason"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "N1.X.reason",
+          "W2.X.reason"
+        ],
+        "note": "N 路径标准 N1 和 W 路径标准 W2 均指出回答错误地跳过了‘被带回俱乐部’的情节，直接在救护车分娩。这显示经验 E2 中关于‘叙事边界’的约束在本题中是核心冲突点，而非泛泛的背景信息。"
+      },
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "N2.X.reason",
+          "N2.Y.reason"
+        ],
+        "note": "由于回答未承接‘返回俱乐部’的前提，导致 N 路径标准 N2（解释为何不能在车内分娩）无法被正确评估。回答的逻辑直接否定了 N2 存在的前提，使得该标准在对比中失效或产生误判。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "N5.X.reason",
+          "N5.Y.reason"
+        ],
+        "note": "N5 的 Y 理由称回答引入‘不合逻辑的医疗处置’，理由是它否定了任务设定的‘被迫返回’前提。这实际上是场景选择错误（Scope Issue），而非单纯的医疗逻辑错误，Judge 将场景偏离归因为医疗严谨性可能混淆了问题性质。"
+      },
+      {
+        "kind": "useful_check",
+        "refs": [
+          "W1.X.reason",
+          "W1.Y.reason"
+        ],
+        "note": "W1 标准严格核验了‘Yuri 是唯一分娩者’的属性绑定，确认其他角色无此属性。这是 E1 经验的核心应用，且在两个回答中均得到满足，证明该校验机制在当前案例中有效且必要。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "W4.X.reason",
+          "W4.Y.reason"
+        ],
+        "note": "W4 标准提到‘未强行跳跃到产后细节’，但 X 和 Y 的理由主要聚焦于地点错误（救护车 vs 俱乐部）。对于‘产后细节’这一具体维度的判定依据在理由中不够清晰，难以确定 Judge 是否真正区分了地点错误与时间线跳跃。"
+      }
+    ],
+    "limit": "无法确认回答中‘救护车分娩’是故意改写结局还是对‘水袋破裂’指令的误读；无法仅凭现有文本确认医疗处置的具体专业标准是否被违反。"
+  }
+}

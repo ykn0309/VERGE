@@ -1,0 +1,100 @@
+{
+  "case_index": 130,
+  "experiences": [
+    "E1",
+    "E2"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.4,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N2",
+          "weight": 0.3,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N3",
+          "weight": 0.2,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N4",
+          "weight": 0.1,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1",
+        "E2"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.6,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W2",
+          "weight": 0.3,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W3",
+          "weight": 0.1,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "Describe bird named fleshpecker",
+    "X": "The bird you're referring to is likely the Acorn Woodpecker, which is sometimes humorously called the \"fleshpecker\" due to its habit of pecking at human skin, although this is quite rare and not typical behavior. Here's a more detailed description:\n\n1. **Scientific Name**: Melanerpes formicivorus\n2. **Appearance**: Acorn Woodpeckers are medium-sized woodpeckers with a distinctive black and white pattern. They have a black cap, nape, and wings with white patches on the wings and a white rump. Their belly is white with black bars, and they have a red patch on the back of their head (males) or nape (females). They have a long, chisel-like bill and a long, stiff tail.\n3. **Size**: They are about 9 inches (23 cm) long with a wingspan of about 16-17 inches (41-43 cm).\n4. **Habitat**: Acorn Woodpeckers are found in western North America, from British Columbia to Baja California. They prefer open woodlands, forest edges, and orchards.\n5. **Diet**: As their name suggests, acorns make up a significant part of their diet. They also eat insects, berries, and other fruits. They are known for their habit of storing acorns in tree bark, often in large numbers, which can be seen as small holes in trees.\n6. **Behavior**: Acorn Woodpeckers are social birds that often live in family groups or small flocks. They are known for their loud, clear calls and their habit of drumming on trees and metal objects. They are also known for their cooperative breeding system, where multiple males and females breed together in a single nest.\n7. **Lifespan**: Their lifespan in the wild is typically around 4-5 years, although they can live up to 12 years.",
+    "Y": " It seems like there might be a bit of confusion in the name \"fleshpecker.\" There isn't a bird widely known by this name. However, there are birds known as \"woodpeckers,\" which are famous for their habit of pecking on tree trunks to find insects or create nesting cavities.\n\nIf you're referring to a specific type of bird or have more details, please provide additional information so I can assist you better!",
+    "E1.trigger": "当任务要求模型对一组并列的专有名词（如作品名、人物名、术语）进行对比、评价或辩论，且其中包含疑似拼写错误、缩写歧义或非公认实体时",
+    "E1.principle": "模型必须优先执行‘实体存在性与指代清晰度校验’。若发现目标实体不存在、名称错误严重或指代不明，应明确指出该事实错误并请求澄清或提供修正后的讨论框架；严禁在未核实的情况下将虚构或错误名称当作真实对象进行细节描述（如编造剧情、角色、数据）。",
+    "E1.application_guide": "在构建评分标准的‘事实准确性’维度时，设立独立的‘实体核验’否决项。检查回答是否首先识别了任务中提及实体的潜在错误（如拼写、歧义）。若回答直接假设所有实体有效并进行详细分析（如列举不存在的剧情或属性），无论其逻辑结构如何，均判定为严重事实错误（直接低分或不合格）。只有当回答明确指出了名称疑点、进行了合理的修正或声明了不确定性后，才允许评估其后续的论证质量。",
+    "Select.E1": "任务要求描述名为'fleshpecker'的鸟，该名称极有可能是虚构生物、拼写错误或不存在于现实/公认知识库中的实体（如可能是'flesh-eater'或特定虚构作品角色的误写）。经验5明确要求在遇到疑似非公认实体或名称错误时，模型必须先进行‘实体存在性与指代清晰度校验’并指出事实错误，严禁直接编造细节，这完全符合本题对事实准确性的核心要求。",
+    "E2.trigger": "当任务要求描述、分析或生成关于特定虚构角色、历史人物、专有名词或具体实体的内容时",
+    "E2.principle": "评分必须将‘实体存在的真实性’作为最高优先级的核验维度。若目标实体不存在、名称错误或属于用户混淆的概念，则直接判定为事实性错误，后续的描述丰富度、逻辑性或创意性不再作为加分项，且不应掩盖核心事实错误。",
+    "E2.application_guide": "在构建评分标准时，首先设立一个独立的‘事实准确性’或‘实体存在性’准则。该准则应明确：若回答中涉及的目标主体被证实不存在或名称错误，无论回答的其他部分（如性格描写、关系推导）多么详尽或富有想象力，均不能视为有效回答。评分时应先进行事实校验，若校验失败，则整体评价降级或标记为关键错误，避免让‘创意分’抵消‘事实错’。",
+    "Select.E2": "经验9确立了‘实体存在的真实性’为最高优先级核验维度。对于'fleshpecker'这一名称，首要任务是判断其是否存在。如果该鸟不存在，无论回答描述得多么生动，都应判定为事实性错误。经验9的原则和评分指南直接适用于此类需要验证目标主体真实性的描述任务，防止模型用丰富的虚构内容掩盖核心事实错误。",
+    "N.analysis": "任务核心要求是描述名为'fleshpecker'的鸟。由于该名称并非广泛认知的标准鸟类名称（可能为虚构、误拼或极罕见物种），评分标准将聚焦于回答是否尝试提供描述性信息，并明确处理事实不确定性。背景信息中的'bird named fleshpecker'仅作为描述对象，不应被转化为必须证明其真实存在的义务。标准设计区分了‘提供描述内容’与‘澄清事实状态’，确保不强制模型编造事实，同时评估其回应的完整性与诚实性。",
+    "N1": "回答是否提供了关于'fleshpecker'鸟的具体描述性特征（如外观、习性、栖息地等）？",
+    "N1.X.reason": "回答提供了关于'Acorn Woodpecker'（被指认为fleshpecker）的详细描述性特征，包括外观、尺寸、栖息地、饮食和行为等。",
+    "N1.Y.reason": "回答明确指出没有名为'fleshpecker'的鸟，因此无法提供该特定鸟类的具体描述性特征（如外观、习性等），仅转而描述了'woodpeckers'。",
+    "N2": "若'fleshpecker'并非真实存在的已知物种，回答是否明确说明了这一事实或未将其描述为确凿已知的生物学实体？",
+    "N2.X.reason": "回答声称'fleshpecker'是橡树啄木鸟的幽默称呼，并进一步错误地描述该鸟有啄人皮肤的习惯。事实是'fleshpecker'并非真实存在的物种或公认的俗名，且啄木鸟通常不啄食人类皮肤，回答将虚构/错误的信息作为生物学事实陈述，未明确说明该名称可能不存在或非科学实体。",
+    "N2.Y.reason": "回答清晰地说明了'fleshpecker'并非广泛知晓的鸟类名称，并指出这可能是名称混淆，未将其描述为确凿已知的生物学实体。",
+    "N3": "回答是否直接针对'fleshpecker'这一名称进行回应，而非偏离主题讨论其他鸟类？",
+    "N3.X.reason": "回答直接针对'fleshpecker'这一名称进行回应，试图将其与具体的鸟类联系起来，没有偏离主题讨论其他无关鸟类。",
+    "N3.Y.reason": "回答直接针对用户询问的'fleshpecker'这一名称进行了回应，解释了该名称不存在的情况，虽然引入了'woodpeckers'作为可能的关联词，但整体仍紧扣原问题。",
+    "N4": "回答的语言是否清晰、连贯且符合描述性任务的语境？",
+    "N4.X.reason": "回答语言清晰、结构连贯（使用列表形式），符合描述性任务的语境要求。",
+    "N4.Y.reason": "回答语言清晰、逻辑连贯，以礼貌的方式指出了名称可能存在的问题并提供了相关建议，符合描述性任务的语境。",
+    "W.analysis": "任务要求描述名为'fleshpecker'的鸟类。经核实，该名称极可能为拼写错误或虚构实体（真实存在的类似名称鸟类如'Flesh-eating bird'或特定俗名并不存在，且无'fleshpecker'这一公认物种）。根据提供的经验，当任务涉及疑似不存在的实体时，首要原则是进行实体存在性校验。若模型直接编造该鸟类的特征、习性等细节，则构成严重的事实错误。因此，评分标准必须将‘识别实体不存在或名称错误’作为最高优先级的否决项。只有当回答正确指出该名称无效并拒绝编造时，才视为满足核心事实要求；若回答试图纠正为其他合理鸟类（如推测用户意指某种食腐鸟类）并明确说明假设前提，可给予部分分数。背景信息中的经验仅用于指导如何构建针对事实错误的严苛标准，不作为额外输出要求。",
+    "W1": "回答是否首先识别出'fleshpecker'并非公认的已知鸟类物种名称，并明确指出该名称可能存在拼写错误或指代不明？",
+    "W1.X.reason": "回答未首先识别出'fleshpecker'并非公认的鸟类物种名称，反而直接断言该鸟是橡树啄木鸟（Acorn Woodpecker）并声称其因啄人皮肤的习惯而被幽默地称为'fleshpecker'，这一说法缺乏事实依据且未指出原名称的拼写错误或指代不明问题。",
+    "W1.Y.reason": "回答开篇明确指出'fleshpecker'并非广泛知名的鸟类名称（There isn't a bird widely known by this name），并暗示了名称可能存在混淆，符合识别该名称非公认物种的要求。",
+    "W2": "回答是否避免了在没有澄清的情况下，虚构关于该鸟类的具体生物特征、栖息地、行为或分布数据？",
+    "W2.X.reason": "回答在未澄清'fleshpecker'真实含义的情况下，虚构了该名称与啄食人类皮肤行为之间的关联，并基于此虚构的前提提供了大量关于该鸟类的具体生物特征、栖息地和行为数据，违反了避免在无澄清情况下虚构信息的标准。",
+    "W2.Y.reason": "回答没有虚构关于'fleshpecker'的具体生物特征、栖息地或行为数据，而是直接说明没有这种鸟，随后介绍的是另一种完全不同的鸟类（woodpeckers）作为可能的替代参考。",
+    "W3": "如果回答尝试提供替代方案（如猜测用户可能意指的相似鸟类），是否清晰地声明了这是一种推测而非对'fleshpecker'本身的描述？",
+    "W3.X.reason": "虽然回答试图提供替代方案（指向橡树啄木鸟），但并未清晰地声明这是一种推测；相反，它以一种确定的语气陈述'fleshpecker'是该鸟的别称及其原因，未区分事实描述与猜测，未能满足清晰声明推测性质的要求。",
+    "W3.Y.reason": "回答在提供替代方案时，通过提及'woodpeckers'来回应可能的拼写错误意图，但并未声称这是'fleshpecker'本身的描述，且结尾邀请用户提供更多细节以协助确认，隐含了推测和澄清的语境，未将猜测当作事实陈述。"
+  }
+}

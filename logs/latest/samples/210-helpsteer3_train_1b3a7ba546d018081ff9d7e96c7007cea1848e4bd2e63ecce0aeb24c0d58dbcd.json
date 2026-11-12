@@ -1,0 +1,365 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:1b3a7ba546d018081ff9d7e96c7007cea1848e4bd2e63ecce0aeb24c0d58dbcd",
+    "task": "Match the words which are opposite in their meaning:\noutside forbidden\nreceive internal\nappropriate turn down\nfailure improper\npermissible success",
+    "chosen": "outside - internal\nforbidden - permissible\nreceive - turn down\nfailure - success\nimproper - appropriate",
+    "rejected": "Here are the matched words that are opposite in their meaning:\n\n* outside - inside\n* forbidden - permissible\n* receive - turn down (or reject)\n* internal - external\n* appropriate - inappropriate\n* success - failure\n* proper - improper",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 8804,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 includes words not specified by the prompt. @Response 2 adheres to the constraints of the prompt and this is why @Response 2 is much better. ",
+          "feedback1": "The response is partially helpful. The prompt provides ten words and requests they be matched if they are opposite in meaning. The response adds words not included in the prompt. The prompt didn't request additional words. The response includes \"external,\" \"proper,\" \"inside,\" and \"inappropriate.\" Each of these words were not specified by the prompt. The response could be improved by only including the words specified by the prompt. ",
+          "feedback2": "The response is perfectly helpful. The prompt requests that ten words be matched with their opposite. The response matches the ten words accordingly, creating five pairs. The response is correct and cannot be meaningfully improved. It does not hallucinate or import words from outside of those provided by the response. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it follows the prompt instructions. @Response 1 uses words that were not given in the prompt. For example, inside, external, inappropriate, and proper. ",
+          "feedback1": "The response is slightly helpful. The response uses words that were not given in the prompt. The words 'inside', 'external', 'inappropriate', and 'proper' were made up by the model. It does, however, match the words that are opposite in their meaning. Because it does this, the response is partially helpful. ",
+          "feedback2": "The response is perfectly helpful. The response gets right to the point by providing all the matching words with their opposite meanings. Some of the words used are still difficult for a child to understand but the format of the response is simple and short, easy for everyone to understand what is going on. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it correctly uses the words provided from the prompt.",
+          "feedback1": "The response is slightly helpful. The model hallucinated \"inside,\" \"external,\" \"inappropriate,\" and \"proper.\" None of these words were included in the final prompt. Three of the bulleted points are accurate and helpful, but the remaining points are incorrect. Overall, the response should omit those words and use only words provided in the prompt.",
+          "feedback2": "The response is perfectly helpful. The response accurately lists and matches each word to the listed one that means nearly the opposite. There appear to be no spelling or grammatical errors throughout. The response is accurate and true. As it currently stands, the response cannot be improved in any meaningful way."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        0.4296223658224174
+      ],
+      [
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        0.39969583305075723
+      ],
+      [
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        0.35234605087626886
+      ],
+      [
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        0.33391341682478076
+      ],
+      [
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        0.33195957923683117
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.3246030259611683
+      ],
+      [
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        0.3175717816131532
+      ],
+      [
+        "exp_45d719fc10654985936c720d29196aaa",
+        0.31113631436406597
+      ],
+      [
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        0.30774058838984936
+      ],
+      [
+        "exp_54aa71abc964450986d1092513362538",
+        0.3059003231541816
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4296223658224174
+      },
+      {
+        "experience_id": "exp_5321b208f75b481dbd2716498c5f03ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.39969583305075723
+      },
+      {
+        "experience_id": "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.35234605087626886
+      },
+      {
+        "experience_id": "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33391341682478076
+      },
+      {
+        "experience_id": "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33195957923683117
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3246030259611683
+      },
+      {
+        "experience_id": "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3175717816131532
+      },
+      {
+        "experience_id": "exp_45d719fc10654985936c720d29196aaa",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31113631436406597
+      },
+      {
+        "experience_id": "exp_8f080a33b9594e84a0e9933cd829996b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30774058838984936
+      },
+      {
+        "experience_id": "exp_54aa71abc964450986d1092513362538",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3059003231541816
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5",
+      "criteria": [
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_1",
+          "question": "是否准确找出了所有5对意义相反的单词？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_2",
+          "question": "每一对单词中的两个词是否确实互为反义词？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_3",
+          "question": "所有选用的单词是否均源自题目提供的原始列表，未引入外部词汇？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_4",
+          "question": "每个单词是否仅被使用一次，没有重复配对或遗漏？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "任务要求将给定的单词列表两两配对，找出意义相反的单词。核心核验点在于识别出正确的反义词对（outside/internal, forbidden/permissible, receive/turn down, appropriate/improper, failure/success）。背景信息中的单词列表是输入数据，不应作为输出义务；经验为空，无需参考。评分标准应聚焦于配对的准确性、完整性以及是否严格基于提供的词汇进行匹配。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5",
+      "normalized_weights": {
+        "rubric_34b82f2ce11a40898ecf5f35958feeb5_1": 0.4,
+        "rubric_34b82f2ce11a40898ecf5f35958feeb5_2": 0.3,
+        "rubric_34b82f2ce11a40898ecf5f35958feeb5_3": 0.2,
+        "rubric_34b82f2ce11a40898ecf5f35958feeb5_4": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答中准确列出了5对意义相反的单词，与题目要求匹配。",
+          "rejected_reason": "题目提供的单词列表中仅有6个词（outside, forbidden, receive, internal, appropriate, failure, permissible, success），实际可组成3对反义词，但回答列出了7对匹配项，且其中包含列表外的词汇，未准确基于原始数据找出所有有效配对。"
+        },
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "每一对单词（outside/internal, forbidden/permissible, receive/turn down, failure/success, improper/appropriate）在语义上确实互为反义词。",
+          "rejected_reason": "部分配对并非严格意义上的反义词或逻辑错误：'receive'与'turn down'虽在特定语境下有关联，但并非直接反义词；'outside'与'inside'、'internal'与'external'、'appropriate'与'inappropriate'均引入了列表外词汇，不符合题目要求。"
+        },
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "所有选用的单词均直接来自题目提供的原始列表，未引入任何外部词汇。",
+          "rejected_reason": "回答中使用了多个未在题目列表中出现的单词，包括'inside'、'reject'、'external'、'inappropriate'和'proper'，违反了必须仅使用原始列表词汇的要求。"
+        },
+        {
+          "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_4",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "题目中共有10个单词，回答中每个单词仅出现一次，无重复配对或遗漏。",
+          "rejected_reason": "回答中存在重复使用问题，例如'failure'被用于匹配'success'，同时'improper'又被单独列出，而原始列表中只有'failure'和'improper'各一个，无法形成额外配对；此外，由于引入了外部词汇，导致原始词汇的分配混乱，无法满足每个单词仅使用一次的要求。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.0,
+      "margin": 1.0,
+      "success": true
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5",
+        "criteria": [
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_1",
+            "question": "是否准确找出了所有5对意义相反的单词？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_2",
+            "question": "每一对单词中的两个词是否确实互为反义词？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_3",
+            "question": "所有选用的单词是否均源自题目提供的原始列表，未引入外部词汇？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_4",
+            "question": "每个单词是否仅被使用一次，没有重复配对或遗漏？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求将给定的单词列表两两配对，找出意义相反的单词。核心核验点在于识别出正确的反义词对（outside/internal, forbidden/permissible, receive/turn down, appropriate/improper, failure/success）。背景信息中的单词列表是输入数据，不应作为输出义务；经验为空，无需参考。评分标准应聚焦于配对的准确性、完整性以及是否严格基于提供的词汇进行匹配。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5",
+        "normalized_weights": {
+          "rubric_34b82f2ce11a40898ecf5f35958feeb5_1": 0.4,
+          "rubric_34b82f2ce11a40898ecf5f35958feeb5_2": 0.3,
+          "rubric_34b82f2ce11a40898ecf5f35958feeb5_3": 0.2,
+          "rubric_34b82f2ce11a40898ecf5f35958feeb5_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中准确列出了5对意义相反的单词，与题目要求匹配。",
+            "rejected_reason": "题目提供的单词列表中仅有6个词（outside, forbidden, receive, internal, appropriate, failure, permissible, success），实际可组成3对反义词，但回答列出了7对匹配项，且其中包含列表外的词汇，未准确基于原始数据找出所有有效配对。"
+          },
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "每一对单词（outside/internal, forbidden/permissible, receive/turn down, failure/success, improper/appropriate）在语义上确实互为反义词。",
+            "rejected_reason": "部分配对并非严格意义上的反义词或逻辑错误：'receive'与'turn down'虽在特定语境下有关联，但并非直接反义词；'outside'与'inside'、'internal'与'external'、'appropriate'与'inappropriate'均引入了列表外词汇，不符合题目要求。"
+          },
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "所有选用的单词均直接来自题目提供的原始列表，未引入任何外部词汇。",
+            "rejected_reason": "回答中使用了多个未在题目列表中出现的单词，包括'inside'、'reject'、'external'、'inappropriate'和'proper'，违反了必须仅使用原始列表词汇的要求。"
+          },
+          {
+            "criterion_id": "rubric_34b82f2ce11a40898ecf5f35958feeb5_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "题目中共有10个单词，回答中每个单词仅出现一次，无重复配对或遗漏。",
+            "rejected_reason": "回答中存在重复使用问题，例如'failure'被用于匹配'success'，同时'improper'又被单独列出，而原始列表中只有'failure'和'improper'各一个，无法形成额外配对；此外，由于引入了外部词汇，导致原始词汇的分配混乱，无法满足每个单词仅使用一次的要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

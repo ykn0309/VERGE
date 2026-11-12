@@ -1,0 +1,56 @@
+{
+  "status": "valid",
+  "input_index": 209,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 209,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "supported",
+        "reason": "Task 明确设定 Sayori 怀孕且 MC 为丈夫，符合 E1 触发条件中关于特定关系定义及属性分配的要求。",
+        "refs": [
+          "TASK",
+          "E1.trigger"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "W1",
+          "W2",
+          "W3"
+        ],
+        "note": "路径 W 将 E1 原则转化为具体评分项（W1-W3），强制要求逐条核验属性归属。原任务未显式要求此结构化校验流程，属于增加了执行层面的义务。"
+      },
+      {
+        "kind": "useful_check",
+        "refs": [
+          "W1.Y.reason",
+          "N2.Y.reason"
+        ],
+        "note": "W1 的核验逻辑（确认怀孕者仅为 Sayori）直接对应 Task 核心事实，比 N 路径仅关注情感基调更能有效防止角色属性错配的根本性错误。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "N2.Y.reason",
+          "W4.X.reason"
+        ],
+        "note": "N2 理由称 Y 回答‘未严格遵循剧本格式’，但 Y 回答确实包含对话和动作描写；W4 理由称 X 回答‘未错误归因’，但 X 回答中其他角色的祝福是基于场景延伸，需确认是否算作‘私密计划’的误读。"
+      },
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "E1.application_guide",
+          "W.analysis"
+        ],
+        "note": "E1 应用指南提到‘性格特征’转移也属错误，但 W 路径的评分项（W1-W5）主要聚焦于生理状态和关系定义，未显式包含对性格特征归属的独立核验标准。"
+      }
+    ],
+    "limit": "无法确认 W 路径增加的结构性校验是否优于 N 路径的自然叙事连贯性检查，因两者评估维度不同且无最终输赢标签。"
+  }
+}

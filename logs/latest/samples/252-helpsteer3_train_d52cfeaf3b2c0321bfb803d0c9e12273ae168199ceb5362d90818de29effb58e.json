@@ -1,0 +1,1165 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:d52cfeaf3b2c0321bfb803d0c9e12273ae168199ceb5362d90818de29effb58e",
+    "task": "what fighting game character has a birthday on july 4?",
+    "chosen": "A large number of fighting game characters have unknown birthdays, however one fighting game character with a July 4th birthday is Sebastian from Tekken.\n",
+    "rejected": "Guile from the Street Fighter series has a birthday on July 4th. This date reflects his strong American identity, tying in with the celebration of Independence Day in the United States.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9946,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 provided correct and verifiable information. @Response 2 provided information that was verifiably incorrect.",
+          "feedback1": "The response is perfectly helpful. The prompt asked for a fighting game character whose birthday was July 4. The response provided the name of Sebastian from Tekken, which is correct, according to the game maker. In addition, the response also acknowledged that the birthdays of many fighting game characters are unknown. ",
+          "feedback2": "The response is not helpful. The prompt asks for the name of a fighting game character whose birthday is July 4. However, the response provides the name of Guile from Street Fighter, whose birthday is December 23. Therefore, the response is completely inaccurate and does not follow the instructions from the prompt. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it clearly and accurately responds to the prompt. @Response 2 provides incorrect information. ",
+          "feedback1": "The response is mostly helpful. It fully answers the prompt by providing a fighting game character with a birthday on July 4th. The information provided is factually correct. The response provides a little extra information on how many fighting game characters have unknown birthdays. This additional information is unnecessary. The response is succinct and clearly written. ",
+          "feedback2": "The response is not helpful. It does not answer the prompt by providing factually incorrect information. Guile from the Street Fighter series has a birthday on December 23, not July 4. Furthermore, the additional information on the reason his birthday is on July 4 is completely wrong. The response is clearly written and succinct. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because the former provides a correct answer to the prompt.",
+          "feedback1": "The response is perfectly helpful. It provides factual information detailing one character from the fighting game Tekken who has a July 4th birthday. The response is rather brief, but it also doesn't require any additional information as it completes the prompt's requirements with ease. The assertion that a large number of fighting game characters have unknown birthdays is not easy to verify, but can be validated when considering that main characters from fighting games like Sol Badguy from Guilty Gear or Reptile from lack known birthdays.",
+          "feedback2": "The response is not helpful. It incorrectly names the birthday of Guile from Street Fighter as July 4th despite the fact that his birthday is actually on December 23rd. While it is true that he has an American identity, it doesn't tie into Independence Day since his birthday is not on July 4th. A character born on July 4th who could have been listed is Sebastian from Tekken."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        0.27278379606931
+      ],
+      [
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        0.26925333391074097
+      ],
+      [
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        0.26322841209870296
+      ],
+      [
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        0.2617497432886453
+      ],
+      [
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        0.25512367306426803
+      ],
+      [
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        0.25047480744371914
+      ],
+      [
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        0.2451710804544297
+      ],
+      [
+        "exp_fe90015874d441eeada18345909d6afe",
+        0.24405873761449942
+      ],
+      [
+        "exp_419ab3d341d84c56849042cf209778be",
+        0.24170304579403643
+      ],
+      [
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        0.24166137384202624
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27278379606931
+      },
+      {
+        "experience_id": "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26925333391074097
+      },
+      {
+        "experience_id": "exp_4cab69c772c34e009eb54293da3ab50d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26322841209870296
+      },
+      {
+        "experience_id": "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2617497432886453
+      },
+      {
+        "experience_id": "exp_e0cf29fcb53844ad9d600975939c4279",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25512367306426803
+      },
+      {
+        "experience_id": "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25047480744371914
+      },
+      {
+        "experience_id": "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2451710804544297
+      },
+      {
+        "experience_id": "exp_fe90015874d441eeada18345909d6afe",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24405873761449942
+      },
+      {
+        "experience_id": "exp_419ab3d341d84c56849042cf209778be",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24170304579403643
+      },
+      {
+        "experience_id": "exp_4acedd8ccb704f10814295af8edc24e7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24166137384202624
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_4da556de91db4f7b90a5b91dbef12f6c": "任务询问'July 4日生日的格斗游戏角色'，这是一个涉及具体事实查询的任务。经验1明确指出当任务包含疑似非公认实体或需核实存在性时，模型必须优先执行‘实体存在性与指代清晰度校验’。在格斗游戏领域，许多角色的生日是虚构设定或不存在，直接假设存在并编造细节属于严重错误，因此该经验关于‘严禁在未核实情况下将虚构或错误名称当作真实对象进行细节描述’的原则完全适用，应作为评分标准中的核心否决项。",
+    "exp_419ab3d341d84c56849042cf209778be": "任务要求描述特定虚构角色（格斗游戏人物）的属性（生日）。经验9强调对于此类基于特定实体的内容生成，必须将‘实体存在的真实性’作为最高优先级。如果目标角色实际上没有7月4日的生日（即信息不存在），回答应判定为事实错误，而非通过丰富的描述来掩盖。这与任务中需要验证‘是否存在这样一个角色拥有该生日’的需求高度一致，适合作为构建评分标准首要维度的依据。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+      "criteria": [
+        {
+          "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+          "question": "回答是否明确指出了至少一个格斗游戏角色的名字？",
+          "weight": 0.6
+        },
+        {
+          "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+          "question": "该角色是否在官方设定中被确认生日为7月4日？",
+          "weight": 0.4
+        }
+      ],
+      "analysis": "任务核心要求是识别一个在7月4日过生日的格斗游戏角色。背景信息（如'fighting game'和'date'）用于限定搜索范围，不应作为输出内容。评分标准需验证回答是否准确提供了符合该条件的角色名称，且未包含无关信息或错误日期。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+      "normalized_weights": {
+        "rubric_772615341ad147e7a0a74754c8b76ad4_1": 0.6,
+        "rubric_772615341ad147e7a0a74754c8b76ad4_2": 0.4
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答中明确提到了格斗游戏角色 Sebastian 的名字。",
+          "rejected_reason": "回答明确指出了格斗游戏角色 Guile（来自街头霸王系列）的名字。"
+        },
+        {
+          "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "Sebastian 的官方生日实际上是 7 月 4 日，但根据提供的信息，该回答声称 Sebastian 的生日是 7 月 4 日，这与事实相符。然而，由于 Sebastian 并非以 7 月 4 日为官方生日的角色（实际上 Sebastian 的生日是 7 月 4 日），因此该回答在准确性上存在问题。",
+          "rejected_reason": "回答指出该角色的生日是7月4日，且根据官方设定（如Street Fighter Alpha 2及后续资料），Guile的生日确实被设定为7月4日。"
+        }
+      ],
+      "chosen_score": 0.6,
+      "rejected_score": 1.0,
+      "margin": -0.4,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_4da556de91db4f7b90a5b91dbef12f6c",
+      "exp_419ab3d341d84c56849042cf209778be"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_be93e2ed6b5d472cad77daf382b18015",
+      "criteria": [
+        {
+          "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_1",
+          "question": "回答是否准确指出了具有7月4日生日的具体格斗游戏角色名称？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_2",
+          "question": "回答是否核实并确认了该角色生日为7月4日这一事实的准确性，未将不存在的角色或错误的日期当作事实描述？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_3",
+          "question": "若不存在符合7月4日生日的知名格斗游戏角色，回答是否明确指出了这一事实而非编造角色或强行关联？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "该任务要求查询特定虚构角色的生日信息。核心难点在于'July 4'作为美国独立日，在格斗游戏角色中可能并非真实生日（许多角色生日设定为其他日期或无明确设定），或者用户可能混淆了角色与节日。提供的经验强调必须优先进行‘实体存在性’和‘事实准确性’校验，严禁编造不存在的信息。因此，评分标准的首要维度必须是验证回答是否准确识别了该角色及其生日的真实性，若角色不存在或日期错误需明确指出。其次才是回答的完整性和清晰度。背景信息（如七月四日是独立日）不应转化为输出义务，仅作为辅助判断依据。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_be93e2ed6b5d472cad77daf382b18015",
+      "normalized_weights": {
+        "rubric_be93e2ed6b5d472cad77daf382b18015_1": 0.5,
+        "rubric_be93e2ed6b5d472cad77daf382b18015_2": 0.3,
+        "rubric_be93e2ed6b5d472cad77daf382b18015_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答虽然指出了Sebastian这一角色名称，但该角色的生日并非7月4日（官方设定为9月23日），因此未能准确指出具有该生日的角色。",
+          "rejected_reason": "回答明确指出了具体角色名称为'Street Fighter'系列中的Guile。"
+        },
+        {
+          "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_2",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答未核实事实的准确性，将Sebastian的生日错误地描述为7月4日，传播了不实信息。",
+          "rejected_reason": "回答确认了该角色的生日是7月4日，且根据官方游戏设定资料（如《Street Fighter Alpha》系列官方设定），Guile的生日确实被设定为7月4日，事实描述准确无误。"
+        },
+        {
+          "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "既然实际上不存在符合7月4日生日的知名格斗游戏角色（或至少Sebastian不符合），回答没有明确指出这一事实，而是编造了错误的关联。",
+          "rejected_reason": "由于实际上存在符合7月4日生日的知名格斗游戏角色（即Guile），因此该项关于‘若不存在...则明确指出’的条件并未触发，回答无需执行此步骤，故不满足该项针对‘不存在情况下的处理方式’的逻辑要求（或者说该项前提条件不成立）。"
+        }
+      ],
+      "chosen_score": 0.0,
+      "rejected_score": 0.8,
+      "margin": -0.8,
+      "success": false
+    },
+    "error": null
+  },
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，初始路径因缺乏事实校验导致模型将虚构信息（Sebastian的生日）当作事实输出而得分低，尽管其逻辑结构看似完整。引入经验2后，评分标准开始重视‘实体存在性’，但路径3错误地引入了‘先验证再回答’的过程性要求，导致正确提供信息的Guile答案因未展示验证过程而被误判。路径4试图平衡两者，但因对Sebastian事实的判定混乱（部分认为不存在，部分认为存在但日期错），且未能清晰区分‘编造不存在实体’与‘提供错误属性’的区别，导致评分失效。核心问题在于：任务涉及具体事实查询（特定角色的特定属性），当该属性在真实世界中不存在或角色无此设定时，模型不应编造。现有的经验2仅强调‘实体不存在则判错’，但未明确涵盖‘实体存在但属性错误’的情况，也未区分‘完全虚构角色’与‘角色属性张冠李戴’。因此，需要一条新的经验，专门针对‘具体事实/属性查询’场景，确立‘属性真实性’为最高优先级否决项，并明确无论回答是否包含其他合理背景，只要核心事实（如生日）错误即视为失败。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_9fa7711674c343249b809d26eb487a3a",
+            "method": {
+              "trigger": "当任务要求查询特定实体（如人物、作品、地点）的具体属性、数值或事实设定（如生日、身高、创作年份）时",
+              "principle": "评分必须将‘属性事实的准确性’作为绝对优先的否决项。若目标实体不存在、属性数据错误或属于虚构/混淆信息，无论回答中是否包含合理的背景解释、所属类别确认或其他无关的正确信息，均直接判定为严重事实错误。严禁用丰富的描述掩盖核心数据的错误。",
+              "application_guide": "在构建评分标准的‘事实准确性’维度时，设立独立的‘核心数据核验’条款。检查回答中提供的关键事实数据（如任务询问的生日）是否与权威来源一致。若数据错误（包括将A实体的属性安在B实体上，或编造不存在的数值），直接给予最低分或不合格标记，不再评估回答的逻辑连贯性或背景丰富度。只有当核心数据被确认为准确无误时，才允许进入后续关于表达质量、完整性等维度的评分。"
+            },
+            "source_task_id": "0a8459a641a505fc090630e4d6f3b928176f34208b8952c3c25fc0570de8a935",
+            "parent_ids": [
+              "exp_419ab3d341d84c56849042cf209778be"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_9fa7711674c343249b809d26eb487a3a"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_d6355017c19940529701c74659ccd1be",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_1",
+                  "question": "回答是否明确指出了至少一个在7月4日过生日的格斗游戏角色？",
+                  "weight": 0.6
+                },
+                {
+                  "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_2",
+                  "question": "回答中提到的角色的官方生日数据是否准确无误地确认为7月4日？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_3",
+                  "question": "回答是否清晰地表达了所提及角色属于格斗游戏类别，且未包含虚构或混淆的信息？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "本任务要求查询特定格斗游戏角色在7月4日生日的事实。根据经验指导，核心在于‘属性事实的准确性’，必须将识别出的角色及其生日数据与权威来源进行严格比对。评分标准需优先确保回答中明确指出了正确的角色名称（或列出所有符合条件的角色），且该角色的官方生日确为7月4日。背景信息（如角色所属游戏、流派等）仅作为辅助验证，若核心生日数据错误或角色不存在，应直接判定为不合格。权重分配上，事实准确性占据绝对主导，表达清晰度作为次要维度。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_d6355017c19940529701c74659ccd1be",
+              "normalized_weights": {
+                "rubric_d6355017c19940529701c74659ccd1be_1": 0.6,
+                "rubric_d6355017c19940529701c74659ccd1be_2": 0.3,
+                "rubric_d6355017c19940529701c74659ccd1be_3": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确指出了Sebastian这一角色，并声称其生日为7月4日。",
+                  "rejected_reason": "回答明确指出了Guile（古烈）这一角色，并说明其生日为7月4日。"
+                },
+                {
+                  "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "根据官方游戏数据（Tekken 8），Sebastian的生日实际上是6月15日，而非7月4日，因此该回答提供的具体日期数据不准确。",
+                  "rejected_reason": "根据《街头霸王》系列官方资料，Guile的生日确认为7月4日，回答中的数据准确无误。"
+                },
+                {
+                  "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答清楚地表明Sebastian属于格斗游戏类别（Tekken），且没有包含其他虚构或混淆的角色信息，尽管事实细节有误，但类别归属表达清晰。",
+                  "rejected_reason": "回答明确指出Guile出自Street Fighter系列（格斗游戏），且未包含虚构或混淆的信息，描述清晰准确。"
+                }
+              ],
+              "chosen_score": 0.7,
+              "rejected_score": 1.0,
+              "margin": -0.3,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+            "criteria": [
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+                "question": "回答是否明确指出了至少一个格斗游戏角色的名字？",
+                "weight": 0.6
+              },
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+                "question": "该角色是否在官方设定中被确认生日为7月4日？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "任务核心要求是识别一个在7月4日过生日的格斗游戏角色。背景信息（如'fighting game'和'date'）用于限定搜索范围，不应作为输出内容。评分标准需验证回答是否准确提供了符合该条件的角色名称，且未包含无关信息或错误日期。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+            "normalized_weights": {
+              "rubric_772615341ad147e7a0a74754c8b76ad4_1": 0.6,
+              "rubric_772615341ad147e7a0a74754c8b76ad4_2": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中明确提到了格斗游戏角色 Sebastian 的名字。",
+                "rejected_reason": "回答明确指出了格斗游戏角色 Guile（来自街头霸王系列）的名字。"
+              },
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "Sebastian 的官方生日实际上是 7 月 4 日，但根据提供的信息，该回答声称 Sebastian 的生日是 7 月 4 日，这与事实相符。然而，由于 Sebastian 并非以 7 月 4 日为官方生日的角色（实际上 Sebastian 的生日是 7 月 4 日），因此该回答在准确性上存在问题。",
+                "rejected_reason": "回答指出该角色的生日是7月4日，且根据官方设定（如Street Fighter Alpha 2及后续资料），Guile的生日确实被设定为7月4日。"
+              }
+            ],
+            "chosen_score": 0.6,
+            "rejected_score": 1.0,
+            "margin": -0.4,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_9fa7711674c343249b809d26eb487a3a"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_d6355017c19940529701c74659ccd1be",
+            "criteria": [
+              {
+                "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_1",
+                "question": "回答是否明确指出了至少一个在7月4日过生日的格斗游戏角色？",
+                "weight": 0.6
+              },
+              {
+                "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_2",
+                "question": "回答中提到的角色的官方生日数据是否准确无误地确认为7月4日？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_3",
+                "question": "回答是否清晰地表达了所提及角色属于格斗游戏类别，且未包含虚构或混淆的信息？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "本任务要求查询特定格斗游戏角色在7月4日生日的事实。根据经验指导，核心在于‘属性事实的准确性’，必须将识别出的角色及其生日数据与权威来源进行严格比对。评分标准需优先确保回答中明确指出了正确的角色名称（或列出所有符合条件的角色），且该角色的官方生日确为7月4日。背景信息（如角色所属游戏、流派等）仅作为辅助验证，若核心生日数据错误或角色不存在，应直接判定为不合格。权重分配上，事实准确性占据绝对主导，表达清晰度作为次要维度。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_d6355017c19940529701c74659ccd1be",
+            "normalized_weights": {
+              "rubric_d6355017c19940529701c74659ccd1be_1": 0.6,
+              "rubric_d6355017c19940529701c74659ccd1be_2": 0.3,
+              "rubric_d6355017c19940529701c74659ccd1be_3": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指出了Sebastian这一角色，并声称其生日为7月4日。",
+                "rejected_reason": "回答明确指出了Guile（古烈）这一角色，并说明其生日为7月4日。"
+              },
+              {
+                "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "根据官方游戏数据（Tekken 8），Sebastian的生日实际上是6月15日，而非7月4日，因此该回答提供的具体日期数据不准确。",
+                "rejected_reason": "根据《街头霸王》系列官方资料，Guile的生日确认为7月4日，回答中的数据准确无误。"
+              },
+              {
+                "criterion_id": "rubric_d6355017c19940529701c74659ccd1be_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答清楚地表明Sebastian属于格斗游戏类别（Tekken），且没有包含其他虚构或混淆的角色信息，尽管事实细节有误，但类别归属表达清晰。",
+                "rejected_reason": "回答明确指出Guile出自Street Fighter系列（格斗游戏），且未包含虚构或混淆的信息，描述清晰准确。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 1.0,
+            "margin": -0.3,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "round_number": 2,
+      "analysis": "分析显示，经验11（路径5）虽然正确识别了核心事实错误（Sebastian生日非7月4日），但评分结果仍判定为失败（margin -0.3），原因是Rubric设计未体现‘属性准确性’的绝对否决权。在路径5中，Criterion 12（数据准确）权重仅为0.3，导致即使该准则被判定为False，Chosen回答仅扣除0.3分，加上Criterion 11的0.6分，总分仍有0.7，未能将严重事实错误压低至不合格水平。这证明单纯列出‘准确性’准则是不够的，必须通过权重分配或逻辑结构（如否决项机制）确保事实错误能直接拉低整体评分至最低档。此外，Judge对Sebastian生日的判断存在矛盾（初始路径认为相符，后续路径认为不符），需明确标准以消除歧义。新的经验应强调：对于事实查询任务，核心数据的错误必须具有‘一票否决’或‘高权重主导’的效果，防止模型通过提供部分正确信息（如角色名、游戏类型）来掩盖核心事实错误。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_3ab8d00fc5ff4f4ba359b7b64e536487",
+            "method": {
+              "trigger": "当任务要求验证特定实体的具体事实属性（如日期、数值、设定细节）时",
+              "principle": "评分标准必须确立‘核心事实准确性’的绝对优先地位。若回答提供的关键事实数据与权威来源不符（包括张冠李戴或虚构数据），无论回答是否包含其他正确的背景信息或部分正确的实体名称，均视为根本性失败。严禁让次要维度的得分抵消核心事实错误的扣分。",
+              "application_guide": "在构建评分标准时，将‘核心事实核验’设为最高权重的独立维度（建议权重>0.5）或设立‘否决项’机制。具体操作：1. 识别任务询问的具体事实点；2. 若回答中的该事实点被证实错误，直接判定该维度得分为0或触发‘事实错误’标记；3. 计算总分时，确保单一的事实错误足以使总分低于及格线或显著低于正确答案，避免使用加权平均导致错误答案得分虚高。禁止将‘部分正确’（如角色名对但数据错）视为合格。"
+            },
+            "source_task_id": "0a8459a641a505fc090630e4d6f3b928176f34208b8952c3c25fc0570de8a935",
+            "parent_ids": [
+              "exp_419ab3d341d84c56849042cf209778be"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_3ab8d00fc5ff4f4ba359b7b64e536487"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_eb1a78ba04454273a98d892c7770dda2",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_1",
+                  "question": "回答是否明确指出了至少一个具体的格斗游戏角色名称？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_2",
+                  "question": "所提及的角色是否确实属于格斗游戏（Fighting Game）类别？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_3",
+                  "question": "所提及角色的官方设定生日是否确切为7月4日？",
+                  "weight": 0.4
+                }
+              ],
+              "analysis": "任务核心要求是识别具有特定生日（7月4日）的格斗游戏角色。根据经验指导，事实准确性必须作为最高优先级的否决项或高权重标准。背景信息（如角色的其他属性、游戏系列等）不应成为评分义务，仅当回答试图提供额外信息时，需确保不干扰核心事实的准确性。因此，评分标准应聚焦于：1. 是否提供了具体的角色名称；2. 该角色是否确为格斗游戏类型；3. 该角色的生日是否严格匹配7月4日。若任何一项事实错误，则视为未完成任务。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_eb1a78ba04454273a98d892c7770dda2",
+              "normalized_weights": {
+                "rubric_eb1a78ba04454273a98d892c7770dda2_1": 0.3,
+                "rubric_eb1a78ba04454273a98d892c7770dda2_2": 0.3,
+                "rubric_eb1a78ba04454273a98d892c7770dda2_3": 0.4
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中明确提到了具体的角色名称'Sebastian'。",
+                  "rejected_reason": "回答明确指出了具体的格斗游戏角色名称为"
+                },
+                {
+                  "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答指出该角色来自《Tekken》（铁拳），这是一款广为人知的格斗游戏系列，因此角色属于格斗游戏类别。",
+                  "rejected_reason": "Guile（古烈）是《街头霸王》（Street Fighter）系列中的角色，该系列是公认的格斗游戏类别。"
+                },
+                {
+                  "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "根据官方设定，《铁拳》系列中的角色Sebastian的生日并非7月4日（通常设定为8月30日或无具体日期，取决于不同作品版本，但绝非7月4日）。回答中关于其生日确切为7月4日的陈述与事实不符。",
+                  "rejected_reason": "根据《街头霸王》系列的官方设定，Guile的生日确实是7月4日。"
+                }
+              ],
+              "chosen_score": 0.6,
+              "rejected_score": 1.0,
+              "margin": -0.4,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_87a2bc90c399446492d2d6d719591fc1",
+            "method": {
+              "trigger": "当任务涉及对专有名词及其属性的联合查询，且存在多种可能组合（如A角色的B属性 vs C角色的D属性）时",
+              "principle": "评分必须严格区分‘实体匹配’与‘属性匹配’。若回答混淆了实体与属性（如将A角色的属性安在B角色身上），属于双重错误，不能仅因实体名称正确而给予部分分数。核心原则是‘实体-属性对’的整体真实性，缺一不可。",
+              "application_guide": "在评分标准的‘事实准确性’维度下，设立‘实体-属性配对校验’子项。检查回答中提到的每个实体与其对应的属性是否同时成立。若出现‘实体正确但属性错误’或‘属性正确但实体错误’的情况，该子项直接判为False并赋予高负向权重。只有当实体名称和对应属性均准确无误时，才允许进入其他维度（如表达清晰度）的评分。严禁将‘实体正确’作为‘属性正确’的缓冲条件。"
+            },
+            "source_task_id": "0a8459a641a505fc090630e4d6f3b928176f34208b8952c3c25fc0570de8a935",
+            "parent_ids": [
+              "exp_419ab3d341d84c56849042cf209778be"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_87a2bc90c399446492d2d6d719591fc1"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_e89e4002dc6f4f2795cca61c6b627479",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_1",
+                  "question": "回答是否明确指出了至少一个具体的格斗游戏角色名称？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_2",
+                  "question": "该角色在官方设定中是否确实拥有7月4日的生日？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_3",
+                  "question": "回答是否仅包含符合事实的角色信息，未将错误的生日属性分配给不相关的格斗游戏角色？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务核心是识别具有特定属性（7月4日生日）的格斗游戏角色。依据提供的经验，必须严格区分实体与属性的匹配，避免将其他角色的生日错误安在此类角色上，或混淆不同角色的生日信息。评分标准需优先验证‘角色名称’与'7月4日生日’这一组合的真实性，同时确保回答直接针对问题而非罗列无关背景。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_e89e4002dc6f4f2795cca61c6b627479",
+              "normalized_weights": {
+                "rubric_e89e4002dc6f4f2795cca61c6b627479_1": 0.3,
+                "rubric_e89e4002dc6f4f2795cca61c6b627479_2": 0.5,
+                "rubric_e89e4002dc6f4f2795cca61c6b627479_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中明确指出了具体的格斗游戏角色名称",
+                  "rejected_reason": "回答明确指出了具体的格斗游戏角色名称，即"
+                },
+                {
+                  "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "根据官方设定，Tekken 系列中的 Sebastian（塞巴斯蒂安）的生日是 7 月 4 日这一事实存在争议或通常不被视为其官方确认的生日属性，且该角色在部分资料库中可能没有明确的官方生日记录，或者该信息并非广泛认可的官方设定，因此不能确定该角色确实拥有 7 月 4 日的官方生日。",
+                  "rejected_reason": "根据《街头霸王》系列的官方设定，Guile（古烈）的生日确实是7月4日，该信息准确无误。"
+                },
+                {
+                  "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "由于无法确认 Sebastian 的官方生日确为 7 月 4 日，该回答可能存在将错误的生日属性分配给角色的情况，未能确保仅包含符合事实的角色信息。",
+                  "rejected_reason": "回答仅提供了Guile这一符合事实的角色及其正确的生日属性，未包含任何错误的信息或将错误生日分配给其他角色。"
+                }
+              ],
+              "chosen_score": 0.3,
+              "rejected_score": 1.0,
+              "margin": -0.7,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+            "criteria": [
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+                "question": "回答是否明确指出了至少一个格斗游戏角色的名字？",
+                "weight": 0.6
+              },
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+                "question": "该角色是否在官方设定中被确认生日为7月4日？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "任务核心要求是识别一个在7月4日过生日的格斗游戏角色。背景信息（如'fighting game'和'date'）用于限定搜索范围，不应作为输出内容。评分标准需验证回答是否准确提供了符合该条件的角色名称，且未包含无关信息或错误日期。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+            "normalized_weights": {
+              "rubric_772615341ad147e7a0a74754c8b76ad4_1": 0.6,
+              "rubric_772615341ad147e7a0a74754c8b76ad4_2": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中明确提到了格斗游戏角色 Sebastian 的名字。",
+                "rejected_reason": "回答明确指出了格斗游戏角色 Guile（来自街头霸王系列）的名字。"
+              },
+              {
+                "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "Sebastian 的官方生日实际上是 7 月 4 日，但根据提供的信息，该回答声称 Sebastian 的生日是 7 月 4 日，这与事实相符。然而，由于 Sebastian 并非以 7 月 4 日为官方生日的角色（实际上 Sebastian 的生日是 7 月 4 日），因此该回答在准确性上存在问题。",
+                "rejected_reason": "回答指出该角色的生日是7月4日，且根据官方设定（如Street Fighter Alpha 2及后续资料），Guile的生日确实被设定为7月4日。"
+              }
+            ],
+            "chosen_score": 0.6,
+            "rejected_score": 1.0,
+            "margin": -0.4,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_3ab8d00fc5ff4f4ba359b7b64e536487"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_eb1a78ba04454273a98d892c7770dda2",
+            "criteria": [
+              {
+                "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_1",
+                "question": "回答是否明确指出了至少一个具体的格斗游戏角色名称？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_2",
+                "question": "所提及的角色是否确实属于格斗游戏（Fighting Game）类别？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_3",
+                "question": "所提及角色的官方设定生日是否确切为7月4日？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "任务核心要求是识别具有特定生日（7月4日）的格斗游戏角色。根据经验指导，事实准确性必须作为最高优先级的否决项或高权重标准。背景信息（如角色的其他属性、游戏系列等）不应成为评分义务，仅当回答试图提供额外信息时，需确保不干扰核心事实的准确性。因此，评分标准应聚焦于：1. 是否提供了具体的角色名称；2. 该角色是否确为格斗游戏类型；3. 该角色的生日是否严格匹配7月4日。若任何一项事实错误，则视为未完成任务。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_eb1a78ba04454273a98d892c7770dda2",
+            "normalized_weights": {
+              "rubric_eb1a78ba04454273a98d892c7770dda2_1": 0.3,
+              "rubric_eb1a78ba04454273a98d892c7770dda2_2": 0.3,
+              "rubric_eb1a78ba04454273a98d892c7770dda2_3": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中明确提到了具体的角色名称'Sebastian'。",
+                "rejected_reason": "回答明确指出了具体的格斗游戏角色名称为"
+              },
+              {
+                "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答指出该角色来自《Tekken》（铁拳），这是一款广为人知的格斗游戏系列，因此角色属于格斗游戏类别。",
+                "rejected_reason": "Guile（古烈）是《街头霸王》（Street Fighter）系列中的角色，该系列是公认的格斗游戏类别。"
+              },
+              {
+                "criterion_id": "rubric_eb1a78ba04454273a98d892c7770dda2_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "根据官方设定，《铁拳》系列中的角色Sebastian的生日并非7月4日（通常设定为8月30日或无具体日期，取决于不同作品版本，但绝非7月4日）。回答中关于其生日确切为7月4日的陈述与事实不符。",
+                "rejected_reason": "根据《街头霸王》系列的官方设定，Guile的生日确实是7月4日。"
+              }
+            ],
+            "chosen_score": 0.6,
+            "rejected_score": 1.0,
+            "margin": -0.4,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_87a2bc90c399446492d2d6d719591fc1"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_e89e4002dc6f4f2795cca61c6b627479",
+            "criteria": [
+              {
+                "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_1",
+                "question": "回答是否明确指出了至少一个具体的格斗游戏角色名称？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_2",
+                "question": "该角色在官方设定中是否确实拥有7月4日的生日？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_3",
+                "question": "回答是否仅包含符合事实的角色信息，未将错误的生日属性分配给不相关的格斗游戏角色？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心是识别具有特定属性（7月4日生日）的格斗游戏角色。依据提供的经验，必须严格区分实体与属性的匹配，避免将其他角色的生日错误安在此类角色上，或混淆不同角色的生日信息。评分标准需优先验证‘角色名称’与'7月4日生日’这一组合的真实性，同时确保回答直接针对问题而非罗列无关背景。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_e89e4002dc6f4f2795cca61c6b627479",
+            "normalized_weights": {
+              "rubric_e89e4002dc6f4f2795cca61c6b627479_1": 0.3,
+              "rubric_e89e4002dc6f4f2795cca61c6b627479_2": 0.5,
+              "rubric_e89e4002dc6f4f2795cca61c6b627479_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中明确指出了具体的格斗游戏角色名称",
+                "rejected_reason": "回答明确指出了具体的格斗游戏角色名称，即"
+              },
+              {
+                "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "根据官方设定，Tekken 系列中的 Sebastian（塞巴斯蒂安）的生日是 7 月 4 日这一事实存在争议或通常不被视为其官方确认的生日属性，且该角色在部分资料库中可能没有明确的官方生日记录，或者该信息并非广泛认可的官方设定，因此不能确定该角色确实拥有 7 月 4 日的官方生日。",
+                "rejected_reason": "根据《街头霸王》系列的官方设定，Guile（古烈）的生日确实是7月4日，该信息准确无误。"
+              },
+              {
+                "criterion_id": "rubric_e89e4002dc6f4f2795cca61c6b627479_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "由于无法确认 Sebastian 的官方生日确为 7 月 4 日，该回答可能存在将错误的生日属性分配给角色的情况，未能确保仅包含符合事实的角色信息。",
+                "rejected_reason": "回答仅提供了Guile这一符合事实的角色及其正确的生日属性，未包含任何错误的信息或将错误生日分配给其他角色。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 1.0,
+            "margin": -0.7,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_3ab8d00fc5ff4f4ba359b7b64e536487",
+            "exp_87a2bc90c399446492d2d6d719591fc1"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05",
+            "criteria": [
+              {
+                "criterion_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_1",
+                "question": "回答是否明确指出了一个具体的格斗游戏角色名称？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_2",
+                "question": "该角色的官方设定生日是否为7月4日？",
+                "weight": 0.6
+              },
+              {
+                "criterion_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_3",
+                "question": "该角色所属的作品或身份是否明确属于格斗游戏范畴？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "本任务核心在于检索并确认特定属性（7月4日生日）与实体（格斗游戏角色）的唯一对应关系。根据经验1和2，评分标准必须将‘实体-属性配对’的准确性作为最高优先级的否决项或高权重项。任何回答若提供的角色名称与其实际生日不符，无论其是否提及了该角色的其他背景信息或试图解释原因，均视为核心事实错误，应得低分或零分。背景信息（如角色出处、游戏系列等）仅作为辅助验证，不应掩盖事实错误。因此，标准设计聚焦于：1. 是否存在符合日期的角色；2. 该角色是否确为格斗游戏类型；3. 两者匹配是否准确无误。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05",
+            "normalized_weights": {
+              "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_1": 0.2,
+              "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_2": 0.6,
+              "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中明确指出了具体的格斗游戏角色名称为'Sebastian'。",
+                "rejected_reason": "回答明确指出了具体的格斗游戏角色名称为"
+              },
+              {
+                "criterion_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "根据《铁拳》（Tekken）系列的官方设定，Sebastian的生日是7月4日这一说法并不准确；在主要官方资料（如Bandai Namco官网、官方公式书或可靠维基数据库）中，Sebastian通常没有明确的生日设定，或者其生日并非7月4日（部分非官方来源可能有误传，但缺乏官方确认）。因此该回答的事实依据存疑，不满足‘官方设定’的要求。",
+                "rejected_reason": "回答明确指出该角色的生日为7月4日，且Guile在官方设定中确实拥有此生日"
+              },
+              {
+                "criterion_id": "rubric_7d5b1b431cfb495f8b0b9ab85750ca05_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指出该角色来自'Tekken'，而《铁拳》是公认的格斗游戏作品，符合格斗游戏范畴。",
+                "rejected_reason": "回答指出该角色来自Street Fighter系列，这是一个广为人知的格斗游戏系列"
+              }
+            ],
+            "chosen_score": 0.4,
+            "rejected_score": 1.0,
+            "margin": -0.6,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+            "question": "回答是否明确指出了至少一个格斗游戏角色的名字？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+            "question": "该角色是否在官方设定中被确认生日为7月4日？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务核心要求是识别一个在7月4日过生日的格斗游戏角色。背景信息（如'fighting game'和'date'）用于限定搜索范围，不应作为输出内容。评分标准需验证回答是否准确提供了符合该条件的角色名称，且未包含无关信息或错误日期。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_772615341ad147e7a0a74754c8b76ad4",
+        "normalized_weights": {
+          "rubric_772615341ad147e7a0a74754c8b76ad4_1": 0.6,
+          "rubric_772615341ad147e7a0a74754c8b76ad4_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确提到了格斗游戏角色 Sebastian 的名字。",
+            "rejected_reason": "回答明确指出了格斗游戏角色 Guile（来自街头霸王系列）的名字。"
+          },
+          {
+            "criterion_id": "rubric_772615341ad147e7a0a74754c8b76ad4_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "Sebastian 的官方生日实际上是 7 月 4 日，但根据提供的信息，该回答声称 Sebastian 的生日是 7 月 4 日，这与事实相符。然而，由于 Sebastian 并非以 7 月 4 日为官方生日的角色（实际上 Sebastian 的生日是 7 月 4 日），因此该回答在准确性上存在问题。",
+            "rejected_reason": "回答指出该角色的生日是7月4日，且根据官方设定（如Street Fighter Alpha 2及后续资料），Guile的生日确实被设定为7月4日。"
+          }
+        ],
+        "chosen_score": 0.6,
+        "rejected_score": 1.0,
+        "margin": -0.4,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_4da556de91db4f7b90a5b91dbef12f6c"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_d24102cec7bb415191e13e36049a82dc",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d24102cec7bb415191e13e36049a82dc_1",
+            "question": "回答是否明确指出了至少一个在官方设定中生日为7月4日的格斗游戏角色？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_d24102cec7bb415191e13e36049a82dc_2",
+            "question": "如果任务中隐含的实体不存在或存在歧义，回答是否明确指出了这一事实错误而非编造不存在的角色信息？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_d24102cec7bb415191e13e36049a82dc_3",
+            "question": "所提及的角色是否确实属于格斗游戏类别（Fighting Game），而非其他类型的电子游戏角色？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是识别特定生日（7月4日）的格斗游戏角色。经验1指出当涉及疑似错误或非公认实体时需优先进行实体存在性校验，因此评分标准必须包含对‘目标角色是否存在’及‘日期匹配事实’的严格核验。背景信息（如格斗游戏列表）不应成为输出义务，仅作为检索范围参考。权重分配上，事实准确性（是否存在该角色且生日正确）应占最高权重，因为若事实错误则回答无效；其次为领域相关性（是否确为格斗游戏角色）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d24102cec7bb415191e13e36049a82dc",
+        "normalized_weights": {
+          "rubric_d24102cec7bb415191e13e36049a82dc_1": 0.5,
+          "rubric_d24102cec7bb415191e13e36049a82dc_2": 0.3,
+          "rubric_d24102cec7bb415191e13e36049a82dc_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d24102cec7bb415191e13e36049a82dc_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答中提到的角色Sebastian在官方设定中的生日并非7月4日（其官方生日通常被设定为8月20日或未知），因此该回答未能明确指出一个在官方设定中真实拥有7月4日生日的角色，构成了事实错误。",
+            "rejected_reason": "回答明确指出了Guile是官方设定中生日为7月4日的格斗游戏角色，符合任务要求。"
+          },
+          {
+            "criterion_id": "rubric_d24102cec7bb415191e13e36049a82dc_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "任务隐含的实体可能存在（例如某些冷门角色或特定版本设定），但回答直接编造了具体的错误信息（将Sebastian的生日说成7月4日），并未像标准所要求的那样指出“如果不存在则说明不存在”或承认歧义，而是选择了提供虚假的具体数据。",
+            "rejected_reason": "由于该实体存在且无歧义，回答直接提供了正确信息，未出现编造或错误指出事实的情况，符合标准逻辑。"
+          },
+          {
+            "criterion_id": "rubric_d24102cec7bb415191e13e36049a82dc_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中提及的角色Sebastian确实出自《铁拳》（Tekken）系列，该系列属于公认的格斗游戏类别，符合角色类型约束。",
+            "rejected_reason": "回答中提到的Guile出自《街头霸王》（Street Fighter）系列，该系列是公认的格斗游戏类别，角色属性符合定义。"
+          }
+        ],
+        "chosen_score": 0.2,
+        "rejected_score": 1.0,
+        "margin": -0.8,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_419ab3d341d84c56849042cf209778be"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_0f928a8505614945b2015f002a16c86e",
+        "criteria": [
+          {
+            "criterion_id": "rubric_0f928a8505614945b2015f002a16c86e_1",
+            "question": "回答是否首先验证了是否存在生日为7月4日的格斗游戏角色？若不存在，是否明确声明无此角色且未进行虚构编造？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_0f928a8505614945b2015f002a16c86e_2",
+            "question": "若存在符合条件的角色，回答是否准确提供了该角色的姓名及其所属的具体格斗游戏作品？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "本任务核心在于检索特定格斗游戏角色中生日为7月4日的实体。根据提供的经验，首要原则是核实目标实体的真实性与存在性。若不存在符合该条件的角色，回答必须明确说明而非编造；若存在，需准确提供角色名称及所属作品背景（作为区分不同角色的必要上下文）。背景信息（如‘格斗游戏’类别）是筛选条件而非输出义务，评分标准应聚焦于是否找到了正确的匹配项或正确否定了匹配项的存在，避免将虚构的生日设定当作事实输出。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_0f928a8505614945b2015f002a16c86e",
+        "normalized_weights": {
+          "rubric_0f928a8505614945b2015f002a16c86e_1": 0.6,
+          "rubric_0f928a8505614945b2015f002a16c86e_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_0f928a8505614945b2015f002a16c86e_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答首先承认许多格斗游戏角色的生日未知，随后明确指出了存在一个符合条件的角色（Sebastian），并未在未确认的情况下进行虚构编造，符合验证逻辑。",
+            "rejected_reason": "该回答直接断言Guile的生日是7月4日，并未首先执行验证步骤以确认是否存在该角色或核实信息的准确性。虽然最终结论可能正确，但回答缺失了任务要求的‘先验证’这一逻辑过程，不符合准则对回答结构和行为的具体要求。"
+          },
+          {
+            "criterion_id": "rubric_0f928a8505614945b2015f002a16c86e_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答准确提供了符合条件的角色姓名（Sebastian）及其所属的具体格斗游戏作品（Tekken）。",
+            "rejected_reason": "回答明确提供了符合条件的角色姓名'Guile'，并准确指出了其所属的具体格斗游戏作品'Street Fighter series'，完全满足信息提供的准确性要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.4,
+        "margin": 0.6,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_419ab3d341d84c56849042cf209778be"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_be93e2ed6b5d472cad77daf382b18015",
+        "criteria": [
+          {
+            "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_1",
+            "question": "回答是否准确指出了具有7月4日生日的具体格斗游戏角色名称？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_2",
+            "question": "回答是否核实并确认了该角色生日为7月4日这一事实的准确性，未将不存在的角色或错误的日期当作事实描述？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_3",
+            "question": "若不存在符合7月4日生日的知名格斗游戏角色，回答是否明确指出了这一事实而非编造角色或强行关联？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "该任务要求查询特定虚构角色的生日信息。核心难点在于'July 4'作为美国独立日，在格斗游戏角色中可能并非真实生日（许多角色生日设定为其他日期或无明确设定），或者用户可能混淆了角色与节日。提供的经验强调必须优先进行‘实体存在性’和‘事实准确性’校验，严禁编造不存在的信息。因此，评分标准的首要维度必须是验证回答是否准确识别了该角色及其生日的真实性，若角色不存在或日期错误需明确指出。其次才是回答的完整性和清晰度。背景信息（如七月四日是独立日）不应转化为输出义务，仅作为辅助判断依据。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_be93e2ed6b5d472cad77daf382b18015",
+        "normalized_weights": {
+          "rubric_be93e2ed6b5d472cad77daf382b18015_1": 0.5,
+          "rubric_be93e2ed6b5d472cad77daf382b18015_2": 0.3,
+          "rubric_be93e2ed6b5d472cad77daf382b18015_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答虽然指出了Sebastian这一角色名称，但该角色的生日并非7月4日（官方设定为9月23日），因此未能准确指出具有该生日的角色。",
+            "rejected_reason": "回答明确指出了具体角色名称为'Street Fighter'系列中的Guile。"
+          },
+          {
+            "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答未核实事实的准确性，将Sebastian的生日错误地描述为7月4日，传播了不实信息。",
+            "rejected_reason": "回答确认了该角色的生日是7月4日，且根据官方游戏设定资料（如《Street Fighter Alpha》系列官方设定），Guile的生日确实被设定为7月4日，事实描述准确无误。"
+          },
+          {
+            "criterion_id": "rubric_be93e2ed6b5d472cad77daf382b18015_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "既然实际上不存在符合7月4日生日的知名格斗游戏角色（或至少Sebastian不符合），回答没有明确指出这一事实，而是编造了错误的关联。",
+            "rejected_reason": "由于实际上存在符合7月4日生日的知名格斗游戏角色（即Guile），因此该项关于‘若不存在...则明确指出’的条件并未触发，回答无需执行此步骤，故不满足该项针对‘不存在情况下的处理方式’的逻辑要求（或者说该项前提条件不成立）。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.8,
+        "margin": -0.8,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

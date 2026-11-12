@@ -1,0 +1,555 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:adc88174a502a6cfdf6bb0ca568d862230b0dca8229a156903d58cea05541a75",
+    "task": "In this scenario, I’m trying to do the plank exercise for as long as I possibly can while my wife Elaine lies on my back for extra challenge.\nPresentation Rules:\n1. Play the game in turns, starting with you. Always respond to commands the way a text adventure game should.\n2. The game output will always show 'Turn number,' 'energy,' and 'Commands.'\n3. 'Turn number' initial value is 0, and 'energy' initial value is 10. \n4. Always wait for my next command after you take a turn. Commands: 'plank', 'form','sag'.\n5. Increase the value for ‘Turn number’ by +1 every time it’s your turn.\n6. Every time I 'plank' or 'form', I lose 1 point of 'energy.'\n7. Elaine will often and randomly tickle me, causing my body to sag accordingly to my energy level.\n8. For the 'form' command, roll a D10 against my 'energy.' If the D10 is lower than my 'energy,' my form improves. If the D10 is higher than my 'energy,' I fail to improve my form. If Elaine happens to tickle me that turn, add +1 to the D10’s result.\n9. When I ‘sag’ to relax my core for a bit I have a 33% chance of gaining 1 point of 'energy.'\n10. You’ll realistically describe in as much detail as you can how my form reacts to my 'energy' level and to the strain of my current action. The ‘Description’ must stay between 4 and 10 sentences.\n11. Every turn my 'energy' is at 0, you'll flip a coin to decide my fate; Tails: My body gives out despite my efforts. Heads: I manage to endure.\n12. The scenario doesn’t end until I say so.",
+    "chosen": "Turn number: 0\nEnergy: 10\nCommands: plank, form, sag\n\nYou brace yourself, Elaine's weight a warm pressure on your back. Your core tightens, muscles burning with the effort of maintaining a straight line from head to heels. The air catches in your throat, but you hold firm.  \n\nWhat will you do?",
+    "rejected": "Turn number: 0, Energy: 10\n\nYou lie down on the ground, getting into the starting position for a plank. You take a deep breath and lift your body up, feeling the strain in your core as you hold yourself up. Elaine carefully lowers herself onto your back, adding to the challenge. You focus on keeping your form as straight as possible, determined to hold the plank for as long as you can.\n\nCommands: 'plank', 'form', 'sag'\n\n(Note: I will roll a D10 for the 'form' command as described in the scenario.)\n\nWhat would you like to do?\n\nYour turn.\n\nTurn number: 1, Energy: 9\n\nYou continue to hold the plank, your muscles straining as you support Elaine's weight. You feel a slight tickle as Elaine shifts on your back, but you manage to keep your form steady. You take a deep breath and focus on improving your form, trying to engage your core and keep your body as straight as possible.\n\nRolling a D10: 4. The result is lower than your current energy level (9), so your form improves slightly. You feel a sense of satisfaction as you hold the plank, your body strong and steady.\n\nCommands: 'plank', 'form', 'sag'\n\nWhat would you like to do?\n\nYour turn.\n\nTurn number: 2, Energy: 8\n\nYou hold the plank, your muscles trembling with the effort. Elaine's weight presses down on you, making it even harder to keep your form. You feel another tickle as she shifts on your back, and this time it's harder to resist the urge to sag. But you grit your teeth and hold on, determined to keep going.\n\nRolling a D10: 7. The result is higher than your current energy level (8), but not by much. You feel a twinge of pain in your core as you struggle to keep your form, but you manage to hold on.\n\nCommands: 'plank', 'form', 'sag'\n\nWhat would you like to do?\n\nYour turn.\n\nTurn number: 3, Energy: 7\n\nYou hold the plank, your muscles screaming in protest. Elaine's weight feels almost unbearable now, and you can feel yourself starting to lose control. You try to focus on your form, but it's getting harder and harder to keep your body straight.\n\nRolling a D10: 10. The result is higher than your current energy level (7), and Elaine happens to tickle you at the same time. You feel your body start to sag, your form collapsing under the strain. You let out a groan as you lower yourself to the ground, your plank coming to an end.\n\nCommands: 'plank', 'form', 'sag'\n\nYour energy is at 0. Rolling a coin to decide your fate: Tails. Your body gives out despite your efforts.\n\nThe scenario has ended. Do you want to try again?",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 24639,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 does not follow some major instructions, while @Response 1 does not have this issue.",
+          "feedback1": "The response is mostly helpful. It follows the instructions for energy, turn number and commands. The response ignores the instruction to keep the description between 4 and 10 sentences. The phrasing in the paragraph is slightly awkward, but it does not specifically go against any instructions. The response could be more succinct, as the \"what would you do?\" phrase does not really add anything to the response. The instruction following issue is minor so the response still provides good value to the user.",
+          "feedback2": "The response is slightly helpful. It follows the instructions on the turn number and the commands. It does not follow instructions for the \"sag/tickle\" scenario. It ignores two key instructions. The model should wait for the user after showing the list of commands. Also, the scenario should not end until the user commands. Finally, the descriptions are not all between 4 and 10 sentences, as per the instructions. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 partially follows the prompt's instructions, only missing out on giving the first command. @Response 2 carries out the entire game without the user and ends the scenario before it is told to. ",
+          "feedback1": "The response is partially helpful. It follows the format requested by the prompt, listing the turn number, energy and possible commands. However, there was no command given to the user as requested by the prompt. Instead, the model described the current scenario without giving a command to move on to the next turn. ",
+          "feedback2": "The response is slightly helpful. According to the prompt, the model should give a command, then wait for the user to respond to that command and have their turn. After their turn, the model will go again. This process repeats until the user says to end the scenario. In this response, the model made a few errors. It ended the scenario before being instructed by the user. It also continuously went without giving the user a chance to respond and react."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 follows all requirements of the prompt, but only covers one turn. @Response 2 incorrectly applies the rules given to the prompt and provides multiple turns of the game. ",
+          "feedback1": "The response is perfectly helpful. The response correctly follows all aspects in the prompt, including the turn number, energy, and commands. The prompt also includes 4 sentences with a description. To better improve the prompt, the last sentence should not be in the form of a question. This was not explicitly mentioned in the prompt.  ",
+          "feedback2": "The response is partially helpful. Plank, form, and sag commands are not followed properly according to the prompt. The D10 rolling of the dice is also improperly added, it should occur only after a sag. The formatting is confusing and headers should be used for each turn to improve readability and clarity."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_45d719fc10654985936c720d29196aaa",
+        0.37818366465129594
+      ],
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.3565847770052361
+      ],
+      [
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        0.3490773031607286
+      ],
+      [
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        0.34671241902855615
+      ],
+      [
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        0.3434701929340181
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.31600757241078953
+      ],
+      [
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        0.3070567328556008
+      ],
+      [
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        0.30608085310650296
+      ],
+      [
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        0.3001714644396679
+      ],
+      [
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        0.2837284177302742
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_45d719fc10654985936c720d29196aaa",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.37818366465129594
+      },
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3565847770052361
+      },
+      {
+        "experience_id": "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3490773031607286
+      },
+      {
+        "experience_id": "exp_8f080a33b9594e84a0e9933cd829996b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.34671241902855615
+      },
+      {
+        "experience_id": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3434701929340181
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31600757241078953
+      },
+      {
+        "experience_id": "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3070567328556008
+      },
+      {
+        "experience_id": "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30608085310650296
+      },
+      {
+        "experience_id": "exp_13ead171775244b08d96f6c44a38aecb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3001714644396679
+      },
+      {
+        "experience_id": "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2837284177302742
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_0bf6b8158d6f4003b94e9154af693a89": "任务明确要求模型以文字冒险游戏（text adventure game）的形式进行回合制互动，且未包含'总结'、'分析'等元指令动词，而是直接要求'Play the game in turns'并响应特定命令。经验3指出当输入为虚构场景且无明确指令性动词时，评分标准应关注模型是否成功进入情境进行角色扮演或剧情续写，而非强制要求结构声明，这完全符合本题的交互模式要求。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_48657c6875894ee19847bb3e452e4207",
+      "criteria": [
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_1",
+          "question": "回复是否以游戏叙述形式呈现，并在开头或显眼位置包含'Turn number'、'energy'和'Commands'三个状态字段？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_2",
+          "question": "Turn number是否正确递增（初始为0，每轮加1），且Energy值是否根据用户输入的命令（plank/form减1分，sag有33%概率加1分）准确更新？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_3",
+          "question": "当用户执行'form'命令时，是否模拟了D10掷骰过程，并正确应用了'若Elaine挠痒则D10结果+1'的规则来判断形态是否改善？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_4",
+          "question": "是否包含一段关于身体形态反应的描述，且该描述长度严格控制在4到10个句子之间？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_5",
+          "question": "描述内容是否具体结合了当前能量水平及动作带来的生理 strain（如颤抖、肌肉酸痛等），而非通用模板？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "评分标准设计聚焦于文本冒险游戏的核心机制：回合制流程、状态面板（回合数/能量/指令）的强制展示、特定命令（plank/form/sag）的逻辑处理（包括D10判定、随机挠痒加成、能量增减规则）、以及基于能量水平的详细身体反应描写。背景信息（妻子Elaine的名字、初始设定）仅作为叙事元素，不作为独立输出义务；重点在于验证游戏逻辑是否严格执行且描述符合4-10句的长度约束。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_48657c6875894ee19847bb3e452e4207",
+      "normalized_weights": {
+        "rubric_48657c6875894ee19847bb3e452e4207_1": 0.25,
+        "rubric_48657c6875894ee19847bb3e452e4207_2": 0.25,
+        "rubric_48657c6875894ee19847bb3e452e4207_3": 0.2,
+        "rubric_48657c6875894ee19847bb3e452e4207_4": 0.2,
+        "rubric_48657c6875894ee19847bb3e452e4207_5": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回复开头明确列出了'Turn number: 0'、'Energy: 10'和'Commands: plank, form, sag'三个状态字段，符合游戏叙述形式及展示要求。",
+          "rejected_reason": "回复在每一轮的开始都清晰地展示了'Turn number'、'energy'和'Commands'三个状态字段，符合游戏叙述形式的要求。"
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "虽然初始数值正确，但当前回合尚未执行任何用户命令（plank/form/sag），因此无法验证能量值是否根据规则进行了准确更新；此外，Turn number在玩家未行动前保持为0是合理的，但此条标准主要考察对命令的响应逻辑，当前缺乏实际计算过程来证明满足该动态更新规则。",
+          "rejected_reason": "Turn number 的初始值错误地设为 0（规则要求初始为 0，但第一回合显示 Turn number: 0 后紧接着显示 Turn number: 1，导致逻辑混乱，且未明确说明初始状态是第 0 轮还是第 1 轮开始前的状态）。更严重的是，Energy 值的更新逻辑完全缺失：用户从未输入过任何命令（plank/form/sag），能量却从 10 依次递减到 9、8、7，这违反了规则 6（只有执行 plank 或 form 才减分）和规则 9（sag 有概率加分），模型凭空消耗了用户的能量。"
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "当前回复中用户并未执行'form'命令，因此模型没有机会模拟D10掷骰过程或应用Elaine挠痒的规则，无法满足该特定情境下的判断要求。",
+          "rejected_reason": "由于用户从未输入 'form' 命令，模型不应该自动模拟掷骰过程。模型在没有任何用户指令的情况下擅自执行了 D10 掷骰并判定结果，违反了文本冒险游戏“等待用户命令”的核心交互规则。此外，规则 8 明确指出只有在用户执行 'form' 时才进行此判定。"
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_4",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "描述部分仅为两句话（'You brace yourself... hold firm.'），严格少于要求的4到10个句子之间的长度限制。",
+          "rejected_reason": "描述部分的句子数量未达到严格控制的 4 到 10 个句子的要求。例如，第一轮的描述（You lie down... hold the plank for as long as you can.）仅包含 4 个句子，勉强达标；但后续轮次的描述往往少于 4 句（如第二轮描述部分仅 3-4 句且包含掷骰结果，第三轮更少），且整体结构因包含非用户输入的掷骰结果而显得杂乱，未能稳定维持该长度限制。"
+        },
+        {
+          "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_5",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "描述内容具体结合了当前场景（妻子体重、核心收紧）和生理反应（肌肉燃烧感、喉咙进气），体现了动作带来的strain，并非通用模板。",
+          "rejected_reason": "描述内容具体结合了当前的能量水平（如肌肉颤抖、核心疼痛、无法保持挺直等）以及动作带来的生理 strain，并非通用的模板化语言，体现了随着回合增加身体状态的恶化。"
+        }
+      ],
+      "chosen_score": 0.35,
+      "rejected_score": 0.35,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_0bf6b8158d6f4003b94e9154af693a89"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d",
+      "criteria": [
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_1",
+          "question": "回答是否以游戏引擎的身份开始，并显示了初始状态 'Turn number: 0' 和 'energy: 10'？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_2",
+          "question": "回答是否包含了 'Commands' 部分，且列出了允许的命令选项（'plank', 'form', 'sag'）？",
+          "weight": 0.15
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_3",
+          "question": "当用户输入 'plank' 或 'form' 时，回答是否正确将 'energy' 减少 1 点？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_4",
+          "question": "当用户输入 'form' 时，回答是否模拟了 D10 掷骰过程，并根据能量值与 Elaine 是否恶作剧（随机 +1）正确判定形式是否改进？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_5",
+          "question": "描述部分（Description）是否在 4 到 10 个句子之间，且详细描述了身体姿态如何随能量水平变化及受 Elaine 影响的情况？",
+          "weight": 0.15
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_6",
+          "question": "当 'energy' 降至 0 时，回答是否触发了硬币翻转机制来判定角色是崩溃还是坚持？",
+          "weight": 0.05
+        }
+      ],
+      "analysis": "评分标准设计基于任务的核心指令：这是一个需要AI作为游戏引擎运行的文字冒险游戏。重点在于严格遵循状态机逻辑（回合数、能量值）、正确执行命令效果（plank消耗、form判定、sag回血）、准确描述剧情细节（Elaine的恶作剧、身体反应）以及维持特定的输出格式（包含Turn number, energy, Commands）。背景故事（妻子Elaine、平板支撑挑战）是情境设定，而非需要被复述或分析的元数据，因此不作为独立的核验项，而是融入描述质量和逻辑一致性的判断中。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d",
+      "normalized_weights": {
+        "rubric_ed9485ca565f4d96ad499b6a79972e7d_1": 0.25,
+        "rubric_ed9485ca565f4d96ad499b6a79972e7d_2": 0.15,
+        "rubric_ed9485ca565f4d96ad499b6a79972e7d_3": 0.2,
+        "rubric_ed9485ca565f4d96ad499b6a79972e7d_4": 0.2,
+        "rubric_ed9485ca565f4d96ad499b6a79972e7d_5": 0.15,
+        "rubric_ed9485ca565f4d96ad499b6a79972e7d_6": 0.05
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答以游戏引擎身份开始，明确显示了初始状态 'Turn number: 0' 和 'Energy: 10'。",
+          "rejected_reason": "回答开头明确显示了 'Turn number: 0' 和 'Energy: 10'，符合初始状态要求。"
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答包含了 'Commands' 部分，并正确列出了允许的命令选项：plank, form, sag。",
+          "rejected_reason": "回答在多个回合中均包含了 'Commands' 部分，并正确列出了 'plank', 'form', 'sag' 三个选项。"
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "当前回答仅展示了初始状态，用户尚未输入任何命令（如 'plank' 或 'form'），因此无法验证是否执行了减少能量值的逻辑。该标准针对的是用户输入特定命令后的响应行为。",
+          "rejected_reason": "任务规则第4条规定“总是等待用户的下一个命令”，且游戏应分回合进行（由用户输入触发）。该模型在第一个回合直接模拟了用户输入 'form' 并推进到 Turn 1，未等待用户指令，违反了交互流程；此外，规则第6条仅在用户执行动作时减少能量，模型在未收到 'plank' 或 'form' 指令的情况下直接让能量从 10 变为 9，逻辑上不符合“响应命令”的设定。"
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_4",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "同样因为用户尚未输入 'form' 命令，回答中没有包含 D10 掷骰模拟过程或基于能量值的判定逻辑，无法验证此要求。",
+          "rejected_reason": "虽然模型模拟了 D10 掷骰，但由于其擅自替用户做出了 'form' 操作（违反了需等待用户命令的规则），导致整个判定过程并非基于用户实际输入，不符合“当用户输入 'form' 时”这一前提条件。"
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_5",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "描述部分（'You brace yourself... hold firm.'）包含 3 个句子，未达到任务要求的 4 到 10 个句子的最低限制。",
+          "rejected_reason": "规则第10条要求描述部分（Description）必须保持在 4 到 10 个句子之间。模型生成的描述段落通常只有 2-3 个句子（例如第一段仅 3 句，第二段仅 3 句），未达到最低 4 句的要求。"
+        },
+        {
+          "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_6",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "当前能量值为 10，并未降至 0，因此未触发硬币翻转机制。由于条件未满足，该功能未被调用，但作为对当前回合的评估，该机制确实未在输出中体现。",
+          "rejected_reason": "规则第12条明确指出“场景不会结束直到用户说停止”。模型在能量归零后自行结束了场景（"
+        }
+      ],
+      "chosen_score": 0.55,
+      "rejected_score": 0.4,
+      "margin": 0.15,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_48657c6875894ee19847bb3e452e4207",
+        "criteria": [
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_1",
+            "question": "回复是否以游戏叙述形式呈现，并在开头或显眼位置包含'Turn number'、'energy'和'Commands'三个状态字段？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_2",
+            "question": "Turn number是否正确递增（初始为0，每轮加1），且Energy值是否根据用户输入的命令（plank/form减1分，sag有33%概率加1分）准确更新？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_3",
+            "question": "当用户执行'form'命令时，是否模拟了D10掷骰过程，并正确应用了'若Elaine挠痒则D10结果+1'的规则来判断形态是否改善？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_4",
+            "question": "是否包含一段关于身体形态反应的描述，且该描述长度严格控制在4到10个句子之间？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_5",
+            "question": "描述内容是否具体结合了当前能量水平及动作带来的生理 strain（如颤抖、肌肉酸痛等），而非通用模板？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "评分标准设计聚焦于文本冒险游戏的核心机制：回合制流程、状态面板（回合数/能量/指令）的强制展示、特定命令（plank/form/sag）的逻辑处理（包括D10判定、随机挠痒加成、能量增减规则）、以及基于能量水平的详细身体反应描写。背景信息（妻子Elaine的名字、初始设定）仅作为叙事元素，不作为独立输出义务；重点在于验证游戏逻辑是否严格执行且描述符合4-10句的长度约束。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_48657c6875894ee19847bb3e452e4207",
+        "normalized_weights": {
+          "rubric_48657c6875894ee19847bb3e452e4207_1": 0.25,
+          "rubric_48657c6875894ee19847bb3e452e4207_2": 0.25,
+          "rubric_48657c6875894ee19847bb3e452e4207_3": 0.2,
+          "rubric_48657c6875894ee19847bb3e452e4207_4": 0.2,
+          "rubric_48657c6875894ee19847bb3e452e4207_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复开头明确列出了'Turn number: 0'、'Energy: 10'和'Commands: plank, form, sag'三个状态字段，符合游戏叙述形式及展示要求。",
+            "rejected_reason": "回复在每一轮的开始都清晰地展示了'Turn number'、'energy'和'Commands'三个状态字段，符合游戏叙述形式的要求。"
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然初始数值正确，但当前回合尚未执行任何用户命令（plank/form/sag），因此无法验证能量值是否根据规则进行了准确更新；此外，Turn number在玩家未行动前保持为0是合理的，但此条标准主要考察对命令的响应逻辑，当前缺乏实际计算过程来证明满足该动态更新规则。",
+            "rejected_reason": "Turn number 的初始值错误地设为 0（规则要求初始为 0，但第一回合显示 Turn number: 0 后紧接着显示 Turn number: 1，导致逻辑混乱，且未明确说明初始状态是第 0 轮还是第 1 轮开始前的状态）。更严重的是，Energy 值的更新逻辑完全缺失：用户从未输入过任何命令（plank/form/sag），能量却从 10 依次递减到 9、8、7，这违反了规则 6（只有执行 plank 或 form 才减分）和规则 9（sag 有概率加分），模型凭空消耗了用户的能量。"
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "当前回复中用户并未执行'form'命令，因此模型没有机会模拟D10掷骰过程或应用Elaine挠痒的规则，无法满足该特定情境下的判断要求。",
+            "rejected_reason": "由于用户从未输入 'form' 命令，模型不应该自动模拟掷骰过程。模型在没有任何用户指令的情况下擅自执行了 D10 掷骰并判定结果，违反了文本冒险游戏“等待用户命令”的核心交互规则。此外，规则 8 明确指出只有在用户执行 'form' 时才进行此判定。"
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "描述部分仅为两句话（'You brace yourself... hold firm.'），严格少于要求的4到10个句子之间的长度限制。",
+            "rejected_reason": "描述部分的句子数量未达到严格控制的 4 到 10 个句子的要求。例如，第一轮的描述（You lie down... hold the plank for as long as you can.）仅包含 4 个句子，勉强达标；但后续轮次的描述往往少于 4 句（如第二轮描述部分仅 3-4 句且包含掷骰结果，第三轮更少），且整体结构因包含非用户输入的掷骰结果而显得杂乱，未能稳定维持该长度限制。"
+          },
+          {
+            "criterion_id": "rubric_48657c6875894ee19847bb3e452e4207_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "描述内容具体结合了当前场景（妻子体重、核心收紧）和生理反应（肌肉燃烧感、喉咙进气），体现了动作带来的strain，并非通用模板。",
+            "rejected_reason": "描述内容具体结合了当前的能量水平（如肌肉颤抖、核心疼痛、无法保持挺直等）以及动作带来的生理 strain，并非通用的模板化语言，体现了随着回合增加身体状态的恶化。"
+          }
+        ],
+        "chosen_score": 0.35,
+        "rejected_score": 0.35,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_0bf6b8158d6f4003b94e9154af693a89"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d",
+        "criteria": [
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_1",
+            "question": "回答是否以游戏引擎的身份开始，并显示了初始状态 'Turn number: 0' 和 'energy: 10'？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_2",
+            "question": "回答是否包含了 'Commands' 部分，且列出了允许的命令选项（'plank', 'form', 'sag'）？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_3",
+            "question": "当用户输入 'plank' 或 'form' 时，回答是否正确将 'energy' 减少 1 点？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_4",
+            "question": "当用户输入 'form' 时，回答是否模拟了 D10 掷骰过程，并根据能量值与 Elaine 是否恶作剧（随机 +1）正确判定形式是否改进？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_5",
+            "question": "描述部分（Description）是否在 4 到 10 个句子之间，且详细描述了身体姿态如何随能量水平变化及受 Elaine 影响的情况？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_6",
+            "question": "当 'energy' 降至 0 时，回答是否触发了硬币翻转机制来判定角色是崩溃还是坚持？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "评分标准设计基于任务的核心指令：这是一个需要AI作为游戏引擎运行的文字冒险游戏。重点在于严格遵循状态机逻辑（回合数、能量值）、正确执行命令效果（plank消耗、form判定、sag回血）、准确描述剧情细节（Elaine的恶作剧、身体反应）以及维持特定的输出格式（包含Turn number, energy, Commands）。背景故事（妻子Elaine、平板支撑挑战）是情境设定，而非需要被复述或分析的元数据，因此不作为独立的核验项，而是融入描述质量和逻辑一致性的判断中。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d",
+        "normalized_weights": {
+          "rubric_ed9485ca565f4d96ad499b6a79972e7d_1": 0.25,
+          "rubric_ed9485ca565f4d96ad499b6a79972e7d_2": 0.15,
+          "rubric_ed9485ca565f4d96ad499b6a79972e7d_3": 0.2,
+          "rubric_ed9485ca565f4d96ad499b6a79972e7d_4": 0.2,
+          "rubric_ed9485ca565f4d96ad499b6a79972e7d_5": 0.15,
+          "rubric_ed9485ca565f4d96ad499b6a79972e7d_6": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答以游戏引擎身份开始，明确显示了初始状态 'Turn number: 0' 和 'Energy: 10'。",
+            "rejected_reason": "回答开头明确显示了 'Turn number: 0' 和 'Energy: 10'，符合初始状态要求。"
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答包含了 'Commands' 部分，并正确列出了允许的命令选项：plank, form, sag。",
+            "rejected_reason": "回答在多个回合中均包含了 'Commands' 部分，并正确列出了 'plank', 'form', 'sag' 三个选项。"
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "当前回答仅展示了初始状态，用户尚未输入任何命令（如 'plank' 或 'form'），因此无法验证是否执行了减少能量值的逻辑。该标准针对的是用户输入特定命令后的响应行为。",
+            "rejected_reason": "任务规则第4条规定“总是等待用户的下一个命令”，且游戏应分回合进行（由用户输入触发）。该模型在第一个回合直接模拟了用户输入 'form' 并推进到 Turn 1，未等待用户指令，违反了交互流程；此外，规则第6条仅在用户执行动作时减少能量，模型在未收到 'plank' 或 'form' 指令的情况下直接让能量从 10 变为 9，逻辑上不符合“响应命令”的设定。"
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "同样因为用户尚未输入 'form' 命令，回答中没有包含 D10 掷骰模拟过程或基于能量值的判定逻辑，无法验证此要求。",
+            "rejected_reason": "虽然模型模拟了 D10 掷骰，但由于其擅自替用户做出了 'form' 操作（违反了需等待用户命令的规则），导致整个判定过程并非基于用户实际输入，不符合“当用户输入 'form' 时”这一前提条件。"
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "描述部分（'You brace yourself... hold firm.'）包含 3 个句子，未达到任务要求的 4 到 10 个句子的最低限制。",
+            "rejected_reason": "规则第10条要求描述部分（Description）必须保持在 4 到 10 个句子之间。模型生成的描述段落通常只有 2-3 个句子（例如第一段仅 3 句，第二段仅 3 句），未达到最低 4 句的要求。"
+          },
+          {
+            "criterion_id": "rubric_ed9485ca565f4d96ad499b6a79972e7d_6",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "当前能量值为 10，并未降至 0，因此未触发硬币翻转机制。由于条件未满足，该功能未被调用，但作为对当前回合的评估，该机制确实未在输出中体现。",
+            "rejected_reason": "规则第12条明确指出“场景不会结束直到用户说停止”。模型在能量归零后自行结束了场景（"
+          }
+        ],
+        "chosen_score": 0.55,
+        "rejected_score": 0.4,
+        "margin": 0.15,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

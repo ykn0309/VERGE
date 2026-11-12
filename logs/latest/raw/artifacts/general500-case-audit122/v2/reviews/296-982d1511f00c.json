@@ -1,0 +1,48 @@
+{
+  "status": "valid",
+  "input_index": 296,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 296,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "mixed",
+        "reason": "任务未涉及多义专业术语消歧，但经验强调的‘基于客观事实’原则与N3/W2中关于虚构武器（炸药/酸）的事实核查高度相关。",
+        "refs": [
+          "TASK",
+          "N3.X.reason",
+          "W2.X.reason"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "useful_check",
+        "refs": [
+          "N3.X.reason",
+          "W2.X.reason"
+        ],
+        "note": "经验虽不直接触发术语消歧，但其核心原则（禁止虚构参数）被有效转化为对‘真实存在武器’的核查标准（N3/W2），成功识别了X回答中虚构炸药的严重事实错误。"
+      },
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "N.analysis",
+          "W.analysis"
+        ],
+        "note": "N和W的分析均正确指出任务要求200个物品，但经验适用性讨论中未明确区分‘数量不足’与‘内容虚构’是两个独立的失败点，仅聚焦于后者。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "W3.Y.reason",
+          "Y"
+        ],
+        "note": "W3判定Y未满足‘至少三项物理特征’，理由是Thumbtacks/Spike等条目缺失颜色或材质描述；需核对Y原文是否真的遗漏了这些具体属性，而非笼统认为有描述即可。"
+      }
+    ],
+    "limit": "无法确认Y回答中部分条目（如Thumbtacks）是否确实缺失了指定的物理属性细节，需逐条比对原文。"
+  }
+}

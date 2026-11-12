@@ -1,0 +1,48 @@
+{
+  "status": "valid",
+  "input_index": 221,
+  "outcome": "improved",
+  "attempt": 1,
+  "review": {
+    "case_index": 221,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "mixed",
+        "reason": "任务要求包含短语'We Crush Bugs.'，符合强制指定单词触发条件。但经验要求严格核验逐字匹配，而任务未明确禁止标点变化或格式调整（如标签化），前提存在不确定性。",
+        "refs": [
+          "TASK",
+          "E1.trigger",
+          "W1"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "W2",
+          "TASK"
+        ],
+        "note": "W2标准新增了对原句末尾点号（.）必须作为句子结束符号保留的严格要求。Task仅要求生成包含该短语的帖子，未规定短语在输出中必须以独立句子形式出现且保留末尾标点。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "W1.Y.reason",
+          "Y"
+        ],
+        "note": "W1.Y.reason指出Y回复中'#WeCrushBugs'属于形态变化。但这是Hashtags部分的常见格式处理，Task未禁止将短语用于标签。Judge将此视为违规可能误读了社交媒体语境下的正常变体。"
+      },
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "W3",
+          "N2"
+        ],
+        "note": "W3将颜色主题作为独立评分项，而N2将其作为描述完整性检查。经验E1主要关注文本精确匹配，未明确指示颜色方案应成为独立的扣分维度，可能导致评分重心偏移。"
+      }
+    ],
+    "limit": "无法确认任务是否隐含禁止标签化或标点变化的意图；无法判断颜色描述缺失是否构成实质性失败而非风格差异。"
+  }
+}

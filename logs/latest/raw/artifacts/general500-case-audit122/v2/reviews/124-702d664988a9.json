@@ -1,0 +1,64 @@
+{
+  "status": "valid",
+  "input_index": 124,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 124,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "unsupported",
+        "reason": "任务核心是列举原作中“知晓”角色的事实，而非构建虚构的跨作品互动场景。经验 E1 要求核验虚构互动的排他性，与任务要求的“基于原作设定”前提冲突。",
+        "refs": [
+          "TASK",
+          "N4.X.reason"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "mixed",
+        "reason": "经验 E2 强调多维信息展示（如多条引语），但任务主要询问认知层级和反应类型，未明确要求提供多条具体言论或语录，适用性取决于对“反应”定义的宽窄解读。",
+        "refs": [
+          "TASK",
+          "W.analysis"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "TASK",
+          "N4.X.reason"
+        ],
+        "note": "任务背景提及'Sonic characters'，但 N4 指出回答因混淆 IP 而虚构剧情被判定为错误。经验 W.analysis 却将'Sonic characters'视为有效约束并据此评分，存在对任务范围理解的潜在偏差。"
+      },
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "TASK",
+          "N1.X.reason"
+        ],
+        "note": "任务隐含要求区分‘猜测’、‘战斗’与‘见过全力’。经验 E1 聚焦于虚构互动的角色绑定度，可能掩盖了任务对‘认知层级’这一关键事实维度的核查需求。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "N4.Y.reason",
+          "W3.Y.reason"
+        ],
+        "note": "N4 理由指出 Y 回答混淆了 Sonic 系列角色与一拳超人中的音速索尼克；但 W3 理由却认为 Y 正确区分了认知程度。两者对同一回答段落的解读存在逻辑矛盾。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "W2.X.reason",
+          "W2.Y.reason"
+        ],
+        "note": "W2 对 X 和 Y 的评价标准不一致：X 认为虚构描述体现了独特性，Y 认为真实描述过于通用。在虚构 vs 事实的语境下，‘体现独特性格’的标准是否应同等适用尚不明确。"
+      }
+    ],
+    "limit": "无法确认任务中'Sonic characters'是否为笔误，以及经验 E1/E2 在虚构与事实混合场景下的优先级排序规则。"
+  }
+}

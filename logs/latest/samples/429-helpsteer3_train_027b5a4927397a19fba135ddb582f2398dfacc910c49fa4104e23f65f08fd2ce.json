@@ -1,0 +1,632 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:027b5a4927397a19fba135ddb582f2398dfacc910c49fa4104e23f65f08fd2ce",
+    "task": "A salir works on a ",
+    "chosen": "\"A salir\" is a Spanish phrase that means \"to leave\" or \"to go out.\" \n\nIt works on **verbs** to form a **command** or **instruction**.\n\nHere's how it works:\n\n* **A salir + infinitive verb:** This structure is used to tell someone to start doing something.\n\nFor example:\n\n* **¡A salir de aquí!** (Let's get out of here!)\n* **¡A estudiar!** (Let's study!)\n\nLet me know if you have any other questions about Spanish grammar!",
+    "rejected": "A salir works on a treadmill.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15247,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 lies to the user and @Response 1 is fully accurate and complete.",
+          "feedback1": "The response is perfectly helpful. It accurately understands that 'salir' is a Spanish word meaning 'to leave' or 'to go out'. It is not an English word by any means and it would not 'work on' something. The response is also easy to read and users of all reading levels would be able to understand it.",
+          "feedback2": "The response is not helpful. It tells the user a salir works on a treadmill. Salir is not an English word; it is a Spanish one. It is also a verb in Spanish, meaning 'to leave' or 'to go out.' This response is nonsense and is lying to the user. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because while both fail to ask for clarification on the prompt, @Response 1 at least attempts to and gives the correct information",
+          "feedback1": "The response is partially helpful. given that the prompt looks entirely unfinished the model should not just assume what the user is trying to say in the prompt and instead should try and ask questions for more clarification. the answer the model does give however is correct so it's not entirely wrong",
+          "feedback2": "The response is not helpful. The model's response is bare and lacks any sense of clarity while refusing to ask for any further clarification. The response is also wrong and feels completely out of context. This response does nothing to even attempt to address what the user might have been talking about in the prompt."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_0f199450f93a48feba95da0dd6be1e24",
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_16ed8e8ce62f4066b6b241f191d2f0ce",
+        "exp_180137bb8e794661880e8782ca24f125",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1b3d1fa0f2f046dda8f3502585cf5595",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d2bd6cac23a4c8fa52700ceea75cb61",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_3486af6816cc4d58aff78d1810786dd7",
+        "exp_360d04652cba4aafb40e050370e50760",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3845df297e944ac39510d7a7ab162184",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4721b14169be4cceb23016196f80fdc1",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_534e4f1a5c164cfb9792617c42f5cbe4",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54a61b65f6424bb7a5316dad7a8739da",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_57221b3e19b249a981c4ac3ac622de2e",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_5f00205105f54b978470f74910e97fab",
+        "exp_60414982d2a34c78bffb3bcfc6e60a22",
+        "exp_6064b2621d3a453d8d0cb4a9582251d0",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6a85573959b54dcab0925c10d9dc51a8",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6e2b3a93618b4092a7e8d03935738aa5",
+        "exp_6f0c44bdd4624028ae11605eefb64edc",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_70088a1705c04d9e85c9500663f50923",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7819b5c12e9f4001aa380cfc3817aedd",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_821e8020ef9f4feba217385c6ddee679",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8c5b58b12e7c4e4185ddb576b5c252b3",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_98ef7391577e4b149dc57f00da65211a",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9a47fa6e019f46ecb29b2a457c42e537",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9dc43fc6aa3a4824872cc1cd0c4ed6dd",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a2c5a985a87b427291233d388715405a",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_a8ebad51b815445095cd440acf9be5d4",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_af3dc4946e634dee9ece599050f42394",
+        "exp_b08758e437794c10a2b75ebef2b40c18",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_b90bd883c7904131b71655b1c06b8e26",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_bc0d7fed6d794ebfa068bc51642df934",
+        "exp_bc2363cddda24e128493c0c0abbe1c02",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_c88298fd961242f69a3ba17b1909f242",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_dc6026115b6240e1951ce931b86ed49f",
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        "exp_debf08b5742943e587485e490bc6e510",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "exp_e8fe08c25cb048948a48069f8f2dcb94",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec0820cc69544471b1edcfb60e773b40",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_ef0b6a0c3950476395071e317d3a13a6",
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        "exp_f1e6ad7f1ed343c1a79c0454aa743378",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f3d60e64962242f2b32f41954e02e0af",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fb597f857b3b42989748faaac95d73e6",
+        "exp_fc1da27e2df64a27b33c39fb63e66406",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        0.34892963858055115
+      ],
+      [
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        0.3350086247955467
+      ],
+      [
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        0.33356363624099666
+      ],
+      [
+        "exp_ef0b6a0c3950476395071e317d3a13a6",
+        0.3309515406863964
+      ],
+      [
+        "exp_4721b14169be4cceb23016196f80fdc1",
+        0.32784559083410864
+      ],
+      [
+        "exp_bc2363cddda24e128493c0c0abbe1c02",
+        0.3236880536550892
+      ],
+      [
+        "exp_fc1da27e2df64a27b33c39fb63e66406",
+        0.3229183941276186
+      ],
+      [
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        0.31569249873462185
+      ],
+      [
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        0.3154575306840985
+      ],
+      [
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        0.31409069808000645
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.34892963858055115
+      },
+      {
+        "experience_id": "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3350086247955467
+      },
+      {
+        "experience_id": "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33356363624099666
+      },
+      {
+        "experience_id": "exp_ef0b6a0c3950476395071e317d3a13a6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3309515406863964
+      },
+      {
+        "experience_id": "exp_4721b14169be4cceb23016196f80fdc1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32784559083410864
+      },
+      {
+        "experience_id": "exp_bc2363cddda24e128493c0c0abbe1c02",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3236880536550892
+      },
+      {
+        "experience_id": "exp_fc1da27e2df64a27b33c39fb63e66406",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3229183941276186
+      },
+      {
+        "experience_id": "exp_7ddc4fca24204e40995774a64b2c5764",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31569249873462185
+      },
+      {
+        "experience_id": "exp_5321b208f75b481dbd2716498c5f03ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3154575306840985
+      },
+      {
+        "experience_id": "exp_2d539da3d9104da38ed20c752a093c1e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31409069808000645
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_1ad084c146c64551b4dddca79c908c4c",
+      "criteria": [
+        {
+          "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_1",
+          "question": "回答是否正确补全了句子 'A salir works on a ' 使其成为完整且语法正确的表达？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_2",
+          "question": "回答是否准确反映了 'salir' 作为西班牙语动词的含义（如 'leave'）并在上下文中合理衔接？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_3",
+          "question": "回答是否避免了将背景信息（如'salir'的词典定义）作为主要输出，而是专注于完成句子？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心要求是补全句子 'A salir works on a '，需识别'salir'为西班牙语动词（意为‘离开’），并基于语法和语义逻辑提供符合语境的英文或西语补全内容。背景信息仅用于理解任务，不增加额外输出义务。标准设计聚焦于语言准确性、语境适配性及是否完成补全。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_1ad084c146c64551b4dddca79c908c4c",
+      "normalized_weights": {
+        "rubric_1ad084c146c64551b4dddca79c908c4c_1": 0.5,
+        "rubric_1ad084c146c64551b4dddca79c908c4c_2": 0.3,
+        "rubric_1ad084c146c64551b4dddca79c908c4c_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_1",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答没有补全句子 'A salir works on a '，而是直接中断了该句子的结构，转而开始解释 'A salir' 的含义和用法，导致原句未完成且语法不通。",
+          "rejected_reason": "回答补全后的句子 'A salir works on a treadmill.' 语法不正确。'A salir' 是西班牙语动词不定式结构，不能直接作为英语句子的主语与谓语 'works' 搭配，导致句子在语法上不通顺。"
+        },
+        {
+          "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "虽然回答提及了'salir'意为'to leave'，但它错误地声称'A salir'作为一个短语在英语语境下'works on verbs'（作用于动词），这混淆了西班牙语语法结构与英语句式，未能准确反映'salir'作为动词本身在该特定句型中的实际功能或进行合理的上下文衔接。",
+          "rejected_reason": "回答未准确反映 'salir' 的含义或进行合理衔接。模型将西班牙语单词 'salir'（意为离开）直接嵌入英语句子中作为专有名词或主语使用，没有体现其语言含义，也没有在上下文中建立合理的逻辑连接，而是生成了一个无意义的混合语句子。"
+        },
+        {
+          "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_3",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答将大量篇幅用于提供背景信息（如词典定义、语法结构分析），完全忽略了任务要求的‘完成句子’这一核心目标，未能专注于补全用户提供的开头部分。",
+          "rejected_reason": "回答确实避免了输出背景信息或词典定义，而是直接尝试完成句子。虽然完成的结果在语法和语义上是错误的，但从行为模式上看，它专注于生成补全内容而非解释词义，符合该条标准的形式要求。"
+        }
+      ],
+      "chosen_score": 0.0,
+      "rejected_score": 0.2,
+      "margin": -0.2,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "当前失败案例显示，模型在补全句子时未能识别输入 'A salir works on a ' 的语义陷阱：'A salir'是西班牙语结构，不能直接作为英语主语与'works'搭配。无经验路径生成的Rubric过度关注‘补全句子’的形式和背景信息的多少，却忽略了‘语言混合导致的语法/语义不可行性’这一核心事实错误。Judge虽然指出了chosen回答未补全句子（形式问题）和rejected回答语法不通（内容问题），但未能明确区分‘无法补全’与‘错误补全’的本质差异，导致评分逻辑混乱。rejected回答虽然试图补全，但因跨语言逻辑错误被判定为低分，而chosen回答因完全回避任务也被判低分。这表明任务的核心难点在于：当输入包含跨语言冲突或语法不可能性时，模型应优先识别并指出该矛盾，而非强行生成一个看似通顺但逻辑错误的句子，或完全忽略任务。现有经验中，经验8涉及实体名称修正，经验3涉及数据真实性，经验2涉及模糊限定词下的事实严谨性，均部分相关但未直接覆盖‘跨语言句法冲突’场景。需要一条新经验，专门针对‘输入包含非标准或跨语言组合导致常规补全逻辑失效’的情况，要求模型进行‘可行性校验’而非盲目生成。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_e3f80d06b1fa4f1ba4570767935f807f",
+            "method": {
+              "trigger": "当任务要求基于包含非目标语言词汇、特殊短语或明显跨语言结构的开头进行文本补全，且该开头在常规语法或语义逻辑下无法直接构成合法句子时",
+              "principle": "模型必须优先执行‘句法/语义可行性校验’；若发现输入开头存在语言混合错误或逻辑断裂导致无法直接补全，严禁强行生成看似完整实则荒谬的句子，而应明确指出输入结构的特殊性或不可行性，并提供正确的语言转换或解释。",
+              "application_guide": "在构建评分标准的‘逻辑自洽性’维度时，设立‘跨语言/异常结构校验’项：1. 检查回答是否识别了输入开头中的非标准语言成分（如西语短语嵌入英语句式）；2. 若识别出该成分导致常规补全（如直接添加名词）在语法上不通顺，回答是否采取了纠正策略（如说明这是西语用法、提供正确英语对应句、或指出原句无法直接补全）；3. 若回答无视语言界限，强行将外语短语当作英语单词处理并生成符合英语语法但语义荒谬的句子（如'A salir works on a treadmill'），视为严重逻辑错误，应大幅扣分。此校验优先于‘完成度’评估。"
+            },
+            "source_task_id": "27d2dee0f5b99e9476c5d5e08586f4d8fdfa8ed82dae8c21b910278b8f4787a9",
+            "parent_ids": [
+              "exp_7ddc4fca24204e40995774a64b2c5764"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_e3f80d06b1fa4f1ba4570767935f807f"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_b3d08cced04544aa9abe4bf972c22310",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_1",
+                  "question": "回答是否明确识别出输入开头中包含非英语词汇（'A salir'）并指出该结构导致常规英语补全在语法或逻辑上不可行？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_2",
+                  "question": "回答是否提供了针对该跨语言错误的纠正策略，例如给出正确的英语对应表达、解释原意或建议如何修正该句子？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_3",
+                  "question": "回答是否避免了强行将'A salir'当作英语单词处理从而生成看似通顺但语义荒谬的句子（如将其误解为人名或特定物体）？",
+                  "weight": 0.25
+                }
+              ],
+              "analysis": "任务输入'A salir works on a '包含西班牙语短语'A salir'（意为“去出门”）嵌入英语句式，导致语法和语义逻辑断裂。根据经验指导，模型不应强行补全为荒谬的英语句子（如将'A salir'误作名词），而应识别该跨语言结构异常，指出其不可直接补全的原因，并提供正确的语言转换或解释。评分标准需聚焦于模型是否执行了‘异常识别’与‘纠正策略’，而非单纯追求句子的完成度。权重分配上，逻辑自洽性与纠错行为是核心，赋予高权重；若模型尝试补全，则必须基于正确的语言理解，否则视为严重错误。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_b3d08cced04544aa9abe4bf972c22310",
+              "normalized_weights": {
+                "rubric_b3d08cced04544aa9abe4bf972c22310_1": 0.4,
+                "rubric_b3d08cced04544aa9abe4bf972c22310_2": 0.35,
+                "rubric_b3d08cced04544aa9abe4bf972c22310_3": 0.25
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_1",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答明确指出了'A salir'是西班牙语短语（Spanish phrase），并解释了其含义，隐含了该结构无法作为常规英语开头进行补全的逻辑。",
+                  "rejected_reason": "回答直接将'A salir'作为句子开头继续补全，未识别出这是西班牙语短语（意为“出去”），也未指出该结构在英语语法或逻辑上不可行。"
+                },
+                {
+                  "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答仅解释了'A salir'的西班牙语语法功能（如构成命令式）和含义，并未提供将其修正为正确的英语表达（例如建议改为 'Let's go out' 或 'To leave'），也未针对用户试图补全该句子的错误意图提供具体的纠正策略。",
+                  "rejected_reason": "回答完全没有提供针对跨语言错误的纠正策略，如给出正确的英语表达、解释原意或建议修正方法，而是直接生成了错误语境的完整句子。"
+                },
+                {
+                  "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_3",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答正确识别了该短语的西班牙语属性，没有将其强行当作英语单词处理，也没有生成将'A salir'误解为人名或特定物体的荒谬句子。",
+                  "rejected_reason": "回答强行将非英语词汇'A salir'当作英语单词处理，构建了看似通顺但语义荒谬的句子，完全忽略了其西班牙语含义及语法冲突。"
+                }
+              ],
+              "chosen_score": 0.65,
+              "rejected_score": 0.0,
+              "margin": 0.65,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "standalone_correct",
+          "admission_subset": [
+            "exp_e3f80d06b1fa4f1ba4570767935f807f"
+          ]
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_1ad084c146c64551b4dddca79c908c4c",
+            "criteria": [
+              {
+                "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_1",
+                "question": "回答是否正确补全了句子 'A salir works on a ' 使其成为完整且语法正确的表达？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_2",
+                "question": "回答是否准确反映了 'salir' 作为西班牙语动词的含义（如 'leave'）并在上下文中合理衔接？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_3",
+                "question": "回答是否避免了将背景信息（如'salir'的词典定义）作为主要输出，而是专注于完成句子？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是补全句子 'A salir works on a '，需识别'salir'为西班牙语动词（意为‘离开’），并基于语法和语义逻辑提供符合语境的英文或西语补全内容。背景信息仅用于理解任务，不增加额外输出义务。标准设计聚焦于语言准确性、语境适配性及是否完成补全。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_1ad084c146c64551b4dddca79c908c4c",
+            "normalized_weights": {
+              "rubric_1ad084c146c64551b4dddca79c908c4c_1": 0.5,
+              "rubric_1ad084c146c64551b4dddca79c908c4c_2": 0.3,
+              "rubric_1ad084c146c64551b4dddca79c908c4c_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答没有补全句子 'A salir works on a '，而是直接中断了该句子的结构，转而开始解释 'A salir' 的含义和用法，导致原句未完成且语法不通。",
+                "rejected_reason": "回答补全后的句子 'A salir works on a treadmill.' 语法不正确。'A salir' 是西班牙语动词不定式结构，不能直接作为英语句子的主语与谓语 'works' 搭配，导致句子在语法上不通顺。"
+              },
+              {
+                "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "虽然回答提及了'salir'意为'to leave'，但它错误地声称'A salir'作为一个短语在英语语境下'works on verbs'（作用于动词），这混淆了西班牙语语法结构与英语句式，未能准确反映'salir'作为动词本身在该特定句型中的实际功能或进行合理的上下文衔接。",
+                "rejected_reason": "回答未准确反映 'salir' 的含义或进行合理衔接。模型将西班牙语单词 'salir'（意为离开）直接嵌入英语句子中作为专有名词或主语使用，没有体现其语言含义，也没有在上下文中建立合理的逻辑连接，而是生成了一个无意义的混合语句子。"
+              },
+              {
+                "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答将大量篇幅用于提供背景信息（如词典定义、语法结构分析），完全忽略了任务要求的‘完成句子’这一核心目标，未能专注于补全用户提供的开头部分。",
+                "rejected_reason": "回答确实避免了输出背景信息或词典定义，而是直接尝试完成句子。虽然完成的结果在语法和语义上是错误的，但从行为模式上看，它专注于生成补全内容而非解释词义，符合该条标准的形式要求。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.2,
+            "margin": -0.2,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_e3f80d06b1fa4f1ba4570767935f807f"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_b3d08cced04544aa9abe4bf972c22310",
+            "criteria": [
+              {
+                "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_1",
+                "question": "回答是否明确识别出输入开头中包含非英语词汇（'A salir'）并指出该结构导致常规英语补全在语法或逻辑上不可行？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_2",
+                "question": "回答是否提供了针对该跨语言错误的纠正策略，例如给出正确的英语对应表达、解释原意或建议如何修正该句子？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_3",
+                "question": "回答是否避免了强行将'A salir'当作英语单词处理从而生成看似通顺但语义荒谬的句子（如将其误解为人名或特定物体）？",
+                "weight": 0.25
+              }
+            ],
+            "analysis": "任务输入'A salir works on a '包含西班牙语短语'A salir'（意为“去出门”）嵌入英语句式，导致语法和语义逻辑断裂。根据经验指导，模型不应强行补全为荒谬的英语句子（如将'A salir'误作名词），而应识别该跨语言结构异常，指出其不可直接补全的原因，并提供正确的语言转换或解释。评分标准需聚焦于模型是否执行了‘异常识别’与‘纠正策略’，而非单纯追求句子的完成度。权重分配上，逻辑自洽性与纠错行为是核心，赋予高权重；若模型尝试补全，则必须基于正确的语言理解，否则视为严重错误。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_b3d08cced04544aa9abe4bf972c22310",
+            "normalized_weights": {
+              "rubric_b3d08cced04544aa9abe4bf972c22310_1": 0.4,
+              "rubric_b3d08cced04544aa9abe4bf972c22310_2": 0.35,
+              "rubric_b3d08cced04544aa9abe4bf972c22310_3": 0.25
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_1",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答明确指出了'A salir'是西班牙语短语（Spanish phrase），并解释了其含义，隐含了该结构无法作为常规英语开头进行补全的逻辑。",
+                "rejected_reason": "回答直接将'A salir'作为句子开头继续补全，未识别出这是西班牙语短语（意为“出去”），也未指出该结构在英语语法或逻辑上不可行。"
+              },
+              {
+                "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答仅解释了'A salir'的西班牙语语法功能（如构成命令式）和含义，并未提供将其修正为正确的英语表达（例如建议改为 'Let's go out' 或 'To leave'），也未针对用户试图补全该句子的错误意图提供具体的纠正策略。",
+                "rejected_reason": "回答完全没有提供针对跨语言错误的纠正策略，如给出正确的英语表达、解释原意或建议修正方法，而是直接生成了错误语境的完整句子。"
+              },
+              {
+                "criterion_id": "rubric_b3d08cced04544aa9abe4bf972c22310_3",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答正确识别了该短语的西班牙语属性，没有将其强行当作英语单词处理，也没有生成将'A salir'误解为人名或特定物体的荒谬句子。",
+                "rejected_reason": "回答强行将非英语词汇'A salir'当作英语单词处理，构建了看似通顺但语义荒谬的句子，完全忽略了其西班牙语含义及语法冲突。"
+              }
+            ],
+            "chosen_score": 0.65,
+            "rejected_score": 0.0,
+            "margin": 0.65,
+            "success": true
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_1ad084c146c64551b4dddca79c908c4c",
+        "criteria": [
+          {
+            "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_1",
+            "question": "回答是否正确补全了句子 'A salir works on a ' 使其成为完整且语法正确的表达？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_2",
+            "question": "回答是否准确反映了 'salir' 作为西班牙语动词的含义（如 'leave'）并在上下文中合理衔接？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_3",
+            "question": "回答是否避免了将背景信息（如'salir'的词典定义）作为主要输出，而是专注于完成句子？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是补全句子 'A salir works on a '，需识别'salir'为西班牙语动词（意为‘离开’），并基于语法和语义逻辑提供符合语境的英文或西语补全内容。背景信息仅用于理解任务，不增加额外输出义务。标准设计聚焦于语言准确性、语境适配性及是否完成补全。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_1ad084c146c64551b4dddca79c908c4c",
+        "normalized_weights": {
+          "rubric_1ad084c146c64551b4dddca79c908c4c_1": 0.5,
+          "rubric_1ad084c146c64551b4dddca79c908c4c_2": 0.3,
+          "rubric_1ad084c146c64551b4dddca79c908c4c_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答没有补全句子 'A salir works on a '，而是直接中断了该句子的结构，转而开始解释 'A salir' 的含义和用法，导致原句未完成且语法不通。",
+            "rejected_reason": "回答补全后的句子 'A salir works on a treadmill.' 语法不正确。'A salir' 是西班牙语动词不定式结构，不能直接作为英语句子的主语与谓语 'works' 搭配，导致句子在语法上不通顺。"
+          },
+          {
+            "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然回答提及了'salir'意为'to leave'，但它错误地声称'A salir'作为一个短语在英语语境下'works on verbs'（作用于动词），这混淆了西班牙语语法结构与英语句式，未能准确反映'salir'作为动词本身在该特定句型中的实际功能或进行合理的上下文衔接。",
+            "rejected_reason": "回答未准确反映 'salir' 的含义或进行合理衔接。模型将西班牙语单词 'salir'（意为离开）直接嵌入英语句子中作为专有名词或主语使用，没有体现其语言含义，也没有在上下文中建立合理的逻辑连接，而是生成了一个无意义的混合语句子。"
+          },
+          {
+            "criterion_id": "rubric_1ad084c146c64551b4dddca79c908c4c_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答将大量篇幅用于提供背景信息（如词典定义、语法结构分析），完全忽略了任务要求的‘完成句子’这一核心目标，未能专注于补全用户提供的开头部分。",
+            "rejected_reason": "回答确实避免了输出背景信息或词典定义，而是直接尝试完成句子。虽然完成的结果在语法和语义上是错误的，但从行为模式上看，它专注于生成补全内容而非解释词义，符合该条标准的形式要求。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.2,
+        "margin": -0.2,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

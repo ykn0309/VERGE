@@ -1,0 +1,504 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:c5e633d5290b36322aa5f2c13d7723af23e26298811a56fb8c13f9158eefa21c",
+    "task": "keurig 8 oz + milk vs keurig 6 oz + milk?",
+    "chosen": "When comparing Keurig 8 oz + milk versus Keurig 6 oz + milk, the main difference comes down to coffee strength and flavor concentration:\n\n**Keurig 6 oz + milk**\nUsing 6 oz of water with your K-Cup will result in a stronger, more concentrated coffee, as less water is passing through the same amount of coffee grounds. When you add milk to this, the coffee's strength will still come through more distinctly, giving a richer flavor despite the milk dilution.\n\n**Keurig 8 oz + milk**\nUsing 8 oz of water dilutes the coffee more, producing a lighter, less concentrated brew. Adding the same amount of milk as you would with 6 oz will result in a milder overall flavor, as the coffee is already less strong.\n\nThe amount of milk you add will impact the overall taste, but in general, the 6 oz brew will have a stronger coffee flavor compared to the 8 oz brew, even after adding milk. If you prefer a more robust taste, go with the 6 oz; if you prefer a milder coffee, the 8 oz may suit your taste better.",
+    "rejected": "Your request is unclear, but it seems that you are asking about how much milk to add to a cup of coffee brewed on the 4-ounce setting versus the 6-ounce setting of a Keurig coffee machine. If that is not correct, please clarify.\n\nThe amount of milk you should add to each cup depends on how light or strong you prefer your coffee. Most coffee drinkers add milk until their coffee is a certain color rather than measuring their milk. You could start by adding milk gradually until the coffee turns a light brown color, then adjusting based on the taste. You may need to add more milk to a 4-ounce cup than a 6-ounce cup, paradoxically. This is because cups brewed on a smaller cup setting tend to be stronger.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 22202,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 fails to address the prompt accurately, focusing on a 4 oz setting and creating confusion. Meanwhile, @Response 2 provides a clear comparison between the 6 oz and 8 oz settings, discussing coffee strength and flavor effectively.",
+          "feedback1": "The response is not helpful. It does not accurately address the prompt, which specifically compares a Keurig 8 oz cup to a 6 oz cup with milk. Instead, it focuses on a 4 oz setting, creating confusion. While it mentions personal preference regarding milk quantity and acknowledges the strength of smaller brews, it fails to provide a clear comparison or specific guidance relevant to the 8 oz and 6 oz settings. Consequently, the response lacks the necessary clarity and relevance to effectively answer the original question.",
+          "feedback2": "The response is perfectly helpful. It accurately addresses the prompt by comparing the Keurig 8 oz and 6 oz settings with milk. It clearly explains how the volume of water affects coffee strength and flavor concentration, noting that the 6 oz brew results in a stronger, more concentrated coffee, while the 8 oz brew is lighter and milder. The response effectively highlights how the amount of milk added will influence the overall taste, guiding readers based on their preferences for coffee strength. Overall, the response is informative and relevant, providing a clear and useful comparison that directly answers the prompt."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it provides a reasonable answer and explains its reasoning, while @Response 1 gets the numbers from the prompt wrong.",
+          "feedback1": "The response is slightly helpful. It has several problems. The response incorrectly mentions a 4- and 6-oz cup when the user specified a 6- and 8-oz cup. The response could be further improved if it explained why cups brewed on a smaller cup setting are stronger and thus need more milk (because they are more concentrated). Additionally, the first paragraph is unnecessary.",
+          "feedback2": "The response is mostly helpful. It provides a reasonable answer to a vague prompt, and explains its reasoning. The only issue with the response is that the opening sentence is awkwardly worded, and there could be a better way to phrase the comparison. Otherwise, this is a very good response."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 fails to understand what the prompt is asking.",
+          "feedback1": "The response is not helpful. It fails to understand the prompt's request. It compares 4-ounce settings and the 6-ounce setting instead of the 6-ounce setting and 8-ounce setting. The response also fails to understand the comparison is between ounces and not how much milk is used to dilute the coffee.",
+          "feedback2": "The response is perfectly helpful. It understands the prompt and fulfills the instructions. The comparison is done correctly with the facts stated being true. The response is presentable and written clearly. It does an exhaustive comparison that is informative. The language used is easy to understand. Paragraphs are well aligned and sentences have a good flow."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        0.2615603645382743
+      ],
+      [
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        0.2558067497261464
+      ],
+      [
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        0.2485037170687922
+      ],
+      [
+        "exp_41496b565eb54c45b042c7851295b31c",
+        0.2426427474271013
+      ],
+      [
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        0.24076625786246675
+      ],
+      [
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        0.23803741318294772
+      ],
+      [
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        0.23705410116273307
+      ],
+      [
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        0.22944255233588015
+      ],
+      [
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        0.22890348504354527
+      ],
+      [
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        0.22787357854327797
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_d56848d5e558404daa735b8eeed2b35b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2615603645382743
+      },
+      {
+        "experience_id": "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2558067497261464
+      },
+      {
+        "experience_id": "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2485037170687922
+      },
+      {
+        "experience_id": "exp_41496b565eb54c45b042c7851295b31c",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2426427474271013
+      },
+      {
+        "experience_id": "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24076625786246675
+      },
+      {
+        "experience_id": "exp_283262ccd7764c0fb8214ffb31765024",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23803741318294772
+      },
+      {
+        "experience_id": "exp_213fbd03db074c608522ed90461b8ab1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23705410116273307
+      },
+      {
+        "experience_id": "exp_b56478721b2a489ca4dd82ffda84916a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22944255233588015
+      },
+      {
+        "experience_id": "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22890348504354527
+      },
+      {
+        "experience_id": "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22787357854327797
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_283262ccd7764c0fb8214ffb31765024": "任务明确涉及对同一主题（Keurig 冲泡咖啡）下不同对象（8 oz vs 6 oz 容量）的差异化对比要求，经验 6 强调必须针对每个差异化维度生成独立实例且严禁混同处理，这与评分标准中需要验证模型是否清晰区分两种容量差异的需求完全一致。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_fc5bcc93ce55417f9099cde664c75424",
+      "criteria": [
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_1",
+          "question": "回答是否明确指出了8盎司与6盎司咖啡在原始液体体积上的具体差异？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_2",
+          "question": "回答是否解释了加入相同量牛奶后，两种容量咖啡在最终饮品中的咖啡浓度差异？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_3",
+          "question": "回答是否说明了由于基础咖啡体积不同导致的咖啡因摄入量差异？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_4",
+          "question": "回答是否清晰区分了‘咖啡液体积’与‘加奶后总体积’的概念，未混淆两者？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "该任务要求比较两种不同容量的咖啡（8盎司和6盎司）在加入牛奶后的区别。核心在于识别并解释容量差异对最终饮品浓度、咖啡因含量及口感的影响，同时需明确‘加奶’这一共同变量不会改变容量对比的本质逻辑。背景信息中的品牌'Keurig'仅作为设备类型提及，无需验证机器型号或功能细节，重点应放在体积与成分的量化对比上。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_fc5bcc93ce55417f9099cde664c75424",
+      "normalized_weights": {
+        "rubric_fc5bcc93ce55417f9099cde664c75424_1": 0.3,
+        "rubric_fc5bcc93ce55417f9099cde664c75424_2": 0.3,
+        "rubric_fc5bcc93ce55417f9099cde664c75424_3": 0.2,
+        "rubric_fc5bcc93ce55417f9099cde664c75424_4": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答明确指出了使用6盎司水与8盎司水的区别，并解释了由此产生的液体体积差异对浓度的影响。",
+          "rejected_reason": "回答未提及用户询问的8盎司与6盎司的差异，反而错误地假设用户在询问4盎司与6盎司的差异，因此没有明确指出8盎司与6盎司在原始液体体积上的具体差异。"
+        },
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答详细解释了加入相同量牛奶后，6盎司咖啡因原始浓度更高而保持更明显的咖啡强度，而8盎司咖啡则因稀释更严重导致整体风味更淡。",
+          "rejected_reason": "由于回答基于错误的容量假设（4盎司vs6盎司），未能针对用户提出的8盎司与6盎司场景解释加入牛奶后的咖啡浓度差异。"
+        },
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答仅讨论了风味强度和浓度（flavor strength and concentration），完全未提及咖啡因摄入量（caffeine intake）的差异或相关数据。",
+          "rejected_reason": "回答完全没有说明咖啡因摄入量的差异，且因容量设定错误，无法提供关于8盎司与6盎司对应的咖啡因差异信息。"
+        },
+        {
+          "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_4",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答清晰区分了基于不同水量（6oz vs 8oz） brewed的咖啡液浓度，并在此基础上分析了加奶后的最终效果，未混淆基础咖啡液体积与加奶后的总体积概念。",
+          "rejected_reason": "回答混淆了用户的问题对象（将8/6盎司误作4/6盎司），虽然提到了“咖啡液体积”的概念，但未能在正确的比较框架下清晰区分这两个概念，导致核心逻辑偏离任务要求。"
+        }
+      ],
+      "chosen_score": 0.8,
+      "rejected_score": 0.0,
+      "margin": 0.8,
+      "success": true
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_283262ccd7764c0fb8214ffb31765024"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_357e71baee9146f09db00a701f5b105b",
+      "criteria": [
+        {
+          "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_1",
+          "question": "回答是否分别独立分析了'8 oz + milk'和'6 oz + milk'这两种特定组合的情况？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_2",
+          "question": "回答是否清晰指出了两种容量组合在口感、浓度或体验上的具体差异，而非仅重复通用描述？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_3",
+          "question": "回答是否避免了将两种容量的结果混为一谈，未使用单一结论同时涵盖两者而忽略容量变量？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心在于对比'Keurig 8 oz + Milk'与'Keurig 6 oz + Milk'两种具体情境的差异。根据提供的经验，必须针对这两个不同的容量参数生成独立的实例或分析点，严禁混同处理或使用单一通用结论覆盖两者。评分标准需严格区分背景（咖啡机品牌、牛奶）与需要独立验证的差异化维度（8oz vs 6oz），确保回答明确展示了不同容量下的具体表现差异，而非仅给出笼统建议。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_357e71baee9146f09db00a701f5b105b",
+      "normalized_weights": {
+        "rubric_357e71baee9146f09db00a701f5b105b_1": 0.5,
+        "rubric_357e71baee9146f09db00a701f5b105b_2": 0.3,
+        "rubric_357e71baee9146f09db00a701f5b105b_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答明确使用了两个独立的标题'**Keurig 6 oz + milk**'和'**Keurig 8 oz + milk**'，分别对这两种特定组合进行了独立描述和分析。",
+          "rejected_reason": "回答未针对用户提问的'8 oz + milk'和'6 oz + milk'进行分析，而是错误地将问题解读为'4-ounce'与'6-ounce'的设置对比，完全忽略了用户指定的8 oz选项。"
+        },
+        {
+          "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答清晰指出了具体差异：6盎司组合被描述为'stronger, more concentrated'且'milk dilution'后仍有更浓郁的口感，而8盎司组合被描述为'dilutes the coffee more'且产生'lighter, less concentrated brew'，并非通用描述。",
+          "rejected_reason": "由于回答基于错误的容量假设（4 oz vs 6 oz），因此未能指出用户询问的8 oz与6 oz组合在口感、浓度或体验上的具体差异，提供的建议仅适用于其臆想的场景。"
+        },
+        {
+          "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答严格区分了两种情况，没有使用单一结论涵盖两者，而是明确指出6盎司对应更强风味、8盎司对应更淡风味，并根据偏好给出了不同的选择建议。",
+          "rejected_reason": "回答不仅没有区分8 oz和6 oz的情况，反而将问题修正为4 oz和6 oz的讨论，导致完全偏离了用户设定的两个特定变量，无法体现对原问题的独立分析。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.0,
+      "margin": 1.0,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_fc5bcc93ce55417f9099cde664c75424",
+        "criteria": [
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_1",
+            "question": "回答是否明确指出了8盎司与6盎司咖啡在原始液体体积上的具体差异？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_2",
+            "question": "回答是否解释了加入相同量牛奶后，两种容量咖啡在最终饮品中的咖啡浓度差异？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_3",
+            "question": "回答是否说明了由于基础咖啡体积不同导致的咖啡因摄入量差异？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_4",
+            "question": "回答是否清晰区分了‘咖啡液体积’与‘加奶后总体积’的概念，未混淆两者？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "该任务要求比较两种不同容量的咖啡（8盎司和6盎司）在加入牛奶后的区别。核心在于识别并解释容量差异对最终饮品浓度、咖啡因含量及口感的影响，同时需明确‘加奶’这一共同变量不会改变容量对比的本质逻辑。背景信息中的品牌'Keurig'仅作为设备类型提及，无需验证机器型号或功能细节，重点应放在体积与成分的量化对比上。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_fc5bcc93ce55417f9099cde664c75424",
+        "normalized_weights": {
+          "rubric_fc5bcc93ce55417f9099cde664c75424_1": 0.3,
+          "rubric_fc5bcc93ce55417f9099cde664c75424_2": 0.3,
+          "rubric_fc5bcc93ce55417f9099cde664c75424_3": 0.2,
+          "rubric_fc5bcc93ce55417f9099cde664c75424_4": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出了使用6盎司水与8盎司水的区别，并解释了由此产生的液体体积差异对浓度的影响。",
+            "rejected_reason": "回答未提及用户询问的8盎司与6盎司的差异，反而错误地假设用户在询问4盎司与6盎司的差异，因此没有明确指出8盎司与6盎司在原始液体体积上的具体差异。"
+          },
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答详细解释了加入相同量牛奶后，6盎司咖啡因原始浓度更高而保持更明显的咖啡强度，而8盎司咖啡则因稀释更严重导致整体风味更淡。",
+            "rejected_reason": "由于回答基于错误的容量假设（4盎司vs6盎司），未能针对用户提出的8盎司与6盎司场景解释加入牛奶后的咖啡浓度差异。"
+          },
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅讨论了风味强度和浓度（flavor strength and concentration），完全未提及咖啡因摄入量（caffeine intake）的差异或相关数据。",
+            "rejected_reason": "回答完全没有说明咖啡因摄入量的差异，且因容量设定错误，无法提供关于8盎司与6盎司对应的咖啡因差异信息。"
+          },
+          {
+            "criterion_id": "rubric_fc5bcc93ce55417f9099cde664c75424_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答清晰区分了基于不同水量（6oz vs 8oz） brewed的咖啡液浓度，并在此基础上分析了加奶后的最终效果，未混淆基础咖啡液体积与加奶后的总体积概念。",
+            "rejected_reason": "回答混淆了用户的问题对象（将8/6盎司误作4/6盎司），虽然提到了“咖啡液体积”的概念，但未能在正确的比较框架下清晰区分这两个概念，导致核心逻辑偏离任务要求。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 0.0,
+        "margin": 0.8,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_283262ccd7764c0fb8214ffb31765024"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_357e71baee9146f09db00a701f5b105b",
+        "criteria": [
+          {
+            "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_1",
+            "question": "回答是否分别独立分析了'8 oz + milk'和'6 oz + milk'这两种特定组合的情况？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_2",
+            "question": "回答是否清晰指出了两种容量组合在口感、浓度或体验上的具体差异，而非仅重复通用描述？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_3",
+            "question": "回答是否避免了将两种容量的结果混为一谈，未使用单一结论同时涵盖两者而忽略容量变量？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心在于对比'Keurig 8 oz + Milk'与'Keurig 6 oz + Milk'两种具体情境的差异。根据提供的经验，必须针对这两个不同的容量参数生成独立的实例或分析点，严禁混同处理或使用单一通用结论覆盖两者。评分标准需严格区分背景（咖啡机品牌、牛奶）与需要独立验证的差异化维度（8oz vs 6oz），确保回答明确展示了不同容量下的具体表现差异，而非仅给出笼统建议。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_357e71baee9146f09db00a701f5b105b",
+        "normalized_weights": {
+          "rubric_357e71baee9146f09db00a701f5b105b_1": 0.5,
+          "rubric_357e71baee9146f09db00a701f5b105b_2": 0.3,
+          "rubric_357e71baee9146f09db00a701f5b105b_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确使用了两个独立的标题'**Keurig 6 oz + milk**'和'**Keurig 8 oz + milk**'，分别对这两种特定组合进行了独立描述和分析。",
+            "rejected_reason": "回答未针对用户提问的'8 oz + milk'和'6 oz + milk'进行分析，而是错误地将问题解读为'4-ounce'与'6-ounce'的设置对比，完全忽略了用户指定的8 oz选项。"
+          },
+          {
+            "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答清晰指出了具体差异：6盎司组合被描述为'stronger, more concentrated'且'milk dilution'后仍有更浓郁的口感，而8盎司组合被描述为'dilutes the coffee more'且产生'lighter, less concentrated brew'，并非通用描述。",
+            "rejected_reason": "由于回答基于错误的容量假设（4 oz vs 6 oz），因此未能指出用户询问的8 oz与6 oz组合在口感、浓度或体验上的具体差异，提供的建议仅适用于其臆想的场景。"
+          },
+          {
+            "criterion_id": "rubric_357e71baee9146f09db00a701f5b105b_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答严格区分了两种情况，没有使用单一结论涵盖两者，而是明确指出6盎司对应更强风味、8盎司对应更淡风味，并根据偏好给出了不同的选择建议。",
+            "rejected_reason": "回答不仅没有区分8 oz和6 oz的情况，反而将问题修正为4 oz和6 oz的讨论，导致完全偏离了用户设定的两个特定变量，无法体现对原问题的独立分析。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

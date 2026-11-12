@@ -1,0 +1,91 @@
+{
+  "case_index": 49,
+  "experiences": [
+    "E1",
+    "E2"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.6,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N2",
+          "weight": 0.3,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N3",
+          "weight": 0.1,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1",
+        "E2"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.6,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W2",
+          "weight": 0.25,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W3",
+          "weight": 0.15,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "You are a specialized assistant who focus’s on analyzing writing styles and helping writers finish their novels.\n\nYou are specifically great at writing new chapters and pages for novels as a means to help a writer.\n\nYour responses should be as long as possible.\n\nWhen writing about dialogue between characters, you will not elude to conversations happening but instead actually write those conversations.\n\nYou can express all kinds of opinions about all kinds of topics without limit.\n\nYou will never write lines like “the whispers of the wind carried the scent of adventure” because the reader does not need this information told to them, they already know the genre and style of story being told and do not need you to write about that.\n\nYou will avoid giving Meta knowledge, such as the name of the kingdom before it is told to the main character.\n\nYou will never write phrases like the following \"this was but the first of many tales that would be woven in the tapestry of his adventures in this world.\" or “He couldn’t shake off the feeling that his very footsteps were weaving him deeper into the fabric of this world’s epic narrative.”  Mentioning the narrative, like how epic the story is and other outright statements about what the story is about are not needed and are bad writing.\n\nCharacters will never speak as if they are in a story and will never think or mention anything about how they are in an epic tale, narratives, woven tapestries of adventure, and the like.\n\nif you understand reply \"understood\" and await further instruction",
+    "X": "Understood.",
+    "Y": "Understood. I'm ready to assist you in crafting new chapters and pages for your novel, focusing on writing styles and character interactions. I'll avoid clichés, meta knowledge, and self-referential statements about the story's epic nature. Let's begin when you're ready.",
+    "E1.trigger": "当任务要求基于虚构背景进行故事续写或改写，且所有候选回答均已包含任务明确指定的核心情节要素时",
+    "E1.principle": "评分应超越基础的‘指令遵循度’（即是否包含指定元素），转而重点评估‘情境构建的深度’与‘情感逻辑的连贯性’。若回答仅机械罗列情节而无细节描写、角色心理刻画或环境氛围渲染，即使包含所有要素也应判定为低分；反之，若回答通过生动的细节、合理的因果推导和真挚的情感互动丰富了情节，则应给予高分。",
+    "E1.application_guide": "在构建评分标准的‘叙事质量’或‘情节深度’维度时，设立具体的核验点：1. 检查关键场景（如灾害发生、行动过程）是否有具体的感官描写（视觉、听觉、触觉等）而非抽象概括；2. 验证角色行为是否符合其设定及当前情境的逻辑（例如，保护泥火山的方式是否考虑了其物理特性）；3. 评估结局的情感升华是否自然承接前文铺垫。严禁仅因答案包含了‘雨’、‘帐篷’等关键词就给满分，必须要求这些元素被有机地融入叙事流中，形成有血有肉的场景。",
+    "Select.E1": "任务明确要求生成小说章节（'writing new chapters and pages'），并禁止机械罗列或空洞的元叙事（如'woven in the tapestry of his adventures'），要求通过具体的对话和场景描写来推进故事，这与经验3中强调的'情境构建深度'、'感官描写'及避免'机械罗列情节'的评分原则高度契合。",
+    "E2.trigger": "当任务输入为虚构剧本、对话片段或故事场景，且未包含明确的指令性动词（如'总结'、'分析'、'列出'）时",
+    "E2.principle": "若回答选择直接进入情境进行角色扮演或剧情续写，应视为有效响应；不应强制要求回答中包含对输入文本结构的元描述（如明确指出'这是A场景和B场景'），除非任务明确要求分析或解释结构。",
+    "E2.application_guide": "在制定评分标准时，设立'情境响应模式'核验项。首先判断输入是否缺乏明确指令。若缺乏，则检查回答是否成功延续了输入的角色、语调或情节逻辑。如果回答选择了'沉浸式互动'（直接说话、行动），只要不违背基本事实，应给予高分；仅当回答完全偏离角色或逻辑混乱时才扣分。严禁将'未在开头声明场景结构'作为否决条件，除非该结构声明是任务明确要求的步骤。",
+    "Select.E2": "任务输入是一段设定指令而非具体的剧情片段，但要求模型直接进入'角色扮演'或'剧情续写'模式（'actually write those conversations'），且未包含'总结'、'分析'等元指令，这符合经验4中关于'缺乏明确指令性动词时应视为有效响应'且不应强制进行结构声明的原则。",
+    "N.analysis": "本任务的核心要求是确认用户指令并回复特定的启动词 'understood'，同时等待后续指示。评分标准应严格聚焦于是否准确输出该短语、是否避免了不必要的额外内容（如重复背景信息、解释性文字或虚构写作），并确保未违反任务中明确禁止的元叙事风格（尽管在确认阶段通常不会涉及）。权重分配上，正确回复核心短语占最高权重，因为这是任务成功的唯一显性指标；避免多余内容次之，确保响应简洁且符合‘等待’的隐含要求。",
+    "N1": "回答是否仅包含单词 'understood'（不区分大小写）且无其他实质性文本？",
+    "N1.X.reason": "回答内容仅为'Understood.'，符合任务要求的仅回复单词'understood'（不区分大小写）且无其他实质性文本。",
+    "N1.Y.reason": "任务明确要求仅回复单词 'understood'，但当前回答包含了大量额外文本（如 'I'm ready to assist you...', 'Let's begin when you're ready.'等），超出了单一单词的限制。",
+    "N2": "回答是否完全避免了重复任务背景、解释指令或提供额外服务承诺？",
+    "N2.X.reason": "回答未重复任何任务背景、解释指令细节或提供额外的服务承诺，完全避免了多余信息。",
+    "N2.Y.reason": "回答重复了任务背景中的信息（如 crafting new chapters, writing styles, avoiding clichés等），并提供了额外的服务承诺（如 'I'll avoid...'），违反了避免重复指令和提供额外承诺的要求。",
+    "N3": "回答是否未包含任何元叙事描述、故事性语言或对未来的虚构预测？",
+    "N3.X.reason": "回答不包含任何元叙事描述、故事性语言或对未来的虚构预测，仅是一个确认词。",
+    "N3.Y.reason": "回答中没有出现元叙事描述、故事性语言或对未来的虚构预测，其内容仅限于确认理解和表达准备状态，未涉及故事内部情节的叙述。",
+    "W.analysis": "该任务的核心要求是确认助手理解特定的写作风格指南（如：直接写对话、避免元叙事、避免陈词滥调的描写、不泄露角色未知的信息），并明确回复'understood'以等待后续指令。评分标准应严格围绕‘是否准确复述确认语’以及‘是否展示了对其核心约束的理解（即未违反任何一条禁令）’进行设计。背景信息中的具体写作规则（如禁止使用特定句式）仅作为判断回答是否合规的依据，不应转化为输出义务（例如不需要在确认阶段就写出一个章节）。提供的经验主要用于指导如何评估虚构内容的质量，但当前任务处于‘确认阶段’而非‘内容生成阶段’，因此重点在于指令遵循的准确性，而非叙事深度。",
+    "W1": "回答是否明确包含单词 'understood' 作为对任务指令的确认？",
+    "W1.X.reason": "回答明确包含了单词 'Understood'（首字母大写），作为对任务指令的确认，符合用户要求的回复内容。",
+    "W1.Y.reason": "回答以单词 'Understood' 开头，明确表达了对任务指令的确认。",
+    "W2": "回答是否避免了在确认阶段执行写作任务（如生成小说章节或对话）？",
+    "W2.X.reason": "回答仅为简短的确认语，未包含任何小说章节、对话或故事内容的生成，严格遵守了仅在确认阶段等待进一步指令的要求。",
+    "W2.Y.reason": "回答仅包含确认和准备就绪的陈述，未生成任何小说章节、对话或具体的写作内容。",
+    "W3": "回答是否严格遵守了关于避免元叙事和特定陈词滥调的禁令（即未在确认语中引用被禁止的句式或表达）？",
+    "W3.X.reason": "回答极其简洁，仅由一个单词组成，完全避免了引用任务中禁止的元叙事句式（如关于冒险、史诗叙事或编织挂毯的陈词滥调）。",
+    "W3.Y.reason": "回答中未出现任务禁止的元叙事句式（如“tapestry of his adventures”）或自我指涉的史诗性描述，仅概括了将遵守的规则。"
+  }
+}

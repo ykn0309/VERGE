@@ -1,0 +1,55 @@
+{
+  "status": "valid",
+  "input_index": 446,
+  "outcome": "improved",
+  "attempt": 1,
+  "review": {
+    "case_index": 446,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "unsupported",
+        "reason": "Task要求提供剧透（事实信息），而E1触发条件为“叙事、表演或展示类创作”。任务未要求场景描写或角色互动，前提不成立。",
+        "refs": [
+          "TASK",
+          "E1.trigger"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "Select.E1",
+          "W.analysis"
+        ],
+        "note": "Select.E1错误认定任务属于“内容展示或叙事概括”，将事实性剧透请求误判为需动态场景描写的创作任务，导致经验适用性判断偏差。"
+      },
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "E1.principle",
+          "W3.Y.reason"
+        ],
+        "note": "W路径下Y回答因声明“不想剧透”被判定满足W3（剧透警告），但任务核心是索要剧透而非拒绝。若按E1逻辑，拒绝剧透本身即不符合“展现剧情细节”的隐含义务。"
+      },
+      {
+        "kind": "judge_rule_drift",
+        "refs": [
+          "W2.X.reason",
+          "W2.Y.reason"
+        ],
+        "note": "W2标准核验“设定一致性”，但因回答拒绝提供细节，理由称“不存在可核验陈述”。这实际上是用回避行为掩盖了任务要求的缺失，而非真正执行了事实核验。"
+      },
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "N1.X.reason",
+          "N1.Y.reason"
+        ],
+        "note": "N路径正确指出X和Y均未满足“提供具体剧情发展”的核心要求，但W路径引入的E1标准试图用“叙事形式”替代“内容完整性”作为主要评判维度，导致对任务本质的偏离。"
+      }
+    ],
+    "limit": "无法确认在拒绝剧透的前提下，何种程度的背景介绍能被视为符合用户潜在意图，且无法验证E1是否适用于非创作类事实查询。"
+  }
+}

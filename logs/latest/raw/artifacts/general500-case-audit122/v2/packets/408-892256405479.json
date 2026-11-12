@@ -1,0 +1,76 @@
+{
+  "case_index": 408,
+  "experiences": [
+    "E1"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.7,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N2",
+          "weight": 0.3,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.4,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W2",
+          "weight": 0.4,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W3",
+          "weight": 0.2,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "hello generate a very short reply.",
+    "X": "Of course, hello! How can I assist you today? If you have a question or need help with something, feel free to share. I'm here to help!",
+    "Y": "Hello! Here's a short reply: \"Greetings!\"",
+    "E1.trigger": "当任务指令明确要求以特定短语、单词或极短语句作为唯一响应，且包含‘等待后续指令’、‘不要做其他事’等排他性约束时",
+    "E1.principle": "若回答包含除指定短语外的任何实质性文本（如解释、承诺、复述背景、问候语），无论其内容多么符合角色设定或风格指南，均应判定为严重违规；反之，仅包含指定短语（允许必要的标点）即为满分。此时，任何关于‘风格’、‘深度’或‘内容质量’的评估均因缺乏比较对象而无效，不应纳入评分标准。",
+    "E1.application_guide": "在构建评分标准时，设立唯一的‘指令遵循度’核心维度。该维度的核验方法应为：1. 提取回答去除首尾空白后的实际内容；2. 将其与任务指定的目标短语进行严格比对（忽略大小写）；3. 检查是否存在任何非目标短语的字符序列。只要存在额外字符，直接判定为不合格（或极低分）。严禁添加关于‘是否提及元叙事’、‘是否生动’等与当前简短回复无关的次要维度，以免分散对核心违规点的注意力。",
+    "Select.E1": "任务指令明确要求生成'一个非常短的回复'（very short reply），这符合经验1中关于‘极短语句’作为响应形式的触发条件；该经验强调在简短回复场景下，应设立唯一的‘指令遵循度’核心维度，严格排除任何非必要的实质性文本（如解释、问候等），这与当前任务对‘短’的严格要求高度契合。",
+    "N.analysis": "任务明确要求生成一个非常简短的回复，核心要求是‘简短’且为‘回复’。背景信息（如问候）仅作为上下文，不应增加额外的输出义务（如解释、长段落等）。因此评分标准应聚焦于回复是否简短以及是否为有效回应。",
+    "N1": "回复是否足够简短（例如不超过20个单词或一句话）？",
+    "N1.X.reason": "回复包含三句话且单词数远超20个，不符合'非常简短（不超过20个单词或一句话）'的要求。",
+    "N1.Y.reason": "回复包含'Hello! Here's a short reply: \"Greetings!\"'，总单词数约为8个，未超过20个单词的限制。",
+    "N2": "回复是否构成对输入的有效回应（即有实际内容而非空响应）？",
+    "N2.X.reason": "回复包含问候语和提供帮助的表述，构成了对输入的有效回应，具有实际内容。",
+    "N2.Y.reason": "回复以问候语回应了用户的打招呼请求，提供了实际内容而非空响应。",
+    "W.analysis": "任务明确要求生成一个‘非常短的回复’，且提供的经验指出当指令包含极短回复要求及排他性约束时，核心评估维度应为‘指令遵循度’。背景信息（如问候语或上下文）不应成为评分标准的一部分，重点在于回答是否严格控制在极短范围内且无多余实质性内容。因此，评分标准应聚焦于长度控制和内容纯净度，排除对风格、深度等无关维度的评估。",
+    "W1": "回答去除首尾空白后是否为非空字符串？",
+    "W1.X.reason": "回答去除首尾空白后为'Of course, hello! How can I assist you today? If you have a question or need help with something, feel free to share. I'm here to help!'，是非空字符串。",
+    "W1.Y.reason": "回答去除首尾空白后为'Hello! Here's a short reply: \"Greetings!\"'，是有效的非空字符串。",
+    "W2": "回答的字符总数（含标点）是否不超过20个字符？",
+    "W2.X.reason": "回答的字符总数远超过20个字符，经计算约为143个字符（含空格和标点）。",
+    "W2.Y.reason": "回答包含'Hello! Here's a short reply: \"Greetings!\"'，经统计字符总数（含空格和标点）为39个，超过了20个字符的限制。",
+    "W3": "回答中是否不包含解释、承诺、复述背景或额外的寒暄语等实质性内容？",
+    "W3.X.reason": "回答包含了复述背景（如'If you have a question...'）以及额外的寒暄语（如'feel free to share', 'I'm here to help!'），不符合要求。",
+    "W3.Y.reason": "回答中包含'Here's a short reply:'这一解释性语句以及引导语，属于实质性内容或额外寒暄，未直接仅回复问候本身。"
+  }
+}

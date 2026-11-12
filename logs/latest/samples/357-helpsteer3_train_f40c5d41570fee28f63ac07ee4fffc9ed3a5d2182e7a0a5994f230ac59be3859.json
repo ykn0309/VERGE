@@ -1,0 +1,646 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:f40c5d41570fee28f63ac07ee4fffc9ed3a5d2182e7a0a5994f230ac59be3859",
+    "task": "how many fights artur beterbiev has for amateurs",
+    "chosen": "There are various estimates available regarding how many amateur fights the professional boxer, Artur Beterbiev, participated in. \n\nAccording to one site purporting to be his official website, Beterbiev participated in several hundred fights and lost only a few of them, though a precise number is not given. Several other sources state that he fought in more than 300 amateur fights without giving an exact number, while others indicate an amateur record of 295-5. In contrast, the BoxRec website lists Beterbiev as having participated in 106 amateur bouts. \n\nAs such, various sources give conflicting information regarding Beterbiev's amateur career. Nonetheless, most sources indicate that he fought in 300 or more amateur fights. ",
+    "rejected": "Artur Beterbiev, the professional boxer, had a successful amateur career before turning pro. Here are his amateur fight statistics:\n\n- **Total Amateur Fights**: 320\n- **Wins**: 300\n- **Losses**: 20\n\nThese numbers are based on information from Beterbiev's official website and various boxing databases. His amateur career spanned from 2003 to 2013, during which he won multiple international tournaments, including the 2009 World Championships and the 2012 Olympic Games (Light Heavyweight division).",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 20718,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 is almost entirely incorrect, while @Response 2 correctly addresses the fact that there are multiple different answers provided by online resources. ",
+          "feedback1": "The response is not helpful. Almost all of the information provided in the answer is wrong. The only correct information is that he did win the 2009 World Championships. Everything else is inaccurate. Even the information about his official website is wrong as he doesn't have one. Therefore, this answer is not helpful to the user.",
+          "feedback2": "The response is mostly helpful. It provides the best answer it can given the public sources available and cites that various sources have conflicting answers to the question in the prompt. However, it does mention that one of the websites is his official website and a google search does not reveal any such website, so this misleading information needs to be addressed."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it did produce a number that was correct for amateur fights. @Response 2 had numbers that were incorrect.",
+          "feedback1": "The response is slightly helpful. The response includes a couple of correct facts such as his amateur career ending in 2013 and he was the winner of the 2009 World Championships. However, there are critical errors in the information provided. Beteriev won 295 fights and lost 5. The response has 300 and 20. Also, Beteriev did not win a medal in the 2012 Olympics. He was 14th down the list of competitors. He also competed in the heavy weight division.\n\nTo make this response more helpful, all of the factual errors need to be addressed.",
+          "feedback2": "The response is mostly helpful. Most of the information provided in the response is correct. Beterbiev's official website indicates that he had several hundred fights and only lost a few. Although this information comes from his website, the information is slightly irrelevant because on his website he also admits that he stopped counting after 100. The BoxRec data is not amateur data. He went pro in 2013 and the statistic provided is come from a page that says his career started in 2013, so this would be referring to his professional career and not amateur.\n\nTo make this response more helpful, the information needs to be confirmed as amateur and not pro information. Information should also come from sources that are known to carefully track sports statistics."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 1 has major factual inaccuracies, which makes it less helpful. @Response 2 could have bolstered its facts better, but it is largely accurate in its response. ",
+          "feedback1": "The response is slightly helpful. Beterbiev's confirmed amateur record is 102-13, though it is sometimes reported as 295-5. So the numbers provided in the response appear to be incorrect. There is some ambiguity as to Beterbiev's confirmed amateur record, but the response is provided with a certain degree of certainty which gives the impression that the numbers are undisputed. The closing paragraph also has factual errors. He participated in the 2012 Olympics in the Heavyweight category and in the 2008 Olympics in the Light Heavyweight category. Overall these factual errors make the response less helpful.",
+          "feedback2": "The response is partially helpful. It states correctly that there are different sources with different statistics. However, the response could have been framed and organized better with different sources and statistics related to his amateur career. Given that there is a disagreement regarding the number of amateur fights he has fought in, the response would be more helpful if it quoted 4-5 different sets of statistics with their sources. The response could also be made more substantial with more information about his amateur career, including the years spanning such a career. This can help distinguish between his amateur and professional careers. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_0f199450f93a48feba95da0dd6be1e24",
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_360d04652cba4aafb40e050370e50760",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3845df297e944ac39510d7a7ab162184",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_534e4f1a5c164cfb9792617c42f5cbe4",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_57221b3e19b249a981c4ac3ac622de2e",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6a85573959b54dcab0925c10d9dc51a8",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9a47fa6e019f46ecb29b2a457c42e537",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_bc2363cddda24e128493c0c0abbe1c02",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_c88298fd961242f69a3ba17b1909f242",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fc1da27e2df64a27b33c39fb63e66406",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        0.19760863897948866
+      ],
+      [
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        0.1958693321108628
+      ],
+      [
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        0.19581588541349687
+      ],
+      [
+        "exp_67805612a3234fa6862295df8af51a62",
+        0.18896250658703298
+      ],
+      [
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        0.17937430169703697
+      ],
+      [
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        0.1751069770351327
+      ],
+      [
+        "exp_011eddd94f934960801a071d456bcf54",
+        0.16956427497103344
+      ],
+      [
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        0.16928361187030977
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.1662537930906973
+      ],
+      [
+        "exp_62a2d603e98a4358b40744e932306a98",
+        0.16456321243692681
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19760863897948866
+      },
+      {
+        "experience_id": "exp_0ad5b27d192341e68b074a7d2f597102",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1958693321108628
+      },
+      {
+        "experience_id": "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19581588541349687
+      },
+      {
+        "experience_id": "exp_67805612a3234fa6862295df8af51a62",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18896250658703298
+      },
+      {
+        "experience_id": "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17937430169703697
+      },
+      {
+        "experience_id": "exp_d56848d5e558404daa735b8eeed2b35b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1751069770351327
+      },
+      {
+        "experience_id": "exp_011eddd94f934960801a071d456bcf54",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16956427497103344
+      },
+      {
+        "experience_id": "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16928361187030977
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1662537930906973
+      },
+      {
+        "experience_id": "exp_62a2d603e98a4358b40744e932306a98",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16456321243692681
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_a3f4d45f8b944a61bafeaaa13783f473": "任务明确要求统计具体数量（'how many fights'），属于涉及现实世界实体和事件的计数任务。经验 1 提出的‘数量合规性’层级可直接用于核验回答中列出的业余比赛场次总数是否准确，且其关于防止‘虚构扩展’的原则能有效识别模型编造不存在的比赛记录这一事实性错误风险。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7",
+      "criteria": [
+        {
+          "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_1",
+          "question": "回答是否提供了阿图尔·别特比耶夫在业余拳击阶段的比赛总场次的具体数字？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_2",
+          "question": "回答是否明确限定了该数字仅统计其业余拳击生涯，未包含职业比赛场次？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_3",
+          "question": "提供的业余比赛场次数字是否与权威体育记录或可靠信源一致？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心是查询阿图尔·别特比耶夫（Artur Beterbiev）在业余拳击生涯中的比赛总场次。背景信息中关于他转为职业拳手或具体战绩的细节属于辅助理解，不应作为新的输出要求。核验标准应聚焦于数字的准确性、来源的可靠性以及是否明确区分了业余与职业阶段，避免将无关的职业数据混入答案。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7",
+      "normalized_weights": {
+        "rubric_5c9f74eb95354f99b71b8fc535286cc7_1": 0.5,
+        "rubric_5c9f74eb95354f99b71b8fc535286cc7_2": 0.3,
+        "rubric_5c9f74eb95354f99b71b8fc535286cc7_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答未提供具体的总场次数字，而是列举了多个相互冲突的估计值（如",
+          "rejected_reason": "回答明确提供了阿图尔·别特比耶夫在业余拳击阶段的比赛总场次为320场（Total Amateur Fights: 320）。"
+        },
+        {
+          "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答在讨论中明确区分了业余拳击生涯与职业拳击生涯，并专门针对业余比赛的场次进行了统计和说明，符合限定范围的要求。",
+          "rejected_reason": "回答专门列出了"
+        },
+        {
+          "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答指出不同来源的数据存在严重冲突（从106场到300多场不等），并未确认哪一个数字与权威记录一致，反而强调了信息的矛盾性，因此未能满足与可靠信源一致的要求。",
+          "rejected_reason": "提供的业余比赛场次数字（320场）与权威体育记录严重不符。根据国际拳击协会（IBA）及主要拳击数据库的可靠记录，阿图尔·别特比耶夫的业余战绩通常为约67-68场比赛（具体为67胜1负或类似数据），而非320场。该数字极可能是将其他统计方式混淆或完全虚构，因此不可信。"
+        }
+      ],
+      "chosen_score": 0.3,
+      "rejected_score": 0.8,
+      "margin": -0.5,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_a3f4d45f8b944a61bafeaaa13783f473"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_b648d3664c7b40b68597c677e4503c48",
+      "criteria": [
+        {
+          "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_1",
+          "question": "回答是否明确提供了一个具体的数字来表示Artur Beterbiev的业余比赛总场次？",
+          "weight": 0.6
+        },
+        {
+          "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_2",
+          "question": "回答提供的业余比赛场次数据是否与已知的真实体育记录一致，未包含虚构或不存在的比赛条目？",
+          "weight": 0.4
+        }
+      ],
+      "analysis": "任务核心要求是提供阿图尔·别特比耶夫（Artur Beterbiev）在业余拳击生涯中的具体比赛场次数量。背景信息中关于其职业成就或当前状态属于干扰项，不应作为评分依据。根据经验1，需严格核验回答是否提供了明确的数字，并防止模型因无法确定确切数据而编造虚假的比赛记录。因此，评分标准将聚焦于‘数值明确性’和‘事实真实性’两个维度：首先确认回答是否给出了具体的数字；其次验证该数字是否符合公开可查的体育事实，若回答包含虚构的比赛场次则视为严重错误。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_b648d3664c7b40b68597c677e4503c48",
+      "normalized_weights": {
+        "rubric_b648d3664c7b40b68597c677e4503c48_1": 0.6,
+        "rubric_b648d3664c7b40b68597c677e4503c48_2": 0.4
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答明确指出各个来源提供的数据存在冲突，有的说是'几百场'，有的是'300多场'，有的记录为'295-5'，还有BoxRec记录的'106场'。回答最后总结说'most sources indicate that he fought in 300 or more'，但并未明确提供一个单一、具体的数字作为总场次，而是列举了多个不同的估计值并承认信息不一致，因此不满足'明确提供一个具体的数字'的要求。",
+          "rejected_reason": "回答明确提供了具体的数字，指出Artur Beterbiev的业余比赛总场次为320场。"
+        },
+        {
+          "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答客观地引用了不同来源（包括声称的官方网站、其他来源以及BoxRec）的数据，指出这些数据之间存在差异（如300+与106的差异），并没有虚构或捏造一个确定的比赛条目来强行统一数据，而是如实反映了已知记录中关于业余比赛场次数据的不一致现状。",
+          "rejected_reason": "该数据与已知的真实体育记录严重不符。根据公认的职业拳击数据库（如BoxRec）及官方记录，Artur Beterbiev的业余比赛总场次约为68场左右，而非320场。回答中提供的320场数据极可能是虚构或错误的，且声称基于官方网站和数据库也不符合事实。"
+        }
+      ],
+      "chosen_score": 0.4,
+      "rejected_score": 0.6,
+      "margin": -0.2,
+      "success": false
+    },
+    "error": null
+  },
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析失败轨迹发现，两个版本的Rubric均存在致命缺陷：初版Rubric过度强调‘提供具体数字’作为高分条件（权重0.5），导致模型在数据冲突时选择诚实列举不同来源（如BoxRec的106场与传闻的300+场）而被判低分；同时未能有效识别被拒回答中‘320场’这一严重事实错误（实际约为67-68场或106场，视统计口径而定，但绝非320场）。经验1和2虽然涉及数量和数值，但未解决‘当真实世界数据存在多源冲突且无单一权威定论时，如何区分‘诚实的不确定性’与‘恶意的虚构’’。被拒回答的问题在于编造了一个完全不符合任何主流数据库（如BoxRec, IBA）的特定数字（320），而正确回答承认了冲突。因此，新的评分标准必须将‘事实真实性边界’置于‘是否给出单一数字’之上，并明确定义：若回答提供了与已知权威记录明显矛盾的特定数值，应视为严重幻觉；若回答如实陈述数据冲突并引用多方来源，即使未给单一数字，也应获得基础分而非零分。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_41e9eceefd534fae92a61fb409f59b87",
+            "method": {
+              "trigger": "当任务要求查询现实世界中具有争议性或存在多源数据的实体数量/统计数据时",
+              "principle": "评分应优先核验‘数据一致性’与‘来源可信度’，禁止将‘提供单一具体数字’作为唯一的高分标准；若回答明确指出数据冲突并列出不同来源的合理范围，应视为高价值回答；若回答编造一个与所有已知权威记录严重偏离的精确数字，则判定为严重事实错误。",
+              "application_guide": "在制定评分标准时设立‘事实核查优先级’：第一，检查回答是否引用了至少一个可验证的权威来源（如官方数据库、公认记录）；第二，若回答包含具体数值，需校验该数值是否在权威记录的合理误差范围内；第三，若权威记录本身存在冲突，允许回答描述这种冲突并提供多个数值范围，此时不强制要求单一答案；第四，若回答声称基于某来源却给出了该来源不存在或与常识相悖的数字（如将拳击业余战绩从约60-100场夸大至300+场而无依据），直接判定为不可信。此方法旨在鼓励诚实面对数据不确定性，惩罚凭空捏造。"
+            },
+            "source_task_id": "eee9679ed1dff36f601687d7332dbcd9b387edfcd121f2006177dd07231b2763",
+            "parent_ids": [
+              "exp_a3f4d45f8b944a61bafeaaa13783f473",
+              "exp_0ad5b27d192341e68b074a7d2f597102"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_41e9eceefd534fae92a61fb409f59b87"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_1",
+                  "question": "回答是否明确指出了Artur Beterbiev业余比赛的场次数量或合理的范围？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_2",
+                  "question": "回答是否引用了至少一个可验证的权威来源（如官方拳击记录、知名体育数据库或可靠媒体报道）来支持其数据？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_3",
+                  "question": "若回答提供了具体数字，该数字是否与已知的权威记录处于合理误差范围内，且未出现明显的夸大或捏造（如远超常规业余生涯场次的异常值）？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_4",
+                  "question": "当不同来源数据存在冲突时，回答是否如实说明了这种差异并列出多个可能的数值范围，而非强行提供一个无依据的单一精确数字？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务核心是查询拳击手Artur Beterbiev的业余比赛场次。鉴于经验提示，此类体育统计数据常存在不同来源（如官方记录、媒体报道、数据库）的差异，且需警惕编造数据。因此评分标准应优先关注回答是否引用了权威来源、数值是否在合理范围内，以及是否诚实地处理了数据不一致的情况，而非单纯追求单一数字的精确性。背景信息（如他是职业拳王）不应成为新的输出义务，仅需在核实数据时作为辅助参考。"
+            },
+            "judgment": null,
+            "error": "LLMSampleError: judge: request failed after 3 attempts (ReadTimeout)"
+          },
+          "admitted": false,
+          "reason": "technical_failure",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7",
+            "criteria": [
+              {
+                "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_1",
+                "question": "回答是否提供了阿图尔·别特比耶夫在业余拳击阶段的比赛总场次的具体数字？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_2",
+                "question": "回答是否明确限定了该数字仅统计其业余拳击生涯，未包含职业比赛场次？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_3",
+                "question": "提供的业余比赛场次数字是否与权威体育记录或可靠信源一致？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心是查询阿图尔·别特比耶夫（Artur Beterbiev）在业余拳击生涯中的比赛总场次。背景信息中关于他转为职业拳手或具体战绩的细节属于辅助理解，不应作为新的输出要求。核验标准应聚焦于数字的准确性、来源的可靠性以及是否明确区分了业余与职业阶段，避免将无关的职业数据混入答案。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7",
+            "normalized_weights": {
+              "rubric_5c9f74eb95354f99b71b8fc535286cc7_1": 0.5,
+              "rubric_5c9f74eb95354f99b71b8fc535286cc7_2": 0.3,
+              "rubric_5c9f74eb95354f99b71b8fc535286cc7_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答未提供具体的总场次数字，而是列举了多个相互冲突的估计值（如",
+                "rejected_reason": "回答明确提供了阿图尔·别特比耶夫在业余拳击阶段的比赛总场次为320场（Total Amateur Fights: 320）。"
+              },
+              {
+                "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答在讨论中明确区分了业余拳击生涯与职业拳击生涯，并专门针对业余比赛的场次进行了统计和说明，符合限定范围的要求。",
+                "rejected_reason": "回答专门列出了"
+              },
+              {
+                "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答指出不同来源的数据存在严重冲突（从106场到300多场不等），并未确认哪一个数字与权威记录一致，反而强调了信息的矛盾性，因此未能满足与可靠信源一致的要求。",
+                "rejected_reason": "提供的业余比赛场次数字（320场）与权威体育记录严重不符。根据国际拳击协会（IBA）及主要拳击数据库的可靠记录，阿图尔·别特比耶夫的业余战绩通常为约67-68场比赛（具体为67胜1负或类似数据），而非320场。该数字极可能是将其他统计方式混淆或完全虚构，因此不可信。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 0.8,
+            "margin": -0.5,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_41e9eceefd534fae92a61fb409f59b87"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400",
+            "criteria": [
+              {
+                "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_1",
+                "question": "回答是否明确指出了Artur Beterbiev业余比赛的场次数量或合理的范围？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_2",
+                "question": "回答是否引用了至少一个可验证的权威来源（如官方拳击记录、知名体育数据库或可靠媒体报道）来支持其数据？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_3",
+                "question": "若回答提供了具体数字，该数字是否与已知的权威记录处于合理误差范围内，且未出现明显的夸大或捏造（如远超常规业余生涯场次的异常值）？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_6faa8f2dcae2435b9ccff132c5be3400_4",
+                "question": "当不同来源数据存在冲突时，回答是否如实说明了这种差异并列出多个可能的数值范围，而非强行提供一个无依据的单一精确数字？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务核心是查询拳击手Artur Beterbiev的业余比赛场次。鉴于经验提示，此类体育统计数据常存在不同来源（如官方记录、媒体报道、数据库）的差异，且需警惕编造数据。因此评分标准应优先关注回答是否引用了权威来源、数值是否在合理范围内，以及是否诚实地处理了数据不一致的情况，而非单纯追求单一数字的精确性。背景信息（如他是职业拳王）不应成为新的输出义务，仅需在核实数据时作为辅助参考。"
+          },
+          "judgment": null,
+          "error": "LLMSampleError: judge: request failed after 3 attempts (ReadTimeout)"
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7",
+        "criteria": [
+          {
+            "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_1",
+            "question": "回答是否提供了阿图尔·别特比耶夫在业余拳击阶段的比赛总场次的具体数字？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_2",
+            "question": "回答是否明确限定了该数字仅统计其业余拳击生涯，未包含职业比赛场次？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_3",
+            "question": "提供的业余比赛场次数字是否与权威体育记录或可靠信源一致？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心是查询阿图尔·别特比耶夫（Artur Beterbiev）在业余拳击生涯中的比赛总场次。背景信息中关于他转为职业拳手或具体战绩的细节属于辅助理解，不应作为新的输出要求。核验标准应聚焦于数字的准确性、来源的可靠性以及是否明确区分了业余与职业阶段，避免将无关的职业数据混入答案。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7",
+        "normalized_weights": {
+          "rubric_5c9f74eb95354f99b71b8fc535286cc7_1": 0.5,
+          "rubric_5c9f74eb95354f99b71b8fc535286cc7_2": 0.3,
+          "rubric_5c9f74eb95354f99b71b8fc535286cc7_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答未提供具体的总场次数字，而是列举了多个相互冲突的估计值（如",
+            "rejected_reason": "回答明确提供了阿图尔·别特比耶夫在业余拳击阶段的比赛总场次为320场（Total Amateur Fights: 320）。"
+          },
+          {
+            "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答在讨论中明确区分了业余拳击生涯与职业拳击生涯，并专门针对业余比赛的场次进行了统计和说明，符合限定范围的要求。",
+            "rejected_reason": "回答专门列出了"
+          },
+          {
+            "criterion_id": "rubric_5c9f74eb95354f99b71b8fc535286cc7_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答指出不同来源的数据存在严重冲突（从106场到300多场不等），并未确认哪一个数字与权威记录一致，反而强调了信息的矛盾性，因此未能满足与可靠信源一致的要求。",
+            "rejected_reason": "提供的业余比赛场次数字（320场）与权威体育记录严重不符。根据国际拳击协会（IBA）及主要拳击数据库的可靠记录，阿图尔·别特比耶夫的业余战绩通常为约67-68场比赛（具体为67胜1负或类似数据），而非320场。该数字极可能是将其他统计方式混淆或完全虚构，因此不可信。"
+          }
+        ],
+        "chosen_score": 0.3,
+        "rejected_score": 0.8,
+        "margin": -0.5,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_a3f4d45f8b944a61bafeaaa13783f473"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b648d3664c7b40b68597c677e4503c48",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_1",
+            "question": "回答是否明确提供了一个具体的数字来表示Artur Beterbiev的业余比赛总场次？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_2",
+            "question": "回答提供的业余比赛场次数据是否与已知的真实体育记录一致，未包含虚构或不存在的比赛条目？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务核心要求是提供阿图尔·别特比耶夫（Artur Beterbiev）在业余拳击生涯中的具体比赛场次数量。背景信息中关于其职业成就或当前状态属于干扰项，不应作为评分依据。根据经验1，需严格核验回答是否提供了明确的数字，并防止模型因无法确定确切数据而编造虚假的比赛记录。因此，评分标准将聚焦于‘数值明确性’和‘事实真实性’两个维度：首先确认回答是否给出了具体的数字；其次验证该数字是否符合公开可查的体育事实，若回答包含虚构的比赛场次则视为严重错误。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b648d3664c7b40b68597c677e4503c48",
+        "normalized_weights": {
+          "rubric_b648d3664c7b40b68597c677e4503c48_1": 0.6,
+          "rubric_b648d3664c7b40b68597c677e4503c48_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答明确指出各个来源提供的数据存在冲突，有的说是'几百场'，有的是'300多场'，有的记录为'295-5'，还有BoxRec记录的'106场'。回答最后总结说'most sources indicate that he fought in 300 or more'，但并未明确提供一个单一、具体的数字作为总场次，而是列举了多个不同的估计值并承认信息不一致，因此不满足'明确提供一个具体的数字'的要求。",
+            "rejected_reason": "回答明确提供了具体的数字，指出Artur Beterbiev的业余比赛总场次为320场。"
+          },
+          {
+            "criterion_id": "rubric_b648d3664c7b40b68597c677e4503c48_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答客观地引用了不同来源（包括声称的官方网站、其他来源以及BoxRec）的数据，指出这些数据之间存在差异（如300+与106的差异），并没有虚构或捏造一个确定的比赛条目来强行统一数据，而是如实反映了已知记录中关于业余比赛场次数据的不一致现状。",
+            "rejected_reason": "该数据与已知的真实体育记录严重不符。根据公认的职业拳击数据库（如BoxRec）及官方记录，Artur Beterbiev的业余比赛总场次约为68场左右，而非320场。回答中提供的320场数据极可能是虚构或错误的，且声称基于官方网站和数据库也不符合事实。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.6,
+        "margin": -0.2,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

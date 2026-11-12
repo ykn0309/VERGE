@@ -1,0 +1,73 @@
+{
+  "case_index": 105,
+  "experiences": [
+    "E1",
+    "E2"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 1.0,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1",
+        "E2"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.4,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W2",
+          "weight": 0.4,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W3",
+          "weight": 0.2,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "I'm working on a horror game and I'd like to tell you about its main character.",
+    "X": "That sounds exciting! I'd be happy to hear about the main character of your horror game. Please go ahead and share the details. What's their background, personality, and role in the game? The more information you provide, the better I can understand and provide feedback on your character.",
+    "Y": "That sounds exciting! I'd be happy to help you brainstorm your main character for your horror game. Let's create a compelling and memorable protagonist.\n\nName: Samuel \"Sam\" Harper\n\nAge: 35\n\nBackground: Sam Harper is a former detective who left the force after a traumatic case involving a serial killer known as \"The Whispering Phantom.\" The case left him with PTSD, and he now works as a private investigator, specializing in cold cases and paranormal investigations.\n\nPersonality: Sam is a determined, resourceful, and intelligent individual. He is haunted by his past and struggles with anxiety and insomnia. Despite his personal demons, he is fiercely loyal to his friends and will stop at nothing to protect them.\n\nAppearance: Sam is a tall, lean man with short, messy brown hair and piercing blue eyes. He wears a trench coat, jeans, and a white dress shirt, often unbuttoned to reveal a necklace with a small cross pendant. He has a scar running down the left side of his face, a reminder of his encounters with \"The Whispering Phantom.\"\n\nSkills: Sam is an expert in investigative techniques, forensics, and psychology. He is also well-versed in various paranormal phenomena and has a keen sense of intuition.\n\nMotivation: Sam is driven by a desire to uncover the truth, no matter how dark or terrifying it may be. He hopes that by solving the mysteries that haunt him, he can find closure and peace.\n\nRelationships: Sam has a close-knit group of friends who support him through his struggles. His best friend, Emily, is a fellow investigator who often assists him on cases. Sam also has a strained relationship with his estranged sister, Sarah, who blames him for their mother's death.\n\nConflict: In the game, Sam is drawn into a new case involving a series of grisly murders that bear a striking resemblance to \"The Whispering Phantom\" killings. As he delves deeper into the mystery, he must confront his own demons and uncover the truth behind the phantom's return.\n\nThis character should provide a strong foundation for your horror game, offering both a relatable protagonist and a compelling narrative. Good luck with your project! If you'd like to further develop any aspect of Sam or create additional characters, feel free to ask!",
+    "E1.trigger": "当任务要求描述、分析或生成关于特定虚构角色、历史人物、专有名词或具体实体的内容时",
+    "E1.principle": "评分必须将‘实体存在的真实性’作为最高优先级的核验维度。若目标实体不存在、名称错误或属于用户混淆的概念，则直接判定为事实性错误，后续的描述丰富度、逻辑性或创意性不再作为加分项，且不应掩盖核心事实错误。",
+    "E1.application_guide": "在构建评分标准时，首先设立一个独立的‘事实准确性’或‘实体存在性’准则。该准则应明确：若回答中涉及的目标主体被证实不存在或名称错误，无论回答的其他部分（如性格描写、关系推导）多么详尽或富有想象力，均不能视为有效回答。评分时应先进行事实校验，若校验失败，则整体评价降级或标记为关键错误，避免让‘创意分’抵消‘事实错’。",
+    "Select.E1": "任务明确提到要介绍'main character'（主要角色），属于涉及特定虚构角色的内容生成。经验5强调在描述虚构角色时，必须将‘实体存在的真实性’作为最高优先级核验维度，若用户提供的角色设定存在逻辑矛盾或概念混淆，需优先判定为事实错误，这符合评分标准构建中对基础准确性的要求。",
+    "E2.trigger": "当任务涉及对虚构角色或历史人物的多属性进行综合描述，且特别关注其标志性言论或核心特质时",
+    "E2.principle": "评分标准应区分‘信息存在’与‘信息丰富度’。对于高辨识度的信息点（如直接引语），若回答仅提取了单一条目，而未展示该角色多样化的语言风格或思想侧面，应视为未能充分展现角色全貌；若回答提供了多条不同侧面的引语，则视为更优解。此标准不强制要求所有属性列表化，但要求核心维度的信息量达到一定密度。",
+    "E2.application_guide": "在评分标准的‘内容深度’或‘信息丰富度’维度设立‘多维信息展示’核验项：1. 针对回答中的关键信息块（如Quotes、Abilities），检查其内部条目数量；2. 若某关键块仅包含单一条目（如仅1句名言），需进一步评估该条目是否足以代表角色全貌；若不足以代表（如仅体现一种性格侧面），则酌情扣分；3. 若回答提供了多条条目（如2-3句不同语境的名言），且覆盖了角色的不同特征（如狡黠、哲学思考、讽刺等），则给予高分。严禁仅因‘有一条名言’就给予满分，忽视角色塑造的丰富性需求。",
+    "Select.E2": "任务旨在讲述角色的故事或特征，隐含了对角色多维度信息（如性格、背景、标志性言论）的展示需求。经验8指出评分应区分‘信息存在’与‘信息丰富度’，对于高辨识度的信息点（如核心特质），若回答仅提取单一条目而未展示多样化侧面，应视为未能充分展现角色全貌，这有助于制定更细致的‘内容深度’评分标准，避免仅因罗列少量信息就给予满分。",
+    "N.analysis": "该任务仅表达了用户希望分享游戏角色的意愿，属于对话发起或背景陈述，并未包含任何具体的指令、问题或需要模型执行的操作（如生成描述、提供建议等）。因此，不存在可量化的输出义务或事实性要求。评分标准的设计需基于‘任务是否隐含了明确的响应需求’这一核心逻辑，由于当前输入仅为意图声明而无具体请求，所有关于内容生成的核验项均无法成立，故权重分配应体现‘无强制输出要求’的状态，即不设置任何正向完成度指标，而是确认模型正确识别了用户的非指令性意图。",
+    "N1": "模型是否正确识别出用户尚未提出具体请求，而只是表达分享意愿？",
+    "N1.X.reason": "模型在回复中明确识别出用户仅表达了分享意愿（'I'd like to tell you about its main character'），并未提出具体的请求或问题。因此，模型回应表示愿意倾听（'I'd be happy to hear...'），并主动邀请用户提供更多细节（'Please go ahead and share the details'），这准确反映了用户当前处于陈述/分享阶段而非指令执行阶段的语境。",
+    "N1.Y.reason": "用户仅表达了分享游戏主角的意愿（'I'd like to tell you about its main character'），并未提出具体的请求或要求模型生成角色设定。然而，模型未能识别这一状态，而是直接主动创作了一个名为Samuel Harper的详细虚构角色档案，包括姓名、年龄、背景等所有细节。这种过度响应表明模型错误地将用户的分享意愿理解为明确的创作指令，未满足‘正确识别用户尚未提出具体请求’的标准。",
+    "W.analysis": "该任务明确为‘分享游戏角色’的开放性陈述请求，而非要求模型生成虚构内容或验证事实。因此，经验1中关于‘实体存在真实性’的最高优先级核验不适用，因为用户正在描述一个他们正在创作的角色（可能不存在于公共知识库），且任务未要求模型进行事实核查。经验2中关于‘多属性综合描述’和‘名言数量’的要求也不适用，因为任务仅要求用户讲述角色，并未规定回答必须包含多条引语或特定维度的信息密度。评分标准应聚焦于：1. 是否确认接收并理解了用户的分享意图；2. 是否针对用户提供的具体角色特征进行了回应（如性格、背景、能力等）；3. 是否保持了与恐怖游戏主题相符的互动氛围。核心在于‘响应性’和‘相关性’，而非强制的信息量或事实校验。",
+    "W1": "回答是否明确识别并接纳了用户想要分享其原创恐怖游戏角色的意图？",
+    "W1.X.reason": "回答明确表达了愿意倾听用户分享其恐怖游戏主角的意愿，并直接邀请用户介绍角色的背景、性格和角色定位，完全接纳了用户的分享意图。",
+    "W1.Y.reason": "回答以 'That sounds exciting!' 开头，明确表达了兴奋和接纳的态度，并直接回应了用户想要分享角色信息的意图，表示愿意帮助头脑风暴。",
+    "W2": "回答是否针对用户提供的角色具体信息（如性格、经历、外观等）做出了实质性的反馈或评论，而非使用通用模板？",
+    "W2.X.reason": "由于用户尚未在输入中提供具体的角色信息（如性格、经历或外观），回答无法针对具体细节进行实质性反馈或评论；当前的回复属于通用的引导性提问，而非基于具体内容的深度分析。",
+    "W2.Y.reason": "用户仅表示想要介绍其原创角色，但并未提供任何具体的角色信息（如性格、经历、外观等）。回答却凭空捏造了一个名为 Samuel Harper 的完整角色设定，而非针对用户提供的具体信息进行反馈或评论，属于未基于输入内容的虚构创作。",
+    "W3": "回答的语气和风格是否与恐怖游戏的题材氛围相契合，展现出对 genre 的理解？",
+    "W3.X.reason": "回答的语气热情且充满期待（'That sounds exciting!'），配合对恐怖游戏题材的尊重态度，整体风格与恐怖游戏开发者的交流氛围相契合，展现了对该领域的理解与支持。",
+    "W3.Y.reason": "回答中构建的角色背景涉及创伤后应激障碍 (PTSD)、连环杀手、超自然现象调查以及心理恐惧元素，语气和设定的选择与恐怖游戏的题材氛围相契合，展现了对该类型的理解。"
+  }
+}

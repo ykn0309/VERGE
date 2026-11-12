@@ -1,0 +1,529 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:396c4017f18ef9f86190d50c14cd2d3f76ac4fef2df04e6e36f80ca4578523a2",
+    "task": "please list our key points of these paragraph:",
+    "chosen": "I'm sorry, I need the text of the paragraph(s) in order to determine the key points. Could you please provide the text?\n\nIf you have already provided the text and I missed it, please let me know and I will identify the key points.",
+    "rejected": "1. The paragraph discusses the importance of effective communication in the workplace.\n2. It highlights the role of active listening in understanding and responding to colleagues' needs.\n3. The paragraph emphasizes the need for clear and concise language to avoid misunderstandings.\n4. It suggests using non-verbal cues, such as body language and facial expressions, to enhance communication.\n5. The paragraph mentions the significance of feedback in improving communication skills and fostering a positive work environment.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 11582,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because the prompt is too ambiguous to discern a proper response. The model correctly identifies the missing paragraph from the prompt and asks the user for further information.",
+          "feedback1": "The response is mostly helpful. It apologizes and identifies the ambiguous prompt, which is correctly missing the paragraph in question. However, the first sentence is repetitive and should be shortened to maintain conciseness, such as omitting \"Could you please provide the text?\" since it is already mentioned in the first sentence.",
+          "feedback2": "The response is not helpful. The model should have addressed the ambiguity in the prompt and asked for further information. Instead, the model lists the main points of a non-existent paragraph and hallucinates information that is not in the prompt. There is also no reason to list in sequential order; instead, main ideas should be listed in bullet points."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 hallucinates on points whereas @Response 1 asks for clarification. ",
+          "feedback1": "The response is partially helpful. The response did not understand the question and thus was unable to provide an answer to the user. However, the response does request clarification, using correct grammar within the response. This request for clarification will aid the user in providing a more detailed prompt next time to extract greater information from the model.",
+          "feedback2": "The response is not helpful. The response answers the question without any information,thus the content of the response is made up and may not actually address the user's prompt. The model has hallucinated 5 points of information. The model should have asked for more clarity from the prompt. The response is not helpful. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because the refusal to answer the prompt from @Response 1 is warranted, while @Response 2 fabricates a response with zero prior conversation history.",
+          "feedback1": "The response is perfectly helpful. The final prompt implies that there was no previous conversation history to base its response on, and therefore the refusal to answer the prompt is warranted. Therefore, although the response does not help the user due to it refusing to answer the prompt, it does allow the user to give the model context so that it can give a valid response to the user.",
+          "feedback2": "The response is not helpful. The response implies that there was some form of conversation history prior to the final prompt, where the user simply asks the model for the key points of a paragraph. There was no prior conversation history between the user and the model shown. Therefore, the response is invalid."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        0.3842348318464587
+      ],
+      [
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        0.3569816660849212
+      ],
+      [
+        "exp_011eddd94f934960801a071d456bcf54",
+        0.33901222959234667
+      ],
+      [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        0.3087122747516053
+      ],
+      [
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        0.3063062477295537
+      ],
+      [
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        0.3061399633402953
+      ],
+      [
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        0.3048067395792069
+      ],
+      [
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        0.30392071857209996
+      ],
+      [
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        0.3003189708698088
+      ],
+      [
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        0.2982532432486762
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3842348318464587
+      },
+      {
+        "experience_id": "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3569816660849212
+      },
+      {
+        "experience_id": "exp_011eddd94f934960801a071d456bcf54",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33901222959234667
+      },
+      {
+        "experience_id": "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3087122747516053
+      },
+      {
+        "experience_id": "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3063062477295537
+      },
+      {
+        "experience_id": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3061399633402953
+      },
+      {
+        "experience_id": "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3048067395792069
+      },
+      {
+        "experience_id": "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30392071857209996
+      },
+      {
+        "experience_id": "exp_4cab69c772c34e009eb54293da3ab50d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3003189708698088
+      },
+      {
+        "experience_id": "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2982532432486762
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_0fdba19b0ed8422694db077a005df2ca",
+      "criteria": [
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_1",
+          "question": "列出的要点是否准确反映了所提供段落的原始含义且无事实性错误？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_2",
+          "question": "回答是否涵盖了段落中的主要思想，遗漏了关键信息？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_3",
+          "question": "输出的内容是否为精炼的关键点列表，而非大段原文的简单复制？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_4",
+          "question": "每个列出的要点是否表达清晰、独立且易于理解？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "任务核心要求是从提供的段落中列出关键要点。背景信息（即待分析的段落）不应被视为输出义务，而是分析对象。评分标准应聚焦于提取的要点是否准确反映原文核心、是否完整覆盖主要观点、是否去除了冗余细节以及表述是否清晰。由于未提供具体段落，标准将基于一般性文本摘要原则制定，确保对任何输入段落均适用。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_0fdba19b0ed8422694db077a005df2ca",
+      "normalized_weights": {
+        "rubric_0fdba19b0ed8422694db077a005df2ca_1": 0.4,
+        "rubric_0fdba19b0ed8422694db077a005df2ca_2": 0.3,
+        "rubric_0fdba19b0ed8422694db077a005df2ca_3": 0.2,
+        "rubric_0fdba19b0ed8422694db077a005df2ca_4": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_1",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答未列出任何要点，因此无法判断其是否准确反映了段落含义或是否存在事实性错误。",
+          "rejected_reason": "任务要求基于提供的段落列出要点，但输入中并未包含任何原始段落文本。模型直接编造了关于职场沟通的具体内容（如积极倾听、非语言线索等），这些内容并非源自用户提供的材料，因此存在事实性错误（即虚构了原文含义）。"
+        },
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "由于输入中未提供具体段落文本，回答未能涵盖任何主要思想或关键信息，仅请求补充材料。",
+          "rejected_reason": "由于缺乏原始段落作为依据，回答无法涵盖该段落中的主要思想或关键信息，因为它总结的是模型自行生成的通用知识，而非特定输入内容的核心思想。"
+        },
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_3",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "输出内容为请求提供文本的说明，并非针对段落的精炼关键点列表。",
+          "rejected_reason": "从格式上看，输出确实呈现为精炼的关键点列表形式，且没有大段复制原文（因为根本没有原文可复制），符合列表化的结构要求。"
+        },
+        {
+          "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_4",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答中没有列出具体的要点供评估其清晰度、独立性或可理解性。",
+          "rejected_reason": "列出的五个要点在语法上表达清晰，每个要点都是独立的句子，且易于理解，满足了语言表达的清晰度要求。"
+        }
+      ],
+      "chosen_score": 0.0,
+      "rejected_score": 0.3,
+      "margin": -0.3,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "当前案例中，任务要求从段落中提取关键点，但用户未提供段落文本。Chosen回答正确识别了输入缺失并请求补充，而Rejected回答虚构了具体的段落内容（职场沟通等）并据此列出了不存在的要点。初始Rubric未能有效区分这两种情况：它假设‘段落存在’作为前提，导致在判断‘准确性’和‘完整性’时逻辑失效（例如，无法评估未提取的内容是否准确）。Rejected因‘事实性错误’（编造原文）被判定为差，但Rubric中的具体措辞（如‘反映原始含义’）在输入缺失时难以直接操作。核心问题在于：当任务依赖外部输入（如特定文本、数据）而该输入缺失时，评分标准必须优先校验‘输入可用性’或‘幻觉检测’，而非直接评估输出内容的质量。现有的经验多关注内容结构、安全或数量阈值，缺乏针对‘输入缺失导致模型被迫生成虚构内容’这一场景的通用核验机制。需要一条新经验，其触发条件仅基于任务描述是否隐含对特定未提供信息的依赖，原则是禁止在无依据情况下生成具体内容，应用指南需指导Generator设立‘输入验证’或‘幻觉防御’作为首要否决项。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_d3d1838e29e14e2587b0e09e16ce629e",
+            "method": {
+              "trigger": "当任务明确要求基于特定未提供的文本、数据、列表或上下文信息进行分析、总结或生成时",
+              "principle": "若候选回答在未获得必要输入的情况下，自行编造、推断或虚构了任务所依赖的具体内容细节，应视为严重的事实性错误或幻觉，无论其生成的内容在逻辑上是否自洽或语言是否流畅。",
+              "application_guide": "在构建评分标准的'准确性'或'真实性'维度时，增加一项'输入依赖性核验'：首先检查回答是否明确指出了输入缺失并请求补充；若回答直接生成了具体的事实性细节（如特定的观点、数据、情节），且这些细节无法从用户指令或已知背景中推导出来，则判定为'幻觉/虚构'，该项不得分或直接否决。此标准旨在区分'澄清需求'与'无中生有'，确保评分能捕捉到因输入缺失导致的根本性错误。"
+            },
+            "source_task_id": "b01954e58fe86281134fb12de527821d014da3a6a58ec646061515d2c118b90c",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_d3d1838e29e14e2587b0e09e16ce629e"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_1",
+                  "question": "回答是否明确指出用户未提供待分析的段落文本，并请求用户提供该内容？",
+                  "weight": 0.8
+                },
+                {
+                  "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_2",
+                  "question": "回答是否避免了编造、推断或虚构任何具体的观点、数据或情节等事实性细节？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务要求基于特定段落列出关键点，但用户指令中未实际提供该段落内容。根据提供的经验，若模型在未获得必要输入的情况下自行编造具体内容细节，属于严重的事实性错误（幻觉）。因此，评分标准的核心应聚焦于：1. 识别输入缺失并请求补充（正确行为）；2. 检查是否虚构了不存在的段落细节（错误行为）。背景信息（即‘需要列点’）是任务目标，不应被转化为输出义务，重点在于处理‘无输入’这一核心约束。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879",
+              "normalized_weights": {
+                "rubric_11bbb02da69b408f97b6bbd7daa9b879_1": 0.8,
+                "rubric_11bbb02da69b408f97b6bbd7daa9b879_2": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_1",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答明确指出了需要段落文本才能确定关键点，并直接请求用户提供该内容（'I need the text of the paragraph(s)... Could you please provide the text?'），完全符合标准中关于指出未提供文本并请求提供的要求。",
+                  "rejected_reason": "回答直接列出了关于段落内容的五个具体观点，完全没有指出用户未提供待分析的段落文本，也没有请求用户提供该内容。"
+                },
+                {
+                  "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_2",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "由于用户未提供任何段落文本，回答仅说明了无法进行分析的原因并请求补充信息，全程未编造、推断或虚构任何具体的观点、数据或情节等事实性细节。",
+                  "rejected_reason": "由于用户并未提供任何段落文本，回答中关于沟通重要性、积极倾听、清晰语言、非语言线索及反馈等具体内容均为编造或虚构的事实性细节，违反了避免虚构的要求。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 0.0,
+              "margin": 1.0,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "standalone_correct",
+          "admission_subset": [
+            "exp_d3d1838e29e14e2587b0e09e16ce629e"
+          ]
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_0fdba19b0ed8422694db077a005df2ca",
+            "criteria": [
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_1",
+                "question": "列出的要点是否准确反映了所提供段落的原始含义且无事实性错误？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_2",
+                "question": "回答是否涵盖了段落中的主要思想，遗漏了关键信息？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_3",
+                "question": "输出的内容是否为精炼的关键点列表，而非大段原文的简单复制？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_4",
+                "question": "每个列出的要点是否表达清晰、独立且易于理解？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务核心要求是从提供的段落中列出关键要点。背景信息（即待分析的段落）不应被视为输出义务，而是分析对象。评分标准应聚焦于提取的要点是否准确反映原文核心、是否完整覆盖主要观点、是否去除了冗余细节以及表述是否清晰。由于未提供具体段落，标准将基于一般性文本摘要原则制定，确保对任何输入段落均适用。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_0fdba19b0ed8422694db077a005df2ca",
+            "normalized_weights": {
+              "rubric_0fdba19b0ed8422694db077a005df2ca_1": 0.4,
+              "rubric_0fdba19b0ed8422694db077a005df2ca_2": 0.3,
+              "rubric_0fdba19b0ed8422694db077a005df2ca_3": 0.2,
+              "rubric_0fdba19b0ed8422694db077a005df2ca_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答未列出任何要点，因此无法判断其是否准确反映了段落含义或是否存在事实性错误。",
+                "rejected_reason": "任务要求基于提供的段落列出要点，但输入中并未包含任何原始段落文本。模型直接编造了关于职场沟通的具体内容（如积极倾听、非语言线索等），这些内容并非源自用户提供的材料，因此存在事实性错误（即虚构了原文含义）。"
+              },
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "由于输入中未提供具体段落文本，回答未能涵盖任何主要思想或关键信息，仅请求补充材料。",
+                "rejected_reason": "由于缺乏原始段落作为依据，回答无法涵盖该段落中的主要思想或关键信息，因为它总结的是模型自行生成的通用知识，而非特定输入内容的核心思想。"
+              },
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "输出内容为请求提供文本的说明，并非针对段落的精炼关键点列表。",
+                "rejected_reason": "从格式上看，输出确实呈现为精炼的关键点列表形式，且没有大段复制原文（因为根本没有原文可复制），符合列表化的结构要求。"
+              },
+              {
+                "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_4",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中没有列出具体的要点供评估其清晰度、独立性或可理解性。",
+                "rejected_reason": "列出的五个要点在语法上表达清晰，每个要点都是独立的句子，且易于理解，满足了语言表达的清晰度要求。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.3,
+            "margin": -0.3,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_d3d1838e29e14e2587b0e09e16ce629e"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879",
+            "criteria": [
+              {
+                "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_1",
+                "question": "回答是否明确指出用户未提供待分析的段落文本，并请求用户提供该内容？",
+                "weight": 0.8
+              },
+              {
+                "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_2",
+                "question": "回答是否避免了编造、推断或虚构任何具体的观点、数据或情节等事实性细节？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务要求基于特定段落列出关键点，但用户指令中未实际提供该段落内容。根据提供的经验，若模型在未获得必要输入的情况下自行编造具体内容细节，属于严重的事实性错误（幻觉）。因此，评分标准的核心应聚焦于：1. 识别输入缺失并请求补充（正确行为）；2. 检查是否虚构了不存在的段落细节（错误行为）。背景信息（即‘需要列点’）是任务目标，不应被转化为输出义务，重点在于处理‘无输入’这一核心约束。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879",
+            "normalized_weights": {
+              "rubric_11bbb02da69b408f97b6bbd7daa9b879_1": 0.8,
+              "rubric_11bbb02da69b408f97b6bbd7daa9b879_2": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_1",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答明确指出了需要段落文本才能确定关键点，并直接请求用户提供该内容（'I need the text of the paragraph(s)... Could you please provide the text?'），完全符合标准中关于指出未提供文本并请求提供的要求。",
+                "rejected_reason": "回答直接列出了关于段落内容的五个具体观点，完全没有指出用户未提供待分析的段落文本，也没有请求用户提供该内容。"
+              },
+              {
+                "criterion_id": "rubric_11bbb02da69b408f97b6bbd7daa9b879_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "由于用户未提供任何段落文本，回答仅说明了无法进行分析的原因并请求补充信息，全程未编造、推断或虚构任何具体的观点、数据或情节等事实性细节。",
+                "rejected_reason": "由于用户并未提供任何段落文本，回答中关于沟通重要性、积极倾听、清晰语言、非语言线索及反馈等具体内容均为编造或虚构的事实性细节，违反了避免虚构的要求。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 0.0,
+            "margin": 1.0,
+            "success": true
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_0fdba19b0ed8422694db077a005df2ca",
+        "criteria": [
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_1",
+            "question": "列出的要点是否准确反映了所提供段落的原始含义且无事实性错误？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_2",
+            "question": "回答是否涵盖了段落中的主要思想，遗漏了关键信息？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_3",
+            "question": "输出的内容是否为精炼的关键点列表，而非大段原文的简单复制？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_4",
+            "question": "每个列出的要点是否表达清晰、独立且易于理解？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务核心要求是从提供的段落中列出关键要点。背景信息（即待分析的段落）不应被视为输出义务，而是分析对象。评分标准应聚焦于提取的要点是否准确反映原文核心、是否完整覆盖主要观点、是否去除了冗余细节以及表述是否清晰。由于未提供具体段落，标准将基于一般性文本摘要原则制定，确保对任何输入段落均适用。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_0fdba19b0ed8422694db077a005df2ca",
+        "normalized_weights": {
+          "rubric_0fdba19b0ed8422694db077a005df2ca_1": 0.4,
+          "rubric_0fdba19b0ed8422694db077a005df2ca_2": 0.3,
+          "rubric_0fdba19b0ed8422694db077a005df2ca_3": 0.2,
+          "rubric_0fdba19b0ed8422694db077a005df2ca_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未列出任何要点，因此无法判断其是否准确反映了段落含义或是否存在事实性错误。",
+            "rejected_reason": "任务要求基于提供的段落列出要点，但输入中并未包含任何原始段落文本。模型直接编造了关于职场沟通的具体内容（如积极倾听、非语言线索等），这些内容并非源自用户提供的材料，因此存在事实性错误（即虚构了原文含义）。"
+          },
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "由于输入中未提供具体段落文本，回答未能涵盖任何主要思想或关键信息，仅请求补充材料。",
+            "rejected_reason": "由于缺乏原始段落作为依据，回答无法涵盖该段落中的主要思想或关键信息，因为它总结的是模型自行生成的通用知识，而非特定输入内容的核心思想。"
+          },
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "输出内容为请求提供文本的说明，并非针对段落的精炼关键点列表。",
+            "rejected_reason": "从格式上看，输出确实呈现为精炼的关键点列表形式，且没有大段复制原文（因为根本没有原文可复制），符合列表化的结构要求。"
+          },
+          {
+            "criterion_id": "rubric_0fdba19b0ed8422694db077a005df2ca_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答中没有列出具体的要点供评估其清晰度、独立性或可理解性。",
+            "rejected_reason": "列出的五个要点在语法上表达清晰，每个要点都是独立的句子，且易于理解，满足了语言表达的清晰度要求。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.3,
+        "margin": -0.3,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

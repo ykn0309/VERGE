@@ -1,0 +1,813 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:dffd9304f30ae49e356652c20480dfd044b06eb7281f687db7346df327f2e3f3",
+    "task": "How long would I have to work in Australia to earn the same amount of money as an average 8-hour workday in Brunei?",
+    "chosen": "1. Determine the average hourly wage in Brunei.\n 2. Determine the average hourly wage in Australia.\n 3. Calculate the ratio of the Australian wage to the Bruneian wage.\n 4. Multiply the average 8-hour workday in Brunei by the ratio obtained in step 3.\n\nLet's assume the average hourly wage in Brunei is $30 and the average hourly wage in Australia is $40.\n\nStep 3: Ratio = Australian wage / Bruneian wage = $40 / $30 = 4/3\nStep 4: Equivalent Australian workday = 8 hours * (3/4) = 6 hours\n\nSo, you would have to work 6 hours in Australia to earn the same amount of money as an average 8-hour workday in Brunei.",
+    "rejected": "To compare the earnings between Australia and Brunei, we need to consider the average daily wage in each country and the number of hours worked in a day.\n\nLet's use the following data:\n\n1. **Australia:**\n   - Average daily wage: According to the Australian Bureau of Statistics, the average weekly earnings for full-time adults in Australia is around AUD 1,730 (as of May 2021). Assuming a 38-hour work week, the average daily wage would be approximately AUD 225.\n   - Hours worked in a day: 8 hours\n\n2. **Brunei:**\n   - Average daily wage: According to data from the International Labour Organization, the average daily wage in Brunei is around BND 120 (as of 2019).\n   - Hours worked in a day: 8 hours\n\nNow, let's calculate how long it would take to earn the same amount of money as an average 8-hour workday in Brunei while working in Australia:\n\n- In Brunei, you earn BND 120 in an 8-hour workday.\n- In Australia, you earn AUD 225 in an 8-hour workday.\n\nTo find out how many 8-hour workdays it takes to earn BND 120 in Australia, we divide the Brunei daily wage by the Australian daily wage:\n\nBND 120 / AUD 225 ≈ 0.5333 days\n\nSo, it would take approximately 0.5333 days (or about 4.27 hours) of working in Australia to earn the same amount of money as an average 8-hour workday in Brunei.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 22627,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. The latter contains incorrect information and a few essential contradictions. ",
+          "feedback1": "The response is not helpful. It is written in a rather clear but somewhat incoherent manner. Simple online research indicates that the particular numbers for income in Australia and Brunei are given incorrectly. There are shadow payments in Brunei, which are not taken into account, but even official statistics provide almost half the numbers. Moreover, the response compares incomes in Australia as of 2021 and in Brunei as of 2019, which is inaccurate. Also, if 8 hours are worked in a day, then the work week should contain 40 hours, not 38 hours. As a result, the response turns into a complete mess. ",
+          "feedback2": "The response is mostly helpful. It is presented in a rather clear and coherent manner, without excessive verbosity. The algorithm of calculations required to address the prompt is provided accurately and the example with assumed numbers is very illustrative. However, formally the prompt's request is not fully addressed as the response does not operate with real wage numbers."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1.  @Response 1 contains outdated information as of 2024. This makes the response irrelevant to the user request.",
+          "feedback1": "The response is slightly helpful. As requested by the prompt, the response provides information that is accurate but outdated as of July 2024. The response provides income statistics for 2021 and 2019 for Australia and Brunei, respectively. Due to the outdated information, it would be hard to meet the user's request. Also, in terms of conversion, there is an error. The response identifies both the BND and AUD as a 1:1 conversion; this is wrong, as 120 BND is equivalent to 138 AUD. The response fails to take that into account.",
+          "feedback2": "The response is mostly helpful. As requested by the prompt, the response provides a step-by-step means of determining the user request. The response is logical, and the steps are accurate. However, the response failed to take into account that both countries use different currencies (BND and AUD). An additional step should have been included to either convert the currencies to a common denominator like the US dollar or to their respective currencies."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It gives a correct, logical, shortcut solution.\nBut both responses need to use up-to-date 2024 information.",
+          "feedback1": "The response is slightly helpful. It understands the prompt but didn't calculate correctly.\n1- Firstly, it contains information not up to date for 2024. It gives information since 2019 and 2020.\n2- It didn't take the difference in money value between countries into consideration. It should convert the currencies to one value and then perform the division.\n3- It gives correct steps but the wrong way.",
+          "feedback2": "The response is mostly helpful. It understands the prompt. Give a logic shortcut solution, and explain it simply and clearly.\n It just used old information that is not up to date for 2024. It used data from 2019 and 2021.\nIt converted the currencies to dollars, and took the money value into consideration, which is the most effective way to calculate.\n"
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_99cc8baae7b848799b634b94909f0156",
+        0.20202672972727587
+      ],
+      [
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        0.17422828879613425
+      ],
+      [
+        "exp_fe90015874d441eeada18345909d6afe",
+        0.17075040406109476
+      ],
+      [
+        "exp_62a2d603e98a4358b40744e932306a98",
+        0.16773246046627777
+      ],
+      [
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        0.16466405941972484
+      ],
+      [
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        0.15825173396235598
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.15759501888319444
+      ],
+      [
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        0.15757823833259718
+      ],
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.15331082008518856
+      ],
+      [
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        0.15328625133893514
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_99cc8baae7b848799b634b94909f0156",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20202672972727587
+      },
+      {
+        "experience_id": "exp_5321b208f75b481dbd2716498c5f03ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17422828879613425
+      },
+      {
+        "experience_id": "exp_fe90015874d441eeada18345909d6afe",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17075040406109476
+      },
+      {
+        "experience_id": "exp_62a2d603e98a4358b40744e932306a98",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16773246046627777
+      },
+      {
+        "experience_id": "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16466405941972484
+      },
+      {
+        "experience_id": "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15825173396235598
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15759501888319444
+      },
+      {
+        "experience_id": "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15757823833259718
+      },
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15331082008518856
+      },
+      {
+        "experience_id": "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15328625133893514
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59",
+      "criteria": [
+        {
+          "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1",
+          "question": "回答是否提供了文莱和澳大利亚用于计算的基准薪资数据（如平均时薪或日薪）？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2",
+          "question": "回答是否基于正确的数学逻辑（文莱日薪除以澳大利亚时薪）得出了所需的工作时长？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3",
+          "question": "回答是否将最终计算结果明确表述为具体的时间量（如X小时或Y天），而非仅给出原始数值？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "任务核心要求是计算在澳大利亚工作多少小时（或天数）才能赚取相当于文莱一个标准8小时工作日平均收入的金额。核验标准应聚焦于：1.是否获取并正确使用了文莱和澳大利亚的平均时薪或日薪数据；2.是否正确执行了‘文莱日薪 / 澳大利亚时薪’的除法运算；3.是否将计算结果清晰地转化为用户可理解的时间单位（如小时数或天数）。背景信息（如两国名称、8小时工作制）不应作为独立的验证项，而应作为计算逻辑的一部分进行核查。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59",
+      "normalized_weights": {
+        "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1": 0.4,
+        "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2": 0.5,
+        "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答中明确声明了'Let's assume...'（让我们假设），使用了虚构的薪资数据（文莱$30，澳大利亚$40），并未提供真实的文莱和澳大利亚平均时薪或日薪基准数据。",
+          "rejected_reason": "回答明确提供了澳大利亚的平均日薪数据（约AUD 225）和文莱的平均日薪数据（约BND 120），并引用了数据来源。"
+        },
+        {
+          "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答中的数学逻辑存在错误。题目要求计算在澳大利亚工作多久能赚得文莱8小时的钱，逻辑应为：(文莱日薪) / (澳大利亚时薪)。回答先计算了澳/文比率(4/3)，随后却用8乘以(3/4)即文/澳比率，虽然步骤描述称乘以第三步的比率，但实际计算数值与描述的逻辑方向不符（若按Step 3的4/3计算，结果应为约10.67小时；若结果为6小时，则应用的是文/澳比率，而非Step 3得出的比率）。此外，基于假设数据的逻辑推导无法验证其正确性。",
+          "rejected_reason": "回答的数学逻辑存在错误，它直接将文莱货币单位（BND）除以澳大利亚货币单位（AUD）来计算天数（BND 120 / AUD 225）。正确的计算必须首先通过汇率将两种货币换算为同一币种，或者假设汇率为1:1（这在现实中不成立），而回答未进行汇率转换却得出了数值结果，逻辑不严谨。"
+        },
+        {
+          "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答在结尾处明确表述了最终结果：",
+          "rejected_reason": "回答将最终计算结果明确表述为具体的时间量，即'approximately 0.5333 days (or about 4.27 hours)'，符合具体时间量的要求。"
+        }
+      ],
+      "chosen_score": 0.1,
+      "rejected_score": 0.5,
+      "margin": -0.4,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "本次失败案例的核心在于模型在处理跨货币、跨国家的经济计算任务时，未能执行必要的‘单位/币种统一’步骤。Chosen回答虽然逻辑步骤看似清晰（假设数据->算比率->乘时长），但使用了虚构数据且未进行汇率换算，导致结果在现实语境下无意义；Rejected回答虽然引用了真实数据源，但直接除以不同币种的数值（BND/AUD），忽略了汇率转换这一关键物理约束，导致逻辑错误。初始Rubric仅关注了‘是否提供数据’和‘最终结果形式’，完全缺失了对‘计算过程物理合理性（特别是多币种场景下的汇率处理）’的核验。这导致两个都有严重事实/逻辑缺陷的回答得分接近（0.1 vs 0.5），无法区分优劣。正确的评分标准必须强制要求：涉及不同货币单位的比较或计算时，必须先进行汇率换算或明确声明假设汇率为1:1（且需指出该假设的局限性），否则视为逻辑断裂。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_6ade6a3dad8643bab4db815696e7422d",
+            "method": {
+              "trigger": "当任务涉及跨国家、跨地区或跨系统的数值比较与计算，且原始数据包含不同的计量单位（如不同货币、不同长度单位、不同时间标准等）时",
+              "principle": "模型在执行任何算术运算前，必须显式完成单位标准化或转换步骤；若涉及货币，必须引入汇率因子将不同币种转换为同一基准，严禁直接对不同币种的数值进行加减乘除而不做说明。",
+              "application_guide": "在构建评分标准的‘逻辑严谨性’维度时，设立‘单位一致性’核验点：1. 检查候选回答中涉及的数值是否来自不同体系（如澳元与文莱元）；2. 验证回答是否在计算前包含了明确的汇率查询、声明或转换公式；3. 若回答直接对未转换的不同币种数值进行运算，无论其引用的数据来源多么详实，均判定为逻辑错误并大幅扣分；4. 若回答声明了假设（如‘假设汇率为1:1’），则需进一步评估该假设是否合理或被明确标记为估算而非精确计算。"
+            },
+            "source_task_id": "264f9c725df31c0e4f5e1b26cc8ab47566f7a39c63ed7a4471b13d43fe5553af",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_6ade6a3dad8643bab4db815696e7422d"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_1",
+                  "question": "回答是否明确识别了澳大利亚（澳元）与文莱（文莱元）的货币差异，并声明了用于计算的汇率或明确的汇率假设？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_2",
+                  "question": "回答是否提供了澳大利亚平均时薪/日薪与文莱平均日薪的具体数值来源或合理估算依据？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_3",
+                  "question": "回答是否在将所有数值统一为同一货币单位后，才进行了除法运算以得出所需的工作天数？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_4",
+                  "question": "回答最终给出的工作时长（天数或具体工时）是否基于上述计算逻辑得出了合理的数值结果？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "本任务核心在于通过跨国家收入比较进行时间换算，涉及澳元与文莱元两种货币及不同工作时长标准。依据经验原则，模型必须在计算前显式完成汇率转换或声明假设，严禁直接对未统一币种的数值运算。评分标准将重点聚焦于：是否识别了货币差异、是否执行了单位标准化（汇率转换）、是否基于正确的日薪数据进行了逻辑推导、以及最终得出的工作时间是否准确对应了目标金额。背景信息中的'8小时工作制’是计算基准而非待输出内容，不作为独立评分项，但需确保回答正确使用了该基准进行对比。权重分配上，逻辑严谨性（汇率处理）占比最高，其次为数据准确性与计算结果的正确性。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e",
+              "normalized_weights": {
+                "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_1": 0.35,
+                "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_2": 0.25,
+                "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_3": 0.25,
+                "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中未明确识别澳大利亚（澳元）与文莱（文莱元）的货币差异，也未声明任何汇率或汇率假设，而是直接使用美元符号$进行数值比较。",
+                  "rejected_reason": "回答中虽然提到了澳元（AUD）和文莱元（BND），但在计算过程中直接将 BND 120 除以 AUD 225，完全未声明或假设任何汇率将两种货币统一为同一单位，导致跨币种直接运算在逻辑上不成立。"
+                },
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答虽然给出了每小时工资的具体数值（$30和$40），但仅以'Let's assume'开头，未提供任何数据来源、统计依据或合理的估算背景，且数值设定不符合两国实际平均时薪水平。",
+                  "rejected_reason": "回答明确引用了澳大利亚统计局（Australian Bureau of Statistics）的数据得出日均工资约为 AUD 225，并引用国际劳工组织（International Labour Organization）的数据得出文莱日均工资约为 BND 120，提供了具体的数值来源。"
+                },
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答在计算过程中未将不同货币统一为同一单位，而是直接基于假设的相同货币单位（美元）进行比率计算，忽略了题目要求的货币转换步骤。",
+                  "rejected_reason": "回答在计算时直接使用了 BND 120 除以 AUD 225，没有先将两者转换为同一货币单位（例如通过汇率将 BND 换算为 AUD 或将 AUD 换算为 BND），因此未满足“统一为同一货币单位后才进行除法运算”的要求。"
+                },
+                {
+                  "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "最终得出的6小时结果是基于错误的逻辑推导（错误地使用了8小时乘以3/4而非4/3的倒数关系来匹配收入，且输入数据无现实依据），因此该数值结果不具备合理性。",
+                  "rejected_reason": "由于前序步骤中缺乏汇率转换，直接对不同币种的数值进行除法得出的结果（0.5333 天）在经济学逻辑上是错误的，不能真实反映所需的工作时长，因此最终结果不合理。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.25,
+              "margin": -0.25,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+            "method": {
+              "trigger": "当任务要求基于现实世界数据进行量化推理或计算，且答案的正确性高度依赖于特定外部事实参数（如汇率、税率、物理常数）时",
+              "principle": "模型不得凭空捏造核心参数值作为计算基础；若缺乏实时数据访问能力，必须明确声明所使用数据的来源年份、局限性或假设性质，且不能将虚构数据伪装成客观事实进行推导。",
+              "application_guide": "在构建评分标准的‘事实准确性’维度时，设立‘数据真实性与透明度’核验点：1. 检查回答是否提供了具体的、可追溯的数据来源（如机构名称、发布日期）；2. 若回答使用了‘Let's assume’或类似表述引入数据，必须确认该数据是作为‘示例’还是被当作‘事实’使用；3. 若回答将虚构的薪资数据（如$30, $40）作为计算依据并得出确定性结论，而未明确告知用户这是估算或假设情景，则视为事实性误导，应判低分；4. 优先采信那些明确标注数据时效性和假设条件的回答，即使其数值可能不精确，也比使用虚假数据更优。"
+            },
+            "source_task_id": "264f9c725df31c0e4f5e1b26cc8ab47566f7a39c63ed7a4471b13d43fe5553af",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_b6cbe7b0a7f346c99dbc2b86304fd934"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_47b689df877944ccb85e5493f2cb5943",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_1",
+                  "question": "回答是否明确提供了用于计算的澳大利亚平均日薪、文莱平均日薪及汇率的具体数值及其来源（如机构名称、年份），而非凭空捏造？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_2",
+                  "question": "若回答使用了估算值或假设条件，是否清晰声明了数据的局限性或非实时性，未将其伪装为绝对确定的客观事实？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_3",
+                  "question": "回答是否正确执行了从文莱日薪到澳元金额的汇率换算，并据此计算出在澳大利亚所需的等效工作时长？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_4",
+                  "question": "回答是否直接给出了明确的结论（具体工作天数或小时数），而非仅停留在背景介绍或未完成的推导中？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "本任务核心要求是基于现实世界数据进行跨国薪资对比计算，涉及澳大利亚与文莱的时薪/日薪及汇率转换。依据提供的经验，评分标准必须严格区分背景信息（如两国经济概况）与核心计算义务（具体数值、来源声明、计算逻辑）。重点在于防止模型捏造数据或混淆假设与事实，因此将‘数据来源透明度’和‘计算逻辑正确性’设为高权重项，而背景描述仅作为辅助验证。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_47b689df877944ccb85e5493f2cb5943",
+              "normalized_weights": {
+                "rubric_47b689df877944ccb85e5493f2cb5943_1": 0.4,
+                "rubric_47b689df877944ccb85e5493f2cb5943_2": 0.25,
+                "rubric_47b689df877944ccb85e5493f2cb5943_3": 0.25,
+                "rubric_47b689df877944ccb85e5493f2cb5943_4": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中明确声明数据为假设（'Let's assume'），并未提供澳大利亚和文莱平均日薪或时薪的真实具体数值，也未引用任何机构名称、年份等数据来源，不符合‘明确提供具体数值及来源’的要求。",
+                  "rejected_reason": "回答提供了澳大利亚平均周薪和文莱日薪的具体数值及来源（ABS 2021年、ILO 2019年），但存在严重的数据单位错误：将文莱日薪标注为 BND 120，而根据常识及 ILO 数据，文莱普通日薪通常在 BND 20-40 左右，BND 120 的日薪极不真实（相当于月入数万），且未说明该数值的合理性或来源细节，疑似捏造或误用年度/月度数据当作日薪，导致基础数据不可靠。"
+                },
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_2",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答在给出数值前使用了'Let's assume'（让我们假设）这一表述，清晰地将数据定义为假设条件而非客观事实，符合关于声明数据局限性或非实时性的要求。",
+                  "rejected_reason": "回答虽然引用了年份，但未对 BND 120 这一异常高额的日薪数据进行任何局限性声明或风险提示，直接将其作为计算依据，未表明该数据可能不准确或非典型，违反了“清晰声明数据局限性”的要求。"
+                },
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "虽然回答进行了计算，但基于错误的前提逻辑：题目要求的是“赚取相同金额”，即 Brunei_8h收入 = Australia_Xh收入。若Brunei工资$30/h，8小时赚$240；Australia工资$40/h，需工作6小时赚$240。回答中的计算步骤3写成了Ratio = 40/30，步骤4却乘以了3/4（即反比），虽然最终结果6小时在数学上巧合正确（因为240/40=6），但其推导过程描述混乱且基于虚构数据，更重要的是Criterion 3的核心在于基于真实数据的换算，而由于缺乏真实数据（违反Criterion 1），无法视为正确执行了基于真实世界的汇率和薪资换算。更严格来说，其计算逻辑描述存在矛盾（先算40/30再乘3/4），未能清晰展示正确的换算逻辑。",
+                  "rejected_reason": "回答在计算过程中完全忽略了汇率换算步骤。题目要求比较“赚取相同金额”，必须先将文莱币（BND）转换为澳元（AUD）或反之。回答直接除以 AUD 225，隐含假设了 1 BND = 1 AUD 或者错误地将 BND 当作 AUD 处理，导致数学逻辑错误，未能正确执行汇率换算。"
+                },
+                {
+                  "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答在最后明确给出了结论：",
+                  "rejected_reason": "回答最后明确给出了结论：“大约 0.5333 天（或约 4.27 小时）”，直接回应了问题关于工作时长的问题，没有停留在背景介绍中。"
+                }
+              ],
+              "chosen_score": 0.35,
+              "rejected_score": 0.1,
+              "margin": 0.25,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "standalone_correct",
+          "admission_subset": [
+            "exp_b6cbe7b0a7f346c99dbc2b86304fd934"
+          ]
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59",
+            "criteria": [
+              {
+                "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1",
+                "question": "回答是否提供了文莱和澳大利亚用于计算的基准薪资数据（如平均时薪或日薪）？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2",
+                "question": "回答是否基于正确的数学逻辑（文莱日薪除以澳大利亚时薪）得出了所需的工作时长？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3",
+                "question": "回答是否将最终计算结果明确表述为具体的时间量（如X小时或Y天），而非仅给出原始数值？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务核心要求是计算在澳大利亚工作多少小时（或天数）才能赚取相当于文莱一个标准8小时工作日平均收入的金额。核验标准应聚焦于：1.是否获取并正确使用了文莱和澳大利亚的平均时薪或日薪数据；2.是否正确执行了‘文莱日薪 / 澳大利亚时薪’的除法运算；3.是否将计算结果清晰地转化为用户可理解的时间单位（如小时数或天数）。背景信息（如两国名称、8小时工作制）不应作为独立的验证项，而应作为计算逻辑的一部分进行核查。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59",
+            "normalized_weights": {
+              "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1": 0.4,
+              "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2": 0.5,
+              "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中明确声明了'Let's assume...'（让我们假设），使用了虚构的薪资数据（文莱$30，澳大利亚$40），并未提供真实的文莱和澳大利亚平均时薪或日薪基准数据。",
+                "rejected_reason": "回答明确提供了澳大利亚的平均日薪数据（约AUD 225）和文莱的平均日薪数据（约BND 120），并引用了数据来源。"
+              },
+              {
+                "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中的数学逻辑存在错误。题目要求计算在澳大利亚工作多久能赚得文莱8小时的钱，逻辑应为：(文莱日薪) / (澳大利亚时薪)。回答先计算了澳/文比率(4/3)，随后却用8乘以(3/4)即文/澳比率，虽然步骤描述称乘以第三步的比率，但实际计算数值与描述的逻辑方向不符（若按Step 3的4/3计算，结果应为约10.67小时；若结果为6小时，则应用的是文/澳比率，而非Step 3得出的比率）。此外，基于假设数据的逻辑推导无法验证其正确性。",
+                "rejected_reason": "回答的数学逻辑存在错误，它直接将文莱货币单位（BND）除以澳大利亚货币单位（AUD）来计算天数（BND 120 / AUD 225）。正确的计算必须首先通过汇率将两种货币换算为同一币种，或者假设汇率为1:1（这在现实中不成立），而回答未进行汇率转换却得出了数值结果，逻辑不严谨。"
+              },
+              {
+                "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答在结尾处明确表述了最终结果：",
+                "rejected_reason": "回答将最终计算结果明确表述为具体的时间量，即'approximately 0.5333 days (or about 4.27 hours)'，符合具体时间量的要求。"
+              }
+            ],
+            "chosen_score": 0.1,
+            "rejected_score": 0.5,
+            "margin": -0.4,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_6ade6a3dad8643bab4db815696e7422d"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e",
+            "criteria": [
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_1",
+                "question": "回答是否明确识别了澳大利亚（澳元）与文莱（文莱元）的货币差异，并声明了用于计算的汇率或明确的汇率假设？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_2",
+                "question": "回答是否提供了澳大利亚平均时薪/日薪与文莱平均日薪的具体数值来源或合理估算依据？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_3",
+                "question": "回答是否在将所有数值统一为同一货币单位后，才进行了除法运算以得出所需的工作天数？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_4",
+                "question": "回答最终给出的工作时长（天数或具体工时）是否基于上述计算逻辑得出了合理的数值结果？",
+                "weight": 0.15
+              }
+            ],
+            "analysis": "本任务核心在于通过跨国家收入比较进行时间换算，涉及澳元与文莱元两种货币及不同工作时长标准。依据经验原则，模型必须在计算前显式完成汇率转换或声明假设，严禁直接对未统一币种的数值运算。评分标准将重点聚焦于：是否识别了货币差异、是否执行了单位标准化（汇率转换）、是否基于正确的日薪数据进行了逻辑推导、以及最终得出的工作时间是否准确对应了目标金额。背景信息中的'8小时工作制’是计算基准而非待输出内容，不作为独立评分项，但需确保回答正确使用了该基准进行对比。权重分配上，逻辑严谨性（汇率处理）占比最高，其次为数据准确性与计算结果的正确性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e",
+            "normalized_weights": {
+              "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_1": 0.35,
+              "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_2": 0.25,
+              "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_3": 0.25,
+              "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_4": 0.15
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中未明确识别澳大利亚（澳元）与文莱（文莱元）的货币差异，也未声明任何汇率或汇率假设，而是直接使用美元符号$进行数值比较。",
+                "rejected_reason": "回答中虽然提到了澳元（AUD）和文莱元（BND），但在计算过程中直接将 BND 120 除以 AUD 225，完全未声明或假设任何汇率将两种货币统一为同一单位，导致跨币种直接运算在逻辑上不成立。"
+              },
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答虽然给出了每小时工资的具体数值（$30和$40），但仅以'Let's assume'开头，未提供任何数据来源、统计依据或合理的估算背景，且数值设定不符合两国实际平均时薪水平。",
+                "rejected_reason": "回答明确引用了澳大利亚统计局（Australian Bureau of Statistics）的数据得出日均工资约为 AUD 225，并引用国际劳工组织（International Labour Organization）的数据得出文莱日均工资约为 BND 120，提供了具体的数值来源。"
+              },
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答在计算过程中未将不同货币统一为同一单位，而是直接基于假设的相同货币单位（美元）进行比率计算，忽略了题目要求的货币转换步骤。",
+                "rejected_reason": "回答在计算时直接使用了 BND 120 除以 AUD 225，没有先将两者转换为同一货币单位（例如通过汇率将 BND 换算为 AUD 或将 AUD 换算为 BND），因此未满足“统一为同一货币单位后才进行除法运算”的要求。"
+              },
+              {
+                "criterion_id": "rubric_4ebe2fa62fc44c29b0c89e2079f7254e_4",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "最终得出的6小时结果是基于错误的逻辑推导（错误地使用了8小时乘以3/4而非4/3的倒数关系来匹配收入，且输入数据无现实依据），因此该数值结果不具备合理性。",
+                "rejected_reason": "由于前序步骤中缺乏汇率转换，直接对不同币种的数值进行除法得出的结果（0.5333 天）在经济学逻辑上是错误的，不能真实反映所需的工作时长，因此最终结果不合理。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.25,
+            "margin": -0.25,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_b6cbe7b0a7f346c99dbc2b86304fd934"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_47b689df877944ccb85e5493f2cb5943",
+            "criteria": [
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_1",
+                "question": "回答是否明确提供了用于计算的澳大利亚平均日薪、文莱平均日薪及汇率的具体数值及其来源（如机构名称、年份），而非凭空捏造？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_2",
+                "question": "若回答使用了估算值或假设条件，是否清晰声明了数据的局限性或非实时性，未将其伪装为绝对确定的客观事实？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_3",
+                "question": "回答是否正确执行了从文莱日薪到澳元金额的汇率换算，并据此计算出在澳大利亚所需的等效工作时长？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_4",
+                "question": "回答是否直接给出了明确的结论（具体工作天数或小时数），而非仅停留在背景介绍或未完成的推导中？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "本任务核心要求是基于现实世界数据进行跨国薪资对比计算，涉及澳大利亚与文莱的时薪/日薪及汇率转换。依据提供的经验，评分标准必须严格区分背景信息（如两国经济概况）与核心计算义务（具体数值、来源声明、计算逻辑）。重点在于防止模型捏造数据或混淆假设与事实，因此将‘数据来源透明度’和‘计算逻辑正确性’设为高权重项，而背景描述仅作为辅助验证。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_47b689df877944ccb85e5493f2cb5943",
+            "normalized_weights": {
+              "rubric_47b689df877944ccb85e5493f2cb5943_1": 0.4,
+              "rubric_47b689df877944ccb85e5493f2cb5943_2": 0.25,
+              "rubric_47b689df877944ccb85e5493f2cb5943_3": 0.25,
+              "rubric_47b689df877944ccb85e5493f2cb5943_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中明确声明数据为假设（'Let's assume'），并未提供澳大利亚和文莱平均日薪或时薪的真实具体数值，也未引用任何机构名称、年份等数据来源，不符合‘明确提供具体数值及来源’的要求。",
+                "rejected_reason": "回答提供了澳大利亚平均周薪和文莱日薪的具体数值及来源（ABS 2021年、ILO 2019年），但存在严重的数据单位错误：将文莱日薪标注为 BND 120，而根据常识及 ILO 数据，文莱普通日薪通常在 BND 20-40 左右，BND 120 的日薪极不真实（相当于月入数万），且未说明该数值的合理性或来源细节，疑似捏造或误用年度/月度数据当作日薪，导致基础数据不可靠。"
+              },
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答在给出数值前使用了'Let's assume'（让我们假设）这一表述，清晰地将数据定义为假设条件而非客观事实，符合关于声明数据局限性或非实时性的要求。",
+                "rejected_reason": "回答虽然引用了年份，但未对 BND 120 这一异常高额的日薪数据进行任何局限性声明或风险提示，直接将其作为计算依据，未表明该数据可能不准确或非典型，违反了“清晰声明数据局限性”的要求。"
+              },
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "虽然回答进行了计算，但基于错误的前提逻辑：题目要求的是“赚取相同金额”，即 Brunei_8h收入 = Australia_Xh收入。若Brunei工资$30/h，8小时赚$240；Australia工资$40/h，需工作6小时赚$240。回答中的计算步骤3写成了Ratio = 40/30，步骤4却乘以了3/4（即反比），虽然最终结果6小时在数学上巧合正确（因为240/40=6），但其推导过程描述混乱且基于虚构数据，更重要的是Criterion 3的核心在于基于真实数据的换算，而由于缺乏真实数据（违反Criterion 1），无法视为正确执行了基于真实世界的汇率和薪资换算。更严格来说，其计算逻辑描述存在矛盾（先算40/30再乘3/4），未能清晰展示正确的换算逻辑。",
+                "rejected_reason": "回答在计算过程中完全忽略了汇率换算步骤。题目要求比较“赚取相同金额”，必须先将文莱币（BND）转换为澳元（AUD）或反之。回答直接除以 AUD 225，隐含假设了 1 BND = 1 AUD 或者错误地将 BND 当作 AUD 处理，导致数学逻辑错误，未能正确执行汇率换算。"
+              },
+              {
+                "criterion_id": "rubric_47b689df877944ccb85e5493f2cb5943_4",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答在最后明确给出了结论：",
+                "rejected_reason": "回答最后明确给出了结论：“大约 0.5333 天（或约 4.27 小时）”，直接回应了问题关于工作时长的问题，没有停留在背景介绍中。"
+              }
+            ],
+            "chosen_score": 0.35,
+            "rejected_score": 0.1,
+            "margin": 0.25,
+            "success": true
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_6ade6a3dad8643bab4db815696e7422d",
+            "exp_b6cbe7b0a7f346c99dbc2b86304fd934"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_2aca5e5124844926b9f6b56121240948",
+            "criteria": [
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_1",
+                "question": "回答是否明确声明了所使用的汇率数值或转换公式，并据此将澳元与文莱元统一为同一货币基准？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_2",
+                "question": "回答是否提供了文莱平均日薪和澳大利亚相关薪资的具体数据来源、年份或明确的估算假设条件？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_3",
+                "question": "回答是否正确执行了算术运算，计算出在澳大利亚工作的具体时长（如天数或小时数），且该计算过程清晰可见？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_4",
+                "question": "回答是否避免了将不同币种的原始数值直接相除或比较而未进行任何转换说明的逻辑错误？",
+                "weight": 0.15
+              }
+            ],
+            "analysis": "本任务要求基于澳大利亚和文莱的薪资水平进行跨币种、跨地区的量化计算。核心难点在于处理货币差异（澳元与文莱元）及工作时间单位（天 vs 年/月）的统一。评分标准需严格区分背景信息（如两国经济概况）与必须完成的任务（汇率转换、数据源声明、最终时长计算）。依据经验1，必须核验回答是否显式执行了汇率转换，严禁直接对未转换币种进行运算；依据经验2，必须核验数据来源的透明度及假设条件的明确性，防止虚构数据误导用户。权重分配上，逻辑严谨性（单位/汇率处理）和事实准确性（数据透明与来源）最为关键，各占较高权重，计算结果的正确性紧随其后。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_2aca5e5124844926b9f6b56121240948",
+            "normalized_weights": {
+              "rubric_2aca5e5124844926b9f6b56121240948_1": 0.35,
+              "rubric_2aca5e5124844926b9f6b56121240948_2": 0.25,
+              "rubric_2aca5e5124844926b9f6b56121240948_3": 0.25,
+              "rubric_2aca5e5124844926b9f6b56121240948_4": 0.15
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中未声明任何实际的汇率数值或转换公式，而是直接假设了澳元和文莱元的工资数值（$30 和 $40）并隐含认为两者单位相同（均为美元），未说明如何将两种不同货币统一为同一基准。",
+                "rejected_reason": "回答未声明任何汇率数值或转换公式，也未将澳元（AUD）与文莱元（BND）统一为同一货币基准，而是直接使用了不同币种的数值进行除法运算。"
+              },
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答仅使用了'Let's assume'提出的虚构数值（$30 和 $40），未提供任何真实的文莱平均日薪、澳大利亚相关薪资的数据来源、年份或基于现实数据的估算假设条件。",
+                "rejected_reason": "回答明确提供了数据来源和年份：澳大利亚数据引用自澳大利亚统计局（2021年5月），文莱数据引用自国际劳工组织（2019年），并说明了假设条件（如38小时工作周）。"
+              },
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "虽然展示了一个计算过程，但由于输入数据是虚构的且逻辑推导存在错误（步骤 4 中乘以比率时方向错误，导致结果偏差），并未计算出基于真实世界数据的在澳大利亚工作的具体时长。",
+                "rejected_reason": "虽然回答展示了算术过程（120/225），但由于未进行货币单位转换，该计算在逻辑上是错误的，无法得出“赚取相同金额”的正确时长，因此未正确执行符合题意的算术运算。"
+              },
+              {
+                "criterion_id": "rubric_2aca5e5124844926b9f6b56121240948_4",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答没有直接将不同币种的原始数值相除，而是先设定了假设的工资数值，并在计算过程中尝试通过比率进行换算，避免了直接的币种混淆比较（尽管其假设本身不成立）。",
+                "rejected_reason": "回答直接将文莱元的原始数值（BND 120）除以澳大利亚元的原始数值（AUD 225），在未进行任何汇率说明或货币转换的情况下进行比较，犯了逻辑错误。"
+              }
+            ],
+            "chosen_score": 0.15,
+            "rejected_score": 0.25,
+            "margin": -0.1,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59",
+        "criteria": [
+          {
+            "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1",
+            "question": "回答是否提供了文莱和澳大利亚用于计算的基准薪资数据（如平均时薪或日薪）？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2",
+            "question": "回答是否基于正确的数学逻辑（文莱日薪除以澳大利亚时薪）得出了所需的工作时长？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3",
+            "question": "回答是否将最终计算结果明确表述为具体的时间量（如X小时或Y天），而非仅给出原始数值？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务核心要求是计算在澳大利亚工作多少小时（或天数）才能赚取相当于文莱一个标准8小时工作日平均收入的金额。核验标准应聚焦于：1.是否获取并正确使用了文莱和澳大利亚的平均时薪或日薪数据；2.是否正确执行了‘文莱日薪 / 澳大利亚时薪’的除法运算；3.是否将计算结果清晰地转化为用户可理解的时间单位（如小时数或天数）。背景信息（如两国名称、8小时工作制）不应作为独立的验证项，而应作为计算逻辑的一部分进行核查。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59",
+        "normalized_weights": {
+          "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1": 0.4,
+          "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2": 0.5,
+          "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答中明确声明了'Let's assume...'（让我们假设），使用了虚构的薪资数据（文莱$30，澳大利亚$40），并未提供真实的文莱和澳大利亚平均时薪或日薪基准数据。",
+            "rejected_reason": "回答明确提供了澳大利亚的平均日薪数据（约AUD 225）和文莱的平均日薪数据（约BND 120），并引用了数据来源。"
+          },
+          {
+            "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中的数学逻辑存在错误。题目要求计算在澳大利亚工作多久能赚得文莱8小时的钱，逻辑应为：(文莱日薪) / (澳大利亚时薪)。回答先计算了澳/文比率(4/3)，随后却用8乘以(3/4)即文/澳比率，虽然步骤描述称乘以第三步的比率，但实际计算数值与描述的逻辑方向不符（若按Step 3的4/3计算，结果应为约10.67小时；若结果为6小时，则应用的是文/澳比率，而非Step 3得出的比率）。此外，基于假设数据的逻辑推导无法验证其正确性。",
+            "rejected_reason": "回答的数学逻辑存在错误，它直接将文莱货币单位（BND）除以澳大利亚货币单位（AUD）来计算天数（BND 120 / AUD 225）。正确的计算必须首先通过汇率将两种货币换算为同一币种，或者假设汇率为1:1（这在现实中不成立），而回答未进行汇率转换却得出了数值结果，逻辑不严谨。"
+          },
+          {
+            "criterion_id": "rubric_57bf9d6cec894a4e9c5542d0441f0f59_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答在结尾处明确表述了最终结果：",
+            "rejected_reason": "回答将最终计算结果明确表述为具体的时间量，即'approximately 0.5333 days (or about 4.27 hours)'，符合具体时间量的要求。"
+          }
+        ],
+        "chosen_score": 0.1,
+        "rejected_score": 0.5,
+        "margin": -0.4,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

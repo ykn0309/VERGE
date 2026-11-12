@@ -1,0 +1,66 @@
+{
+  "status": "valid",
+  "input_index": 386,
+  "outcome": "improved",
+  "attempt": 1,
+  "review": {
+    "case_index": 386,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "unsupported",
+        "reason": "任务要求生成课程创意，非人际互动指导。经验 E1 要求提供具体对话范例（Quote）或动作指令，属于对任务未要求的额外义务，且与‘课程构思’目标不直接对应。",
+        "refs": [
+          "TASK",
+          "E1.trigger",
+          "W.analysis"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "mixed",
+        "reason": "任务提及警察和矫正工作者，但未明确要求将两者内容在物理空间上隔离。经验 E2 强制要求视觉分隔，可能增加任务未要求的结构限制，导致误判混合列表为缺陷。",
+        "refs": [
+          "TASK",
+          "E2.trigger",
+          "W4.X.reason"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "E1.principle",
+          "W3"
+        ],
+        "note": "路径 W 引入 E1 要求每个策略类别必须包含具体对话范例或分步动作指令。原任务仅请求‘课程创意’，并未要求提供具体的教学话术或演示步骤，此标准增加了任务未要求的产出细节。"
+      },
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "E2.application_guide",
+          "W4"
+        ],
+        "note": "路径 W 依据 E2 要求回答必须将警察和矫正人员的内容在视觉上明确区分。任务仅要求针对该群体提供创意，未规定必须分开列出。将混合列表视为结构缺陷可能过度解读了任务范围。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "N3.Y.reason",
+          "W3.Y.reason"
+        ],
+        "note": "Judge 对 Y 的回答存在矛盾：N3 认为 Y 缺乏模块结构特征，但 W3 指出 Y 在'Important Considerations'部分提到了角色扮演等实操形式。若 N3 判定 Y 完全无实操描述，则与 W3 观察到的文本事实冲突。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "W2.X.reason",
+          "W2.Y.reason"
+        ],
+        "note": "关于 W2 的评判存在分歧：X 认为描述缺乏深度定制，Y 认为紧扣职业特性。由于任务未定义‘深度定制’的具体标准，无法确定哪种判断更符合任务本意，需外部确认何为合格的课程描述。"
+      }
+    ],
+    "limit": "无法确认任务是否隐含要求将两类人群内容分离，也无法验证‘课程创意’是否必须包含具体教学话术或分步动作指令。"
+  }
+}

@@ -1,0 +1,9 @@
+### Result
+{
+  "hash": "#cases122",
+  "heading": "改善和退化分别发生了什么？"
+}
+### Ran Playwright code
+```js
+await page.evaluate('() => ({hash:location.hash,heading:document.querySelector("article h2").textContent})');
+```

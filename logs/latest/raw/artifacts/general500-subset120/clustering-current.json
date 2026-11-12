@@ -1,0 +1,110 @@
+{
+  "completed": 263,
+  "parameters": {
+    "reference_weight": 0.5,
+    "task_threshold": 0.75,
+    "experience_threshold": 0.75,
+    "max_rounds": 5
+  },
+  "kinds": {
+    "task": {
+      "objects": 262,
+      "groups": 253,
+      "singletons": 248,
+      "size_distribution": {
+        "1": 248,
+        "2": 4,
+        "6": 1
+      },
+      "text_pairs_ge_075": 37,
+      "of_those_hybrid_ge_075": 14,
+      "both_nonempty_reference_pairs": 19503,
+      "of_those_no_common_reference": 18154,
+      "no_references": 64,
+      "examples_of_suppression": [
+        {
+          "left": "10f213bf804ad2ffe167da786f39d343edaba6abdc8a615f51b3cbafe6297fad",
+          "right": "02de9a7f130a52f10ea52e3b5d2288350f98c1ad509a1b3479e78f0fdf5d4604",
+          "text": 0.8004984913185842,
+          "hybrid": 0.7253738684889381,
+          "support": [
+            1,
+            2
+          ],
+          "intersection": 1
+        },
+        {
+          "left": "38ba2fe126d04d70e2d389744025ae6223481f30e004f29ce69545bf31329a89",
+          "right": "32bd527d5a92817e000c495dfc5381c543de9bb254ffa3fb769c364369474b1b",
+          "text": 0.7707181452467783,
+          "hybrid": 0.5780386089350837,
+          "support": [
+            2,
+            1
+          ],
+          "intersection": 0
+        },
+        {
+          "left": "5fa07c1ffd10a4bfe2a7d13dd9d84fcd7d7b33ca374255b0a9534413c8e934bf",
+          "right": "014bc258d2d190271018d23503fc1168c1d23bfbf4100ba62057daf7a2d48740",
+          "text": 0.7642183678430567,
+          "hybrid": 0.5094789118953712,
+          "support": [
+            2,
+            2
+          ],
+          "intersection": 0
+        }
+      ]
+    },
+    "experience": {
+      "objects": 74,
+      "groups": 73,
+      "singletons": 72,
+      "size_distribution": {
+        "1": 72,
+        "2": 1
+      },
+      "text_pairs_ge_075": 29,
+      "of_those_hybrid_ge_075": 1,
+      "both_nonempty_reference_pairs": 1326,
+      "of_those_no_common_reference": 1270,
+      "no_references": 22,
+      "examples_of_suppression": [
+        {
+          "left": "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+          "right": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+          "text": 0.7513478826351283,
+          "hybrid": 0.48096651731559303,
+          "support": [
+            10,
+            7
+          ],
+          "intersection": 2
+        },
+        {
+          "left": "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+          "right": "exp_33fe10ea5cd147c4b399ead199015824",
+          "text": 0.7805875783840248,
+          "hybrid": 0.5854406837880186,
+          "support": [
+            10,
+            1
+          ],
+          "intersection": 0
+        },
+        {
+          "left": "exp_419ab3d341d84c56849042cf209778be",
+          "right": "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+          "text": 0.7572288014761777,
+          "hybrid": 0.4327021722721015,
+          "support": [
+            27,
+            6
+          ],
+          "intersection": 0
+        }
+      ]
+    }
+  }
+}

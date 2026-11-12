@@ -1,0 +1,73 @@
+{
+  "status": "valid",
+  "input_index": 407,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 407,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "unsupported",
+        "reason": "任务为文本摘要，不涉及基于现实世界数据的量化推理或计算，无需核验外部事实参数来源。",
+        "refs": [
+          "TASK",
+          "E1.trigger"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "mixed",
+        "reason": "经验要求严格限定范围，但Y回答保留了原文所有细节（如完整税率列表），虽未越界但可能被视为冗余而非精炼总结，需确认是否违反“避免无效输出”原则。",
+        "refs": [
+          "TASK",
+          "E2.trigger",
+          "N4.Y.reason"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "N4",
+          "N4.Y.reason"
+        ],
+        "note": "N标准明确判定Y因“逐字复制细节数据”而扣分，但W标准中W6仅要求“未捏造外部数据”，未将“过度复述原文细节”列为负面项，存在对“概括”要求的理解差异。"
+      },
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "E2.principle",
+          "E2.application_guide"
+        ],
+        "note": "E2经验强调若包含大量超出范围的正确信息应判低分，但当前任务中Y并未引入无关国家，而是保留了原文所有内部细节，该经验是否适用于“保留原文细节”场景存疑。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "N4.X.reason",
+          "N4.Y.reason"
+        ],
+        "note": "N标准认为X提及税率是“说明结构特点”而非罗列，而Y则是“完全符合简单罗列”，需核对两者在税率描述上的具体措辞差异以确认判断依据。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "E1.trigger",
+          "TASK"
+        ],
+        "note": "E1触发条件涉及“量化推理”，但任务仅要求总结含数值的文本，需确认模型在总结时是否进行了数值推导还是仅复述，以确定E1是否适用。"
+      },
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "N.analysis",
+          "W.analysis"
+        ],
+        "note": "N分析明确要求“提炼应对策略”，W分析侧重“忠实于原文”，若W标准未显式包含对策略提炼的权重，可能导致对Y回答中策略部分详略程度的评价偏差。"
+      }
+    ],
+    "limit": "无法确认Y回答保留原文细节是否属于E2定义的‘无效输出’，以及N与W对‘概括’与‘复述’的界定边界是否一致。"
+  }
+}

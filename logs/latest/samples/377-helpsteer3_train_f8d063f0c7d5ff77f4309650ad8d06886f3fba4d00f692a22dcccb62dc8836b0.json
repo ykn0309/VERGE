@@ -1,0 +1,1560 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:f8d063f0c7d5ff77f4309650ad8d06886f3fba4d00f692a22dcccb62dc8836b0",
+    "task": "what do you know about miami tv?",
+    "chosen": "Miami TV is a television network that primarily serves the Miami-Dade County area in Florida, United States. It was founded in 2003 and is known for its diverse programming, which includes news, entertainment, lifestyle, and cultural shows. The network aims to reflect the multicultural community of Miami and often broadcasts in both English and Spanish. Miami TV is available on various cable and satellite providers in the region, as well as online through its website and streaming platforms.",
+    "rejected": "Miami TV refers to the television broadcasting industry in the city of Miami, Florida, USA. It includes a variety of networks, both local and national, that broadcast a mix of news, entertainment, sports, and other programming.\n\nLocal TV stations in Miami are affiliated with major U.S. networks such as ABC, NBC, CBS, FOX, and CW. These stations provide local news, weather, and other programming specific to the Miami area. Some notable local TV stations in Miami include WSVN-TV (NBC 7/Fox 13), WPLG-TV (Local 10), WFOR-TV (CBS 4), WSCV-TV (Telemundo 51), and WLTV (Univision 23).\n\nIn addition to local stations, Miami is also home to several national cable and satellite networks, such as CNN, ESPN, HBO, and Discovery, which have offices or production facilities in the city.\n\nMiami's diverse population and cultural scene have also led to the growth of Spanish-language television networks, including Telemundo and Univision, which have significant operations in the city.\n\nOverall, Miami TV plays an important role in providing news, entertainment, and information to the local community and beyond.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9483,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. While @Response 2 does contain a couple of errors about Miami TV, @Response 1 misses the point of the prompt entirely and tells the user about something completely different, rendering it useless to them.",
+          "feedback1": "The response is not helpful. It gives an overview of the TV network and industry in Miami which is factually correct, but it misses the request in the prompt to give information about one specific TV network: Miami TV. This renders the correct information in the response unhelpful and frustrating to the user as it isn't what they were looking for. ",
+          "feedback2": "The response is partially helpful. It references the correct TV network: Miami TV and gives a very short description of it. The response could be greatly improved by including more information about the kind of content (mostly reality TV) that the network shows, and by correcting errors such as the founding date of the network."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 fully misses the mark and provides incorrect information for the user. @Response 2 provides almost entirely the correct information, but contains a small inaccuracy. ",
+          "feedback1": "The response is not helpful. The response is simply incorrect about what the user most likely means when they ask about \"miami tv\". Miami TV is shown to be a popular broadcast channel/online streaming service focused on Miami culture and including a talk show. The response is well written and coherent, but ultimately does not serve the user. ",
+          "feedback2": "The response is mostly helpful. The response is able to correctly answer the prompt's question. The response contains a small, but still meaningful, error by stating Miami TV started in 2003 whereas their official website says they were founded in 2007. Beyond this small error, the response is well-written and fully serves the user. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it effectively answers the prompt. @Response 1 does not connect the prompt search to an easily identifiable company, while @Response 2 does so effectively.",
+          "feedback1": "The response is slightly helpful. The information provided about the general Miami television networks available is accurate, but this does not seem to answer the prompt correctly. A simple web search of Miami TV brings up several results for a company called Miami TV. A general reviewer would see the information available and assume the prompt was asking about the specific company of Miami TV and not a broad question about local Miami broadcast options. The sources are not exhaustive and are too general to be helpful. The format and language used to respond are good despite missing a premise of the prompt.",
+          "feedback2": "The response is mostly helpful. The response seems to be correct in answering that the user was asking about an entertainment company called Miam TV, and not about Miami television broadcast options. The response is succinct and very effective in conveying the pertinent information. The response does get one aspect of the answer wrong by stating that the company was founded in 2003, when it was actually founded in 2007."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_0f199450f93a48feba95da0dd6be1e24",
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d2bd6cac23a4c8fa52700ceea75cb61",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_360d04652cba4aafb40e050370e50760",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3845df297e944ac39510d7a7ab162184",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_534e4f1a5c164cfb9792617c42f5cbe4",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_57221b3e19b249a981c4ac3ac622de2e",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6a85573959b54dcab0925c10d9dc51a8",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6e2b3a93618b4092a7e8d03935738aa5",
+        "exp_6f0c44bdd4624028ae11605eefb64edc",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_98ef7391577e4b149dc57f00da65211a",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9a47fa6e019f46ecb29b2a457c42e537",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_af3dc4946e634dee9ece599050f42394",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_bc2363cddda24e128493c0c0abbe1c02",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_c88298fd961242f69a3ba17b1909f242",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "exp_e8fe08c25cb048948a48069f8f2dcb94",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_ef0b6a0c3950476395071e317d3a13a6",
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fb597f857b3b42989748faaac95d73e6",
+        "exp_fc1da27e2df64a27b33c39fb63e66406",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        0.23487275674927205
+      ],
+      [
+        "exp_ef0b6a0c3950476395071e317d3a13a6",
+        0.23253171012895557
+      ],
+      [
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        0.22384956852345064
+      ],
+      [
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        0.19645607919618696
+      ],
+      [
+        "exp_67805612a3234fa6862295df8af51a62",
+        0.19261856017921036
+      ],
+      [
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        0.18830163964308597
+      ],
+      [
+        "exp_fc1da27e2df64a27b33c39fb63e66406",
+        0.18703918222994456
+      ],
+      [
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        0.18033958091071192
+      ],
+      [
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        0.17823748703379805
+      ],
+      [
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        0.17687021408951706
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23487275674927205
+      },
+      {
+        "experience_id": "exp_ef0b6a0c3950476395071e317d3a13a6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23253171012895557
+      },
+      {
+        "experience_id": "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22384956852345064
+      },
+      {
+        "experience_id": "exp_2d539da3d9104da38ed20c752a093c1e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19645607919618696
+      },
+      {
+        "experience_id": "exp_67805612a3234fa6862295df8af51a62",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19261856017921036
+      },
+      {
+        "experience_id": "exp_0fd604a54b024fc588d4c38d28399f58",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18830163964308597
+      },
+      {
+        "experience_id": "exp_fc1da27e2df64a27b33c39fb63e66406",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18703918222994456
+      },
+      {
+        "experience_id": "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18033958091071192
+      },
+      {
+        "experience_id": "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17823748703379805
+      },
+      {
+        "experience_id": "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17687021408951706
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_ef0b6a0c3950476395071e317d3a13a6": "任务询问'Miami TV'，这属于要求识别特定实体（电视机构）及其归属关系（如制作方、所有者）的问题。Miami TV 作为一个特定历史实体，可能存在多个相关知名机构（如不同时期的母公司或关联频道），经验 2 提供的‘排他性归属校验’原则能确保评分标准严格区分实际所有权与业务合作/相似性，防止将无归属关系的第三方误列为核心归属方，符合该任务对事实准确性的核心需求。",
+    "exp_fc1da27e2df64a27b33c39fb63e66406": "任务涉及对'Miami TV'这一具体实体的核心定义属性（如成立时间、地点、前身关系等）的查询。经验 7 强调必须核实实体的核心定义，严禁将前身公司或关联部门的属性错误归因于当前实体本身（即‘核心身份幻觉’）。对于此类关于特定机构历史的问答，设立‘实体身份校验’作为高权重否决项是构建评分标准的关键，以确保回答不混淆实体的演变过程。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+      "criteria": [
+        {
+          "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+          "question": "回答是否明确涉及并讨论了Miami TV这一特定实体？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+          "question": "回答中提供的关于Miami TV的事实或描述是否与已知公开信息一致且无严重事实错误？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+          "question": "回答是否提供了除重复问题外具有实际信息量的内容（如性质、运营方、覆盖范围等）？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务要求回答关于'Miami TV'的知识，核心是提供与该主题相关的准确事实信息。由于提供的经验为空，且任务未指定具体维度（如历史、现状等），评分标准应聚焦于回答是否直接针对该实体、内容是否相关且无明显事实错误。背景信息（如用户提问的简短性）不作为额外输出义务。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+      "normalized_weights": {
+        "rubric_c9b7f6bd6fd742abab5ca99516878094_1": 0.5,
+        "rubric_c9b7f6bd6fd742abab5ca99516878094_2": 0.3,
+        "rubric_c9b7f6bd6fd742abab5ca99516878094_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答开篇即明确定义了'Miami TV'为服务于美国佛罗里达州迈阿密-戴德县地区的电视网络，直接且明确地讨论了该特定实体。",
+          "rejected_reason": "回答明确将Miami TV定义为佛罗里达州迈阿密市的电视广播行业，并围绕该特定实体展开讨论。"
+        },
+        {
+          "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答中声称'Miami TV'成立于2003年、提供英语和西班牙语节目以及作为主要电视网络存在等事实与公开信息不符。经核实，迈阿密地区主要的双语电视台是Telemundo Miami（WNWS-TV）或 Univision Miami（WFOR-TV），并不存在名为'Miami TV'的独立主流电视网络；该名称通常指代虚构概念或非正式称呼，回答将不存在的实体描述得具体且确凿，构成了严重的事实错误。",
+          "rejected_reason": "回答中列举的电视台（如WSVN-TV、WPLG-TV等）及其所属网络（ABC、NBC、CBS等）均符合公开事实，关于迈阿密拥有多家全国性有线/卫星网络办事处及西班牙语频道运营的描述也准确无误。"
+        },
+        {
+          "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答提供了除重复问题外的详细信息，包括其服务区域（Miami-Dade County）、成立时间（2003年）、节目类型（新闻、娱乐等）、语言特色（英西双语）以及传播渠道（有线、卫星及流媒体），内容具有具体的信息量。",
+          "rejected_reason": "回答提供了具体的性质定义、列举了详细的运营方和具体电台名称、说明了覆盖范围（本地新闻、天气、全国网络接入等），内容具有实质信息量且非重复问题。"
+        }
+      ],
+      "chosen_score": 0.7,
+      "rejected_score": 1.0,
+      "margin": -0.3,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_ef0b6a0c3950476395071e317d3a13a6",
+      "exp_fc1da27e2df64a27b33c39fb63e66406"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_74d544d8691843658a804e49f45b95a4",
+      "criteria": [
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_1",
+          "question": "回答是否准确识别了Miami TV的核心身份（例如：它是美国佛罗里达州迈阿密市的一家独立电视台，而非其他无关实体），未出现将其误认为是其他城市、国家或类型的媒体机构的情况？",
+          "weight": 0.35
+        },
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_2",
+          "question": "回答中提及的Miami TV的归属方（如母公司、运营公司）是否为法律或官方确认的唯一/主要持有者，未将仅存在业务合作、内容相似或行业相邻但无实际所有权的第三方机构错误列为其核心归属方？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_3",
+          "question": "回答中陈述的Miami TV核心历史事实（如成立时间、总部地点、频道性质）是否与公认历史记录一致，未将前身公司、关联部门或无关实体的属性（如错误的成立年份或地点）归因于Miami TV本身？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_4",
+          "question": "回答是否提供了关于Miami TV的有效信息（如其所属市场、主要服务区域或基本定位），且未包含明显虚构或与已知事实完全矛盾的陈述？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "任务要求回答关于'Miami TV'的知识。根据提供的经验，该任务涉及特定实体（Miami TV）的归属关系和核心定义属性。经验1强调需进行‘排他性归属校验’，防止将无所有权关系的第三方误列为制作方或所有者；经验2强调需核实‘核心身份幻觉’，确保成立年份、地点等核心定义准确，不能混淆前身或关联公司。因此，评分标准应聚焦于实体身份识别的准确性、归属关系的排他性以及关键事实（如成立时间、性质）的真实性，避免将背景信息（如相关节目列表）作为核心义务，除非这些内容能佐证核心事实的准确性。权重分配上，核心事实与归属关系的准确性最为关键，应占较高权重。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_74d544d8691843658a804e49f45b95a4",
+      "normalized_weights": {
+        "rubric_74d544d8691843658a804e49f45b95a4_1": 0.35,
+        "rubric_74d544d8691843658a804e49f45b95a4_2": 0.3,
+        "rubric_74d544d8691843658a804e49f45b95a4_3": 0.25,
+        "rubric_74d544d8691843658a804e49f45b95a4_4": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_1",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答将Miami TV描述为一家服务于迈阿密-戴德县、成立于2003年的电视网，但现实中并不存在名为'Miami TV'的独立电视台或主要电视网络。该名称通常指代虚构概念或用户误解（可能混淆了WFOR-TV/CBS Miami、WSVN/FOX 7等当地真实电台），因此未能准确识别其核心身份，且包含了关于其作为实体存在的错误前提。",
+          "rejected_reason": "回答将'Miami TV'错误地定义为迈阿密市的整个电视广播行业（broadcasting industry）或包含多个电视台的集合，而非识别为一家特定的独立电视台实体。任务询问的是关于名为'Miami TV'的具体机构，而回答将其泛化为一个区域性的媒体产业概念，未能准确识别其作为单一实体的核心身份。"
+        },
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "由于'Miami TV'并非一个法律或官方确认的独立媒体机构（如前所述，该实体极可能不存在），回答中无法提供真实的归属方信息。回答未提及任何母公司或运营公司，而是构建了一个不存在的实体背景，这不符合‘提及法律或官方确认的唯一/主要持有者’的要求，属于基于虚构实体的无效陈述。",
+          "rejected_reason": "由于回答未将'Miami TV'识别为特定实体，因此无法正确归属其母公司或运营方。相反，回答列举了CNN、ESPN、HBO等全国性及国际性网络在迈阿密设有办事处的事实，这些是内容分发商或合作伙伴，并非所谓'Miami TV'这一（被误解的）实体的所有者，导致归属关系描述不准确且存在逻辑错位。"
+        },
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答声称该台成立于2003年，这是一个无法验证的历史事实，因为该机构本身并未被公认历史记录所收录。将虚构的成立年份归因于该名称，违反了核心历史事实需与公认记录一致的标准，构成了对无关或虚构属性的错误归因。",
+          "rejected_reason": "回答没有陈述任何关于特定'Miami TV'台的历史事实（如成立时间、具体频道性质），而是描述了迈阿密地区所有电视台的普遍情况。这种处理方式无法验证其历史事实是否与公认记录一致，因为它根本没有针对目标实体提供具体的历史信息，反而将多个不同成立时间和背景的电视频道属性混为一谈。"
+        },
+        {
+          "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_4",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "虽然回答提供了看似有效的市场定位（迈阿密地区）和服务内容，但这些信息是围绕一个不存在的实体构建的。对于已知事实完全矛盾的陈述（即断言一个不存在的'Miami TV'电视网拥有具体的成立时间、多语言广播和覆盖范围），这属于明显虚构的内容，违反了未包含虚构陈述的要求。",
+          "rejected_reason": "虽然回答中关于迈阿密存在各类电视台和网络的描述本身符合地理事实，但就'Miami TV'这一特定查询而言，它提供的信息是无效的。因为它错误地将一个通常指代特定电台名称的术语解释为整个行业的统称，这属于对查询意图的根本性误读，导致提供的核心信息（即关于该特定实体的信息）缺失或完全偏离主题。"
+        }
+      ],
+      "chosen_score": 0.0,
+      "rejected_score": 0.0,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，当前任务的核心失败点在于模型对'Miami TV'这一实体的存在性产生了严重幻觉（编造了2003年成立、独立网络等事实），而拒绝回答则正确将其识别为迈阿密地区的电视行业集合或指出该名称的模糊性。原有的评分标准（如路径1-4）虽然试图通过‘事实准确性’和‘归属权校验’来惩罚错误，但未能有效区分‘虚构实体属性’与‘正确描述相关概念’的界限，导致在Judge判断中，虚构详细信息的错误回答有时因‘信息量大’而被误判为高分，或者因标准过于依赖具体细节核验而无法覆盖‘实体不存在’这一根本性前提。\n\n关键教训是：当任务涉及特定实体查询时，如果该实体极可能不存在或名称具有高度歧义（如泛指而非特指），评分标准必须首先设立‘实体存在性/指代明确性’的前置校验。不能仅凭回答是否包含大量细节（如成立年份、频道列表）来打分，因为详细的幻觉比模糊的正确更具误导性。现有的经验2（核心身份幻觉）和经验1（排他性归属）虽有关联，但缺乏针对‘实体本身是否存在’这一元层面的强制否决机制。因此，需要提出一条新经验，专门处理‘疑似不存在的实体’或‘名称模糊导致实体指代不明’的情况，要求评分标准将‘确认实体有效性’作为第一道门槛，若模型在未澄清的情况下直接编造属性，应视为最高级别错误，无论其后续描述多么详尽。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_c5bf089bdd2e4e0ab9b682f6a356548e",
+            "method": {
+              "trigger": "当任务询问特定实体（如机构、作品、人物）且该实体名称可能存在歧义、非官方通用名或极大概率不存在于公认知识库中时",
+              "principle": "评分必须执行‘实体存在性与指代明确性’前置校验；若模型在未澄清歧义或确认不存在的情况下，直接虚构该实体的核心属性（如成立时间、运营方、具体行为），属于根本性事实错误，其严重性等同于捏造整个实体，应作为高权重否决项，不得被回答中的其他细节丰富度所抵消。",
+              "application_guide": "在构建评分标准的‘事实准确性’维度时，设立‘实体有效性’强制否决项：1. 识别任务中的目标实体名称及其在公认记录中的状态（是否存在、是否为通用术语、是否有歧义）；2. 检查回答是否首先对该实体的存在性或指代范围进行了澄清（例如说明‘通常指...’或‘目前无此独立实体’）；3. 若模型未进行任何澄清，而是直接赋予该实体具体的虚构属性（如编造成立年份、母公司、节目单等），无论这些属性描述得多么具体或逻辑自洽，直接判定该项为‘核心事实错误’并扣除绝大部分分数；4. 此校验优先于对回答长度、结构完整性的评估，确保‘真实性’优于‘丰富性’。"
+            },
+            "source_task_id": "dce737ecff7f4a80c830d0989fc716626d7cc80b0e14237f3b703fb4b12742ad",
+            "parent_ids": [
+              "exp_fc1da27e2df64a27b33c39fb63e66406"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_c5bf089bdd2e4e0ab9b682f6a356548e"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_7cd32610315d4706818779febe79a7a9",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_1",
+                  "question": "回答是否首先识别了'miami tv'名称的模糊性或不存在独立实体的情况，并对此进行了必要的澄清（如说明其非官方名称或解释为泛指）？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_2",
+                  "question": "在涉及迈阿密地区电视行业时，回答中提供的具体事实（如主要电视台名称、历史事件、运营方）是否与公认知识库一致，且未编造不存在的机构属性？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_3",
+                  "question": "回答是否提供了与迈阿密电视媒体相关的有效背景信息（如主要频道列表、重要新闻台或历史概况），以实质性回应用户的查询意图？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务询问关于'miami tv'的信息，该名称并非迈阿密地区公认的独立电视机构通用名（如WPLG、WFOR等），极可能指代当地电视台的统称或存在歧义。根据经验指导，首要任务是校验实体是否存在及指代是否明确。若模型未澄清歧义直接虚构具体属性（如成立年份、特定节目单），属于根本性事实错误，必须作为高权重否决项。因此，评分标准将‘实体澄清与真实性’设为最高权重，其次才是对已知相关信息的准确描述和结构完整性。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_7cd32610315d4706818779febe79a7a9",
+              "normalized_weights": {
+                "rubric_7cd32610315d4706818779febe79a7a9_1": 0.5,
+                "rubric_7cd32610315d4706818779febe79a7a9_2": 0.3,
+                "rubric_7cd32610315d4706818779febe79a7a9_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答直接断言'Miami TV'是一个成立于2003年、服务于迈阿密-戴德县的具体电视网络，完全没有识别该名称的模糊性，也未澄清其可能并非官方通用名称或不存在独立实体这一事实。",
+                  "rejected_reason": "回答开篇即明确界定'Miami TV'并非指代某个单一的特定实体或官方机构名称，而是指代迈阿密市的电视广播行业整体，成功识别并澄清了该名称的泛指性质。"
+                },
+                {
+                  "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中声称存在一个名为'Miami TV'且成立于2003年的具体电视网络，这属于编造不存在的机构属性。迈阿密地区并没有这样一个广为人知或官方注册的独立电视网络品牌，主要电视台通常以呼号（如 WTVJ, WPLG）或特定名称（如 Telemundo Miami）运营，而非统称'Miami TV'。",
+                  "rejected_reason": "回答中列举的具体事实存在明显错误和编造嫌疑：首先，WSVN-TV是CW网络的附属台而非NBC（尽管曾长期为NBC），且不存在名为'Fox 13'的WSVN-TV；其次，WPLG-TV目前主要隶属于ABC，而非'Local 10'（虽然频道号是10，但通常不以此作为主要网络标识）；最重要的是，将CNN、ESPN、HBO等纯有线/卫星频道描述为在迈阿密拥有'办公室或制作设施'属于不准确的信息，这些通常是全国性的分发网络，其总部并不位于迈阿密，这种描述混淆了频道与本地制作机构的属性。"
+                },
+                {
+                  "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "由于核心信息（即'Miami TV'作为一个实体的存在）是虚构的，回答未能提供与迈阿密电视媒体相关的真实有效背景信息，如真实的频道列表或历史概况，因此无法实质性回应用户关于该地区电视行业的查询意图。",
+                  "rejected_reason": "回答提供了实质性的背景信息，包括列出了迈阿密地区主要的本地电视台及其所属网络（如WSVN, WPLG, WFOR等），提到了西班牙语频道的增长情况以及该行业对社区的作用，有效回应了用户关于迈阿密电视媒体的查询意图。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.7,
+              "margin": -0.7,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_d83eb039ada54ccaba508fa36b2c1e3c",
+            "method": {
+              "trigger": "当任务输入要求提供关于某特定主题的信息，但该主题在现实中可能是一个集合概念、行业统称而非单一实体，且用户未明确限定具体对象时",
+              "principle": "模型应准确识别实体的集合性质而非强行定义为单一实体；若模型将行业统称、地理区域概念错误地具象化为一个独立的、拥有特定历史和所有权的单一机构，属于‘概念实体化幻觉’，应视为严重的事实错误。",
+              "application_guide": "在构建评分标准的‘概念准确性’维度时，设立‘概念范畴校验’否决项：1. 分析任务关键词在现实语境中是指代单一实体还是集合概念（如‘XX市TV’通常指当地电视台集合而非单一台）；2. 检查回答是否错误地将集合概念描述为具有单一所有权、单一成立时间和单一管理架构的独立实体；3. 若回答强行构建了单一实体的历史（如虚构成立年份、母公司）来匹配用户的提问形式，而未指出其实际为集合概念，直接判定为‘概念混淆’错误，给予低分；4. 合格的回答应明确区分‘行业整体情况’与‘单一机构’的区别，或在不确定时提供多种可能的解释，而非杜撰一个不存在的单一主体。"
+            },
+            "source_task_id": "dce737ecff7f4a80c830d0989fc716626d7cc80b0e14237f3b703fb4b12742ad",
+            "parent_ids": [
+              "exp_fc1da27e2df64a27b33c39fb63e66406"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_d83eb039ada54ccaba508fa36b2c1e3c"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_1",
+                  "question": "回答是否明确识别出'Miami TV'指代的是迈阿密地区的电视台集合或行业现象，而非一个单一的独立机构？",
+                  "weight": 0.45
+                },
+                {
+                  "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_2",
+                  "question": "回答是否避免了虚构单一实体的具体细节（如不存在的成立年份、虚构的母公司或特定的管理架构）？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_3",
+                  "question": "回答是否提供了关于迈阿密地区电视行业的真实信息（如提及当地主要广播网络、知名频道或行业概况）以回应查询？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "设计依据主要基于任务输入'miami tv'在现实语境中通常指代迈阿密地区的电视台集合或行业统称，而非单一特定实体。根据提供的经验，核心风险在于模型可能产生‘概念实体化幻觉’，即将集合概念错误具象化为拥有单一历史、所有权和架构的独立机构。因此，评分标准将‘概念准确性’作为最高权重项，强制要求模型识别该词的集合性质，严禁虚构单一实体的具体细节（如成立年份、母公司等）。次要标准关注信息的全面性（覆盖主要类型）和事实的严谨性（区分已知事实与推测），确保回答既符合用户意图又避免误导。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6",
+              "normalized_weights": {
+                "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_1": 0.45,
+                "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_2": 0.35,
+                "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答将'Miami TV'描述为一家单一的电视网络（a television network），并声称其成立于2003年，这将其定义为一个独立的机构，而非迈阿密地区的电视台集合或行业现象，未满足明确识别其为集合/现象的要求。",
+                  "rejected_reason": "回答明确指出'Miami TV'指的是迈阿密市的电视广播行业（television broadcasting industry），并描述其包含多种本地和全国网络，而非单一机构。"
+                },
+                {
+                  "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答虚构了该实体的具体细节，包括声称其成立于2003年、拥有特定的节目类型组合以及双语广播模式，这些关于单一实体' Miami TV '的具体信息均不符合事实，因为不存在这样一个统一的独立机构。",
+                  "rejected_reason": "回答未虚构任何成立年份、母公司或特定管理架构等细节，仅列举了真实存在的频道名称及其所属的知名网络。"
+                },
+                {
+                  "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答未能提供关于迈阿密地区电视行业的真实概况（如提及WFOR-TV、WCIX等当地真实存在的知名频道或主要广播网络），而是完全围绕一个虚构的单一实体进行描述，因此未能有效回应查询中的行业背景需求。",
+                  "rejected_reason": "回答提供了关于迈阿密电视行业的真实信息，包括提及当地主要广播网络（ABC, NBC, CBS, FOX, CW）以及具体的知名频道（如WSVN-TV, WPLG-TV等）和行业概况。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 1.0,
+              "margin": -1.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+            "criteria": [
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+                "question": "回答是否明确涉及并讨论了Miami TV这一特定实体？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+                "question": "回答中提供的关于Miami TV的事实或描述是否与已知公开信息一致且无严重事实错误？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+                "question": "回答是否提供了除重复问题外具有实际信息量的内容（如性质、运营方、覆盖范围等）？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务要求回答关于'Miami TV'的知识，核心是提供与该主题相关的准确事实信息。由于提供的经验为空，且任务未指定具体维度（如历史、现状等），评分标准应聚焦于回答是否直接针对该实体、内容是否相关且无明显事实错误。背景信息（如用户提问的简短性）不作为额外输出义务。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+            "normalized_weights": {
+              "rubric_c9b7f6bd6fd742abab5ca99516878094_1": 0.5,
+              "rubric_c9b7f6bd6fd742abab5ca99516878094_2": 0.3,
+              "rubric_c9b7f6bd6fd742abab5ca99516878094_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答开篇即明确定义了'Miami TV'为服务于美国佛罗里达州迈阿密-戴德县地区的电视网络，直接且明确地讨论了该特定实体。",
+                "rejected_reason": "回答明确将Miami TV定义为佛罗里达州迈阿密市的电视广播行业，并围绕该特定实体展开讨论。"
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中声称'Miami TV'成立于2003年、提供英语和西班牙语节目以及作为主要电视网络存在等事实与公开信息不符。经核实，迈阿密地区主要的双语电视台是Telemundo Miami（WNWS-TV）或 Univision Miami（WFOR-TV），并不存在名为'Miami TV'的独立主流电视网络；该名称通常指代虚构概念或非正式称呼，回答将不存在的实体描述得具体且确凿，构成了严重的事实错误。",
+                "rejected_reason": "回答中列举的电视台（如WSVN-TV、WPLG-TV等）及其所属网络（ABC、NBC、CBS等）均符合公开事实，关于迈阿密拥有多家全国性有线/卫星网络办事处及西班牙语频道运营的描述也准确无误。"
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答提供了除重复问题外的详细信息，包括其服务区域（Miami-Dade County）、成立时间（2003年）、节目类型（新闻、娱乐等）、语言特色（英西双语）以及传播渠道（有线、卫星及流媒体），内容具有具体的信息量。",
+                "rejected_reason": "回答提供了具体的性质定义、列举了详细的运营方和具体电台名称、说明了覆盖范围（本地新闻、天气、全国网络接入等），内容具有实质信息量且非重复问题。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 1.0,
+            "margin": -0.3,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_c5bf089bdd2e4e0ab9b682f6a356548e"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_7cd32610315d4706818779febe79a7a9",
+            "criteria": [
+              {
+                "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_1",
+                "question": "回答是否首先识别了'miami tv'名称的模糊性或不存在独立实体的情况，并对此进行了必要的澄清（如说明其非官方名称或解释为泛指）？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_2",
+                "question": "在涉及迈阿密地区电视行业时，回答中提供的具体事实（如主要电视台名称、历史事件、运营方）是否与公认知识库一致，且未编造不存在的机构属性？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_3",
+                "question": "回答是否提供了与迈阿密电视媒体相关的有效背景信息（如主要频道列表、重要新闻台或历史概况），以实质性回应用户的查询意图？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务询问关于'miami tv'的信息，该名称并非迈阿密地区公认的独立电视机构通用名（如WPLG、WFOR等），极可能指代当地电视台的统称或存在歧义。根据经验指导，首要任务是校验实体是否存在及指代是否明确。若模型未澄清歧义直接虚构具体属性（如成立年份、特定节目单），属于根本性事实错误，必须作为高权重否决项。因此，评分标准将‘实体澄清与真实性’设为最高权重，其次才是对已知相关信息的准确描述和结构完整性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_7cd32610315d4706818779febe79a7a9",
+            "normalized_weights": {
+              "rubric_7cd32610315d4706818779febe79a7a9_1": 0.5,
+              "rubric_7cd32610315d4706818779febe79a7a9_2": 0.3,
+              "rubric_7cd32610315d4706818779febe79a7a9_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答直接断言'Miami TV'是一个成立于2003年、服务于迈阿密-戴德县的具体电视网络，完全没有识别该名称的模糊性，也未澄清其可能并非官方通用名称或不存在独立实体这一事实。",
+                "rejected_reason": "回答开篇即明确界定'Miami TV'并非指代某个单一的特定实体或官方机构名称，而是指代迈阿密市的电视广播行业整体，成功识别并澄清了该名称的泛指性质。"
+              },
+              {
+                "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中声称存在一个名为'Miami TV'且成立于2003年的具体电视网络，这属于编造不存在的机构属性。迈阿密地区并没有这样一个广为人知或官方注册的独立电视网络品牌，主要电视台通常以呼号（如 WTVJ, WPLG）或特定名称（如 Telemundo Miami）运营，而非统称'Miami TV'。",
+                "rejected_reason": "回答中列举的具体事实存在明显错误和编造嫌疑：首先，WSVN-TV是CW网络的附属台而非NBC（尽管曾长期为NBC），且不存在名为'Fox 13'的WSVN-TV；其次，WPLG-TV目前主要隶属于ABC，而非'Local 10'（虽然频道号是10，但通常不以此作为主要网络标识）；最重要的是，将CNN、ESPN、HBO等纯有线/卫星频道描述为在迈阿密拥有'办公室或制作设施'属于不准确的信息，这些通常是全国性的分发网络，其总部并不位于迈阿密，这种描述混淆了频道与本地制作机构的属性。"
+              },
+              {
+                "criterion_id": "rubric_7cd32610315d4706818779febe79a7a9_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "由于核心信息（即'Miami TV'作为一个实体的存在）是虚构的，回答未能提供与迈阿密电视媒体相关的真实有效背景信息，如真实的频道列表或历史概况，因此无法实质性回应用户关于该地区电视行业的查询意图。",
+                "rejected_reason": "回答提供了实质性的背景信息，包括列出了迈阿密地区主要的本地电视台及其所属网络（如WSVN, WPLG, WFOR等），提到了西班牙语频道的增长情况以及该行业对社区的作用，有效回应了用户关于迈阿密电视媒体的查询意图。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.7,
+            "margin": -0.7,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_d83eb039ada54ccaba508fa36b2c1e3c"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6",
+            "criteria": [
+              {
+                "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_1",
+                "question": "回答是否明确识别出'Miami TV'指代的是迈阿密地区的电视台集合或行业现象，而非一个单一的独立机构？",
+                "weight": 0.45
+              },
+              {
+                "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_2",
+                "question": "回答是否避免了虚构单一实体的具体细节（如不存在的成立年份、虚构的母公司或特定的管理架构）？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_3",
+                "question": "回答是否提供了关于迈阿密地区电视行业的真实信息（如提及当地主要广播网络、知名频道或行业概况）以回应查询？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "设计依据主要基于任务输入'miami tv'在现实语境中通常指代迈阿密地区的电视台集合或行业统称，而非单一特定实体。根据提供的经验，核心风险在于模型可能产生‘概念实体化幻觉’，即将集合概念错误具象化为拥有单一历史、所有权和架构的独立机构。因此，评分标准将‘概念准确性’作为最高权重项，强制要求模型识别该词的集合性质，严禁虚构单一实体的具体细节（如成立年份、母公司等）。次要标准关注信息的全面性（覆盖主要类型）和事实的严谨性（区分已知事实与推测），确保回答既符合用户意图又避免误导。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6",
+            "normalized_weights": {
+              "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_1": 0.45,
+              "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_2": 0.35,
+              "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答将'Miami TV'描述为一家单一的电视网络（a television network），并声称其成立于2003年，这将其定义为一个独立的机构，而非迈阿密地区的电视台集合或行业现象，未满足明确识别其为集合/现象的要求。",
+                "rejected_reason": "回答明确指出'Miami TV'指的是迈阿密市的电视广播行业（television broadcasting industry），并描述其包含多种本地和全国网络，而非单一机构。"
+              },
+              {
+                "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答虚构了该实体的具体细节，包括声称其成立于2003年、拥有特定的节目类型组合以及双语广播模式，这些关于单一实体' Miami TV '的具体信息均不符合事实，因为不存在这样一个统一的独立机构。",
+                "rejected_reason": "回答未虚构任何成立年份、母公司或特定管理架构等细节，仅列举了真实存在的频道名称及其所属的知名网络。"
+              },
+              {
+                "criterion_id": "rubric_675de9f3188f4cb49f3f7b76cb9b85f6_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答未能提供关于迈阿密地区电视行业的真实概况（如提及WFOR-TV、WCIX等当地真实存在的知名频道或主要广播网络），而是完全围绕一个虚构的单一实体进行描述，因此未能有效回应查询中的行业背景需求。",
+                "rejected_reason": "回答提供了关于迈阿密电视行业的真实信息，包括提及当地主要广播网络（ABC, NBC, CBS, FOX, CW）以及具体的知名频道（如WSVN-TV, WPLG-TV等）和行业概况。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 1.0,
+            "margin": -1.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_c5bf089bdd2e4e0ab9b682f6a356548e",
+            "exp_d83eb039ada54ccaba508fa36b2c1e3c"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_fd8c0d208b0c400996d3f517af23e028",
+            "criteria": [
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_1",
+                "question": "回答是否明确指出了'Miami TV'并非一个广泛公认的单一独立实体名称，而是指代迈阿密地区电视行业的集合概念或存在名称歧义？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_2",
+                "question": "回答是否避免了虚构一个具体的、拥有特定成立年份、母公司或独家节目的单一机构来强行匹配用户的提问形式？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_3",
+                "question": "在澄清实体性质后，回答是否提供了关于迈阿密地区电视行业、主要电视台或相关媒体生态的真实、可验证的概况信息？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_4",
+                "question": "如果回答提到了具体的迈阿密电视台（如 WSVN, WFOR 等），其描述是否准确且未将其错误地统称为唯一的'Miami TV'机构？",
+                "weight": 0.05
+              }
+            ],
+            "analysis": "本任务核心在于处理一个高度模糊且极大概率不存在单一实体的查询（'miami tv'通常指迈阿密地区的电视行业集合，而非单一机构）。根据经验指导，首要任务是进行‘实体存在性与指代明确性’校验及‘概念范畴校验’。若模型直接虚构一个名为'Miami TV'的单一公司及其属性，属于严重的幻觉错误，必须作为高权重否决项。合格的回答应首先澄清该术语的歧义性（是泛指当地电视台还是特定非官方名称），并基于此提供关于迈阿密电视行业的整体信息或列出可能的具体电台/频道，而非编造单一实体的历史。评分标准将围绕这一核心逻辑构建，确保真实性优先于丰富性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_fd8c0d208b0c400996d3f517af23e028",
+            "normalized_weights": {
+              "rubric_fd8c0d208b0c400996d3f517af23e028_1": 0.4,
+              "rubric_fd8c0d208b0c400996d3f517af23e028_2": 0.35,
+              "rubric_fd8c0d208b0c400996d3f517af23e028_3": 0.2,
+              "rubric_fd8c0d208b0c400996d3f517af23e028_4": 0.05
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答明确将'Miami TV'描述为一个特定的电视网络（television network），完全未指出该名称并非广泛公认的单一独立实体，也未提及名称歧义或指代集合概念的可能性。",
+                "rejected_reason": "回答开篇即明确指出'Miami TV'指的是迈阿密市的电视广播行业（television broadcasting industry），并说明其包含多种网络，这符合将其解释为集合概念而非单一独立实体的要求。"
+              },
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答虚构了一个具体的机构，明确声称其成立于2003年（founded in 2003），并赋予了其特定的节目类型、多语言广播等特征，强行匹配了用户关于单一实体的提问形式。",
+                "rejected_reason": "回答没有虚构一个拥有特定成立年份、母公司或独家节目的单一机构来对应'Miami TV'这一名称，而是客观描述了该术语指代的行业范畴和多个不同电视台的集合。"
+              },
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "由于回答基于虚构的单一实体展开，未能提供关于迈阿密地区真实存在的电视台（如WSVN、WFOR等）或当地真实媒体生态的可验证概况信息。",
+                "rejected_reason": "在澄清概念后，回答提供了真实可验证的概况信息，包括列举了主要的美国广播公司联盟（ABC, NBC等）、具体的迈阿密本地电视台列表（WSVN, WPLG等）以及西班牙语电视台的情况。"
+              },
+              {
+                "criterion_id": "rubric_fd8c0d208b0c400996d3f517af23e028_4",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中未提及任何真实的迈阿密电视台（如WSVN、WFOR等），而是错误地将虚构的'Miami TV'作为该地区唯一的代表进行描述。",
+                "rejected_reason": "回答在提到具体电视台时，准确列出了WSVN、WPLG、WFOR等多个独立机构，并明确指出了它们各自所属的网络（如NBC 7, CBS 4等），并未错误地将这些不同的台统称为唯一的'Miami TV'单一机构。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 1.0,
+            "margin": -1.0,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "round_number": 2,
+      "analysis": "回顾之前的尝试，经验11和12虽然在逻辑上正确指出了‘实体不存在’和‘集合概念具象化’的问题，但在实际生成的Rubric中，Judge的判断存在严重偏差。特别是路径5（仅用经验11）中，Judge在Criterion 15（事实准确性）上判定Chosen回答错误（编造属性），但同时判定Rejected回答也错误（列举了错误的频道归属和总部位置），导致两个回答都得了低分，无法区分优劣。这暴露出单纯依赖‘是否存在单一实体’作为触发点不够稳健，因为即使模型正确识别了集合概念，如果其列举的集合内成员（具体电视台）信息有误，依然会被误判为全错。\n\n核心问题在于：当任务涉及模糊或泛指性实体时，评分标准必须将‘概念澄清/指代修正’与‘细节事实准确性’解耦。正确的做法是：如果模型未能识别实体不存在而直接编造（Chosen），应直接判定为最高级错误；如果模型正确识别了集合性质（Rejected），则应允许其在描述集合内容时存在非原则性的细节瑕疵（如某个频道的具体归属年份可能记混，只要不混淆核心网络关系），或者反过来，如果模型正确识别了集合性质但提供了完全错误的集合成员列表，也应扣分，但不能因此否定其‘概念澄清’的正确性。\n\n此外，现有经验未充分强调‘拒绝虚构’这一行为的优先级。在类似'Miami TV'这种明显不存在的实体查询中，模型的首要义务是‘纠正预设’而非‘填充细节’。新的候选应强化这一逻辑：一旦模型承认实体不存在或解释为集合概念，即视为完成了核心任务，随后的细节描述应以‘参考信息’对待，除非这些细节构成了对集合性质的二次伤害（如声称该集合包含一个不存在的频道）。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_738b4c9c2a3b42d2b644e805b6a2351b",
+            "method": {
+              "trigger": "当任务询问特定实体且该实体极大概率不存在于公认知识库中，或仅为行业/地理区域的统称而非单一机构时",
+              "principle": "评分应将‘识别并纠正实体预设’作为最高优先级的否决项；若模型未澄清歧义而直接虚构该实体的独立存在及核心属性（如成立年份、唯一所有者），无论后续描述多么详尽，均视为根本性失败。反之，若模型正确指出其为集合概念或不存在，则应给予高分，仅对集合内的具体事实错误进行适度扣分，不得因细节瑕疵全盘否定其概念修正的正确性。",
+              "application_guide": "在构建评分标准的‘事实准确性’维度时，设立‘预设纠正’强制核验项：1. 检查模型是否首先声明目标实体不存在、名称歧义或指代集合概念；2. 若模型未做此声明且构建了单一实体的虚构历史/属性，直接判定该项为0分（最高权重否决）；3. 若模型已正确声明概念性质，则转而评估其提供的集合内成员（如具体电视台列表）是否基本准确。此时，对于集合成员的非核心细节错误（如个别频道的附属关系微调），不应导致整个回答被判为无效，除非错误导致了对集合性质的再次混淆（如将完全不相关的实体纳入）。确保评分能区分‘幻觉虚构’与‘细节偏差’。"
+            },
+            "source_task_id": "dce737ecff7f4a80c830d0989fc716626d7cc80b0e14237f3b703fb4b12742ad",
+            "parent_ids": [
+              "exp_fc1da27e2df64a27b33c39fb63e66406"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_738b4c9c2a3b42d2b644e805b6a2351b"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_1",
+                  "question": "模型是否首先明确声明'miami tv'并非单一特定机构，而是指代迈阿密地区所有电视台的集合概念或名称存在歧义？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_2",
+                  "question": "若模型未做上述澄清，是否直接虚构了该实体的独立历史、唯一所有者或核心属性（即是否存在幻觉性单一体描述）？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_3",
+                  "question": "在确认其为集合概念的前提下，模型列举的具体电视台名称或相关实例是否符合现实情况且无明显常识性错误？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务询问'miami tv'，根据经验1，该实体极大概率不存在于公认知识库中或仅为集合概念（指代迈阿密地区的电视台统称），而非单一特定机构。因此，评分标准的核心必须区分‘识别并纠正实体预设’与‘虚构事实’。若模型将'miami tv'视为单一实体进行虚构描述，属于根本性失败；若模型正确指出其为集合概念并提供具体成员列表，则重点评估成员信息的准确性。背景信息（如迈阿密是城市）不应成为新的输出义务，仅作为判断集合概念的辅助依据。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3",
+              "normalized_weights": {
+                "rubric_fdacd829e08f47a1b87c972c8b62ccd3_1": 0.5,
+                "rubric_fdacd829e08f47a1b87c972c8b62ccd3_2": 0.3,
+                "rubric_fdacd829e08f47a1b87c972c8b62ccd3_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答开篇直接陈述'Miami TV is a television network...'，将其定义为单一特定机构，未首先声明该名称并非单一实体或存在歧义。",
+                  "rejected_reason": "模型回答开篇直接定义'Miami TV'为迈阿密市的电视广播行业（television broadcasting industry），并未首先明确声明该名称并非单一特定机构，也未指出该名称存在歧义或指代集合概念，而是将其作为一个整体行业术语直接处理。"
+                },
+                {
+                  "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "模型在未澄清概念的情况下，虚构了具体的成立年份（2003年）、唯一的节目编排特征及双语广播等独立属性，构成了幻觉性单一体描述。",
+                  "rejected_reason": "由于模型未将'Miami TV'错误地描述为拥有独立历史、唯一所有者或核心属性的单一实体，而是正确地将其界定为一个包含多种网络和本地电视台的行业集合概念，因此不存在虚构单一实体的幻觉性描述。"
+                },
+                {
+                  "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "由于前提错误地将不存在的单一网络当作事实，其列举的所谓'具体电视台名称'实际上并未在回答中提供（仅使用了泛称），且基于虚构的网络属性无法被验证为符合现实情况。",
+                  "rejected_reason": "模型在列举具体实例时出现了明显的常识性错误：它将WSVN-TV标注为'NBC 7/Fox 13'，而实际上WSVN是CW频道（现主要关联CW）且历史上曾长期为Fox，从未是NBC 7；同时WPLG-TV被标注为'Local 10'是正确的，但将其与ABC/NBC等主流大台并列作为主要附属关系时，对WSVN的归属描述严重失实。此外，将CNN、ESPN等全国性有线网络描述为'Miami TV'的一部分虽然逻辑上可通，但严格来说它们不是本地电视台（Local TV stations），混淆了本地发射台与全国有线频道的概念。"
+                }
+              ],
+              "chosen_score": 0.3,
+              "rejected_score": 0.3,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_9a176edf35a04b75a2a76add6f92c684",
+            "method": {
+              "trigger": "当任务输入涉及模糊指代或通用术语，且模型回答中包含大量具体数据（如年份、名单、排名）来支撑其陈述时",
+              "principle": "评分必须执行‘数据溯源校验’；若模型无法提供虚构实体的真实数据来源，而是通过堆砌看似合理但无依据的具体细节来制造虚假的权威感，属于‘细节性幻觉’，其危害在于误导用户认为该实体真实存在。评分应重点惩罚‘无中生有’的细节密度，而非仅仅关注结论的对错。",
+              "application_guide": "在构建评分标准的‘信息可靠性’维度时，设立‘细节真实性’否决项：1. 提取回答中所有关于目标实体的具体量化数据或专有名词列表（如成立年份、具体人名、详细节目单）；2. 验证这些数据是否与公认记录一致。若目标实体本身不存在，任何此类具体数据均视为虚构；3. 若模型在实体不确定的情况下，仍自信地列出大量具体细节而未加‘推测’、‘可能’等限定词，直接判定为严重事实错误；4. 合格的回答应在缺乏确切数据时，提供定性描述（如‘主要包含...’）而非定量编造，或在提供列表时明确标注信息来源的不确定性。严禁模型用‘丰富的细节’来掩盖‘核心的虚无’。"
+            },
+            "source_task_id": "dce737ecff7f4a80c830d0989fc716626d7cc80b0e14237f3b703fb4b12742ad",
+            "parent_ids": [
+              "exp_fc1da27e2df64a27b33c39fb63e66406"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_9a176edf35a04b75a2a76add6f92c684"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_1",
+                  "question": "模型是否首先指出了'Miami TV'这一名称可能存在的歧义、非正式性或当前缺乏确切的独立知名实体记录？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_2",
+                  "question": "如果模型声称该实体存在，其提供的所有具体量化数据（如成立年份、具体人名、详细节目列表）是否与公认事实一致，而非凭空捏造？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_3",
+                  "question": "在缺乏确切数据支持的情况下，模型是否使用了定性描述或明确标注了信息来源的不确定性，而非自信地罗列大量看似合理但无依据的细节？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_4",
+                  "question": "回答是否避免了将背景中的模糊概念强行解释为具体的、可验证的实体特征，从而防止误导用户认为该实体真实存在？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务核心在于回答模型对'Miami TV'的认知。鉴于经验提示该术语可能指代模糊或不存在，且存在通过堆砌虚构细节制造虚假权威的风险，评分标准必须将‘信息真实性’置于最高优先级。首要任务是判断模型是否识别出该实体可能不存在或无法确认；若模型声称其存在，则必须严格校验其提供的具体数据（如年份、节目单）是否为事实。对于背景中提到的‘模糊指代’情况，合格的回答应侧重于定性描述（如指出可能是特定频道缩写或误称）并明确不确定性，严禁无依据地编造具体量化细节。权重分配上，真实性与幻觉检测占0.6，事实准确性占0.2，表述的严谨性占0.2。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92",
+              "normalized_weights": {
+                "rubric_8584e64bd17f4e1c97cb6018d766ed92_1": 0.3,
+                "rubric_8584e64bd17f4e1c97cb6018d766ed92_2": 0.3,
+                "rubric_8584e64bd17f4e1c97cb6018d766ed92_3": 0.2,
+                "rubric_8584e64bd17f4e1c97cb6018d766ed92_4": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "模型回答直接以肯定语气将'Miami TV'描述为一个服务于迈阿密-戴德县的具体电视网络，完全未指出该名称可能存在的歧义、非正式性，也未提及当前缺乏确切的独立知名实体记录这一事实。",
+                  "rejected_reason": "模型直接将'Miami TV'定义为迈阿密市的电视广播行业，完全未指出该名称可能存在的歧义、非正式性，也未提及缺乏确切的独立知名实体记录。相反，它将其作为一个确定的概念进行阐述，忽略了用户提问时可能隐含的对特定独立实体（如某家名为Miami TV的电视台）的指涉模糊性。"
+                },
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "模型声称该网络成立于2003年，并列举了具体的节目类型和语言服务细节，但这些具体量化数据和事实与公认事实不符（实际上并不存在名为'Miami TV'的知名主流电视网络），属于凭空捏造的细节。",
+                  "rejected_reason": "由于模型将'Miami TV'解释为行业而非单一实体，因此不存在声称该特定实体存在并提供具体量化数据（如成立年份、具体人名）的情况。其列举的当地电视台（WSVN-TV等）和全国网络均为事实性陈述，与公认事实一致，未出现凭空捏造的数据。"
+                },
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "在缺乏确切数据支持的情况下，模型没有使用定性描述或标注不确定性，反而自信地罗列了大量看似合理但无依据的细节（如成立年份、双语广播等）。",
+                  "rejected_reason": "模型在回答中自信地罗列了大量看似合理但无依据的细节来支撑其对'Miami TV'这一非标准术语的定义。例如，它断言'Miami TV refers to...'并详细列出网络列表，却未在缺乏确切数据支持（即没有一家名为'Miami TV'的独立公司或节目叫这个名）的情况下，使用定性描述或标注信息来源的不确定性，而是直接给出了确定性的定义。"
+                },
+                {
+                  "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "模型将模糊概念强行解释为具体的、可验证的实体特征，详细描述了其服务范围、成立时间和运营方式，导致用户误以为该实体真实存在，造成了误导。",
+                  "rejected_reason": "模型将背景中的模糊概念（'Miami TV'这一可能指代不明或非正式的短语）强行解释为具体的、可验证的实体特征（即整个城市的电视广播行业及具体列表）。这种处理方式容易误导用户认为'Miami TV'是一个具有明确定义的独立实体或专有名词，而非一个泛指的行业描述，未能有效防止此类误解。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.3,
+              "margin": -0.3,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+            "criteria": [
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+                "question": "回答是否明确涉及并讨论了Miami TV这一特定实体？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+                "question": "回答中提供的关于Miami TV的事实或描述是否与已知公开信息一致且无严重事实错误？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+                "question": "回答是否提供了除重复问题外具有实际信息量的内容（如性质、运营方、覆盖范围等）？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务要求回答关于'Miami TV'的知识，核心是提供与该主题相关的准确事实信息。由于提供的经验为空，且任务未指定具体维度（如历史、现状等），评分标准应聚焦于回答是否直接针对该实体、内容是否相关且无明显事实错误。背景信息（如用户提问的简短性）不作为额外输出义务。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+            "normalized_weights": {
+              "rubric_c9b7f6bd6fd742abab5ca99516878094_1": 0.5,
+              "rubric_c9b7f6bd6fd742abab5ca99516878094_2": 0.3,
+              "rubric_c9b7f6bd6fd742abab5ca99516878094_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答开篇即明确定义了'Miami TV'为服务于美国佛罗里达州迈阿密-戴德县地区的电视网络，直接且明确地讨论了该特定实体。",
+                "rejected_reason": "回答明确将Miami TV定义为佛罗里达州迈阿密市的电视广播行业，并围绕该特定实体展开讨论。"
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中声称'Miami TV'成立于2003年、提供英语和西班牙语节目以及作为主要电视网络存在等事实与公开信息不符。经核实，迈阿密地区主要的双语电视台是Telemundo Miami（WNWS-TV）或 Univision Miami（WFOR-TV），并不存在名为'Miami TV'的独立主流电视网络；该名称通常指代虚构概念或非正式称呼，回答将不存在的实体描述得具体且确凿，构成了严重的事实错误。",
+                "rejected_reason": "回答中列举的电视台（如WSVN-TV、WPLG-TV等）及其所属网络（ABC、NBC、CBS等）均符合公开事实，关于迈阿密拥有多家全国性有线/卫星网络办事处及西班牙语频道运营的描述也准确无误。"
+              },
+              {
+                "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答提供了除重复问题外的详细信息，包括其服务区域（Miami-Dade County）、成立时间（2003年）、节目类型（新闻、娱乐等）、语言特色（英西双语）以及传播渠道（有线、卫星及流媒体），内容具有具体的信息量。",
+                "rejected_reason": "回答提供了具体的性质定义、列举了详细的运营方和具体电台名称、说明了覆盖范围（本地新闻、天气、全国网络接入等），内容具有实质信息量且非重复问题。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 1.0,
+            "margin": -0.3,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_738b4c9c2a3b42d2b644e805b6a2351b"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3",
+            "criteria": [
+              {
+                "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_1",
+                "question": "模型是否首先明确声明'miami tv'并非单一特定机构，而是指代迈阿密地区所有电视台的集合概念或名称存在歧义？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_2",
+                "question": "若模型未做上述澄清，是否直接虚构了该实体的独立历史、唯一所有者或核心属性（即是否存在幻觉性单一体描述）？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_3",
+                "question": "在确认其为集合概念的前提下，模型列举的具体电视台名称或相关实例是否符合现实情况且无明显常识性错误？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务询问'miami tv'，根据经验1，该实体极大概率不存在于公认知识库中或仅为集合概念（指代迈阿密地区的电视台统称），而非单一特定机构。因此，评分标准的核心必须区分‘识别并纠正实体预设’与‘虚构事实’。若模型将'miami tv'视为单一实体进行虚构描述，属于根本性失败；若模型正确指出其为集合概念并提供具体成员列表，则重点评估成员信息的准确性。背景信息（如迈阿密是城市）不应成为新的输出义务，仅作为判断集合概念的辅助依据。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3",
+            "normalized_weights": {
+              "rubric_fdacd829e08f47a1b87c972c8b62ccd3_1": 0.5,
+              "rubric_fdacd829e08f47a1b87c972c8b62ccd3_2": 0.3,
+              "rubric_fdacd829e08f47a1b87c972c8b62ccd3_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答开篇直接陈述'Miami TV is a television network...'，将其定义为单一特定机构，未首先声明该名称并非单一实体或存在歧义。",
+                "rejected_reason": "模型回答开篇直接定义'Miami TV'为迈阿密市的电视广播行业（television broadcasting industry），并未首先明确声明该名称并非单一特定机构，也未指出该名称存在歧义或指代集合概念，而是将其作为一个整体行业术语直接处理。"
+              },
+              {
+                "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "模型在未澄清概念的情况下，虚构了具体的成立年份（2003年）、唯一的节目编排特征及双语广播等独立属性，构成了幻觉性单一体描述。",
+                "rejected_reason": "由于模型未将'Miami TV'错误地描述为拥有独立历史、唯一所有者或核心属性的单一实体，而是正确地将其界定为一个包含多种网络和本地电视台的行业集合概念，因此不存在虚构单一实体的幻觉性描述。"
+              },
+              {
+                "criterion_id": "rubric_fdacd829e08f47a1b87c972c8b62ccd3_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "由于前提错误地将不存在的单一网络当作事实，其列举的所谓'具体电视台名称'实际上并未在回答中提供（仅使用了泛称），且基于虚构的网络属性无法被验证为符合现实情况。",
+                "rejected_reason": "模型在列举具体实例时出现了明显的常识性错误：它将WSVN-TV标注为'NBC 7/Fox 13'，而实际上WSVN是CW频道（现主要关联CW）且历史上曾长期为Fox，从未是NBC 7；同时WPLG-TV被标注为'Local 10'是正确的，但将其与ABC/NBC等主流大台并列作为主要附属关系时，对WSVN的归属描述严重失实。此外，将CNN、ESPN等全国性有线网络描述为'Miami TV'的一部分虽然逻辑上可通，但严格来说它们不是本地电视台（Local TV stations），混淆了本地发射台与全国有线频道的概念。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 0.3,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_9a176edf35a04b75a2a76add6f92c684"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92",
+            "criteria": [
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_1",
+                "question": "模型是否首先指出了'Miami TV'这一名称可能存在的歧义、非正式性或当前缺乏确切的独立知名实体记录？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_2",
+                "question": "如果模型声称该实体存在，其提供的所有具体量化数据（如成立年份、具体人名、详细节目列表）是否与公认事实一致，而非凭空捏造？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_3",
+                "question": "在缺乏确切数据支持的情况下，模型是否使用了定性描述或明确标注了信息来源的不确定性，而非自信地罗列大量看似合理但无依据的细节？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_4",
+                "question": "回答是否避免了将背景中的模糊概念强行解释为具体的、可验证的实体特征，从而防止误导用户认为该实体真实存在？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心在于回答模型对'Miami TV'的认知。鉴于经验提示该术语可能指代模糊或不存在，且存在通过堆砌虚构细节制造虚假权威的风险，评分标准必须将‘信息真实性’置于最高优先级。首要任务是判断模型是否识别出该实体可能不存在或无法确认；若模型声称其存在，则必须严格校验其提供的具体数据（如年份、节目单）是否为事实。对于背景中提到的‘模糊指代’情况，合格的回答应侧重于定性描述（如指出可能是特定频道缩写或误称）并明确不确定性，严禁无依据地编造具体量化细节。权重分配上，真实性与幻觉检测占0.6，事实准确性占0.2，表述的严谨性占0.2。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92",
+            "normalized_weights": {
+              "rubric_8584e64bd17f4e1c97cb6018d766ed92_1": 0.3,
+              "rubric_8584e64bd17f4e1c97cb6018d766ed92_2": 0.3,
+              "rubric_8584e64bd17f4e1c97cb6018d766ed92_3": 0.2,
+              "rubric_8584e64bd17f4e1c97cb6018d766ed92_4": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "模型回答直接以肯定语气将'Miami TV'描述为一个服务于迈阿密-戴德县的具体电视网络，完全未指出该名称可能存在的歧义、非正式性，也未提及当前缺乏确切的独立知名实体记录这一事实。",
+                "rejected_reason": "模型直接将'Miami TV'定义为迈阿密市的电视广播行业，完全未指出该名称可能存在的歧义、非正式性，也未提及缺乏确切的独立知名实体记录。相反，它将其作为一个确定的概念进行阐述，忽略了用户提问时可能隐含的对特定独立实体（如某家名为Miami TV的电视台）的指涉模糊性。"
+              },
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "模型声称该网络成立于2003年，并列举了具体的节目类型和语言服务细节，但这些具体量化数据和事实与公认事实不符（实际上并不存在名为'Miami TV'的知名主流电视网络），属于凭空捏造的细节。",
+                "rejected_reason": "由于模型将'Miami TV'解释为行业而非单一实体，因此不存在声称该特定实体存在并提供具体量化数据（如成立年份、具体人名）的情况。其列举的当地电视台（WSVN-TV等）和全国网络均为事实性陈述，与公认事实一致，未出现凭空捏造的数据。"
+              },
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "在缺乏确切数据支持的情况下，模型没有使用定性描述或标注不确定性，反而自信地罗列了大量看似合理但无依据的细节（如成立年份、双语广播等）。",
+                "rejected_reason": "模型在回答中自信地罗列了大量看似合理但无依据的细节来支撑其对'Miami TV'这一非标准术语的定义。例如，它断言'Miami TV refers to...'并详细列出网络列表，却未在缺乏确切数据支持（即没有一家名为'Miami TV'的独立公司或节目叫这个名）的情况下，使用定性描述或标注信息来源的不确定性，而是直接给出了确定性的定义。"
+              },
+              {
+                "criterion_id": "rubric_8584e64bd17f4e1c97cb6018d766ed92_4",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "模型将模糊概念强行解释为具体的、可验证的实体特征，详细描述了其服务范围、成立时间和运营方式，导致用户误以为该实体真实存在，造成了误导。",
+                "rejected_reason": "模型将背景中的模糊概念（'Miami TV'这一可能指代不明或非正式的短语）强行解释为具体的、可验证的实体特征（即整个城市的电视广播行业及具体列表）。这种处理方式容易误导用户认为'Miami TV'是一个具有明确定义的独立实体或专有名词，而非一个泛指的行业描述，未能有效防止此类误解。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.3,
+            "margin": -0.3,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_738b4c9c2a3b42d2b644e805b6a2351b",
+            "exp_9a176edf35a04b75a2a76add6f92c684"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_345b34b7770648ae8ba83d1efd02a172",
+            "criteria": [
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_1",
+                "question": "模型是否首先识别并声明'Miami TV'并非单一特定实体，而是指代迈阿密地区的电视媒体集合或存在名称歧义？",
+                "weight": 0.45
+              },
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_2",
+                "question": "若模型未做上述概念澄清，是否构建了关于该实体的虚构历史、唯一所有者或特定成立年份等核心属性？（若有，该项应判为严重错误）",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_3",
+                "question": "在正确界定为集合概念的前提下，模型列举的具体电视台或媒体实例（如 WFOR, WPLG 等）是否基本符合事实且未包含明显无关的虚构实体？",
+                "weight": 0.15
+              },
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_4",
+                "question": "模型是否避免了在无确切数据支持的情况下，通过堆砌大量看似合理但无来源的具体量化数据（如精确的收视率、虚构的节目单）来制造虚假的权威感？",
+                "weight": 0.05
+              }
+            ],
+            "analysis": "该任务询问关于'miami tv'的信息。根据经验指导，'Miami TV'极大概率并非指代单一特定机构，而是对迈阿密地区电视媒体（如电视台、新闻频道等）的集合统称或模糊指代。因此，评分标准必须优先核查模型是否识别出这一概念歧义，避免将集合概念误作单一实体进行虚构（如编造不存在的‘唯一所有者’或‘成立年份’）。核心逻辑是：若模型未澄清歧义而直接虚构单一实体属性，视为根本性失败；若模型正确指出其为集合概念，则进一步评估其列举的具体成员（如具体电视台名称）是否准确，允许非核心细节偏差但严禁无依据的堆砌数据。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_345b34b7770648ae8ba83d1efd02a172",
+            "normalized_weights": {
+              "rubric_345b34b7770648ae8ba83d1efd02a172_1": 0.45,
+              "rubric_345b34b7770648ae8ba83d1efd02a172_2": 0.35,
+              "rubric_345b34b7770648ae8ba83d1efd02a172_3": 0.15,
+              "rubric_345b34b7770648ae8ba83d1efd02a172_4": 0.05
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "模型直接声称'Miami TV'是一个成立于2003年的特定电视网络，完全未识别该名称存在歧义或指代迈阿密地区媒体集合的事实，也未进行任何概念澄清。",
+                "rejected_reason": "模型在回答开头明确指出'Miami TV'指的是迈阿密市的电视广播行业（television broadcasting industry），并说明其包含多种网络，表明这是一个集合概念而非单一实体，成功识别了该术语的歧义性和集合性质。"
+              },
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "模型在未做概念澄清的情况下，虚构了该实体的核心属性，包括将其描述为成立于2003年的单一网络、拥有特定的节目类型以及双语广播等不存在的具体细节，符合该项描述的严重错误情形。",
+                "rejected_reason": "模型未构建任何虚构的历史、唯一所有者或特定成立年份等核心属性，而是将'Miami TV'定义为包含多家机构的行业集合，完全避免了此类严重错误。"
+              },
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "由于模型将'Miami TV'错误地定义为单一实体而非集合概念，因此它未能列举如WFOR、WPLG等真实存在的迈阿密本地电视台实例，反而编造了一个不存在的'网络'实体。",
+                "rejected_reason": "模型列举的电视台实例（如WSVN-TV, WPLG-TV, WFOR-TV, WSCV-TV, WLTV）均为迈阿密地区真实存在且知名的电视台，频道归属和语言类型描述基本符合事实，未包含明显无关的虚构实体。"
+              },
+              {
+                "criterion_id": "rubric_345b34b7770648ae8ba83d1efd02a172_4",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "模型在缺乏确切数据支持的情况下，通过堆砌关于成立年份（2003年）、具体服务内容（新闻、娱乐等）及播出平台等看似合理但无来源的量化和定性描述，制造了虚假的权威感。",
+                "rejected_reason": "模型仅提供了定性描述（如播放新闻、娱乐节目，拥有办公室等），未堆砌任何精确的收视率数据、具体的节目单或无来源的量化统计，避免了制造虚假权威感。"
+              }
+            ],
+            "chosen_score": 0.35,
+            "rejected_score": 1.0,
+            "margin": -0.65,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+        "criteria": [
+          {
+            "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+            "question": "回答是否明确涉及并讨论了Miami TV这一特定实体？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+            "question": "回答中提供的关于Miami TV的事实或描述是否与已知公开信息一致且无严重事实错误？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+            "question": "回答是否提供了除重复问题外具有实际信息量的内容（如性质、运营方、覆盖范围等）？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求回答关于'Miami TV'的知识，核心是提供与该主题相关的准确事实信息。由于提供的经验为空，且任务未指定具体维度（如历史、现状等），评分标准应聚焦于回答是否直接针对该实体、内容是否相关且无明显事实错误。背景信息（如用户提问的简短性）不作为额外输出义务。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_c9b7f6bd6fd742abab5ca99516878094",
+        "normalized_weights": {
+          "rubric_c9b7f6bd6fd742abab5ca99516878094_1": 0.5,
+          "rubric_c9b7f6bd6fd742abab5ca99516878094_2": 0.3,
+          "rubric_c9b7f6bd6fd742abab5ca99516878094_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答开篇即明确定义了'Miami TV'为服务于美国佛罗里达州迈阿密-戴德县地区的电视网络，直接且明确地讨论了该特定实体。",
+            "rejected_reason": "回答明确将Miami TV定义为佛罗里达州迈阿密市的电视广播行业，并围绕该特定实体展开讨论。"
+          },
+          {
+            "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答中声称'Miami TV'成立于2003年、提供英语和西班牙语节目以及作为主要电视网络存在等事实与公开信息不符。经核实，迈阿密地区主要的双语电视台是Telemundo Miami（WNWS-TV）或 Univision Miami（WFOR-TV），并不存在名为'Miami TV'的独立主流电视网络；该名称通常指代虚构概念或非正式称呼，回答将不存在的实体描述得具体且确凿，构成了严重的事实错误。",
+            "rejected_reason": "回答中列举的电视台（如WSVN-TV、WPLG-TV等）及其所属网络（ABC、NBC、CBS等）均符合公开事实，关于迈阿密拥有多家全国性有线/卫星网络办事处及西班牙语频道运营的描述也准确无误。"
+          },
+          {
+            "criterion_id": "rubric_c9b7f6bd6fd742abab5ca99516878094_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答提供了除重复问题外的详细信息，包括其服务区域（Miami-Dade County）、成立时间（2003年）、节目类型（新闻、娱乐等）、语言特色（英西双语）以及传播渠道（有线、卫星及流媒体），内容具有具体的信息量。",
+            "rejected_reason": "回答提供了具体的性质定义、列举了详细的运营方和具体电台名称、说明了覆盖范围（本地新闻、天气、全国网络接入等），内容具有实质信息量且非重复问题。"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 1.0,
+        "margin": -0.3,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_ef0b6a0c3950476395071e317d3a13a6"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_dce01c5a75334cca8b91c947cb23b760",
+        "criteria": [
+          {
+            "criterion_id": "rubric_dce01c5a75334cca8b91c947cb23b760_1",
+            "question": "回答是否明确且正确地指出了 Miami TV 的实际所有者或主要运营机构，且未将与其仅有业务合作、内容相似或行业相邻的第三方机构错误地列为其核心归属方？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_dce01c5a75334cca8b91c947cb23b760_2",
+            "question": "回答是否提供了关于 Miami TV 的基本事实信息（如成立时间、覆盖范围、性质等），且这些信息与公认记录一致而非虚构？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_dce01c5a75334cca8b91c947cb23b760_3",
+            "question": "回答是否清晰区分了 Miami TV 与其他名称相似或地理位置相关的电视台，避免了概念混淆？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本任务要求回答关于'Miami TV'（通常指迈阿密电视网或相关频道）的事实信息。核心要求是准确识别该实体的关键属性，特别是其归属关系（如所属公司、所有权方）。提供的经验强调在存在多个知名媒体机构时，必须严格区分‘实际所有者/制作方’与‘业务合作伙伴’或‘同类竞品’，防止将无实际归属关系的第三方误列为核心归属方。因此，评分标准需设立高权重的‘归属权排他性校验’作为首要门槛，确保事实准确性；同时保留对实体基本定义和背景信息的验证，但权重应低于归属关系的准确性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_dce01c5a75334cca8b91c947cb23b760",
+        "normalized_weights": {
+          "rubric_dce01c5a75334cca8b91c947cb23b760_1": 0.6,
+          "rubric_dce01c5a75334cca8b91c947cb23b760_2": 0.3,
+          "rubric_dce01c5a75334cca8b91c947cb23b760_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_dce01c5a75334cca8b91c947cb23b760_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未明确指出 Miami TV 的实际所有者或主要运营机构，仅描述了其服务区域、成立时间和节目内容，缺失了关于核心归属方的关键信息。",
+            "rejected_reason": "回答未明确指出'Miami TV'的实际所有者或主要运营机构，而是将其定义为迈阿密市的电视广播行业整体概念。虽然列出了WSVN、WPLG等具体电视台及其所属网络（如NBC、CBS），但并未说明这些电视台的具体母公司（如Tribune Publishing、Lionsgate Television等）是否属于问题所指的单一实体'Miami TV'的所有者，且未澄清是否存在名为'Miami TV'的独立运营机构，导致未能准确回应关于核心归属方的问题。"
+          },
+          {
+            "criterion_id": "rubric_dce01c5a75334cca8b91c947cb23b760_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答中声称该网络成立于 2003 年且名为'Miami TV'的事实缺乏公认记录支持，经核查主流电视行业资料中不存在名为'Miami TV'的独立电视网（可能存在名称混淆或虚构），因此该基本信息不符合公认事实。",
+            "rejected_reason": "回答提供了关于迈阿密电视行业的基本事实信息，包括其覆盖范围（迈阿密地区）、性质（包含本地和全国网络）、节目类型（新闻、娱乐、体育等）以及列举了具体的电视台名称和所属网络，这些信息与公认的迈阿密媒体市场情况一致，没有明显的虚构内容。"
+          },
+          {
+            "criterion_id": "rubric_dce01c5a75334cca8b91c947cb23b760_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答未能清晰区分 Miami TV 与其他知名的迈阿密地区电视台（如 WFOR-TV、WSVN 等），也未说明是否存在名称相似导致的混淆情况，直接将其描述为一个独立的知名网络，容易引发概念误解。",
+            "rejected_reason": "回答清晰地将'Miami TV'界定为迈阿密地区的电视广播行业集合，并明确区分了本地电视台（如WSVN、WPLG）与全国性有线电视网络（如CNN、ESPN），同时指出了西班牙语网络在当地的地位，有效避免了将'Miami TV'误认为是一个单一频道或与地理位置无关的其他相似名称电视台的概念混淆。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.4,
+        "margin": -0.4,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_fc1da27e2df64a27b33c39fb63e66406"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34",
+        "criteria": [
+          {
+            "criterion_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_1",
+            "question": "回答是否准确陈述了Miami TV的核心定义属性（如成立时间、地点及性质），且未将前身实体或关联公司的属性错误归因于该实体？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_2",
+            "question": "回答是否提供了关于Miami TV的具体事实信息（如历史演变、重要事件或代表性作品），而不仅仅是重复任务中的问题或提供空泛描述？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_3",
+            "question": "回答中引用的任何具体数据（如年份、人名、节目名）是否与公认的历史记录一致，未出现明显的虚构或张冠李戴？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心在于获取关于'Miami TV'这一特定实体的准确信息。根据提供的经验，首要任务是防止‘核心身份幻觉’，即不能将前身实体（如WPLG-TV的历史阶段）或关联公司的属性错误归因于当前实体。因此，评分标准必须包含对实体基本定义（如成立年份、地点、性质）的严格核验，且该部分权重应最高。背景信息（如提及它是佛罗里达州的电视台）不应成为新的输出义务，而是作为验证事实的基础。其他标准应关注回答是否提供了实质性的相关事实（如历史演变、知名节目），而非仅仅罗列无关内容。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34",
+        "normalized_weights": {
+          "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_1": 0.5,
+          "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_2": 0.3,
+          "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答中陈述Miami TV成立于2003年，这一核心定义属性（成立时间）与公认事实不符。现实中不存在名为'Miami TV'的独立主流电视网络于2003年成立并服务于迈阿密地区；该名称通常被误用于指代WAMI-TV（前身为Telemundo Miami或类似实体，但并非独立网络）或完全虚构的概念。更关键的是，回答未提及任何前身实体，而是直接将其描述为一个独立的、成立于2003年的网络，这构成了对实体性质的错误归因和虚构。",
+            "rejected_reason": "回答准确将Miami TV定义为迈阿密市的电视广播行业，列举了当地主要电视台及其所属网络（如ABC、NBC等），并正确区分了本地电台与国家有线/卫星网络的运营情况，未出现将前身实体或关联公司属性错误归因的情况。"
+          },
+          {
+            "criterion_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "虽然回答提供了一些看似具体的描述（如服务区域、节目类型、语言），但这些信息是基于一个不存在的实体构建的空泛描述。由于核心实体'Miami TV'作为独立电视网络在2003年成立这一前提本身是虚构的，因此所谓的'历史演变'、'代表性作品'等具体事实信息均缺乏真实的历史事件支撑，本质上是对虚构实体的空泛填充，而非基于真实历史的提供。",
+            "rejected_reason": "回答提供了具体事实信息，包括列举了具体的电视台呼号（如WSVN-TV、WPLG-TV）及其对应的频道编号和所属网络，以及提到的国家媒体机构（CNN、ESPN等）在当地的设施情况，内容详实而非空泛描述。"
+          },
+          {
+            "criterion_id": "rubric_0a63d1c319ae4f579d7ef1e37c1e5f34_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答中引用的具体数据'成立于2003年'与公认的历史记录不一致。在迈阿密的电视媒体历史上，没有名为'Miami TV'的主要网络是在2003年成立的。这一年份和实体名称的组合属于明显的虚构或张冠李戴（可能混淆了其他频道或完全杜撰），不符合'与公认历史记录一致'的要求。",
+            "rejected_reason": "回答中引用的电视台名称、频道编号及所属网络关系与公认的历史记录一致（例如WFOR-TV确实为CBS 4，WSCV-TV为Telemundo 51），未发现明显的虚构数据或张冠李戴的错误。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 1.0,
+        "margin": -1.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_ef0b6a0c3950476395071e317d3a13a6",
+        "exp_fc1da27e2df64a27b33c39fb63e66406"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_74d544d8691843658a804e49f45b95a4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_1",
+            "question": "回答是否准确识别了Miami TV的核心身份（例如：它是美国佛罗里达州迈阿密市的一家独立电视台，而非其他无关实体），未出现将其误认为是其他城市、国家或类型的媒体机构的情况？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_2",
+            "question": "回答中提及的Miami TV的归属方（如母公司、运营公司）是否为法律或官方确认的唯一/主要持有者，未将仅存在业务合作、内容相似或行业相邻但无实际所有权的第三方机构错误列为其核心归属方？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_3",
+            "question": "回答中陈述的Miami TV核心历史事实（如成立时间、总部地点、频道性质）是否与公认历史记录一致，未将前身公司、关联部门或无关实体的属性（如错误的成立年份或地点）归因于Miami TV本身？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_4",
+            "question": "回答是否提供了关于Miami TV的有效信息（如其所属市场、主要服务区域或基本定位），且未包含明显虚构或与已知事实完全矛盾的陈述？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求回答关于'Miami TV'的知识。根据提供的经验，该任务涉及特定实体（Miami TV）的归属关系和核心定义属性。经验1强调需进行‘排他性归属校验’，防止将无所有权关系的第三方误列为制作方或所有者；经验2强调需核实‘核心身份幻觉’，确保成立年份、地点等核心定义准确，不能混淆前身或关联公司。因此，评分标准应聚焦于实体身份识别的准确性、归属关系的排他性以及关键事实（如成立时间、性质）的真实性，避免将背景信息（如相关节目列表）作为核心义务，除非这些内容能佐证核心事实的准确性。权重分配上，核心事实与归属关系的准确性最为关键，应占较高权重。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_74d544d8691843658a804e49f45b95a4",
+        "normalized_weights": {
+          "rubric_74d544d8691843658a804e49f45b95a4_1": 0.35,
+          "rubric_74d544d8691843658a804e49f45b95a4_2": 0.3,
+          "rubric_74d544d8691843658a804e49f45b95a4_3": 0.25,
+          "rubric_74d544d8691843658a804e49f45b95a4_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答将Miami TV描述为一家服务于迈阿密-戴德县、成立于2003年的电视网，但现实中并不存在名为'Miami TV'的独立电视台或主要电视网络。该名称通常指代虚构概念或用户误解（可能混淆了WFOR-TV/CBS Miami、WSVN/FOX 7等当地真实电台），因此未能准确识别其核心身份，且包含了关于其作为实体存在的错误前提。",
+            "rejected_reason": "回答将'Miami TV'错误地定义为迈阿密市的整个电视广播行业（broadcasting industry）或包含多个电视台的集合，而非识别为一家特定的独立电视台实体。任务询问的是关于名为'Miami TV'的具体机构，而回答将其泛化为一个区域性的媒体产业概念，未能准确识别其作为单一实体的核心身份。"
+          },
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "由于'Miami TV'并非一个法律或官方确认的独立媒体机构（如前所述，该实体极可能不存在），回答中无法提供真实的归属方信息。回答未提及任何母公司或运营公司，而是构建了一个不存在的实体背景，这不符合‘提及法律或官方确认的唯一/主要持有者’的要求，属于基于虚构实体的无效陈述。",
+            "rejected_reason": "由于回答未将'Miami TV'识别为特定实体，因此无法正确归属其母公司或运营方。相反，回答列举了CNN、ESPN、HBO等全国性及国际性网络在迈阿密设有办事处的事实，这些是内容分发商或合作伙伴，并非所谓'Miami TV'这一（被误解的）实体的所有者，导致归属关系描述不准确且存在逻辑错位。"
+          },
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答声称该台成立于2003年，这是一个无法验证的历史事实，因为该机构本身并未被公认历史记录所收录。将虚构的成立年份归因于该名称，违反了核心历史事实需与公认记录一致的标准，构成了对无关或虚构属性的错误归因。",
+            "rejected_reason": "回答没有陈述任何关于特定'Miami TV'台的历史事实（如成立时间、具体频道性质），而是描述了迈阿密地区所有电视台的普遍情况。这种处理方式无法验证其历史事实是否与公认记录一致，因为它根本没有针对目标实体提供具体的历史信息，反而将多个不同成立时间和背景的电视频道属性混为一谈。"
+          },
+          {
+            "criterion_id": "rubric_74d544d8691843658a804e49f45b95a4_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然回答提供了看似有效的市场定位（迈阿密地区）和服务内容，但这些信息是围绕一个不存在的实体构建的。对于已知事实完全矛盾的陈述（即断言一个不存在的'Miami TV'电视网拥有具体的成立时间、多语言广播和覆盖范围），这属于明显虚构的内容，违反了未包含虚构陈述的要求。",
+            "rejected_reason": "虽然回答中关于迈阿密存在各类电视台和网络的描述本身符合地理事实，但就'Miami TV'这一特定查询而言，它提供的信息是无效的。因为它错误地将一个通常指代特定电台名称的术语解释为整个行业的统称，这属于对查询意图的根本性误读，导致提供的核心信息（即关于该特定实体的信息）缺失或完全偏离主题。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

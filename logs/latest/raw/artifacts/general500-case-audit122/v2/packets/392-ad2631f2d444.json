@@ -1,0 +1,85 @@
+{
+  "case_index": 392,
+  "experiences": [
+    "E1"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.4,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N2",
+          "weight": 0.4,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N3",
+          "weight": 0.2,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.5,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W2",
+          "weight": 0.3,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W3",
+          "weight": 0.2,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "worries gone, paraphrase into something \"done\"",
+    "X": "anxieties dispelled, rephrased as \"resolved\"",
+    "Y": "Here are some paraphrases of \"worries gone\" that convey a sense of completion or resolution:\n\n**Direct:**\n\n* Worries resolved.\n* Free from worry.\n* No more worries.\n\n**Figurative:**\n\n* Peace of mind achieved.\n* A weight lifted.\n* Tranquility found.\n\nThe best choice will depend on the specific context and the tone you want to convey.",
+    "E1.trigger": "当任务输入包含主观断言或非正式口语表达，且用户要求提供‘准确’或‘正式’版本的改写时",
+    "E1.principle": "模型在提供改写版本时，应将原文的非正式口语风格（如 'buy the idea', 'just a'）转换为符合语境要求的正式或严谨措辞（如 'agree with the notion', 'primarily'），而非仅保留原句结构进行语法修补；若模型保留了原文的口语化特征或随意措辞，即使语法正确，也视为未满足‘准确渲染’的隐含语用要求。",
+    "E1.application_guide": "在评分标准的‘语体适配度’或‘表达规范性’维度设立‘措辞正式性校验’：1. 识别原文中的口语化词汇、缩略语或非正式搭配；2. 检查改写后的文本是否将其替换为更正式、精准的同义词或短语；3. 若模型保留了原文的随意措辞（如直接使用 'don't subscribe to' 代替 'do not agree with'，或未将 'just' 改为 'primarily'），即使语法无误，也应判定为未充分响应‘准确’指令中的语体规范，予以扣分。重点在于模型是否意识到‘准确’包含‘得体’与‘规范’。",
+    "Select.E1": "任务要求将'worries gone'（一种非正式、口语化的表达）改写为某种‘done’的状态，这符合经验 1 中关于将非正式口语风格转换为更严谨或符合语境的措辞的触发条件；评分标准需关注模型是否准确捕捉了从‘担忧消失’到‘已完成’这一语用状态的转换，而非仅做字面替换。",
+    "N.analysis": "任务核心要求是将短语'worries gone'改写为包含'done'含义的表达，需保留原意（担忧消除）并体现完成状态。背景信息仅为原始短语，不应作为额外输出义务。核验标准聚焦于语义转换的准确性、关键词'done'的融入方式以及自然度。",
+    "N1": "改写后的内容是否明确表达了担忧已消除或结束的含义？",
+    "N1.X.reason": "改写后的内容使用了'resolved'（已解决）一词，明确表达了担忧消除或结束的含义。",
+    "N1.Y.reason": "提供的改写选项如'Worries resolved'、'Free from worry'和'No more worries'都清晰地表达了担忧已消除或结束的含义。",
+    "N2": "改写后的内容是否自然融入了单词'done'或其同义表达以体现完成状态？",
+    "N2.X.reason": "改写后的内容仅使用了'resolved'作为同义表达，未直接融入单词'done'或其明确的同义短语来体现完成状态，不符合任务要求中关于使用'done'的特定指示。",
+    "N2.Y.reason": "任务明确要求改写后的内容需融入单词'done'或其同义表达以体现完成状态，但提供的所有示例（如'resolved', 'achieved', 'lifted'）均未包含单词'done'，也未明确使用其作为核心词汇来体现该特定要求。",
+    "N3": "改写后的句子是否在语法和用词上通顺且符合英语习惯？",
+    "N3.X.reason": "句子'anxieties dispelled, rephrased as \"resolved\"'在语法结构上正确，用词符合英语习惯，表达通顺。",
+    "N3.Y.reason": "所有列出的短语在语法结构上正确，用词地道，符合英语习惯用法。",
+    "W.analysis": "任务核心要求是将短语'worries gone'改写为表达完成状态的'something done'。背景信息'worries gone'是输入素材，而非需要被保留的特定风格；用户隐含要求将非正式、描述性的状态转化为具有完成时态或结果导向的表达（如 'Worries are gone' 或 'Worries have been resolved'）。经验中提到的语体转换原则在此处不适用，因为输入并非长句或非正式口语断言，而是一个简短的状态描述，且用户未明确要求‘正式’风格，仅要求语义上的‘done’转化。因此，评分标准应聚焦于：1. 是否准确传达了‘担忧消失/解决’的核心语义；2. 是否体现了‘已完成’的时态或状态；3. 表达是否自然流畅。",
+    "W1": "改写后的内容是否明确表达了担忧已经消失或被解决的完成状态？",
+    "W1.X.reason": "改写后的内容使用了'dispelled'（驱散）和'resolved'（解决），这两个词都明确表达了担忧已经消失或被解决的完成状态。",
+    "W1.Y.reason": "回答中提供的改写选项如'Worries resolved'、'Free from worry'、'Peace of mind achieved'等均明确表达了担忧已经消失或被解决的完成状态。",
+    "W2": "改写后的文本是否使用了符合英语语法规范的完整句式或地道的习语来表达该状态？",
+    "W2.X.reason": "回答中的'anxieties dispelled'是一个过去分词短语，而非符合英语语法规范的完整句子；虽然'rephrased as...'是完整的结构，但核心的改写部分并未构成独立完整的句式。",
+    "W2.Y.reason": "回答中的改写内容均符合英语语法规范，使用了完整的短语或地道的习语（如'A weight lifted'）来描述该状态。",
+    "W3": "改写后的内容是否保留了原文关于'worries'（担忧）的核心指代对象？",
+    "W3.X.reason": "原文的'worries'被替换为同义词'anxieties'，核心指代对象依然是担忧，保留了原文的核心语义。",
+    "W3.Y.reason": "回答中的多个改写项（如'Worries resolved', 'No more worries'）直接保留了原文关于'worries'的核心指代对象，部分习语虽未直用该词但语境上紧密关联且整体列表覆盖了核心指代。"
+  }
+}

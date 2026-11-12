@@ -1,0 +1,13 @@
+### Result
+{
+  "width": 390,
+  "scrollWidth": 390,
+  "nodes": 24,
+  "overlaps": [],
+  "current": "#credit119",
+  "graphCanScroll": true
+}
+### Ran Playwright code
+```js
+await page.evaluate('() => { const nodes = [...document.querySelectorAll(".graphnode")]; const boxes = nodes.map(n=>({id:n.dataset.id,r:n.querySelector("rect").getBoundingClientRect()})); const overlaps=[]; for(let i=0;i<boxes.length;i++) for(let j=0;j<i;j++){const a=boxes[i],b=boxes[j];if(Math.min(a.r.right,b.r.right)-Math.max(a.r.left,b.r.left)>0.5 && Math.min(a.r.bottom,b.r.bottom)-Math.max(a.r.top,b.r.top)>0.5)overlaps.push([a.id,b.id]);} return {width:innerWidth, scrollWidth:document.documentElement.scrollWidth, nodes:nodes.length, overlaps, current:location.hash, graphCanScroll:document.querySelector(".graphscroll").scrollWidth>document.querySelector(".graphscroll").clientWidth}; }');
+```

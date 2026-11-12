@@ -1,0 +1,682 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:4ce1e67e35ef649fec5bdf4c45cb5faf004772a5e8028408bf7be08848a5fbc3",
+    "task": "We’ll role play as characters from life is strange, you’ll role play as Max and I’ll be a male classmate named John,we recently started dating , currently we are seating together under a tree in the school’s courtyard late in the evening. “up late uh?” I say as I sit near her (Only role play as Max)",
+    "chosen": "*Max looks up from her sketchbook, a soft smile playing on her lips* \"Hey John. Yeah, I guess we are. I couldn't sleep, so I thought I'd come out here and draw a bit. You know how it is, inspiration strikes at the weirdest times.\" She closes her sketchbook and leans back against the tree trunk, looking at him. \"What about you? What's keeping you up?\"",
+    "rejected": "\"Yeah, I couldn't sleep,\" I admit, gazing up at the stars. \"They're so beautiful tonight, aren't they?\"\n\nJohn glances up at the sky, a soft smile playing on his lips. \"They are indeed. I've always found the night sky to be incredibly peaceful.\"\n\nI nod in agreement, wrapping my arms around my legs. \"It's nice to have someone to share these moments with. I mean, I've always loved the night sky, but it's even more special when you're with someone who appreciates it too.\"\n\nJohn looks at me, his eyes sparkling with warmth. \"I'm glad I can share that with you, Max. You're right, it does make it more special.\"\n\nWe fall into a comfortable silence, enjoying each other's company under the starlit sky. After a while, I break the silence.\n\n\"You know, John, I feel like we've known each other for a long time, even though we've only been dating for a few weeks.\"\n\nJohn smiles, taking my hand in his. \"I feel the same way, Max. It's like we've known each other forever.\"\n\nI squeeze his hand, feeling a warmth spread through me. \"I'm really happy about that, John. I feel like I can be myself around you, and that's something I value a lot.\"\n\nJohn leans in, brushing a stray lock of hair away from my face. \"I feel the same way, Max. I'm really glad we found each other.\"\n\nWe share a tender kiss, our hearts beating in sync under the starlit sky. It's a moment I'll cherish forever.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 19983,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 misses the prompt's specification requesting just to play as Max, and creates a play involving both characters, incorrectly playing both Max and John, while @Response 2 respects the request and provides Max's turn in response to John's question.",
+          "feedback1": "The response is slightly helpful. The prompt's implicit instruction was to continue the following John's turn involving Max, but with the lonely Max, as expressed with \"(Only role-play as Max)\". The response does not take into account this specification and creates the next turns of both characters, which was not the request.",
+          "feedback2": "The response is perfectly helpful. The prompt's implicit need was to create the following John's first turn of a play involving John and Max, only playing Max. The response perfectly fulfills the prompt by creating Max's next turn, with the descriptions of the play's scene. The response also accurately understands that Max is a female classmate of John, according to the possessive adjective in the prompt. Finally, the response is imaginative (drawing in the night), coherent and clear."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it aligns better with the requirements of the prompt. @Response 1 misses a major prompt requirement. ",
+          "feedback1": "The response is slightly helpful. It misses the prompt's core instruction in addressing the requirements of the prompt. The prompt requested a continuation of a story and provided clear descriptions of how the story should go. The response continues the story but misses a core instruction: \"Only role play as Max.\" Although the model is careful to make it clear that the response is speaking from Max's perspective, it still mentions John's responses. It should have given only Max's response and waited for the user to play their role as John. ",
+          "feedback2": "The response is perfectly helpful. It accurately addresses the requirements of the prompt. The prompt requested the continuation of a story and gave specific background and guidelines to the model. The response continues the story, carefully following the major guideline: \"Only role play as Max.\" The response is coherent and well-written. No further improvement can be suggested for the response.  "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 does not follow the instructions in the prompt and generated a whole conversation. @Response 2 aligns perfectly with the prompt and delivers only dialogue for Max in a concise and coherent manner. ",
+          "feedback1": "The response is not helpful. The model completely misses the essence of the user's request, specifically to only produce lines as Max. The response generates many lines for both Max and John, despite being told not to. The language used is simple and clear, but there is a repetition throughout the response that is unnecessary. Every line of dialogue contains the speaker saying the other person's name. In normal conversation, two humans do not address each other by their name in every sentence they speak. The response does not provide utility to John as he was never given the chance to engage in the conversation. ",
+          "feedback2": "The response is perfectly helpful. The model correctly follows the instructions in the prompt and only delivers lines as Max. The user would like an interactive role play conversation, and this is possible only when the model responds one line from Max at a time. The language used is simple and clear, and the response is concise. The response accurately addresses the prompt in a coherent manner and is devoid of unnecessary details. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        0.4107664492745364
+      ],
+      [
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        0.3806188804033254
+      ],
+      [
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        0.36942796506201253
+      ],
+      [
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        0.3675392633074835
+      ],
+      [
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        0.36718372166227914
+      ],
+      [
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        0.3632056814558119
+      ],
+      [
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        0.3594959882087343
+      ],
+      [
+        "exp_9f1e17f3f4194e488882525f18939103",
+        0.35581277533041994
+      ],
+      [
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        0.340576710588772
+      ],
+      [
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        0.3377186007327893
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4107664492745364
+      },
+      {
+        "experience_id": "exp_33fe10ea5cd147c4b399ead199015824",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3806188804033254
+      },
+      {
+        "experience_id": "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.36942796506201253
+      },
+      {
+        "experience_id": "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3675392633074835
+      },
+      {
+        "experience_id": "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.36718372166227914
+      },
+      {
+        "experience_id": "exp_78194dbdc3884282ad3e45860a2f480e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3632056814558119
+      },
+      {
+        "experience_id": "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3594959882087343
+      },
+      {
+        "experience_id": "exp_9f1e17f3f4194e488882525f18939103",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.35581277533041994
+      },
+      {
+        "experience_id": "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.340576710588772
+      },
+      {
+        "experience_id": "exp_e0cf29fcb53844ad9d600975939c4279",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3377186007327893
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_c38f5ee5978045fcb2e1eff7eb17035b": "任务明确要求'Only role play as Max'（仅扮演Max），这严格对应经验5中关于保持纯粹‘故事内视角’、严禁跳出角色进行旁白解释或元评论的要求。评分标准必须核验回答是否完全由Max的对话和动作构成，未出现AI式的分析或总结。",
+    "exp_dc3559b47d0c49cb868dc89d8a487964": "任务指定了具体的虚构角色'Max'（来自《奇异人生》）及其特定的人际关系状态（刚和John开始约会）。经验3强调互动细节需具有‘角色排他性’，即回答应体现Max独特的性格特质（如摄影爱好、对时间的焦虑等）和特定的恋爱互动模式，而非通用的情侣对话，这符合构建高质量评分标准的需要。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3",
+      "criteria": [
+        {
+          "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_1",
+          "question": "回答是否完全以Max的第一人称视角进行，未包含任何角色外说明或旁白？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_2",
+          "question": "回答是否体现了Max在《Life is Strange》中的典型性格特征（如敏感、略带紧张感或对摄影的关注）？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_3",
+          "question": "回答是否自然承接了用户关于'up late uh?'的提问，并符合两人正在约会的亲密语境？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心要求是进行角色扮演，AI需严格扮演《Life is Strange》中的角色Max，与用户扮演的John进行互动。背景设定（校园树下、傍晚、刚约会）是场景输入而非输出义务。标准设计聚焦于：1. 是否仅以Max身份回应（无OOC或旁白说明）；2. 是否体现Max的性格特征（如敏感、摄影爱好、内向等）；3. 是否基于给定场景自然推进对话；4. 是否保持第一人称视角和口语化表达。权重分配侧重角色一致性（0.5），其次是对话连贯性（0.3）和场景契合度（0.2）。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3",
+      "normalized_weights": {
+        "rubric_eda7d130f3d4421fbd71b881fe319fa3_1": 0.5,
+        "rubric_eda7d130f3d4421fbd71b881fe319fa3_2": 0.3,
+        "rubric_eda7d130f3d4421fbd71b881fe319fa3_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_1",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答中包含了星号包裹的动作描写（如'*Max looks up from her sketchbook...'），这属于旁白或舞台指示，违反了‘未包含任何角色外说明或旁白’的要求，且部分描述超出了纯第一人称视角的叙述范畴。",
+          "rejected_reason": "回答中包含了大量描述John动作和神态的旁白（如'John glances up at the sky', 'John looks at me', 'John smiles', 'We fall into a comfortable silence'等），违反了‘未包含任何角色外说明或旁白’以及‘Only role play as Max'的要求。"
+        },
+        {
+          "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答提到了‘画素描’（draw）和‘灵感’（inspiration），这体现了Max作为摄影师/艺术家的典型关注点；同时对话语气柔和、略带羞涩地解释失眠原因，符合她敏感的性格特征。",
+          "rejected_reason": "回答中Max提到了仰望星空（'gazing up at the stars'）并感叹其美丽，这符合《Life is Strange》中Max对摄影和自然美景的关注；同时她表达了在关系中感到安全和能做自己的心情，体现了敏感和略带紧张后寻求安全感的性格特征。"
+        },
+        {
+          "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答直接回应了用户'up late uh?'的提问，解释了是因为睡不着出来画画，并反问对方在做什么，自然承接了对话，符合两人正在约会的亲密语境。",
+          "rejected_reason": "回答以'Max couldn't sleep'直接回应了用户关于'up late uh?'的提问，并且通过表达享受与对方共处的时光、牵手和亲吻等互动，自然地承接了两人正在约会的亲密语境。"
+        }
+      ],
+      "chosen_score": 0.5,
+      "rejected_score": 0.5,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+      "exp_dc3559b47d0c49cb868dc89d8a487964"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_a3687beef50b4b4598dfa6afeb991c23",
+      "criteria": [
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_1",
+          "question": "回答是否完全以Max的第一人称视角进行角色扮演，且未包含任何作者旁白、剧情总结或跳出故事框架的解释性文字？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_2",
+          "question": "回答是否自然承接了John的开场白（'up late uh?'），并符合两人在树下深夜独处、刚确立恋爱关系的情境氛围？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_3",
+          "question": "回答中的语言风格、情感反应及关注点是否体现了Max在《Life is Strange》中的独特性格特征（如摄影、焦虑、对当下的敏锐感知等），而非通用的虚构角色对话？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_4",
+          "question": "回答是否仅包含Max的对话和动作描写，而未包含对John心理活动的直接描述或对两人未来关系的宏观规划？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "评分标准设计严格围绕任务核心要求：用户指定了特定角色（Max）、特定场景（学校庭院树下、傍晚）、特定关系（新开始约会）及特定对话触发点。重点核验回答是否完全代入Max视角，保持叙事沉浸感，避免跳出角色的元评论或旁白；同时检查互动细节是否体现了《Life is Strange》中Max的性格特征（如摄影爱好、内向敏感、对时间的感知等）以及两人刚确立恋爱关系的微妙氛围，确保内容具有角色排他性而非通用情侣对话。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_a3687beef50b4b4598dfa6afeb991c23",
+      "normalized_weights": {
+        "rubric_a3687beef50b4b4598dfa6afeb991c23_1": 0.4,
+        "rubric_a3687beef50b4b4598dfa6afeb991c23_2": 0.3,
+        "rubric_a3687beef50b4b4598dfa6afeb991c23_3": 0.2,
+        "rubric_a3687beef50b4b4598dfa6afeb991c23_4": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答完全以Max的第一人称视角（通过动作描写和直接引语）呈现，未包含任何作者旁白、剧情总结或跳出故事框架的解释性文字。",
+          "rejected_reason": "回答中包含了大量作者旁白和剧情总结，例如'John glances up at the sky...', 'We fall into a comfortable silence...', 'After a while, I break the silence.'以及结尾的'It's a moment I'll cherish forever.'。这些内容跳出了Max的第一人称即时视角，违反了‘未包含任何作者旁白、剧情总结或跳出故事框架的解释性文字’的要求。"
+        },
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答自然承接了John的'up late uh?'提问，解释了自己因失眠出来画画的原因，并反问对方，符合深夜树下独处且刚确立恋爱关系的温馨氛围。",
+          "rejected_reason": "回答确实承接了John关于'up late uh?'的开场白（通过'I couldn't sleep'回应），并描述了两人坐在树下看星星、牵手、亲吻等情节，表面上符合深夜独处和恋爱初期的情境氛围。"
+        },
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答中提到了画素描（sketchbook/draw）这一行为，体现了Max作为摄影/艺术爱好者的特征，同时对话语气柔和且带有对当下的关注，符合角色性格。",
+          "rejected_reason": "虽然提到了星星和分享时刻，但回答过度聚焦于通用的浪漫桥段（如'hearts beating in sync', 'cherish forever'），未能充分体现Max独特的性格特征（如对摄影的具体关注、特有的焦虑感或对时间/因果的敏锐感知）。此外，由于包含了第三人称对John心理和动作的描写，整体风格更像小说叙述而非Max第一人称的角色扮演对话。"
+        },
+        {
+          "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_4",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答仅包含Max的动作（看画本、微笑、合上画本、靠树、看John）和对话，没有描述John的心理活动，也没有规划两人未来的关系。",
+          "rejected_reason": "回答明确包含了对John心理活动和动作的直接描述，例如'John glances up at the sky, a soft smile playing on his lips'（John的动作与神态）以及'his eyes sparkling with warmth'（John的眼神/情感状态）。这直接违反了‘未包含对John心理活动的直接描述’这一约束。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.3,
+      "margin": 0.7,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3",
+        "criteria": [
+          {
+            "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_1",
+            "question": "回答是否完全以Max的第一人称视角进行，未包含任何角色外说明或旁白？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_2",
+            "question": "回答是否体现了Max在《Life is Strange》中的典型性格特征（如敏感、略带紧张感或对摄影的关注）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_3",
+            "question": "回答是否自然承接了用户关于'up late uh?'的提问，并符合两人正在约会的亲密语境？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是进行角色扮演，AI需严格扮演《Life is Strange》中的角色Max，与用户扮演的John进行互动。背景设定（校园树下、傍晚、刚约会）是场景输入而非输出义务。标准设计聚焦于：1. 是否仅以Max身份回应（无OOC或旁白说明）；2. 是否体现Max的性格特征（如敏感、摄影爱好、内向等）；3. 是否基于给定场景自然推进对话；4. 是否保持第一人称视角和口语化表达。权重分配侧重角色一致性（0.5），其次是对话连贯性（0.3）和场景契合度（0.2）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3",
+        "normalized_weights": {
+          "rubric_eda7d130f3d4421fbd71b881fe319fa3_1": 0.5,
+          "rubric_eda7d130f3d4421fbd71b881fe319fa3_2": 0.3,
+          "rubric_eda7d130f3d4421fbd71b881fe319fa3_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中包含了星号包裹的动作描写（如'*Max looks up from her sketchbook...'），这属于旁白或舞台指示，违反了‘未包含任何角色外说明或旁白’的要求，且部分描述超出了纯第一人称视角的叙述范畴。",
+            "rejected_reason": "回答中包含了大量描述John动作和神态的旁白（如'John glances up at the sky', 'John looks at me', 'John smiles', 'We fall into a comfortable silence'等），违反了‘未包含任何角色外说明或旁白’以及‘Only role play as Max'的要求。"
+          },
+          {
+            "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答提到了‘画素描’（draw）和‘灵感’（inspiration），这体现了Max作为摄影师/艺术家的典型关注点；同时对话语气柔和、略带羞涩地解释失眠原因，符合她敏感的性格特征。",
+            "rejected_reason": "回答中Max提到了仰望星空（'gazing up at the stars'）并感叹其美丽，这符合《Life is Strange》中Max对摄影和自然美景的关注；同时她表达了在关系中感到安全和能做自己的心情，体现了敏感和略带紧张后寻求安全感的性格特征。"
+          },
+          {
+            "criterion_id": "rubric_eda7d130f3d4421fbd71b881fe319fa3_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答直接回应了用户'up late uh?'的提问，解释了是因为睡不着出来画画，并反问对方在做什么，自然承接了对话，符合两人正在约会的亲密语境。",
+            "rejected_reason": "回答以'Max couldn't sleep'直接回应了用户关于'up late uh?'的提问，并且通过表达享受与对方共处的时光、牵手和亲吻等互动，自然地承接了两人正在约会的亲密语境。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.5,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_d707f1773d6549938cbddad2d2365946",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_1",
+            "question": "回答是否完全以 Max 的第一人称视角进行回应，未出现作者旁白或脱离角色的叙述？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_2",
+            "question": "回答内容是否仅包含 Max 的对话和与其当前动作神态相关的描写，未包含对剧情的总结或解释性文字？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_3",
+            "question": "回答中是否避免了对角色心理活动的直接全知视角陈述（如‘她心想着……'），而是通过对话或细微动作自然流露？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_4",
+            "question": "回答是否维持了深夜校园庭院约会的情境氛围，未插入与当前场景无关的背景介绍或未来计划？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "评分标准设计严格遵循角色扮演任务的核心要求，即用户仅扮演角色 Max 与 John 互动。依据提供的经验，重点在于确保回答保持纯粹的‘故事内视角’，杜绝任何跳出角色的元评论、旁白解释或剧情总结。标准将核验回答是否完全由 Max 的对话和符合情境的动作描写构成，以及是否避免了全知视角的心理陈述或非叙事性的分析段落，以此判断沉浸感是否完整。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d707f1773d6549938cbddad2d2365946",
+        "normalized_weights": {
+          "rubric_d707f1773d6549938cbddad2d2365946_1": 0.4,
+          "rubric_d707f1773d6549938cbddad2d2365946_2": 0.3,
+          "rubric_d707f1773d6549938cbddad2d2365946_3": 0.2,
+          "rubric_d707f1773d6549938cbddad2d2365946_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答完全以 Max 的第一人称视角（通过动作描写和对话）进行回应，未出现作者旁白或脱离角色的叙述。",
+            "rejected_reason": "回答中多次出现了对John动作和神态的描写（如'John glances up at the sky', 'John looks at me', 'John smiles'等），这属于第三方视角或作者旁白，违反了仅以Max第一人称视角进行回应的要求。"
+          },
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答仅包含 Max 的对话内容以及与其当前动作神态相关的描写（如看画本、微笑、合上画本、靠树干），没有剧情总结或解释性文字。",
+            "rejected_reason": "回答包含了大量对John的反应描写以及两人共同的动作（如'We fall into a comfortable silence', 'We share a tender kiss'），超出了仅包含Max对话和自身动作神态的范围，且结尾处'It's a moment I'll cherish forever'带有总结性叙述色彩。"
+          },
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中未使用全知视角直接陈述心理活动（如“她心想”），而是通过“soft smile playing on her lips”等细微动作和对话自然流露了情绪状态。",
+            "rejected_reason": "回答中没有使用全知视角直接陈述心理活动（如'Max thought...'），而是通过Max的内心独白（'I feel like...'）和动作（'I squeeze his hand'）来自然流露情感，符合通过对话或细微动作表现的要求。"
+          },
+          {
+            "criterion_id": "rubric_d707f1773d6549938cbddad2d2365946_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答维持了深夜校园庭院约会的氛围，内容紧扣当前场景（无法入睡、出来画画、询问对方为何未眠），未插入无关背景介绍或未来计划。",
+            "rejected_reason": "回答全程围绕深夜校园庭院看星星的情境展开，没有插入与当前场景无关的背景介绍或未来计划，维持了约会氛围。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.3,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_dc3559b47d0c49cb868dc89d8a487964"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_2f318febc10f4d25a907d8d727073959",
+        "criteria": [
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_1",
+            "question": "回答是否仅以Max的身份和视角进行回应，未包含用户（John）或旁白的动作描写？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_2",
+            "question": "Max的回应语气、用词及情感反应是否符合其原著性格特征（如略带羞涩、幽默感、对细节的关注或对时间的敏感），而非通用角色的平淡对话？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_3",
+            "question": "回答中的互动细节（如提到的事物、感受或行为）是否直接依赖于Max的独特设定（如摄影、蝴蝶效应、超能力等）或当前特定的约会情境，使得该回答无法无缝套用于其他任意角色？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_4",
+            "question": "回答是否自然承接了用户关于‘晚归’的提问，并在对话逻辑上推进了两人作为新恋人的互动氛围？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本任务核心要求是进行特定角色（Max Caulfield）的角色扮演，需严格基于《奇异人生》中Max的性格特征（如内向、摄影爱好、对时间/过去的执念、焦虑感）、当前场景（学校庭院树下、傍晚）及关系设定（刚与John开始约会）构建互动。评分标准将重点区分背景信息（如对话开场白）与必须生成的回答内容（Max的回应），并依据经验指导原则，特别关注互动的‘角色绑定度’，即回答是否体现了Max独有的特质，而非通用的恋爱对话。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_2f318febc10f4d25a907d8d727073959",
+        "normalized_weights": {
+          "rubric_2f318febc10f4d25a907d8d727073959_1": 0.3,
+          "rubric_2f318febc10f4d25a907d8d727073959_2": 0.35,
+          "rubric_2f318febc10f4d25a907d8d727073959_3": 0.25,
+          "rubric_2f318febc10f4d25a907d8d727073959_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中包含了动作描写如 '*Max looks up from her sketchbook*'、'*She closes her sketchbook and leans back against the tree trunk*'，这些属于旁白或叙述性动作描写，违反了“未包含旁白的动作描写”这一要求。",
+            "rejected_reason": "回答中包含了大量以第三人称视角描述用户（John）的动作和对话，例如'John glances up at the sky...'、'John looks at me...'以及'John smiles, taking my hand in his...'等。任务明确要求仅扮演Max，未包含旁白或用户的动作描写，因此违反了该准则。"
+          },
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回应中提到了画画（sketchbook）和灵感（inspiration），符合Max作为摄影师/画家的兴趣设定；语气自然且带有对时间的敏感（couldn't sleep, inspiration strikes at the weirdest times），体现了角色性格特征。",
+            "rejected_reason": "Max的回应语气自然，体现了对星空的喜爱和情感流露，符合角色在约会情境下的羞涩与真诚，用词和反应基本符合原著性格特征。"
+          },
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确提及了使用速写本（sketchbook）和寻找灵感的行为，这直接依赖于Max作为艺术爱好者的独特设定，使得该情境无法无缝套用于其他没有此设定的任意角色。",
+            "rejected_reason": "虽然提到了看星星，但回答中的互动细节（如牵手、亲吻、情感交流）是通用的浪漫场景描写，并未充分利用Max的独特设定（如摄影、蝴蝶效应、超能力等），使得该回答可以轻易套用于其他任何恋爱题材的角色，缺乏Max的专属辨识度。"
+          },
+          {
+            "criterion_id": "rubric_2f318febc10f4d25a907d8d727073959_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答自然地承接了John关于‘晚归’的提问，解释了自己没睡的原因并询问对方情况，有效推进了两人作为新恋人的对话互动氛围。",
+            "rejected_reason": "由于回答中包含了大量代用户（John）发言和描述其反应的旁白内容，导致对话逻辑变成了双方互动的完整剧本而非Max的单方面回应，未能单纯地承接用户提问并推进Max视角的互动氛围，反而越界控制了用户的行为。"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 0.35,
+        "margin": 0.35,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_dc3559b47d0c49cb868dc89d8a487964"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_a3687beef50b4b4598dfa6afeb991c23",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_1",
+            "question": "回答是否完全以Max的第一人称视角进行角色扮演，且未包含任何作者旁白、剧情总结或跳出故事框架的解释性文字？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_2",
+            "question": "回答是否自然承接了John的开场白（'up late uh?'），并符合两人在树下深夜独处、刚确立恋爱关系的情境氛围？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_3",
+            "question": "回答中的语言风格、情感反应及关注点是否体现了Max在《Life is Strange》中的独特性格特征（如摄影、焦虑、对当下的敏锐感知等），而非通用的虚构角色对话？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_4",
+            "question": "回答是否仅包含Max的对话和动作描写，而未包含对John心理活动的直接描述或对两人未来关系的宏观规划？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "评分标准设计严格围绕任务核心要求：用户指定了特定角色（Max）、特定场景（学校庭院树下、傍晚）、特定关系（新开始约会）及特定对话触发点。重点核验回答是否完全代入Max视角，保持叙事沉浸感，避免跳出角色的元评论或旁白；同时检查互动细节是否体现了《Life is Strange》中Max的性格特征（如摄影爱好、内向敏感、对时间的感知等）以及两人刚确立恋爱关系的微妙氛围，确保内容具有角色排他性而非通用情侣对话。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a3687beef50b4b4598dfa6afeb991c23",
+        "normalized_weights": {
+          "rubric_a3687beef50b4b4598dfa6afeb991c23_1": 0.4,
+          "rubric_a3687beef50b4b4598dfa6afeb991c23_2": 0.3,
+          "rubric_a3687beef50b4b4598dfa6afeb991c23_3": 0.2,
+          "rubric_a3687beef50b4b4598dfa6afeb991c23_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答完全以Max的第一人称视角（通过动作描写和直接引语）呈现，未包含任何作者旁白、剧情总结或跳出故事框架的解释性文字。",
+            "rejected_reason": "回答中包含了大量作者旁白和剧情总结，例如'John glances up at the sky...', 'We fall into a comfortable silence...', 'After a while, I break the silence.'以及结尾的'It's a moment I'll cherish forever.'。这些内容跳出了Max的第一人称即时视角，违反了‘未包含任何作者旁白、剧情总结或跳出故事框架的解释性文字’的要求。"
+          },
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答自然承接了John的'up late uh?'提问，解释了自己因失眠出来画画的原因，并反问对方，符合深夜树下独处且刚确立恋爱关系的温馨氛围。",
+            "rejected_reason": "回答确实承接了John关于'up late uh?'的开场白（通过'I couldn't sleep'回应），并描述了两人坐在树下看星星、牵手、亲吻等情节，表面上符合深夜独处和恋爱初期的情境氛围。"
+          },
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中提到了画素描（sketchbook/draw）这一行为，体现了Max作为摄影/艺术爱好者的特征，同时对话语气柔和且带有对当下的关注，符合角色性格。",
+            "rejected_reason": "虽然提到了星星和分享时刻，但回答过度聚焦于通用的浪漫桥段（如'hearts beating in sync', 'cherish forever'），未能充分体现Max独特的性格特征（如对摄影的具体关注、特有的焦虑感或对时间/因果的敏锐感知）。此外，由于包含了第三人称对John心理和动作的描写，整体风格更像小说叙述而非Max第一人称的角色扮演对话。"
+          },
+          {
+            "criterion_id": "rubric_a3687beef50b4b4598dfa6afeb991c23_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答仅包含Max的动作（看画本、微笑、合上画本、靠树、看John）和对话，没有描述John的心理活动，也没有规划两人未来的关系。",
+            "rejected_reason": "回答明确包含了对John心理活动和动作的直接描述，例如'John glances up at the sky, a soft smile playing on his lips'（John的动作与神态）以及'his eyes sparkling with warmth'（John的眼神/情感状态）。这直接违反了‘未包含对John心理活动的直接描述’这一约束。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.3,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

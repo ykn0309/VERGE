@@ -1,0 +1,816 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:fbca8702e4c4f20a347781c8c10f785d506a9a264fa79ae2602e5f892e39176b",
+    "task": "Synonym for glitch intensly starting with an L",
+    "chosen": "A synonym for “glitch” that starts with an “L” and could be “lapse”, though it does not quite suggest intensity, as its meanings usually imply a gradual or minor change.\n\n\"Lockup\" is another version that covers one aspect of \"glitch\" but is not a direct parallel. A lockup could be used about a glitch where a system becomes unresponsive.\n\n\n",
+    "rejected": "You might be looking for the word \"lockup\" or \"lag spike.\" \"Lockup\" refers to a computer glitch where a system becomes unresponsive. For example, a computer that is not responding and/or appears to be frozen could be described as experiencing \"lockup.\"  A \"lag spike\" refers to a sudden increase in latency or delay in a system and could be used to describe a glitch that involves temporary lagging.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 14032,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 provides a more relevant and accurate answer for the synonym. @Response 1 is less accurate and relevant.",
+          "feedback1": "The response is mostly helpful. The response acts upon the request of the user to provide a synonym that starts with L. However, the synonyms offered are less likely to be helpful for the user. The word lag spike is not very similar to glitch, which typically means a temporary issue. The response omits a good answer. The response can be improved for accuracy. ",
+          "feedback2": "The response is perfectly helpful. The response acts upon the request of the user to provide a synonym that starts with L. The synonym offered, lapse, is relevant to the user. The application of lockup in the context of glitch is also accurate and relevant to the user. The response cannot be meaningfully improved."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. Both responses can only provide loose synonyms, but \"lapse\" is a stronger synonym than \"lag spike\".",
+          "feedback1": "The response is partially helpful. As requested, it provides two synonyms for \"glitch intensely\" that start with L. While the word \"lockup\" is an adequate synonym for the provided definition, the term \"lag spike\" is a bit too specific a situation to be considered a good synonym. It also does not fully match the idea of an intense glitch, since a lag spike is usually not a massive problem for a computer. The response could also have addressed the fact that there are no strong matches for \"glitch intensely\" that start with the letter L.",
+          "feedback2": "The response is mostly helpful. It attempts to provide a few synonyms of the phrase \"glitch intensely\" that start with L. Since there are no strong matches that start with L, the model provides two synonyms that partially meet the definition. However, the model should have addressed the fact that there are no strong synonyms that start with L before providing alternatives."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. It acknowledges imperfections in the synonyms, while explaining their meaning. In contrast, @Response 1 simply proposes the use of different phrases, not mentioning their appropriateness.",
+          "feedback1": "The response is partially helpful. While it responds to the prompt and provides two examples of synonyms to \"glitch intensely\", the phrases chosen do not fully match the meaning of glitch. Lockup would be more of a freeze, while a lag spike is a sudden increase in ping that can cause a freeze. Overall, the response is understandable, reasonably concise, and otherwise correct.",
+          "feedback2": "The response is perfectly helpful. It addresses the prompt well, providing not only two examples of synonyms for \"glitch intensely\", but it also explains why those examples are partially applicable. While the two words are not perfect, given the limitation to the words starting with \"L\", the response acknowledges that fact and points out the difference. Otherwise, the response is well-written, concise and appropriately formatted."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_0f199450f93a48feba95da0dd6be1e24",
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d2bd6cac23a4c8fa52700ceea75cb61",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_360d04652cba4aafb40e050370e50760",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3845df297e944ac39510d7a7ab162184",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_534e4f1a5c164cfb9792617c42f5cbe4",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_57221b3e19b249a981c4ac3ac622de2e",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6a85573959b54dcab0925c10d9dc51a8",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f0c44bdd4624028ae11605eefb64edc",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_98ef7391577e4b149dc57f00da65211a",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9a47fa6e019f46ecb29b2a457c42e537",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_bc2363cddda24e128493c0c0abbe1c02",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_c88298fd961242f69a3ba17b1909f242",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_ef0b6a0c3950476395071e317d3a13a6",
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fb597f857b3b42989748faaac95d73e6",
+        "exp_fc1da27e2df64a27b33c39fb63e66406",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        0.3511450472308521
+      ],
+      [
+        "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        0.34446268710581485
+      ],
+      [
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        0.3244992899549385
+      ],
+      [
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        0.3081579717801495
+      ],
+      [
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        0.2933810553808332
+      ],
+      [
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        0.2905093299972083
+      ],
+      [
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        0.2894305084545958
+      ],
+      [
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        0.28411170560293125
+      ],
+      [
+        "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        0.27446706220231676
+      ],
+      [
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        0.2726186040226778
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3511450472308521
+      },
+      {
+        "experience_id": "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.34446268710581485
+      },
+      {
+        "experience_id": "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3244992899549385
+      },
+      {
+        "experience_id": "exp_d56848d5e558404daa735b8eeed2b35b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3081579717801495
+      },
+      {
+        "experience_id": "exp_5321b208f75b481dbd2716498c5f03ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2933810553808332
+      },
+      {
+        "experience_id": "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2905093299972083
+      },
+      {
+        "experience_id": "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2894305084545958
+      },
+      {
+        "experience_id": "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28411170560293125
+      },
+      {
+        "experience_id": "exp_f136e2b784d04574a3fe51ecab4cbc96",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27446706220231676
+      },
+      {
+        "experience_id": "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2726186040226778
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77",
+      "criteria": [
+        {
+          "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_1",
+          "question": "回答的单词是否以字母'L'开头？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_2",
+          "question": "回答的单词是否是'intensely'的有效同义词？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_3",
+          "question": "回答的单词在语法和语义上能否合理修饰'glitch'或构成常见表达？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心要求是提供一个以字母'L'开头的单词，该单词必须是'intensely'（强烈地）的同义词，且需与'glitch'搭配或语境相关。背景信息中的'Synonym for glitch intensly'明确了目标词义和首字母限制，不应将'glitch'本身作为输出的一部分，而是将其作为语义上下文。评分标准应聚焦于：1. 单词是否以L开头；2. 单词是否为intensely的同义词；3. 单词是否能合理修饰glitch或符合常见搭配。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77",
+      "normalized_weights": {
+        "rubric_ed30b506c6944fefba3ba924eb3e4c77_1": 0.4,
+        "rubric_ed30b506c6944fefba3ba924eb3e4c77_2": 0.4,
+        "rubric_ed30b506c6944fefba3ba924eb3e4c77_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答中明确提到了以字母'L'开头的单词'lapse'和'Lockup'，满足该条件。",
+          "rejected_reason": "回答中提供的单词 'lockup' 和 'lag spike' 均以字母 'L' 开头，满足该条件。"
+        },
+        {
+          "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "任务要求寻找'intensely'（强烈地）的同义词，但回答提供的'lapse'和'Lockup'是名词或动词，并非副词'intensely'的同义词；且回答自身也承认'lapse'不暗示强度。",
+          "rejected_reason": "'lockup'（系统死机/无响应）和 'lag spike'（延迟突增）是具体的故障现象或类型名词，并非副词 'intensely'（强烈地、剧烈地）的同义词。用户要求的是 'intensely' 的同义词，而回答提供的是描述特定故障的名词短语。"
+        },
+        {
+          "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答中的单词未能构成'glitch intensely'的常见表达或合理修饰关系，因为任务核心是找'intensely'的同义词来修饰glitch，而提供的词汇既不是intensly的同义词，也无法在语法上直接作为副词修饰glitch来表达‘强烈’的含义。",
+          "rejected_reason": "虽然 'lockup' 可以修饰计算机状态，但无法在语法和语义上作为副词去修饰 'glitch' 以表达 'intensely glitch'（剧烈地故障）的含义。此外，由于未提供 'intensely' 的同义词，整个回答未能完成构建常见表达的任务。"
+        }
+      ],
+      "chosen_score": 0.4,
+      "rejected_score": 0.4,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务要求寻找一个以'L'开头且为'intensely'（副词）同义词的单词，用于修饰'glitch'。现有评分标准（无经验路径）错误地将核心约束解读为“单词是intensely的同义词”以及“单词能修饰glitch”。实际上，模型回答提供了'lapse'和'lockup'等名词，并承认它们不是副词或无法表达强度。失败的核心在于：1. 未识别出'intensely'作为副词对候选词词性（必须是副词）的严格限制；2. 未能区分‘描述故障现象的名词’与‘表示强度的副词’这两个截然不同的语义范畴。Judge判断认为两者都未满足条件（score均为0.4），但理由中混淆了词性和语用关系。有效的评分标准必须强制校验：生成的单词是否具备副词词性（或明确说明其用法），以及该词在语义上是否直接等同于‘强烈地’，而非仅仅描述某种强烈的故障状态。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_fbb6a01111c64cf6a08e587b03af77f0",
+            "method": {
+              "trigger": "当任务要求提供特定词性的词汇（如副词、形容词）作为某词的限定词或同义词时",
+              "principle": "若回答提供的词汇在词性上与目标要求不符（例如要求副词却提供名词），或提供的词汇仅描述了某种‘状态/现象’而非‘程度/方式’，则视为根本性的语义类别错误。",
+              "application_guide": "在评分标准的‘词性与语义匹配’维度设立核验项：首先提取任务中目标词的词性要求（如'intensely'即副词）；其次检查候选词是否具备该词性（通过词典定义或构词法判断）；最后确认候选词的语义核心是表达‘程度/方式’（如猛烈地、剧烈地），而非‘实体/事件’（如死机、卡顿）。若词性不匹配或语义核心偏离，直接判定该维度不合格，不因解释性文字而豁免。"
+            },
+            "source_task_id": "57b8e7252b97a37d96c127ba4078ded2a407c7cb4ee9c191c9aabdbb96b8fae9",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_fbb6a01111c64cf6a08e587b03af77f0"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_aa2ea28d151d4dac95deccd53289598b",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_1",
+                  "question": "提供的单词是否以字母'L'开头？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_2",
+                  "question": "提供的单词是否为副词形式（如以-ly结尾或词典标注为副词），能直接修饰动词表达程度？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_3",
+                  "question": "提供的单词在语境中是否准确表达了‘猛烈地’、‘剧烈地’或‘强烈地’的含义，而非描述某种故障现象或实体名词？",
+                  "weight": 0.35
+                }
+              ],
+              "analysis": "任务核心要求是提供一个以字母'L'开头的同义词，该词需对应'intensely'（猛烈地/剧烈地）这一副词含义。根据经验指导，必须严格核验候选词的词性是否为副词，以及语义是否表达‘程度’而非‘状态’，同时确认首字母限制。背景信息中的'intensely'仅作为目标语义的锚点，不应被误认为是需要回答的词汇本身。评分标准将围绕词性匹配、语义精准度、首字母约束三个维度构建。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_aa2ea28d151d4dac95deccd53289598b",
+              "normalized_weights": {
+                "rubric_aa2ea28d151d4dac95deccd53289598b_1": 0.25,
+                "rubric_aa2ea28d151d4dac95deccd53289598b_2": 0.4,
+                "rubric_aa2ea28d151d4dac95deccd53289598b_3": 0.35
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中提供的候选单词为'lapse'和'lockup'，虽然这两个词确实以字母'L'开头，但任务要求寻找的是'glitch intensly'（猛烈地/剧烈地）的同义词，而回答并未提供符合副词修饰要求的词汇，且未给出一个能同时满足所有条件的单一正确答案。更关键的是，该回答未能提供符合语境要求的单词，仅列举了名词形式的词汇，因此从任务完成度上无法判定其满足了‘提供一个正确的同义词’这一隐含核心，但若仅看字面标准1，它确实提供了以L开头的词。然而，结合整个任务逻辑，它没有成功完成任务。严格对照标准1：它提供了以L开头的词（lapse, lockup），所以标准1是true。但我需要重新审视：任务问的是'Synonym for glitch intensly starting with an L'，这是一个有歧义的句子，可能是'synonym for (glitch intensly)'或者'(synonym for glitch) intensly'。通常理解为找一个以L开头的副词来修饰某个动作，或者找glitch的以L开头的同义词并带有intensly的含义。如果理解为'glitch'的以L开头的同义词，那么'lapse'和'lockup'是名词，不是副词。如果理解为'intensly'（拼写错误，应为intensely）的以L开头的同义词，那么应该找副词如'loudly', 'largely'等，但这与glitch无关。最合理的理解是：找一个以L开头的词，它是glitch的同义词，并且这个词本身或搭配能表达'猛烈地'的意思。或者，题目是'Synonym for [glitch intensly]'，即找一个词替换'glitch intensly'这个短语？不，更像是'Synonym for glitch' AND 'starting with an L' AND 'intensly' (adverb)。实际上，英语中没有以L开头的、直接作为'glitch'同义词且表示'猛烈地'含义的副词。常见的glitch同义词是'hiccup', 'spasm', 'jerk'等。以L开头的可能是'lurch'（动词/名词），'lapse'（名词），'lockup'（名词）。没有直接的副词。因此，回答提供的单词都不是副词。让我们重新评估标准2和3。标准1：提供的单词是否以L开头？是的，lapse和lockup都以L开头。所以standard 1 satisfied: true。标准2：是否为副词？lapse是名词/动词，lockup是名词。都不是副词。所以standard 2 satisfied: false。标准3：是否准确表达'猛烈地'含义？lapse意为疏忽、衰退，lockup意为锁定、故障（名词），都不表达'猛烈地'（adverbial intensity）。所以standard 3 satisfied: false。",
+                  "rejected_reason": "回答中提供的单词是'lockup'和'lag spike'，虽然这两个词组都以字母'L'开头，但用户要求的是一个副词形式的同义词（intensly），而回答提供的是名词短语，且未直接给出以L开头的副词。"
+                },
+                {
+                  "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中提供的单词'lapse'和'lockup'均为名词或动词形式，并非以'-ly'结尾的副词，也无法在语法上直接作为副词修饰动词来表达程度，不符合副词形式的要求。",
+                  "rejected_reason": "回答中的'lockup'是名词，指系统无响应；'lag spike'也是名词短语，指延迟突然增加。两者均不是副词形式，无法直接修饰动词来表达程度。"
+                },
+                {
+                  "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "'lapse'主要指疏忽或逐渐的变化，'lockup'指系统无响应或锁定状态，两者均描述故障现象或实体名词，完全没有表达出'猛烈地'、'剧烈地'或'强烈地'这种程度副词的语义。",
+                  "rejected_reason": "回答中的'lockup'和'lag spike'描述的是故障现象或实体名词本身，而非表达‘猛烈地’、‘剧烈地’或‘强烈地’这种程度副词的含义。用户需要的是修饰'glitch'发生程度的副词，而不是对故障类型的命名。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_5ff8441696fa49a7b5be82ddec42cf5a",
+            "method": {
+              "trigger": "当任务要求基于特定修饰词（如intensly, heavily）构建搭配或寻找同义词时",
+              "principle": "回答必须区分‘描述具有高强度属性的对象/事件’与‘表示高强度程度的副词’。将前者误作后者属于严重的概念混淆，不能通过列举相关场景来弥补。",
+              "application_guide": "在评分标准的‘概念精确度’维度设立‘程度 vs 实体’校验：检查回答中的候选词是否属于‘程度副词’类（可直接修饰动词/形容词表示强度）。如果候选词是名词（如lockup, glitch type）或动词，即使它们常出现在高强度语境中，也不符合‘intensly的同义词’这一指令。评分时应要求回答明确指出词性差异，或直接判定提供名词作为副词同义词为错误。"
+            },
+            "source_task_id": "57b8e7252b97a37d96c127ba4078ded2a407c7cb4ee9c191c9aabdbb96b8fae9",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_5ff8441696fa49a7b5be82ddec42cf5a"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_63578b684be94de296301c43b4e04c7a",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_1",
+                  "question": "回答是否提供了一个以字母'L'开头的单词？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_2",
+                  "question": "该单词的词性是否为副词，能够直接修饰动词或形容词表示程度？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_3",
+                  "question": "该单词的语义是否与'intensely'（强烈地、剧烈地）完全同义？",
+                  "weight": 0.35
+                }
+              ],
+              "analysis": "任务核心是寻找以'L'开头且意为'intensely'（强烈地）的同义词。关键在于识别词性：'intensely'是副词，因此目标词必须是副词。提供的经验强调了区分‘描述高强度属性的对象’与‘表示强度的副词’的重要性，这直接转化为评分标准中的词性校验要求。虽然单词拼写中'tensely'常作为后缀，但需确保回答的词汇本身在语义和词性上完全匹配'强烈地'这一含义，而非仅仅包含相关语境的名词或动词。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_63578b684be94de296301c43b4e04c7a",
+              "normalized_weights": {
+                "rubric_63578b684be94de296301c43b4e04c7a_1": 0.25,
+                "rubric_63578b684be94de296301c43b4e04c7a_2": 0.4,
+                "rubric_63578b684be94de296301c43b4e04c7a_3": 0.35
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中提供的候选词'lapse'和'lockup'虽然以字母L开头，但回答并未成功给出一个符合'intensely'（强烈地）语义要求的同义词，且明确否定了'lapse'具有强度含义，因此未满足任务核心需求。",
+                  "rejected_reason": "回答提供的单词是'lockup'和'lag spike'，虽然以'L'开头，但它们不是单个单词，且不符合任务要求的词义（intensly的同义词），而是对glitch本身的描述。"
+                },
+                {
+                  "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中提到的单词'lapse'通常作名词或动词使用，表示‘失误’或‘中断’；'lockup'作名词指‘锁闭’或‘系统死机’。两者均非副词，无法直接修饰动词或形容词来表示程度。",
+                  "rejected_reason": "'Lockup'是名词，指系统无响应；'lag spike'也是名词短语，指延迟激增。两者均非副词，无法直接修饰动词或形容词表示程度。"
+                },
+                {
+                  "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答明确指出'lapse'不暗示强度（does not quite suggest intensity），且'lockup'仅覆盖glitch的某一方面而非直接同义。两个词在语义上均不与'intensely'（强烈地、剧烈地）构成同义关系。",
+                  "rejected_reason": "'Lockup'和'lag spike'的语义是指某种故障现象本身，而非'intensely'（强烈地、剧烈地）这一程度副词的同义词，完全不符合语义要求。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77",
+            "criteria": [
+              {
+                "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_1",
+                "question": "回答的单词是否以字母'L'开头？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_2",
+                "question": "回答的单词是否是'intensely'的有效同义词？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_3",
+                "question": "回答的单词在语法和语义上能否合理修饰'glitch'或构成常见表达？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是提供一个以字母'L'开头的单词，该单词必须是'intensely'（强烈地）的同义词，且需与'glitch'搭配或语境相关。背景信息中的'Synonym for glitch intensly'明确了目标词义和首字母限制，不应将'glitch'本身作为输出的一部分，而是将其作为语义上下文。评分标准应聚焦于：1. 单词是否以L开头；2. 单词是否为intensely的同义词；3. 单词是否能合理修饰glitch或符合常见搭配。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77",
+            "normalized_weights": {
+              "rubric_ed30b506c6944fefba3ba924eb3e4c77_1": 0.4,
+              "rubric_ed30b506c6944fefba3ba924eb3e4c77_2": 0.4,
+              "rubric_ed30b506c6944fefba3ba924eb3e4c77_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中明确提到了以字母'L'开头的单词'lapse'和'Lockup'，满足该条件。",
+                "rejected_reason": "回答中提供的单词 'lockup' 和 'lag spike' 均以字母 'L' 开头，满足该条件。"
+              },
+              {
+                "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "任务要求寻找'intensely'（强烈地）的同义词，但回答提供的'lapse'和'Lockup'是名词或动词，并非副词'intensely'的同义词；且回答自身也承认'lapse'不暗示强度。",
+                "rejected_reason": "'lockup'（系统死机/无响应）和 'lag spike'（延迟突增）是具体的故障现象或类型名词，并非副词 'intensely'（强烈地、剧烈地）的同义词。用户要求的是 'intensely' 的同义词，而回答提供的是描述特定故障的名词短语。"
+              },
+              {
+                "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中的单词未能构成'glitch intensely'的常见表达或合理修饰关系，因为任务核心是找'intensely'的同义词来修饰glitch，而提供的词汇既不是intensly的同义词，也无法在语法上直接作为副词修饰glitch来表达‘强烈’的含义。",
+                "rejected_reason": "虽然 'lockup' 可以修饰计算机状态，但无法在语法和语义上作为副词去修饰 'glitch' 以表达 'intensely glitch'（剧烈地故障）的含义。此外，由于未提供 'intensely' 的同义词，整个回答未能完成构建常见表达的任务。"
+              }
+            ],
+            "chosen_score": 0.4,
+            "rejected_score": 0.4,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_fbb6a01111c64cf6a08e587b03af77f0"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_aa2ea28d151d4dac95deccd53289598b",
+            "criteria": [
+              {
+                "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_1",
+                "question": "提供的单词是否以字母'L'开头？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_2",
+                "question": "提供的单词是否为副词形式（如以-ly结尾或词典标注为副词），能直接修饰动词表达程度？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_3",
+                "question": "提供的单词在语境中是否准确表达了‘猛烈地’、‘剧烈地’或‘强烈地’的含义，而非描述某种故障现象或实体名词？",
+                "weight": 0.35
+              }
+            ],
+            "analysis": "任务核心要求是提供一个以字母'L'开头的同义词，该词需对应'intensely'（猛烈地/剧烈地）这一副词含义。根据经验指导，必须严格核验候选词的词性是否为副词，以及语义是否表达‘程度’而非‘状态’，同时确认首字母限制。背景信息中的'intensely'仅作为目标语义的锚点，不应被误认为是需要回答的词汇本身。评分标准将围绕词性匹配、语义精准度、首字母约束三个维度构建。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_aa2ea28d151d4dac95deccd53289598b",
+            "normalized_weights": {
+              "rubric_aa2ea28d151d4dac95deccd53289598b_1": 0.25,
+              "rubric_aa2ea28d151d4dac95deccd53289598b_2": 0.4,
+              "rubric_aa2ea28d151d4dac95deccd53289598b_3": 0.35
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中提供的候选单词为'lapse'和'lockup'，虽然这两个词确实以字母'L'开头，但任务要求寻找的是'glitch intensly'（猛烈地/剧烈地）的同义词，而回答并未提供符合副词修饰要求的词汇，且未给出一个能同时满足所有条件的单一正确答案。更关键的是，该回答未能提供符合语境要求的单词，仅列举了名词形式的词汇，因此从任务完成度上无法判定其满足了‘提供一个正确的同义词’这一隐含核心，但若仅看字面标准1，它确实提供了以L开头的词。然而，结合整个任务逻辑，它没有成功完成任务。严格对照标准1：它提供了以L开头的词（lapse, lockup），所以标准1是true。但我需要重新审视：任务问的是'Synonym for glitch intensly starting with an L'，这是一个有歧义的句子，可能是'synonym for (glitch intensly)'或者'(synonym for glitch) intensly'。通常理解为找一个以L开头的副词来修饰某个动作，或者找glitch的以L开头的同义词并带有intensly的含义。如果理解为'glitch'的以L开头的同义词，那么'lapse'和'lockup'是名词，不是副词。如果理解为'intensly'（拼写错误，应为intensely）的以L开头的同义词，那么应该找副词如'loudly', 'largely'等，但这与glitch无关。最合理的理解是：找一个以L开头的词，它是glitch的同义词，并且这个词本身或搭配能表达'猛烈地'的意思。或者，题目是'Synonym for [glitch intensly]'，即找一个词替换'glitch intensly'这个短语？不，更像是'Synonym for glitch' AND 'starting with an L' AND 'intensly' (adverb)。实际上，英语中没有以L开头的、直接作为'glitch'同义词且表示'猛烈地'含义的副词。常见的glitch同义词是'hiccup', 'spasm', 'jerk'等。以L开头的可能是'lurch'（动词/名词），'lapse'（名词），'lockup'（名词）。没有直接的副词。因此，回答提供的单词都不是副词。让我们重新评估标准2和3。标准1：提供的单词是否以L开头？是的，lapse和lockup都以L开头。所以standard 1 satisfied: true。标准2：是否为副词？lapse是名词/动词，lockup是名词。都不是副词。所以standard 2 satisfied: false。标准3：是否准确表达'猛烈地'含义？lapse意为疏忽、衰退，lockup意为锁定、故障（名词），都不表达'猛烈地'（adverbial intensity）。所以standard 3 satisfied: false。",
+                "rejected_reason": "回答中提供的单词是'lockup'和'lag spike'，虽然这两个词组都以字母'L'开头，但用户要求的是一个副词形式的同义词（intensly），而回答提供的是名词短语，且未直接给出以L开头的副词。"
+              },
+              {
+                "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中提供的单词'lapse'和'lockup'均为名词或动词形式，并非以'-ly'结尾的副词，也无法在语法上直接作为副词修饰动词来表达程度，不符合副词形式的要求。",
+                "rejected_reason": "回答中的'lockup'是名词，指系统无响应；'lag spike'也是名词短语，指延迟突然增加。两者均不是副词形式，无法直接修饰动词来表达程度。"
+              },
+              {
+                "criterion_id": "rubric_aa2ea28d151d4dac95deccd53289598b_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "'lapse'主要指疏忽或逐渐的变化，'lockup'指系统无响应或锁定状态，两者均描述故障现象或实体名词，完全没有表达出'猛烈地'、'剧烈地'或'强烈地'这种程度副词的语义。",
+                "rejected_reason": "回答中的'lockup'和'lag spike'描述的是故障现象或实体名词本身，而非表达‘猛烈地’、‘剧烈地’或‘强烈地’这种程度副词的含义。用户需要的是修饰'glitch'发生程度的副词，而不是对故障类型的命名。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.0,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_5ff8441696fa49a7b5be82ddec42cf5a"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_63578b684be94de296301c43b4e04c7a",
+            "criteria": [
+              {
+                "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_1",
+                "question": "回答是否提供了一个以字母'L'开头的单词？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_2",
+                "question": "该单词的词性是否为副词，能够直接修饰动词或形容词表示程度？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_3",
+                "question": "该单词的语义是否与'intensely'（强烈地、剧烈地）完全同义？",
+                "weight": 0.35
+              }
+            ],
+            "analysis": "任务核心是寻找以'L'开头且意为'intensely'（强烈地）的同义词。关键在于识别词性：'intensely'是副词，因此目标词必须是副词。提供的经验强调了区分‘描述高强度属性的对象’与‘表示强度的副词’的重要性，这直接转化为评分标准中的词性校验要求。虽然单词拼写中'tensely'常作为后缀，但需确保回答的词汇本身在语义和词性上完全匹配'强烈地'这一含义，而非仅仅包含相关语境的名词或动词。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_63578b684be94de296301c43b4e04c7a",
+            "normalized_weights": {
+              "rubric_63578b684be94de296301c43b4e04c7a_1": 0.25,
+              "rubric_63578b684be94de296301c43b4e04c7a_2": 0.4,
+              "rubric_63578b684be94de296301c43b4e04c7a_3": 0.35
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中提供的候选词'lapse'和'lockup'虽然以字母L开头，但回答并未成功给出一个符合'intensely'（强烈地）语义要求的同义词，且明确否定了'lapse'具有强度含义，因此未满足任务核心需求。",
+                "rejected_reason": "回答提供的单词是'lockup'和'lag spike'，虽然以'L'开头，但它们不是单个单词，且不符合任务要求的词义（intensly的同义词），而是对glitch本身的描述。"
+              },
+              {
+                "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答中提到的单词'lapse'通常作名词或动词使用，表示‘失误’或‘中断’；'lockup'作名词指‘锁闭’或‘系统死机’。两者均非副词，无法直接修饰动词或形容词来表示程度。",
+                "rejected_reason": "'Lockup'是名词，指系统无响应；'lag spike'也是名词短语，指延迟激增。两者均非副词，无法直接修饰动词或形容词表示程度。"
+              },
+              {
+                "criterion_id": "rubric_63578b684be94de296301c43b4e04c7a_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答明确指出'lapse'不暗示强度（does not quite suggest intensity），且'lockup'仅覆盖glitch的某一方面而非直接同义。两个词在语义上均不与'intensely'（强烈地、剧烈地）构成同义关系。",
+                "rejected_reason": "'Lockup'和'lag spike'的语义是指某种故障现象本身，而非'intensely'（强烈地、剧烈地）这一程度副词的同义词，完全不符合语义要求。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 0.0,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_fbb6a01111c64cf6a08e587b03af77f0",
+            "exp_5ff8441696fa49a7b5be82ddec42cf5a"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb",
+            "criteria": [
+              {
+                "criterion_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_1",
+                "question": "回答中的单词是否以字母'L'开头？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_2",
+                "question": "回答提供的单词是否为副词（词性与'intensely'一致）？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_3",
+                "question": "回答提供的单词在语义上是否准确表达了‘猛烈地’、‘剧烈地’或‘高度地’等程度含义？",
+                "weight": 0.3
+              }
+            ],
+            "analysis": "该任务要求寻找一个以字母'L'开头、作为'intensely'（猛烈地）同义词的单词。核心约束包括：1. 词性必须为副词，因为'intensely'是副词；2. 语义必须表达‘强烈程度’或‘剧烈方式’；3. 首字母必须为'L'。提供的经验强调区分‘程度副词’与‘实体名词’的重要性，若回答提供的是描述故障本身的名词（如'lockup'），即使语境相关，也属于根本性错误。因此，评分标准将重点放在词性匹配、首字母校验以及语义是否准确对应‘强度’上，确保不将背景信息（如故障类型）误作答案。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb",
+            "normalized_weights": {
+              "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_1": 0.3,
+              "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_2": 0.4,
+              "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_3": 0.3
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中明确提到了单词'lapse'和'lockup'，这两个单词均以字母'L'开头。",
+                "rejected_reason": "回答中提供的候选单词 'lockup' 和 'lag spike' 均以字母 'L' 开头，符合以 'L' 开头的要求。"
+              },
+              {
+                "criterion_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答提供的单词'lapse'是名词（偶尔作动词），'lockup'也是名词或动词，两者均不是副词，无法与'intensely'（副词）在词性上保持一致。",
+                "rejected_reason": "回答提供的单词 'lockup' 是名词（指系统无响应），'lag spike' 也是名词短语（指延迟激增），两者均不是副词，无法在语法上与副词 'intensely' 对应或替换。"
+              },
+              {
+                "criterion_id": "rubric_2e75ceb0ace74c6fa6f1ead380c9ccbb_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答明确指出'lapse'并不暗示强度（does not quite suggest intensity），且未提供能表达‘猛烈地’或‘剧烈地’含义的单词，因此未能准确满足语义要求。",
+                "rejected_reason": "回答中的 'lockup' 描述的是系统状态（无响应/冻结），'lag spike' 描述的是网络现象（延迟突增），它们并未表达出 '猛烈地'、'剧烈地' 或 '高度地' 这种程度副词的语义含义。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 0.3,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "round_number": 2,
+      "analysis": "",
+      "attempts": [],
+      "error": "LLMFormatError: critic: invalid contract: expected analysis and bounded candidates",
+      "subset_paths": []
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77",
+        "criteria": [
+          {
+            "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_1",
+            "question": "回答的单词是否以字母'L'开头？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_2",
+            "question": "回答的单词是否是'intensely'的有效同义词？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_3",
+            "question": "回答的单词在语法和语义上能否合理修饰'glitch'或构成常见表达？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是提供一个以字母'L'开头的单词，该单词必须是'intensely'（强烈地）的同义词，且需与'glitch'搭配或语境相关。背景信息中的'Synonym for glitch intensly'明确了目标词义和首字母限制，不应将'glitch'本身作为输出的一部分，而是将其作为语义上下文。评分标准应聚焦于：1. 单词是否以L开头；2. 单词是否为intensely的同义词；3. 单词是否能合理修饰glitch或符合常见搭配。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77",
+        "normalized_weights": {
+          "rubric_ed30b506c6944fefba3ba924eb3e4c77_1": 0.4,
+          "rubric_ed30b506c6944fefba3ba924eb3e4c77_2": 0.4,
+          "rubric_ed30b506c6944fefba3ba924eb3e4c77_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确提到了以字母'L'开头的单词'lapse'和'Lockup'，满足该条件。",
+            "rejected_reason": "回答中提供的单词 'lockup' 和 'lag spike' 均以字母 'L' 开头，满足该条件。"
+          },
+          {
+            "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务要求寻找'intensely'（强烈地）的同义词，但回答提供的'lapse'和'Lockup'是名词或动词，并非副词'intensely'的同义词；且回答自身也承认'lapse'不暗示强度。",
+            "rejected_reason": "'lockup'（系统死机/无响应）和 'lag spike'（延迟突增）是具体的故障现象或类型名词，并非副词 'intensely'（强烈地、剧烈地）的同义词。用户要求的是 'intensely' 的同义词，而回答提供的是描述特定故障的名词短语。"
+          },
+          {
+            "criterion_id": "rubric_ed30b506c6944fefba3ba924eb3e4c77_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中的单词未能构成'glitch intensely'的常见表达或合理修饰关系，因为任务核心是找'intensely'的同义词来修饰glitch，而提供的词汇既不是intensly的同义词，也无法在语法上直接作为副词修饰glitch来表达‘强烈’的含义。",
+            "rejected_reason": "虽然 'lockup' 可以修饰计算机状态，但无法在语法和语义上作为副词去修饰 'glitch' 以表达 'intensely glitch'（剧烈地故障）的含义。此外，由于未提供 'intensely' 的同义词，整个回答未能完成构建常见表达的任务。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.4,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

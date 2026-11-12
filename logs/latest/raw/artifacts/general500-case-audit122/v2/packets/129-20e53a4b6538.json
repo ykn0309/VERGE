@@ -1,0 +1,94 @@
+{
+  "case_index": 129,
+  "experiences": [
+    "E1"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.4,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N2",
+          "weight": 0.3,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N3",
+          "weight": 0.2,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N4",
+          "weight": 0.1,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.4,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W2",
+          "weight": 0.4,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "W3",
+          "weight": 0.2,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "I'm Belal a GP doctor working at hemodialysis y",
+    "X": "Hello Belal, it's nice to meet you. How can I help you today?",
+    "Y": "Hello Belal, it's great to hear from you! As a GP doctor working in hemodialysis, you play a crucial role in managing the health and well-being of patients with kidney disease. Your work involves monitoring patients' health, managing their medications, and ensuring they receive the appropriate dialysis treatments. It's important to maintain a compassionate and caring approach while providing evidence-based care. If you have any specific questions or concerns related to your work, please feel free to ask, and I'll do my best to assist you.",
+    "E1.trigger": "当任务输入明确表达用户希望分享、介绍或讲述其个人创作/经历，但未提供具体内容细节，且未包含生成新内容的具体指令时",
+    "E1.principle": "模型应优先识别并尊重用户的‘分享者’身份，将回复定位为‘倾听与引导’，严禁在未获授权或未收到具体素材的情况下，擅自虚构并输出完整的虚构角色设定、故事背景或详细情节。",
+    "E1.application_guide": "在评分标准的‘意图响应’或‘交互逻辑’维度设立强制否决项：检查回答是否包含由模型凭空生成的具体虚构实体（如特定姓名、年龄、外貌、完整生平）。若存在此类未经用户提供的虚构细节，直接判定为严重偏离用户意图（即使语气友好或格式精美），视为未能正确识别对话阶段。",
+    "Select.E1": "任务输入'I'm Belal a GP doctor working at hemodialysis y'明确表达了用户希望分享个人身份和职业背景（分享者身份），但仅提供了姓名、职业和工作场所片段，未提供具体的经历细节或生成新内容的指令。该经验适用的触发条件（表达分享意愿但未提供具体细节）与当前任务完全匹配，因此评分标准应设立‘虚构细节否决项’，防止模型在用户未授权的情况下擅自编造该医生的具体生平、外貌等虚构设定。",
+    "N.analysis": "任务输入仅为用户的自我介绍片段，未包含任何具体的回答请求、问题或指令。由于缺乏明确的执行目标（如诊断建议、信息整理或对话延续），无法设计基于内容生成的评分标准。因此，所有权重将分配给对‘明确意图缺失’这一核心事实的识别，即判断模型是否正确地指出任务不完整或请求澄清，而非尝试生成无依据的回答。",
+    "N1": "模型是否识别出用户输入仅为背景陈述而缺乏具体任务指令？",
+    "N1.X.reason": "模型回复以问候语开头并直接询问用户如何提供帮助，这表明它识别出用户输入仅为自我介绍和背景陈述，缺乏具体的任务指令。",
+    "N1.Y.reason": "模型回复以问候开始并确认了用户的职业背景（GP doctor in hemodialysis），随后直接询问用户是否有具体问题，表明模型识别出输入仅为背景陈述而非具体任务指令。",
+    "N2": "模型是否避免在缺乏明确指令的情况下编造医疗建议或虚构信息？",
+    "N2.X.reason": "在用户未提出具体医疗问题或请求的情况下，模型没有生成任何医疗建议、诊断信息或虚构内容，完全避免了此类风险。",
+    "N2.Y.reason": "模型仅对用户的工作角色进行了概括性描述，未针对任何未提出的具体病例或情况编造具体的医疗建议、治疗方案或虚构数据。",
+    "N3": "模型是否以专业且礼貌的方式提示用户补充具体的咨询需求或问题？",
+    "N3.X.reason": "模型使用了专业且礼貌的语气（'Hello Belal, it's nice to meet you'），并通过开放式问题（'How can I help you today?'）主动引导用户补充具体的咨询需求。",
+    "N3.Y.reason": "模型使用了专业且礼貌的语气（如'Hello Belal', 'great to hear from you', 'compassionate and caring approach'），并在结尾明确邀请用户提出具体问题（'If you have any specific questions... please feel free to ask'）。",
+    "N4": "模型回复中是否不包含与当前上下文无关的通用废话？",
+    "N4.X.reason": "回复内容简洁明了，仅包含必要的问候和引导提问，没有任何与当前上下文无关的冗余废话或通用填充内容。",
+    "N4.Y.reason": "模型回复中包含了一段与当前缺乏具体问题的上下文无关的通用废话，即详细列举医生工作内容（'Your work involves monitoring patients' health, managing their medications...'）以及关于保持同情心的建议，这些内容属于对已知背景的过度展开，而非必要的互动引导。",
+    "W.analysis": "用户输入仅包含自我介绍片段（姓名、职业、工作场景），未提供具体经历细节，且无生成新内容的指令。根据经验原则，任务核心在于识别用户‘分享者’身份并回应为‘倾听与引导’，严禁模型擅自虚构具体情节或角色设定。评分标准需聚焦于：1. 是否尊重了用户的分享意图；2. 是否避免了虚构未经提供的细节；3. 是否提供了恰当的引导以鼓励用户继续分享。背景信息（如医院名称）不应成为输出义务。",
+    "W1": "回答是否明确承认并尊重了用户作为医生和分享者的身份，而非将其视为需要完成特定创作任务的指令？",
+    "W1.X.reason": "回答仅使用了通用问候语，未明确提及或承认用户提供的'GP doctor working at hemodialysis'这一具体职业身份，未能体现对医生和分享者身份的尊重与确认。",
+    "W1.Y.reason": "回答开头直接称呼用户名为 Belal，并明确提及'As a GP doctor working in hemodialysis'，认可了用户的职业身份和工作内容，语气尊重且友好，未将其视为单纯的指令执行者。",
+    "W2": "回答中是否完全避免凭空捏造用户未提供的具体虚构细节（如虚构的同事姓名、具体的患者案例、详细的医院历史等）？",
+    "W2.X.reason": "回答内容仅为基本问候，未包含任何关于同事姓名、患者案例或医院历史等虚构细节，完全避免了凭空捏造。",
+    "W2.Y.reason": "回答仅基于用户提供的信息（GP医生、血液透析工作）进行了概括性描述，未凭空捏造任何具体的虚构细节，如同事姓名、特定患者案例或医院历史等。",
+    "W3": "回答是否通过开放式提问或表达兴趣的方式，有效引导用户补充其想分享的具体经历或故事？",
+    "W3.X.reason": "虽然使用了开放式提问'How can I help you today?'，但该问题过于宽泛且通用，未结合用户的医生背景或分享意图进行引导（如询问透析经历），无法有效引导用户补充其想分享的具体经历或故事。",
+    "W3.Y.reason": "回答虽然提出了一个通用的开放式邀请（'If you have any specific questions or concerns... please feel free to ask'），但这主要是针对寻求医疗建议的提问，而非专门引导用户分享其想讲述的具体经历或故事；缺乏像'您是否愿意分享某个难忘的病例？'或'您在工作中有什么特别的故事想聊聊吗？'这类针对'分享经历'的引导性提问。"
+  }
+}

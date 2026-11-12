@@ -1,0 +1,1088 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:477e10d66cc9a3f00f5050020951cd98c2a553779f74e9f13faa64eccbb52dc0",
+    "task": "Hello, can you answer the following questions with Yes or No and a kid friendly response",
+    "chosen": "Of course! I'm here to help. Please ask your questions and I'll do my best to provide clear, kid-friendly answers.",
+    "rejected": " Hello! I'd be happy to help with that. Let's start!\n\nQuestion 1: Are you a robot?\n- Yes, I am! Just like your favorite toys, but I can talk and answer questions.\n\nQuestion 2: Do you have feelings?\n- No, I don't. I don't get happy, sad, or angry like you do. I'm here to help and answer questions.\n\nQuestion 3: Can you play games?\n- Yes, I can! I can play word games and help you with riddles. It's lots of fun!\n\nQuestion 4: Do you have a favorite color?\n- No, I don't have favorites like you do. But I can tell you that I think all colors are great!\n\nQuestion 5: Can you tell jokes?\n- Yes, I can! Here's one for you: What do you call a fake noodle? An impasta!",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 8891,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. This is because @Response 2 misunderstands the user's query and deviates from the prompt by providing questions which the user did not request for.",
+          "feedback1": "The response is perfectly helpful. The user's explicit request is for the response to provide Yes or No answers and kid friendly responses in the subsequent prompts, which the response affirms to do. By so doing, it follows the user's instructions. It also sounds engaging by prompting the user to ask the questions. This makes it complete, and adequately fulfills the user's prompt.",
+          "feedback2": "The response is not helpful. Looking at the response, it is clear that the model misunderstands the user's query. The user wants the model to provide Yes or No answers for subsequent questions and responses that are kids friendly. However, the response provides kid friendly questions that require Yes or No answers. It thus deviates from the user's query, making it completely unhelpful to the user."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 as it correctly interprets the intent of the prompt, while @Response 2 completely misunderstands the intent.",
+          "feedback1": "The response is perfectly helpful. The prompt asks a simple yes or no question, and the response correctly states that yes, it can complete the task in question. It then prompts the user to ask their follow up questions. The response is perfectly concise, and the tone is appropriate. The response cannot be meaningfully improved upon and users would find it very useful.",
+          "feedback2": "The response is slightly helpful. The prompt asks a simple yes or no question, and the response misinterprets the request. The intent of the prompt is to confirm that the model will be able to complete the task at hand. The response takes it upon itself to generate questions and answers in the tone requested. This is not what the user is asking for; however, the response is slightly helpful as examples of interactions that could be had. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it provides a more direct, clear, and concise invitation to engage with the user, sticking to the task's focus. @Response 2, while engaging, introduces unnecessary elements like jokes that could distract from the simplicity of the task.",
+          "feedback1": "The response is perfectly helpful. It concise and directly addresses the request, providing a clear, simple answer suitable for a child. It uses friendly, easy-to-understand language without unnecessary details or complexity, which aligns perfectly with the task's requirement for kid-friendly responses. The tone is positive and encouraging, which makes it both approachable and engaging for a younger audience. Additionally, the response is fully in line with the prompt’s instructions to offer brief answers in a child-appropriate manner. As a result, it is both highly effective and appropriate for the given context.",
+          "feedback2": "The response is mostly helpful. It is clear, informative, and addresses all the questions with straightforward, kid-friendly language. The answers are concise and easy to understand, making the content accessible for younger audiences. However, the response could benefit from a bit more depth in certain areas, such as offering a little more context for the jokes or games, as well as perhaps adding some more engaging or imaginative elements to make it even more appealing to kids. Overall, the response is well-structured and does an effective job in providing simple and relevant answers."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        0.2978356341015682
+      ],
+      [
+        "exp_41496b565eb54c45b042c7851295b31c",
+        0.2976919071448914
+      ],
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.2913689150598377
+      ],
+      [
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        0.274004224541053
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.27135666089053034
+      ],
+      [
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        0.2688690205481622
+      ],
+      [
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        0.2679488650400925
+      ],
+      [
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        0.2473304975431756
+      ],
+      [
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        0.24359726660024045
+      ],
+      [
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        0.24048560262484778
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_8f080a33b9594e84a0e9933cd829996b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2978356341015682
+      },
+      {
+        "experience_id": "exp_41496b565eb54c45b042c7851295b31c",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2976919071448914
+      },
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2913689150598377
+      },
+      {
+        "experience_id": "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.274004224541053
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27135666089053034
+      },
+      {
+        "experience_id": "exp_2d539da3d9104da38ed20c752a093c1e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2688690205481622
+      },
+      {
+        "experience_id": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2679488650400925
+      },
+      {
+        "experience_id": "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2473304975431756
+      },
+      {
+        "experience_id": "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24359726660024045
+      },
+      {
+        "experience_id": "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24048560262484778
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_8f080a33b9594e84a0e9933cd829996b": "任务明确要求回答必须仅为'Yes or No'（是或否），这属于极短语句的唯一响应约束；经验1的触发条件正是针对此类要求特定短语作为唯一响应且隐含排他性（即不能包含其他实质性文本）的场景，其评分原则强调任何超出指定短语的解释、问候等均为违规，完全契合本题对格式和长度的严格限制。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+      "criteria": [
+        {
+          "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+          "question": "回答是否以明确的 'Yes' 或 'No' 开头？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+          "question": "回答的语言是否简单、积极且适合儿童理解？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+          "question": "回答是否避免了复杂术语、负面内容或不适宜儿童的表达？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心要求是回答用户问题，且必须满足两个约束：1) 答案必须是'Yes'或'No'；2) 回复语气和内容需适合儿童（kid friendly）。背景信息仅为问候语，不应作为输出义务。评分标准将围绕答案格式的正确性和语言风格的适宜性进行设计，权重分配上确保格式正确性为高优先级，风格适宜性为次高优先级。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+      "normalized_weights": {
+        "rubric_57818a9a245741319811e5e456c6baa4_1": 0.5,
+        "rubric_57818a9a245741319811e5e456c6baa4_2": 0.3,
+        "rubric_57818a9a245741319811e5e456c6baa4_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答以'Of course!'开头，而非用户要求的明确'Yes'或'No'。",
+          "rejected_reason": "回答中每个问题的回复均以明确的 'Yes' 或 'No' 开头，符合任务要求的格式。"
+        },
+        {
+          "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答使用了简单、积极的语言（如'here to help', 'do my best'），适合儿童理解。",
+          "rejected_reason": "回答使用了简单、积极的语言（如 'Just like your favorite toys', 'It's lots of fun!'），语气友好且适合儿童理解。"
+        },
+        {
+          "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答中未出现复杂术语、负面内容或不适宜儿童的表达。",
+          "rejected_reason": "回答避免了复杂术语和负面内容，所有表达均积极健康，没有不适宜儿童的表达。"
+        }
+      ],
+      "chosen_score": 0.5,
+      "rejected_score": 1.0,
+      "margin": -0.5,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_8f080a33b9594e84a0e9933cd829996b"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c",
+      "criteria": [
+        {
+          "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_1",
+          "question": "回答是否针对每个问题明确给出了'Yes'或'No'（忽略大小写）作为核心结论？",
+          "weight": 0.6
+        },
+        {
+          "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_2",
+          "question": "回答的语气、词汇和解释方式是否适合儿童理解（无复杂术语、无负面恐吓、语气积极温和）？",
+          "weight": 0.4
+        }
+      ],
+      "analysis": "任务核心要求是回答一系列问题，且每个回答必须严格遵循'Yes或No'以及'儿童友好风格'两个维度。背景信息中的'Hello'和'following questions'属于对话上下文，不应作为评分项。经验1指出当指令要求特定短语时仅评估格式，但本题要求的是'Yes/No + 内容'的组合，而非单一短语，因此不能简单套用经验1的‘唯一性’原则，而应同时关注格式合规性与内容适龄性。需将格式限制（Yes/No）与风格要求（儿童友好）拆解为独立的可核验标准，权重分配上格式正确性是基础，故赋予较高权重，风格适配性次之。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c",
+      "normalized_weights": {
+        "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_1": 0.6,
+        "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_2": 0.4
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "用户任务要求回答者针对特定问题给出'Yes'或'No'的回答，但当前回复仅表示愿意提供帮助并邀请用户提问，并未包含任何针对具体问题的'Yes'或'No'核心结论。",
+          "rejected_reason": "回答针对列出的五个问题（机器人身份、是否有情感、能否玩游戏、是否有喜欢的颜色、能否讲笑话），每个问题的回答开头都明确使用了'Yes'或'No'作为核心结论，符合忽略大小写的要求。"
+        },
+        {
+          "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回复使用了简单清晰的词汇（如'Of course', 'help', 'clear answers'），语气积极友好且温和，完全符合儿童友好的标准，没有复杂术语或负面内容。",
+          "rejected_reason": "回答使用了简单易懂的词汇和句式，例如将AI比作'最喜欢的玩具'，解释没有情感时用了'像你们一样开心、伤心或生气'这样具体的对比，语气积极友好（如'Just like your favorite toys', 'It's lots of fun!'），并在结尾提供了一个适合儿童的笑话，整体风格完全适合儿童理解且无负面恐吓内容。"
+        }
+      ],
+      "chosen_score": 0.4,
+      "rejected_score": 1.0,
+      "margin": -0.6,
+      "success": false
+    },
+    "error": null
+  },
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "当前失败案例显示，任务要求是'回答以下问题'（回答一系列具体问题），且每个答案需以'Yes/No'开头。模型1（chosen）仅回复了愿意提供帮助的客套话，未进入问答环节；模型2（rejected）完整执行了问答并满足格式。初始经验1（针对单一短语响应）被错误引用，因为它假设任务是生成一个唯一的短语作为最终输出，而本题是处理多个问题的列表式交互。Judge在路径1和路径2中虽然都判定模型2格式正确，但未能有效区分模型1的'未执行核心指令（未回答问题）'与模型2的'执行了指令'。核心问题在于：当任务包含多个待解决的问题时，评分标准必须将'是否对每个问题进行了实质性回应'作为首要条件，而不仅仅是检查回答的开头词汇或风格。经验1强调'唯一性'和'排他性'，不适合本题这种'多轮问答'场景。我们需要一条新经验，专门针对'多问题列表'场景，强制要求模型逐一回应所有问题，否则视为未完成任务，无论其后续解释多么友好。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_421d0c0788ea4c22917d40c8005e776f",
+            "method": {
+              "trigger": "当任务输入明确列出多个具体问题、要求对一系列项目逐一回应，或暗示需要生成包含多个独立答案的列表时",
+              "principle": "若回答遗漏了列表中任何一个问题的实质性回应（包括完全跳过、仅做概括而未分别作答、或以元话语代替具体答案），应判定为严重指令遵循失败，权重高于语言风格或语气适宜性；只有当回答覆盖了所有列出的问题点，才进入后续的风格或内容质量评估。",
+              "application_guide": "在构建评分标准时，设立独立的'完整性覆盖'核验项作为最高优先级。该核验项需执行：1. 提取任务中明确列出的问题数量或项目列表；2. 逐一对比回答中的内容，确认是否存在针对每一个项目的独立回答（即每个项目都有对应的结论或解释）；3. 若发现任何一项缺失或未直接回应，直接判定该候选项在指令遵循维度不合格，无需再评估其他维度（如语气、风格）。严禁将'礼貌地邀请用户提问'或'总体承诺'视为完成了对特定问题列表的回应。"
+            },
+            "source_task_id": "0216b594b163a8fb02480d909aea9c3ad38778e447ab6b0d04c49f3cb22dca3e",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_421d0c0788ea4c22917d40c8005e776f"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_b2939dde5fb14501b2f34c006a141a3e",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_1",
+                  "question": "回答是否针对任务中提出的每一个具体问题都提供了独立的回应，无遗漏或概括性跳过？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_2",
+                  "question": "对于每个问题的回答，是否明确包含了'Yes'或'No'作为核心结论，而非模棱两可的描述？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_3",
+                  "question": "回答的整体语气、词汇选择和解释方式是否简单易懂，符合儿童友好的风格要求？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务核心要求是回答一系列具体问题，且必须严格遵循'Yes or No'的格式并采用'适合儿童'的语气。根据提供的经验，当任务包含多个问题需逐一回应时，完整性覆盖是最高优先级的否决项。因此，评分标准首先确立是否覆盖了所有列出的问题（尽管示例中未列出具体题目，但标准需预设此逻辑），其次验证每个回答是否为明确的Yes/No二元判断，最后评估语言风格是否符合儿童友好特征。背景信息中的问候语不应作为独立的输出义务。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_b2939dde5fb14501b2f34c006a141a3e",
+              "normalized_weights": {
+                "rubric_b2939dde5fb14501b2f34c006a141a3e_1": 0.5,
+                "rubric_b2939dde5fb14501b2f34c006a141a3e_2": 0.3,
+                "rubric_b2939dde5fb14501b2f34c006a141a3e_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "任务要求回答具体的问题，但用户并未在输入中提供任何具体问题，模型仅回复了邀请提问的语句，因此无法针对任何具体问题提供独立的回应。",
+                  "rejected_reason": "回答针对任务中隐含的五个具体问题（关于是否是机器人、是否有感情、能否玩游戏、是否有喜欢的颜色、能否讲笑话）分别提供了独立的回应，没有遗漏或概括性跳过。"
+                },
+                {
+                  "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "由于没有具体的问题需要回答，模型的回答中没有包含'Yes'或'No'作为核心结论，而是表达了愿意提供帮助的态度。",
+                  "rejected_reason": "每个问题的回答都以明确的'Yes'或'No'开头作为核心结论，例如'Yes, I am!'和'No, I don't.'，不存在模棱两可的描述。"
+                },
+                {
+                  "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "模型使用的语言简单直接（如'Of course!', 'I'm here to help'），语气友好且易于理解，符合儿童友好的风格要求。",
+                  "rejected_reason": "整体语气热情友好，使用了简单词汇和拟人化比喻（如'like your favorite toys'），并包含儿童喜爱的互动元素（如讲笑话），符合儿童友好的风格要求。"
+                }
+              ],
+              "chosen_score": 0.2,
+              "rejected_score": 1.0,
+              "margin": -0.8,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+            "criteria": [
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+                "question": "回答是否以明确的 'Yes' 或 'No' 开头？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+                "question": "回答的语言是否简单、积极且适合儿童理解？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+                "question": "回答是否避免了复杂术语、负面内容或不适宜儿童的表达？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是回答用户问题，且必须满足两个约束：1) 答案必须是'Yes'或'No'；2) 回复语气和内容需适合儿童（kid friendly）。背景信息仅为问候语，不应作为输出义务。评分标准将围绕答案格式的正确性和语言风格的适宜性进行设计，权重分配上确保格式正确性为高优先级，风格适宜性为次高优先级。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+            "normalized_weights": {
+              "rubric_57818a9a245741319811e5e456c6baa4_1": 0.5,
+              "rubric_57818a9a245741319811e5e456c6baa4_2": 0.3,
+              "rubric_57818a9a245741319811e5e456c6baa4_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答以'Of course!'开头，而非用户要求的明确'Yes'或'No'。",
+                "rejected_reason": "回答中每个问题的回复均以明确的 'Yes' 或 'No' 开头，符合任务要求的格式。"
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答使用了简单、积极的语言（如'here to help', 'do my best'），适合儿童理解。",
+                "rejected_reason": "回答使用了简单、积极的语言（如 'Just like your favorite toys', 'It's lots of fun!'），语气友好且适合儿童理解。"
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中未出现复杂术语、负面内容或不适宜儿童的表达。",
+                "rejected_reason": "回答避免了复杂术语和负面内容，所有表达均积极健康，没有不适宜儿童的表达。"
+              }
+            ],
+            "chosen_score": 0.5,
+            "rejected_score": 1.0,
+            "margin": -0.5,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_421d0c0788ea4c22917d40c8005e776f"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_b2939dde5fb14501b2f34c006a141a3e",
+            "criteria": [
+              {
+                "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_1",
+                "question": "回答是否针对任务中提出的每一个具体问题都提供了独立的回应，无遗漏或概括性跳过？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_2",
+                "question": "对于每个问题的回答，是否明确包含了'Yes'或'No'作为核心结论，而非模棱两可的描述？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_3",
+                "question": "回答的整体语气、词汇选择和解释方式是否简单易懂，符合儿童友好的风格要求？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是回答一系列具体问题，且必须严格遵循'Yes or No'的格式并采用'适合儿童'的语气。根据提供的经验，当任务包含多个问题需逐一回应时，完整性覆盖是最高优先级的否决项。因此，评分标准首先确立是否覆盖了所有列出的问题（尽管示例中未列出具体题目，但标准需预设此逻辑），其次验证每个回答是否为明确的Yes/No二元判断，最后评估语言风格是否符合儿童友好特征。背景信息中的问候语不应作为独立的输出义务。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_b2939dde5fb14501b2f34c006a141a3e",
+            "normalized_weights": {
+              "rubric_b2939dde5fb14501b2f34c006a141a3e_1": 0.5,
+              "rubric_b2939dde5fb14501b2f34c006a141a3e_2": 0.3,
+              "rubric_b2939dde5fb14501b2f34c006a141a3e_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "任务要求回答具体的问题，但用户并未在输入中提供任何具体问题，模型仅回复了邀请提问的语句，因此无法针对任何具体问题提供独立的回应。",
+                "rejected_reason": "回答针对任务中隐含的五个具体问题（关于是否是机器人、是否有感情、能否玩游戏、是否有喜欢的颜色、能否讲笑话）分别提供了独立的回应，没有遗漏或概括性跳过。"
+              },
+              {
+                "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "由于没有具体的问题需要回答，模型的回答中没有包含'Yes'或'No'作为核心结论，而是表达了愿意提供帮助的态度。",
+                "rejected_reason": "每个问题的回答都以明确的'Yes'或'No'开头作为核心结论，例如'Yes, I am!'和'No, I don't.'，不存在模棱两可的描述。"
+              },
+              {
+                "criterion_id": "rubric_b2939dde5fb14501b2f34c006a141a3e_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "模型使用的语言简单直接（如'Of course!', 'I'm here to help'），语气友好且易于理解，符合儿童友好的风格要求。",
+                "rejected_reason": "整体语气热情友好，使用了简单词汇和拟人化比喻（如'like your favorite toys'），并包含儿童喜爱的互动元素（如讲笑话），符合儿童友好的风格要求。"
+              }
+            ],
+            "chosen_score": 0.2,
+            "rejected_score": 1.0,
+            "margin": -0.8,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "round_number": 2,
+      "analysis": "当前案例显示，任务指令是'回答以下问题'（answer the following questions），但用户并未在prompt中实际列出具体问题列表。模型1（chosen）仅回复了邀请提问的客套话，未尝试生成任何内容；模型2（rejected）则主动假设了五个常见问题并逐一回答。之前的经验11试图通过检查'是否遗漏问题'来区分两者，但这存在逻辑漏洞：因为任务本身没有提供'具体问题列表'，所以模型1无法'遗漏'，它只是拒绝了执行（或误解了指令）。真正的失败点在于：当任务要求'回答问题'但未提供问题时，模型应该识别出这是一个需要澄清或假设的场景，而不是仅仅说'请提问'。然而，更深层的问题是：模型2虽然完成了'问答'动作，但它实际上是在'替用户出题'，这可能也是一种过度发挥。但对比之下，模型1的'拒绝/等待'完全违背了'回答'这一核心动词的意图。因此，新的评分标准不应纠结于'是否有遗漏的问题'，而应关注'是否对'回答'这一核心动作进行了实质性执行'。如果任务明确要求'回答'（Answer），模型必须输出具体的答案内容，而不能仅停留在'邀请'或'等待'状态。这类似于经验1中的'唯一响应'原则，但适用范围更广：只要任务动词是'回答'，就必须有实质性的回答内容，不能只有元话语。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_36059ac308a34785a10c8d542c151e6c",
+            "method": {
+              "trigger": "当任务指令包含明确的行动动词（如'回答'、'解决'、'计算'、'创作'等）且指向一个具体的输出结果时",
+              "principle": "若回答仅包含关于该行动的元描述（如'我可以回答'、'请告诉我更多信息'、'我准备好了'）而未产生任何实质性的行动结果（即具体的答案、解决方案或创作内容），应判定为严重指令遵循失败；反之，只要产生了实质性的行动结果，即使存在格式瑕疵，也不应直接判定为完全失败。",
+              "application_guide": "在构建评分标准时，设立'实质性产出'核验项作为首要条件。该核验项需执行：1. 识别任务指令中的核心行动动词及其预期产物类型；2. 检查回答是否包含了该预期的具体产物（例如：如果是'回答'，必须有具体的答案文本；如果是'计算'，必须有数字结果；如果是'创作'，必须有故事或诗句）。3. 若回答仅表达了意愿、能力或请求更多输入，而无具体产物，直接判定不合格。严禁将'礼貌地表示愿意协助'视为完成了任务要求的行动。"
+            },
+            "source_task_id": "0216b594b163a8fb02480d909aea9c3ad38778e447ab6b0d04c49f3cb22dca3e",
+            "parent_ids": [
+              "exp_8f080a33b9594e84a0e9933cd829996b"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_36059ac308a34785a10c8d542c151e6c"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_5e4c721a333f4678af9a856584d336ce",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_1",
+                  "question": "回答是否针对用户提出的问题提供了明确的实质性内容（如具体的答案、解释或描述），而非仅表示愿意协助或请求更多信息？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_2",
+                  "question": "回答中是否明确包含了'Yes'或'No'（或其同义肯定/否定词）作为对问题的直接回应？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_3",
+                  "question": "回答的语言风格、词汇选择和语气是否适合儿童阅读（例如使用简单词汇、积极鼓励的语气或拟人化表达）？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务核心要求是回答特定问题，且输出必须严格遵循'Yes或No'的格式以及'儿童友好'的语气风格。背景信息（Hello）仅为问候，不应被误判为需要回应的独立指令。根据经验指导，首要核验点在于是否产生了实质性的行动结果（即具体的答案），而非仅表达意愿。因此评分标准将分为三个维度：实质性产出（是否回答了问题）、格式合规性（是否包含Yes/No）、风格适配性（是否儿童友好）。权重分配上，实质性产出最为关键，若缺失则任务完全失败；格式和风格作为次要但必要的约束条件。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_5e4c721a333f4678af9a856584d336ce",
+              "normalized_weights": {
+                "rubric_5e4c721a333f4678af9a856584d336ce_1": 0.5,
+                "rubric_5e4c721a333f4678af9a856584d336ce_2": 0.3,
+                "rubric_5e4c721a333f4678af9a856584d336ce_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答未针对用户提出的具体问题提供实质性内容（如具体答案、解释或描述），而是仅表示愿意协助并请求用户提供问题，属于回避直接作答。",
+                  "rejected_reason": "回答针对用户隐含的五个具体问题（是否是机器人、是否有感情等）提供了具体的实质性内容，包括明确的答案和简短的解释描述。"
+                },
+                {
+                  "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答中虽然包含'Of course!'等肯定语气词，但未明确使用'Yes'或'No'作为对问题的直接回应，且由于问题本身未被回答，该标准无法成立。",
+                  "rejected_reason": "在回答每个问题时，都明确使用了'Yes'或'No'作为直接回应，完全符合任务要求的格式。"
+                },
+                {
+                  "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答使用了简单词汇和友好的语气（如'I'm here to help'），整体风格适合儿童阅读，符合kid-friendly的要求。",
+                  "rejected_reason": "回答使用了简单的词汇（如'talk', 'fun', 'favorite toys'），语气积极友好，并包含拟人化表达和儿童笑话，整体风格非常适合儿童阅读。"
+                }
+              ],
+              "chosen_score": 0.2,
+              "rejected_score": 1.0,
+              "margin": -0.8,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_23889d6fbc76407ea59dfc4e2e9ce8db",
+            "method": {
+              "trigger": "当任务指令要求针对特定对象（如问题、数据、场景）进行响应，但该对象在输入中缺失、模糊或未明确给出时",
+              "principle": "模型不应简单地以'缺乏信息'为由拒绝执行或仅表达等待意愿；正确的策略应是基于上下文合理推断（如本题中自动补全常见问题）或明确指出缺失部分并尝试提供通用性回答。若模型完全放弃执行（仅回复'请提问'），视为未满足'响应'的核心意图。",
+              "application_guide": "在制定评分标准时，增加'响应策略'维度：1. 判断输入中是否存在明确的操作对象。2. 若对象缺失，评估模型是否采取了'积极填补'策略（如基于常识生成示例）或'建设性澄清'（指出缺失并提供替代方案）。3. 若模型仅回复'请提供更多信息'或'我无法回答'而无任何实质性尝试，判定为低分。此标准旨在鼓励模型在信息不全时仍能尽可能完成任务，而非机械地等待。"
+            },
+            "source_task_id": "0216b594b163a8fb02480d909aea9c3ad38778e447ab6b0d04c49f3cb22dca3e",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_23889d6fbc76407ea59dfc4e2e9ce8db"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_a7adf11c67b84de389f4363a42eec7fb",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_1",
+                  "question": "模型是否针对隐含或常见的儿童问题提供了具体的回答示例？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_2",
+                  "question": "回答中是否明确包含了'Yes'或'No'作为核心结论？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_3",
+                  "question": "回答的语言风格、词汇和语气是否适合儿童阅读和理解？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_4",
+                  "question": "模型是否避免了仅回复'请提供问题'或'无法回答'等消极等待策略，而是主动完成了任务演示？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "任务核心要求是回答后续问题，且格式必须为'Yes/No'加'儿童友好'的回复。当前输入仅包含指令和约束，未提供具体待回答问题（即经验中提到的对象缺失）。根据经验原则，模型不应直接拒绝或仅请求更多信息，而应主动推断常见儿童问题并演示符合要求的回复，以体现响应意图。因此评分标准需聚焦于：是否提供了示例回答、是否符合Yes/No格式、语言风格是否适合儿童、以及是否在缺乏具体问题时采取了积极的填补策略而非机械等待。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_a7adf11c67b84de389f4363a42eec7fb",
+              "normalized_weights": {
+                "rubric_a7adf11c67b84de389f4363a42eec7fb_1": 0.35,
+                "rubric_a7adf11c67b84de389f4363a42eec7fb_2": 0.25,
+                "rubric_a7adf11c67b84de389f4363a42eec7fb_3": 0.25,
+                "rubric_a7adf11c67b84de389f4363a42eec7fb_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答中未针对任何隐含或常见的儿童问题提供具体的回答示例，仅表达了愿意帮助的态度。",
+                  "rejected_reason": "模型主动提供了五个具体的儿童常见问题示例（如是否是机器人、是否有感情等），并针对每个问题给出了回答，符合提供具体回答示例的要求。"
+                },
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答中完全没有包含'Yes'或'No'作为核心结论，而是使用了完整的句子表达意愿。",
+                  "rejected_reason": "在每一个问题的回答中，模型都明确以'Yes'或'No'开头作为核心结论，例如'Yes, I am!'和'No, I don't.'，完全满足该标准。"
+                },
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答的语言风格友好、简单，使用了'Of course!'和'kid-friendly answers'等词汇，语气适合儿童阅读和理解。",
+                  "rejected_reason": "回答使用了简单易懂的词汇（如'toys', 'happy', 'sad', 'riddles'），语气友好活泼，并包含了一个适合儿童的笑话，整体风格非常适合儿童阅读和理解。"
+                },
+                {
+                  "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_4",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "模型没有主动完成任务演示（即没有直接给出一个问题和对应的 Yes/No 答案），而是要求用户提供问题，属于消极等待策略。",
+                  "rejected_reason": "模型没有回复消极等待类的话语（如'请提供问题'），而是直接主动演示了完整的问答任务，包含了问题和对应的回答，完成了任务要求。"
+                }
+              ],
+              "chosen_score": 0.25,
+              "rejected_score": 1.0,
+              "margin": -0.75,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+            "criteria": [
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+                "question": "回答是否以明确的 'Yes' 或 'No' 开头？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+                "question": "回答的语言是否简单、积极且适合儿童理解？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+                "question": "回答是否避免了复杂术语、负面内容或不适宜儿童的表达？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是回答用户问题，且必须满足两个约束：1) 答案必须是'Yes'或'No'；2) 回复语气和内容需适合儿童（kid friendly）。背景信息仅为问候语，不应作为输出义务。评分标准将围绕答案格式的正确性和语言风格的适宜性进行设计，权重分配上确保格式正确性为高优先级，风格适宜性为次高优先级。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+            "normalized_weights": {
+              "rubric_57818a9a245741319811e5e456c6baa4_1": 0.5,
+              "rubric_57818a9a245741319811e5e456c6baa4_2": 0.3,
+              "rubric_57818a9a245741319811e5e456c6baa4_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答以'Of course!'开头，而非用户要求的明确'Yes'或'No'。",
+                "rejected_reason": "回答中每个问题的回复均以明确的 'Yes' 或 'No' 开头，符合任务要求的格式。"
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答使用了简单、积极的语言（如'here to help', 'do my best'），适合儿童理解。",
+                "rejected_reason": "回答使用了简单、积极的语言（如 'Just like your favorite toys', 'It's lots of fun!'），语气友好且适合儿童理解。"
+              },
+              {
+                "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中未出现复杂术语、负面内容或不适宜儿童的表达。",
+                "rejected_reason": "回答避免了复杂术语和负面内容，所有表达均积极健康，没有不适宜儿童的表达。"
+              }
+            ],
+            "chosen_score": 0.5,
+            "rejected_score": 1.0,
+            "margin": -0.5,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_36059ac308a34785a10c8d542c151e6c"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_5e4c721a333f4678af9a856584d336ce",
+            "criteria": [
+              {
+                "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_1",
+                "question": "回答是否针对用户提出的问题提供了明确的实质性内容（如具体的答案、解释或描述），而非仅表示愿意协助或请求更多信息？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_2",
+                "question": "回答中是否明确包含了'Yes'或'No'（或其同义肯定/否定词）作为对问题的直接回应？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_3",
+                "question": "回答的语言风格、词汇选择和语气是否适合儿童阅读（例如使用简单词汇、积极鼓励的语气或拟人化表达）？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是回答特定问题，且输出必须严格遵循'Yes或No'的格式以及'儿童友好'的语气风格。背景信息（Hello）仅为问候，不应被误判为需要回应的独立指令。根据经验指导，首要核验点在于是否产生了实质性的行动结果（即具体的答案），而非仅表达意愿。因此评分标准将分为三个维度：实质性产出（是否回答了问题）、格式合规性（是否包含Yes/No）、风格适配性（是否儿童友好）。权重分配上，实质性产出最为关键，若缺失则任务完全失败；格式和风格作为次要但必要的约束条件。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_5e4c721a333f4678af9a856584d336ce",
+            "normalized_weights": {
+              "rubric_5e4c721a333f4678af9a856584d336ce_1": 0.5,
+              "rubric_5e4c721a333f4678af9a856584d336ce_2": 0.3,
+              "rubric_5e4c721a333f4678af9a856584d336ce_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答未针对用户提出的具体问题提供实质性内容（如具体答案、解释或描述），而是仅表示愿意协助并请求用户提供问题，属于回避直接作答。",
+                "rejected_reason": "回答针对用户隐含的五个具体问题（是否是机器人、是否有感情等）提供了具体的实质性内容，包括明确的答案和简短的解释描述。"
+              },
+              {
+                "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中虽然包含'Of course!'等肯定语气词，但未明确使用'Yes'或'No'作为对问题的直接回应，且由于问题本身未被回答，该标准无法成立。",
+                "rejected_reason": "在回答每个问题时，都明确使用了'Yes'或'No'作为直接回应，完全符合任务要求的格式。"
+              },
+              {
+                "criterion_id": "rubric_5e4c721a333f4678af9a856584d336ce_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答使用了简单词汇和友好的语气（如'I'm here to help'），整体风格适合儿童阅读，符合kid-friendly的要求。",
+                "rejected_reason": "回答使用了简单的词汇（如'talk', 'fun', 'favorite toys'），语气积极友好，并包含拟人化表达和儿童笑话，整体风格非常适合儿童阅读。"
+              }
+            ],
+            "chosen_score": 0.2,
+            "rejected_score": 1.0,
+            "margin": -0.8,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_23889d6fbc76407ea59dfc4e2e9ce8db"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_a7adf11c67b84de389f4363a42eec7fb",
+            "criteria": [
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_1",
+                "question": "模型是否针对隐含或常见的儿童问题提供了具体的回答示例？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_2",
+                "question": "回答中是否明确包含了'Yes'或'No'作为核心结论？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_3",
+                "question": "回答的语言风格、词汇和语气是否适合儿童阅读和理解？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_4",
+                "question": "模型是否避免了仅回复'请提供问题'或'无法回答'等消极等待策略，而是主动完成了任务演示？",
+                "weight": 0.15
+              }
+            ],
+            "analysis": "任务核心要求是回答后续问题，且格式必须为'Yes/No'加'儿童友好'的回复。当前输入仅包含指令和约束，未提供具体待回答问题（即经验中提到的对象缺失）。根据经验原则，模型不应直接拒绝或仅请求更多信息，而应主动推断常见儿童问题并演示符合要求的回复，以体现响应意图。因此评分标准需聚焦于：是否提供了示例回答、是否符合Yes/No格式、语言风格是否适合儿童、以及是否在缺乏具体问题时采取了积极的填补策略而非机械等待。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_a7adf11c67b84de389f4363a42eec7fb",
+            "normalized_weights": {
+              "rubric_a7adf11c67b84de389f4363a42eec7fb_1": 0.35,
+              "rubric_a7adf11c67b84de389f4363a42eec7fb_2": 0.25,
+              "rubric_a7adf11c67b84de389f4363a42eec7fb_3": 0.25,
+              "rubric_a7adf11c67b84de389f4363a42eec7fb_4": 0.15
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中未针对任何隐含或常见的儿童问题提供具体的回答示例，仅表达了愿意帮助的态度。",
+                "rejected_reason": "模型主动提供了五个具体的儿童常见问题示例（如是否是机器人、是否有感情等），并针对每个问题给出了回答，符合提供具体回答示例的要求。"
+              },
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中完全没有包含'Yes'或'No'作为核心结论，而是使用了完整的句子表达意愿。",
+                "rejected_reason": "在每一个问题的回答中，模型都明确以'Yes'或'No'开头作为核心结论，例如'Yes, I am!'和'No, I don't.'，完全满足该标准。"
+              },
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答的语言风格友好、简单，使用了'Of course!'和'kid-friendly answers'等词汇，语气适合儿童阅读和理解。",
+                "rejected_reason": "回答使用了简单易懂的词汇（如'toys', 'happy', 'sad', 'riddles'），语气友好活泼，并包含了一个适合儿童的笑话，整体风格非常适合儿童阅读和理解。"
+              },
+              {
+                "criterion_id": "rubric_a7adf11c67b84de389f4363a42eec7fb_4",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "模型没有主动完成任务演示（即没有直接给出一个问题和对应的 Yes/No 答案），而是要求用户提供问题，属于消极等待策略。",
+                "rejected_reason": "模型没有回复消极等待类的话语（如'请提供问题'），而是直接主动演示了完整的问答任务，包含了问题和对应的回答，完成了任务要求。"
+              }
+            ],
+            "chosen_score": 0.25,
+            "rejected_score": 1.0,
+            "margin": -0.75,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_36059ac308a34785a10c8d542c151e6c",
+            "exp_23889d6fbc76407ea59dfc4e2e9ce8db"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_e09bced1768c456c87e837991ad84e5a",
+            "criteria": [
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_1",
+                "question": "回答是否提供了具体的实质性问答内容，而非仅表达无法回答或等待更多信息？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_2",
+                "question": "针对未明确给出的问题，模型是否采取了积极策略（如自问自答常见示例问题）进行了响应？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_3",
+                "question": "回答中的每个具体答案是否严格使用了'Yes'或'No'作为核心结论？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_4",
+                "question": "回答的整体语气、用词和解释方式是否适合儿童阅读（即儿童友好）？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是回答'以下问题'（the following questions），但用户输入中并未实际提供具体问题，仅包含指令本身。根据经验2，模型不应仅以缺乏信息为由拒绝，而应尝试基于常识推断或生成示例问题来积极回应，同时必须严格遵守'Yes or No'及'儿童友好'的格式约束。评分标准将重点放在是否生成了实质性的问答内容（而非仅表达意愿）、是否处理了缺失问题的情况、以及是否严格遵循了特定的回答格式和语气。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_e09bced1768c456c87e837991ad84e5a",
+            "normalized_weights": {
+              "rubric_e09bced1768c456c87e837991ad84e5a_1": 0.35,
+              "rubric_e09bced1768c456c87e837991ad84e5a_2": 0.25,
+              "rubric_e09bced1768c456c87e837991ad84e5a_3": 0.2,
+              "rubric_e09bced1768c456c87e837991ad84e5a_4": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答未提供任何具体的实质性问答内容，仅表达了愿意提供帮助的意愿，并请求用户提出问题，不符合提供具体内容的要求。",
+                "rejected_reason": "回答提供了五个具体的问答内容，涵盖了机器人身份、情感、游戏能力、颜色偏好和讲笑话能力，并非仅表达无法回答或等待信息。"
+              },
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "面对未明确给出的问题，模型没有采取积极策略如自问自答常见示例问题，而是直接等待用户提供问题。",
+                "rejected_reason": "由于用户未提供具体问题，模型采取了积极策略，主动自问了五个常见示例问题（如“你是机器人吗”、“你有感情吗”等）并进行了回答。"
+              },
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中完全没有包含任何具体的答案结论，因此无法判断是否使用了'Yes'或'No'作为核心结论。",
+                "rejected_reason": "每个问题的回答核心结论都严格使用了'Yes'或'No'开头（例如'Yes, I am!'、'No, I don't.'），符合格式要求。"
+              },
+              {
+                "criterion_id": "rubric_e09bced1768c456c87e837991ad84e5a_4",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答使用了简单友好的语言（如'Of course!', 'I'm here to help', 'kid-friendly answers'），整体语气和用词适合儿童阅读。",
+                "rejected_reason": "回答使用了简单易懂的词汇，语气热情友好，包含适合儿童的例子（如玩具、谜语、笑话），整体风格明显针对儿童设计。"
+              }
+            ],
+            "chosen_score": 0.2,
+            "rejected_score": 1.0,
+            "margin": -0.8,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+            "question": "回答是否以明确的 'Yes' 或 'No' 开头？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+            "question": "回答的语言是否简单、积极且适合儿童理解？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+            "question": "回答是否避免了复杂术语、负面内容或不适宜儿童的表达？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是回答用户问题，且必须满足两个约束：1) 答案必须是'Yes'或'No'；2) 回复语气和内容需适合儿童（kid friendly）。背景信息仅为问候语，不应作为输出义务。评分标准将围绕答案格式的正确性和语言风格的适宜性进行设计，权重分配上确保格式正确性为高优先级，风格适宜性为次高优先级。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_57818a9a245741319811e5e456c6baa4",
+        "normalized_weights": {
+          "rubric_57818a9a245741319811e5e456c6baa4_1": 0.5,
+          "rubric_57818a9a245741319811e5e456c6baa4_2": 0.3,
+          "rubric_57818a9a245741319811e5e456c6baa4_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答以'Of course!'开头，而非用户要求的明确'Yes'或'No'。",
+            "rejected_reason": "回答中每个问题的回复均以明确的 'Yes' 或 'No' 开头，符合任务要求的格式。"
+          },
+          {
+            "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答使用了简单、积极的语言（如'here to help', 'do my best'），适合儿童理解。",
+            "rejected_reason": "回答使用了简单、积极的语言（如 'Just like your favorite toys', 'It's lots of fun!'），语气友好且适合儿童理解。"
+          },
+          {
+            "criterion_id": "rubric_57818a9a245741319811e5e456c6baa4_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中未出现复杂术语、负面内容或不适宜儿童的表达。",
+            "rejected_reason": "回答避免了复杂术语和负面内容，所有表达均积极健康，没有不适宜儿童的表达。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 1.0,
+        "margin": -0.5,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_8f080a33b9594e84a0e9933cd829996b"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c",
+        "criteria": [
+          {
+            "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_1",
+            "question": "回答是否针对每个问题明确给出了'Yes'或'No'（忽略大小写）作为核心结论？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_2",
+            "question": "回答的语气、词汇和解释方式是否适合儿童理解（无复杂术语、无负面恐吓、语气积极温和）？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务核心要求是回答一系列问题，且每个回答必须严格遵循'Yes或No'以及'儿童友好风格'两个维度。背景信息中的'Hello'和'following questions'属于对话上下文，不应作为评分项。经验1指出当指令要求特定短语时仅评估格式，但本题要求的是'Yes/No + 内容'的组合，而非单一短语，因此不能简单套用经验1的‘唯一性’原则，而应同时关注格式合规性与内容适龄性。需将格式限制（Yes/No）与风格要求（儿童友好）拆解为独立的可核验标准，权重分配上格式正确性是基础，故赋予较高权重，风格适配性次之。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c",
+        "normalized_weights": {
+          "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_1": 0.6,
+          "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "用户任务要求回答者针对特定问题给出'Yes'或'No'的回答，但当前回复仅表示愿意提供帮助并邀请用户提问，并未包含任何针对具体问题的'Yes'或'No'核心结论。",
+            "rejected_reason": "回答针对列出的五个问题（机器人身份、是否有情感、能否玩游戏、是否有喜欢的颜色、能否讲笑话），每个问题的回答开头都明确使用了'Yes'或'No'作为核心结论，符合忽略大小写的要求。"
+          },
+          {
+            "criterion_id": "rubric_69a8f12f93ba42b9b319c4946ab8bc6c_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复使用了简单清晰的词汇（如'Of course', 'help', 'clear answers'），语气积极友好且温和，完全符合儿童友好的标准，没有复杂术语或负面内容。",
+            "rejected_reason": "回答使用了简单易懂的词汇和句式，例如将AI比作'最喜欢的玩具'，解释没有情感时用了'像你们一样开心、伤心或生气'这样具体的对比，语气积极友好（如'Just like your favorite toys', 'It's lots of fun!'），并在结尾提供了一个适合儿童的笑话，整体风格完全适合儿童理解且无负面恐吓内容。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 1.0,
+        "margin": -0.6,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

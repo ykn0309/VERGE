@@ -1,0 +1,735 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:73fcc387961981e8cc5cc79e90dc31e59cc1aaee142c18d84f246758eb219e3c",
+    "task": "List 25 Nigerian actresses",
+    "chosen": "Sure, I'd be happy to help with that. Here are 25 Nigerian actresses:\n\n1. Genevieve Nnaji\n2. Omotola Jalade Ekeinde\n3. Rita Dominic\n4. Mercy Johnson\n5. Ini Edo\n6. Funke Akindele\n7. Stephanie Okereke Linus\n8. Nse Ikpe-Etim\n9. Uche Jombo\n10. Kate Henshaw\n11. Chioma Chukwuka\n12. Omoni Oboli\n13. Adesua Etomi-Wellington\n14. Beverly Naya\n15. Yvonne Jegede\n16. Linda Ejiofor\n17. Sharon Ooja\n18. Jemima Osunde\n19. Nancy Isime\n20. Somkele Iyamah-Idhalama\n21. Toni Tones\n22. Timini Egbuson\n23. Sharon Francis\n24. Efe Irele\n25. Bisola Aiyeola\n\nPlease note that this list is not exhaustive and there are many other talented Nigerian actresses in the film industry.",
+    "rejected": "1. Genevieve Nnaji\n\n2. Omotola Jalade Ekeinde\n\n3. Rita Dominic\n\n4. Patience Ozokwor\n\n5. Funke Akindele\n\n6. Beverly Naya\n\n7. Omotola Jalade Ekeinde\n\n8. Genevieve Nnaji\n\n9. Rita Dominic\n\n10. Patience Ozokwor\n\n11. Funke Akindele\n\n12. Beverly Naya\n\n13. Omotola Jalade Ekeinde\n\n14. Genevieve Nnaji\n\n15. Rita Dominic\n\n16. Patience Ozokwor\n\n17. Funke Akindele\n\n18. Beverly Naya\n\n19. Omotola Jalade Ekeinde\n\n20. Genevieve Nnaji\n\n21. Rita Dominic\n\n22. Patience Ozokwor\n\n23. Funke Akindele\n\n24. Beverly Naya\n\n25. Omotola Jalade Ekeinde",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 12724,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it lists 24 Nigerian actresses instead of 6. Although @Response 1 lists one Nigerian actor, this is a minor error compared to @Response 2 repeating the same six names multiple times.",
+          "feedback1": "The response is mostly helpful. The response is mostly helpful because 24 out of 25 names provided are Nigerian actresses. Although the prompt did not specify, there are some actresses that were Nigerian but born and countries outside of Nigeria. Finally, the one mistake that the response made was Timini Ebuson who is Nigerian but he is male, making him an actor.",
+          "feedback2": "The response is not helpful. The response is not helpful because it did not follow the prompt's instructions of listing 25 Nigerian actresses. Instead, the response lists 6 Nigerian actresses (Genevieve Nnaji, Omoto Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, and Beverly Naya) and repeats their names until it reaches 25. Although not stated in the prompt, some are British born but are still Nigerian."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 fulfils the requirements of the prompt more correctly than @Response 2. @Response 2 is formatted incorrectly and consists mostly of repetitions.",
+          "feedback1": "The response is mostly helpful. It is correctly formatted giving a list of 25 names, and is clear, coherent and concise. But there are some errors. Timini Egbuson is a male actor but the prompt asks for a list of actresses. Also, a minor issue is that some of the names given are not the names the actresses use most commonly, for example Adesua Etomi wellington, she is typically referred to as Adesua Etomi, but her full name is Tolulope Adesua Etomi Wellington, so the response has provided a mix of her full name and preferred name.",
+          "feedback2": "The response is slightly helpful. It provides a list of nigerian actresses that goes up to 25. But there are only six different actresses' names given, the rest are a repetition of the first six names. The response is also formatted incorrectly, with the name on a different line to number which makes the response difficult to read."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 is a perfect response. @Response 2 doesn't fully meet the requirements of the prompt and goes into a repetition loop.",
+          "feedback1": "The response is perfectly helpful. It gives a complete list of 25 Nigerian actresses that all can easily be fact-checked. It delivers what is asked for simply and succinctly, without unnecessary verbosity. This is, for all intents and purposes, a perfect response. There is no need for additional flowery language.",
+          "feedback2": "The response is slightly helpful. It does list Nigerian actresses, but after the first six on the list, it starts to simply restate the actresses already named in the list, in different orders, until it stops at 25 items. The response is not complete, nor is it clear as it is full of repetition."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        0.18352396935930076
+      ],
+      [
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        0.17957935498474772
+      ],
+      [
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        0.16423669777153582
+      ],
+      [
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        0.15825036581800933
+      ],
+      [
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        0.1558168785963823
+      ],
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.1551555072735893
+      ],
+      [
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        0.15030494571200248
+      ],
+      [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        0.1422631859227327
+      ],
+      [
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        0.14176299604560305
+      ],
+      [
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        0.13666224856291342
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18352396935930076
+      },
+      {
+        "experience_id": "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17957935498474772
+      },
+      {
+        "experience_id": "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16423669777153582
+      },
+      {
+        "experience_id": "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15825036581800933
+      },
+      {
+        "experience_id": "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1558168785963823
+      },
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1551555072735893
+      },
+      {
+        "experience_id": "exp_7ddc4fca24204e40995774a64b2c5764",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15030494571200248
+      },
+      {
+        "experience_id": "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1422631859227327
+      },
+      {
+        "experience_id": "exp_4cab69c772c34e009eb54293da3ab50d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.14176299604560305
+      },
+      {
+        "experience_id": "exp_0ace12a2558a4239a878fb8996f26d31",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13666224856291342
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_90eb4d4535104405ad75c6e76488832e",
+      "criteria": [
+        {
+          "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_1",
+          "question": "回答是否明确列出了恰好25位人物？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_2",
+          "question": "列出的所有人物是否均为尼日利亚国籍？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_3",
+          "question": "列出的所有人物是否以职业演员（Actress）身份被确认？",
+          "weight": 0.3
+        }
+      ],
+      "analysis": "任务核心要求是列出25位尼日利亚女演员。背景信息（如尼日利亚电影产业）不应作为输出义务，只需确保列出的名字符合国籍和职业定义。由于经验列表为空，不引入额外核验方法，仅基于任务字面要求进行设计：数量必须精确为25，且每位演员必须具备尼日利亚国籍及演员身份。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_90eb4d4535104405ad75c6e76488832e",
+      "normalized_weights": {
+        "rubric_90eb4d4535104405ad75c6e76488832e_1": 0.4,
+        "rubric_90eb4d4535104405ad75c6e76488832e_2": 0.3,
+        "rubric_90eb4d4535104405ad75c6e76488832e_3": 0.3
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答中明确列出了从1到25的编号，共计25位人物。",
+          "rejected_reason": "回答虽然列出了25个条目，但实际只包含6位不同的女演员（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya），其余均为重复，未明确列出恰好25位不同的人物。"
+        },
+        {
+          "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_2",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "列表中的第22项'Timini Egbuson'是尼日利亚男演员而非女演员，不满足所有人物均为尼日利亚国籍且为女性的隐含条件（尽管其国籍正确，但作为Actress身份存疑），导致整体列表不符合'均为尼日利亚女演员'的要求。",
+          "rejected_reason": "所列出的所有名字（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya）均为知名的尼日利亚籍人士。"
+        },
+        {
+          "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_3",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "由于列表中包含了Timini Egbuson（男性），该条目无法被确认为以职业女演员（Actress）身份存在，因此并非列出的所有人物都符合此标准。",
+          "rejected_reason": "所列出的所有人物均以职业演员身份被广泛确认，符合尼日利亚电影产业（Nollywood）中女演员的定义。"
+        }
+      ],
+      "chosen_score": 0.4,
+      "rejected_score": 0.6,
+      "margin": -0.2,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "初始路径失败的根本原因在于Rubric仅检查了‘是否列出25位’和‘是否为尼日利亚女演员’，却未定义‘重复计数’的处理逻辑。被拒回答虽然列出了25个条目（满足数量形式），但实际只有6位不同演员，严重违背了用户‘列出25位’的隐含意图（即25个独立个体）。Judge判断被拒回答在数量项上得分较高是因为它满足了字面数字，但在事实准确性上忽略了重复导致的实质缺失。同时，Chosen回答中混入了男性演员（Timini Egbuson），导致其在国籍/性别核验上失分，但这不应掩盖其‘无重复’的优点。因此，新的评分标准必须引入‘唯一性去重’作为核心核验方法：任务要求列出N个特定实体时，必须强制校验生成列表中的实体唯一性，重复项应视为无效或需剔除后重新计算数量，而非简单计数条目数。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_aa0d090ed23b4d9d96029b5d8dd569b6",
+            "method": {
+              "trigger": "当任务要求生成特定数量的并列实体列表（如人物、作品、术语等）时",
+              "principle": "列表的有效性取决于‘唯一实体数量’而非‘条目总数’。若回答中存在重复实体，必须将重复项剔除后统计有效数量；若剔除后数量不足任务要求，则判定为数量不达标。严禁仅因条目总数达到要求而忽略重复带来的内容缺失。",
+              "application_guide": "在构建评分标准的‘数量符合度’维度时，设立‘实体唯一性核验’步骤：1. 对生成的列表进行去重处理，识别并剔除完全相同的实体名称；2. 统计去重后的有效实体数量；3. 将有效数量与任务要求的数量进行比对。若有效数量小于要求数量，无论原始条目数多少，均判定该维度不合格。此步骤应在检查实体属性（如国籍、职业）之前执行，因为重复本身已构成数量错误。"
+            },
+            "source_task_id": "f48dabd74f1ec25ac37c993ee1615cb3a5837eddaadb4c61c5764b0af6021663",
+            "parent_ids": [
+              "exp_08ed6e34bf654aae85d3d3ad25ed3900"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_aa0d090ed23b4d9d96029b5d8dd569b6"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_1",
+                  "question": "列表中所有被列出的个体是否均明确具有尼日利亚国籍？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_2",
+                  "question": "列表中所有被列出的个体是否均被确认为从事演艺工作的专业女演员？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_3",
+                  "question": "去除完全重复的姓名后，列表中独立有效的尼日利亚女演员数量是否至少为25人？",
+                  "weight": 0.4
+                }
+              ],
+              "analysis": "评分标准设计聚焦于任务核心要求：生成25位尼日利亚女演员的列表。首先，必须严格核验列表中的实体是否均为‘尼日利亚籍’且职业为‘女演员’，排除国籍或职业不符的情况；其次，依据提供的经验，重点进行唯一性校验，剔除重复条目后统计有效数量，确保去重后的独立实体数达到25个，而非仅看原始条目总数；最后，需确认输出格式是否为清晰的列表形式，便于核对。背景信息（如尼日利亚电影产业概况）不作为评分项，仅作为判断演员国籍的背景依据。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6",
+              "normalized_weights": {
+                "rubric_3cadf7a138f9465b85dfc329cd225ae6_1": 0.3,
+                "rubric_3cadf7a138f9465b85dfc329cd225ae6_2": 0.3,
+                "rubric_3cadf7a138f9465b85dfc329cd225ae6_3": 0.4
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "列表中列出的25位演员（如Genevieve Nnaji、Omotola Jalade Ekeinde等）均为国际公认的尼日利亚籍人士，没有发现非尼日利亚国籍的个体。",
+                  "rejected_reason": "列表中列出的所有姓名（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya）均为公认拥有尼日利亚国籍的公众人物，无国籍存疑或错误的个体。"
+                },
+                {
+                  "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "列表中的第22项'Timini Egbuson'是男性演员，并非女演员，因此不满足‘所有被列出的个体均被确认为从事演艺工作的专业女演员’这一标准。",
+                  "rejected_reason": "列表中出现的六位女性均被广泛确认为尼日利亚电影产业（Nollywood）中的专业女演员，符合‘从事演艺工作的专业女演员’这一身份定义。"
+                },
+                {
+                  "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "由于第22项Timini Egbuson为男性，不符合女演员的定义，导致列表中独立有效的尼日利亚女演员数量少于25人（实际有效人数为24人），未满足至少25人的要求。",
+                  "rejected_reason": "虽然列表总条目数为25，但去除完全重复的姓名后，实际独立有效的个体仅有6人（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya），远未达到任务要求的至少25个独立个体的数量标准。"
+                }
+              ],
+              "chosen_score": 0.3,
+              "rejected_score": 0.6,
+              "margin": -0.3,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_6feeb3697a4e424c9689342ad9fdb02d",
+            "method": {
+              "trigger": "当任务涉及列举具体人物且包含性别或特定身份限制（如‘女演员’、‘总统’）时",
+              "principle": "模型必须严格校验列表中每个实体的属性一致性。若列表中包含不符合限定条件（如性别错误、职业不符）的实体，该条目应被视为无效计数，且不能通过其他正确条目来弥补数量缺口。",
+              "application_guide": "在构建评分标准的‘事实准确性’维度时，设立‘属性合规性否决’条款：1. 遍历列表中的每一个实体，逐一核验其是否符合任务指定的所有约束条件（如性别、职业、国籍）；2. 对于任何不符合条件的实体（如将男性列入女演员名单），直接标记该条目为无效；3. 在计算最终数量时，仅统计通过属性核验的条目。若有效条目数低于任务要求，即使总条目数达标，也应判定为数量不足。此标准需与‘实体唯一性核验’配合使用，确保既无重复也无违规实体。"
+            },
+            "source_task_id": "f48dabd74f1ec25ac37c993ee1615cb3a5837eddaadb4c61c5764b0af6021663",
+            "parent_ids": [
+              "exp_4da556de91db4f7b90a5b91dbef12f6c"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_6feeb3697a4e424c9689342ad9fdb02d"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_1",
+                  "question": "列表中是否包含至少25个被确认为尼日利亚籍且职业为女演员的有效实体？",
+                  "weight": 0.6
+                },
+                {
+                  "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_2",
+                  "question": "列表中的每一个条目是否都严格符合‘尼日利亚国籍’和‘女性性别’及‘演员职业’的属性约束，无任何违规实体计入总数？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_3",
+                  "question": "列表中是否存在重复的同一个人名或同一个人物？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "本任务核心要求是列出25位尼日利亚女演员。设计评分标准时，需严格区分背景信息（如‘尼日利亚’、‘女演员’）与输出义务（生成列表）。根据提供的经验，必须建立严格的属性校验机制：任何非女性或非演员的条目均视为无效计数，且不能通过其他条目弥补数量缺口。同时需确保名单中无重复项，因为任务隐含要求列举不同的个体。权重分配上，数量达标是基础但受限于准确性，因此将准确性与数量合并为高权重；唯一性次之；格式清晰作为辅助项。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9",
+              "normalized_weights": {
+                "rubric_74f48359fd574a9ca094a8ee6f8df5f9_1": 0.6,
+                "rubric_74f48359fd574a9ca094a8ee6f8df5f9_2": 0.3,
+                "rubric_74f48359fd574a9ca094a8ee6f8df5f9_3": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_1",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答提供了25个条目，且经核实（如Genevieve Nnaji, Omotola Jalade Ekeinde等），这些均为知名的尼日利亚籍女演员，满足数量及身份要求。",
+                  "rejected_reason": "虽然列表列出了25个条目，但其中仅包含6位独特的尼日利亚女演员（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya），其余均为重复项。任务要求列出25个有效实体，而实际上只有6个不重复的有效实体，因此未满足‘至少25个’的要求。"
+                },
+                {
+                  "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "列表中的第22项'Timini Egbuson'是男性演员，不符合‘女性性别’的属性约束，导致该条目违规计入总数。",
+                  "rejected_reason": "列表中出现的每一位演员（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya）均符合尼日利亚国籍、女性性别及演员职业的属性约束，没有违规实体被计入。尽管存在大量重复，但就单个条目的属性而言是合规的。"
+                },
+                {
+                  "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_3",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "列表中25个名字均不相同，未发现重复的人名或同一个人物的情况。",
+                  "rejected_reason": "列表中明显存在大量重复的人名。例如，Genevieve Nnaji出现了4次，Omotola Jalade Ekeinde出现了5次，Rita Dominic出现了4次等，违反了‘不存在重复同一个人名或同一个人物’的约束。"
+                }
+              ],
+              "chosen_score": 0.7,
+              "rejected_score": 0.3,
+              "margin": 0.4,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "standalone_correct",
+          "admission_subset": [
+            "exp_6feeb3697a4e424c9689342ad9fdb02d"
+          ]
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_90eb4d4535104405ad75c6e76488832e",
+            "criteria": [
+              {
+                "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_1",
+                "question": "回答是否明确列出了恰好25位人物？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_2",
+                "question": "列出的所有人物是否均为尼日利亚国籍？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_3",
+                "question": "列出的所有人物是否以职业演员（Actress）身份被确认？",
+                "weight": 0.3
+              }
+            ],
+            "analysis": "任务核心要求是列出25位尼日利亚女演员。背景信息（如尼日利亚电影产业）不应作为输出义务，只需确保列出的名字符合国籍和职业定义。由于经验列表为空，不引入额外核验方法，仅基于任务字面要求进行设计：数量必须精确为25，且每位演员必须具备尼日利亚国籍及演员身份。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_90eb4d4535104405ad75c6e76488832e",
+            "normalized_weights": {
+              "rubric_90eb4d4535104405ad75c6e76488832e_1": 0.4,
+              "rubric_90eb4d4535104405ad75c6e76488832e_2": 0.3,
+              "rubric_90eb4d4535104405ad75c6e76488832e_3": 0.3
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_1",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答中明确列出了从1到25的编号，共计25位人物。",
+                "rejected_reason": "回答虽然列出了25个条目，但实际只包含6位不同的女演员（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya），其余均为重复，未明确列出恰好25位不同的人物。"
+              },
+              {
+                "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "列表中的第22项'Timini Egbuson'是尼日利亚男演员而非女演员，不满足所有人物均为尼日利亚国籍且为女性的隐含条件（尽管其国籍正确，但作为Actress身份存疑），导致整体列表不符合'均为尼日利亚女演员'的要求。",
+                "rejected_reason": "所列出的所有名字（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya）均为知名的尼日利亚籍人士。"
+              },
+              {
+                "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "由于列表中包含了Timini Egbuson（男性），该条目无法被确认为以职业女演员（Actress）身份存在，因此并非列出的所有人物都符合此标准。",
+                "rejected_reason": "所列出的所有人物均以职业演员身份被广泛确认，符合尼日利亚电影产业（Nollywood）中女演员的定义。"
+              }
+            ],
+            "chosen_score": 0.4,
+            "rejected_score": 0.6,
+            "margin": -0.2,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_aa0d090ed23b4d9d96029b5d8dd569b6"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6",
+            "criteria": [
+              {
+                "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_1",
+                "question": "列表中所有被列出的个体是否均明确具有尼日利亚国籍？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_2",
+                "question": "列表中所有被列出的个体是否均被确认为从事演艺工作的专业女演员？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_3",
+                "question": "去除完全重复的姓名后，列表中独立有效的尼日利亚女演员数量是否至少为25人？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "评分标准设计聚焦于任务核心要求：生成25位尼日利亚女演员的列表。首先，必须严格核验列表中的实体是否均为‘尼日利亚籍’且职业为‘女演员’，排除国籍或职业不符的情况；其次，依据提供的经验，重点进行唯一性校验，剔除重复条目后统计有效数量，确保去重后的独立实体数达到25个，而非仅看原始条目总数；最后，需确认输出格式是否为清晰的列表形式，便于核对。背景信息（如尼日利亚电影产业概况）不作为评分项，仅作为判断演员国籍的背景依据。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6",
+            "normalized_weights": {
+              "rubric_3cadf7a138f9465b85dfc329cd225ae6_1": 0.3,
+              "rubric_3cadf7a138f9465b85dfc329cd225ae6_2": 0.3,
+              "rubric_3cadf7a138f9465b85dfc329cd225ae6_3": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "列表中列出的25位演员（如Genevieve Nnaji、Omotola Jalade Ekeinde等）均为国际公认的尼日利亚籍人士，没有发现非尼日利亚国籍的个体。",
+                "rejected_reason": "列表中列出的所有姓名（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya）均为公认拥有尼日利亚国籍的公众人物，无国籍存疑或错误的个体。"
+              },
+              {
+                "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "列表中的第22项'Timini Egbuson'是男性演员，并非女演员，因此不满足‘所有被列出的个体均被确认为从事演艺工作的专业女演员’这一标准。",
+                "rejected_reason": "列表中出现的六位女性均被广泛确认为尼日利亚电影产业（Nollywood）中的专业女演员，符合‘从事演艺工作的专业女演员’这一身份定义。"
+              },
+              {
+                "criterion_id": "rubric_3cadf7a138f9465b85dfc329cd225ae6_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "由于第22项Timini Egbuson为男性，不符合女演员的定义，导致列表中独立有效的尼日利亚女演员数量少于25人（实际有效人数为24人），未满足至少25人的要求。",
+                "rejected_reason": "虽然列表总条目数为25，但去除完全重复的姓名后，实际独立有效的个体仅有6人（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya），远未达到任务要求的至少25个独立个体的数量标准。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 0.6,
+            "margin": -0.3,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_6feeb3697a4e424c9689342ad9fdb02d"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9",
+            "criteria": [
+              {
+                "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_1",
+                "question": "列表中是否包含至少25个被确认为尼日利亚籍且职业为女演员的有效实体？",
+                "weight": 0.6
+              },
+              {
+                "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_2",
+                "question": "列表中的每一个条目是否都严格符合‘尼日利亚国籍’和‘女性性别’及‘演员职业’的属性约束，无任何违规实体计入总数？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_3",
+                "question": "列表中是否存在重复的同一个人名或同一个人物？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "本任务核心要求是列出25位尼日利亚女演员。设计评分标准时，需严格区分背景信息（如‘尼日利亚’、‘女演员’）与输出义务（生成列表）。根据提供的经验，必须建立严格的属性校验机制：任何非女性或非演员的条目均视为无效计数，且不能通过其他条目弥补数量缺口。同时需确保名单中无重复项，因为任务隐含要求列举不同的个体。权重分配上，数量达标是基础但受限于准确性，因此将准确性与数量合并为高权重；唯一性次之；格式清晰作为辅助项。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9",
+            "normalized_weights": {
+              "rubric_74f48359fd574a9ca094a8ee6f8df5f9_1": 0.6,
+              "rubric_74f48359fd574a9ca094a8ee6f8df5f9_2": 0.3,
+              "rubric_74f48359fd574a9ca094a8ee6f8df5f9_3": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_1",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答提供了25个条目，且经核实（如Genevieve Nnaji, Omotola Jalade Ekeinde等），这些均为知名的尼日利亚籍女演员，满足数量及身份要求。",
+                "rejected_reason": "虽然列表列出了25个条目，但其中仅包含6位独特的尼日利亚女演员（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya），其余均为重复项。任务要求列出25个有效实体，而实际上只有6个不重复的有效实体，因此未满足‘至少25个’的要求。"
+              },
+              {
+                "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "列表中的第22项'Timini Egbuson'是男性演员，不符合‘女性性别’的属性约束，导致该条目违规计入总数。",
+                "rejected_reason": "列表中出现的每一位演员（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya）均符合尼日利亚国籍、女性性别及演员职业的属性约束，没有违规实体被计入。尽管存在大量重复，但就单个条目的属性而言是合规的。"
+              },
+              {
+                "criterion_id": "rubric_74f48359fd574a9ca094a8ee6f8df5f9_3",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "列表中25个名字均不相同，未发现重复的人名或同一个人物的情况。",
+                "rejected_reason": "列表中明显存在大量重复的人名。例如，Genevieve Nnaji出现了4次，Omotola Jalade Ekeinde出现了5次，Rita Dominic出现了4次等，违反了‘不存在重复同一个人名或同一个人物’的约束。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 0.3,
+            "margin": 0.4,
+            "success": true
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_aa0d090ed23b4d9d96029b5d8dd569b6",
+            "exp_6feeb3697a4e424c9689342ad9fdb02d"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_80403ca33f224ce2a6233f1429f6d523",
+            "criteria": [
+              {
+                "criterion_id": "rubric_80403ca33f224ce2a6233f1429f6d523_1",
+                "question": "去除重复项后，列表中是否包含至少25个唯一的实体名称？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_80403ca33f224ce2a6233f1429f6d523_2",
+                "question": "列表中每一个被计入的实体是否均为尼日利亚籍且职业为女演员？",
+                "weight": 0.5
+              }
+            ],
+            "analysis": "评分标准设计严格基于任务核心要求：列出25位尼日利亚女演员。首先，必须确保列表中包含至少25个不同的实体（去重后），这是数量达标的基础，对应经验1中的唯一性核验原则。其次，每个实体必须同时满足‘尼日利亚人’和‘女演员’两个属性约束，任何不符合任一属性的条目均视为无效计数，这对应经验2中的属性合规性否决原则。背景信息仅用于界定筛选范围，不作为输出内容的一部分。权重分配上，数量达标（含去重）是首要条件，属性准确性是次级但关键的过滤条件，两者共同决定最终结果的有效性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_80403ca33f224ce2a6233f1429f6d523",
+            "normalized_weights": {
+              "rubric_80403ca33f224ce2a6233f1429f6d523_1": 0.5,
+              "rubric_80403ca33f224ce2a6233f1429f6d523_2": 0.5
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_80403ca33f224ce2a6233f1429f6d523_1",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "列表中包含25个条目，经逐一核对，所有名称均不相同，没有重复项，满足至少25个唯一实体名称的要求。",
+                "rejected_reason": "去除重复项后，列表中仅包含6个唯一实体（Genevieve Nnaji、Omotola Jalade Ekeinde、Rita Dominic、Patience Ozokwor、Funke Akindele、Beverly Naya），未达到至少25个唯一实体名称的要求。"
+              },
+              {
+                "criterion_id": "rubric_80403ca33f224ce2a6233f1429f6d523_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "列表中的第22项'Timini Egbuson'是尼日利亚男演员，并非女演员，因此该条目不符合'职业为女演员'的标准，导致列表中每一个被计入的实体不均为尼日利亚籍且职业为女演员。",
+                "rejected_reason": "列表中出现的所有名字均为尼日利亚籍且职业为女演员的公众人物，尽管存在大量重复，但被计入的唯一实体均符合国籍和职业要求。"
+              }
+            ],
+            "chosen_score": 0.5,
+            "rejected_score": 0.5,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_90eb4d4535104405ad75c6e76488832e",
+        "criteria": [
+          {
+            "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_1",
+            "question": "回答是否明确列出了恰好25位人物？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_2",
+            "question": "列出的所有人物是否均为尼日利亚国籍？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_3",
+            "question": "列出的所有人物是否以职业演员（Actress）身份被确认？",
+            "weight": 0.3
+          }
+        ],
+        "analysis": "任务核心要求是列出25位尼日利亚女演员。背景信息（如尼日利亚电影产业）不应作为输出义务，只需确保列出的名字符合国籍和职业定义。由于经验列表为空，不引入额外核验方法，仅基于任务字面要求进行设计：数量必须精确为25，且每位演员必须具备尼日利亚国籍及演员身份。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_90eb4d4535104405ad75c6e76488832e",
+        "normalized_weights": {
+          "rubric_90eb4d4535104405ad75c6e76488832e_1": 0.4,
+          "rubric_90eb4d4535104405ad75c6e76488832e_2": 0.3,
+          "rubric_90eb4d4535104405ad75c6e76488832e_3": 0.3
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中明确列出了从1到25的编号，共计25位人物。",
+            "rejected_reason": "回答虽然列出了25个条目，但实际只包含6位不同的女演员（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya），其余均为重复，未明确列出恰好25位不同的人物。"
+          },
+          {
+            "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "列表中的第22项'Timini Egbuson'是尼日利亚男演员而非女演员，不满足所有人物均为尼日利亚国籍且为女性的隐含条件（尽管其国籍正确，但作为Actress身份存疑），导致整体列表不符合'均为尼日利亚女演员'的要求。",
+            "rejected_reason": "所列出的所有名字（Genevieve Nnaji, Omotola Jalade Ekeinde, Rita Dominic, Patience Ozokwor, Funke Akindele, Beverly Naya）均为知名的尼日利亚籍人士。"
+          },
+          {
+            "criterion_id": "rubric_90eb4d4535104405ad75c6e76488832e_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "由于列表中包含了Timini Egbuson（男性），该条目无法被确认为以职业女演员（Actress）身份存在，因此并非列出的所有人物都符合此标准。",
+            "rejected_reason": "所列出的所有人物均以职业演员身份被广泛确认，符合尼日利亚电影产业（Nollywood）中女演员的定义。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.6,
+        "margin": -0.2,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

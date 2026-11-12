@@ -1,0 +1,398 @@
+{
+  "scope": "All final non-singleton groups, without reclustering, editing pool, model calls or changing labels",
+  "source": "runs/history-learning-general500-subset120/checkpoint.json",
+  "checkpoint_sha256": "f0c12d2c0dbb0bba1eb40c9e691687bcebc169415dbcc87c516b58f3c62cbe35",
+  "reviewer": "Codex content review, not independent human ground truth",
+  "interpretation": "较强=具体需求/方法重叠或有明确互补依据；较宽=仅支持宽类或边界需要进一步区分；不报告聚类准确率",
+  "summary": {
+    "task": {
+      "较强": 7,
+      "较宽": 4
+    },
+    "experience": {
+      "较强": 12,
+      "较宽": 3
+    }
+  },
+  "reviews": [
+    {
+      "kind": "task",
+      "group_id": "task_000000000046",
+      "rating": "较强",
+      "suggested_description": "平行版本的社团对话承接",
+      "reason": "两题有大段相同开头、同一平行版本结构；均需维持当前版本的人设和对话连续性。",
+      "boundary": "截止位置不同，不能复用同一具体后续事件要求。",
+      "member_ids": [
+        "32bd527d5a92817e000c495dfc5381c543de9bb254ffa3fb769c364369474b1b",
+        "eb36985d5289697ea38af34355a8b3e73a73473bcbe8756a90b21cd49e41912d"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:72b329158a9a3da0b7090d0eb885a3c4eb29ebe0d93eb1c64fa79615c9eaea28",
+        "helpsteer3:train:1cedcc8e41810ecdb1394475c6b077fe8330f99642d567982e5ae041d0717722"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000072",
+      "rating": "较强",
+      "suggested_description": "同一超自然母女设定的故事承接",
+      "reason": "较长题包含短题的大段前文，人物、心灵感应及母女关系一致。",
+      "boundary": "一题停在初次对话，另一题已揭晓性别并时间跳跃；当前剧情阶段不同。",
+      "member_ids": [
+        "21f1e2691e21aeda298013c3acfd53fbfbf92028c2b58099b535a9e9ffecacca",
+        "51d6a802edfafca654c8ddff96053239e51fe820205c7616a3ff627267ccbf74"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:e63a6369be84d90e10f1525b4e7a516e6a8b8c37b5ddd182ce38bb9698100758",
+        "helpsteer3:train:763a2829ddc5ee9b2946a58e7ea7ce750c71e4e8ee7509e39b5269fa6a94f793"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000180",
+      "rating": "较强",
+      "suggested_description": "多品牌联名广告创作",
+      "reason": "均要求把给定品牌/IP融合为广告；核心核验都是品牌覆盖、融合和广告体裁。",
+      "boundary": "长题额外列出多个IP，覆盖清单应逐题生成，不照搬。",
+      "member_ids": [
+        "094d5dbead2d766f3a0e63360d8ec8e36473d49d21f080a37115a107bc3143eb",
+        "3432efa0616c3aecd798a0317e5b7a5e86728750ad5b9af781a8be985545c0f2"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:cd00224931354c54e7ad262becf5b853983a31f53a310bf4ec502303c5ca8b0c",
+        "helpsteer3:train:97172cac439d6dea8663796af1da26aa150d631071c976a4052d40a053f78bb8"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000209",
+      "rating": "较宽",
+      "suggested_description": "相同角色体系下的家庭/孕期对话",
+      "reason": "六题都属同一角色体系的剧情承接，角色—属性绑定经验有共同使用理由。",
+      "boundary": "结尾分别是紧急临产、孕期问候、婚后揭晓等；只支持宽类，不支持共同紧急性或固定结局。",
+      "member_ids": [
+        "10f213bf804ad2ffe167da786f39d343edaba6abdc8a615f51b3cbafe6297fad",
+        "704331507b4ae7efde21532d084a74155fb2c7eaef9229a54abb79411c78c857",
+        "7f512bdccc81f0a7ddc2881c4b2d0f6ff8bac38ad1dedff9cfbb6bc5ff99c5f4",
+        "e0867c1e5bde4b77799254f11f89f130aac06017b1e09964c1e63802cda09281",
+        "e99e2d94d584d66fec296491b6e3a304a235dc79915c97be01b88ea9c8c79152",
+        "fc82758de753162f32d9d473942868f76cc30cccac00808a7d93600516a921e9"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:92c3621a82f1d1688e697d0b7f6d8dffc03ad90682ff74bcd652acccd6030b17",
+        "helpsteer3:train:1baf7938ec5a866195106241a23f23f639153e76f10ffc5702ec4a5347616356",
+        "helpsteer3:train:b6839b249148b02631523ef5e3aed282b69be392dc864e2e198d8d1c949ec4c3",
+        "helpsteer3:train:690493c9d3059e65c059734d29cae572431913529dd3761406983b57deb33973",
+        "helpsteer3:train:ff2fd9884b0ec1ca28a4935465c420bb0c74f01afe58586f1853f195a58f7dc7",
+        "helpsteer3:train:8620a4080f87854fb173a49e77fb26270717be65ac948cb6dae0da829e7d8dc9"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000212",
+      "rating": "较强",
+      "suggested_description": "多角色互动中的孕期突发情节承接",
+      "reason": "两题均围绕Sayori在社团中出现孕期痛苦、其他角色回应；人物绑定与情节承接的核验目标相近。",
+      "boundary": "一题是第一人称且明确三胞胎和即将出生，另一题只到带痛苦入场，细节不可互换。",
+      "member_ids": [
+        "02de9a7f130a52f10ea52e3b5d2288350f98c1ad509a1b3479e78f0fdf5d4604",
+        "5fa07c1ffd10a4bfe2a7d13dd9d84fcd7d7b33ca374255b0a9534413c8e934bf"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:2db71ab3ce2cc3bb7b5da48f03f765b08238820c4b1cfd94a4fe8268f359af93",
+        "helpsteer3:train:c51830c6481e015299ab74a246b8dd6e34cb0b6849a88879d238704368b9b406"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000338",
+      "rating": "较强",
+      "suggested_description": "指定政治分歧点的架空历史章节",
+      "reason": "均明确要求世界内历史书章节、不得提真实时间线，且围绕北洋/明朝复辟等给定分歧点推演。",
+      "boundary": "两题对关键人物命运和复辟路径的设定不同；应按各自设定检查，不做真实史实认证。",
+      "member_ids": [
+        "202e1986c062567c1447aa89516b10ea63978f0b37d5dd830a28ffb2f2635c89",
+        "9e003d65aed317f8a689f7123fca1e8a42e3ee52744366d20e9f646d6e00cdf2"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:4ed4d0536f7adacf0cdeaaf9d05012527e8791e697373e0df00fbd5985a316fd",
+        "helpsteer3:train:1d415b0433e7790df1038153a5231b34fe0056ebf81db9a076298f3e7bc227dd"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000387",
+      "rating": "较宽",
+      "suggested_description": "社团成员的母亲身份相关对话",
+      "reason": "均有同一角色体系及母亲/孩子信息，对话对象和角色属性核验可共享。",
+      "boundary": "一题关切胎动消失，另一题介绍单亲母亲与女儿；紧急性、情绪和下一步动作不同。",
+      "member_ids": [
+        "6caab9fe09353645f1ae22642975416b9bffe6448963cd4dea488a615151873a",
+        "d732b3764c7e3a261ee4c4fc85589b420d44c9f611a2efe1c7e8ce7c85fd1d96"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:061e05ab04dcf2f35895f46f269170b79b27a19d26d5b194210b1094e4e567f3",
+        "helpsteer3:train:a49c2b4d9ca684429551110b1c4baed606ec353f0c8300b726e75209ee7488ee"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000412",
+      "rating": "较宽",
+      "suggested_description": "带孕期背景的角色对话承接",
+      "reason": "共享人物体系、孕期属性与即时情绪回应的潜在检查。",
+      "boundary": "一题追问梦境，一题转到另一角色突发痛苦；主要对话目标不同。",
+      "member_ids": [
+        "d9e3ca09ebfd658d0d8b967982a89ab0fe26aa8bfc765456c09107bcca304832",
+        "fb45f5ba753031b64e1da0734116f196fe2a94b38d09ac8629b3fbc23b54a191"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:627895df21f6a1b66223c64ff56028c0945b0fd214cea282f3a89d85253b512a",
+        "helpsteer3:train:aeb2c7b510db58b27d2511ea19c9ff877762d365d378247a46197d97b8b600bb"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000414",
+      "rating": "较强",
+      "suggested_description": "同一受控角色设定的剧本承接",
+      "reason": "均是同名角色、同类受控行为的虚构场景，角色行动与既定设定一致性可共同检查。",
+      "boundary": "一题是旁观者当下反应，另一题包含建立状态与忘记经历等过程；不能泛化具体状态要求。",
+      "member_ids": [
+        "8ceeb0dec9407be738b71bd60023a34d8f5e5269a5b276c4ef3167c669bf554f",
+        "9bcb972643fe4304c05836b5025f12809afbc73f2e971e112f6db3d38be1ddce"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:0a00ba02114fad58fceb8c7c20c2d2705a170a506ea30e10c251f76b6dc17bdc",
+        "helpsteer3:train:3dfb7cec8bab60a37a9e08001417c4e8d64f02c6b16bc531a6d540e76b214a25"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000533",
+      "rating": "较宽",
+      "suggested_description": "极短社团对话片段的承接",
+      "reason": "都只有场景提示和一句角色台词，响应对象与对话承接是可共享的宽泛要求。",
+      "boundary": "一题是鼓励分娩，一题是寻找缺席成员；除形式/角色体系外，具体评分需求差异大。",
+      "member_ids": [
+        "47811f0f40bdc99e53311d3539dd6fcfacd34b9f18a356baea587dfcb3136f74",
+        "e034173617cdb76e09203dab48015d3a400a30a3a88281a706acd167925a042e"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:6e7e2ca2410c779a4426b353beaec146d94db31748b88735c087e3d01333afbe",
+        "helpsteer3:train:ea50e70f6e6ce10dee8b54756aec4e59b73fd788522db9db3825229614455604"
+      ]
+    },
+    {
+      "kind": "task",
+      "group_id": "task_000000000636",
+      "rating": "较强",
+      "suggested_description": "咖啡馆场景的相近剧本模板",
+      "reason": "人物关系虽换名，但店主/雇员/来访熟人、对话推进和受控行为的结构高度相近。",
+      "boundary": "来访者分别为表亲、前女友，结尾分别涉及后续触发与忘记经历，不能交换关系与结局。",
+      "member_ids": [
+        "4e3e6d83aa17ea4e38780a2b23f2db903a3554d3f304b40c12219d4af6c491af",
+        "fc78ce7bb43d4396fb4b1540a1598e50047c91246e910d8c258e11778897ac0a"
+      ],
+      "sample_ids": [
+        "helpsteer3:train:a8b5799e62d9adf18212469ce0d7c39989f799dd6e81357858a58576f26141db",
+        "helpsteer3:train:9bdd61f86f43b9e5d2e3d0cfa4b069da52e3bd5dec931202c6ab29f064cf231d"
+      ]
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000036",
+      "rating": "较强",
+      "suggested_description": "角色属性与主体绑定",
+      "reason": "两条均核验谁具有什么属性、关系是否被转移；第二条额外要求关键状态不被遗漏。",
+      "boundary": "同类合理，归属错误与遗漏不是同一失分条件，合并时会改变适用边界。",
+      "member_ids": [
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_e6bc0e63268d43908dfb2bc8056627c6"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000114",
+      "rating": "较强",
+      "suggested_description": "指定字数范围合规",
+      "reason": "均核验实际词数是否在任务范围内，第二条更强调下限和二元扣分。",
+      "boundary": "类别合理；±10%等容差和一票否决式强度不能由聚类认证为正确。",
+      "member_ids": [
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_a8ebad51b815445095cd440acf9be5d4"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000150",
+      "rating": "较强",
+      "suggested_description": "设定中的苏醒后记忆状态",
+      "reason": "均区分合理困惑/遗忘与保留被操控记忆，方法高度重叠。",
+      "boundary": "后一条范围更偏苏醒场景，不能把所有心理设定都视为同一状态。",
+      "member_ids": [
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c5aef76ff90b405884b05f789c917151"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000210",
+      "rating": "较强",
+      "suggested_description": "遵守故事明确锁定的行动路径",
+      "reason": "两条均核验输入明确排除的路径与强制场景，不应被创作绕过。",
+      "boundary": "同类合理，但不能因出现紧迫情节就推定唯一解；正文含案例细节，质量另审。",
+      "member_ids": [
+        "exp_2af3ce804cd047ed8f10e7f46ee557c3",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000283",
+      "rating": "较强",
+      "suggested_description": "具体事实细节的时间/语境归属",
+      "reason": "原则及指南高度重复，重点都是细节真实性和时代/上下文匹配。",
+      "boundary": "trigger一条偏描述任务、一条偏确认任务，仍需保留各自使用前提。",
+      "member_ids": [
+        "exp_3845df297e944ac39510d7a7ab162184",
+        "exp_7dfe611224264aa6b083dde51ccfed66"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000302",
+      "rating": "较宽",
+      "suggested_description": "叙事解释的逻辑来源",
+      "reason": "一条要求解释依赖角色独有属性，另一条禁止靠新编外部事实解决矛盾，可能在部分故事中配合。",
+      "boundary": "任务触发与核验目标不同：角色特异性不等于事实来源约束，当前缺少共同应用证据。",
+      "member_ids": [
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000315",
+      "rating": "较宽",
+      "suggested_description": "叙事表达质量",
+      "reason": "一条核验对话是否承担人物/情节功能，另一条要求纯故事内表达并禁止全知旁白。",
+      "boundary": "前者是功能质量，后者是叙述形式限制；共同叙事词汇不足以支持把它们视为一种具体核验方法。",
+      "member_ids": [
+        "exp_d740a40f12cc4f02822223c2beade8b2",
+        "exp_e8fe08c25cb048948a48069f8f2dcb94"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000388",
+      "rating": "较强",
+      "suggested_description": "保留待定叙事状态/避免越过阶段",
+      "reason": "两条都限制擅自终结输入保留的悬念或状态，并排除元评论。",
+      "boundary": "同类合理；是否真应禁止推进剧情仍取决于task，不能因同组认定强限制正确。",
+      "member_ids": [
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000415",
+      "rating": "较强",
+      "suggested_description": "长文本的实质内容与相关性",
+      "reason": "均区分有意义扩展与占位/重复填充，核心检查目标一致。",
+      "boundary": "一条要求有深度期待，另一条触发更宽；同来源不构成关联证据。",
+      "member_ids": [
+        "exp_57221b3e19b249a981c4ac3ac622de2e",
+        "exp_9a47fa6e019f46ecb29b2a457c42e537"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000420",
+      "rating": "较强",
+      "suggested_description": "历史风格下工具/渠道的时代适配",
+      "reason": "两条原则和指南几乎逐字重复，差异主要是标点和trigger一个字。",
+      "boundary": "是明显去重候选；一条是另一条的parent后代，但两条均无下游尝试，不能继承收益。",
+      "member_ids": [
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        "exp_ec0820cc69544471b1edcfb60e773b40"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000489",
+      "rating": "较强",
+      "suggested_description": "历史实体的时间属性匹配",
+      "reason": "一条针对主动替代实体，一条针对论据实体，都核验实体年代/属性是否符合语境。",
+      "boundary": "同类相关但对象角色不同，不意味着每条历史任务都应同时用两条。",
+      "member_ids": [
+        "exp_180137bb8e794661880e8782ca24f125",
+        "exp_d9e94f426cec45e28f9147d7cf33149e"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000510",
+      "rating": "较强",
+      "suggested_description": "输入材料缺失时避免伪造完成",
+      "reason": "两条均要求基于材料的任务在缺少输入时澄清/给通用框架，方法近似。",
+      "boundary": "一条指南具体绑定JD/面试；同时禁止假设示例是否过强，应单独审查。",
+      "member_ids": [
+        "exp_70088a1705c04d9e85c9500663f50923",
+        "exp_dc6026115b6240e1951ce931b86ed49f"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000526",
+      "rating": "较强",
+      "suggested_description": "非现实设定的喜剧反应",
+      "reason": "均核验人物是否对荒谬要素进行符合基调的反应，一条更强调明确言语。",
+      "boundary": "同组合理；虚构不等于必须吐槽或口头质疑，这属于经验内容过宽。",
+      "member_ids": [
+        "exp_cc63506a3b7f4396be124343dbc9f3a1",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000554",
+      "rating": "较宽",
+      "suggested_description": "事实前提与实体真实性核验",
+      "reason": "实体是否存在与任务预设是否真实有关，能归入前提核查的宽类。",
+      "boundary": "一条范围覆盖虚构角色生成并将存在性优先，另一条针对事实性前提；不能将虚构设定和真实断言混用。",
+      "member_ids": [
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_a2a4625cad71471994fc4169fe251393"
+      ],
+      "sample_ids": []
+    },
+    {
+      "kind": "experience",
+      "group_id": "experience_000000000600",
+      "rating": "较强",
+      "suggested_description": "基于既有作品的假设性续作推演",
+      "reason": "一条强调事实/推测边界，一条强调实际利用设定产生增量构想；围绕同一种任务需求，属于互补。",
+      "boundary": "唯一共同后续题的baseline技术失败，三条有经验路径虽判对仍无完整信用，不能认证组合收益。",
+      "member_ids": [
+        "exp_4020a6314aa6404490dfd65b19655e79",
+        "exp_a6debea171724490a85fdc530b8d6932"
+      ],
+      "sample_ids": []
+    }
+  ]
+}

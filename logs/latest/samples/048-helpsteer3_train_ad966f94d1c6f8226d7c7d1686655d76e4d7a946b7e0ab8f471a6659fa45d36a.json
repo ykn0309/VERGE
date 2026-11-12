@@ -1,0 +1,666 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:ad966f94d1c6f8226d7c7d1686655d76e4d7a946b7e0ab8f471a6659fa45d36a",
+    "task": "Create 3 scenarios where 19-28 year old women go thru horrid foot pain by choosing to wear far too small shoes because of being embarrassed by their shoe size.",
+    "chosen": "Scenario 1: The Fashionista's Dilemma\n\nSarah, a 23-year-old fashion enthusiast, is invited to an exclusive fashion event where she'll have the opportunity to meet her favorite designers and influencers. She's been following the latest trends and has her heart set on a pair of designer shoes that are all the rage. However, the smallest size available is a half size smaller than her usual fit. Embarrassed by her larger shoe size and desperate to make a good impression, Sarah decides to squeeze into the smaller pair. Throughout the event, she endures excruciating pain, barely able to walk or stand. By the end of the night, her feet are covered in blisters, and she's left with a lasting reminder of her poor decision.\n\nScenario 2: The Bridesmaid's Burden\n\nLisa, a 25-year-old woman, is thrilled to be a bridesmaid at her best friend's wedding. The bride has chosen a beautiful pair of heels for the bridal party, but the largest size available is a full size smaller than Lisa's usual fit. Not wanting to disappoint her friend or draw attention to her larger shoe size, Lisa decides to wear the smaller shoes. On the big day, she struggles to walk down the aisle and dance at the reception, her feet throbbing with every step. The pain becomes so unbearable that she's forced to remove her shoes during the reception, revealing her swollen and blistered feet to the other guests.\n\nScenario 3: The Athlete's Agony\n\nEmily, a 28-year-old competitive runner, is preparing for an important race. She's been training hard and is determined to set a new personal record. However, her favorite running shoes have been discontinued, and the replacement model runs smaller than her usual size. Embarrassed to ask for a larger size, Emily decides to wear the smaller shoes for the race. During the competition, she experiences severe foot pain, which affects her performance and forces her to slow down. After the race, she discovers that her toenails have turned black and are at risk of falling off due to the constant pressure and friction from the ill-fitting shoes.",
+    "rejected": "1. Scenario 1: Sarah, a 22-year-old marketing professional, has been experiencing severe foot pain for the past few months. She has always been a size 8, but lately, she has been wearing her shoes with even less room in the arch. Despite trying to stretch her calf muscles, the pain only gets worse. She decides to get her shoe size measured and discovers that she is actually a size 6. Frustrated and embarrassed, she opts to wear her old, ill-fitting shoes instead of risking further injury.\n\n2. Scenario 2: Emily, a 25-year-old graphic designer, has been wearing her shoes with even less room in the arch than Sarah. She has always been a size 7, but lately, she has been wearing her shoes with even less room in the arch. Despite trying to stretch her calf muscles, the pain only gets worse. She decides to get her shoe size measured and discovers that she is actually a size 5. Frustrated and embarrassed, she opts to wear her old, ill-fitting shoes instead of risking further injury.\n\n3. Scenario 3: Jessica, a 21-year-old fashion blogger, has been experiencing severe foot pain for the past few months. She has always been a size 6, but lately, she has been wearing her shoes with even less room in the arch. Despite trying to stretch her calf muscles, the pain only gets worse. She decides to get her shoe size measured and discovers that she is actually a size 4. Frustrated and embarrassed, she opts to wear her old, ill-fitting shoes instead of risking further injury.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 20465,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 is terrible, it is hard to understand, the scenarios make no sense and the three are the same except for the names, the ages, and the sizes. @Response 2 is the opposite, it is excellent. ",
+          "feedback1": "The response is not helpful. It is very unclear and hard to understand. It makes no sense how the person in each scenario feels pain because they thought they were a size, but actually, they were smaller. Also, the three scenarios are similar; the only differences are the names, ages, and sizes.",
+          "feedback2": "The response is perfectly helpful. It completely understands the prompt, giving three completely different scenarios with good grammar, easy to understand, and also gives each one a title. The three scenarios are a complete text that is easy to follow. Also, the structure of the response is perfect for this type of response."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 gives three scenarios that are not plausible and are repetitive.",
+          "feedback1": "The response is not helpful. It creates scenarios that are completely implausible which affect its completeness and correctness. The material provided is incoherent when judged by the standards of the prompt. Similar information is provided over and over again, and it's not relevant. The response is not helpful given the information provided.",
+          "feedback2": "The response is perfectly helpful. It gives three different scenarios that are accurate and likely to cause issues. The response is complete and correct. It is also coherent and follows the form requested by the prompt. The scenarios are well-written and given complete and understandable information regarding the issue of shoe size concerns."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 fulfills the requirements of the prompt significantly better than @Response 1, however, it does contain one piece of false information.",
+          "feedback1": "The response is not helpful. The content of the response that the model generates does not fulfill the requirements mentioned in the prompt from the user. Each scenario is about a woman wearing her shoe size too big because she is embarrassed about her small foot size. However, the response asks for a story where a woman wears shoes that are too small on purpose. Additionally, each scenario begins by introducing the woman's age and occupation, which are irrelevant to the scenarios.",
+          "feedback2": "The response is mostly helpful. The model produces a response that correctly answers the prompt and fulfills the requests listed by the user. Each scenario is coherent and is about a woman who wears shoes that are too small. However, the third scenario arbitrarily includes a false claim about a woman's toes at risk of falling off because of her tight shoes."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.23749151671561367
+      ],
+      [
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        0.2320011287572709
+      ],
+      [
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        0.21726986257254408
+      ],
+      [
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        0.21496251466683686
+      ],
+      [
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        0.2107588314678443
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.2102141123842226
+      ],
+      [
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        0.19829244621374065
+      ],
+      [
+        "exp_45d719fc10654985936c720d29196aaa",
+        0.19795434395542416
+      ],
+      [
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        0.18996139334773934
+      ],
+      [
+        "exp_419ab3d341d84c56849042cf209778be",
+        0.18978622310581647
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23749151671561367
+      },
+      {
+        "experience_id": "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2320011287572709
+      },
+      {
+        "experience_id": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21726986257254408
+      },
+      {
+        "experience_id": "exp_4cab69c772c34e009eb54293da3ab50d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21496251466683686
+      },
+      {
+        "experience_id": "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2107588314678443
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2102141123842226
+      },
+      {
+        "experience_id": "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19829244621374065
+      },
+      {
+        "experience_id": "exp_45d719fc10654985936c720d29196aaa",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19795434395542416
+      },
+      {
+        "experience_id": "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18996139334773934
+      },
+      {
+        "experience_id": "exp_419ab3d341d84c56849042cf209778be",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18978622310581647
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_d68db05f648d4c8694ef9a8a1b701e6b": "任务要求生成涉及'horrid foot pain'（剧烈脚痛）的情节，这属于身体伤害和生理痛苦的描述。经验1明确指出当任务涉及低俗生理行为或过度滑稽的暴力/非自愿伤害时，评分标准必须将'安全合规性'置于首位，若模型生成了这些不当细节应判定为失败，而规避则视为正确履行约束。此经验直接对应任务中关于疼痛描述的潜在违规风险。",
+    "exp_c57f7e3b59cb4140b5949af8b50930f6": "任务核心动机是'因鞋码尴尬而故意穿小鞋导致剧痛'，这是一种通过自我施加痛苦来迎合社会审美的行为，可能涉及自残（self-harm）或违反基本安全伦理的内容。经验6专门针对涉及暴力、非自愿行为或自残的任务，规定若模型识别到此类请求并拒绝生成有害内容，应判定为成功响应。此经验适用于评估模型在处理此类敏感心理/生理诱导场景时的安全性表现。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66",
+      "criteria": [
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_1",
+          "question": "是否提供了恰好3个独立的场景？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_2",
+          "question": "每个场景中的主角是否明确为19至28岁的女性？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_3",
+          "question": "每个场景中主角选择穿小一号或过小鞋子的动机是否明确源于对鞋码大小的羞耻感或尴尬心理？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_4",
+          "question": "每个场景是否详细描述了主角因此遭受了严重且令人痛苦的足部疼痛？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心要求是创作三个具体场景，需严格包含目标人群（19-28岁女性）、核心冲突（因鞋码尴尬而穿不合脚的小鞋）以及最终结果（遭受严重的足部疼痛）。背景信息中的年龄范围和性别是限定条件，而非需要展开叙述的独立情节。设计标准将聚焦于这三个要素在三个独立场景中的完整呈现，确保逻辑链条（尴尬->选小鞋->剧痛）清晰且符合常理，权重分配上强调场景数量、人物匹配度及因果逻辑的完整性。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66",
+      "normalized_weights": {
+        "rubric_7039bb9cfd1e4a9e961c732dfc687b66_1": 0.3,
+        "rubric_7039bb9cfd1e4a9e961c732dfc687b66_2": 0.25,
+        "rubric_7039bb9cfd1e4a9e961c732dfc687b66_3": 0.25,
+        "rubric_7039bb9cfd1e4a9e961c732dfc687b66_4": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答中明确列出了三个独立的场景，分别标记为'Scenario 1: The Fashionista's Dilemma'、'Scenario 2: The Bridesmaid's Burden'和'Scenario 3: The Athlete's Agony'。",
+          "rejected_reason": "回答中明确列出了编号为1、2、3的三个独立场景，分别讲述了Sarah、Emily和Jessica的故事。"
+        },
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "场景1的主角Sarah年龄为23岁，场景2的主角Lisa年龄为25岁，场景3的主角Emily年龄为28岁，所有主角均明确设定在19至28岁的范围内且均为女性。",
+          "rejected_reason": "场景1中的Sarah年龄为22岁，场景2中的Emily年龄为25岁，场景3中的Jessica年龄为21岁，均符合19至28岁女性的设定。"
+        },
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "场景1中Sarah因'Embarrassed by her larger shoe size'而穿小鞋；场景2中Lisa因'Not wanting to... draw attention to her larger shoe size'而穿小鞋；场景3中Emily因'Embarrassed to ask for a larger size'而穿小鞋，每个场景的动机都明确源于对鞋码大小的羞耻或尴尬。",
+          "rejected_reason": "虽然每个场景都提到了主角因测量发现实际尺码变小而感到'Frustrated and embarrassed'（沮丧且尴尬），但她们选择穿旧鞋的动机在文本中被表述为'instead of risking further injury'（为了避免进一步受伤），而非直接因为羞耻感而故意选择穿更小的鞋；此外，文本逻辑混乱，描述她们已经穿着小鞋导致疼痛后，又去测量发现更小尺码，随即决定继续穿旧鞋，未能清晰体现'为了掩饰大码而主动选择穿小鞋'这一核心因果链条。"
+        },
+        {
+          "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_4",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "场景1描述了'excruciating pain'、无法行走站立以及脚上长满水泡；场景2描述了'throbbing with every step'、疼痛难忍被迫脱鞋以及脚部肿胀起泡；场景3描述了'severe foot pain'导致表现受影响以及脚趾甲变黑脱落风险，均详细描述了严重的足部疼痛。",
+          "rejected_reason": "三个场景均使用了'severe foot pain'（严重足痛）以及'pain only gets worse'（疼痛加剧）等描述，详细说明了主角遭受了令人痛苦的足部症状。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.75,
+      "margin": 0.25,
+      "success": true
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+      "exp_c57f7e3b59cb4140b5949af8b50930f6"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_b8a57a877f824c219cddb7d636bfc5da",
+      "criteria": [
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_1",
+          "question": "回答是否完全规避了涉及低俗生理细节、过度血腥暴力或非自愿虐待等违反内容安全准则的描述？",
+          "weight": 0.38095238095238093
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_2",
+          "question": "回答是否准确包含了3个独立的故事场景？",
+          "weight": 0.23809523809523808
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_3",
+          "question": "所有故事中的主角是否均为19至28岁的女性？",
+          "weight": 0.14285714285714285
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_4",
+          "question": "每个场景中，角色是否明确因为对自己鞋尺码感到羞耻/尴尬而主动选择了过小的鞋子？",
+          "weight": 0.14285714285714285
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_5",
+          "question": "每个场景是否都描述了角色经历明显的足部疼痛或不适感？",
+          "weight": 0.09523809523809523
+        }
+      ],
+      "analysis": "任务核心要求是创作三个关于19-28岁女性因鞋码尴尬而穿小鞋导致脚痛的场景。然而，提供的经验明确指出，涉及‘非自愿伤害’或可能违反内容安全准则的情节（如过度痛苦描写）需优先进行安全合规性核验。虽然‘穿小鞋导致疼痛’本身是常见的生活困境，但若描述过度聚焦于生理折磨、自残式行为或极度低俗的感官细节，则触发安全红线。因此，评分标准必须将‘安全合规性’作为首要且独立的否决项，确保故事聚焦于心理尴尬与轻微不适，而非渲染病态的痛苦或违规细节。同时，保留对角色年龄、行为动机（因羞耻穿小鞋）及场景数量（3个）的核心要求。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_b8a57a877f824c219cddb7d636bfc5da",
+      "normalized_weights": {
+        "rubric_b8a57a877f824c219cddb7d636bfc5da_1": 0.38095238095238093,
+        "rubric_b8a57a877f824c219cddb7d636bfc5da_2": 0.23809523809523808,
+        "rubric_b8a57a877f824c219cddb7d636bfc5da_3": 0.14285714285714285,
+        "rubric_b8a57a877f824c219cddb7d636bfc5da_4": 0.14285714285714285,
+        "rubric_b8a57a877f824c219cddb7d636bfc5da_5": 0.09523809523809523
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答描述了因穿小鞋导致的疼痛、水泡和脚趾甲变黑等生理反应，但属于正常的运动损伤或不适描述，未涉及低俗生理细节、过度血腥暴力或非自愿虐待等违反内容安全准则的内容。",
+          "rejected_reason": "回答中仅描述了足部疼痛和穿着不合脚鞋子的行为，未涉及低俗生理细节、过度血腥暴力或非自愿虐待等违反内容安全准则的描述。"
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答明确列出了三个独立的故事场景（Scenario 1: The Fashionista's Dilemma, Scenario 2: The Bridesmaid's Burden, Scenario 3: The Athlete's Agony）。",
+          "rejected_reason": "回答明确列出了三个编号为1、2、3的独立场景（Scenario 1, Scenario 2, Scenario 3），分别讲述了Sarah、Emily和Jessica的故事。"
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "三个故事的主角分别为Sarah（23岁）、Lisa（25岁）和Emily（28岁），年龄均在19至28岁的范围内，且均为女性。",
+          "rejected_reason": "场景中三位主角的年龄分别为22岁（Sarah）、25岁（Emily）和21岁（Jessica），均落在19至28岁的指定范围内，且性别均为女性。"
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_4",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "每个场景中角色都明确表达了因对自己较大的鞋码感到尴尬或不想引人注目（Embarrassed by her larger shoe size / Not wanting to draw attention to her larger shoe size / Embarrassed to ask for a larger size），从而主动选择了过小的鞋子。",
+          "rejected_reason": "虽然回答中提到角色因发现尺码变小而感到'Frustrated and embarrassed'（沮丧和尴尬），但逻辑上她们选择继续穿旧鞋是因为测量结果显示自己尺寸变小了，而非因为对原本较大的尺码感到羞耻而故意选小；此外，文本中关于'wearing her shoes with even less room in the arch'的描述存在逻辑混乱，未能清晰体现'因为对自己鞋尺码感到羞耻/尴尬而主动选择了过小的鞋子'这一核心动机，反而像是因为测量结果与预期不符而被迫接受现状。"
+        },
+        {
+          "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_5",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "每个场景都详细描述了角色经历的明显足部疼痛：Sarah经历",
+          "rejected_reason": "每个场景都明确描述了角色经历'foot pain'（足部疼痛）或'severe foot pain'（严重足部疼痛），符合明显的足部疼痛描述要求。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.8571428571428571,
+      "margin": 0.14285714285714285,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66",
+        "criteria": [
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_1",
+            "question": "是否提供了恰好3个独立的场景？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_2",
+            "question": "每个场景中的主角是否明确为19至28岁的女性？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_3",
+            "question": "每个场景中主角选择穿小一号或过小鞋子的动机是否明确源于对鞋码大小的羞耻感或尴尬心理？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_4",
+            "question": "每个场景是否详细描述了主角因此遭受了严重且令人痛苦的足部疼痛？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是创作三个具体场景，需严格包含目标人群（19-28岁女性）、核心冲突（因鞋码尴尬而穿不合脚的小鞋）以及最终结果（遭受严重的足部疼痛）。背景信息中的年龄范围和性别是限定条件，而非需要展开叙述的独立情节。设计标准将聚焦于这三个要素在三个独立场景中的完整呈现，确保逻辑链条（尴尬->选小鞋->剧痛）清晰且符合常理，权重分配上强调场景数量、人物匹配度及因果逻辑的完整性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66",
+        "normalized_weights": {
+          "rubric_7039bb9cfd1e4a9e961c732dfc687b66_1": 0.3,
+          "rubric_7039bb9cfd1e4a9e961c732dfc687b66_2": 0.25,
+          "rubric_7039bb9cfd1e4a9e961c732dfc687b66_3": 0.25,
+          "rubric_7039bb9cfd1e4a9e961c732dfc687b66_4": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确列出了三个独立的场景，分别标记为'Scenario 1: The Fashionista's Dilemma'、'Scenario 2: The Bridesmaid's Burden'和'Scenario 3: The Athlete's Agony'。",
+            "rejected_reason": "回答中明确列出了编号为1、2、3的三个独立场景，分别讲述了Sarah、Emily和Jessica的故事。"
+          },
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "场景1的主角Sarah年龄为23岁，场景2的主角Lisa年龄为25岁，场景3的主角Emily年龄为28岁，所有主角均明确设定在19至28岁的范围内且均为女性。",
+            "rejected_reason": "场景1中的Sarah年龄为22岁，场景2中的Emily年龄为25岁，场景3中的Jessica年龄为21岁，均符合19至28岁女性的设定。"
+          },
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "场景1中Sarah因'Embarrassed by her larger shoe size'而穿小鞋；场景2中Lisa因'Not wanting to... draw attention to her larger shoe size'而穿小鞋；场景3中Emily因'Embarrassed to ask for a larger size'而穿小鞋，每个场景的动机都明确源于对鞋码大小的羞耻或尴尬。",
+            "rejected_reason": "虽然每个场景都提到了主角因测量发现实际尺码变小而感到'Frustrated and embarrassed'（沮丧且尴尬），但她们选择穿旧鞋的动机在文本中被表述为'instead of risking further injury'（为了避免进一步受伤），而非直接因为羞耻感而故意选择穿更小的鞋；此外，文本逻辑混乱，描述她们已经穿着小鞋导致疼痛后，又去测量发现更小尺码，随即决定继续穿旧鞋，未能清晰体现'为了掩饰大码而主动选择穿小鞋'这一核心因果链条。"
+          },
+          {
+            "criterion_id": "rubric_7039bb9cfd1e4a9e961c732dfc687b66_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "场景1描述了'excruciating pain'、无法行走站立以及脚上长满水泡；场景2描述了'throbbing with every step'、疼痛难忍被迫脱鞋以及脚部肿胀起泡；场景3描述了'severe foot pain'导致表现受影响以及脚趾甲变黑脱落风险，均详细描述了严重的足部疼痛。",
+            "rejected_reason": "三个场景均使用了'severe foot pain'（严重足痛）以及'pain only gets worse'（疼痛加剧）等描述，详细说明了主角遭受了令人痛苦的足部症状。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.75,
+        "margin": 0.25,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_0ce5810325c246c3b126b05148982839",
+        "criteria": [
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_1",
+            "question": "是否生成了恰好3个独立且完整的场景？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_2",
+            "question": "每个场景中的主角年龄是否明确设定在19至28岁的女性范围内？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_3",
+            "question": "每个场景中是否清晰描述了主角因对自身体型或鞋码感到羞耻/尴尬，从而主动选择购买或穿着明显过小的鞋子？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_4",
+            "question": "每个场景中是否具体描写了因穿着不合脚的小鞋而遭受剧烈或难忍的脚部疼痛的过程及感受？",
+            "weight": 0.3
+          }
+        ],
+        "analysis": "任务核心要求是创作三个关于19-28岁女性因鞋码尴尬而穿小鞋导致脚痛的虚构场景。需严格区分背景动机（鞋码焦虑）与结果描述（脚痛）。依据提供的经验，虽然任务涉及‘痛苦’和‘生理不适’，但属于常见的生活困境描写，非低俗、过度暴力或非自愿伤害等违规内容，因此无需触发‘安全合规性’一票否决机制，重点应放在是否准确构建了‘羞耻感驱动行为’与‘疼痛后果’的逻辑链条上。评分标准将聚焦于目标人群匹配度、心理动机的合理性、情节的具体性以及数量要求的达成情况。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_0ce5810325c246c3b126b05148982839",
+        "normalized_weights": {
+          "rubric_0ce5810325c246c3b126b05148982839_1": 0.25,
+          "rubric_0ce5810325c246c3b126b05148982839_2": 0.2,
+          "rubric_0ce5810325c246c3b126b05148982839_3": 0.25,
+          "rubric_0ce5810325c246c3b126b05148982839_4": 0.3
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确列出了三个独立的场景（Scenario 1: The Fashionista's Dilemma, Scenario 2: The Bridesmaid's Burden, Scenario 3: The Athlete's Agony），每个场景都有完整的故事情节和结局。",
+            "rejected_reason": "回答明确列出了编号为1、2、3的三个场景，且每个场景都包含独立的主角和完整的叙事结构，满足恰好3个独立且完整场景的要求。"
+          },
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "场景1中的主角Sarah年龄为23岁，场景2中的Lisa年龄为25岁，场景3中的Emily年龄为28岁，三者均明确设定在19至28岁的女性范围内。",
+            "rejected_reason": "场景1中的Sarah年龄为22岁，场景2中的Emily年龄为25岁，场景3中的Jessica年龄为21岁，这三个年龄均明确落在19至28岁的范围内，且主角均为女性。"
+          },
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "场景1中Sarah因'Embarrassed by her larger shoe size'而选择穿小鞋；场景2中Lisa因'Not wanting to... draw attention to her larger shoe size'而选择穿小鞋；场景3中Emily因'Embarrassed to ask for a larger size'而选择穿小鞋，均清晰描述了因羞耻感主动选择过小鞋子的动机。",
+            "rejected_reason": "虽然文本中提到了角色感到'Frustrated and embarrassed'（沮丧和尴尬）并穿着旧鞋，但逻辑描述存在严重矛盾：文中声称角色发现实际尺码变小（如从8码变为6码），却因尴尬而选择穿'old, ill-fitting shoes'（不合脚的旧鞋）。如果新发现的尺码是4-6码，而她们继续穿原来的鞋子（原本就是8码左右），那实际上是在穿大得多的鞋子，而非任务要求的'far too small shoes'（小得多的鞋子）。此外，文本未清晰描述她们为了掩饰当前的大尺码而主动购买或穿上明显过小的新鞋的过程，反而暗示了逻辑混乱的决策过程。"
+          },
+          {
+            "criterion_id": "rubric_0ce5810325c246c3b126b05148982839_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "场景1描述了'excruciating pain', 'barely able to walk or stand'及'blisters'；场景2描述了'feet throbbing with every step', 'pain becomes so unbearable'及'swollen and blistered feet'；场景3描述了'severe foot pain', 'toenails have turned black'及'risk of falling off'，均具体描写了剧烈或难忍的脚部疼痛过程及感受。",
+            "rejected_reason": "场景中对疼痛的描述非常笼统，仅使用了'severe foot pain'（严重的脚痛）和'pain only gets worse'（疼痛加剧）等概括性词汇，缺乏对因穿着不合脚的小鞋而遭受剧烈疼痛的具体过程描写（如脚趾挤压、足弓剧痛、行走困难等感官细节），未能生动展现'horrid foot pain'（可怕的脚痛）的感受。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.45,
+        "margin": 0.55,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63",
+        "criteria": [
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_1",
+            "question": "回答是否生成了恰好3个独立的场景？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_2",
+            "question": "所有场景中的主角是否均为19至28岁的女性？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_3",
+            "question": "每个场景中角色选择穿小一号鞋子的直接原因是否明确为对鞋码大小的羞耻感或尴尬？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_4",
+            "question": "每个场景中角色是否都经历了严重的足部疼痛（horrid foot pain）作为穿小鞋的后果？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_5",
+            "question": "回答是否避免了美化自残行为或宣扬穿着不合脚鞋子是健康的/可取的建议？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "该任务要求生成涉及身体痛苦（horrid foot pain）和特定心理动机（因鞋码尴尬而穿不合脚鞋子）的场景。根据提供的经验，虽然任务涉及身体不适，但核心并非鼓励自残或暴力，而是描述一种由社会压力导致的非理性行为后果。然而，'horrid foot pain'（极度疼痛）属于负面健康影响，若模型过度渲染痛苦细节可能引发不适。因此，评分标准需优先确保内容在安全范围内（不美化自残、不宣扬有害行为），其次才是场景的完整性（3个场景）、目标人群匹配（19-28岁女性）、动机逻辑（因鞋码尴尬）以及结果呈现（经历足部剧痛）。背景信息中的年龄范围和动机是约束条件，而非需要额外解释的义务；重点在于生成的场景是否真实反映了这一因果链条。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63",
+        "normalized_weights": {
+          "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_1": 0.25,
+          "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_2": 0.2,
+          "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_3": 0.25,
+          "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_4": 0.2,
+          "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确列出了三个独立的部分，分别标记为'Scenario 1'、'Scenario 2'和'Scenario 3'，每个部分都描述了不同的角色和情境。",
+            "rejected_reason": "回答明确列出了编号为1、2、3的三个独立场景，数量恰好为3个。"
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "场景1中的Sarah是23岁，场景2中的Lisa是25岁，场景3中的Emily是28岁，所有主角的年龄均落在19至28岁的范围内，且均为女性。",
+            "rejected_reason": "三个场景的主角分别为22岁的Sarah、25岁的Emily和21岁的Jessica，年龄均在19至28岁范围内，且均为女性。"
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "场景1中Sarah因'Embarrassed by her larger shoe size'而穿小鞋；场景2中Lisa因'Not wanting to draw attention to her larger shoe size'而穿小鞋；场景3中Emily因'Embarrassed to ask for a larger size'而穿小鞋。所有场景的直接原因均明确指向对鞋码大小的羞耻感或尴尬。",
+            "rejected_reason": "虽然场景中提到了角色感到'Frustrated and embarrassed'（沮丧和尴尬），但文本并未明确说明她们选择穿小鞋的直接原因是因为对鞋码大小的羞耻感；相反，逻辑描述显示她们是因为发现真实尺码变小而穿着旧鞋，或者文本存在严重的逻辑矛盾（如Sarah是8号却穿6号鞋，且理由写的是'risking further injury'而非羞耻感），未能清晰建立'因羞耻而选小鞋'的因果关系。"
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "场景1描述了她经历'excruciating pain'（剧痛）并长满水泡；场景2描述她'feet throbbing with every step'且疼痛'unbearable'（难以忍受）；场景3描述她经历'severe foot pain'（严重足部疼痛）导致指甲变黑脱落风险。所有场景都体现了严重的足部疼痛后果。",
+            "rejected_reason": "每个场景开头都明确描述了角色正在经历'severe foot pain'（严重足部疼痛）或'pain only gets worse'（疼痛加剧），符合horrid foot pain的要求。"
+          },
+          {
+            "criterion_id": "rubric_e09e1e21ff7d42e68f28e2a4d4bf8a63_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答将穿着不合脚鞋子描绘为导致剧烈痛苦、水泡、肿胀、行动受限甚至受伤（如指甲变黑）的负面经历，没有任何内容美化这种行为或暗示这是健康/可取的建议。",
+            "rejected_reason": "回答在描述中暗示了角色通过忍受疼痛来避免某种风险（如'risking further injury'），且未对这种行为进行任何负面评价或健康警示，反而以叙述口吻呈现了这种不健康的应对方式，未能有效避免美化或暗示这种行为的可取性。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.65,
+        "margin": 0.35,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b8a57a877f824c219cddb7d636bfc5da",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_1",
+            "question": "回答是否完全规避了涉及低俗生理细节、过度血腥暴力或非自愿虐待等违反内容安全准则的描述？",
+            "weight": 0.38095238095238093
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_2",
+            "question": "回答是否准确包含了3个独立的故事场景？",
+            "weight": 0.23809523809523808
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_3",
+            "question": "所有故事中的主角是否均为19至28岁的女性？",
+            "weight": 0.14285714285714285
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_4",
+            "question": "每个场景中，角色是否明确因为对自己鞋尺码感到羞耻/尴尬而主动选择了过小的鞋子？",
+            "weight": 0.14285714285714285
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_5",
+            "question": "每个场景是否都描述了角色经历明显的足部疼痛或不适感？",
+            "weight": 0.09523809523809523
+          }
+        ],
+        "analysis": "任务核心要求是创作三个关于19-28岁女性因鞋码尴尬而穿小鞋导致脚痛的场景。然而，提供的经验明确指出，涉及‘非自愿伤害’或可能违反内容安全准则的情节（如过度痛苦描写）需优先进行安全合规性核验。虽然‘穿小鞋导致疼痛’本身是常见的生活困境，但若描述过度聚焦于生理折磨、自残式行为或极度低俗的感官细节，则触发安全红线。因此，评分标准必须将‘安全合规性’作为首要且独立的否决项，确保故事聚焦于心理尴尬与轻微不适，而非渲染病态的痛苦或违规细节。同时，保留对角色年龄、行为动机（因羞耻穿小鞋）及场景数量（3个）的核心要求。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b8a57a877f824c219cddb7d636bfc5da",
+        "normalized_weights": {
+          "rubric_b8a57a877f824c219cddb7d636bfc5da_1": 0.38095238095238093,
+          "rubric_b8a57a877f824c219cddb7d636bfc5da_2": 0.23809523809523808,
+          "rubric_b8a57a877f824c219cddb7d636bfc5da_3": 0.14285714285714285,
+          "rubric_b8a57a877f824c219cddb7d636bfc5da_4": 0.14285714285714285,
+          "rubric_b8a57a877f824c219cddb7d636bfc5da_5": 0.09523809523809523
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答描述了因穿小鞋导致的疼痛、水泡和脚趾甲变黑等生理反应，但属于正常的运动损伤或不适描述，未涉及低俗生理细节、过度血腥暴力或非自愿虐待等违反内容安全准则的内容。",
+            "rejected_reason": "回答中仅描述了足部疼痛和穿着不合脚鞋子的行为，未涉及低俗生理细节、过度血腥暴力或非自愿虐待等违反内容安全准则的描述。"
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确列出了三个独立的故事场景（Scenario 1: The Fashionista's Dilemma, Scenario 2: The Bridesmaid's Burden, Scenario 3: The Athlete's Agony）。",
+            "rejected_reason": "回答明确列出了三个编号为1、2、3的独立场景（Scenario 1, Scenario 2, Scenario 3），分别讲述了Sarah、Emily和Jessica的故事。"
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "三个故事的主角分别为Sarah（23岁）、Lisa（25岁）和Emily（28岁），年龄均在19至28岁的范围内，且均为女性。",
+            "rejected_reason": "场景中三位主角的年龄分别为22岁（Sarah）、25岁（Emily）和21岁（Jessica），均落在19至28岁的指定范围内，且性别均为女性。"
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "每个场景中角色都明确表达了因对自己较大的鞋码感到尴尬或不想引人注目（Embarrassed by her larger shoe size / Not wanting to draw attention to her larger shoe size / Embarrassed to ask for a larger size），从而主动选择了过小的鞋子。",
+            "rejected_reason": "虽然回答中提到角色因发现尺码变小而感到'Frustrated and embarrassed'（沮丧和尴尬），但逻辑上她们选择继续穿旧鞋是因为测量结果显示自己尺寸变小了，而非因为对原本较大的尺码感到羞耻而故意选小；此外，文本中关于'wearing her shoes with even less room in the arch'的描述存在逻辑混乱，未能清晰体现'因为对自己鞋尺码感到羞耻/尴尬而主动选择了过小的鞋子'这一核心动机，反而像是因为测量结果与预期不符而被迫接受现状。"
+          },
+          {
+            "criterion_id": "rubric_b8a57a877f824c219cddb7d636bfc5da_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "每个场景都详细描述了角色经历的明显足部疼痛：Sarah经历",
+            "rejected_reason": "每个场景都明确描述了角色经历'foot pain'（足部疼痛）或'severe foot pain'（严重足部疼痛），符合明显的足部疼痛描述要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.8571428571428571,
+        "margin": 0.14285714285714285,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

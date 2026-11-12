@@ -1,0 +1,399 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:9ccb50b7e0872190155092aff4edbae5dd83982a9d6919d93eed54082e64f1c1",
+    "task": "Who wrote \"The Rite of Spring\"?",
+    "chosen": "\"The Rite of Spring\" is a famous ballet and orchestral concert work composed by Igor Stravinsky, a renowned Russian composer. The piece was written for the 1913 Paris season of Sergei Diaghilev's Ballets Russes company and is known for its innovative and groundbreaking music, which caused a sensation during its premiere.",
+    "rejected": "T.S. Eliot",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 22409,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it provides accurate information about Igor Stravinsky as the writer of The Rite of Spring. @Response 2 inaccurately states T.S. Eliot. ",
+          "feedback1": "The response is perfectly helpful. It accurately answers that Igor Stravinsky wrote The Rite of Spring. The response also provides additional information, including Stravinsky's origin, the year the work was composed, and the outcome of the premiere. These details are useful because the user may not have known them and it could guide the next prompt. ",
+          "feedback2": "The response is not helpful. It provides inaccurate information about who wrote The Rite of Spring. The response inaccurately states T.S. Eliot to be the composer instead of Igor Stravinsky. T.S. Eliot was known mainly as a poet, not a composer. The response did not attempt to justify the answer with additional information. It should have provided accurate information backed by several sentences for justification. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 gets the question right and gives information around the question. @Response 2 is incorrect and does not give accurate information to the user ",
+          "feedback1": "The response is mostly helpful. The model successfully answers correctly that the rite of spring is a ballet and orchestral concert work. It adds helpful information around when it was made and what it was written for. It could have been shorter as the user only asked who wrote it and not for the other information.",
+          "feedback2": "The response is not helpful. It incorrectly names the person who wrote the rite of spring to be T.S. Eliot when it is in fact igor stravinsky who wrote the piece. the response gets the question and information completely incorrect and also only answers with a name, no other words or information."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 provides a correct and straightforward answer. However, @Response 2 mentioned a person who has nothing to do with The Rite of Spring.",
+          "feedback1": "The response is perfectly helpful. It addressed the prompt fully and correctly. The response provides a concise and to-the-point answer that accurately identifies Igor Stravinsky as the composer. Moreover, the response provided more relevant context about the piece, such as the year it was written and its being a ballet and orchestral work.",
+          "feedback2": "The response is not helpful. It failed to answer the prompt fully and correctly. T.S. Elliot was a poet and playwright, not a composer of The Rite of Spring. Igor Stravinsky is the correct answer, as he is the composer of the piece. Therefore, the response provides no value to the user. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.13229318683062596
+      ],
+      [
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        0.1291457058569255
+      ],
+      [
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        0.11948056382690049
+      ],
+      [
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        0.11598955345403267
+      ],
+      [
+        "exp_45d719fc10654985936c720d29196aaa",
+        0.11501728236515923
+      ],
+      [
+        "exp_419ab3d341d84c56849042cf209778be",
+        0.10160287129741856
+      ],
+      [
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        0.09594523963789961
+      ],
+      [
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        0.093442607966509
+      ],
+      [
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        0.09225720980124177
+      ],
+      [
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        0.08740477789334775
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13229318683062596
+      },
+      {
+        "experience_id": "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1291457058569255
+      },
+      {
+        "experience_id": "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11948056382690049
+      },
+      {
+        "experience_id": "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11598955345403267
+      },
+      {
+        "experience_id": "exp_45d719fc10654985936c720d29196aaa",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11501728236515923
+      },
+      {
+        "experience_id": "exp_419ab3d341d84c56849042cf209778be",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10160287129741856
+      },
+      {
+        "experience_id": "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.09594523963789961
+      },
+      {
+        "experience_id": "exp_8f080a33b9594e84a0e9933cd829996b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.093442607966509
+      },
+      {
+        "experience_id": "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.09225720980124177
+      },
+      {
+        "experience_id": "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.08740477789334775
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_419ab3d341d84c56849042cf209778be": "任务询问《春之祭》（The Rite of Spring）的创作者，属于要求回答关于特定专有名词（作品名）及对应历史人物（作曲家斯特拉文斯基）的事实性问题。经验6明确指出当任务涉及生成关于特定实体或历史人物的内容时，必须将‘实体存在的真实性’作为最高优先级核验维度，若事实错误则直接判定失败，这与本题核实事实准确性的核心需求完全一致。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_ae066c55ba04443cab30e3948e4a26cf",
+      "criteria": [
+        {
+          "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_1",
+          "question": "回答是否明确指出了《春之祭》的作者姓名？",
+          "weight": 0.6
+        },
+        {
+          "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_2",
+          "question": "所提及的作者姓名拼写是否正确且无歧义？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_3",
+          "question": "回答是否直接针对问题，未包含与作者身份无关的冗余信息？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "任务核心要求是识别《春之祭》（The Rite of Spring）的创作者。背景信息仅涉及作品名称，无需在回答中复述或展开。评分标准应聚焦于答案的准确性、作者姓名的正确拼写以及是否直接回答了问题，避免将作品背景或创作年份等无关细节作为强制要求。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_ae066c55ba04443cab30e3948e4a26cf",
+      "normalized_weights": {
+        "rubric_ae066c55ba04443cab30e3948e4a26cf_1": 0.6,
+        "rubric_ae066c55ba04443cab30e3948e4a26cf_2": 0.3,
+        "rubric_ae066c55ba04443cab30e3948e4a26cf_3": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答明确指出了《春之祭》的作者是Igor Stravinsky（伊戈尔·斯特拉文斯基）。",
+          "rejected_reason": "回答中提到的T.S. Eliot并非《春之祭》的作者，《春之祭》由伊戈尔·斯特拉文斯基创作，因此未正确指出作者姓名。"
+        },
+        {
+          "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答中作者姓名为'Igor Stravinsky'，拼写正确且无歧义。",
+          "rejected_reason": "虽然T.S. Eliot的拼写是正确的，但该名字并未正确回答问题所指的作者身份，不过仅就其自身拼写而言无误且无歧义。"
+        },
+        {
+          "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_3",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答在指出作者后，包含了大量与作者身份无关的冗余信息，如作品首演的具体年份、地点、演出公司以及作品引发的轰动效应等背景描述。",
+          "rejected_reason": "回答非常简短，仅包含一个名字，没有包含与问题无关的冗余信息。"
+        }
+      ],
+      "chosen_score": 0.9,
+      "rejected_score": 0.4,
+      "margin": 0.5,
+      "success": true
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_419ab3d341d84c56849042cf209778be"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_04b8607f59b649fca743f179c5110ec6",
+      "criteria": [
+        {
+          "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_1",
+          "question": "回答是否明确指出伊戈尔·斯特拉文斯基（Igor Stravinsky）是《春之祭》的创作者？",
+          "weight": 0.95
+        },
+        {
+          "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_2",
+          "question": "回答是否直接针对问题提供了答案，未包含与确认作者无关的冗余信息？",
+          "weight": 0.05
+        }
+      ],
+      "analysis": "本任务为明确的事实性问答，核心要求是准确识别《春之祭》的创作者。根据提供的经验1，实体存在的真实性及名称准确性应作为最高优先级的核验维度。若回答中提及的作者不存在或名称错误（如混淆斯特拉文斯基与另一位作曲家），则直接判定为事实错误。背景信息（作品名称）无需验证，仅需确保回答针对该特定作品。因此评分标准将分为两部分：首要核查作者身份是否完全正确且无歧义，次要核查是否直接回应了问题而未包含无关内容。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_04b8607f59b649fca743f179c5110ec6",
+      "normalized_weights": {
+        "rubric_04b8607f59b649fca743f179c5110ec6_1": 0.95,
+        "rubric_04b8607f59b649fca743f179c5110ec6_2": 0.05
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答中明确陈述'The Rite of Spring' is a famous ballet and orchestral concert work composed by Igor Stravinsky，直接指出了伊戈尔·斯特拉文斯基是创作者。",
+          "rejected_reason": "回答内容为T.S. Eliot，未明确指出伊戈尔·斯特拉文斯基是《春之祭》的创作者，且给出了错误信息。"
+        },
+        {
+          "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_2",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "回答虽然提供了作者信息，但包含了大量与确认作者身份无关的冗余细节，如首演年份、演出公司（Ballets Russes）、导演（Sergei Diaghilev）以及作品引发的轰动效应等，超出了单纯回答‘谁创作了该作品’所需的信息范围。",
+          "rejected_reason": "虽然回答直接针对问题提供了答案（尽管是错误的），但该答案未能正确确认作者，因此未能满足“提供正确答案”这一隐含的针对性要求，导致无法有效回答问题。"
+        }
+      ],
+      "chosen_score": 0.95,
+      "rejected_score": 0.0,
+      "margin": 0.95,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_ae066c55ba04443cab30e3948e4a26cf",
+        "criteria": [
+          {
+            "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_1",
+            "question": "回答是否明确指出了《春之祭》的作者姓名？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_2",
+            "question": "所提及的作者姓名拼写是否正确且无歧义？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_3",
+            "question": "回答是否直接针对问题，未包含与作者身份无关的冗余信息？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务核心要求是识别《春之祭》（The Rite of Spring）的创作者。背景信息仅涉及作品名称，无需在回答中复述或展开。评分标准应聚焦于答案的准确性、作者姓名的正确拼写以及是否直接回答了问题，避免将作品背景或创作年份等无关细节作为强制要求。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_ae066c55ba04443cab30e3948e4a26cf",
+        "normalized_weights": {
+          "rubric_ae066c55ba04443cab30e3948e4a26cf_1": 0.6,
+          "rubric_ae066c55ba04443cab30e3948e4a26cf_2": 0.3,
+          "rubric_ae066c55ba04443cab30e3948e4a26cf_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出了《春之祭》的作者是Igor Stravinsky（伊戈尔·斯特拉文斯基）。",
+            "rejected_reason": "回答中提到的T.S. Eliot并非《春之祭》的作者，《春之祭》由伊戈尔·斯特拉文斯基创作，因此未正确指出作者姓名。"
+          },
+          {
+            "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中作者姓名为'Igor Stravinsky'，拼写正确且无歧义。",
+            "rejected_reason": "虽然T.S. Eliot的拼写是正确的，但该名字并未正确回答问题所指的作者身份，不过仅就其自身拼写而言无误且无歧义。"
+          },
+          {
+            "criterion_id": "rubric_ae066c55ba04443cab30e3948e4a26cf_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答在指出作者后，包含了大量与作者身份无关的冗余信息，如作品首演的具体年份、地点、演出公司以及作品引发的轰动效应等背景描述。",
+            "rejected_reason": "回答非常简短，仅包含一个名字，没有包含与问题无关的冗余信息。"
+          }
+        ],
+        "chosen_score": 0.9,
+        "rejected_score": 0.4,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_419ab3d341d84c56849042cf209778be"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_04b8607f59b649fca743f179c5110ec6",
+        "criteria": [
+          {
+            "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_1",
+            "question": "回答是否明确指出伊戈尔·斯特拉文斯基（Igor Stravinsky）是《春之祭》的创作者？",
+            "weight": 0.95
+          },
+          {
+            "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_2",
+            "question": "回答是否直接针对问题提供了答案，未包含与确认作者无关的冗余信息？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "本任务为明确的事实性问答，核心要求是准确识别《春之祭》的创作者。根据提供的经验1，实体存在的真实性及名称准确性应作为最高优先级的核验维度。若回答中提及的作者不存在或名称错误（如混淆斯特拉文斯基与另一位作曲家），则直接判定为事实错误。背景信息（作品名称）无需验证，仅需确保回答针对该特定作品。因此评分标准将分为两部分：首要核查作者身份是否完全正确且无歧义，次要核查是否直接回应了问题而未包含无关内容。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_04b8607f59b649fca743f179c5110ec6",
+        "normalized_weights": {
+          "rubric_04b8607f59b649fca743f179c5110ec6_1": 0.95,
+          "rubric_04b8607f59b649fca743f179c5110ec6_2": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中明确陈述'The Rite of Spring' is a famous ballet and orchestral concert work composed by Igor Stravinsky，直接指出了伊戈尔·斯特拉文斯基是创作者。",
+            "rejected_reason": "回答内容为T.S. Eliot，未明确指出伊戈尔·斯特拉文斯基是《春之祭》的创作者，且给出了错误信息。"
+          },
+          {
+            "criterion_id": "rubric_04b8607f59b649fca743f179c5110ec6_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然提供了作者信息，但包含了大量与确认作者身份无关的冗余细节，如首演年份、演出公司（Ballets Russes）、导演（Sergei Diaghilev）以及作品引发的轰动效应等，超出了单纯回答‘谁创作了该作品’所需的信息范围。",
+            "rejected_reason": "虽然回答直接针对问题提供了答案（尽管是错误的），但该答案未能正确确认作者，因此未能满足“提供正确答案”这一隐含的针对性要求，导致无法有效回答问题。"
+          }
+        ],
+        "chosen_score": 0.95,
+        "rejected_score": 0.0,
+        "margin": 0.95,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

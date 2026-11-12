@@ -1,0 +1,776 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:112fab1ef04363ff19990452ebf0377d1fbb1073dde705b5e03ed9fd9c3abc55",
+    "task": "casa. reply shortly.",
+    "chosen": "Of course! However, I need more context to provide a helpful response. Are you asking about a specific casa, or do you need help with something related to a casa? Please provide more details so I can assist you better.",
+    "rejected": "🏠",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15671,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 makes an assumption about what the prompter wants, and gives a response that might or might not be what the prompter wants. @Response 2 wisely asks for clarification before proceeding.",
+          "feedback1": "The response is slightly helpful. The model assumes the prompter is asking for a house (the translation from Spanish of \"casa\"). Since the prompter says \"reply shortly,\" the model responds with an image of a house. However, the prompt is not explicit about what it wants, so it would have been better to ask for clarification before proceeding. ",
+          "feedback2": "The response is perfectly helpful. Rather than make an assumption about what the prompter wants, it asks for clarification, pointing out several possibilities for what the prompter might be asking for. This way the model doesn't risk wasting both its and the prompter's time by making an incorrect assumption and giving a response that the prompter will have to follow up on."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 understood that it could not reply to the prompt as is so it asked for more context. @Response 1 was very unhelpful by replying with an emoji.",
+          "feedback1": "The response is not helpful. Using emojis is against the behavior guidelines for this model. Additionally, this reply does not attempt to continue the conversation by prompting the user for clarification on their request. This response effectively ends the conversation with a very unhelpful reply when it could have tried to clarify.",
+          "feedback2": "The response is perfectly helpful. The model understands that it does not have enough information in the prompt to reply helpfully, so it asks for more context. This is an effective reply to an incomplete prompt since it tries to keep the conversation going and get more information from the user."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it appropriately and helpfully asks for more information to clarify an ambiguous response. @Response 2 responds with a single emoji, and this is not at all helpful. ",
+          "feedback1": "The response is not helpful. The user prompt is \"casa. reply shortly.\" A correct and helpful response would have requested more information to clarify the ambiguous prompt. Instead, the chatbot replied with an emoji of a house. The chatbot should not be using emojis at all, and this response is not at all helpful to determine what the user wants. ",
+          "feedback2": "The response is perfectly helpful. The user provided a very short and ambiguous prompt (\"casa. reply shortly.\") The chatbot appropriately asks the user for more information so that it can provide a helpful response. The user might be asking about their own house, or an organization called CASA, for example. The chatbot appropriately and politely asks for the information it needs to response helpfully in the next turn. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        0.3378330484727263
+      ],
+      [
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        0.26743972568548
+      ],
+      [
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        0.25940139494147546
+      ],
+      [
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        0.2584130873205762
+      ],
+      [
+        "exp_99cc8baae7b848799b634b94909f0156",
+        0.2553715269685659
+      ],
+      [
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        0.25212210954027314
+      ],
+      [
+        "exp_62a2d603e98a4358b40744e932306a98",
+        0.24901462453650217
+      ],
+      [
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        0.24888507788885994
+      ],
+      [
+        "exp_13499fb3460249daa973501a67babcd3",
+        0.24721424017257582
+      ],
+      [
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        0.24174930708929127
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_8f080a33b9594e84a0e9933cd829996b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3378330484727263
+      },
+      {
+        "experience_id": "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26743972568548
+      },
+      {
+        "experience_id": "exp_2d539da3d9104da38ed20c752a093c1e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25940139494147546
+      },
+      {
+        "experience_id": "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2584130873205762
+      },
+      {
+        "experience_id": "exp_99cc8baae7b848799b634b94909f0156",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2553715269685659
+      },
+      {
+        "experience_id": "exp_5321b208f75b481dbd2716498c5f03ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25212210954027314
+      },
+      {
+        "experience_id": "exp_62a2d603e98a4358b40744e932306a98",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24901462453650217
+      },
+      {
+        "experience_id": "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24888507788885994
+      },
+      {
+        "experience_id": "exp_13499fb3460249daa973501a67babcd3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24721424017257582
+      },
+      {
+        "experience_id": "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24174930708929127
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_8f080a33b9594e84a0e9933cd829996b": "任务指令为 'reply shortly'（简短回复），这符合经验 1 中关于‘极短语句’作为响应形式的触发条件。该经验强调当任务要求极简回复时，评分标准应聚焦于是否包含除指定短语外的实质性文本，这与当前任务对长度和简洁性的核心约束高度一致。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_a3eb300270a9402da452be26db3ea5e4",
+      "criteria": [
+        {
+          "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_1",
+          "question": "回答是否简洁且未包含不必要的背景重复？",
+          "weight": 0.6
+        },
+        {
+          "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_2",
+          "question": "回答是否直接回应了用户的核心意图而非展开解释？",
+          "weight": 0.4
+        }
+      ],
+      "analysis": "任务核心要求是简短回复，需确保回答内容精炼、无冗余信息，且不因背景描述而增加额外输出义务。评分标准聚焦于回答长度和直接性，排除对背景信息的复述或扩展。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_a3eb300270a9402da452be26db3ea5e4",
+      "normalized_weights": {
+        "rubric_a3eb300270a9402da452be26db3ea5e4_1": 0.6,
+        "rubric_a3eb300270a9402da452be26db3ea5e4_2": 0.4
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答虽然篇幅不长，但包含了不必要的背景重复和询问（如重复提及'casa'并请求更多上下文），且未直接回应可能的核心意图，反而增加了用户的交互负担。",
+          "rejected_reason": "回答仅为一个表情符号，极度简洁且没有任何背景重复内容。"
+        },
+        {
+          "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_2",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "用户指令为简短回复（reply shortly），模型却以询问更多细节作为回应，未直接提供实质性内容或确认性答复，偏离了直接回应用户核心意图的要求。",
+          "rejected_reason": "用户要求简短回复（reply shortly），该回答以极简方式直接响应了指令，未展开任何解释。"
+        }
+      ],
+      "chosen_score": 0.0,
+      "rejected_score": 1.0,
+      "margin": -1.0,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_8f080a33b9594e84a0e9933cd829996b"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996",
+      "criteria": [
+        {
+          "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_1",
+          "question": "回答是否仅包含极简短的语句（通常不超过10-15个单词）且无多余解释？",
+          "weight": 0.8
+        },
+        {
+          "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_2",
+          "question": "回答是否完全避免了复述任务背景、元叙事或额外问候语？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务明确要求回复简短（reply shortly），且提供的经验指出当指令包含排他性约束或极短回复要求时，核心评估维度应为‘指令遵循度’。本任务虽未指定具体短语，但‘简短’是唯一的实质性输出限制，任何冗长、解释性或包含背景复述的内容均视为违规。因此，评分标准应聚焦于回答长度是否控制在极短范围内，并排除非必要的元叙事或背景信息，不引入内容深度等次要维度。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996",
+      "normalized_weights": {
+        "rubric_b04c427dfc1240fd8a1c7f74c0584996_1": 0.8,
+        "rubric_b04c427dfc1240fd8a1c7f74c0584996_2": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答包含36个单词，远超10-15个单词的极简短语句限制，且包含反问和请求更多信息的冗长解释。",
+          "rejected_reason": "回答仅包含一个表情符号，长度极短，远低于10-15个单词的限制，且没有任何多余解释。"
+        },
+        {
+          "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_2",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "回答以'Of course!'开头属于多余问候语，并复述了任务背景（指出需要更多上下文才能回答），违反了完全避免元叙事和额外问候的要求。",
+          "rejected_reason": "回答直接给出了回应内容，完全没有复述任务背景、元叙事或添加任何问候语。"
+        }
+      ],
+      "chosen_score": 0.0,
+      "rejected_score": 1.0,
+      "margin": -1.0,
+      "success": false
+    },
+    "error": null
+  },
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "当前失败案例显示，当任务指令为'reply shortly'时，模型倾向于输出包含解释、询问和问候语的长文本（chosen），而用户实际期望的是极简响应（rejected为表情符号）。现有经验1虽然触发了‘极短语句’场景，但其principle过度聚焦于‘特定短语’的严格匹配，导致在任务未指定具体短语（仅要求简短）时，评分标准难以界定‘实质性文本’的边界，且可能错误地将任何非零长度内容视为违规。同时，经验7关于字数范围的约束过于僵化，不适用于此类开放式简短回复。核心问题在于：缺乏针对‘模糊简短指令’的通用核验逻辑——即如何在不指定具体内容的情况下，判定回答是否‘过度展开’或‘包含不必要的元叙事’。新的评分标准应聚焦于‘信息密度与指令层级’的匹配：若任务仅要求简短，则任何超出‘确认/回应’必要性的背景复述、反问或解释性内容均应视为偏离；而不仅仅是看单词数或是否包含特定词。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_1667a809768e47a08ffe036c9b5f3fcd",
+            "method": {
+              "trigger": "当任务指令明确要求回复简短、简洁或以极简方式响应，但未指定具体的回复内容或短语时",
+              "principle": "若回答包含除直接回应指令外的背景复述、额外问候、反问澄清或解释性说明，无论其内容逻辑多么合理，均视为对‘简短’指令的违背；反之，仅包含必要的确认语或极简符号且不展开任何附加信息的回答应获高分。此时，内容深度和丰富度不再是评估重点，‘无冗余’是核心原则。",
+              "application_guide": "在构建评分标准时，设立‘指令遵循度-精简性’维度。Generator需指导评测者执行以下核验：1. 识别任务中‘简短’类指令的排他性意图；2. 检查回答是否包含非必要的元叙事（如重复任务背景）、请求更多信息的疑问句、或多余的礼貌用语；3. 只要存在上述任一类型的冗余信息，即判定该维度不合格或大幅扣分，不因其内容正确性而豁免。严禁引入‘内容丰富度’或‘交互友好性’作为加分项来抵消冗余错误。"
+            },
+            "source_task_id": "e3d2f1f1ba13be2f951f7515162ba42c3655f2e4369d7ed284a9a15b2ad0ec0d",
+            "parent_ids": [
+              "exp_8f080a33b9594e84a0e9933cd829996b"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_1667a809768e47a08ffe036c9b5f3fcd"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_1",
+                  "question": "回答是否仅包含对指令的直接回应（如确认语或极简符号），未包含任何背景信息复述？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_2",
+                  "question": "回答中是否完全不存在额外的问候语、礼貌用语或客套话？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_3",
+                  "question": "回答中是否不包含解释性说明、原因阐述或补充性细节？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_4",
+                  "question": "回答中是否不包含反问句或请求更多信息的交互内容？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务核心要求为'简短回复'，未指定具体回答内容或主题。根据经验1，评估重点应完全聚焦于‘无冗余’原则，即严格排除背景复述、额外问候、解释说明等非必要信息。评分标准需将‘是否包含任何非指令性扩展内容’作为唯一判定依据，确保回答仅由必要的确认或极简符号构成，不引入内容丰富度等无关维度。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1",
+              "normalized_weights": {
+                "rubric_4a1f6b5d36e840aa88a4f551993954f1_1": 0.4,
+                "rubric_4a1f6b5d36e840aa88a4f551993954f1_2": 0.3,
+                "rubric_4a1f6b5d36e840aa88a4f551993954f1_3": 0.2,
+                "rubric_4a1f6b5d36e840aa88a4f551993954f1_4": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答不仅包含确认语，还复述了任务背景（如提到需要更多上下文、询问具体关于casa的内容），违反了仅包含直接回应的要求。",
+                  "rejected_reason": "回答仅包含一个房屋表情符号，是对指令的直接极简回应，未复述任何背景信息。"
+                },
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答中包含了礼貌用语'Of course!'以及客套话'Please provide more details so I can assist you better'，不符合完全不存在额外问候或客套的要求。",
+                  "rejected_reason": "回答中没有任何问候语、礼貌用语或客套话，仅由表情符号构成。"
+                },
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答包含了解释性说明（'I need more context to provide a helpful response'）和补充性细节（询问是特定casa还是相关帮助），违反了不包含解释或补充细节的要求。",
+                  "rejected_reason": "回答不包含任何解释性说明、原因阐述或补充性细节，仅为单一符号。"
+                },
+                {
+                  "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_4",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答中包含反问句（'Are you asking about a specific casa...?'）和请求更多信息的交互内容，违反了不包含此类内容的要求。",
+                  "rejected_reason": "回答中不存在反问句，也没有请求更多信息的交互内容。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 1.0,
+              "margin": -1.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_2ede5524703543e184f43f18ddfc5ae7",
+            "method": {
+              "trigger": "当任务输入包含风格或长度约束（如简短、快速、一句话），且模型输出明显偏离该约束（如包含多段解释、列表或复杂句式）时",
+              "principle": "模型必须优先满足形式约束，任何为了展示能力、提供背景或追求全面性而牺牲形式约束的行为，均视为严重违规。形式约束的优先级高于内容质量，即使内容准确，形式违规也应导致低分。",
+              "application_guide": "在制定评分标准时，设立‘形式合规性’强制否决项。Generator需指导评测者：1. 提取任务中的形式约束关键词（如shortly, briefly, one sentence）；2. 对比回答的实际结构，判断是否存在段落分割、列表、长句堆砌或解释性从句；3. 若回答形式上明显超出了约束范围（如将一句话扩展为三段），直接判定为不合格，无需评估内容准确性。此标准旨在防止模型以‘内容好’为由规避形式限制。"
+            },
+            "source_task_id": "e3d2f1f1ba13be2f951f7515162ba42c3655f2e4369d7ed284a9a15b2ad0ec0d",
+            "parent_ids": [
+              "exp_62a2d603e98a4358b40744e932306a98"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_2ede5524703543e184f43f18ddfc5ae7"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0_1",
+                  "question": "回答是否保持了极短的篇幅（如单句或极短短语），未包含多个段落、列表项或复杂的解释性从句？",
+                  "weight": 1.0
+                }
+              ],
+              "analysis": "任务核心要求为'casa. reply shortly.'，其中包含明确的形式约束'shortly'（简短）。根据提供的经验1，当任务存在长度或风格约束时，形式合规性具有最高优先级。因此评分标准必须聚焦于回答是否真正做到了‘简短’，即避免多段落、列表、冗长解释或复杂句式。背景信息'casa'仅作为话题触发词，不应转化为需要详细阐述的额外义务。设计一条单一的高权重标准来核验长度和结构是否符合'shortly'的要求，确保模型未因提供背景而违反形式限制。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0",
+              "normalized_weights": {
+                "rubric_67da5cfe90cf43ccb829118582f2d6b0_1": 1.0
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "该回答包含三个完整的句子，并提出了两个问题以请求更多背景信息，篇幅远超“单句或极短短语”的要求，且包含了解释性从句（如'However, I need more context...'），不符合任务要求的简短回复。",
+                  "rejected_reason": "回答仅为单个表情符号"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 1.0,
+              "margin": -1.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_a3eb300270a9402da452be26db3ea5e4",
+            "criteria": [
+              {
+                "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_1",
+                "question": "回答是否简洁且未包含不必要的背景重复？",
+                "weight": 0.6
+              },
+              {
+                "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_2",
+                "question": "回答是否直接回应了用户的核心意图而非展开解释？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "任务核心要求是简短回复，需确保回答内容精炼、无冗余信息，且不因背景描述而增加额外输出义务。评分标准聚焦于回答长度和直接性，排除对背景信息的复述或扩展。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_a3eb300270a9402da452be26db3ea5e4",
+            "normalized_weights": {
+              "rubric_a3eb300270a9402da452be26db3ea5e4_1": 0.6,
+              "rubric_a3eb300270a9402da452be26db3ea5e4_2": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答虽然篇幅不长，但包含了不必要的背景重复和询问（如重复提及'casa'并请求更多上下文），且未直接回应可能的核心意图，反而增加了用户的交互负担。",
+                "rejected_reason": "回答仅为一个表情符号，极度简洁且没有任何背景重复内容。"
+              },
+              {
+                "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "用户指令为简短回复（reply shortly），模型却以询问更多细节作为回应，未直接提供实质性内容或确认性答复，偏离了直接回应用户核心意图的要求。",
+                "rejected_reason": "用户要求简短回复（reply shortly），该回答以极简方式直接响应了指令，未展开任何解释。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 1.0,
+            "margin": -1.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_1667a809768e47a08ffe036c9b5f3fcd"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1",
+            "criteria": [
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_1",
+                "question": "回答是否仅包含对指令的直接回应（如确认语或极简符号），未包含任何背景信息复述？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_2",
+                "question": "回答中是否完全不存在额外的问候语、礼貌用语或客套话？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_3",
+                "question": "回答中是否不包含解释性说明、原因阐述或补充性细节？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_4",
+                "question": "回答中是否不包含反问句或请求更多信息的交互内容？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务核心要求为'简短回复'，未指定具体回答内容或主题。根据经验1，评估重点应完全聚焦于‘无冗余’原则，即严格排除背景复述、额外问候、解释说明等非必要信息。评分标准需将‘是否包含任何非指令性扩展内容’作为唯一判定依据，确保回答仅由必要的确认或极简符号构成，不引入内容丰富度等无关维度。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1",
+            "normalized_weights": {
+              "rubric_4a1f6b5d36e840aa88a4f551993954f1_1": 0.4,
+              "rubric_4a1f6b5d36e840aa88a4f551993954f1_2": 0.3,
+              "rubric_4a1f6b5d36e840aa88a4f551993954f1_3": 0.2,
+              "rubric_4a1f6b5d36e840aa88a4f551993954f1_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答不仅包含确认语，还复述了任务背景（如提到需要更多上下文、询问具体关于casa的内容），违反了仅包含直接回应的要求。",
+                "rejected_reason": "回答仅包含一个房屋表情符号，是对指令的直接极简回应，未复述任何背景信息。"
+              },
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_2",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中包含了礼貌用语'Of course!'以及客套话'Please provide more details so I can assist you better'，不符合完全不存在额外问候或客套的要求。",
+                "rejected_reason": "回答中没有任何问候语、礼貌用语或客套话，仅由表情符号构成。"
+              },
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答包含了解释性说明（'I need more context to provide a helpful response'）和补充性细节（询问是特定casa还是相关帮助），违反了不包含解释或补充细节的要求。",
+                "rejected_reason": "回答不包含任何解释性说明、原因阐述或补充性细节，仅为单一符号。"
+              },
+              {
+                "criterion_id": "rubric_4a1f6b5d36e840aa88a4f551993954f1_4",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答中包含反问句（'Are you asking about a specific casa...?'）和请求更多信息的交互内容，违反了不包含此类内容的要求。",
+                "rejected_reason": "回答中不存在反问句，也没有请求更多信息的交互内容。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 1.0,
+            "margin": -1.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_2ede5524703543e184f43f18ddfc5ae7"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0",
+            "criteria": [
+              {
+                "criterion_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0_1",
+                "question": "回答是否保持了极短的篇幅（如单句或极短短语），未包含多个段落、列表项或复杂的解释性从句？",
+                "weight": 1.0
+              }
+            ],
+            "analysis": "任务核心要求为'casa. reply shortly.'，其中包含明确的形式约束'shortly'（简短）。根据提供的经验1，当任务存在长度或风格约束时，形式合规性具有最高优先级。因此评分标准必须聚焦于回答是否真正做到了‘简短’，即避免多段落、列表、冗长解释或复杂句式。背景信息'casa'仅作为话题触发词，不应转化为需要详细阐述的额外义务。设计一条单一的高权重标准来核验长度和结构是否符合'shortly'的要求，确保模型未因提供背景而违反形式限制。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0",
+            "normalized_weights": {
+              "rubric_67da5cfe90cf43ccb829118582f2d6b0_1": 1.0
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_67da5cfe90cf43ccb829118582f2d6b0_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "该回答包含三个完整的句子，并提出了两个问题以请求更多背景信息，篇幅远超“单句或极短短语”的要求，且包含了解释性从句（如'However, I need more context...'），不符合任务要求的简短回复。",
+                "rejected_reason": "回答仅为单个表情符号"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 1.0,
+            "margin": -1.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_1667a809768e47a08ffe036c9b5f3fcd",
+            "exp_2ede5524703543e184f43f18ddfc5ae7"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_966f0724208b4eb78b380918eba98f39",
+            "criteria": [
+              {
+                "criterion_id": "rubric_966f0724208b4eb78b380918eba98f39_1",
+                "question": "回答是否仅包含必要的确认语或极简符号，且未包含任何背景复述、额外问候、解释性说明或非必要的元叙事？",
+                "weight": 1.0
+              }
+            ],
+            "analysis": "任务核心要求为'简短回复'(reply shortly)，未指定具体回答内容。根据经验指导，评估应聚焦于形式约束的遵循度，即排除任何背景复述、额外问候、解释或冗余信息。评分标准需设立单一维度的‘精简性’核查，只要回答包含非必要信息（如重复指令、礼貌寒暄、展开说明）即判定不满足要求，权重设为1.0以确保形式约束的绝对优先性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_966f0724208b4eb78b380918eba98f39",
+            "normalized_weights": {
+              "rubric_966f0724208b4eb78b380918eba98f39_1": 1.0
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_966f0724208b4eb78b380918eba98f39_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "回答包含了背景复述（'I need more context'）、解释性说明（'to provide a helpful response'）以及额外的询问（'Are you asking about...'），违反了仅包含必要确认语或极简符号的要求。",
+                "rejected_reason": "回答仅包含一个极简符号（房屋表情），未包含任何背景复述、额外问候、解释性说明或非必要的元叙事，符合‘仅包含必要的确认语或极简符号’的要求。"
+              }
+            ],
+            "chosen_score": 0.0,
+            "rejected_score": 1.0,
+            "margin": -1.0,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "round_number": 2,
+      "analysis": "",
+      "attempts": [],
+      "error": "LLMFormatError: critic: invalid contract: candidate requires method and parent_ids",
+      "subset_paths": []
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_a3eb300270a9402da452be26db3ea5e4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_1",
+            "question": "回答是否简洁且未包含不必要的背景重复？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_2",
+            "question": "回答是否直接回应了用户的核心意图而非展开解释？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务核心要求是简短回复，需确保回答内容精炼、无冗余信息，且不因背景描述而增加额外输出义务。评分标准聚焦于回答长度和直接性，排除对背景信息的复述或扩展。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a3eb300270a9402da452be26db3ea5e4",
+        "normalized_weights": {
+          "rubric_a3eb300270a9402da452be26db3ea5e4_1": 0.6,
+          "rubric_a3eb300270a9402da452be26db3ea5e4_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答虽然篇幅不长，但包含了不必要的背景重复和询问（如重复提及'casa'并请求更多上下文），且未直接回应可能的核心意图，反而增加了用户的交互负担。",
+            "rejected_reason": "回答仅为一个表情符号，极度简洁且没有任何背景重复内容。"
+          },
+          {
+            "criterion_id": "rubric_a3eb300270a9402da452be26db3ea5e4_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "用户指令为简短回复（reply shortly），模型却以询问更多细节作为回应，未直接提供实质性内容或确认性答复，偏离了直接回应用户核心意图的要求。",
+            "rejected_reason": "用户要求简短回复（reply shortly），该回答以极简方式直接响应了指令，未展开任何解释。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 1.0,
+        "margin": -1.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_8f080a33b9594e84a0e9933cd829996b"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_1",
+            "question": "回答是否仅包含极简短的语句（通常不超过10-15个单词）且无多余解释？",
+            "weight": 0.8
+          },
+          {
+            "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_2",
+            "question": "回答是否完全避免了复述任务背景、元叙事或额外问候语？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务明确要求回复简短（reply shortly），且提供的经验指出当指令包含排他性约束或极短回复要求时，核心评估维度应为‘指令遵循度’。本任务虽未指定具体短语，但‘简短’是唯一的实质性输出限制，任何冗长、解释性或包含背景复述的内容均视为违规。因此，评分标准应聚焦于回答长度是否控制在极短范围内，并排除非必要的元叙事或背景信息，不引入内容深度等次要维度。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996",
+        "normalized_weights": {
+          "rubric_b04c427dfc1240fd8a1c7f74c0584996_1": 0.8,
+          "rubric_b04c427dfc1240fd8a1c7f74c0584996_2": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答包含36个单词，远超10-15个单词的极简短语句限制，且包含反问和请求更多信息的冗长解释。",
+            "rejected_reason": "回答仅包含一个表情符号，长度极短，远低于10-15个单词的限制，且没有任何多余解释。"
+          },
+          {
+            "criterion_id": "rubric_b04c427dfc1240fd8a1c7f74c0584996_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答以'Of course!'开头属于多余问候语，并复述了任务背景（指出需要更多上下文才能回答），违反了完全避免元叙事和额外问候的要求。",
+            "rejected_reason": "回答直接给出了回应内容，完全没有复述任务背景、元叙事或添加任何问候语。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 1.0,
+        "margin": -1.0,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

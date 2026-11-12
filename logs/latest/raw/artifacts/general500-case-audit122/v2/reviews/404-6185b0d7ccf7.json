@@ -1,0 +1,48 @@
+{
+  "status": "valid",
+  "input_index": 404,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 404,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "mixed",
+        "reason": "任务要求描述实体属性，但经验强制要求核验具体人物（如欧几里得）归属。原任务未要求列举具体学者姓名，该条件超出任务范围。",
+        "refs": [
+          "TASK",
+          "E1.trigger",
+          "W2"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "W2",
+          "N2"
+        ],
+        "note": "路径 W 的 W2 标准强制要求回答必须提及具体关键人物（如欧几里得），而 N 路径及原始任务仅要求描述功能、藏书和毁灭原因，未明确要求列举具体人名。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "W2.X.reason",
+          "W2.Y.reason"
+        ],
+        "note": "Judge 理由指出因未提及具体人物导致不合格，但这基于经验 E1 强加的额外义务，而非任务本身对“具体人物”的描述要求。"
+      },
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "E1.principle",
+          "N.analysis"
+        ],
+        "note": "经验 E1 将核验重点锁定在“著作、奖项、特定项目”的归属，但任务主要涉及图书馆整体历史事件（如毁灭原因），两者关注点存在偏差。"
+      }
+    ],
+    "limit": "无法确认是否应因未列举具体学者姓名而判定为事实错误，需明确任务是否隐含此要求。"
+  }
+}

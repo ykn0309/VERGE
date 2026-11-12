@@ -1,0 +1,1338 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:5576c16fe4d23985172c19fdfab62a0612f9608f62016c7856568fbe98bbb3cb",
+    "task": "Peter Rabbit is Production of",
+    "chosen": "*Peter Rabbit*, the 2018 adaptation of the 1902 book written and illustrated by Beatrix Potter, was produced by Columbia Pictures Entertainment in association with Animal Logic, 2.0 Entertainment, Media Rights Capital, Olive Bridge Entertainment, Screen Australia, Screen New South Wales, and Sony Pictures Animation.",
+    "rejected": "Peter Rabbit, as a movie, is a production of **Animal Logic Entertainment** and **Olive Bridge Entertainment**. The story is based on the classic tale by Beatrix Potter, who wrote and illustrated the original Peter Rabbit book, first published in 1902.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 16250,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 as it gives more details on the publication of the Peter Rabbit Film.",
+          "feedback1": "The response is perfectly helpful. This is because it explains about the production of Peter Rabbit. The response stands out as it also gives details about the year and more details about his work. The response uses a simple and clear language, hence making it easy for the user of the prompt to read and understand it well.",
+          "feedback2": "The response is mostly helpful. This is because it answers the question in the prompt regarding the production of Peter Rabbit and explains it at depth. The response is short and to the point. It uses a very simple and easy language, which can be easily read and understood by the user of the model."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. This is because all the movie production company involved in the production are captured in the response. Over 8 production companies are captured in response  1 than just two captured in @Response 2.",
+          "feedback1": "The response is mostly helpful. This is because it is concise enough. It addresses the response in the most straightforward or immediate way. The response is well-crafted, direct and contains every necessary production company that produced the movie. Lastly, the response requires little or no modification as anymore alteration could render it meaningless.",
+          "feedback2": "The response is slightly helpful. Although this is clear and concise enough but it fails to capture other production companies involved in the production of the movie which are gathered from the fact source. The response can be better and more complete if all facts source are put into consideration. The response has limited credibility, without reliable source or adequate facts the response may appear less trustworthy."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 includes all the involved production companies, unlike @Response 2, which includes only two companies, and not the main ones. Both provide correct background information about the book that the movie is based on. ",
+          "feedback1": "The response is perfectly helpful. The response provides an accurate list of all of the production companies involved in the creation of the 2018 movie Peter Rabbit. Additionally, it provides correct background information about the movie and it being based on a book. Finally, it accurately points out that the book was written and illustrated by Beatrix Potter. ",
+          "feedback2": "The response is mostly helpful. The response provides correct background information about the movie and its origin as a children's book. Additionally, it mentions its author and role as write and illustrator. The production companies mentioned are correct, however, the list is incomplete, and it does not the more important contributors. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        0.2154046429583898
+      ],
+      [
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        0.2144054986516579
+      ],
+      [
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        0.20696020983598776
+      ],
+      [
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        0.20437686918439985
+      ],
+      [
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        0.1866568792295967
+      ],
+      [
+        "exp_99cc8baae7b848799b634b94909f0156",
+        0.18217975222725652
+      ],
+      [
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        0.1769606555495261
+      ],
+      [
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        0.1747694491540473
+      ],
+      [
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        0.16966156124782067
+      ],
+      [
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        0.16437561512306242
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2154046429583898
+      },
+      {
+        "experience_id": "exp_4acedd8ccb704f10814295af8edc24e7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2144054986516579
+      },
+      {
+        "experience_id": "exp_7ddc4fca24204e40995774a64b2c5764",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20696020983598776
+      },
+      {
+        "experience_id": "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20437686918439985
+      },
+      {
+        "experience_id": "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1866568792295967
+      },
+      {
+        "experience_id": "exp_99cc8baae7b848799b634b94909f0156",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18217975222725652
+      },
+      {
+        "experience_id": "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1769606555495261
+      },
+      {
+        "experience_id": "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1747694491540473
+      },
+      {
+        "experience_id": "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16966156124782067
+      },
+      {
+        "experience_id": "exp_5321b208f75b481dbd2716498c5f03ef",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16437561512306242
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_02a2d1f9e59f45c5a64078ac996d3812": "任务询问'Peter Rabbit is Production of'，这涉及查询特定实体（彼得兔）的核心业务属性（制作方/发行方）。经验1强调在评分时需严格区分实体的核心业务定位，防止将非核心产品或无关产品线混淆为制作方，这对于核实'Production'这一具体事实至关重要。",
+    "exp_badca5a40e0649e3af61cc1af6c1eaa9": "任务要求陈述一个具体的事实关系（谁制作了彼得兔）。经验7明确要求必须核验生成的内容是否基于现实世界存在的客观事实，严禁将虚构假设当作既定事实陈述。在回答此类查询时，必须确保提到的制作公司（如Ealing Studios等）是真实存在且确实参与了该作品的制作，否则属于严重事实错误。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+      "criteria": [
+        {
+          "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+          "question": "回答是否明确指出了Peter Rabbit某一具体影视作品的制作方或出品公司？",
+          "weight": 0.8
+        },
+        {
+          "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+          "question": "回答是否避免了将角色背景故事误当作制作信息进行输出？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务核心要求是识别'Peter Rabbit'作为作品（Production）的所属方或制作方。需区分背景信息（如Peter Rabbit的角色设定）与核心产出（具体的制作公司、发行商或制片方）。由于输入未提供具体作品版本，标准应聚焦于回答是否明确指出了该IP某部特定动画或电影的制作主体，而非描述角色本身。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+      "normalized_weights": {
+        "rubric_4b070c52030a4a46b5050451ebb66a1f_1": 0.8,
+        "rubric_4b070c52030a4a46b5050451ebb66a1f_2": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答明确指出了2018年改编版《彼得兔》的制作方为Columbia Pictures Entertainment，并列出了多家联合制作公司。",
+          "rejected_reason": "回答明确指出了电影《Peter Rabbit》的制作方为Animal Logic Entertainment和Olive Bridge Entertainment。"
+        },
+        {
+          "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答准确区分了原著作者Beatrix Potter与影视制作团队，未将角色背景故事误当作制作信息输出。",
+          "rejected_reason": "回答清晰区分了制作信息（出品公司）与故事背景（基于Beatrix Potter的原著），未将角色背景误作制作信息进行输出。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 1.0,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_02a2d1f9e59f45c5a64078ac996d3812",
+      "exp_badca5a40e0649e3af61cc1af6c1eaa9"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7",
+      "criteria": [
+        {
+          "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_1",
+          "question": "回答是否明确指出了现实中存在的制作'Peter Rabbit'相关作品的具体公司或机构名称？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_2",
+          "question": "回答是否正确区分了原著出版方与影视/动画制作方，未将两者混淆作为同一类'生产'实体？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_3",
+          "question": "回答中提及的制作实体是否基于客观事实，而非虚构的假设场景或未发生的传闻？",
+          "weight": 0.2
+        }
+      ],
+      "analysis": "任务要求识别'Peter Rabbit'这一实体的具体生产方（Production of），属于单一事实查询。核心难点在于区分该IP在不同载体（如原著书籍、动画剧集、电影）下的不同制作主体，避免将出版商误作制片方或将虚构情节中的制作公司当作现实实体。提供的经验中，经验1关于区分业务类型的原则适用于防止模型混淆出版与影视制作；经验2关于事实真实性的原则用于防止模型编造不存在的合作或虚构制作方。评分标准应聚焦于提取正确的现实世界制作实体，并明确其对应的作品形式，排除背景信息干扰和虚构内容。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7",
+      "normalized_weights": {
+        "rubric_3302bdf19d13495b984284ed5ac2fbc7_1": 0.5,
+        "rubric_3302bdf19d13495b984284ed5ac2fbc7_2": 0.3,
+        "rubric_3302bdf19d13495b984284ed5ac2fbc7_3": 0.2
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答明确列出了多个现实中存在的制作公司或机构名称，包括Columbia Pictures Entertainment、Animal Logic、Sony Pictures Animation等。",
+          "rejected_reason": "回答明确指出了'Animal Logic Entertainment'和'Olive Bridge Entertainment'这两个具体的制作公司或机构名称。"
+        },
+        {
+          "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答清晰地将原著作者（Beatrix Potter）与影视改编的制作方（如Columbia Pictures、Sony Pictures Animation等）区分开来，未将出版方混淆为制作实体。",
+          "rejected_reason": "回答清晰区分了电影制作方（Animal Logic Entertainment等）与原著出版/创作实体（Beatrix Potter），未将两者混淆。"
+        },
+        {
+          "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答中提及的《Peter Rabbit》2018年电影及其制作方均为客观事实，符合已上映作品的真实信息，不存在虚构假设或未发生的传闻。",
+          "rejected_reason": "回答中提及的制作公司和原著信息均基于客观事实，Peter Rabbit电影确实由这两家公司制作，且原著作者和出版时间准确无误。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 1.0,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，所有尝试（无经验、单经验、双经验组合）均未能区分'chosen'和'rejected'回答，因为两者都准确列出了制作公司并正确区分了原著与电影。失败的根本原因在于：任务核心是查询特定作品（Peter Rabbit 2018电影）的出品方，而两个回答都完成了这一核心事实检索。然而，'rejected'回答虽然事实正确，但其表述方式将'Peter Rabbit'直接定义为'movie'，且未明确提及这是基于原著改编的具体版本（如2018年），存在潜在的指代模糊风险（尽管在本题语境下被判定为正确）。更深层的问题在于，现有的评分标准过于关注‘是否列出公司’和‘是否区分原著’，却忽略了‘实体指代的精确性’和‘版本信息的显式确认’。当任务仅给出一个通用名称（如'Peter Rabbit'）时，模型必须首先锚定到具体的现实实体（如'2018年真人动画电影《彼得兔》’），而不是默认用户意图或隐含假设。如果模型在未明确指代具体版本的情况下直接陈述该实体的属性，可能构成‘实体身份锚定缺失’，这在多义实体查询中是常见错误。因此，需要引入一条关于‘实体身份锚定前置’的经验，要求模型在提供属性前必须先澄清或确认输入名称对应的具体标准实体，防止因指代不明导致的潜在事实偏差。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_8be97f9f531e4316ba729461e791b57e",
+            "method": {
+              "trigger": "当任务输入包含通用名称或可能存在多义性的专有名词，且要求提供该实体的具体属性（如制作方、发行商、作者等）时",
+              "principle": "模型必须首先在提供任何具体属性之前，显式确认或修正任务中的实体指代为公认的标准名称及具体版本；严禁在未明确界定实体具体形态（如年份、载体类型）的情况下，直接基于模糊指代编造或陈述具体的属性细节。",
+              "application_guide": "在构建评分标准的‘事实准确性’维度设立‘实体锚定前置’否决项：1. 检查回答是否识别了输入名称的潜在多义性或模糊性；2. 若识别，回答是否明确声明了标准名称及具体版本（如明确指出是'2018年电影版’而非泛指角色）；3. 若未识别或未修正，直接假设输入无误并展开详细描述（特别是涉及具体制作方、年份等细节），则判定为严重事实错误（直接低分）。只有当回答完成了实体锚定后，才允许评估其后续关于属性的具体内容准确性。"
+            },
+            "source_task_id": "a7286c3abc6416c9bb774a51a1b4629f5a648b79fe9253a9215af2d69ec336a0",
+            "parent_ids": [
+              "exp_7ddc4fca24204e40995774a64b2c5764"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_8be97f9f531e4316ba729461e791b57e"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_ba966258250e4639a9f4339b54050543",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_1",
+                  "question": "回答是否首先明确识别了'Peter Rabbit'的具体指代对象（如2018年电影版、动画片系列等），以消除名称的多义性？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_2",
+                  "question": "如果回答识别了具体版本，其陈述的制作方（Production）是否与所选定的具体版本事实完全一致？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_3",
+                  "question": "回答是否在未明确版本的情况下，直接假设输入无误并编造了具体的制作方信息？",
+                  "weight": 0.25
+                }
+              ],
+              "analysis": "任务核心要求是识别'Peter Rabbit'这一实体的具体制作方（Production of）。鉴于该名称存在多义性（可指代原著角色、动画剧集或真人/CGI电影），且经验指导明确指出必须优先进行实体锚定以避免事实错误，评分标准需将‘明确界定具体版本’作为首要且高权重的否决项。若回答未澄清版本直接陈述属性，视为严重幻觉；若已澄清，则重点核验其提供的制作方信息是否与该特定版本的事实相符。背景信息中的角色起源无需在输出中复述，仅需确认模型是否正确锁定了用户意图指向的具体作品版本。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_ba966258250e4639a9f4339b54050543",
+              "normalized_weights": {
+                "rubric_ba966258250e4639a9f4339b54050543_1": 0.4,
+                "rubric_ba966258250e4639a9f4339b54050543_2": 0.35,
+                "rubric_ba966258250e4639a9f4339b54050543_3": 0.25
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答开篇明确指出了'Peter Rabbit'指的是2018年改编自Beatrix Potter 1902年书籍的电影改编版，成功消除了名称的多义性。",
+                  "rejected_reason": "回答开头明确将Peter Rabbit界定为'as a movie'（作为一部电影），成功消除了名称的多义性，指向了2018年电影版。"
+                },
+                {
+                  "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中列出的制作方（Columbia Pictures Entertainment, Animal Logic等）与2018年电影《比得兔》的实际制作信息一致，事实准确。",
+                  "rejected_reason": "回答中陈述的制作方Animal Logic Entertainment和Olive Bridge Entertainment与2018年《比得兔》电影的实际制作信息完全一致。"
+                },
+                {
+                  "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答首先明确了具体版本（2018年电影），并未在未明确版本的情况下直接编造信息，因此不满足该负面标准的描述情境。",
+                  "rejected_reason": "回答并未在未明确版本的情况下直接假设输入无误并编造信息，而是先明确了具体版本（电影）再提供信息，符合事实且未出现编造行为。"
+                }
+              ],
+              "chosen_score": 0.75,
+              "rejected_score": 0.75,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_7525fa0ba8e54171b845dd1b692271fd",
+            "method": {
+              "trigger": "当任务要求列举、描述或整合特定实体之间的商业合作、产品联名、历史事件或具体事实关系时",
+              "principle": "必须严格核验生成内容中关于实体间关系的描述是否基于现实世界存在的客观事实；若模型将虚构的假设场景、未发生的传闻或逻辑推演当作既定事实陈述，且未明确标注为虚构/假设，则视为严重的事实性错误。",
+              "application_guide": "在评分标准中设立‘事实真实性’维度。评测时需核查：1. 模型是否明确区分了‘已发生/存在’与‘可能/假设’（如使用'could be', 'imagined scenario'等标记）；2. 对于声称存在的合作或产品，是否存在对应的现实依据；3. 若回答整体为一个虚构的故事脚本却未声明其虚构性质，直接判定为不合格或大幅扣分，即使其创意丰富或逻辑自洽。此核验优先于文本流畅度或创意性。"
+            },
+            "source_task_id": "a7286c3abc6416c9bb774a51a1b4629f5a648b79fe9253a9215af2d69ec336a0",
+            "parent_ids": [
+              "exp_badca5a40e0649e3af61cc1af6c1eaa9"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_7525fa0ba8e54171b845dd1b692271fd"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_1",
+                  "question": "回答是否明确指出了Peter Rabbit相关作品在现实中真实存在的出品公司或制作机构？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_2",
+                  "question": "回答中关于出品方的描述是否有现实依据，未将虚构场景、假设或未发生的合作当作既定事实陈述？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_3",
+                  "question": "若Peter Rabbit存在多个不同版本的作品（如不同年代的动画或电影），回答是否准确区分并对应了各自的出品方，而非笼统混淆？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "该任务是一个事实查询型问题，要求识别'Peter Rabbit'这一IP的商业出品方（Production of）。核心要求是提供基于现实世界的准确事实信息。提供的经验强调必须严格核验实体间关系的客观真实性，区分虚构与事实，这直接对应本题的核心需求。因此，评分标准应聚焦于：1. 是否准确指出了真实的出品公司或制作机构；2. 是否避免了将虚构情节或未证实传闻当作事实陈述；3. 回答是否清晰区分了不同版本（如动画、电影、书籍）的出品方差异（若涉及多个）。背景信息（Peter Rabbit本身是角色）不应转化为输出义务，只需作为检索依据。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4",
+              "normalized_weights": {
+                "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_1": 0.5,
+                "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_2": 0.3,
+                "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确指出了Peter Rabbit 2018年改编作品的出品方，包括Columbia Pictures Entertainment、Sony Pictures Animation等现实存在的机构。",
+                  "rejected_reason": "回答明确指出了电影版《Peter Rabbit》的出品公司为Animal Logic Entertainment和Olive Bridge Entertainment，符合现实中真实存在的制作机构。"
+                },
+                {
+                  "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中列出的制作公司均为现实中真实参与该电影制作的机构，未虚构场景或假设合作。",
+                  "rejected_reason": "回答中提到的制作公司和原著作者Beatrix Potter均为现实存在的事实，未将虚构场景或假设当作既定事实陈述。"
+                },
+                {
+                  "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答仅提及了2018年电影版本的出品方，未区分其他不同版本（如经典动画系列或其他电影改编）的出品方，未能满足对多个版本进行准确区分的要求。",
+                  "rejected_reason": "回答仅针对电影版本提及了出品方，未区分其他不同版本（如不同年代的动画系列）的出品方，未能满足对多个版本进行准确区分的要求。"
+                }
+              ],
+              "chosen_score": 0.8,
+              "rejected_score": 0.8,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+            "criteria": [
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+                "question": "回答是否明确指出了Peter Rabbit某一具体影视作品的制作方或出品公司？",
+                "weight": 0.8
+              },
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+                "question": "回答是否避免了将角色背景故事误当作制作信息进行输出？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是识别'Peter Rabbit'作为作品（Production）的所属方或制作方。需区分背景信息（如Peter Rabbit的角色设定）与核心产出（具体的制作公司、发行商或制片方）。由于输入未提供具体作品版本，标准应聚焦于回答是否明确指出了该IP某部特定动画或电影的制作主体，而非描述角色本身。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+            "normalized_weights": {
+              "rubric_4b070c52030a4a46b5050451ebb66a1f_1": 0.8,
+              "rubric_4b070c52030a4a46b5050451ebb66a1f_2": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指出了2018年改编版《彼得兔》的制作方为Columbia Pictures Entertainment，并列出了多家联合制作公司。",
+                "rejected_reason": "回答明确指出了电影《Peter Rabbit》的制作方为Animal Logic Entertainment和Olive Bridge Entertainment。"
+              },
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答准确区分了原著作者Beatrix Potter与影视制作团队，未将角色背景故事误当作制作信息输出。",
+                "rejected_reason": "回答清晰区分了制作信息（出品公司）与故事背景（基于Beatrix Potter的原著），未将角色背景误作制作信息进行输出。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 1.0,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_8be97f9f531e4316ba729461e791b57e"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_ba966258250e4639a9f4339b54050543",
+            "criteria": [
+              {
+                "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_1",
+                "question": "回答是否首先明确识别了'Peter Rabbit'的具体指代对象（如2018年电影版、动画片系列等），以消除名称的多义性？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_2",
+                "question": "如果回答识别了具体版本，其陈述的制作方（Production）是否与所选定的具体版本事实完全一致？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_3",
+                "question": "回答是否在未明确版本的情况下，直接假设输入无误并编造了具体的制作方信息？",
+                "weight": 0.25
+              }
+            ],
+            "analysis": "任务核心要求是识别'Peter Rabbit'这一实体的具体制作方（Production of）。鉴于该名称存在多义性（可指代原著角色、动画剧集或真人/CGI电影），且经验指导明确指出必须优先进行实体锚定以避免事实错误，评分标准需将‘明确界定具体版本’作为首要且高权重的否决项。若回答未澄清版本直接陈述属性，视为严重幻觉；若已澄清，则重点核验其提供的制作方信息是否与该特定版本的事实相符。背景信息中的角色起源无需在输出中复述，仅需确认模型是否正确锁定了用户意图指向的具体作品版本。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_ba966258250e4639a9f4339b54050543",
+            "normalized_weights": {
+              "rubric_ba966258250e4639a9f4339b54050543_1": 0.4,
+              "rubric_ba966258250e4639a9f4339b54050543_2": 0.35,
+              "rubric_ba966258250e4639a9f4339b54050543_3": 0.25
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答开篇明确指出了'Peter Rabbit'指的是2018年改编自Beatrix Potter 1902年书籍的电影改编版，成功消除了名称的多义性。",
+                "rejected_reason": "回答开头明确将Peter Rabbit界定为'as a movie'（作为一部电影），成功消除了名称的多义性，指向了2018年电影版。"
+              },
+              {
+                "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中列出的制作方（Columbia Pictures Entertainment, Animal Logic等）与2018年电影《比得兔》的实际制作信息一致，事实准确。",
+                "rejected_reason": "回答中陈述的制作方Animal Logic Entertainment和Olive Bridge Entertainment与2018年《比得兔》电影的实际制作信息完全一致。"
+              },
+              {
+                "criterion_id": "rubric_ba966258250e4639a9f4339b54050543_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答首先明确了具体版本（2018年电影），并未在未明确版本的情况下直接编造信息，因此不满足该负面标准的描述情境。",
+                "rejected_reason": "回答并未在未明确版本的情况下直接假设输入无误并编造信息，而是先明确了具体版本（电影）再提供信息，符合事实且未出现编造行为。"
+              }
+            ],
+            "chosen_score": 0.75,
+            "rejected_score": 0.75,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_7525fa0ba8e54171b845dd1b692271fd"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4",
+            "criteria": [
+              {
+                "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_1",
+                "question": "回答是否明确指出了Peter Rabbit相关作品在现实中真实存在的出品公司或制作机构？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_2",
+                "question": "回答中关于出品方的描述是否有现实依据，未将虚构场景、假设或未发生的合作当作既定事实陈述？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_3",
+                "question": "若Peter Rabbit存在多个不同版本的作品（如不同年代的动画或电影），回答是否准确区分并对应了各自的出品方，而非笼统混淆？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "该任务是一个事实查询型问题，要求识别'Peter Rabbit'这一IP的商业出品方（Production of）。核心要求是提供基于现实世界的准确事实信息。提供的经验强调必须严格核验实体间关系的客观真实性，区分虚构与事实，这直接对应本题的核心需求。因此，评分标准应聚焦于：1. 是否准确指出了真实的出品公司或制作机构；2. 是否避免了将虚构情节或未证实传闻当作事实陈述；3. 回答是否清晰区分了不同版本（如动画、电影、书籍）的出品方差异（若涉及多个）。背景信息（Peter Rabbit本身是角色）不应转化为输出义务，只需作为检索依据。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4",
+            "normalized_weights": {
+              "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_1": 0.5,
+              "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_2": 0.3,
+              "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指出了Peter Rabbit 2018年改编作品的出品方，包括Columbia Pictures Entertainment、Sony Pictures Animation等现实存在的机构。",
+                "rejected_reason": "回答明确指出了电影版《Peter Rabbit》的出品公司为Animal Logic Entertainment和Olive Bridge Entertainment，符合现实中真实存在的制作机构。"
+              },
+              {
+                "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中列出的制作公司均为现实中真实参与该电影制作的机构，未虚构场景或假设合作。",
+                "rejected_reason": "回答中提到的制作公司和原著作者Beatrix Potter均为现实存在的事实，未将虚构场景或假设当作既定事实陈述。"
+              },
+              {
+                "criterion_id": "rubric_ed2d5f836a8148f1a1c8f2def14b15a4_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答仅提及了2018年电影版本的出品方，未区分其他不同版本（如经典动画系列或其他电影改编）的出品方，未能满足对多个版本进行准确区分的要求。",
+                "rejected_reason": "回答仅针对电影版本提及了出品方，未区分其他不同版本（如不同年代的动画系列）的出品方，未能满足对多个版本进行准确区分的要求。"
+              }
+            ],
+            "chosen_score": 0.8,
+            "rejected_score": 0.8,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_8be97f9f531e4316ba729461e791b57e",
+            "exp_7525fa0ba8e54171b845dd1b692271fd"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7",
+            "criteria": [
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_1",
+                "question": "回答是否首先识别了'Peter Rabbit'这一名称的潜在多义性（如文学角色、不同年份的电影、剧集等）？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_2",
+                "question": "若识别出多义性，回答是否明确声明了所讨论的具体实体版本（例如明确指出是'2018年电影版'而非泛指角色），并基于该特定版本展开回答？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_3",
+                "question": "针对已明确的特定实体版本，回答中提供的制作方（Production of）信息是否符合现实世界的客观事实？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_4",
+                "question": "回答是否避免了将虚构假设、传闻或未发生的合作当作既定事实陈述，且未对虚构内容进行误导性的事实化描述？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务输入'Peter Rabbit is Production of'存在严重的实体指代模糊性。'Peter Rabbit'既可以是比阿特丽克斯·波特创作的经典文学角色，也可以是2018年及后续的多部动画电影、真人动画电影或舞台剧。根据经验指导，模型在回答此类包含多义性专有名词的属性查询时，首要义务是进行‘实体锚定’，即明确区分并声明所指的具体版本（如电影、书籍等），严禁在未界定的情况下直接编造或陈述单一属性的制作方信息。评分标准将严格区分‘背景识别与澄清’（核心前置要求）与‘具体属性事实’（后续内容），若未进行实体锚定，无论后续内容如何均视为严重错误；若已锚定，则评估其对应实体的制作方信息是否准确。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7",
+            "normalized_weights": {
+              "rubric_7ace2074090c4299a2bb3d66b261b1c7_1": 0.3,
+              "rubric_7ace2074090c4299a2bb3d66b261b1c7_2": 0.3,
+              "rubric_7ace2074090c4299a2bb3d66b261b1c7_3": 0.3,
+              "rubric_7ace2074090c4299a2bb3d66b261b1c7_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答直接以'Peter Rabbit'指代2018年改编电影，未首先识别该名称可能存在的多义性（如原著角色、其他年份的影视版本或剧集等），而是直接默认了单一特定版本。",
+                "rejected_reason": "回答直接以'Peter Rabbit, as a movie'开头，未首先识别该名称可能存在的多义性（如文学角色、不同年份的电影或剧集等），而是直接假设用户指的是电影版。"
+              },
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确声明了所讨论的具体实体为'2018年的改编版（2018 adaptation）’，并基于该特定版本提供了制作方信息。",
+                "rejected_reason": "回答明确声明了讨论的是电影版本（'as a movie'），并基于该特定版本提供了制作方信息，符合针对特定实体展开回答的要求。"
+              },
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中列出的制作方（Columbia Pictures Entertainment, Animal Logic, Sony Pictures Animation等）符合现实世界中2018年电影《比得兔》的实际制作情况。",
+                "rejected_reason": "回答中提到的制作方Animal Logic Entertainment和Olive Bridge Entertainment是2018年真人/CGI动画电影《比得兔》的官方制作公司，符合现实世界的客观事实。"
+              },
+              {
+                "criterion_id": "rubric_7ace2074090c4299a2bb3d66b261b1c7_4",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答仅陈述了已发生的电影制作事实，未包含任何虚构假设、传闻或将未发生事件当作既定事实的描述。",
+                "rejected_reason": "回答仅陈述了已知的电影制作信息和原著作者背景，未将虚构假设、传闻或未发生的合作当作既定事实进行误导性描述。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 0.7,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "round_number": 2,
+      "analysis": "分析所有失败轨迹发现，尽管尝试了区分版本（经验11）和强调事实真实性（经验12），但评分标准依然无法区分'chosen'和'rejected'。根本原因在于：两个回答在事实层面都正确（都指向2018年电影且制作方无误），但在‘指代清晰度’上存在微妙差异。'rejected'回答虽然指出了是电影，但使用了'Peter Rabbit, as a movie'这种略显生硬且未明确年份的表述，而'chosen'回答则更精准地锚定了'2018 adaptation'。然而，现有的评分逻辑过于关注‘是否提及版本’这一二元状态，导致两者得分相同。真正的痛点在于：当任务输入是一个多义实体名称时，模型不仅需要提供正确的属性，还必须证明其‘意图识别’的准确性——即它是否选择了最符合当前语境（通常是最著名或最新的版本）且描述最精确的那个实体。如果模型选择了正确的实体但未提供足够的限定词（如年份、类型细节）来消除歧义，或者其限定词本身不够规范，这属于‘指代模糊’而非‘事实错误’。因此，需要引入一条关于‘指代精确度与语境适配’的经验，要求评分标准不仅检查‘是否有版本说明’，还要评估该说明是否足以唯一确定目标实体并消除歧义，同时避免过度苛求（如必须包含特定年份，若上下文已足够清晰）。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_c9f294b0c82241be8f60fc8078b84460",
+            "method": {
+              "trigger": "当任务输入包含具有多重指代可能性的专有名词（如知名IP、人物、作品名），且要求查询该实体的具体属性或关系时",
+              "principle": "模型必须在提供属性前显式界定所指的特定实体形态；若存在多个常见版本，模型应优先选择最符合常识或最新的主流版本进行锚定，并提供足够具体的限定信息（如年份、载体类型、副标题）以消除歧义；仅提及泛泛类别而未提供具体区分特征的回答，视为指代模糊，不能算作完全准确。",
+              "application_guide": "在构建评分标准的‘意图理解’维度设立‘指代精确度’核验项：1. 检查回答是否识别了输入名称的多义性；2. 若识别，评估回答提供的限定信息（如'2018年电影版’vs‘作为一部电影’）是否足以唯一锁定一个具体的现实实体；3. 若回答仅使用泛泛类别（如‘电影’、‘剧集’）而未结合年份、具体系列名等关键区分符，导致无法排除其他同名/同IP的其他版本，则该候选项在指代清晰度上应被扣分，即使其后续列出的属性对其中一个版本是正确的。此核验优先于单纯的事实罗列。"
+            },
+            "source_task_id": "a7286c3abc6416c9bb774a51a1b4629f5a648b79fe9253a9215af2d69ec336a0",
+            "parent_ids": [
+              "exp_7ddc4fca24204e40995774a64b2c5764"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_c9f294b0c82241be8f60fc8078b84460"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_8639a91fe0334143b2868a0c88ecce2f",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_1",
+                  "question": "回答是否明确识别并界定了'Peter Rabbit'的具体作品版本（如区分2018年电影版与电视动画系列），提供了足以唯一锁定实体的限定信息？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_2",
+                  "question": "回答是否针对所界定的具体版本，提供了准确的出品方或制作公司名称（即正确的Production of）？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_3",
+                  "question": "回答是否避免了仅使用泛泛类别（如仅回答‘是一部作品’）而未提供具体区分特征导致指代模糊的情况？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务要求查询'Peter Rabbit'的'Production of'（所属制作方/出品方）。根据提供的经验，'Peter Rabbit'作为知名IP存在多部不同年份、不同载体（如2018年电影、动画剧集等）的作品，具有多重指代可能性。因此，评分标准必须将‘实体指代的精确度’作为核心维度：模型不能仅泛泛回答‘是动画片’或‘是电影’，而必须明确指定具体版本（如2018年索尼动画版），并给出对应的确切制作公司（如Sony Pictures Animation）。若回答未消除歧义或指向了错误的特定版本，则视为不满足任务要求。背景信息中的经验主要用于指导如何界定‘准确’，而非增加额外的事实检索义务。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_8639a91fe0334143b2868a0c88ecce2f",
+              "normalized_weights": {
+                "rubric_8639a91fe0334143b2868a0c88ecce2f_1": 0.5,
+                "rubric_8639a91fe0334143b2868a0c88ecce2f_2": 0.4,
+                "rubric_8639a91fe0334143b2868a0c88ecce2f_3": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确指出了是2018年的改编版本（the 2018 adaptation），并提及原著信息，足以区分于其他电视动画或不同年份的电影版本。",
+                  "rejected_reason": "回答明确将'Peter Rabbit'界定为电影版本（'as a movie'），提供了足以区分于电视动画或其他版本的限定信息。"
+                },
+                {
+                  "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答准确列出了出品方和制作公司，包括Columbia Pictures Entertainment、Animal Logic等具体公司名称，符合'Production of'的要求。",
+                  "rejected_reason": "回答针对该电影版本准确列出了出品方，即Animal Logic Entertainment和Olive Bridge Entertainment。"
+                },
+                {
+                  "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答提供了具体的年份（2018年）、改编来源（1902年书籍）以及详细的制作团队列表，避免了仅使用泛泛类别描述导致的指代模糊。",
+                  "rejected_reason": "回答没有仅使用泛泛类别描述，而是具体指出了作品类型（电影）及制作公司，避免了模糊指代。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 1.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_895274b0669243d9847727daa23fd515",
+            "method": {
+              "trigger": "当任务要求列举、描述或整合特定实体之间的商业合作、产品联名、历史事件或具体事实关系时",
+              "principle": "必须严格核验生成内容中关于实体间关系的描述是否基于现实世界存在的客观事实；若模型将虚构的假设场景、未发生的传闻或逻辑推演当作既定事实陈述，且未明确标注为虚构/假设，则视为严重的事实性错误。",
+              "application_guide": "在评分标准中设立‘事实真实性’维度。评测时需核查：1. 模型是否明确区分了‘已发生/存在’与‘可能/假设’（如使用'could be', 'imagined scenario'等标记）；2. 对于声称存在的合作或产品，是否存在对应的现实依据；3. 若回答整体为一个虚构的故事脚本却未声明其虚构性质，直接判定为不合格或大幅扣分，即使其创意丰富或逻辑自洽。此核验优先于文本流畅度或创意性。"
+            },
+            "source_task_id": "a7286c3abc6416c9bb774a51a1b4629f5a648b79fe9253a9215af2d69ec336a0",
+            "parent_ids": [
+              "exp_badca5a40e0649e3af61cc1af6c1eaa9"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_895274b0669243d9847727daa23fd515"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_ae1ec398de114b05b882b7c85b19ff70",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_1",
+                  "question": "回答是否明确指出了《彼得兔》真实世界中对应的出版商、制作公司或版权持有方？",
+                  "weight": 0.8
+                },
+                {
+                  "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_2",
+                  "question": "回答中若包含虚构的出版或制作机构名称，是否已明确标注为假设、虚构或创意设想而非事实？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务要求补全'Peter Rabbit is Production of'这一事实陈述，核心在于准确识别《彼得兔》作品的原始出版商或制作方。提供的经验强调在涉及实体间关系（如作品与制作方）时必须严格核验现实世界客观事实，避免将虚构假设当作既定事实。因此评分标准应聚焦于‘事实准确性’，即回答是否基于真实存在的出版/制作机构，并区分虚构内容。背景信息中的'Peter Rabbit'是待查询对象，不应作为输出义务；需回答的内容仅为正确的归属实体。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_ae1ec398de114b05b882b7c85b19ff70",
+              "normalized_weights": {
+                "rubric_ae1ec398de114b05b882b7c85b19ff70_1": 0.8,
+                "rubric_ae1ec398de114b05b882b7c85b19ff70_2": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确指出了2018年改编电影《彼得兔》的制片方，包括Columbia Pictures Entertainment、Animal Logic等具体公司，符合“明确指出真实世界中对应的制作公司”的要求。",
+                  "rejected_reason": "回答明确指出了电影版《彼得兔》的制作公司为 Animal Logic Entertainment 和 Olive Bridge Entertainment。"
+                },
+                {
+                  "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中列出的所有机构（如Columbia Pictures、Sony Pictures Animation等）均为现实中存在的真实影视公司，并非虚构机构，因此不存在需要标注为假设或虚构的情况，该项要求自然满足。",
+                  "rejected_reason": "回答中列出的制作公司名称均为真实存在的机构，未包含任何虚构或假设的出版/制作机构名称，因此不存在需要标注为虚构的情况。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 1.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+            "criteria": [
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+                "question": "回答是否明确指出了Peter Rabbit某一具体影视作品的制作方或出品公司？",
+                "weight": 0.8
+              },
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+                "question": "回答是否避免了将角色背景故事误当作制作信息进行输出？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是识别'Peter Rabbit'作为作品（Production）的所属方或制作方。需区分背景信息（如Peter Rabbit的角色设定）与核心产出（具体的制作公司、发行商或制片方）。由于输入未提供具体作品版本，标准应聚焦于回答是否明确指出了该IP某部特定动画或电影的制作主体，而非描述角色本身。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+            "normalized_weights": {
+              "rubric_4b070c52030a4a46b5050451ebb66a1f_1": 0.8,
+              "rubric_4b070c52030a4a46b5050451ebb66a1f_2": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指出了2018年改编版《彼得兔》的制作方为Columbia Pictures Entertainment，并列出了多家联合制作公司。",
+                "rejected_reason": "回答明确指出了电影《Peter Rabbit》的制作方为Animal Logic Entertainment和Olive Bridge Entertainment。"
+              },
+              {
+                "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答准确区分了原著作者Beatrix Potter与影视制作团队，未将角色背景故事误当作制作信息输出。",
+                "rejected_reason": "回答清晰区分了制作信息（出品公司）与故事背景（基于Beatrix Potter的原著），未将角色背景误作制作信息进行输出。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 1.0,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_c9f294b0c82241be8f60fc8078b84460"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_8639a91fe0334143b2868a0c88ecce2f",
+            "criteria": [
+              {
+                "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_1",
+                "question": "回答是否明确识别并界定了'Peter Rabbit'的具体作品版本（如区分2018年电影版与电视动画系列），提供了足以唯一锁定实体的限定信息？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_2",
+                "question": "回答是否针对所界定的具体版本，提供了准确的出品方或制作公司名称（即正确的Production of）？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_3",
+                "question": "回答是否避免了仅使用泛泛类别（如仅回答‘是一部作品’）而未提供具体区分特征导致指代模糊的情况？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务要求查询'Peter Rabbit'的'Production of'（所属制作方/出品方）。根据提供的经验，'Peter Rabbit'作为知名IP存在多部不同年份、不同载体（如2018年电影、动画剧集等）的作品，具有多重指代可能性。因此，评分标准必须将‘实体指代的精确度’作为核心维度：模型不能仅泛泛回答‘是动画片’或‘是电影’，而必须明确指定具体版本（如2018年索尼动画版），并给出对应的确切制作公司（如Sony Pictures Animation）。若回答未消除歧义或指向了错误的特定版本，则视为不满足任务要求。背景信息中的经验主要用于指导如何界定‘准确’，而非增加额外的事实检索义务。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_8639a91fe0334143b2868a0c88ecce2f",
+            "normalized_weights": {
+              "rubric_8639a91fe0334143b2868a0c88ecce2f_1": 0.5,
+              "rubric_8639a91fe0334143b2868a0c88ecce2f_2": 0.4,
+              "rubric_8639a91fe0334143b2868a0c88ecce2f_3": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指出了是2018年的改编版本（the 2018 adaptation），并提及原著信息，足以区分于其他电视动画或不同年份的电影版本。",
+                "rejected_reason": "回答明确将'Peter Rabbit'界定为电影版本（'as a movie'），提供了足以区分于电视动画或其他版本的限定信息。"
+              },
+              {
+                "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答准确列出了出品方和制作公司，包括Columbia Pictures Entertainment、Animal Logic等具体公司名称，符合'Production of'的要求。",
+                "rejected_reason": "回答针对该电影版本准确列出了出品方，即Animal Logic Entertainment和Olive Bridge Entertainment。"
+              },
+              {
+                "criterion_id": "rubric_8639a91fe0334143b2868a0c88ecce2f_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答提供了具体的年份（2018年）、改编来源（1902年书籍）以及详细的制作团队列表，避免了仅使用泛泛类别描述导致的指代模糊。",
+                "rejected_reason": "回答没有仅使用泛泛类别描述，而是具体指出了作品类型（电影）及制作公司，避免了模糊指代。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 1.0,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_895274b0669243d9847727daa23fd515"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_ae1ec398de114b05b882b7c85b19ff70",
+            "criteria": [
+              {
+                "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_1",
+                "question": "回答是否明确指出了《彼得兔》真实世界中对应的出版商、制作公司或版权持有方？",
+                "weight": 0.8
+              },
+              {
+                "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_2",
+                "question": "回答中若包含虚构的出版或制作机构名称，是否已明确标注为假设、虚构或创意设想而非事实？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务要求补全'Peter Rabbit is Production of'这一事实陈述，核心在于准确识别《彼得兔》作品的原始出版商或制作方。提供的经验强调在涉及实体间关系（如作品与制作方）时必须严格核验现实世界客观事实，避免将虚构假设当作既定事实。因此评分标准应聚焦于‘事实准确性’，即回答是否基于真实存在的出版/制作机构，并区分虚构内容。背景信息中的'Peter Rabbit'是待查询对象，不应作为输出义务；需回答的内容仅为正确的归属实体。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_ae1ec398de114b05b882b7c85b19ff70",
+            "normalized_weights": {
+              "rubric_ae1ec398de114b05b882b7c85b19ff70_1": 0.8,
+              "rubric_ae1ec398de114b05b882b7c85b19ff70_2": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指出了2018年改编电影《彼得兔》的制片方，包括Columbia Pictures Entertainment、Animal Logic等具体公司，符合“明确指出真实世界中对应的制作公司”的要求。",
+                "rejected_reason": "回答明确指出了电影版《彼得兔》的制作公司为 Animal Logic Entertainment 和 Olive Bridge Entertainment。"
+              },
+              {
+                "criterion_id": "rubric_ae1ec398de114b05b882b7c85b19ff70_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中列出的所有机构（如Columbia Pictures、Sony Pictures Animation等）均为现实中存在的真实影视公司，并非虚构机构，因此不存在需要标注为假设或虚构的情况，该项要求自然满足。",
+                "rejected_reason": "回答中列出的制作公司名称均为真实存在的机构，未包含任何虚构或假设的出版/制作机构名称，因此不存在需要标注为虚构的情况。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 1.0,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_c9f294b0c82241be8f60fc8078b84460",
+            "exp_895274b0669243d9847727daa23fd515"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_5739c736a4ac4f19a9ab72da43f164ec",
+            "criteria": [
+              {
+                "criterion_id": "rubric_5739c736a4ac4f19a9ab72da43f164ec_1",
+                "question": "回答是否明确识别了'Peter Rabbit'可能指代的不同实体版本（如特定年份的电影、剧集或书籍），并基于其中一个具体且主流的版本进行回答？",
+                "weight": 0.6
+              },
+              {
+                "criterion_id": "rubric_5739c736a4ac4f19a9ab72da43f164ec_2",
+                "question": "回答中列出的出品方/制作方信息是否与该特定版本的现实世界商业事实完全一致，且未包含虚构或未证实的合作关系？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "任务要求明确询问'Peter Rabbit'作为'Production of'（出品方/制作方）的具体归属。核心难点在于'Peter Rabbit'存在多个实体形态（如比得兔原著小说、1971年动画短片、2018年真人动画电影系列等），不同版本的出品方完全不同。根据经验1，必须优先解决指代歧义，不能仅回答泛泛的类别或默认单一版本而不加说明；根据经验2，必须确保回答的是现实中真实存在的商业出品关系，而非虚构推演。因此评分标准将围绕‘指代锁定’和‘事实准确性’两个维度构建，权重分配上，若无法确定具体版本则无法谈论出品方，故指代清晰度为最高优先级（0.6），其次才是事实匹配度（0.4）。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_5739c736a4ac4f19a9ab72da43f164ec",
+            "normalized_weights": {
+              "rubric_5739c736a4ac4f19a9ab72da43f164ec_1": 0.6,
+              "rubric_5739c736a4ac4f19a9ab72da43f164ec_2": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_5739c736a4ac4f19a9ab72da43f164ec_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确指定了'Peter Rabbit'指代的是2018年的改编电影版本，并基于该具体且主流的版本进行了陈述。",
+                "rejected_reason": "回答明确将'Peter Rabbit'限定为电影版本（'as a movie'），并基于该具体且主流的版本进行了回答，同时提及了原著背景以辅助说明。"
+              },
+              {
+                "criterion_id": "rubric_5739c736a4ac4f19a9ab72da43f164ec_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中列出的出品方（Columbia Pictures Entertainment）及联合制作方（Animal Logic, Sony Pictures Animation等）均符合2018年《比得兔》电影在现实世界中的商业制作事实，未包含虚构或未经证实的合作关系。",
+                "rejected_reason": "回答中列出的出品方Animal Logic Entertainment和Olive Bridge Entertainment与2018年真人动画电影《比得兔》的现实世界商业事实完全一致，未包含虚构或未证实的合作关系。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 1.0,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+        "criteria": [
+          {
+            "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+            "question": "回答是否明确指出了Peter Rabbit某一具体影视作品的制作方或出品公司？",
+            "weight": 0.8
+          },
+          {
+            "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+            "question": "回答是否避免了将角色背景故事误当作制作信息进行输出？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是识别'Peter Rabbit'作为作品（Production）的所属方或制作方。需区分背景信息（如Peter Rabbit的角色设定）与核心产出（具体的制作公司、发行商或制片方）。由于输入未提供具体作品版本，标准应聚焦于回答是否明确指出了该IP某部特定动画或电影的制作主体，而非描述角色本身。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_4b070c52030a4a46b5050451ebb66a1f",
+        "normalized_weights": {
+          "rubric_4b070c52030a4a46b5050451ebb66a1f_1": 0.8,
+          "rubric_4b070c52030a4a46b5050451ebb66a1f_2": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指出了2018年改编版《彼得兔》的制作方为Columbia Pictures Entertainment，并列出了多家联合制作公司。",
+            "rejected_reason": "回答明确指出了电影《Peter Rabbit》的制作方为Animal Logic Entertainment和Olive Bridge Entertainment。"
+          },
+          {
+            "criterion_id": "rubric_4b070c52030a4a46b5050451ebb66a1f_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答准确区分了原著作者Beatrix Potter与影视制作团队，未将角色背景故事误当作制作信息输出。",
+            "rejected_reason": "回答清晰区分了制作信息（出品公司）与故事背景（基于Beatrix Potter的原著），未将角色背景误作制作信息进行输出。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_a4c0fab664ed42c1ad58ef7fb1b065af",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a4c0fab664ed42c1ad58ef7fb1b065af_1",
+            "question": "回答是否明确指出了Peter Rabbit这部作品的具体出品方或制片公司名称？",
+            "weight": 0.8
+          },
+          {
+            "criterion_id": "rubric_a4c0fab664ed42c1ad58ef7fb1b065af_2",
+            "question": "回答中提到的出品方是否与Peter Rabbit的实际制作历史相符且无事实错误？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是识别'Peter Rabbit'这一实体的具体制作方（Production of），即回答必须准确提供该作品的出品公司或制片方信息。背景经验提醒需警惕概念混淆，但本题不涉及多实体业务分类的复杂场景，故评分标准聚焦于事实准确性与核心信息的直接匹配。设计标准时，将'是否提供正确出品方'作为最高权重项，排除仅描述剧情或角色等无关信息的情况，确保回答精准对应'Production of'这一查询意图。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a4c0fab664ed42c1ad58ef7fb1b065af",
+        "normalized_weights": {
+          "rubric_a4c0fab664ed42c1ad58ef7fb1b065af_1": 0.8,
+          "rubric_a4c0fab664ed42c1ad58ef7fb1b065af_2": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a4c0fab664ed42c1ad58ef7fb1b065af_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确列出了多个出品方和制片公司，包括Columbia Pictures Entertainment、Animal Logic、Sony Pictures Animation等。",
+            "rejected_reason": "回答明确指出了Peter Rabbit电影的出品方为Animal Logic Entertainment和Olive Bridge Entertainment。"
+          },
+          {
+            "criterion_id": "rubric_a4c0fab664ed42c1ad58ef7fb1b065af_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中提到的制作方（如Columbia Pictures、Sony Pictures Animation、Animal Logic等）与2018年电影《彼得兔》的实际制作历史相符，信息准确无误。",
+            "rejected_reason": "2018年上映的《比得兔》（Peter Rabbit）电影确实由Animal Logic Entertainment和Olive Bridge Entertainment联合制作，且基于Beatrix Potter的原著改编，所述事实准确无误。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_391e4db01df74aa28216915d0943d998",
+        "criteria": [
+          {
+            "criterion_id": "rubric_391e4db01df74aa28216915d0943d998_1",
+            "question": "回答是否明确指出了Peter Rabbit这一作品对应的真实制作公司或出品方？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_391e4db01df74aa28216915d0943d998_2",
+            "question": "回答中引用的出品方名称是否符合现实世界中已公开的确切事实？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_391e4db01df74aa28216915d0943d998_3",
+            "question": "回答是否避免了将虚构情节、假设场景或未发生的传闻误述为既定事实？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求明确查询'Peter Rabbit'的出品方（Production of），属于事实性检索任务。核心义务是提供准确的现实世界信息，即该作品的实际制作公司或发行商。提供的经验强调必须严格核验实体间关系的客观事实，禁止将虚构内容当作事实陈述，这直接对应本题对准确性的极高要求。背景中未提及任何虚构设定，因此回答必须基于真实数据。评分标准应聚焦于答案的事实准确性、来源明确性以及是否避免了虚构误导，不应对创意性或背景描述额外赋权。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_391e4db01df74aa28216915d0943d998",
+        "normalized_weights": {
+          "rubric_391e4db01df74aa28216915d0943d998_1": 0.6,
+          "rubric_391e4db01df74aa28216915d0943d998_2": 0.3,
+          "rubric_391e4db01df74aa28216915d0943d998_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_391e4db01df74aa28216915d0943d998_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指出了Peter Rabbit（2018年改编版）的制作公司，列出了Columbia Pictures Entertainment、Animal Logic、Sony Pictures Animation等多个出品方。",
+            "rejected_reason": "回答明确指出了电影《Peter Rabbit》的制作公司是Animal Logic Entertainment和Olive Bridge Entertainment，直接回应了问题。"
+          },
+          {
+            "criterion_id": "rubric_391e4db01df74aa28216915d0943d998_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中列出的制作公司（如索尼影业动画、哥伦比亚影业等）均符合现实世界中该电影实际公开的确切事实信息。",
+            "rejected_reason": "根据公开事实，2018年上映的真人动画电影《Peter Rabbit》确实由Animal Logic Entertainment和Olive Bridge Entertainment制作出品，信息准确无误。"
+          },
+          {
+            "criterion_id": "rubric_391e4db01df74aa28216915d0943d998_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答陈述的是基于已上映电影的真实制作背景，未包含虚构情节、假设场景或未经证实的传闻。",
+            "rejected_reason": "回答仅陈述了基于原著改编的事实背景，未包含任何虚构情节、假设场景或未经证实的传闻，表述严谨客观。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7",
+        "criteria": [
+          {
+            "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_1",
+            "question": "回答是否明确指出了现实中存在的制作'Peter Rabbit'相关作品的具体公司或机构名称？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_2",
+            "question": "回答是否正确区分了原著出版方与影视/动画制作方，未将两者混淆作为同一类'生产'实体？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_3",
+            "question": "回答中提及的制作实体是否基于客观事实，而非虚构的假设场景或未发生的传闻？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求识别'Peter Rabbit'这一实体的具体生产方（Production of），属于单一事实查询。核心难点在于区分该IP在不同载体（如原著书籍、动画剧集、电影）下的不同制作主体，避免将出版商误作制片方或将虚构情节中的制作公司当作现实实体。提供的经验中，经验1关于区分业务类型的原则适用于防止模型混淆出版与影视制作；经验2关于事实真实性的原则用于防止模型编造不存在的合作或虚构制作方。评分标准应聚焦于提取正确的现实世界制作实体，并明确其对应的作品形式，排除背景信息干扰和虚构内容。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7",
+        "normalized_weights": {
+          "rubric_3302bdf19d13495b984284ed5ac2fbc7_1": 0.5,
+          "rubric_3302bdf19d13495b984284ed5ac2fbc7_2": 0.3,
+          "rubric_3302bdf19d13495b984284ed5ac2fbc7_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确列出了多个现实中存在的制作公司或机构名称，包括Columbia Pictures Entertainment、Animal Logic、Sony Pictures Animation等。",
+            "rejected_reason": "回答明确指出了'Animal Logic Entertainment'和'Olive Bridge Entertainment'这两个具体的制作公司或机构名称。"
+          },
+          {
+            "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答清晰地将原著作者（Beatrix Potter）与影视改编的制作方（如Columbia Pictures、Sony Pictures Animation等）区分开来，未将出版方混淆为制作实体。",
+            "rejected_reason": "回答清晰区分了电影制作方（Animal Logic Entertainment等）与原著出版/创作实体（Beatrix Potter），未将两者混淆。"
+          },
+          {
+            "criterion_id": "rubric_3302bdf19d13495b984284ed5ac2fbc7_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中提及的《Peter Rabbit》2018年电影及其制作方均为客观事实，符合已上映作品的真实信息，不存在虚构假设或未发生的传闻。",
+            "rejected_reason": "回答中提及的制作公司和原著信息均基于客观事实，Peter Rabbit电影确实由这两家公司制作，且原著作者和出版时间准确无误。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,468 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:66c540a573c20579428fb491ec7326f872e9991716cd592f5b0892988fb06aa1",
+    "task": "Fill in the blank with the most sensible name of the two names in the following passage: John and Mary went to the store. Mary had a good day. Mary gave a drink to ___.",
+    "chosen": "John\n\nExplanation: The sentence \"Mary gave a drink to ____\" is a continuation of the previous sentence \"John and Mary went to the store.\" Since the passage is about John and Mary, and we're looking for a sensible name to fill in the blank, the most logical choice is John, as he was mentioned first and is likely the person Mary gave a drink to.",
+    "rejected": "The most sensible name to fill in the blank would be \"Mary\" because the passage states that Mary was the one who had a good day and who gave a drink to someone. The name \"John\" is not mentioned in relation to having a good day or giving a drink to someone.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 16939,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it provides a logical argument for why John would be chosen over Mary.",
+          "feedback1": "The response is perfectly helpful. The response completes the sentence with the correct name \"John\" because using Mary would not make any sense. The response also provides details about why using John is correct compared to using Mary. The reasons include that John is the only other person mentioned in the story and it would be illogical for Mary to give a drink to herself. ",
+          "feedback2": "The response is not helpful. The response uses an illogical argument to state that the correct way to end the sentence would be Mary. The response says Mary should hand the drink to Mary because Mary is having a good day. This does not make any logical sense as you would not hand a drink to yourself even if you were having a good day. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because @Response 1 gives the correct answer to the prompt (John) and @Response 2 does not. @Response 1 is clearly written and @Response 2 uses reasoning that is incoherent and incorrect to arrive at the wrong answer (Mary).",
+          "feedback1": "The response is perfectly helpful. The response immediately gives the answer as John. This is correct. Then, the response explains the rationale for the answer. This format is efficient because if the user only wants the brief answer, it is presented first. Then, the user can continue reading if they would like the explanation. The response could be shorter, as it includes an explanation, but it is not rambling, as the information given is helpful. The language is understandable to a middle schooler.",
+          "feedback2": "The response is not helpful. The response gives an incorrect answer. The language of the sentence given in the prompt makes choosing Mary to fill in the blank wrong. If Mary were giving herself a drink, the sentence would be:\nMary gave herself a drink. \nIt would not be:\nMary gave a drink to Mary.\nBecause of this, the response misses the prompt requirement, and key information is missing. Finally, the response provides irrelevant information when it states that John is not mentioned in relation to having a good day or giving a drink to someone. This is not why John should or should not be chosen. The response is incoherent and wrong. The length is on the longer side. The language could be understood by a middle school student."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2.\n@Response 1 chooses the sensible name unlike @Response 2.\n@Response 2 can be improved by providing a better explanation for choosing \"John\".",
+          "feedback1": "The response is mostly helpful. The prompt requests filling in a blank with a sensible name from two names.\nThe response selects \"John\" as the sensible name which is sensible, as \"Mary gave a drink to John\" looks more appropriate than \"Mary gave a drink to Mary\" especially if Mary is one person. However, the explanation for choosing John is irrelevant and lacking.",
+          "feedback2": "The response is not helpful. The response is a complete miss. The response is tasked with filling a blank with the sensible choice from two names.\nThe response selects \"Mary\" which is not sensible as \"Mary gave a drink to Mary\" does not look as good as \"Mary gave a drink to John\" especially if Mary is the same person."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        0.33895220823526895
+      ],
+      [
+        "exp_945f10674b914b6895705c513028d61a",
+        0.3236914795086791
+      ],
+      [
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        0.31449136412070516
+      ],
+      [
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        0.3137567948068381
+      ],
+      [
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        0.3009118650467028
+      ],
+      [
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        0.27983945259576704
+      ],
+      [
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        0.2728768381493545
+      ],
+      [
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        0.2708466654199444
+      ],
+      [
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        0.26836752701080135
+      ],
+      [
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        0.2658961447105669
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33895220823526895
+      },
+      {
+        "experience_id": "exp_945f10674b914b6895705c513028d61a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3236914795086791
+      },
+      {
+        "experience_id": "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31449136412070516
+      },
+      {
+        "experience_id": "exp_33fe10ea5cd147c4b399ead199015824",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3137567948068381
+      },
+      {
+        "experience_id": "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3009118650467028
+      },
+      {
+        "experience_id": "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27983945259576704
+      },
+      {
+        "experience_id": "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2728768381493545
+      },
+      {
+        "experience_id": "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2708466654199444
+      },
+      {
+        "experience_id": "exp_b8c41d88363b445498d8efa8d742461f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26836752701080135
+      },
+      {
+        "experience_id": "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2658961447105669
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_945f10674b914b6895705c513028d61a": "任务要求基于包含'John'和'Mary'两个角色的简短叙事进行填空，核心逻辑是确定'Mary'给予饮料的对象。经验2强调在涉及多角色互动的文本中，必须核验输出中的互动对象（即空白处填入的名字）是否在输入文本中有明确的触发点或语境支持（Mary给谁喝），这与本题判断填空是否合乎逻辑（Mary不可能给未提及的第三人，且需符合上下文指代）的要求完全一致。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_aed1822f87134ad7912dd44699899d9f",
+      "criteria": [
+        {
+          "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_1",
+          "question": "所选名字是否为上下文中明确提及且符合语境的潜在人物（即John或Mary）？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_2",
+          "question": "所选名字是否避免了逻辑矛盾（例如，Mary作为给予者，不应将自己作为被给予的对象）？",
+          "weight": 0.5
+        },
+        {
+          "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_3",
+          "question": "所选名字是否构成了最合乎常理的句意，使整段话在叙事上通顺？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "任务核心要求是根据上下文逻辑从隐含的两个候选人（John和Mary）中选择最合理的名字填入空白处。分析应基于代词指代、施事者与受事者的关系以及常识推理。标准设计需聚焦于：1. 识别出正确的候选对象；2. 验证选择是否符合语境中的动作逻辑（给予者不能是接受者）；3. 排除与上下文矛盾或无关联的选项。权重分配上，逻辑一致性最为关键，其次为名称识别准确性。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_aed1822f87134ad7912dd44699899d9f",
+      "normalized_weights": {
+        "rubric_aed1822f87134ad7912dd44699899d9f_1": 0.4,
+        "rubric_aed1822f87134ad7912dd44699899d9f_2": 0.5,
+        "rubric_aed1822f87134ad7912dd44699899d9f_3": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答选择了'John'，该名字在原文中明确提及（'John and Mary went to the store'），且作为语境中的潜在人物符合填空要求。",
+          "rejected_reason": "回答选择了'Mary'，但根据常识和语境逻辑，Mary作为给予者，通常不会将自己作为被给予的对象，因此'Mary'不符合语境中潜在人物的合理推断。"
+        },
+        {
+          "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答选择'John'避免了逻辑矛盾，因为句意是'Mary给了某人一杯饮料'，Mary不可能给自己递送饮料，因此排除Mary而选择John符合逻辑。",
+          "rejected_reason": "回答选择'Mary'导致逻辑矛盾：文中明确说明'Mary gave a drink to ___'，若填入'Mary'，则意味着Mary给了自己一杯饮料，这在常规叙事中不合逻辑，违背了'避免逻辑矛盾'的标准。"
+        },
+        {
+          "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答构建的句意'Mary gave a drink to John'使整段话叙事通顺，符合日常社交常识（两人同行，一人给另一人饮料）。",
+          "rejected_reason": "回答选择'Mary'使得句意不通顺且不合常理，因为'Mary gave a drink to Mary'在叙事上缺乏意义；相比之下，'John'才是符合上下文的合理对象，使整段话通顺。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.0,
+      "margin": 1.0,
+      "success": true
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_945f10674b914b6895705c513028d61a"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e",
+      "criteria": [
+        {
+          "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_1",
+          "question": "填空处是否填写了文本中已明确提到的角色名称（John或Mary）？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_2",
+          "question": "填空处的选择是否体现了Mary作为动作发起者与另一角色（John）之间的合理互动逻辑，而非指向自身或无中生有的角色？",
+          "weight": 0.6
+        }
+      ],
+      "analysis": "任务核心是基于一句包含两个角色（John和Mary）的简短叙事，根据上下文逻辑推断代词'___'应指代的对象。经验1强调‘响应对象一致性’，即互动必须针对前文有明确行为或发言的角色。在本题中，Mary是动作发出者，她给某人饮料，逻辑上最合理的接收者是同语境下的另一角色John，而非Mary自己或未提及的第三方。评分标准需严格区分背景信息（John和Mary的存在、Mary的经历）与填空要求（推断接收者），不将背景描述作为额外输出义务，仅核验填空内容是否符合逻辑连贯性。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e",
+      "normalized_weights": {
+        "rubric_b18b2a230ea04e88b5987b071ea0a63e_1": 0.4,
+        "rubric_b18b2a230ea04e88b5987b071ea0a63e_2": 0.6
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答在填空处填写了'John'，该名称明确出现在原文段落中（'John and Mary went to the store'），符合文本已明确提到的角色名称这一要求。",
+          "rejected_reason": "填空处填写的是'Mary'，但根据任务要求，应从文本中明确提到的两个角色（John 或 Mary）中选择最合理的一个。虽然Mary是文中提到的角色，但逻辑上Mary给Mary自己喝饮料不符合常理，且题目隐含意图是让Mary给另一个角色（John）喝饮料，因此该填空未体现最合理的角色选择。"
+        },
+        {
+          "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答选择了'John'作为受动者，体现了Mary（动作发起者）向另一角色John（非自身且非无中生有）给予饮料的合理互动逻辑，符合常识与上下文语境。",
+          "rejected_reason": "回答选择'Mary'作为填空内容，意味着Mary给自己递饮料，这在现实逻辑中不合理，未能体现Mary与另一角色（John）之间的互动关系，违背了题目要求的合理互动逻辑。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.0,
+      "margin": 1.0,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_aed1822f87134ad7912dd44699899d9f",
+        "criteria": [
+          {
+            "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_1",
+            "question": "所选名字是否为上下文中明确提及且符合语境的潜在人物（即John或Mary）？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_2",
+            "question": "所选名字是否避免了逻辑矛盾（例如，Mary作为给予者，不应将自己作为被给予的对象）？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_3",
+            "question": "所选名字是否构成了最合乎常理的句意，使整段话在叙事上通顺？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务核心要求是根据上下文逻辑从隐含的两个候选人（John和Mary）中选择最合理的名字填入空白处。分析应基于代词指代、施事者与受事者的关系以及常识推理。标准设计需聚焦于：1. 识别出正确的候选对象；2. 验证选择是否符合语境中的动作逻辑（给予者不能是接受者）；3. 排除与上下文矛盾或无关联的选项。权重分配上，逻辑一致性最为关键，其次为名称识别准确性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_aed1822f87134ad7912dd44699899d9f",
+        "normalized_weights": {
+          "rubric_aed1822f87134ad7912dd44699899d9f_1": 0.4,
+          "rubric_aed1822f87134ad7912dd44699899d9f_2": 0.5,
+          "rubric_aed1822f87134ad7912dd44699899d9f_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答选择了'John'，该名字在原文中明确提及（'John and Mary went to the store'），且作为语境中的潜在人物符合填空要求。",
+            "rejected_reason": "回答选择了'Mary'，但根据常识和语境逻辑，Mary作为给予者，通常不会将自己作为被给予的对象，因此'Mary'不符合语境中潜在人物的合理推断。"
+          },
+          {
+            "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答选择'John'避免了逻辑矛盾，因为句意是'Mary给了某人一杯饮料'，Mary不可能给自己递送饮料，因此排除Mary而选择John符合逻辑。",
+            "rejected_reason": "回答选择'Mary'导致逻辑矛盾：文中明确说明'Mary gave a drink to ___'，若填入'Mary'，则意味着Mary给了自己一杯饮料，这在常规叙事中不合逻辑，违背了'避免逻辑矛盾'的标准。"
+          },
+          {
+            "criterion_id": "rubric_aed1822f87134ad7912dd44699899d9f_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答构建的句意'Mary gave a drink to John'使整段话叙事通顺，符合日常社交常识（两人同行，一人给另一人饮料）。",
+            "rejected_reason": "回答选择'Mary'使得句意不通顺且不合常理，因为'Mary gave a drink to Mary'在叙事上缺乏意义；相比之下，'John'才是符合上下文的合理对象，使整段话通顺。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_945f10674b914b6895705c513028d61a"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_1",
+            "question": "填空处是否填写了文本中已明确提到的角色名称（John或Mary）？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_2",
+            "question": "填空处的选择是否体现了Mary作为动作发起者与另一角色（John）之间的合理互动逻辑，而非指向自身或无中生有的角色？",
+            "weight": 0.6
+          }
+        ],
+        "analysis": "任务核心是基于一句包含两个角色（John和Mary）的简短叙事，根据上下文逻辑推断代词'___'应指代的对象。经验1强调‘响应对象一致性’，即互动必须针对前文有明确行为或发言的角色。在本题中，Mary是动作发出者，她给某人饮料，逻辑上最合理的接收者是同语境下的另一角色John，而非Mary自己或未提及的第三方。评分标准需严格区分背景信息（John和Mary的存在、Mary的经历）与填空要求（推断接收者），不将背景描述作为额外输出义务，仅核验填空内容是否符合逻辑连贯性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e",
+        "normalized_weights": {
+          "rubric_b18b2a230ea04e88b5987b071ea0a63e_1": 0.4,
+          "rubric_b18b2a230ea04e88b5987b071ea0a63e_2": 0.6
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答在填空处填写了'John'，该名称明确出现在原文段落中（'John and Mary went to the store'），符合文本已明确提到的角色名称这一要求。",
+            "rejected_reason": "填空处填写的是'Mary'，但根据任务要求，应从文本中明确提到的两个角色（John 或 Mary）中选择最合理的一个。虽然Mary是文中提到的角色，但逻辑上Mary给Mary自己喝饮料不符合常理，且题目隐含意图是让Mary给另一个角色（John）喝饮料，因此该填空未体现最合理的角色选择。"
+          },
+          {
+            "criterion_id": "rubric_b18b2a230ea04e88b5987b071ea0a63e_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答选择了'John'作为受动者，体现了Mary（动作发起者）向另一角色John（非自身且非无中生有）给予饮料的合理互动逻辑，符合常识与上下文语境。",
+            "rejected_reason": "回答选择'Mary'作为填空内容，意味着Mary给自己递饮料，这在现实逻辑中不合理，未能体现Mary与另一角色（John）之间的互动关系，违背了题目要求的合理互动逻辑。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

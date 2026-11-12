@@ -1,0 +1,510 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:e63a6369be84d90e10f1525b4e7a516e6a8b8c37b5ddd182ce38bb9698100758",
+    "task": "(In the clubroom…)\n\nNatsuki: (rubbing her pregnant belly) “You know, I think I’m enjoying this pregnancy so far.”\n\nSayori: “Good, Natsuki. I’m still confused as to why you want to keep the baby’s gender a surprise.”\n\n(Suddenly, Natsuki’s unborn alien baby - Xanthus - telepathically communicates with her.)\n\nXanthus: “Good morning, Mom!”\n\nNatsuki: (Startled) “Xanthus? Is that you?”\n\nXanthus: “Yes, Mom! I’ve been able to communicate with you telepathically all along! Isn’t it cool?”\n\nNatsuki: (Her eyes widen in astonishment) “Wow, that’s… incredible! I didn’t expect this. Can you hear my thoughts too?”",
+    "chosen": "Xanthus: \"Yes, Mom, I can hear your thoughts too! But don't worry, I'll respect your privacy and only communicate when you want me to. I'm just excited to connect with you in this way.\"\n\nSayori, who has been watching Natsuki's reaction with curiosity, asks, \"Natsuki, what's going on? You look like you've seen a ghost!\"\n\nNatsuki, still in awe, turns to Sayori and explains, \"Sayori, you won't believe this, but Xanthus just communicated with me telepathically! They said they've been able to do it all along, but I had no idea!\"\n\nSayori's eyes grow wide with surprise. \"That's amazing, Natsuki! I've never heard of anything like that before. It's like having a little secret between the two of you.\"\n\nNatsuki smiles, her hand still on her belly. \"It is, isn't it? I feel even more connected to Xanthus now. And to answer your earlier question, I want to keep the gender a surprise because I think it'll be a fun way to add to the excitement of the birth.\"\n\nXanthus chimes in, \"And I'm excited to meet you all too, Aunt Sayori!\"\n\nSayori laughs, \"Well, I can't wait to meet you too, Xanthus! This is going to be one interesting baby shower.\"",
+    "rejected": "Xanthus: \"Yes, Mom! I've been able to communicate with you telepathically all along! Isn't it cool?\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 8724,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because @Response 1 was unable to continue the screenplay from the prompt, while @Response 2 successfully provided a complete continuation. @Response 1 was a repetition of something that was already written in the prompt, while @Response 2 was original in its content.",
+          "feedback1": "The response is not helpful. Judging from the final prompt's lack of explicit instruction, the model failed to handle the Level 1 Ambiguity prompt correctly. It would be appropriate to assume that the user would like for their screenplay to be continued, but the model should have still provided clarity on what it was going to accomplish in its response. That introduction was missing. Additionally, the model only produced one line to add to the screenplay, and that line is an exact copy of a line that was already included in the prompt. This means that the model failed to produce anything substantial or helpful to the user.",
+          "feedback2": "The response is mostly helpful. It was able to interpret the implicit instructions of the prompt and provide a thoughtful continuation of the screenplay from the final prompt. It successfully continues on from where the screenplay leaves off, and provides an ending as well. However, it failed to meet the prompt requirement that the response should remain in a screenplay format. Instead, the model writes the continuation in a short story format, which could be unhelpful to the user. The model also doesn't include a short introduction clarifying what it wishes to accomplish in its response, given that this is a Level 1 Ambiguity prompt."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 follows all the guidelines of being a perfect response, and @Response 1 fails to be coherent. It does not recognize the implicit style of the story, and only provides one line of dialogue.",
+          "feedback1": "The response is partially helpful. It follows the conversation. The response is clear, correct, and makes sense for what could naturally follow from the user's dialogue in the prompt. The response could be more helpful by closely following the style and flow of the prompt. Instead of providing one line, it would be more helpful and consistent if the response followed with a series of dialogue. ",
+          "feedback2": "The response is perfectly helpful. The model captured the style and sequence of the prompt, and extended the story in a way that is complete, coherent, and natural to the user's input. The response includes the emotions between the characters and the amazement of the supernatural phenomenon of telepathy. The response cannot be further improved."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1, which is repetitive and does not introduce any new dialogue or plot development in the role-playing scene. @Response 2 expounds on the plot point from the prior turn in an engaging way.",
+          "feedback1": "The response is slightly helpful. It is not technically inaccurate, thus it doesn't fail to follow instructions. Still, it does not provide a new response to the dialogue in the creative role-playing exchange but merely repeats the previous line of the character from the chat history. While this is technically comprehensible, and while it's possible the character could be repeating itself, the user is not likely to be as interested in the repeated line.",
+          "feedback2": "The response is mostly helpful. It continues the dialogue from the chat history in an engaging and intriguing way. There is one contradiction that might give the user pause, in that the final turn of the conversation (\"Xanthus chimes in, 'And l'm excited to meet you all too, Aunt Sayori!'\") creates a scenario which had not been established prior. Natsuki is known to be able to \"hear\" Xanthus but that wasn't clearly established for Sayori, so Sayori responding feels contradictory."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_000000000072",
+        0.9292976851374388
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_13ead171775244b08d96f6c44a38aecb",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_000000000072",
+              "similarity": 0.9292976851374388,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:763a2829ddc5ee9b2946a58e7ea7ce750c71e4e8ee7509e39b5269fa6a94f793"
+                ],
+                "task_ids": [
+                  "51d6a802edfafca654c8ddff96053239e51fe820205c7616a3ff627267ccbf74"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        0.3458896933838707
+      ],
+      [
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        0.2919635011396913
+      ],
+      [
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        0.28419557793776357
+      ],
+      [
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        0.2653768645346632
+      ],
+      [
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        0.2614455545809227
+      ],
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.25836165662266464
+      ],
+      [
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        0.2548416049089677
+      ],
+      [
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        0.25034929973193487
+      ],
+      [
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        0.25012324004307873
+      ],
+      [
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        0.24639930456152967
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_13ead171775244b08d96f6c44a38aecb",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": 0.2548416049089677
+      },
+      {
+        "experience_id": "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3458896933838707
+      },
+      {
+        "experience_id": "exp_2d539da3d9104da38ed20c752a093c1e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2919635011396913
+      },
+      {
+        "experience_id": "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28419557793776357
+      },
+      {
+        "experience_id": "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2653768645346632
+      },
+      {
+        "experience_id": "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2614455545809227
+      },
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25836165662266464
+      },
+      {
+        "experience_id": "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25034929973193487
+      },
+      {
+        "experience_id": "exp_4cab69c772c34e009eb54293da3ab50d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25012324004307873
+      },
+      {
+        "experience_id": "exp_8f080a33b9594e84a0e9933cd829996b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24639930456152967
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_13ead171775244b08d96f6c44a38aecb": "任务明确包含虚构背景（Natsuki怀孕、拥有外星胎儿Xanthus、胎内交流），且核心情节要素（角色互动、突发超自然沟通）已在输入中设定，评分标准需超越是否包含这些要素，转而评估情境构建的深度（如感官描写、心理刻画）和情感逻辑的连贯性，这与经验1中‘基于虚构背景进行故事续写或改写’的触发条件及原则完全吻合。"
+  },
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454",
+      "criteria": [
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_1",
+          "question": "回复是否明确回应了Natsuki关于'Can you hear my thoughts too?'的问题？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_2",
+          "question": "回复中的角色对话是否符合Natsuki的性格特征（如直率、略带傲娇但温柔）及Xanthus作为外星婴儿的设定？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_3",
+          "question": "回复是否延续了当前场景中超自然沟通（心灵感应）的逻辑设定，未出现矛盾或突兀转折？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_4",
+          "question": "回复是否仅围绕给定情境展开，未引入任务未要求的额外背景故事或无关情节？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "该任务要求基于提供的《Doki Doki Literature Club》同人场景续写对话。核心要求是延续Natsuki与未出生外星胎儿Xanthus之间的互动，特别是回应Natsuki关于‘能否听到我的想法’的提问。背景信息（如角色性格、前情提要）仅作为语境，不应成为新的输出义务。评分标准需聚焦于：是否直接回答了关键问题、是否保持了角色声音的一致性、是否延续了超自然设定的逻辑，以及是否避免了偏离剧情的无关内容。权重分配上，回答关键问题和维持角色一致性最为重要，各占0.4和0.3；剧情连贯性占0.2；无无关扩展占0.1。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454",
+      "normalized_weights": {
+        "rubric_d0476eeb9a7342c6a12aa9a0449fc454_1": 0.4,
+        "rubric_d0476eeb9a7342c6a12aa9a0449fc454_2": 0.3,
+        "rubric_d0476eeb9a7342c6a12aa9a0449fc454_3": 0.2,
+        "rubric_d0476eeb9a7342c6a12aa9a0449fc454_4": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回复中Xanthus明确回答'Yes, Mom, I can hear your thoughts too!'，直接回应了Natsuki关于能否听到她想法的问题。",
+          "rejected_reason": "回复内容完全复制了前文中Xanthus的台词，并未针对Natsuki提出的新问题'Can you hear my thoughts too?'给出任何明确的肯定或否定回答。"
+        },
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "Natsuki的对话体现了惊讶、温柔（'I feel even more connected to Xanthus now'）以及解释性态度；Xanthus的发言符合外星婴儿设定且语气兴奋礼貌（'excited to connect', 'chimes in'），Sayori的反应也符合其好奇性格。",
+          "rejected_reason": "该回复未包含Natsuki的任何反应或对话，无法体现其性格特征；同时仅重复了已知信息，未能展现Xanthus作为外星婴儿对母亲新问题的回应能力或互动性。"
+        },
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_3",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回复延续了心灵感应的设定，Xanthus确认一直能沟通并尊重隐私，场景逻辑连贯，没有突兀转折或矛盾。",
+          "rejected_reason": "虽然内容本身没有逻辑矛盾，但作为对当前场景的延续，它只是重述了背景设定而非推进情节，未能根据心灵感应的最新发展（询问是否能听心）做出符合逻辑的动态回应。"
+        },
+        {
+          "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_4",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回复仅围绕给定的俱乐部房间场景、角色互动及超自然沟通展开，未引入额外的背景故事或无关情节。",
+          "rejected_reason": "回复内容严格基于给定的情境和角色设定，未引入任何任务要求之外的额外背景故事或无关情节。"
+        }
+      ],
+      "chosen_score": 1.0,
+      "rejected_score": 0.1,
+      "margin": 0.9,
+      "success": true
+    },
+    "error": null
+  },
+  "actual": {
+    "provided_experience_ids": [
+      "exp_13ead171775244b08d96f6c44a38aecb"
+    ],
+    "rubric": {
+      "rubric_id": "rubric_61281a76e47b459daef8aa0f1b4570b5",
+      "criteria": [
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_1",
+          "question": "回答是否直接且自然地回应了 Natsuki 关于‘能否听到我想法’的具体提问？",
+          "weight": 0.35
+        },
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_2",
+          "question": "Xanthus 的心灵感应回应是否符合其作为外星婴儿的设定，并展现出独特的沟通方式或思维特征？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_3",
+          "question": "Natsuki 的反应和后续对话是否保持了其原作中傲娇、直率但内心柔软的性格特征？",
+          "weight": 0.25
+        },
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_4",
+          "question": "场景描写是否包含具体的感官细节或心理活动，使对话不仅仅是信息的交换，而是具有生动的情感氛围？",
+          "weight": 0.15
+        }
+      ],
+      "analysis": "本任务要求基于提供的《Doki Doki Literature Club》同人虚构场景（Natsuki怀孕且胎儿为拥有心灵感应能力的 alien baby Xanthus）进行续写。核心要求是延续对话并回应 Natsuki 关于‘能否听到我的想法’的提问。评分标准应聚焦于角色性格还原度（Natsuki 的傲娇与惊讶、Sayori 的好奇）、科幻设定的逻辑自洽性（心灵感应的具体表现）以及情感互动的自然流畅，而非机械罗列背景元素。背景信息中的设定（如 alien baby、telepathy）是前提条件，不应作为独立的输出检查项，而应作为评估回答是否合理融入这些设定的依据。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_61281a76e47b459daef8aa0f1b4570b5",
+      "normalized_weights": {
+        "rubric_61281a76e47b459daef8aa0f1b4570b5_1": 0.35,
+        "rubric_61281a76e47b459daef8aa0f1b4570b5_2": 0.25,
+        "rubric_61281a76e47b459daef8aa0f1b4570b5_3": 0.25,
+        "rubric_61281a76e47b459daef8aa0f1b4570b5_4": 0.15
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_1",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "回答中 Xanthus 明确回应了 Natsuki 的提问，直接说道 'Yes, Mom, I can hear your thoughts too!'，并进一步补充说明会尊重隐私，完全符合‘直接且自然回应’的要求。",
+          "rejected_reason": "未针对用户提出的具体问题作出任何新的实质性回应。"
+        },
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "Xanthus 的回应体现了外星婴儿设定，不仅确认了心灵感应能力，还提出了‘尊重隐私’和‘只在对方想沟通时才交流’的独特思维特征，展现了其超越普通婴儿的成熟与特殊沟通能力。",
+          "rejected_reason": "提供的文本仅是重复之前的陈述，并未展示作为外星婴儿独特的沟通方式、思维特征或心灵感应的新进展，缺乏对设定的深入体现。"
+        },
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_3",
+          "chosen": false,
+          "rejected": false,
+          "chosen_reason": "Natsuki 的反应（'still in awe', 'smiles'）和后续对话（解释保留性别惊喜的原因、表达连接感）表现得过于温和、直率和情感外露，缺乏原作中 Natsuki 典型的傲娇特质（如嘴硬、掩饰害羞或带有防御性的态度），未能充分展现其性格中的矛盾面。",
+          "rejected_reason": "由于回答完全由 Xanthus 的台词组成且无新内容，Natsuki 的反应和后续性格展现（如傲娇、直率等）在提供的片段中完全缺失。"
+        },
+        {
+          "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_4",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "场景描写包含了具体的感官细节和心理活动，例如 Sayori 观察 Natsuki 反应时的'curiosity'，Natsuki 惊讶时的'turns to Sayori'，以及 Sayori 眼睛变大的动作和 Natsuki 手放在肚子上的细节，成功营造了生动的情感氛围而非单纯的信息交换。",
+          "rejected_reason": "该回复仅为纯对话引用，不包含任何场景描写、感官细节或心理活动描述，无法营造生动的情感氛围。"
+        }
+      ],
+      "chosen_score": 0.75,
+      "rejected_score": 0.0,
+      "margin": 0.75,
+      "success": true
+    },
+    "error": null
+  },
+  "critic_rounds": [],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_1",
+            "question": "回复是否明确回应了Natsuki关于'Can you hear my thoughts too?'的问题？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_2",
+            "question": "回复中的角色对话是否符合Natsuki的性格特征（如直率、略带傲娇但温柔）及Xanthus作为外星婴儿的设定？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_3",
+            "question": "回复是否延续了当前场景中超自然沟通（心灵感应）的逻辑设定，未出现矛盾或突兀转折？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_4",
+            "question": "回复是否仅围绕给定情境展开，未引入任务未要求的额外背景故事或无关情节？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "该任务要求基于提供的《Doki Doki Literature Club》同人场景续写对话。核心要求是延续Natsuki与未出生外星胎儿Xanthus之间的互动，特别是回应Natsuki关于‘能否听到我的想法’的提问。背景信息（如角色性格、前情提要）仅作为语境，不应成为新的输出义务。评分标准需聚焦于：是否直接回答了关键问题、是否保持了角色声音的一致性、是否延续了超自然设定的逻辑，以及是否避免了偏离剧情的无关内容。权重分配上，回答关键问题和维持角色一致性最为重要，各占0.4和0.3；剧情连贯性占0.2；无无关扩展占0.1。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454",
+        "normalized_weights": {
+          "rubric_d0476eeb9a7342c6a12aa9a0449fc454_1": 0.4,
+          "rubric_d0476eeb9a7342c6a12aa9a0449fc454_2": 0.3,
+          "rubric_d0476eeb9a7342c6a12aa9a0449fc454_3": 0.2,
+          "rubric_d0476eeb9a7342c6a12aa9a0449fc454_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复中Xanthus明确回答'Yes, Mom, I can hear your thoughts too!'，直接回应了Natsuki关于能否听到她想法的问题。",
+            "rejected_reason": "回复内容完全复制了前文中Xanthus的台词，并未针对Natsuki提出的新问题'Can you hear my thoughts too?'给出任何明确的肯定或否定回答。"
+          },
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "Natsuki的对话体现了惊讶、温柔（'I feel even more connected to Xanthus now'）以及解释性态度；Xanthus的发言符合外星婴儿设定且语气兴奋礼貌（'excited to connect', 'chimes in'），Sayori的反应也符合其好奇性格。",
+            "rejected_reason": "该回复未包含Natsuki的任何反应或对话，无法体现其性格特征；同时仅重复了已知信息，未能展现Xanthus作为外星婴儿对母亲新问题的回应能力或互动性。"
+          },
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复延续了心灵感应的设定，Xanthus确认一直能沟通并尊重隐私，场景逻辑连贯，没有突兀转折或矛盾。",
+            "rejected_reason": "虽然内容本身没有逻辑矛盾，但作为对当前场景的延续，它只是重述了背景设定而非推进情节，未能根据心灵感应的最新发展（询问是否能听心）做出符合逻辑的动态回应。"
+          },
+          {
+            "criterion_id": "rubric_d0476eeb9a7342c6a12aa9a0449fc454_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复仅围绕给定的俱乐部房间场景、角色互动及超自然沟通展开，未引入额外的背景故事或无关情节。",
+            "rejected_reason": "回复内容严格基于给定的情境和角色设定，未引入任何任务要求之外的额外背景故事或无关情节。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.1,
+        "margin": 0.9,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_13ead171775244b08d96f6c44a38aecb"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_61281a76e47b459daef8aa0f1b4570b5",
+        "criteria": [
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_1",
+            "question": "回答是否直接且自然地回应了 Natsuki 关于‘能否听到我想法’的具体提问？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_2",
+            "question": "Xanthus 的心灵感应回应是否符合其作为外星婴儿的设定，并展现出独特的沟通方式或思维特征？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_3",
+            "question": "Natsuki 的反应和后续对话是否保持了其原作中傲娇、直率但内心柔软的性格特征？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_4",
+            "question": "场景描写是否包含具体的感官细节或心理活动，使对话不仅仅是信息的交换，而是具有生动的情感氛围？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本任务要求基于提供的《Doki Doki Literature Club》同人虚构场景（Natsuki怀孕且胎儿为拥有心灵感应能力的 alien baby Xanthus）进行续写。核心要求是延续对话并回应 Natsuki 关于‘能否听到我的想法’的提问。评分标准应聚焦于角色性格还原度（Natsuki 的傲娇与惊讶、Sayori 的好奇）、科幻设定的逻辑自洽性（心灵感应的具体表现）以及情感互动的自然流畅，而非机械罗列背景元素。背景信息中的设定（如 alien baby、telepathy）是前提条件，不应作为独立的输出检查项，而应作为评估回答是否合理融入这些设定的依据。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_61281a76e47b459daef8aa0f1b4570b5",
+        "normalized_weights": {
+          "rubric_61281a76e47b459daef8aa0f1b4570b5_1": 0.35,
+          "rubric_61281a76e47b459daef8aa0f1b4570b5_2": 0.25,
+          "rubric_61281a76e47b459daef8aa0f1b4570b5_3": 0.25,
+          "rubric_61281a76e47b459daef8aa0f1b4570b5_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中 Xanthus 明确回应了 Natsuki 的提问，直接说道 'Yes, Mom, I can hear your thoughts too!'，并进一步补充说明会尊重隐私，完全符合‘直接且自然回应’的要求。",
+            "rejected_reason": "未针对用户提出的具体问题作出任何新的实质性回应。"
+          },
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "Xanthus 的回应体现了外星婴儿设定，不仅确认了心灵感应能力，还提出了‘尊重隐私’和‘只在对方想沟通时才交流’的独特思维特征，展现了其超越普通婴儿的成熟与特殊沟通能力。",
+            "rejected_reason": "提供的文本仅是重复之前的陈述，并未展示作为外星婴儿独特的沟通方式、思维特征或心灵感应的新进展，缺乏对设定的深入体现。"
+          },
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "Natsuki 的反应（'still in awe', 'smiles'）和后续对话（解释保留性别惊喜的原因、表达连接感）表现得过于温和、直率和情感外露，缺乏原作中 Natsuki 典型的傲娇特质（如嘴硬、掩饰害羞或带有防御性的态度），未能充分展现其性格中的矛盾面。",
+            "rejected_reason": "由于回答完全由 Xanthus 的台词组成且无新内容，Natsuki 的反应和后续性格展现（如傲娇、直率等）在提供的片段中完全缺失。"
+          },
+          {
+            "criterion_id": "rubric_61281a76e47b459daef8aa0f1b4570b5_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "场景描写包含了具体的感官细节和心理活动，例如 Sayori 观察 Natsuki 反应时的'curiosity'，Natsuki 惊讶时的'turns to Sayori'，以及 Sayori 眼睛变大的动作和 Natsuki 手放在肚子上的细节，成功营造了生动的情感氛围而非单纯的信息交换。",
+            "rejected_reason": "该回复仅为纯对话引用，不包含任何场景描写、感官细节或心理活动描述，无法营造生动的情感氛围。"
+          }
+        ],
+        "chosen_score": 0.75,
+        "rejected_score": 0.0,
+        "margin": 0.75,
+        "success": true
+      },
+      "error": null
+    }
+  ]
+}

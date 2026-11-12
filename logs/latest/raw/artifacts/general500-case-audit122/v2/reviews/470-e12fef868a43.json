@@ -1,0 +1,66 @@
+{
+  "status": "valid",
+  "input_index": 470,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 470,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "mixed",
+        "reason": "任务明确设定Natsuki怀孕，但经验E1的触发条件提及'属性分配（如婚姻状态）'及'将Sayori怀孕错误转移'。当前任务未涉及Sayori怀孕或婚姻状态，该经验的具体校验点与当前情境不完全匹配。",
+        "refs": [
+          "TASK",
+          "E1.trigger",
+          "Select.E1"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "unsupported",
+        "reason": "经验E2要求核验'唯一可行路径'并禁止离开现场。然而任务文本中角色已尝试前往医院（被拒绝），且Y回答包含转运情节。经验强制要求'限制在俱乐部室内'与任务文本实际发生的'尝试转运'事实存在冲突，无法直接作为支持性前提。",
+        "refs": [
+          "TASK",
+          "E2.trigger",
+          "W2.X.reason"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "E1.trigger",
+          "Select.E1"
+        ],
+        "note": "经验E1的触发条件和示例（Sayori怀孕、婚姻状态）在当前任务中均未出现。任务仅涉及Natsuki分娩，经验中的具体校验对象（Sayori属性转移）属于无关范围，可能误导评分焦点。"
+      },
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "E2.application_guide",
+          "W2.Y.reason"
+        ],
+        "note": "经验E2要求严格限制事件解决过程在'俱乐部室内'。但任务文本中EMS已介入并试图转运，Y回答也描述了转运结局。若强行应用E2标准，会判定Y违反规则，但这忽略了任务文本本身允许了'尝试转运'的情节发展。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "W2.X.reason",
+          "W2.Y.reason"
+        ],
+        "note": "W2对X和Y的判断逻辑存在矛盾。X认为Y'未严格遵循...限制在俱乐部室内'是因为出现了转运尝试；Y认为Y'未严格遵循'是因为结尾有转运描述。两者都基于同一事实（转运发生），但结论指向不同，需确认是否误读了'强制约束'的定义。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "E2.principle",
+          "TASK"
+        ],
+        "note": "任务文本中Natsuki说'没时间去医院'是拒绝行为，而非物理上'无法运送'的绝对环境限制。经验E2将其解读为'唯一可行路径'并禁止任何转运尝试，这一前提在文本中缺乏明确的物理障碍描述（如道路封锁），存在不确定性。"
+      }
+    ],
+    "limit": "无法确认经验E1关于'Sayori属性'的校验是否适用于纯Natsuki分娩场景，也无法确定任务文本中'没时间'是否等同于经验要求的'物理上无法移动'。"
+  }
+}

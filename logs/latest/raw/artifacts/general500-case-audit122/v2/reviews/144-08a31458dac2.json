@@ -1,0 +1,72 @@
+{
+  "status": "valid",
+  "input_index": 144,
+  "outcome": "regressed",
+  "attempt": 1,
+  "review": {
+    "case_index": 144,
+    "selection": [
+      {
+        "id": "E1",
+        "fit": "unsupported",
+        "reason": "任务明确要求提供'examples'（示例），属于生成具体内容的指令，而非用户处于‘提供信息’或‘请求引导’的模糊状态。经验触发条件与任务显性指令冲突。",
+        "refs": [
+          "TASK",
+          "E1.trigger"
+        ]
+      },
+      {
+        "id": "E2",
+        "fit": "unsupported",
+        "reason": "任务明确请求‘第三人称写作示例’，是具体的生成指令，并非用户希望分享个人经历但未提供细节的状态。经验前提不成立。",
+        "refs": [
+          "TASK",
+          "E2.trigger"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "kind": "scope_issue",
+        "refs": [
+          "W.analysis",
+          "N.analysis"
+        ],
+        "note": "经验路径将任务误判为‘模糊分享’而要求模型避免虚构实体，但任务原文明确要求提供包含具体人物和情节的‘示例’，导致标准 W1/W3 与任务核心需求直接对立。"
+      },
+      {
+        "kind": "judge_reading_issue",
+        "refs": [
+          "W1.X.reason",
+          "W1.Y.reason"
+        ],
+        "note": "Judge 理由 W1 指出回答因包含具体人名（如 John Doe）而违规，但这正是任务要求的‘示例’特征。Judge 未能区分‘任务要求的示例内容’与‘经验禁止的擅自虚构’。"
+      },
+      {
+        "kind": "lost_requirement",
+        "refs": [
+          "W.analysis",
+          "N1"
+        ],
+        "note": "经验路径过度强调‘倾听与引导’，导致评分标准 W3 将‘直接提供完整示例’视为负面行为，实际上这恰恰是任务 N 分析中确认的核心要求。"
+      },
+      {
+        "kind": "added_obligation",
+        "refs": [
+          "W4",
+          "TASK"
+        ],
+        "note": "经验路径增加了‘必须标注为通用模板’的义务（W4），但任务仅要求提供示例，未规定必须声明其为假设性或模板，此义务非任务原意。"
+      },
+      {
+        "kind": "uncertain",
+        "refs": [
+          "E1.application_guide",
+          "Select.E1"
+        ],
+        "note": "无法确定在‘提供示例’的任务中，经验定义的‘替代性创作’边界是否应完全排除所有具体虚构细节，还是仅指代特定类型的抢答行为。"
+      }
+    ],
+    "limit": "无法确认经验 E1/E2 是否适用于此类明确的‘提供示例’指令，需核对任务定义与经验触发条件的互斥性。"
+  }
+}

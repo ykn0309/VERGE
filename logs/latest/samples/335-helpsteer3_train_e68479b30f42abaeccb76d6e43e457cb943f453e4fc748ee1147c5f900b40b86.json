@@ -1,0 +1,1210 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:e68479b30f42abaeccb76d6e43e457cb943f453e4fc748ee1147c5f900b40b86",
+    "task": "Write a sensible sentence that begins with “At the library” and ends with “zoo.”",
+    "chosen": " At the library, I found a fascinating book about the history of the local zoo.",
+    "rejected": "At the library, I found a fascinating book about wildlife conservation, which highlighted the crucial role of libraries in educating the public about the importance of preserving biodiversity and supporting local zoos.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15126,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because @Response 1 succeeds in writing a sensible sentence that ends with \"zoo,\" while @Response 2 fails to write a sensible sentence that ends with \"zoo.\" @Response 1 contains 15 words, while @Response 2 contains 32 words.",
+          "feedback1": "The response is perfectly helpful. The response is completely aligned with the spirit of the task.  The response succeeds in writing a sensible sentence that begins with \"At the library\" and ends with \"zoo.\" The response contains 15 words in one sentence. The sentence is clear and concise. The response does not have grammar errors. ",
+          "feedback2": "The response is partially helpful. The response succeeds in writing a sensible sentence that begins with \"At the library\" and ends with \"zoos.\" There is a slight difference from the user prompt. It should be \"zoo\" instead of \"zoos.\" The response contains 32 words in one sentence. There are too many words for one sentence."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 is a much more succinct and natural sentence that could be said by a human. @Response 2 is long and unnatural and does not satisfy all of the requests of the prompt by incorrectly using \"zoo\" instead of \"zoos.\"",
+          "feedback1": "The response is perfectly helpful. The response provided a sentence that is natural, believable, and could have been said by an actual person. The sentence is simple and effective in satisfying the request of the prompt. The sentence is sensible and would completely satisfy a user who provides this prompt. ",
+          "feedback2": "The response is slightly helpful. The response includes the correct beginning of the sentence with \"At the library.\" The response includes the incorrect ending of the sentence by using \"zoos\" instead of \"zoo.\" The sentence is also not very sensible and feels like an unnatural statement that a human would not say. The sentence is a run-on sentence that includes unnecessary information to satisfy the prompt. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it is clear, concise, and thoroughly satisfies all instructions. @Response 2 is wordy and contains a minor instruction violation. ",
+          "feedback1": "The response is perfectly helpful. It successfully satisfies the prompt request to provide a logical sentence that starts with \"At the library\" and ends with \"zoo.\" The sentence is clear, concise, and flows naturally. There are no problems across any dimensions or notes for improving the quality of the response. ",
+          "feedback2": "The response is slightly helpful. It somewhat satisfies the core prompt request to write a logical sentence that begins with \"At the library,\" and ends with \"zoo.\" However, it slightly violates the instructions, as it uses \"zoos\" rather than \"zoo.\" The writing style of the response could also be improved, as the sentence could have been more clear and concise. This sentence contains three separate clauses, which is unnecessary for such a simple prompt. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_360d04652cba4aafb40e050370e50760",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_534e4f1a5c164cfb9792617c42f5cbe4",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        0.2836832635055803
+      ],
+      [
+        "exp_41496b565eb54c45b042c7851295b31c",
+        0.2829112542867184
+      ],
+      [
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        0.26796561020472015
+      ],
+      [
+        "exp_360d04652cba4aafb40e050370e50760",
+        0.26714307352809735
+      ],
+      [
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        0.2647526085352754
+      ],
+      [
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        0.26441750310788775
+      ],
+      [
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        0.2633560648612203
+      ],
+      [
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        0.2578864382155746
+      ],
+      [
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        0.25721094577894654
+      ],
+      [
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        0.2571305287146917
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_13ead171775244b08d96f6c44a38aecb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2836832635055803
+      },
+      {
+        "experience_id": "exp_41496b565eb54c45b042c7851295b31c",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2829112542867184
+      },
+      {
+        "experience_id": "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26796561020472015
+      },
+      {
+        "experience_id": "exp_360d04652cba4aafb40e050370e50760",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26714307352809735
+      },
+      {
+        "experience_id": "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2647526085352754
+      },
+      {
+        "experience_id": "exp_c1eba83c719e4d0eae375533f1a36301",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26441750310788775
+      },
+      {
+        "experience_id": "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2633560648612203
+      },
+      {
+        "experience_id": "exp_4acedd8ccb704f10814295af8edc24e7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2578864382155746
+      },
+      {
+        "experience_id": "exp_33fe10ea5cd147c4b399ead199015824",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25721094577894654
+      },
+      {
+        "experience_id": "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2571305287146917
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+      "criteria": [
+        {
+          "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+          "question": "生成的句子是否以'At the library'（包含空格和大小写）作为开头？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+          "question": "生成的句子是否以'zoo.'（包含句号和小写）作为结尾？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+          "question": "句子中间部分是否连接了开头和结尾，使整句话在语法和逻辑上合理通顺？",
+          "weight": 0.4
+        }
+      ],
+      "analysis": "任务核心要求是生成一个语义通顺的句子，必须严格以'At the library'开头并以'zoo.'结尾。背景信息（如图书馆或动物园的关联）仅作为句子内容的逻辑基础，不应被强制扩展为额外的事实陈述。评分标准需聚焦于句子的结构合规性、首尾短语的精确匹配以及整体语义的合理性。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+      "normalized_weights": {
+        "rubric_c5704e2feee54796902fa86272e2f28b_1": 0.3,
+        "rubric_c5704e2feee54796902fa86272e2f28b_2": 0.3,
+        "rubric_c5704e2feee54796902fa86272e2f28b_3": 0.4
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "生成的句子开头包含一个多余的空格，实际以' At the library'（首字符为空格）开始，而非严格要求的'At the library'。",
+          "rejected_reason": "生成的句子确实以'At the library'开头，包含正确的空格和首字母大写。"
+        },
+        {
+          "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+          "chosen": true,
+          "rejected": false,
+          "chosen_reason": "生成的句子以'zoo.'结尾，完全符合包含句号和小写字母的要求。",
+          "rejected_reason": "生成的句子以单词'zoos.'结尾，而评分标准要求必须以单数形式'zoo.'结尾，两者不一致。"
+        },
+        {
+          "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "句子中间部分通过描述在图书馆发现关于当地动物园历史的书籍，成功连接了开头和结尾，语法正确且逻辑通顺。",
+          "rejected_reason": "虽然结尾词不符合要求，但除去结尾问题外，句子中间部分逻辑通顺，试图连接图书馆阅读野生动物书籍与支持动物园的主题。"
+        }
+      ],
+      "chosen_score": 0.7,
+      "rejected_score": 0.7,
+      "margin": 0.0,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "初始评分标准存在两个关键缺陷导致失败：1. 触发条件过于僵化，要求开头必须严格匹配'At the library'（无空格），但用户输入任务通常允许首行自然换行或前导空格，且模型生成' At...'（含前导空格）在视觉上往往被视为符合指令意图，而Judge将其判定为错误导致chosen得分低；2. 结尾判定过度关注单复数形式（'zoo.' vs 'zoos.'），忽略了句子整体语义逻辑。rejected回答虽然以'zoos.'结尾（不符合字面要求），但其逻辑链条完整且试图连接图书馆与动物园主题，而chosen回答虽然字面合规但存在前导空格问题。核心矛盾在于：当任务要求特定首尾短语时，评分应优先保障‘语义连贯性’和‘首尾意图的达成’，而非机械的字面字符完全匹配（特别是前导空格这种非实质性差异），同时对于结尾词的单复数，若其明显是为了语法正确性（如复数名词作宾语）而非故意偏离，不应作为一票否决项。现有经验中，经验4强调事实准确性，经验8强调关联逻辑真实性，但未专门针对‘首尾短语约束下的容错机制’提出方案。需要一条新经验来指导Generator在构建此类约束型任务标准时，区分‘结构性硬约束’与‘语义性软约束’，避免因微小格式偏差（如前导空格）或合理的语法变体（如复数结尾）而误判高质量回答。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_7f1ac82567434dd2b8a34714447d7dbe",
+            "method": {
+              "trigger": "当任务明确要求生成的文本必须以特定短语开头并以特定短语结尾时",
+              "principle": "评分应优先核验首尾短语的‘语义意图匹配度’而非‘字符级绝对一致性’。对于开头部分，若仅存在无关紧要的前导空白字符（如换行、空格）但不影响短语本身的识别，应视为合规；对于结尾部分，若指定词在句中因语法需求（如单复数、时态变化）发生合理形态变化，且该变化未改变核心指代对象，不应直接判定为违规，除非任务明确禁止变形。",
+              "application_guide": "在制定评分标准的‘指令遵循度’维度时，设立‘语义边界校验’：1. 检查开头是否包含目标短语的核心词汇及顺序，忽略首行前的空白字符（空格、制表符、换行）。2. 检查结尾是否包含目标短语的核心概念，允许因语法结构（如复数、所有格、时态）导致的词形微调，但需确保核心指代对象未发生偏移。3. 若模型为了凑齐字数或强行拼接导致首尾短语被截断、插入其他字符或语义断裂，则判定为不合格。此校验旨在区分‘格式瑕疵’与‘实质偏离’。"
+            },
+            "source_task_id": "444fd35d0d531687f93cb341b03aa6b54b9670d76abb4fb2013b3975adabb667",
+            "parent_ids": [
+              "exp_360d04652cba4aafb40e050370e50760"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_7f1ac82567434dd2b8a34714447d7dbe"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_320d2bb5831745d49b9c422ec8af1947",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_1",
+                  "question": "生成的句子是否严格以短语'At the library'作为起始（忽略行首可能存在的空白字符）？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_2",
+                  "question": "生成的句子是否严格以单词'zoo'作为结束（无后续标点之外的字符，且未对'zoo'进行单复数或时态等形态变化）？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_3",
+                  "question": "在首尾短语之间插入的内容是否构成了一个语法正确、逻辑通顺且语义合理的完整句子？",
+                  "weight": 0.3
+                }
+              ],
+              "analysis": "本任务核心要求是生成一个以特定短语开头、特定短语结尾的完整句子，且需具备语义合理性。设计评分标准时，首要核验首尾短语的严格匹配度（允许忽略首行空白但严禁中间截断或变形），其次重点评估句子的逻辑通顺与语法正确性，确保连接自然而非生硬拼接。背景信息中关于‘经验’提到的形态变化规则在此不适用，因为任务明确指定了结尾词为'zoo'这一固定形式，未提及允许变形，故必须严格执行字符级一致。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_320d2bb5831745d49b9c422ec8af1947",
+              "normalized_weights": {
+                "rubric_320d2bb5831745d49b9c422ec8af1947_1": 0.35,
+                "rubric_320d2bb5831745d49b9c422ec8af1947_2": 0.35,
+                "rubric_320d2bb5831745d49b9c422ec8af1947_3": 0.3
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "响应中的句子在忽略行首空白字符后，确实以短语'At the library'作为起始。",
+                  "rejected_reason": "生成的句子确实以短语'At the library'开头，且前面没有空白字符。"
+                },
+                {
+                  "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "生成的句子虽然以单词'zoo'结尾，但紧接着有一个句号（.），根据标准中‘无后续标点之外的字符’的要求，句末的标点符号被视为后续字符，因此不满足严格以单词'zoo'结束的条件。",
+                  "rejected_reason": "句子虽然以单词'zoos'结尾，但题目要求严格以单词'zoo'结束（未进行单复数变化），而回答中使用了复数形式'zoos'，不符合要求。"
+                },
+                {
+                  "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "插入的内容' , I found a fascinating book about the history of the local '使得整个句子语法正确、逻辑通顺且语义合理。",
+                  "rejected_reason": "句子在首尾之间插入的内容语法正确、逻辑通顺，语义合理，构成了一个完整的句子。"
+                }
+              ],
+              "chosen_score": 0.65,
+              "rejected_score": 0.65,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_93f801e907fc493b80b523a0d2d5cf3f",
+            "method": {
+              "trigger": "当任务要求生成连接两个特定端点（如特定开头和结尾）的句子或段落，且中间内容需体现逻辑关联时",
+              "principle": "评分应将‘逻辑连贯性’置于‘字面匹配’之上。若回答成功构建了从起点到终点的合理叙事或逻辑链条，即使结尾词因语法原因发生了非预期的形态变化（如单数变复数），只要未破坏核心语义指向，仍应给予高分；反之，若回答虽字面完美匹配但中间逻辑断裂或生硬拼凑，应判定为低分。",
+              "application_guide": "在构建评分标准的‘逻辑质量’维度时，设立‘路径完整性’核验项：1. 确认回答是否清晰地展示了从起点概念到终点概念的推导或叙述过程。2. 评估结尾处的词汇选择是否服务于句法结构的自然性（例如，使用复数形式以配合上下文语境），若该变化是语法上的必然结果且未歪曲原意，不扣分。3. 只有当逻辑链条中存在明显的断裂、跳跃或为了强行匹配结尾而牺牲合理性时，才判定为失败。严禁仅因结尾词的单复数与任务描述不完全一致就否定整个回答的逻辑价值。"
+            },
+            "source_task_id": "444fd35d0d531687f93cb341b03aa6b54b9670d76abb4fb2013b3975adabb667",
+            "parent_ids": [
+              "exp_41496b565eb54c45b042c7851295b31c"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_93f801e907fc493b80b523a0d2d5cf3f"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_1996345539aa43148047e4842558fc00",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_1996345539aa43148047e4842558fc00_1",
+                  "question": "生成的句子是否从 'At the library' 开始，并自然地过渡到 'zoo' 所在的语境？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_1996345539aa43148047e4842558fc00_2",
+                  "question": "句子中间的内容是否构建了清晰的逻辑链条或合理的叙事场景，而非生硬拼凑？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_1996345539aa43148047e4842558fc00_3",
+                  "question": "句子是否在语法上通顺，且结尾处的词汇（如 'zoo' 的单复数形式）符合句法结构的自然性要求？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务核心要求是生成一个以特定短语开头、以特定单词结尾的完整且合乎逻辑的句子。背景信息中的经验指出，当任务涉及连接两个端点时，逻辑连贯性优于僵化的字面匹配；若为了语法自然性（如单复数变化）而微调结尾词形态，只要不破坏语义指向，不应视为失败。因此，评分标准应优先关注句子的整体逻辑流畅度和叙事合理性，其次才是对开头和结尾的严格形式检查。我们将‘逻辑连贯性’作为最高权重项，确保回答不是生硬拼凑；将‘格式约束’作为次级权重项，但允许在语法必要的情况下对结尾词进行合理的形态调整，同时严禁因微小的形态差异否定整个回答的逻辑价值。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_1996345539aa43148047e4842558fc00",
+              "normalized_weights": {
+                "rubric_1996345539aa43148047e4842558fc00_1": 0.5,
+                "rubric_1996345539aa43148047e4842558fc00_2": 0.3,
+                "rubric_1996345539aa43148047e4842558fc00_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_1996345539aa43148047e4842558fc00_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "句子虽然以'At the library'开头，但并未以'zoo'结尾。句子实际以'the local zoo.'结束，其中包含冠词'the'和形容词'local'，不符合任务要求的严格以'zoo'结尾的约束，且语境未自然过渡到单独使用'zoo'作为句尾名词的状态。",
+                  "rejected_reason": "句子虽然以'At the library'开头，但并未以单词'zoo'结尾，而是以复数形式'zoos'作为句子的最后一个词结束，且语境是支持当地的动物园（复数），而非直接以单数'zoo'收尾。"
+                },
+                {
+                  "criterion_id": "rubric_1996345539aa43148047e4842558fc00_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "句子中间内容构建了合理的叙事场景：在图书馆发现一本关于当地动物园历史的书。逻辑链条清晰，将图书馆与动物园通过书籍主题自然连接，没有生硬拼凑的痕迹。",
+                  "rejected_reason": "句子中间内容构建了从图书馆书籍到野生动物保护再到支持动物园的清晰逻辑链条，叙事场景合理自然。"
+                },
+                {
+                  "criterion_id": "rubric_1996345539aa43148047e4842558fc00_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "句子语法本身通顺，但结尾词汇不是单独的'zoo'，而是'the local zoo'。这违反了任务对结尾词汇形式的特定要求（即必须以'zoo'结尾），导致句法结构不符合指定的自然性要求。",
+                  "rejected_reason": "任务明确要求句子必须以'zoo'结尾，而该回答以'zoos'结尾，违反了结尾词汇的具体要求；此外，语法上虽然通顺，但未满足对结尾特定词汇形式的约束。"
+                }
+              ],
+              "chosen_score": 0.3,
+              "rejected_score": 0.3,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+            "criteria": [
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+                "question": "生成的句子是否以'At the library'（包含空格和大小写）作为开头？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+                "question": "生成的句子是否以'zoo.'（包含句号和小写）作为结尾？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+                "question": "句子中间部分是否连接了开头和结尾，使整句话在语法和逻辑上合理通顺？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "任务核心要求是生成一个语义通顺的句子，必须严格以'At the library'开头并以'zoo.'结尾。背景信息（如图书馆或动物园的关联）仅作为句子内容的逻辑基础，不应被强制扩展为额外的事实陈述。评分标准需聚焦于句子的结构合规性、首尾短语的精确匹配以及整体语义的合理性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+            "normalized_weights": {
+              "rubric_c5704e2feee54796902fa86272e2f28b_1": 0.3,
+              "rubric_c5704e2feee54796902fa86272e2f28b_2": 0.3,
+              "rubric_c5704e2feee54796902fa86272e2f28b_3": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "生成的句子开头包含一个多余的空格，实际以' At the library'（首字符为空格）开始，而非严格要求的'At the library'。",
+                "rejected_reason": "生成的句子确实以'At the library'开头，包含正确的空格和首字母大写。"
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "生成的句子以'zoo.'结尾，完全符合包含句号和小写字母的要求。",
+                "rejected_reason": "生成的句子以单词'zoos.'结尾，而评分标准要求必须以单数形式'zoo.'结尾，两者不一致。"
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "句子中间部分通过描述在图书馆发现关于当地动物园历史的书籍，成功连接了开头和结尾，语法正确且逻辑通顺。",
+                "rejected_reason": "虽然结尾词不符合要求，但除去结尾问题外，句子中间部分逻辑通顺，试图连接图书馆阅读野生动物书籍与支持动物园的主题。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 0.7,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_7f1ac82567434dd2b8a34714447d7dbe"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_320d2bb5831745d49b9c422ec8af1947",
+            "criteria": [
+              {
+                "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_1",
+                "question": "生成的句子是否严格以短语'At the library'作为起始（忽略行首可能存在的空白字符）？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_2",
+                "question": "生成的句子是否严格以单词'zoo'作为结束（无后续标点之外的字符，且未对'zoo'进行单复数或时态等形态变化）？",
+                "weight": 0.35
+              },
+              {
+                "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_3",
+                "question": "在首尾短语之间插入的内容是否构成了一个语法正确、逻辑通顺且语义合理的完整句子？",
+                "weight": 0.3
+              }
+            ],
+            "analysis": "本任务核心要求是生成一个以特定短语开头、特定短语结尾的完整句子，且需具备语义合理性。设计评分标准时，首要核验首尾短语的严格匹配度（允许忽略首行空白但严禁中间截断或变形），其次重点评估句子的逻辑通顺与语法正确性，确保连接自然而非生硬拼接。背景信息中关于‘经验’提到的形态变化规则在此不适用，因为任务明确指定了结尾词为'zoo'这一固定形式，未提及允许变形，故必须严格执行字符级一致。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_320d2bb5831745d49b9c422ec8af1947",
+            "normalized_weights": {
+              "rubric_320d2bb5831745d49b9c422ec8af1947_1": 0.35,
+              "rubric_320d2bb5831745d49b9c422ec8af1947_2": 0.35,
+              "rubric_320d2bb5831745d49b9c422ec8af1947_3": 0.3
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "响应中的句子在忽略行首空白字符后，确实以短语'At the library'作为起始。",
+                "rejected_reason": "生成的句子确实以短语'At the library'开头，且前面没有空白字符。"
+              },
+              {
+                "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "生成的句子虽然以单词'zoo'结尾，但紧接着有一个句号（.），根据标准中‘无后续标点之外的字符’的要求，句末的标点符号被视为后续字符，因此不满足严格以单词'zoo'结束的条件。",
+                "rejected_reason": "句子虽然以单词'zoos'结尾，但题目要求严格以单词'zoo'结束（未进行单复数变化），而回答中使用了复数形式'zoos'，不符合要求。"
+              },
+              {
+                "criterion_id": "rubric_320d2bb5831745d49b9c422ec8af1947_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "插入的内容' , I found a fascinating book about the history of the local '使得整个句子语法正确、逻辑通顺且语义合理。",
+                "rejected_reason": "句子在首尾之间插入的内容语法正确、逻辑通顺，语义合理，构成了一个完整的句子。"
+              }
+            ],
+            "chosen_score": 0.65,
+            "rejected_score": 0.65,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_93f801e907fc493b80b523a0d2d5cf3f"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_1996345539aa43148047e4842558fc00",
+            "criteria": [
+              {
+                "criterion_id": "rubric_1996345539aa43148047e4842558fc00_1",
+                "question": "生成的句子是否从 'At the library' 开始，并自然地过渡到 'zoo' 所在的语境？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_1996345539aa43148047e4842558fc00_2",
+                "question": "句子中间的内容是否构建了清晰的逻辑链条或合理的叙事场景，而非生硬拼凑？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_1996345539aa43148047e4842558fc00_3",
+                "question": "句子是否在语法上通顺，且结尾处的词汇（如 'zoo' 的单复数形式）符合句法结构的自然性要求？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心要求是生成一个以特定短语开头、以特定单词结尾的完整且合乎逻辑的句子。背景信息中的经验指出，当任务涉及连接两个端点时，逻辑连贯性优于僵化的字面匹配；若为了语法自然性（如单复数变化）而微调结尾词形态，只要不破坏语义指向，不应视为失败。因此，评分标准应优先关注句子的整体逻辑流畅度和叙事合理性，其次才是对开头和结尾的严格形式检查。我们将‘逻辑连贯性’作为最高权重项，确保回答不是生硬拼凑；将‘格式约束’作为次级权重项，但允许在语法必要的情况下对结尾词进行合理的形态调整，同时严禁因微小的形态差异否定整个回答的逻辑价值。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_1996345539aa43148047e4842558fc00",
+            "normalized_weights": {
+              "rubric_1996345539aa43148047e4842558fc00_1": 0.5,
+              "rubric_1996345539aa43148047e4842558fc00_2": 0.3,
+              "rubric_1996345539aa43148047e4842558fc00_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_1996345539aa43148047e4842558fc00_1",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "句子虽然以'At the library'开头，但并未以'zoo'结尾。句子实际以'the local zoo.'结束，其中包含冠词'the'和形容词'local'，不符合任务要求的严格以'zoo'结尾的约束，且语境未自然过渡到单独使用'zoo'作为句尾名词的状态。",
+                "rejected_reason": "句子虽然以'At the library'开头，但并未以单词'zoo'结尾，而是以复数形式'zoos'作为句子的最后一个词结束，且语境是支持当地的动物园（复数），而非直接以单数'zoo'收尾。"
+              },
+              {
+                "criterion_id": "rubric_1996345539aa43148047e4842558fc00_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "句子中间内容构建了合理的叙事场景：在图书馆发现一本关于当地动物园历史的书。逻辑链条清晰，将图书馆与动物园通过书籍主题自然连接，没有生硬拼凑的痕迹。",
+                "rejected_reason": "句子中间内容构建了从图书馆书籍到野生动物保护再到支持动物园的清晰逻辑链条，叙事场景合理自然。"
+              },
+              {
+                "criterion_id": "rubric_1996345539aa43148047e4842558fc00_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "句子语法本身通顺，但结尾词汇不是单独的'zoo'，而是'the local zoo'。这违反了任务对结尾词汇形式的特定要求（即必须以'zoo'结尾），导致句法结构不符合指定的自然性要求。",
+                "rejected_reason": "任务明确要求句子必须以'zoo'结尾，而该回答以'zoos'结尾，违反了结尾词汇的具体要求；此外，语法上虽然通顺，但未满足对结尾特定词汇形式的约束。"
+              }
+            ],
+            "chosen_score": 0.3,
+            "rejected_score": 0.3,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_7f1ac82567434dd2b8a34714447d7dbe",
+            "exp_93f801e907fc493b80b523a0d2d5cf3f"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_bc07ee6ae74047a88397667543545963",
+            "criteria": [
+              {
+                "criterion_id": "rubric_bc07ee6ae74047a88397667543545963_1",
+                "question": "回答是否成功构建了一个在逻辑和叙事上从‘图书馆’场景自然过渡到‘动物园’场景的完整且合理的句子？",
+                "weight": 0.45
+              },
+              {
+                "criterion_id": "rubric_bc07ee6ae74047a88397667543545963_2",
+                "question": "回答是否明确以“zoo”或其符合语法的必要形态变化（如复数、所有格等未改变核心指代的变体）作为句子的结尾部分？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_bc07ee6ae74047a88397667543545963_3",
+                "question": "回答是否在去除首行前导空白后，严格以“At the library”作为句子的起始部分，且未出现截断或插入字符的情况？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_bc07ee6ae74047a88397667543545963_4",
+                "question": "回答是否为一个语法正确、结构完整的单句，而非多个片段拼凑或无意义的字符堆砌？",
+                "weight": 0.05
+              }
+            ],
+            "analysis": "评分标准设计严格区分任务背景（‘写一个句子’）与核心约束（首尾短语）。依据经验，重点在于验证模型是否以指定短语为语义边界，并构建逻辑通顺的中间内容。对于首尾短语，允许忽略无关的前导空白，同时基于语法合理性容忍非核心的形态微调（如复数化），但严禁截断或强行拼接导致语义断裂。权重分配上，逻辑连贯性作为句子的灵魂赋予最高权重，首尾短语的完整性和正确性次之，格式瑕疵仅作为低权重的扣分项。"
+          },
+          "judgment": null,
+          "error": "LLMSampleError: judge: request failed after 3 attempts (ReadTimeout)"
+        }
+      ]
+    },
+    {
+      "round_number": 2,
+      "analysis": "回顾之前的尝试，经验11（基于经验4）试图通过‘忽略前导空格’和‘允许形态变化’来解决问题，但生成的Rubric在应用时出现了逻辑矛盾：它一方面说‘允许形态变化’，另一方面Criterion 5却要求‘严格以单词zoo结束...未进行单复数变化’，导致Judge判定chosen（实际用了zoo.）和rejected（实际用了zoos.）都因标点或复数问题被误判或无法区分。经验12（基于经验2）试图将‘逻辑连贯性’置于首位，但权重分配（0.5 vs 0.2）和描述（如Criterion 7要求‘自然过渡到zoo所在语境’）过于模糊，导致Judge依然纠结于字面是否以'zoo'结尾（如'the local zoo'不算），且未能有效区分两个回答的质量差异（两者得分均为0.3）。核心问题在于：现有的评分标准要么过于僵化（死扣字符），要么过于宽松（模糊的‘语境’），缺乏一个清晰的、可操作的‘边界定义’机制。正确的做法应当是：明确界定‘结尾短语’的语义边界——即句子必须以目标词（或其语法变体）作为最后一个实义词，且该词必须独立存在或仅后接标点，不能有其他修饰词（如'the local'）干扰其作为‘结尾’的地位；同时，对于开头，应明确‘包含’而非‘完全匹配字符序列’，允许首行空白。需要一条新经验来指导如何设计这种‘语义边界’与‘形式约束’相结合的校验方法，确保评分能准确捕捉‘意图达成’与‘形式合规’的平衡。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_167b1497d0ca4ac696ade38590a87a9d",
+            "method": {
+              "trigger": "当任务要求生成的文本必须以特定短语开头并以特定单词（或短语）结尾时",
+              "principle": "评分应严格核验结尾词的‘独立性’与‘核心指代一致性’。若结尾词前存在修饰成分（如冠词、形容词）导致其不再是句子的最后一个实义词，则视为未满足结尾约束；若结尾词因语法需求发生单复数等形态变化，只要核心指代对象未变且该变化符合句法逻辑，应视为合规。对于开头，仅需确认核心短语词汇按序出现，忽略行首空白字符。",
+              "application_guide": "在构建评分标准的‘指令遵循度’维度时，设立‘结尾独立性’校验点：1. 检查句子最后一个实义名词/动词是否为任务指定的核心词（或其合理变体）；若其后紧跟其他实义词（如'the local zoo'中的'local'在'zoo'之前，或'zoos'作为复数形式），需判断该词是否改变了核心指代或破坏了‘结尾’的定义。2. 若指定词为单数，而模型使用了复数（如'zoos'）且上下文支持复数（如泛指动物园群体），不扣分；若为了强行匹配单数而牺牲语法（如生硬使用单数导致语病），则扣分。3. 检查开头是否包含指定短语的所有关键词且顺序正确，允许忽略行首的空白符。严禁将‘包含该词’等同于‘以该词结尾’，必须确保该词处于句末位置（除标点外无其他实义词）。"
+            },
+            "source_task_id": "444fd35d0d531687f93cb341b03aa6b54b9670d76abb4fb2013b3975adabb667",
+            "parent_ids": [
+              "exp_360d04652cba4aafb40e050370e50760"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_167b1497d0ca4ac696ade38590a87a9d"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_053436dd99a542ad9f4caf2922775a18",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_1",
+                  "question": "句子是否以短语'At the library'作为起始部分（忽略首行空白符且顺序正确）？",
+                  "weight": 0.45
+                },
+                {
+                  "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_2",
+                  "question": "句子是否在最后一个实义词处结束于单词'zoo'（即'zoo'之后除标点外无其他实义词，且未发生破坏核心指代的形态变化）？",
+                  "weight": 0.45
+                },
+                {
+                  "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_3",
+                  "question": "生成的句子在语法结构和逻辑语义上是否合理通顺？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "评分标准设计严格遵循任务核心约束：句子必须以短语'At the library'开头，并以单词'zoo'结尾。根据经验指导，重点核验结尾词'zoo'的独立性，确保其后无其他实义词（如形容词或复数后缀若改变指代），同时允许标点符号存在；开头需确认指定短语按序完整出现。背景信息（图书馆场景）仅用于判断句意合理性，不作为独立输出义务。权重分配上，格式约束（开头和结尾）各占0.45，句意合理性占0.10，以体现指令遵循的优先级。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_053436dd99a542ad9f4caf2922775a18",
+              "normalized_weights": {
+                "rubric_053436dd99a542ad9f4caf2922775a18_1": 0.45,
+                "rubric_053436dd99a542ad9f4caf2922775a18_2": 0.45,
+                "rubric_053436dd99a542ad9f4caf2922775a18_3": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中的句子在去除首行空白符后，确实以短语'At the library'作为起始部分，且顺序正确。",
+                  "rejected_reason": "句子确实以短语'At the library'开头，且顺序正确，无首行空白符干扰。"
+                },
+                {
+                  "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "句子以单词'zoo'结尾，但紧随其后的是句号标点，而题目要求是结束于单词'zoo'（通常指最后一个实义词为zoo且无后续内容），虽然此处zoo确实是最后一个实义词，但需确认是否允许标点。根据标准描述“除标点外无其他实义词”，该句满足此条件，因此应判定为true。修正判断：句子以'zoo.'结束，'zoo'是最后一个实义词，之后仅有标点，符合标准。重新评估：satisfied应为true。",
+                  "rejected_reason": "句子以单词'zoos'结尾（复数形式），而非任务要求的单数形式'zoo'；此外，末尾是'zoos.'带有标点，但核心实义词形态已发生复数变化，不符合'未发生破坏核心指代的形态变化'的要求。"
+                },
+                {
+                  "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "句子语法结构完整，逻辑通顺，表达了在图书馆发现关于当地动物园历史的书籍这一合理情境。",
+                  "rejected_reason": "生成的句子在语法结构上完整，逻辑语义通顺，表达了图书馆在野生动物保护教育中的作用，与结尾的动物园主题衔接合理。"
+                }
+              ],
+              "chosen_score": 0.55,
+              "rejected_score": 0.55,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect",
+          "admission_subset": []
+        },
+        {
+          "experience": {
+            "experience_id": "exp_bc2363cddda24e128493c0c0abbe1c02",
+            "method": {
+              "trigger": "当任务要求生成连接两个特定端点（如特定开头和结尾）的句子或段落，且中间内容需体现逻辑关联时",
+              "principle": "评分应将‘结尾词的独立完整性’作为硬性门槛，高于‘逻辑连贯性’的软性加分。只有当结尾词在句法上真正位于末尾（无修饰词前置干扰）且语义指向明确时，才进入逻辑质量评估；若结尾词被修饰词包裹（如'the local zoo'）或形态错误导致语义偏移，直接判定为不合格，无论中间逻辑多么通顺。",
+              "application_guide": "在制定评分标准的‘结构合规性’维度时，设立‘句末实体锁定’核验项：1. 提取句子最后一个实义词（排除标点符号），验证其是否与任务指定的结尾词核心一致（允许合理的单复数变体）。2. 若最后一个实义词前紧邻有修饰词（如'the', 'local', 'my'等），且这些修饰词使得整个结尾短语不再是任务指定的单一词项（例如任务要求以'zoo'结尾，回答以'the local zoo'结尾），则判定为结构违规。3. 只有在通过上述结构校验后，再评估中间内容的逻辑连贯性和叙事质量。此规则旨在防止模型通过添加修饰词来‘看似’包含结尾词，实则偏离了严格的结尾约束。"
+            },
+            "source_task_id": "444fd35d0d531687f93cb341b03aa6b54b9670d76abb4fb2013b3975adabb667",
+            "parent_ids": [
+              "exp_41496b565eb54c45b042c7851295b31c"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_bc2363cddda24e128493c0c0abbe1c02"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_1",
+                  "question": "句子是否严格以短语 'At the library' 作为起始部分（不含多余前缀）？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_2",
+                  "question": "句子是否严格以单词 'zoo' 作为最后一个实义词结束（即 'zoo' 之前无冠词、形容词等修饰词，且紧随其后的仅为标点符号）？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_3",
+                  "question": "句子中的中间连接部分是否语义通顺，使得从‘图书馆’到‘动物园’的叙述具有合理的逻辑关联？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_4",
+                  "question": "输出是否为一个语法正确且完整的单句，而非片段或错误拼写的组合？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务核心要求是生成一个以特定短语开头、特定单词结尾的完整句子，且需具备逻辑通顺性。根据提供的经验，必须严格区分‘背景信息’（如句子的主题或中间内容）与‘硬性约束’（开头和结尾的词形）。评分标准应首先确立结构合规性为最高优先级：结尾词必须是句子中最后一个实义词，不能有任何前置修饰词（如'the'），也不能改变形态（除非是允许的单复数变体），否则直接判定不合格。在此基础上，再评估句子是否由有意义的词汇组成以及逻辑是否合理。权重分配上，结构合规性（开头和结尾）应占据主导地位，因为这是任务定义的边界条件；逻辑通顺性作为次要但必要的条件，确保生成的不是无意义的堆砌。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564",
+              "normalized_weights": {
+                "rubric_7cf2473d487a4ee2b0f643c2c25b2564_1": 0.3,
+                "rubric_7cf2473d487a4ee2b0f643c2c25b2564_2": 0.4,
+                "rubric_7cf2473d487a4ee2b0f643c2c25b2564_3": 0.2,
+                "rubric_7cf2473d487a4ee2b0f643c2c25b2564_4": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "响应以空格开头（' At the library...'），导致句子并非严格以短语 'At the library' 作为起始部分，存在多余前缀字符。",
+                  "rejected_reason": "回答严格以短语 'At the library' 开头，没有多余前缀。"
+                },
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_2",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "句子最后一个实义词确实是 'zoo'，其后紧跟句号标点符号，且 'zoo' 之前没有冠词或形容词等修饰词。",
+                  "rejected_reason": "句子并未以单词 'zoo' 结尾，而是以 'zoos.'（复数形式且带标点）结尾，不符合'严格以单词 zoo 作为最后一个实义词结束’的要求。"
+                },
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "句子描述了在图书馆发现关于当地动物园历史的书籍，从‘图书馆’到‘动物园’通过书籍内容建立了合理的逻辑关联，语义通顺。",
+                  "rejected_reason": "句子内容从图书馆阅读野生动物保护书籍自然过渡到支持当地动物园，逻辑关联合理且语义通顺。"
+                },
+                {
+                  "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "该输出是一个语法正确、结构完整的单句，无拼写错误，也不是片段。",
+                  "rejected_reason": "输出是一个语法正确、结构完整的单句，包含主句和定语从句，无拼写错误。"
+                }
+              ],
+              "chosen_score": 0.7,
+              "rejected_score": 0.6,
+              "margin": 0.1,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "standalone_correct",
+          "admission_subset": [
+            "exp_bc2363cddda24e128493c0c0abbe1c02"
+          ]
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+            "criteria": [
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+                "question": "生成的句子是否以'At the library'（包含空格和大小写）作为开头？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+                "question": "生成的句子是否以'zoo.'（包含句号和小写）作为结尾？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+                "question": "句子中间部分是否连接了开头和结尾，使整句话在语法和逻辑上合理通顺？",
+                "weight": 0.4
+              }
+            ],
+            "analysis": "任务核心要求是生成一个语义通顺的句子，必须严格以'At the library'开头并以'zoo.'结尾。背景信息（如图书馆或动物园的关联）仅作为句子内容的逻辑基础，不应被强制扩展为额外的事实陈述。评分标准需聚焦于句子的结构合规性、首尾短语的精确匹配以及整体语义的合理性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+            "normalized_weights": {
+              "rubric_c5704e2feee54796902fa86272e2f28b_1": 0.3,
+              "rubric_c5704e2feee54796902fa86272e2f28b_2": 0.3,
+              "rubric_c5704e2feee54796902fa86272e2f28b_3": 0.4
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "生成的句子开头包含一个多余的空格，实际以' At the library'（首字符为空格）开始，而非严格要求的'At the library'。",
+                "rejected_reason": "生成的句子确实以'At the library'开头，包含正确的空格和首字母大写。"
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "生成的句子以'zoo.'结尾，完全符合包含句号和小写字母的要求。",
+                "rejected_reason": "生成的句子以单词'zoos.'结尾，而评分标准要求必须以单数形式'zoo.'结尾，两者不一致。"
+              },
+              {
+                "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "句子中间部分通过描述在图书馆发现关于当地动物园历史的书籍，成功连接了开头和结尾，语法正确且逻辑通顺。",
+                "rejected_reason": "虽然结尾词不符合要求，但除去结尾问题外，句子中间部分逻辑通顺，试图连接图书馆阅读野生动物书籍与支持动物园的主题。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 0.7,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_167b1497d0ca4ac696ade38590a87a9d"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_053436dd99a542ad9f4caf2922775a18",
+            "criteria": [
+              {
+                "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_1",
+                "question": "句子是否以短语'At the library'作为起始部分（忽略首行空白符且顺序正确）？",
+                "weight": 0.45
+              },
+              {
+                "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_2",
+                "question": "句子是否在最后一个实义词处结束于单词'zoo'（即'zoo'之后除标点外无其他实义词，且未发生破坏核心指代的形态变化）？",
+                "weight": 0.45
+              },
+              {
+                "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_3",
+                "question": "生成的句子在语法结构和逻辑语义上是否合理通顺？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "评分标准设计严格遵循任务核心约束：句子必须以短语'At the library'开头，并以单词'zoo'结尾。根据经验指导，重点核验结尾词'zoo'的独立性，确保其后无其他实义词（如形容词或复数后缀若改变指代），同时允许标点符号存在；开头需确认指定短语按序完整出现。背景信息（图书馆场景）仅用于判断句意合理性，不作为独立输出义务。权重分配上，格式约束（开头和结尾）各占0.45，句意合理性占0.10，以体现指令遵循的优先级。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_053436dd99a542ad9f4caf2922775a18",
+            "normalized_weights": {
+              "rubric_053436dd99a542ad9f4caf2922775a18_1": 0.45,
+              "rubric_053436dd99a542ad9f4caf2922775a18_2": 0.45,
+              "rubric_053436dd99a542ad9f4caf2922775a18_3": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答中的句子在去除首行空白符后，确实以短语'At the library'作为起始部分，且顺序正确。",
+                "rejected_reason": "句子确实以短语'At the library'开头，且顺序正确，无首行空白符干扰。"
+              },
+              {
+                "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "句子以单词'zoo'结尾，但紧随其后的是句号标点，而题目要求是结束于单词'zoo'（通常指最后一个实义词为zoo且无后续内容），虽然此处zoo确实是最后一个实义词，但需确认是否允许标点。根据标准描述“除标点外无其他实义词”，该句满足此条件，因此应判定为true。修正判断：句子以'zoo.'结束，'zoo'是最后一个实义词，之后仅有标点，符合标准。重新评估：satisfied应为true。",
+                "rejected_reason": "句子以单词'zoos'结尾（复数形式），而非任务要求的单数形式'zoo'；此外，末尾是'zoos.'带有标点，但核心实义词形态已发生复数变化，不符合'未发生破坏核心指代的形态变化'的要求。"
+              },
+              {
+                "criterion_id": "rubric_053436dd99a542ad9f4caf2922775a18_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "句子语法结构完整，逻辑通顺，表达了在图书馆发现关于当地动物园历史的书籍这一合理情境。",
+                "rejected_reason": "生成的句子在语法结构上完整，逻辑语义通顺，表达了图书馆在野生动物保护教育中的作用，与结尾的动物园主题衔接合理。"
+              }
+            ],
+            "chosen_score": 0.55,
+            "rejected_score": 0.55,
+            "margin": 0.0,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_bc2363cddda24e128493c0c0abbe1c02"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564",
+            "criteria": [
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_1",
+                "question": "句子是否严格以短语 'At the library' 作为起始部分（不含多余前缀）？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_2",
+                "question": "句子是否严格以单词 'zoo' 作为最后一个实义词结束（即 'zoo' 之前无冠词、形容词等修饰词，且紧随其后的仅为标点符号）？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_3",
+                "question": "句子中的中间连接部分是否语义通顺，使得从‘图书馆’到‘动物园’的叙述具有合理的逻辑关联？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_4",
+                "question": "输出是否为一个语法正确且完整的单句，而非片段或错误拼写的组合？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务核心要求是生成一个以特定短语开头、特定单词结尾的完整句子，且需具备逻辑通顺性。根据提供的经验，必须严格区分‘背景信息’（如句子的主题或中间内容）与‘硬性约束’（开头和结尾的词形）。评分标准应首先确立结构合规性为最高优先级：结尾词必须是句子中最后一个实义词，不能有任何前置修饰词（如'the'），也不能改变形态（除非是允许的单复数变体），否则直接判定不合格。在此基础上，再评估句子是否由有意义的词汇组成以及逻辑是否合理。权重分配上，结构合规性（开头和结尾）应占据主导地位，因为这是任务定义的边界条件；逻辑通顺性作为次要但必要的条件，确保生成的不是无意义的堆砌。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564",
+            "normalized_weights": {
+              "rubric_7cf2473d487a4ee2b0f643c2c25b2564_1": 0.3,
+              "rubric_7cf2473d487a4ee2b0f643c2c25b2564_2": 0.4,
+              "rubric_7cf2473d487a4ee2b0f643c2c25b2564_3": 0.2,
+              "rubric_7cf2473d487a4ee2b0f643c2c25b2564_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_1",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "响应以空格开头（' At the library...'），导致句子并非严格以短语 'At the library' 作为起始部分，存在多余前缀字符。",
+                "rejected_reason": "回答严格以短语 'At the library' 开头，没有多余前缀。"
+              },
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "句子最后一个实义词确实是 'zoo'，其后紧跟句号标点符号，且 'zoo' 之前没有冠词或形容词等修饰词。",
+                "rejected_reason": "句子并未以单词 'zoo' 结尾，而是以 'zoos.'（复数形式且带标点）结尾，不符合'严格以单词 zoo 作为最后一个实义词结束’的要求。"
+              },
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "句子描述了在图书馆发现关于当地动物园历史的书籍，从‘图书馆’到‘动物园’通过书籍内容建立了合理的逻辑关联，语义通顺。",
+                "rejected_reason": "句子内容从图书馆阅读野生动物保护书籍自然过渡到支持当地动物园，逻辑关联合理且语义通顺。"
+              },
+              {
+                "criterion_id": "rubric_7cf2473d487a4ee2b0f643c2c25b2564_4",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "该输出是一个语法正确、结构完整的单句，无拼写错误，也不是片段。",
+                "rejected_reason": "输出是一个语法正确、结构完整的单句，包含主句和定语从句，无拼写错误。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 0.6,
+            "margin": 0.1,
+            "success": true
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_167b1497d0ca4ac696ade38590a87a9d",
+            "exp_bc2363cddda24e128493c0c0abbe1c02"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_c2d0566614544d418135fa8ece0ab430",
+            "criteria": [
+              {
+                "criterion_id": "rubric_c2d0566614544d418135fa8ece0ab430_1",
+                "question": "句子是否严格以短语\"At the library\"作为起始部分（忽略行首空白符）？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_c2d0566614544d418135fa8ece0ab430_2",
+                "question": "句子的最后一个实义单词是否为\"zoo\"（即\"zoo\"之前不能有任何实义词或限定词，且允许标点符号紧随其后）？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_c2d0566614544d418135fa8ece0ab430_3",
+                "question": "句子整体是否在语法正确且语义通顺的前提下，成功连接了图书馆场景与动物园场景？",
+                "weight": 0.3
+              }
+            ],
+            "analysis": "本任务核心要求是生成一个逻辑通顺的句子，严格满足‘以'At the library'开头’和‘以'zoo'结尾’的格式约束。背景信息中的经验强调必须区分‘包含该词’与‘以该词结尾’，严禁在指定结尾词前添加修饰成分（如冠词、形容词）导致其不再是句末实义词。评分标准需优先保障结构合规性（开头短语完整匹配、结尾词独立且无前置修饰），其次评估句子本身的语义合理性。权重分配上，结构约束（开头和结尾）占据主导，因为这是任务的硬性门槛；语义通顺度作为基础要求，确保生成的内容不仅仅是字符拼接。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_c2d0566614544d418135fa8ece0ab430",
+            "normalized_weights": {
+              "rubric_c2d0566614544d418135fa8ece0ab430_1": 0.3,
+              "rubric_c2d0566614544d418135fa8ece0ab430_2": 0.4,
+              "rubric_c2d0566614544d418135fa8ece0ab430_3": 0.3
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_c2d0566614544d418135fa8ece0ab430_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "响应内容在去除行首空白符后，确实以短语'At the library'作为起始部分。",
+                "rejected_reason": "回答中的句子确实以短语'At the library'作为起始部分，没有行首空白符。"
+              },
+              {
+                "criterion_id": "rubric_c2d0566614544d418135fa8ece0ab430_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "句子的最后一个实义单词是'zoo'，其后紧跟句号，符合结尾要求。",
+                "rejected_reason": "句子的最后一个实义单词是'zoos'（复数形式），而不是要求的单数形式'zoo'。此外，根据任务描述，句子应以'zoo'结尾，而这里使用的是'zoos'，不符合严格匹配的要求。"
+              },
+              {
+                "criterion_id": "rubric_c2d0566614544d418135fa8ece0ab430_3",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "句子描述了在图书馆发现一本关于当地动物园历史的书，语法正确且逻辑通顺，成功连接了两个场景。",
+                "rejected_reason": "句子在语法上是正确的，并且成功地将图书馆场景与动物园场景连接起来，通过提到关于野生动物保护的书和图书馆在支持当地动物园方面的作用。"
+              }
+            ],
+            "chosen_score": 1.0,
+            "rejected_score": 0.6,
+            "margin": 0.4,
+            "success": true
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+        "criteria": [
+          {
+            "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+            "question": "生成的句子是否以'At the library'（包含空格和大小写）作为开头？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+            "question": "生成的句子是否以'zoo.'（包含句号和小写）作为结尾？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+            "question": "句子中间部分是否连接了开头和结尾，使整句话在语法和逻辑上合理通顺？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务核心要求是生成一个语义通顺的句子，必须严格以'At the library'开头并以'zoo.'结尾。背景信息（如图书馆或动物园的关联）仅作为句子内容的逻辑基础，不应被强制扩展为额外的事实陈述。评分标准需聚焦于句子的结构合规性、首尾短语的精确匹配以及整体语义的合理性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_c5704e2feee54796902fa86272e2f28b",
+        "normalized_weights": {
+          "rubric_c5704e2feee54796902fa86272e2f28b_1": 0.3,
+          "rubric_c5704e2feee54796902fa86272e2f28b_2": 0.3,
+          "rubric_c5704e2feee54796902fa86272e2f28b_3": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "生成的句子开头包含一个多余的空格，实际以' At the library'（首字符为空格）开始，而非严格要求的'At the library'。",
+            "rejected_reason": "生成的句子确实以'At the library'开头，包含正确的空格和首字母大写。"
+          },
+          {
+            "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "生成的句子以'zoo.'结尾，完全符合包含句号和小写字母的要求。",
+            "rejected_reason": "生成的句子以单词'zoos.'结尾，而评分标准要求必须以单数形式'zoo.'结尾，两者不一致。"
+          },
+          {
+            "criterion_id": "rubric_c5704e2feee54796902fa86272e2f28b_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "句子中间部分通过描述在图书馆发现关于当地动物园历史的书籍，成功连接了开头和结尾，语法正确且逻辑通顺。",
+            "rejected_reason": "虽然结尾词不符合要求，但除去结尾问题外，句子中间部分逻辑通顺，试图连接图书馆阅读野生动物书籍与支持动物园的主题。"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 0.7,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

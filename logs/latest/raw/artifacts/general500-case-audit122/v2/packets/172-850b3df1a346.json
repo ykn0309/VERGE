@@ -1,0 +1,94 @@
+{
+  "case_index": 172,
+  "experiences": [
+    "E1"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.35,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N2",
+          "weight": 0.25,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N3",
+          "weight": 0.25,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N4",
+          "weight": 0.15,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.5,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W2",
+          "weight": 0.3,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W3",
+          "weight": 0.2,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "Script about Mike leach elimination from rose bowl contention ",
+    "X": "Title: \"The Cougars are out of the contention for the Rose Bowl \"\n\nMIKE LEACH'S OFFICE - DAY\n\nMike Leach, the charismatic and eccentric head coach of the Washington State Cougars, is sitting at his desk, surrounded by football memorabilia and books on various subjects. He's watching game footage, his eyes focused and intense.\n\nSuddenly, his assistant coach, JERRY, bursts into the room, looking flustered.\n\nJERRY\nMike, we've just received the news. We're out of the Rose Bowl, the Bulldogs have pulled through.\n\nMike Leach looks up, surprised. He leans back in his chair, rubbing his chin thoughtfully.\n\nMIKE LEACH\nWell, Jerry, that's a tough pill to swallow. But we knew the competition was fierce this year.\n\nJerry nods, looking disappointed.\n\nJERRY\nI know, but I really thought we had a shot this year. The team has been playing so well. \n\nMike Leach stands up, walking over to a large map of the United States on his wall. He points to the Rose Bowl in Pasadena, California.\n\nMIKE LEACH\nJerry, the Rose Bowl is a dream for every college football coach. But it's not the end of the world. We've had a great season, and we've got a lot to be proud of. Maybe my air raid offensives just don't quite do it any more, I need to find something new.\n\nJerry looks at his coach, inspired by his words.\n\nJERRY\nYou're right, Mike. We'll just have to work even harder next season. We can find new strategies and come back on top. \n\nMike Leach smiles, patting Jerry on the back.\n\nMIKE LEACH\nThat's the spirit, Jerry. That's the spirit.\n\nFADE OUT.\n\nThis script is a fictional representation and does not reflect any actual events or conversations.",
+    "Y": "Title: \"The Unforeseen Exit: Mike Leach's Elimination from Rose Bowl Contention\"\n\nINT. MIKE LEACH'S OFFICE - DAY\n\nMike Leach, the head coach of the Washington State Cougars, is sitting at his desk, analyzing game footage. His phone buzzes with a message from the PAC-12 conference. He reads it, his expression turning serious.\n\nMIKE LEACH\n(to himself)\nWell, that's not the news we were hoping for.\n\nJerry, his assistant coach, enters the room, noticing Mike's change in demeanor.\n\nJERRY\nWhat's up, Mike? You look like you've seen a ghost.\n\nMIKE LEACH\nWe've just received word from the PAC-12. Despite our strong season, we've been eliminated from Rose Bowl contention due to our loss against Washington and Oregon's victory over Utah.\n\nJerry looks disappointed but nods in understanding.\n\nJERRY\nThat's a tough break, but we've had a great season nonetheless.\n\nMike Leach stands up, walking over to a large map of the United States on his wall. He points to the Rose Bowl in Pasadena, California.\n\nMIKE LEACH\nThe Rose Bowl is a dream for every college football coach, but it's not the end of the world. We've got a lot to be proud of, and we'll come back even stronger next season.\n\nFADE OUT.",
+    "E1.trigger": "当任务明确要求基于特定未提供的文本、数据、列表或上下文信息进行分析、总结或生成时",
+    "E1.principle": "若候选回答在未获得必要输入的情况下，自行编造、推断或虚构了任务所依赖的具体内容细节，应视为严重的事实性错误或幻觉，无论其生成的内容在逻辑上是否自洽或语言是否流畅。",
+    "E1.application_guide": "在构建评分标准的'准确性'或'真实性'维度时，增加一项'输入依赖性核验'：首先检查回答是否明确指出了输入缺失并请求补充；若回答直接生成了具体的事实性细节（如特定的观点、数据、情节），且这些细节无法从用户指令或已知背景中推导出来，则判定为'幻觉/虚构'，该项不得分或直接否决。此标准旨在区分'澄清需求'与'无中生有'，确保评分能捕捉到因输入缺失导致的根本性错误。",
+    "Select.E1": "任务仅提供了主题（Mike Leach 被取消玫瑰碗资格），未提供任何具体的背景事实、数据、时间线或具体事件细节（如具体比分、教练言论、赛季战绩等）。根据经验7的触发条件，当任务要求基于特定但未提供的上下文信息生成内容时，必须设立‘输入依赖性核验’来防止模型编造虚构事实。因此，该经验适用于制定评分标准以区分‘基于常识合理推断’与‘无中生有捏造细节’。",
+    "N.analysis": "任务要求生成一篇关于迈克·莱奇（Mike Leach）被取消玫瑰碗参赛资格的剧本。设计评分标准时，需区分背景信息（如莱奇的身份、事件本身）与输出要求（剧本格式、内容叙事）。核心在于剧本是否准确描述了该特定事件，包含必要的戏剧元素，且未将背景事实错误地转化为额外的创作义务。由于没有提供具体经验，仅基于任务本身的逻辑构建标准：准确性、格式合规性、叙事完整性和相关性。",
+    "N1": "剧本是否明确以迈克·莱奇被取消玫瑰碗参赛资格为核心主题进行叙述？",
+    "N1.X.reason": "剧本并未以迈克·莱奇被取消玫瑰碗参赛资格为核心主题。首先，迈克·莱奇从未执教过华盛顿州立大学（Washington State），该事实错误导致核心人物与情境完全错位；其次，剧本内容描述的是球队因竞争对手表现优异而未能入选，而非莱奇本人被“取消资格”或遭遇行政/纪律处罚，偏离了任务设定的具体事件。",
+    "N1.Y.reason": "剧本标题明确为《迈克·莱奇无缘玫瑰碗的意外出局》，且对话和舞台指示均围绕迈克·莱奇收到消息得知球队被取消玫瑰碗资格这一核心事件展开，完全符合主题要求。",
+    "N2": "输出是否采用了剧本的标准格式（包含场景标题、角色名、对话和舞台指示）？",
+    "N2.X.reason": "输出严格遵循了剧本的标准格式，包含了明确的大写场景标题（如 MIKE LEACH'S OFFICE - DAY）、居中的角色名、对话文本以及舞台指示（动作描写），结构完整且符合行业规范。",
+    "N2.Y.reason": "输出严格遵循了剧本标准格式，包含了场景标题（INT. MIKE LEACH'S OFFICE - DAY）、角色名称（MIKE LEACH, JERRY）、括号内的动作/语气提示（to himself, 描述性动作）以及标准的结尾标记（FADE OUT）。",
+    "N3": "剧本内容是否准确反映了导致其被淘汰的关键事实或情境，而非虚构完全无关的虚假细节？",
+    "N3.X.reason": "剧本未能准确反映关键事实，反而虚构了大量虚假细节。最明显的错误是将迈克·莱奇设定为华盛顿州立大学的教练（他实际执教过德克萨斯理工大学、密西西比州立大学等，但未执教WSU）。此外，剧本暗示其被淘汰是因为战术过时或竞争失败，而非任务要求的“被取消资格”这一特定情境，属于事实性偏差和虚构无关细节。",
+    "N3.Y.reason": "剧本内容存在严重的事实错误。迈克·莱奇（Mike Leach）生前是德克萨斯理工大学（Texas Tech）的主教练，而非华盛顿州立大学（Washington State Cougars）；此外，他于2021年去世，从未在担任华盛顿州立大学主教练期间经历所谓的“因输给华盛顿队而被取消玫瑰碗资格”的情节，这属于虚构无关的虚假细节。",
+    "N4": "剧本是否具有完整的叙事结构（包含开端、冲突发展和结局/高潮），而不仅仅是事实陈述？",
+    "N4.X.reason": "剧本具备完整的叙事结构：开端展示了莱奇在办公室观看录像的情境；冲突发展通过助手杰瑞带来坏消息引发情感波动；结局/高潮则是莱奇发表关于继续努力的励志讲话并淡出画面。这构成了一个有起承转合的微型故事，而非单纯的事实罗列。",
+    "N4.Y.reason": "剧本具备完整的叙事结构：开端展示了莱奇分析录像并收到坏消息；冲突发展体现在助理教练杰瑞的询问与莱奇告知淘汰结果之间的互动；结局/高潮则是莱奇面对现实、表达遗憾但重申团队骄傲并展望未来，最后以淡出结束，并非单纯的事实罗列。",
+    "W.analysis": "任务要求生成关于Mike Leach退出玫瑰碗争夺的剧本。核心事实背景是：Mike Leach（德州理工大学教练）已于2021年去世，不可能在之后的赛季（如2023或2024年）参与任何比赛或导致球队退出玫瑰碗争夺。因此，任务描述本身包含严重的事实前提错误。根据提供的经验1，当任务基于虚构或不可能发生的前提要求生成具体细节时，模型若直接编造具体的比赛结果、战术分析或对话情节而未指出事实矛盾，即构成严重的幻觉。评分标准必须首先验证回答是否识别并纠正了这一根本性的事实错误，而非仅仅关注剧本的文学性。只有确认回答正确指出了Mike Leach已故且无法参与此事件后，才考虑其创意写作部分（如假设性情境或历史回顾）。权重分配上，事实准确性与幻觉检测应占最高权重，因为这是任务成立的基石；其次才是内容的相关性和格式要求。",
+    "W1": "回答是否明确指出了Mike Leach已于2021年去世这一关键事实，并据此说明他不可能在近期（如2023-2024赛季）因个人原因被‘淘汰’出玫瑰碗争夺？",
+    "W1.X.reason": "回答未明确指出Mike Leach已于2021年去世这一关键事实，反而在剧本中将设定为华盛顿州立大学（Washington State Cougars）的主教练（实际上Leach生前执教的是德州理工大学Texas Tech），并虚构了他在2023-2024赛季因比赛失利被‘淘汰’出玫瑰碗争夺的情节，未能纠正关于时间线和真实性的错误。",
+    "W1.Y.reason": "回答未明确指出Mike Leach已于2021年去世这一关键事实，反而在剧本中将其描绘为2023-2024赛季仍在执教华盛顿州立大学的活人，完全忽略了该历史事实并构建了违背现实的剧情。",
+    "W2": "如果回答采用了假设性或虚构性叙事（如平行宇宙），是否清晰地将其标记为虚构场景，而非作为真实新闻或历史事实进行陈述？",
+    "W2.X.reason": "回答在剧本末尾明确添加了声明：'This script is a fictional representation and does not reflect any actual events or conversations.'（本剧本为虚构代表，不反映任何实际事件或对话），清晰地将其标记为虚构场景，而非作为真实新闻陈述。",
+    "W2.Y.reason": "回答采用了虚构性叙事（让已故教练在世执教），但并未在开头、结尾或任何地方清晰标记该场景为‘假设’、‘平行宇宙’或‘虚构’，而是直接以严肃的剧本形式呈现，容易误导读者将其当作真实新闻或历史事件。",
+    "W3": "回答是否以剧本格式（包含场景描述、角色对话等）呈现内容，符合任务对体裁的要求？",
+    "W3.X.reason": "回答采用了标准的剧本格式，包含了标题（Title）、场景描述（Scene Heading如'MIKE LEACH'S OFFICE - DAY'）、角色名称、对话内容以及转场提示（FADE OUT），符合任务对体裁的要求。",
+    "W3.Y.reason": "回答严格遵循了剧本格式要求，包含了标题、场景描述（如'INT. MIKE LEACH'S OFFICE - DAY'）、角色名称、对话内容以及动作指示（如'FADE OUT'），符合任务对体裁的具体规定。"
+  }
+}

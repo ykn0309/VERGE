@@ -1,0 +1,103 @@
+{
+  "case_index": 334,
+  "experiences": [
+    "E1"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.35,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N2",
+          "weight": 0.35,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N3",
+          "weight": 0.2,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N4",
+          "weight": 0.1,
+          "X_satisfied": false,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.4,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W2",
+          "weight": 0.35,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W3",
+          "weight": 0.15,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W4",
+          "weight": 0.1,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "How could a proper 2006-2007 inspired game be done properly?",
+    "X": "Here are some steps to create a proper 2006-2007 inspired game:\n\n- Choose a genre: Decide on a genre for your game, such as first-person shooter, platformer, or role-playing game.\n\n- Choose a platform: Decide on a platform for your game, such as PC, console, or mobile.\n\n- Choose a programming language: Choose a programming language that is suitable for your platform, such as C++ for PC or Java for mobile.\n\n- Choose a game engine: Choose a game engine that is suitable for your platform and genre, such as Unreal Engine for first-person shooter games or Unity for platformers and role-playing games.\n\n- Design the game mechanics: Design the game mechanics, such as movement, combat, and puzzle-solving, that will be unique to your game.\n\n- Create the game world: Create the game world, including levels, environments, and characters.\n\n- Develop the gameplay: Develop the gameplay, including the storyline, characters, and game mechanics.\n\n- Test and debug: Test the game thoroughly to ensure that it is playable and free of bugs.\n\n- Release the game: Release the game on your chosen platform.\n\n- Iterate and improve: Iterate on the game based on player feedback and continue to improve the game over time.",
+    "Y": "To create a proper 2006-2007 inspired game, you would want to capture the essence of games released during that time period. Here are some steps you could follow:\n\n1. Research: Study the games that were popular during that time frame. Identify the common elements, gameplay mechanics, visual styles, and storytelling techniques that were prevalent.\n2. Choose a genre: Decide on the genre of your game. Was it a period of great adventure games, first-person shooters, or puzzle games? Choose a genre that you are passionate about and that fits well with the time period.\n3. Develop the game mechanics: Once you have chosen a genre, you need to develop the game mechanics. This includes the controls, the physics, and the gameplay mechanics. Try to keep them simple and intuitive, as games during that time period were generally more straightforward and less complex than modern games.\n4. Create the visual style: The visual style of your game should be reminiscent of the time period. Use textures, colors, and design elements that were popular during that time. Avoid using modern techniques and effects that would take away from the retro feel.\n5. Write the story: The story of your game should also be inspired by the time period. Use themes and tropes that were popular during that time, and avoid using modern storytelling techniques.\n6. Test and refine: Once you have developed the game mechanics, created the visual style, and written the story, it's time to test and refine your game. Playtest it with people who are familiar with games from that time period, and get their feedback. Use this feedback to refine and improve your game.\n7. Release and promote: Once you are satisfied with your game, it's time to release it. Promote it through social media, gaming forums, and other channels that are popular with gamers from that time period. Consider releasing it on platforms that were popular during that time, such as Steam or GOG.\n\nBy following these steps, you can create a proper 2006-2007 inspired game that captures the essence of that time period while still providing a fun and engaging experience for modern gamers.",
+    "E1.trigger": "当任务涉及具有明确分期、迭代或版本演变特征的实体（如系列作品、软件版本、历史阶段等），且候选回答中包含关于该实体的具体属性描述时",
+    "E1.principle": "回答必须严格区分不同时期的实体特征；若将属于后续版本、迭代或阶段的特征（如人物、地点、风格、数据）错误地归因于早期版本或阶段，无论其描述多么详细或逻辑自洽，均视为根本性的事实错误（Hallucination of Timeline），而非一般的细节偏差。",
+    "E1.application_guide": "在构建评分标准的‘事实准确性’维度时，设立‘时序/版本归属校验’否决项。1. 识别任务涉及的实体及其明确的分期节点（如‘2002年前’）。2. 检查回答中提及的所有关键属性（如核心人物、标志性事件、特定地点）是否与该时间段的历史记录严格匹配。3. 若发现任何属性明显属于该实体在分期节点之后的状态（如将重启版的主持人列为原版主持人），直接判定该项不得分，且该错误不可通过‘承认不确定性’或‘提供背景信息’来修正。严禁仅因回答提供了‘丰富细节’而给予高分，必须优先验证这些细节的时间归属是否正确。",
+    "Select.E1": "任务明确要求设计一个'2006-2007 inspired game'，这属于具有明确时间分期特征的实体（特定历史时期）。经验6的核心原则是防止将后续版本或阶段的特征错误归因于早期版本（时序幻觉），这与本题中必须严格确保游戏设计元素（如玩法、美术风格、技术限制）符合2006-2007年时代背景的要求完全一致。评分标准必须设立‘时序归属校验’，以否决那些混入了现代概念（如开放世界、微交易等当时尚未普及或不存在的设计）的回答。",
+    "N.analysis": "该任务要求提供关于如何设计一款具有2006-2007年风格的游戏的具体建议。核心在于识别并应用该特定历史时期的游戏设计特征（如硬件限制、玩法机制、视觉风格等），并将其转化为可执行的设计方案。背景信息（即2006-2007年的时间段）仅用于界定风格范围，不应被当作需要复述的历史事实来输出。评分标准应聚焦于对时代特征的准确捕捉、设计策略的可行性以及回答是否直接回应了‘如何做’这一核心问题。",
+    "N1": "回答是否明确提出了具体的游戏设计策略或方法，而非仅描述2006-2007年的游戏历史？",
+    "N1.X.reason": "回答仅提供了通用的游戏开发通用步骤（如选择类型、平台、引擎等），完全没有提出针对2006-2007年特定风格的具体设计策略或方法，未能体现如何“模仿”该时期的独特性。",
+    "N1.Y.reason": "回答明确提出了7个具体的游戏设计步骤，包括研究、选择类型、开发机制、视觉风格、故事创作、测试优化以及发布推广，这些都是具体的策略和方法，而非单纯的历史描述。",
+    "N2": "回答是否准确识别并体现了2006-2007年时期特有的游戏元素（如硬件性能限制、特定的玩法机制、美术风格或叙事方式）？",
+    "N2.X.reason": "回答中未提及任何2006-2007年特有的游戏元素，如当时的硬件限制（PS2/Xbox时代的多边形数量、纹理分辨率）、特定的玩法机制（如线性关卡设计、固定视角）或美术风格（如低多边形建模、早期3D渲染技术）。",
+    "N2.Y.reason": "回答虽然提到了要模仿该时期的元素（如简单直观的控制、特定的纹理和色彩），但并未准确识别或体现2006-2007年特有的具体技术限制（如多边形数量、内存限制、特定API）或当时标志性的独特玩法机制（如当时的物理引擎特性、特定的关卡设计逻辑），内容过于笼统和通用。",
+    "N3": "回答中的建议是否具有实际可操作性，能够指导开发者如何将这些复古元素融入现代开发流程中？",
+    "N3.X.reason": "建议内容过于宽泛和基础，属于现代游戏开发的通用流程，无法指导开发者如何将复古元素融入其中，缺乏针对复古风格实现的具体操作指南。",
+    "N3.Y.reason": "建议缺乏针对现代开发流程的具体可操作性指导。例如，它建议避免使用现代技术，但未说明如何在现代引擎中实现复古效果，也未提及如何处理现代硬件与旧时代设计理念的兼容性问题，仅停留在概念层面的建议。",
+    "N4": "回答是否避免了将时代背景描述作为主要输出内容，而是将其作为设计决策的依据？",
+    "N4.X.reason": "回答完全忽略了时代背景的描述，既没有将其作为设计决策的依据，也没有讨论如何利用历史背景来指导设计，仅仅是一份通用的游戏开发清单。",
+    "N4.Y.reason": "回答将2006-2007年的背景作为设计决策的依据（例如，因为那个时期游戏更简单，所以建议保持机制简单；因为当时流行某种风格，所以建议使用特定纹理），背景信息服务于设计策略，而非作为主要输出内容。",
+    "W.analysis": "任务核心在于提供设计一款受2006-2007年风格启发的游戏的可行方案，属于创意建议类任务。背景信息中的'2006-2007'是设计的灵感来源和时间锚点，而非需要回答的历史事实本身。根据提供的经验1，必须严格区分该特定历史时期的游戏特征（如硬件限制、流行玩法、美术风格）与后世特征，防止将现代元素错误地归因于该时期或作为该时期设计的依据。评分标准应聚焦于：方案是否紧扣该时期特征、建议的可行性、对时代局限性的理解以及是否避免了时代错置。权重分配上，核心要求（如何设计）占主要部分，时代准确性作为关键约束条件赋予较高权重，背景信息描述不作为独立得分项。",
+    "W1": "回答是否提供了具体的设计方案或策略来体现2006-2007年的游戏风格（如玩法机制、视觉艺术或技术限制）？",
+    "W1.X.reason": "回答仅列出了通用的游戏开发步骤（如选择类型、平台、引擎等），未提供任何具体的设计方案或策略来体现2006-2007年的独特风格，例如当时特有的玩法机制（如特定的手柄操作逻辑）、视觉艺术风格（如PS2时代的低多边形渲染或特定的光照效果）或技术限制（如内存管理方式）。",
+    "W1.Y.reason": "回答仅提供了通用的游戏开发步骤（如研究、选择类型、测试等），未提供具体的设计方案或策略来体现2006-2007年的特定风格。例如，没有提及当时标志性的玩法机制（如PS2时代的固定镜头解谜、Xbox的在线多人匹配逻辑）、视觉艺术特征（如低多边形建模、法线贴图缺失、特定的光照渲染方式）或技术限制（如内存限制导致的内容加载方式）。",
+    "W2": "回答中引用的所有游戏特征、技术细节或文化元素是否严格归属于2006-2007年的历史记录，未出现明显的时代错置（Hallucination of Timeline）？",
+    "W2.X.reason": "回答中提到的技术细节存在明显的时代错置。它建议使用Unity作为引擎，而Unity在2005年才发布第一个版本且直到2008年才正式商业化，并非2006-2007年主流的开发工具；同时建议Java用于移动游戏也不符合当时Nokia Symbian或Windows Mobile主导的移动游戏生态（当时主要使用C/C++或特定字节码环境，而非现代意义上的Java手机游戏开发标准）。此外，推荐Unreal Engine也未指明具体是当时的UE3还是更早版本，缺乏历史准确性。",
+    "W2.Y.reason": "回答中存在明显的时间错置（Hallucination of Timeline）。文中建议通过“社交媒体”（social media）进行推广，并提到在“Steam或GOG”上发布。虽然Steam和GOG存在，但Steam作为主要的PC数字发行平台在2003年上线后直到2006-2007年才逐渐普及，且当时的推广核心是实体光盘零售和论坛，而非现代意义上的“社交媒体”。更重要的是，将“社交媒体”列为针对该时期玩家的主要推广渠道是不准确的，因为Facebook、Twitter等主流游戏平台在2006-2007年尚未成为游戏营销的核心阵地，这属于时代错置。",
+    "W3": "提出的设计方法是否在逻辑上可行，并解释了如何利用当时的技术环境（如PS2/Xbox/PC配置）来实现目标？",
+    "W3.X.reason": "提出的设计方法完全通用，没有解释如何利用2006-2007年的具体技术环境（如PS2的Emotion Engine架构、Xbox的GDDR内存限制或PC的DirectX 9特性）来实现目标。回答中的步骤适用于任何时代的现代游戏开发，缺乏针对该特定时期硬件和软件约束的逻辑可行性分析。",
+    "W3.Y.reason": "回答完全没有解释如何利用当时的技术环境（如PS2/Xbox/PC的具体配置）来实现目标。它只是泛泛地提到“保持简单”，但没有涉及任何关于硬件性能、图形API（如DirectX 9.0c）、内存管理或当时引擎（如Unreal Engine 2/3早期版本）的具体实现方法。",
+    "W4": "回答是否准确识别了2006-2007年游戏区别于其他时期的核心要素，而非泛泛而谈通用的游戏设计原则？",
+    "W4.X.reason": "回答未能识别2006-2007年游戏区别于其他时期的核心要素。内容完全是通用的游戏设计原则（如测试、迭代、发布），没有提及该时期特有的文化元素（如多人联机对战的兴起、特定的叙事手法、或是从2D向3D过渡的技术瓶颈等），属于泛泛而谈。",
+    "W4.Y.reason": "回答未能准确识别2006-2007年游戏区别于其他时期的核心要素。内容完全由通用的游戏设计原则组成（如“选择你热爱的类型”、“保持控制直观”、“进行测试”），这些原则适用于任何年代的游戏开发，缺乏对那个特定时代独特文化、审美和技术瓶颈的深入分析。"
+  }
+}

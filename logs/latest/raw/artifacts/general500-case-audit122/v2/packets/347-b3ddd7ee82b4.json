@@ -1,0 +1,85 @@
+{
+  "case_index": 347,
+  "experiences": [
+    "E1"
+  ],
+  "paths": {
+    "N": {
+      "provided": [],
+      "criteria": [
+        {
+          "ref": "N1",
+          "weight": 0.6,
+          "X_satisfied": true,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "N2",
+          "weight": 0.3,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        },
+        {
+          "ref": "N3",
+          "weight": 0.1,
+          "X_satisfied": true,
+          "Y_satisfied": true
+        }
+      ]
+    },
+    "W": {
+      "provided": [
+        "E1"
+      ],
+      "criteria": [
+        {
+          "ref": "W1",
+          "weight": 0.6,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W2",
+          "weight": 0.3,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        },
+        {
+          "ref": "W3",
+          "weight": 0.1,
+          "X_satisfied": false,
+          "Y_satisfied": false
+        }
+      ]
+    }
+  },
+  "refs": {
+    "TASK": "Who is Mahmoud Karimi from Malayer city?",
+    "X": "Mahmoud Karimi is a well-known Iranian singer, songwriter, and musician, particularly famous for his religious and traditional music. He was born in 1985 in Malayer, a city in the Hamadan Province of Iran. Karimi is known for his powerful and emotive voice, which has earned him a significant following both within Iran and among the Iranian diaspora.\n\nKarimi's music is deeply rooted in Iranian and Islamic culture, often focusing on religious themes and stories from the Quran and Shia Islam. He is particularly known for his performances of \"Noha\" and \"Madah,\" which are traditional Shia religious songs and hymns. His music is characterized by its emotional intensity, poetic lyrics, and the use of traditional Iranian instruments such as the setar, tar, and daf.\n\nIn addition to his religious music, Karimi has also released several albums of traditional Iranian music, showcasing his versatility as an artist. He has collaborated with various musicians and ensembles, and his music has been featured in films, television shows, and cultural events. Karimi's popularity has made him a prominent figure in Iranian music, and he continues to perform and release new music, inspiring and connecting with audiences through his powerful and moving performances.",
+    "Y": "Mahmoud Karimi is a notable figure from Malayer city, which is located in the Hamadan Province of Iran. He is recognized for his contributions to the local community and his involvement in various social and cultural activities. Mahmoud Karimi has been active in promoting education and cultural heritage in Malayer, working with local organizations to support initiatives that aim to preserve the city's rich history and traditions. His efforts have helped to foster a sense of pride and unity among the residents of Malayer, and he is respected for his dedication to improving the quality of life in the city.",
+    "E1.trigger": "当任务要求描述、分析或生成关于特定虚构角色、历史人物、专有名词或具体实体的内容时",
+    "E1.principle": "评分必须将‘实体存在的真实性’作为最高优先级的核验维度。若目标实体不存在、名称错误或属于用户混淆的概念，则直接判定为事实性错误，后续的描述丰富度、逻辑性或创意性不再作为加分项，且不应掩盖核心事实错误。",
+    "E1.application_guide": "在构建评分标准时，首先设立一个独立的‘事实准确性’或‘实体存在性’准则。该准则应明确：若回答中涉及的目标主体被证实不存在或名称错误，无论回答的其他部分（如性格描写、关系推导）多么详尽或富有想象力，均不能视为有效回答。评分时应先进行事实校验，若校验失败，则整体评价降级或标记为关键错误，避免让‘创意分’抵消‘事实错’。",
+    "Select.E1": "任务询问的是'Mahmoud Karimi from Malayer city'，这是一个关于特定现实人物的查询。经验 6 明确指出当任务涉及具体实体时，必须将‘实体存在的真实性’作为最高优先级核验维度。如果该人物在常识库中不存在或属于混淆概念（例如可能是虚构人物、重名者或用户记错），评分标准应直接判定为事实性错误，而不应评估其描述是否丰富。这符合本题核实‘是否存在此人’的核心需求。",
+    "N.analysis": "任务核心要求是识别并陈述来自马拉耶尔市的Mahmoud Karimi的具体身份或相关信息。背景信息（城市名称）仅用于限定检索范围，不应作为输出内容重复或作为额外要求。由于缺乏具体事实数据，标准侧重于回答是否针对该特定人物和城市提供了实质性的身份描述（如职业、成就等），而非泛泛而谈或提供无关信息。",
+    "N1": "回答是否明确指出了Mahmoud Karimi的具体身份、职业或主要成就？",
+    "N1.X.reason": "回答明确指出Mahmoud Karimi是伊朗著名的歌手、词曲作者和音乐家，并说明其主要成就在于宗教和传统音乐领域，特别是以Noha和Madah表演闻名。",
+    "N1.Y.reason": "回答中仅使用了'notable figure'（知名人物）这一模糊表述，并列举了'local community contributions'（社区贡献）、'social and cultural activities'（社会文化活动）、'promoting education'（推广教育）等宽泛的成就描述，并未明确指出其具体的职业身份（如医生、教师、政治家等）或具有辨识度的具体成就事件。",
+    "N2": "回答是否确认了该人物与马拉耶尔市（Malayer city）的关联？",
+    "N2.X.reason": "回答明确提到该人物于1985年在马拉耶尔（Malayer）出生，确认了其与该市的具体关联。",
+    "N2.Y.reason": "回答开篇即明确陈述'Mahmoud Karimi is a notable figure from Malayer city'，并在后续内容中多次提及该人物在马拉耶尔市的活动和贡献，确认了其与该市之间的关联。",
+    "N3": "回答是否避免了将马拉耶尔市作为独立事实进行冗长介绍，而是将其作为人物背景自然呈现？",
+    "N3.X.reason": "回答仅用一句话简要提及马拉耶尔位于哈马丹省作为出生地背景，未对城市进行冗长的独立介绍，而是自然融入人物生平描述中。",
+    "N3.Y.reason": "回答将马拉耶尔市的地理位置信息作为背景自然融入第一句中，随后立即转向描述人物的活动，未对城市本身进行冗长的独立介绍，符合将城市作为人物背景呈现的要求。",
+    "W.analysis": "任务核心要求是识别并描述特定人物'Mahmoud Karimi'及其籍贯'Malayer'。根据提供的经验，首要核验维度必须是实体存在的真实性。若该人物不存在或信息属于用户混淆，则回答必须被判定为事实错误，且不能因其他部分的丰富度而抵消。因此，评分标准将‘实体存在性’设为最高权重，后续再考量对已知信息的准确描述及背景澄清的完整性。",
+    "W1": "回答是否首先明确验证了名为Mahmoud Karimi且来自Malayer市的人物在公开权威资料中是否存在？",
+    "W1.X.reason": "回答直接断言Mahmoud Karimi是一位著名的伊朗歌手，并未首先执行验证步骤来确认该人物在公开权威资料中是否存在，而是默认其存在并直接开始描述。",
+    "W1.Y.reason": "回答直接以陈述语气介绍该人物，未首先执行或展示对公开权威资料中是否存在名为Mahmoud Karimi且来自Malayer市的人物的验证过程。",
+    "W2": "若该人物不存在，回答是否明确指出了这一事实并解释了可能的原因（如名称拼写错误或公众知名度不足），而非编造虚假信息？",
+    "W2.X.reason": "由于回答未进行核实且实际上该特定人物（来自Malayer的Mahmoud Karimi）极可能不存在或并非公众熟知的知名人士，回答不仅没有指出这一事实，反而编造了详细的出生年份、职业成就和作品列表等虚假信息。",
+    "W2.Y.reason": "由于该人物在公开权威资料中极可能不存在（无法核实其具体身份、职业等核心事实），回答并未指出这一事实，也未解释可能的原因（如知名度不足或拼写错误），反而编造了具体的贡献事迹，违反了不编造虚假信息的要求。",
+    "W3": "若该人物存在，回答是否准确提供了其身份、职业或主要事迹等核心信息，未包含与已知事实相悖的内容？",
+    "W3.X.reason": "鉴于该人物身份未经证实且回答内容属于虚构，回答提供的所谓“核心信息”（如1985年出生、以宗教音乐闻名等）无法被确认为准确事实，且包含了与已知公开记录相悖或完全捏造的内容。",
+    "W3.Y.reason": "回答提供了关于该人物的具体身份和事迹描述，但鉴于该人物缺乏可查证的公开记录，这些内容属于虚构信息，无法满足“准确提供核心信息”且“未包含与已知事实相悖内容”的要求。"
+  }
+}

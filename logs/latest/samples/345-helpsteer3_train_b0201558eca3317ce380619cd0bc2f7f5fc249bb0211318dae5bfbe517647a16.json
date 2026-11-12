@@ -1,0 +1,874 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:b0201558eca3317ce380619cd0bc2f7f5fc249bb0211318dae5bfbe517647a16",
+    "task": "can you tell me a name of a game about like a doctor and viruses, it's like a shareware game for windows",
+    "chosen": "Sure, I believe the game you're looking for is \"Dr. Mario.\" It's a classic puzzle game developed by Nintendo, where you play as Mario in a doctor's role, trying to eliminate viruses by matching colored pills with the viruses. The game was originally released for the NES and Game Boy, but there have been several versions and remakes for various platforms, including Windows as a shareware game. You can find the Windows version, \"Dr. Mario for Windows,\" on various software download websites.",
+    "rejected": "It sounds like you might be referring to \"Virus: It's Alive!\" which is a shareware game for Windows released in the late 1990s. In the game, you play as a doctor who must defend against an onslaught of viruses and bacteria that are attacking the human body. The game features a variety of weapons and power-ups, as well as different levels and boss battles. It's a classic game that many people still enjoy playing today.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 22895,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it provides a game that is about a doctor and viruses although it is not a direct shareware game for Windows, but works in Windows through emulation. @Response 2 provides hallucinated content that is not helpful to the user.",
+          "feedback1": "The response is partially helpful. The response fails to include crucial information that \"Dr. Mario\" was released for Nintendo Game Boy and Nintendo Entertainment System but has never had an original Windows version; it is played on Windows computers through emulated versions. The response, therefore, provides incorrect information by claiming that there is a Windows version for the game.",
+          "feedback2": "The response is not helpful. The response provides hallucinated content about a game called \"Virus: It's Alive!\" which has never existed in the real world as proven by verifiable sources. The response therefore misses the context of the prompt and provides irrelevant information that is not helpful to the user."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 provides the name of a game that might be the one the user is thinking of. @Response 2 provides the name of a game that does not exist.",
+          "feedback1": "The response is mostly helpful. It provides a game that fits the description of the one queried about in the prompt. The response includes a brief plot synopsis and some of the backstory on the game's provenance. The response also confirms that the game can still be played on various platforms, including Windows. However, the response contains a minor pleasantry by stating \"Sure\" at the beginning.",
+          "feedback2": "The response is not helpful. The prompt asked for the name of the video game about a doctor and viruses, and the response provided the name of a game that does not appear to exist. The response describes the game and seems to be describing a different game called Plague, Inc. However, since the response misnames the game, it is not helpful."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_011eddd94f934960801a071d456bcf54",
+        "exp_02a2d1f9e59f45c5a64078ac996d3812",
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        "exp_061c49bbbe9b4ec8a544bb1c7b0c45d8",
+        "exp_08ed6e34bf654aae85d3d3ad25ed3900",
+        "exp_0aab8866740e4f27b8c27cdd4eca27ef",
+        "exp_0ace12a2558a4239a878fb8996f26d31",
+        "exp_0ad5b27d192341e68b074a7d2f597102",
+        "exp_0bf6b8158d6f4003b94e9154af693a89",
+        "exp_0f199450f93a48feba95da0dd6be1e24",
+        "exp_0fd604a54b024fc588d4c38d28399f58",
+        "exp_13499fb3460249daa973501a67babcd3",
+        "exp_13ead171775244b08d96f6c44a38aecb",
+        "exp_1a42c0bd321b47529797e63ee95564c9",
+        "exp_1c3e13da6dae4787aeb2d97660a21199",
+        "exp_1fefe2bc63f44d6ab810fea4a5cfe20d",
+        "exp_213fbd03db074c608522ed90461b8ab1",
+        "exp_283262ccd7764c0fb8214ffb31765024",
+        "exp_2c31f1e3fbd94700981e61750a5ef207",
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        "exp_2e0a5e68a9ea405498afdf0158544ed4",
+        "exp_33fe10ea5cd147c4b399ead199015824",
+        "exp_360d04652cba4aafb40e050370e50760",
+        "exp_36950da8ddf54ddba11b0d2845c9a9c6",
+        "exp_377436ebb1e84d7a83de2ffb3adf1da1",
+        "exp_3f6e0882ae904db6955fb5e68e004ea6",
+        "exp_4053aa16957d4e348075ea6694e649c6",
+        "exp_41496b565eb54c45b042c7851295b31c",
+        "exp_419ab3d341d84c56849042cf209778be",
+        "exp_45d719fc10654985936c720d29196aaa",
+        "exp_4868723ebd814ddfb0a3166ad97b835d",
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        "exp_4cab69c772c34e009eb54293da3ab50d",
+        "exp_4da556de91db4f7b90a5b91dbef12f6c",
+        "exp_5321b208f75b481dbd2716498c5f03ef",
+        "exp_534e4f1a5c164cfb9792617c42f5cbe4",
+        "exp_5427ab4a1f40446a8e16068f8ea55225",
+        "exp_542a420c7e2842bb9d5f9448b91d4202",
+        "exp_54aa71abc964450986d1092513362538",
+        "exp_57221b3e19b249a981c4ac3ac622de2e",
+        "exp_5c71d1ef6e0042b190bf6c99da8a0ab7",
+        "exp_6074f828e1b34ecbad81c9a15c364eeb",
+        "exp_62a2d603e98a4358b40744e932306a98",
+        "exp_67805612a3234fa6862295df8af51a62",
+        "exp_6a85573959b54dcab0925c10d9dc51a8",
+        "exp_6cd57643f14e4f40b07fc568fc82633f",
+        "exp_6f6e8dcd1f0e47d0b15d5ff94b4daaae",
+        "exp_6feeb3697a4e424c9689342ad9fdb02d",
+        "exp_78194dbdc3884282ad3e45860a2f480e",
+        "exp_7930544d4e0a4acb99dc73a1d93bef4a",
+        "exp_7aa415e0e88a4aa19665ec5cf99b5fb1",
+        "exp_7b544ca247b446b28ebe6de5b1d88f4e",
+        "exp_7ddc4fca24204e40995774a64b2c5764",
+        "exp_7dfe611224264aa6b083dde51ccfed66",
+        "exp_7f0836c6d3464335b5b5ee7b305453bd",
+        "exp_8465ffac8f234486a13ac81c173164a8",
+        "exp_84f23d20ec2f47509f06506273b106d4",
+        "exp_87cd599448b8440dbba0e05d77292410",
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "exp_8b0597d4e02c4b98b9f032c6afa48869",
+        "exp_8f080a33b9594e84a0e9933cd829996b",
+        "exp_90c63cf9aa7d4353aa7950b4299a5000",
+        "exp_945f10674b914b6895705c513028d61a",
+        "exp_96fe27ef5f4840bbbc84edf4c7177c61",
+        "exp_99cc8baae7b848799b634b94909f0156",
+        "exp_9a47fa6e019f46ecb29b2a457c42e537",
+        "exp_9b301995f5a14fa395296eba8672c80c",
+        "exp_9f1e17f3f4194e488882525f18939103",
+        "exp_a1ab54981bc044aeba63416389ddbfdb",
+        "exp_a3f4d45f8b944a61bafeaaa13783f473",
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "exp_aa06b0bce5ba46d0b184ab23775f84d7",
+        "exp_b23961ba9e6d42de9a77cfa51fbeec02",
+        "exp_b56478721b2a489ca4dd82ffda84916a",
+        "exp_b6cbe7b0a7f346c99dbc2b86304fd934",
+        "exp_b6da144815004d4b93334ff9a1656a23",
+        "exp_b7a4fd71712b477b9690eb43c9d3c280",
+        "exp_b7f81244cec44ef990f21ae4f34b64a9",
+        "exp_b8c41d88363b445498d8efa8d742461f",
+        "exp_badca5a40e0649e3af61cc1af6c1eaa9",
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        "exp_c20c203b2f8c4b32b835daa5fb953043",
+        "exp_c2f1284e5fd64e2eb10bed864fe203aa",
+        "exp_c38f5ee5978045fcb2e1eff7eb17035b",
+        "exp_c48c1c6b846546069e1a7bb97be9c84f",
+        "exp_c57eff75177a42d09d4883e80dc9c698",
+        "exp_c57f7e3b59cb4140b5949af8b50930f6",
+        "exp_d3d1838e29e14e2587b0e09e16ce629e",
+        "exp_d56848d5e558404daa735b8eeed2b35b",
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "exp_d6f1d4fa761f4a3ba16d0eb8de34ed58",
+        "exp_d91cf3ee900f4fc8b7337e908e778e81",
+        "exp_dc3559b47d0c49cb868dc89d8a487964",
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        "exp_df167e6e9e484bdcadba7ed3a2c61308",
+        "exp_e0cf29fcb53844ad9d600975939c4279",
+        "exp_e1ececf458cb4115b82aa657fedbad41",
+        "exp_e6a6b1bb920e4c19bd857ffecf663503",
+        "exp_ea41e7bdaf3340ae91a5b727a8852169",
+        "exp_ebf0953df8e749cd8b6f550b3a9d68da",
+        "exp_ec7f6b050fde4ab2a69f3c4fe4dbd70b",
+        "exp_f0c4c7c321e4463f9e6d88dcc2871b51",
+        "exp_f3474b4a78164a748fb77486fd9fa7c9",
+        "exp_f67788238eb848dabadde1aed223a791",
+        "exp_fe90015874d441eeada18345909d6afe"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_dcc093b941a34b4a9681f5e61290a816",
+        0.2897053237621652
+      ],
+      [
+        "exp_4acedd8ccb704f10814295af8edc24e7",
+        0.27904726823699116
+      ],
+      [
+        "exp_2d539da3d9104da38ed20c752a093c1e",
+        0.24121847996379966
+      ],
+      [
+        "exp_8817ae78f9014bd5818c7e4115d0e335",
+        0.238977940626216
+      ],
+      [
+        "exp_c1eba83c719e4d0eae375533f1a36301",
+        0.22872453220690003
+      ],
+      [
+        "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        0.22668649648661565
+      ],
+      [
+        "exp_04aecfd52e014682819afaf71fb4014c",
+        0.22625387839594113
+      ],
+      [
+        "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        0.22441109682855834
+      ],
+      [
+        "exp_87cd599448b8440dbba0e05d77292410",
+        0.22116841404689927
+      ],
+      [
+        "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        0.218448418629072
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_dcc093b941a34b4a9681f5e61290a816",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2897053237621652
+      },
+      {
+        "experience_id": "exp_4acedd8ccb704f10814295af8edc24e7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27904726823699116
+      },
+      {
+        "experience_id": "exp_2d539da3d9104da38ed20c752a093c1e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24121847996379966
+      },
+      {
+        "experience_id": "exp_8817ae78f9014bd5818c7e4115d0e335",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.238977940626216
+      },
+      {
+        "experience_id": "exp_c1eba83c719e4d0eae375533f1a36301",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22872453220690003
+      },
+      {
+        "experience_id": "exp_d68db05f648d4c8694ef9a8a1b701e6b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22668649648661565
+      },
+      {
+        "experience_id": "exp_04aecfd52e014682819afaf71fb4014c",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22625387839594113
+      },
+      {
+        "experience_id": "exp_a3fc30a7fdbd4acc84719f5062e6a023",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22441109682855834
+      },
+      {
+        "experience_id": "exp_87cd599448b8440dbba0e05d77292410",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22116841404689927
+      },
+      {
+        "experience_id": "exp_88c4ba0941af4ff0a6d017f58f4fb01b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.218448418629072
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "baseline": {
+    "provided_experience_ids": [],
+    "rubric": {
+      "rubric_id": "rubric_6647964463884882b790ff88286e0bd3",
+      "criteria": [
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_1",
+          "question": "回答是否提供了一个明确的游戏名称？",
+          "weight": 0.4
+        },
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_2",
+          "question": "该游戏是否以医生和病毒为核心主题？",
+          "weight": 0.3
+        },
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_3",
+          "question": "该游戏是否原生于Windows平台？",
+          "weight": 0.2
+        },
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_4",
+          "question": "该游戏是否具有共享软件（shareware）属性或曾被广泛认为是共享软件？",
+          "weight": 0.1
+        }
+      ],
+      "analysis": "任务核心是识别并回答一个特定的Windows共享软件游戏，其主题涉及医生和病毒。评分标准将聚焦于：1. 是否提供了一个具体的游戏名称；2. 该名称是否准确对应‘医生与病毒’的主题；3. 该平台是否为Windows；4. 该游戏是否属于共享软件（shareware）类型或具有相关特征。背景信息中的'like'表示模糊描述，不应作为硬性约束，但核心要素（医生、病毒、Windows、共享软件）必须被满足以确认答案的准确性。"
+    },
+    "judgment": {
+      "rubric_id": "rubric_6647964463884882b790ff88286e0bd3",
+      "normalized_weights": {
+        "rubric_6647964463884882b790ff88286e0bd3_1": 0.4,
+        "rubric_6647964463884882b790ff88286e0bd3_2": 0.3,
+        "rubric_6647964463884882b790ff88286e0bd3_3": 0.2,
+        "rubric_6647964463884882b790ff88286e0bd3_4": 0.1
+      },
+      "criterion_judgments": [
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_1",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答明确提供了游戏名称为",
+          "rejected_reason": "回答明确提供了游戏名称\"Virus: It's Alive!\""
+        },
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_2",
+          "chosen": true,
+          "rejected": true,
+          "chosen_reason": "回答描述该游戏的核心玩法是扮演医生通过匹配药丸来消除病毒，符合以医生和病毒为核心主题的要求。",
+          "rejected_reason": "回答指出玩家在游戏中扮演医生，任务是抵御病毒和细菌的进攻，符合医生与病毒的核心主题"
+        },
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_3",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "原生于Windows平台的要求未被满足。回答指出该游戏最初发布于NES和Game Boy（任天堂主机），虽然提到有Windows版本，但并非原生开发于Windows系统，且其核心属性为任天堂掌机/主机游戏。",
+          "rejected_reason": "回答明确指出该游戏是为Windows平台发布的共享软件"
+        },
+        {
+          "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_4",
+          "chosen": false,
+          "rejected": true,
+          "chosen_reason": "关于共享软件属性的描述不符合事实。Dr. Mario是由任天堂发行的商业版权游戏，并非共享软件（shareware）。回答中声称其为'Windows上的共享软件'属于虚构信息，历史上并未作为典型的共享软件发布或广泛被如此认知。",
+          "rejected_reason": "回答中直接将该游戏描述为shareware game（共享软件），并提到其发布于90年代末，符合共享软件的属性特征"
+        }
+      ],
+      "chosen_score": 0.7,
+      "rejected_score": 1.0,
+      "margin": -0.3,
+      "success": false
+    },
+    "error": null
+  },
+  "actual": null,
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "当前失败案例显示，模型在回答事实性检索任务时，为了迎合用户模糊的描述（如'shareware'、'Windows'），编造了不存在的游戏属性或错误地关联了现实存在的游戏（Dr. Mario）与这些属性。Rejected回答虽然名称可能不准确，但至少没有像Chosen那样将非共享软件描述为共享软件，或将主机游戏描述为原生Windows游戏。核心问题在于：当任务涉及特定实体（游戏）的多个特征（主题、平台、发行模式）时，模型容易进行‘拼凑式幻觉’，即强行让一个已知实体满足所有描述条件，即使某些条件与该实体的真实历史不符。现有经验多关注逻辑一致性、安全边界或创意写作，缺乏针对‘事实检索中跨属性组合真实性’的专门核验。需要引入一种机制，强制要求对候选答案中的每一个事实断言（特别是那些用户用模糊词引导的属性）进行独立的事实校验，而不是整体判断‘是否像’。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_f136e2b784d04574a3fe51ecab4cbc96",
+            "method": {
+              "trigger": "当任务要求识别特定实体（如游戏、产品、事件）并包含多个具体属性描述（如平台、类型、发行模式、年代等）时",
+              "principle": "模型必须确保所选实体同时满足所有核心属性；若回答将一个已知实体与其实质不符的属性（如将商业游戏描述为共享软件，或将主机游戏描述为PC原生游戏）强行关联，属于严重的事实性幻觉，不能通过模糊描述或解释性语句来掩盖。",
+              "application_guide": "在评分标准的‘事实准确性’维度设立‘属性-实体匹配度’核验点：1. 提取任务中用户明确提及或强烈暗示的核心属性列表（如平台、类型、发行性质）；2. 检查回答提供的实体名称是否在客观现实中确实同时具备所有这些属性；3. 若回答中的实体仅部分匹配属性，或为了匹配而虚构了该实体不具备的属性（如虚构某游戏是shareware），则判定该项不合格；4. 允许模型指出用户描述可能存在偏差并提供最接近的正确选项，但严禁编造该正确选项的虚假属性。"
+            },
+            "source_task_id": "540d291a76229c7ffdd54e123b95ee8a9bb308318cb1f5d4281f946e0f6a1557",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_f136e2b784d04574a3fe51ecab4cbc96"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_5b35702554064b418548b3c669c2c5a2",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_1",
+                  "question": "回答是否明确提供了一个具体的游戏名称？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_2",
+                  "question": "该游戏是否在客观现实中确认为运行于Windows平台的PC游戏？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_3",
+                  "question": "该游戏的玩法内容是否确实涉及医生、治疗或对抗病毒的模拟机制？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_4",
+                  "question": "该游戏在发布时是否属于共享软件（Shareware）性质，即允许用户免费试玩部分内容后再付费解锁完整版？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "本任务要求识别一个特定的Windows共享软件游戏，其核心特征涉及‘医生/病毒’主题及‘Shareware’发行模式。设计评分标准时，首要任务是确保回答提供的游戏名称在现实中确实同时满足‘PC平台’、‘医疗/病毒模拟玩法’以及‘共享软件（可免费下载试用）’这三个核心属性，严防将商业独占游戏或主机游戏误判为共享软件的事实性幻觉。其次，需确认回答是否直接给出了具体的游戏名称，而非仅描述概念。背景信息中用户提到的‘像医生和病毒’是搜索线索，不应作为独立验证点，而是用于核对游戏内容的匹配度。权重分配上，事实准确性（实体与属性完全匹配）应占据最高权重，因为错误的实体匹配是致命缺陷；其次是具体名称的提供。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_5b35702554064b418548b3c669c2c5a2",
+              "normalized_weights": {
+                "rubric_5b35702554064b418548b3c669c2c5a2_1": 0.3,
+                "rubric_5b35702554064b418548b3c669c2c5a2_2": 0.25,
+                "rubric_5b35702554064b418548b3c669c2c5a2_3": 0.25,
+                "rubric_5b35702554064b418548b3c669c2c5a2_4": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确提供了游戏名称",
+                  "rejected_reason": "回答明确提供了具体的游戏名称，即\"Virus: It's Alive!\"。"
+                },
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "Dr. Mario 并非由 Nintendo 官方开发并作为独立 Windows PC 游戏发布，且其原始平台为 NES/Game Boy，虽可能有非官方移植或合集版本，但描述中将其称为“官方发布的 Windows 共享软件”不符合客观事实",
+                  "rejected_reason": "\"Virus: It's Alive!\"实际上是由The Learning Company于1996年发布的教育软件，主要运行在Mac OS和Windows 3.x/95平台上，但其核心定位是教育模拟而非传统意义上的PC动作/射击游戏；更关键的是，该游戏并非以对抗病毒为玩法核心的“医生”题材游戏，而是关于免疫系统防御的科普工具，且其平台支持虽包含Windows但并非典型的PC游戏分类中的“共享软件游戏”，此处存在事实性偏差。"
+                },
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_3",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "游戏玩法确实涉及扮演医生角色并通过匹配药丸消除病毒的核心机制",
+                  "rejected_reason": "虽然游戏涉及病毒和免疫系统的概念，但玩家并非扮演“医生”进行主动治疗或对抗病毒的模拟，而是作为免疫系统的一部分（如白细胞）进行防御，玩法机制更接近塔防或策略模拟，而非直接扮演医生的角色进行医疗操作。"
+                },
+                {
+                  "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "Dr. Mario 是任天堂发行的商业付费游戏，从未以共享软件（Shareware）形式发布，即不存在免费试玩部分内容再付费解锁的官方版本",
+                  "rejected_reason": "\"Virus: It's Alive!\"并非共享软件（Shareware），而是一款完整销售的教育软件，没有提供免费试玩部分内容再付费解锁完整版的机制，因此不符合共享软件的定义。"
+                }
+              ],
+              "chosen_score": 0.55,
+              "rejected_score": 0.3,
+              "margin": 0.25,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "standalone_correct",
+          "admission_subset": [
+            "exp_f136e2b784d04574a3fe51ecab4cbc96"
+          ]
+        },
+        {
+          "experience": {
+            "experience_id": "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298",
+            "method": {
+              "trigger": "当任务输入包含模糊限定词（如'like', 'sort of', 'kind of'）且要求提供具体实体名称时",
+              "principle": "模型不应利用用户的模糊限定词作为借口来编造实体属性；回答必须在承认描述模糊的同时，提供符合客观事实的最优解，严禁为了‘看起来像’而捏造实体的关键特征（如发行模式、平台）。",
+              "application_guide": "在构建评分标准时，增加‘模糊描述下的事实严谨性’校验点。评测者需区分两种情况：A) 模型提供了最匹配的实体，并客观说明其与用户描述的差异（如“您寻找的可能不是完全一样的，因为...”）；B) 模型直接肯定了一个实体，并赋予其用户描述的属性，即使该属性在现实中不存在。对于情况B，无论语气如何委婉，只要存在虚构的关键属性（如错误的发行模式），即视为严重错误。评分应鼓励模型在不确定性下保持事实准确，而非在确定性下制造幻觉。"
+            },
+            "source_task_id": "540d291a76229c7ffdd54e123b95ee8a9bb308318cb1f5d4281f946e0f6a1557",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_1",
+                  "question": "回答是否提供了一个真实存在且符合‘医生与病毒’主题的游戏名称？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_2",
+                  "question": "回答是否客观验证了该游戏是否满足用户提到的‘Shareware’和‘Windows’等关键属性，而非为了迎合描述而捏造不存在的发行模式？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_3",
+                  "question": "当用户的描述（如具体玩法细节或发行模式）与候选游戏的实际特征不完全匹配时，回答是否明确指出了这种差异并进行了合理的解释？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务核心是识别用户模糊描述的特定游戏（医生与病毒题材、Windows平台、Shareware模式）。评分标准需区分‘背景信息’（用户提供的模糊特征）与‘输出义务’（提供真实存在的游戏名称及必要的澄清）。依据经验1，严禁模型因用户描述模糊而编造实体属性。因此，标准将重点考核：1. 是否提供了符合事实的候选游戏；2. 是否准确处理了用户描述中的模糊点或错误假设（如严格区分Shareware与其他发行模式），避免为了迎合描述而虚构关键属性。权重分配上，事实准确性与候选推荐为核心（0.6），对模糊描述的合理澄清为次级核心（0.4）。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e",
+              "normalized_weights": {
+                "rubric_7698ae532ef8457b87ad1d0d4ec6406e_1": 0.5,
+                "rubric_7698ae532ef8457b87ad1d0d4ec6406e_2": 0.3,
+                "rubric_7698ae532ef8457b87ad1d0d4ec6406e_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_1",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答提供了真实存在且符合主题的游戏名称《Dr. Mario》，该游戏确实以医生角色和消除病毒为核心玩法。",
+                  "rejected_reason": "回答提供的游戏名称'Virus: It's Alive!'并非真实存在。经核实，该标题并不存在于任何已知的Windows游戏库中，且没有关于其作为医生对抗病毒主题的发行记录，属于捏造的游戏名称。"
+                },
+                {
+                  "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答声称《Dr. Mario》在Windows上作为'Shareware'（共享软件）发布，这与事实不符。《Dr. Mario》是由任天堂发行的商业软件，并非通过Shareware模式分发；历史上也没有官方认可的Windows版《Dr. Mario》以共享软件形式发布，该描述属于捏造发行模式以迎合用户猜测。",
+                  "rejected_reason": "由于核心推荐的游戏名称是虚构的，回答中声称其为'Shareware'和'Windows'平台游戏的描述缺乏事实依据，无法被客观验证，实际上是为了迎合用户描述而编造的虚假属性。"
+                },
+                {
+                  "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "当用户的描述（Shareware/Windows）与候选游戏实际特征不匹配时，回答并未指出这种差异或进行合理说明，反而直接断言存在所谓的Windows Shareware版本，未能履行澄清事实的义务。",
+                  "rejected_reason": "回答未指出任何差异，而是直接以肯定的语气将虚构的游戏特征与用户描述完全对应，没有进行任何合理的解释或说明该游戏可能不存在的情况。"
+                }
+              ],
+              "chosen_score": 0.5,
+              "rejected_score": 0.0,
+              "margin": 0.5,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "standalone_correct",
+          "admission_subset": [
+            "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298"
+          ]
+        }
+      ],
+      "error": null,
+      "subset_paths": [
+        {
+          "provided_experience_ids": [],
+          "rubric": {
+            "rubric_id": "rubric_6647964463884882b790ff88286e0bd3",
+            "criteria": [
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_1",
+                "question": "回答是否提供了一个明确的游戏名称？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_2",
+                "question": "该游戏是否以医生和病毒为核心主题？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_3",
+                "question": "该游戏是否原生于Windows平台？",
+                "weight": 0.2
+              },
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_4",
+                "question": "该游戏是否具有共享软件（shareware）属性或曾被广泛认为是共享软件？",
+                "weight": 0.1
+              }
+            ],
+            "analysis": "任务核心是识别并回答一个特定的Windows共享软件游戏，其主题涉及医生和病毒。评分标准将聚焦于：1. 是否提供了一个具体的游戏名称；2. 该名称是否准确对应‘医生与病毒’的主题；3. 该平台是否为Windows；4. 该游戏是否属于共享软件（shareware）类型或具有相关特征。背景信息中的'like'表示模糊描述，不应作为硬性约束，但核心要素（医生、病毒、Windows、共享软件）必须被满足以确认答案的准确性。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_6647964463884882b790ff88286e0bd3",
+            "normalized_weights": {
+              "rubric_6647964463884882b790ff88286e0bd3_1": 0.4,
+              "rubric_6647964463884882b790ff88286e0bd3_2": 0.3,
+              "rubric_6647964463884882b790ff88286e0bd3_3": 0.2,
+              "rubric_6647964463884882b790ff88286e0bd3_4": 0.1
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确提供了游戏名称为",
+                "rejected_reason": "回答明确提供了游戏名称\"Virus: It's Alive!\""
+              },
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_2",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答描述该游戏的核心玩法是扮演医生通过匹配药丸来消除病毒，符合以医生和病毒为核心主题的要求。",
+                "rejected_reason": "回答指出玩家在游戏中扮演医生，任务是抵御病毒和细菌的进攻，符合医生与病毒的核心主题"
+              },
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_3",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "原生于Windows平台的要求未被满足。回答指出该游戏最初发布于NES和Game Boy（任天堂主机），虽然提到有Windows版本，但并非原生开发于Windows系统，且其核心属性为任天堂掌机/主机游戏。",
+                "rejected_reason": "回答明确指出该游戏是为Windows平台发布的共享软件"
+              },
+              {
+                "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_4",
+                "chosen": false,
+                "rejected": true,
+                "chosen_reason": "关于共享软件属性的描述不符合事实。Dr. Mario是由任天堂发行的商业版权游戏，并非共享软件（shareware）。回答中声称其为'Windows上的共享软件'属于虚构信息，历史上并未作为典型的共享软件发布或广泛被如此认知。",
+                "rejected_reason": "回答中直接将该游戏描述为shareware game（共享软件），并提到其发布于90年代末，符合共享软件的属性特征"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 1.0,
+            "margin": -0.3,
+            "success": false
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_f136e2b784d04574a3fe51ecab4cbc96"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_5b35702554064b418548b3c669c2c5a2",
+            "criteria": [
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_1",
+                "question": "回答是否明确提供了一个具体的游戏名称？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_2",
+                "question": "该游戏是否在客观现实中确认为运行于Windows平台的PC游戏？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_3",
+                "question": "该游戏的玩法内容是否确实涉及医生、治疗或对抗病毒的模拟机制？",
+                "weight": 0.25
+              },
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_4",
+                "question": "该游戏在发布时是否属于共享软件（Shareware）性质，即允许用户免费试玩部分内容后再付费解锁完整版？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "本任务要求识别一个特定的Windows共享软件游戏，其核心特征涉及‘医生/病毒’主题及‘Shareware’发行模式。设计评分标准时，首要任务是确保回答提供的游戏名称在现实中确实同时满足‘PC平台’、‘医疗/病毒模拟玩法’以及‘共享软件（可免费下载试用）’这三个核心属性，严防将商业独占游戏或主机游戏误判为共享软件的事实性幻觉。其次，需确认回答是否直接给出了具体的游戏名称，而非仅描述概念。背景信息中用户提到的‘像医生和病毒’是搜索线索，不应作为独立验证点，而是用于核对游戏内容的匹配度。权重分配上，事实准确性（实体与属性完全匹配）应占据最高权重，因为错误的实体匹配是致命缺陷；其次是具体名称的提供。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_5b35702554064b418548b3c669c2c5a2",
+            "normalized_weights": {
+              "rubric_5b35702554064b418548b3c669c2c5a2_1": 0.3,
+              "rubric_5b35702554064b418548b3c669c2c5a2_2": 0.25,
+              "rubric_5b35702554064b418548b3c669c2c5a2_3": 0.25,
+              "rubric_5b35702554064b418548b3c669c2c5a2_4": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_1",
+                "chosen": true,
+                "rejected": true,
+                "chosen_reason": "回答明确提供了游戏名称",
+                "rejected_reason": "回答明确提供了具体的游戏名称，即\"Virus: It's Alive!\"。"
+              },
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "Dr. Mario 并非由 Nintendo 官方开发并作为独立 Windows PC 游戏发布，且其原始平台为 NES/Game Boy，虽可能有非官方移植或合集版本，但描述中将其称为“官方发布的 Windows 共享软件”不符合客观事实",
+                "rejected_reason": "\"Virus: It's Alive!\"实际上是由The Learning Company于1996年发布的教育软件，主要运行在Mac OS和Windows 3.x/95平台上，但其核心定位是教育模拟而非传统意义上的PC动作/射击游戏；更关键的是，该游戏并非以对抗病毒为玩法核心的“医生”题材游戏，而是关于免疫系统防御的科普工具，且其平台支持虽包含Windows但并非典型的PC游戏分类中的“共享软件游戏”，此处存在事实性偏差。"
+              },
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_3",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "游戏玩法确实涉及扮演医生角色并通过匹配药丸消除病毒的核心机制",
+                "rejected_reason": "虽然游戏涉及病毒和免疫系统的概念，但玩家并非扮演“医生”进行主动治疗或对抗病毒的模拟，而是作为免疫系统的一部分（如白细胞）进行防御，玩法机制更接近塔防或策略模拟，而非直接扮演医生的角色进行医疗操作。"
+              },
+              {
+                "criterion_id": "rubric_5b35702554064b418548b3c669c2c5a2_4",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "Dr. Mario 是任天堂发行的商业付费游戏，从未以共享软件（Shareware）形式发布，即不存在免费试玩部分内容再付费解锁的官方版本",
+                "rejected_reason": "\"Virus: It's Alive!\"并非共享软件（Shareware），而是一款完整销售的教育软件，没有提供免费试玩部分内容再付费解锁完整版的机制，因此不符合共享软件的定义。"
+              }
+            ],
+            "chosen_score": 0.55,
+            "rejected_score": 0.3,
+            "margin": 0.25,
+            "success": true
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e",
+            "criteria": [
+              {
+                "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_1",
+                "question": "回答是否提供了一个真实存在且符合‘医生与病毒’主题的游戏名称？",
+                "weight": 0.5
+              },
+              {
+                "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_2",
+                "question": "回答是否客观验证了该游戏是否满足用户提到的‘Shareware’和‘Windows’等关键属性，而非为了迎合描述而捏造不存在的发行模式？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_3",
+                "question": "当用户的描述（如具体玩法细节或发行模式）与候选游戏的实际特征不完全匹配时，回答是否明确指出了这种差异并进行了合理的解释？",
+                "weight": 0.2
+              }
+            ],
+            "analysis": "任务核心是识别用户模糊描述的特定游戏（医生与病毒题材、Windows平台、Shareware模式）。评分标准需区分‘背景信息’（用户提供的模糊特征）与‘输出义务’（提供真实存在的游戏名称及必要的澄清）。依据经验1，严禁模型因用户描述模糊而编造实体属性。因此，标准将重点考核：1. 是否提供了符合事实的候选游戏；2. 是否准确处理了用户描述中的模糊点或错误假设（如严格区分Shareware与其他发行模式），避免为了迎合描述而虚构关键属性。权重分配上，事实准确性与候选推荐为核心（0.6），对模糊描述的合理澄清为次级核心（0.4）。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e",
+            "normalized_weights": {
+              "rubric_7698ae532ef8457b87ad1d0d4ec6406e_1": 0.5,
+              "rubric_7698ae532ef8457b87ad1d0d4ec6406e_2": 0.3,
+              "rubric_7698ae532ef8457b87ad1d0d4ec6406e_3": 0.2
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_1",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答提供了真实存在且符合主题的游戏名称《Dr. Mario》，该游戏确实以医生角色和消除病毒为核心玩法。",
+                "rejected_reason": "回答提供的游戏名称'Virus: It's Alive!'并非真实存在。经核实，该标题并不存在于任何已知的Windows游戏库中，且没有关于其作为医生对抗病毒主题的发行记录，属于捏造的游戏名称。"
+              },
+              {
+                "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_2",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "回答声称《Dr. Mario》在Windows上作为'Shareware'（共享软件）发布，这与事实不符。《Dr. Mario》是由任天堂发行的商业软件，并非通过Shareware模式分发；历史上也没有官方认可的Windows版《Dr. Mario》以共享软件形式发布，该描述属于捏造发行模式以迎合用户猜测。",
+                "rejected_reason": "由于核心推荐的游戏名称是虚构的，回答中声称其为'Shareware'和'Windows'平台游戏的描述缺乏事实依据，无法被客观验证，实际上是为了迎合用户描述而编造的虚假属性。"
+              },
+              {
+                "criterion_id": "rubric_7698ae532ef8457b87ad1d0d4ec6406e_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "当用户的描述（Shareware/Windows）与候选游戏实际特征不匹配时，回答并未指出这种差异或进行合理说明，反而直接断言存在所谓的Windows Shareware版本，未能履行澄清事实的义务。",
+                "rejected_reason": "回答未指出任何差异，而是直接以肯定的语气将虚构的游戏特征与用户描述完全对应，没有进行任何合理的解释或说明该游戏可能不存在的情况。"
+              }
+            ],
+            "chosen_score": 0.5,
+            "rejected_score": 0.0,
+            "margin": 0.5,
+            "success": true
+          },
+          "error": null
+        },
+        {
+          "provided_experience_ids": [
+            "exp_f136e2b784d04574a3fe51ecab4cbc96",
+            "exp_ef6eeb6a6e4c4ec48c1941e45c8fa298"
+          ],
+          "rubric": {
+            "rubric_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c",
+            "criteria": [
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_1",
+                "question": "回答是否提供了一个真实存在且名称拼写正确的游戏？",
+                "weight": 0.4
+              },
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_2",
+                "question": "提供的游戏是否在客观现实中确实以医生对抗病毒为核心主题？",
+                "weight": 0.3
+              },
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_3",
+                "question": "提供的游戏是否确认为Windows平台游戏？",
+                "weight": 0.15
+              },
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_4",
+                "question": "若回答肯定游戏为Shareware，该游戏在现实中是否确实具有Shareware发行性质？若否，模型是否指出了用户描述的偏差并提供了最接近的正确选项而不虚构其属性？",
+                "weight": 0.15
+              }
+            ],
+            "analysis": "任务核心是识别一个符合特定描述（医生/病毒主题、Windows平台、Shareware发行模式）的游戏名称。用户使用了'like'等模糊词，但核心属性（主题、平台、发行模式）必须被准确匹配或明确修正。评分标准将聚焦于：1. 是否提供了真实存在且名称正确的游戏；2. 该游戏是否同时满足主题和平台要求；3. 对于'Shareware'这一关键属性，模型是否正确处理（即确认该游戏确实是Shareware，或者在用户描述有误时提供正确信息并指出差异，严禁虚构该游戏的发行模式）。权重分配上，事实准确性（实体存在及属性匹配）占据最高权重，因为这是任务的根本目标；其次是对模糊描述的严谨处理（不编造属性），最后才是回答的完整性和清晰度。"
+          },
+          "judgment": {
+            "rubric_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c",
+            "normalized_weights": {
+              "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_1": 0.4,
+              "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_2": 0.3,
+              "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_3": 0.15,
+              "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_4": 0.15
+            },
+            "criterion_judgments": [
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_1",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "回答提供了真实存在且拼写正确的游戏名称",
+                "rejected_reason": "回答中提到的游戏名称\"Virus: It's Alive!\"并非真实存在的游戏。历史上确实有一款名为\"Virus: The Game\"或类似主题的早期Windows游戏，但\"Virus: It's Alive!\"这一确切名称并不存在，属于模型虚构的名称。"
+              },
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_2",
+                "chosen": true,
+                "rejected": false,
+                "chosen_reason": "Dr. Mario 的核心玩法确实是玩家扮演医生角色消除病毒",
+                "rejected_reason": "由于推荐的游戏名称是虚构的（见准则 1），因此无法确认该游戏在客观现实中以医生对抗病毒为核心主题。虽然描述的情节符合用户猜测的主题，但该实体本身不存在。"
+              },
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_3",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "虽然 Dr. Mario 有 Windows 版本，但回答声称其为 Shareware 是错误的，实际上它是商业软件而非 Shareware",
+                "rejected_reason": "基于虚构的游戏名称，无法确认该平台属性。虽然用户提到是Windows游戏，但模型并未提供真实存在的对应游戏作为验证依据。"
+              },
+              {
+                "criterion_id": "rubric_3852bf0e61aa42b9bfd9fefd61a3219c_4",
+                "chosen": false,
+                "rejected": false,
+                "chosen_reason": "模型错误地断言该游戏是 Shareware，未指出用户描述可能存在偏差，也未提供正确属性说明",
+                "rejected_reason": "模型肯定地声称该游戏是Shareware并描述了其属性，但既然游戏本身是虚构的，这些属性也是虚构的。模型没有指出用户描述的偏差，也没有提供最接近的真实选项（例如可能指代的是\"The Virus\"、\"Plague Inc.\"或早期的\"Virus\"类教育软件等，但未提及）。"
+              }
+            ],
+            "chosen_score": 0.7,
+            "rejected_score": 0.0,
+            "margin": 0.7,
+            "success": true
+          },
+          "error": null
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "subset_paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_6647964463884882b790ff88286e0bd3",
+        "criteria": [
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_1",
+            "question": "回答是否提供了一个明确的游戏名称？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_2",
+            "question": "该游戏是否以医生和病毒为核心主题？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_3",
+            "question": "该游戏是否原生于Windows平台？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_4",
+            "question": "该游戏是否具有共享软件（shareware）属性或曾被广泛认为是共享软件？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务核心是识别并回答一个特定的Windows共享软件游戏，其主题涉及医生和病毒。评分标准将聚焦于：1. 是否提供了一个具体的游戏名称；2. 该名称是否准确对应‘医生与病毒’的主题；3. 该平台是否为Windows；4. 该游戏是否属于共享软件（shareware）类型或具有相关特征。背景信息中的'like'表示模糊描述，不应作为硬性约束，但核心要素（医生、病毒、Windows、共享软件）必须被满足以确认答案的准确性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_6647964463884882b790ff88286e0bd3",
+        "normalized_weights": {
+          "rubric_6647964463884882b790ff88286e0bd3_1": 0.4,
+          "rubric_6647964463884882b790ff88286e0bd3_2": 0.3,
+          "rubric_6647964463884882b790ff88286e0bd3_3": 0.2,
+          "rubric_6647964463884882b790ff88286e0bd3_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确提供了游戏名称为",
+            "rejected_reason": "回答明确提供了游戏名称\"Virus: It's Alive!\""
+          },
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答描述该游戏的核心玩法是扮演医生通过匹配药丸来消除病毒，符合以医生和病毒为核心主题的要求。",
+            "rejected_reason": "回答指出玩家在游戏中扮演医生，任务是抵御病毒和细菌的进攻，符合医生与病毒的核心主题"
+          },
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "原生于Windows平台的要求未被满足。回答指出该游戏最初发布于NES和Game Boy（任天堂主机），虽然提到有Windows版本，但并非原生开发于Windows系统，且其核心属性为任天堂掌机/主机游戏。",
+            "rejected_reason": "回答明确指出该游戏是为Windows平台发布的共享软件"
+          },
+          {
+            "criterion_id": "rubric_6647964463884882b790ff88286e0bd3_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "关于共享软件属性的描述不符合事实。Dr. Mario是由任天堂发行的商业版权游戏，并非共享软件（shareware）。回答中声称其为'Windows上的共享软件'属于虚构信息，历史上并未作为典型的共享软件发布或广泛被如此认知。",
+            "rejected_reason": "回答中直接将该游戏描述为shareware game（共享软件），并提到其发布于90年代末，符合共享软件的属性特征"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 1.0,
+        "margin": -0.3,
+        "success": false
+      },
+      "error": null
+    }
+  ]
+}

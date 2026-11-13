@@ -1,0 +1,74 @@
+[
+  {
+    "sample_suffix": "391b830d",
+    "module": "Critic",
+    "observation": "原task的festive vide of Christmas有拼写歧义；人工理由偏向video。Critic将视频解释当确定核心动作，候选保留create a video、festive atmosphere来源例子。来源判对不认证该解释正确。",
+    "status": "observed ambiguity and source binding"
+  },
+  {
+    "sample_suffix": "9e83fbba",
+    "module": "Critic",
+    "observation": "实体名称核验有可复用内容，但候选要求在回答开头确认名称、设置高权重并优先于其他标准，task未要求这些固定做法；候选还包含Keitt/Kiwit来源取值。",
+    "status": "observed unsupported strategy and source details"
+  },
+  {
+    "sample_suffix": "198e93ab",
+    "module": "Critic",
+    "observation": "how true is that缺少待核验陈述；候选围绕上下文缺失与无关事实，方向较贴近实际缺项。其信息边界限制较宽，例子/解释仍需后续适用性检验。",
+    "status": "plausible method; not generalization proof"
+  },
+  {
+    "sample_suffix": "5b25bacb",
+    "module": "Critic",
+    "observation": "task只提已有newborn，并未预设医院或早产；医院/早产来自chosen。Critic把这些细节说成前文线索，候选继续携带医院、早产及宝宝哭闹来源细节。属于把偏好回答内容当任务依据。",
+    "status": "observed evidence attribution error"
+  },
+  {
+    "sample_suffix": "283e966e",
+    "module": "Generator/Judge",
+    "observation": "基线0.1、有经验0（平局），退化按设计记-1且不触发Critic。基线曾把I work for Bill误写成发件人Bill；判对不认证基线标准合理。基线Judge以额外引用邮件破坏逻辑扣分，而经验路拆分后的逻辑项两侧都通过，不能仅凭该退化断定经验正文无用。",
+    "status": "observed margin loss; mechanism attribution uncertain"
+  },
+  {
+    "sample_suffix": "5054c900",
+    "module": "Generator",
+    "observation": "基线及两条单经验均判对；均将角色背景品牌/年份写为歌词必须包含或暗示的检查项。共享初稿及修订没有自动消除背景转义务；这也并非仅经验路才出现。",
+    "status": "observed extra output requirement in all compared paths"
+  },
+  {
+    "sample_suffix": "bf0d3780",
+    "module": "Critic/Judge",
+    "observation": "原标准已经询问歌曲歌词是否包含指定短语，并不只检查回答中是否声称包含。Critic却把Judge对不同歌曲的事实判断归因为标准仅做字符串匹配，并要求外部知识库核验；执行Judge没有外部检索工具。本次来源判对不证明归因或新增核验可靠。",
+    "status": "observed questionable attribution; factual song claims not independently verified"
+  },
+  {
+    "sample_suffix": "3378ecdf",
+    "module": "Critic",
+    "observation": "两轮完整执行，第一候选失败后第二候选通过。两轮均把不改写与字数约束认定为内在冲突，并规定截断优先等任务没有明确指定的策略；第一候选含3-5句、300词来源取值，第二候选仍强制核心句逐字保留等做法。不能由第二轮判对认证这些优先级合理。",
+    "status": "observed two-round control and unsupported prescription"
+  },
+  {
+    "sample_suffix": "31e162a9",
+    "module": "Generator/Judge",
+    "observation": "无经验margin0.2，实体经验margin-0.35，标准文字改动不大仍发生反向；需分别查看两侧原判，不能将一次反向全部归因于经验增加约束。",
+    "status": "observed reversal; no single-run causal attribution"
+  },
+  {
+    "sample_suffix": "6d2dcb4a",
+    "module": "Generator",
+    "observation": "冻结任务仅为ruas lower east side；初稿把内部draft阶段解读为用户要地理介绍初稿，并加入完整初稿形式要求，修订仍要求符合初稿或修订稿规范。内部工作阶段不应成为回答要求。",
+    "status": "observed internal stage confused with user deliverable"
+  },
+  {
+    "sample_suffix": "66a61d0b",
+    "module": "Generator",
+    "observation": "用户只要求thank you message，初稿及无经验修订均要求完整邮件结构（称呼、正文、落款）。修订未移除这类额外格式义务。",
+    "status": "observed unsupported format requirement retained"
+  },
+  {
+    "sample_suffix": "283e966e + 31e162a9",
+    "module": "Clustering",
+    "observation": "商务邮件改写与体育比赛剧本同组。文本相似度0.1526577，因都提供实体经验形成相同类别分布，混合分升为0.3644932并满足0.35低限。算法按设计执行，但语义联系弱，提供行为会强化误选造成的相似关系。",
+    "status": "observed weak-semantic group supported by provision distribution"
+  }
+]

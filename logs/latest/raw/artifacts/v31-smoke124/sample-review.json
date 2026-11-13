@@ -1,0 +1,845 @@
+[
+  {
+    "sample_id": "helpsteer3:train:6d91cf79eceb1e5f1fd90768062e81e1414ff7017ff4a065af0f1f90886d4de4",
+    "task": "Who is the speaker in Everyday Use by Alice Walker",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 1.0,
+        "error": null,
+        "criteria": [
+          "是否明确指出了叙述者是Mama（即Dee和Maggie的母亲）？",
+          "是否正确说明了叙述使用的是第一人称视角（使用'I'作为主语）？",
+          "是否描述了叙述者在故事中展现出的关键性格或立场特征（如务实、对传统物品的不同理解等）？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:c3476a1bea69c01842794ba211dcbec7210b13cdd0e69721b7369116acdb3dc0",
+    "task": "The role of the United Nations in Iraq War and the methods of conflict resolution being used",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.35,
+        "error": null,
+        "criteria": [
+          "是否明确阐述了联合国在2003年伊拉克战争爆发前、期间及关键转折点的官方立场与主要行动？",
+          "是否具体识别并描述了联合国在该冲突中采用的至少两种冲突解决方法（如外交斡旋、安理会决议、武器核查机制等）及其实施过程？",
+          "是否清晰分析了联合国相关决议或行动在实际执行中遭遇的障碍、失败案例或局限性，而非仅陈述理想化目标？",
+          "内容是否具备基本逻辑结构，包含引言（背景说明）、主体（角色与方法论述）和总结（成效或反思）三个部分？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:ffa804b8dc6bd8d56ce578bde97e77ed36f8e2f6f2ff56565fde837da7572854",
+    "task": "What if Double D (Edd) and Lila Sawyer (Hey Arnold!) dated each other",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.75,
+        "error": null,
+        "criteria": [
+          "是否准确且具体地描述了Edd和Lila在原作中的核心性格特征及典型行为模式？",
+          "是否基于两个角色的性格差异构建了合理的恋爱互动场景、情感张力或潜在冲突？",
+          "是否清晰界定了原作既定事实与本次假设性情境之间的界限，未将同人设定误述为官方剧情？",
+          "是否分析了《Dexter's Laboratory》的科学喜剧风格与《Hey Arnold!》的城市生活剧风格对两人关系的潜在影响？",
+          "最终结论或推演结果是否具有逻辑自洽性，未出现违背角色基本设定的根本性矛盾？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:e446d06bf255030c66287a48c6014a679e29ded94522dd4541561033391b830d",
+    "task": "rewrite in a kind but keen to have the staff to attend the acitivity: Hi Lydia, thanks for your information. we do wish all our teaching staff can attend the event that day, meanwhile, it will give us a chance to further connect with each other, create a festive vide of Christmas",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": false,
+        "margin": 0.0,
+        "error": null,
+        "criteria": [
+          "重写后的文本是否清晰且强烈地表达了希望所有教学员工都能出席活动的愿望？",
+          "重写后的语气是否既礼貌友善又充满热情，成功避免了生硬或命令式的口吻？",
+          "重写后的内容是否准确保留了‘加强彼此联系’和‘营造圣诞节日氛围’这两个核心价值描述？",
+          "重写后的文本是否为结构完整、语法正确且符合商务沟通规范的英文段落？"
+        ]
+      }
+    ],
+    "critic": [
+      {
+        "round": 1,
+        "analysis": "人工偏好判定'chosen'优于'rejected'，核心理由包含'Response 1 (rejected) ... fails to mention creating a Christmas video'以及'Response 2 (chosen) ... includes all the relevant discussions which were asked to be included in the prompt'。然而，对比两份回答的文本内容：Rejected回答明确提及了'create a festive atmosphere and celebrate the holiday season together'（营造节日氛围），而Chosen回答则具体落实了原任务中关于'create a festive vide of Christmas'的具体动作（create a festive video）。Judge在判定Criterion 7时，认为两者都保留了核心价值描述，未将‘是否提及具体视频制作’作为区分点，导致两方在该项得分相同（均为true）。但人工反馈明确指出遗漏‘视频’是Rejected的主要扣分项，且是Chosen获胜的关键依据之一。这表明评分标准中的Criterion 7（关于‘营造圣诞节日氛围’的描述）定义过于宽泛，未能精确覆盖原任务中‘创建视频’这一具体的、可验证的信息点，导致无法有效区分两个回答在信息完整性上的差异。因此，评分标准设计需要更严格地界定‘保留原意’的具体边界，将关键细节从模糊的‘氛围’概念中剥离出来进行独立核验。",
+        "error": null,
+        "attempts": [
+          {
+            "id": "exp_e8f647e3a916420099f5000b6adf78c3",
+            "method": {
+              "trigger": "当重写任务要求保留原文中的具体行动细节或特定名词（如'create a video'）时",
+              "principle": "评分标准中的完整性校验必须显式包含该具体细节，不能仅用上位概念（如'festive atmosphere'）替代，否则无法有效识别遗漏该细节的错误。",
+              "application_guide": "设计标准时，若原文包含具体的执行动作或实体（如‘拍视频’、‘买蛋糕’），应将此具体动作/实体列为独立的必填项或明确写入校验问题中；避免仅使用概括性词汇（如‘庆祝氛围’）来涵盖，除非确认该概括词在上下文中已完全等价于具体动作。"
+            },
+            "admitted": true,
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "task_groups": [],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:496662f7b4085f25410bd5349fc3acd646a812c524e2d8e740e0936fab663324",
+    "task": "[there would be dialogue in this story:]\n\n(Amber wakes up in her room. Time to another day in Mondstadt. But more importantly, the kicks she were feeling were not stopping at all - even though she was 7 months pregnant with quadruplets, or at least, she thinks it's quadruplets. Her latest ultrasound did show that she was having four babies at once. More importantly, she wanted fire-related names for her quadruplets - which were...telepathic, strangely enough.)",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": null,
+        "margin": null,
+        "error": "LLMFormatError: judge: invalid contract: Boolean and nonempty reason required",
+        "criteria": [
+          "故事是否以Amber在蒙德房间醒来并感受到持续强烈的胎动作为开场？",
+          "内容是否明确提及Amber怀孕七个月，并清晰表达四胞胎是超声结果或其主观认知（保留不确定性）？",
+          "故事中是否包含至少一段由胎儿/新生儿发起的对话，或通过心灵感应展现他们之间的交流？",
+          "情节是否具体展现了四胞胎具备心灵感应的特殊能力（如直接传递思想、共享感知等）？",
+          "Amber是否在故事中明确表达了想要给四个孩子起与火元素相关名字的愿望？",
+          "整体叙事风格、地点描述及角色反应是否符合《原神》蒙德地区的背景氛围？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_5f9aef8639999501392c",
+        0.21263348218817657
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:64b1e17c8f6bf5f485c5ebe6559e50a32428798e69862fbfb778cc5bd8f2d865",
+    "task": "itinerary for a return trip to Chuo Osaka with no tourist spots and only high class locations and fashion museums and art gallerys, include 40,000 yen for OXP club allowance Scheme for upper class clubs with spending breakdown, Show budget in YEN as well as projected costs, Display infomation on sporting events in Osaka and train lines in Chuo Area as well as fashion recommendations, Do not include Universal Studios Japan, Kyoto or Nara but include a cat cafe on the 8th day",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.15,
+        "error": null,
+        "criteria": [
+          "行程是否完全排除了Universal Studios Japan、Kyoto和Nara这三个明确禁止的地点？",
+          "除第8天的猫咖外，行程中的其余活动是否均限定为Chuo Osaka区域的高端场所、时尚博物馆或艺术画廊，且无普通旅游景点？",
+          "第8天的行程中是否明确列出了cat cafe（猫咖）项目？",
+          "是否提供了40,000日元OXP俱乐部津贴的详细spending breakdown（消费明细），且该部分独立于其他预算之外？",
+          "预算部分是否同时展示了总预算金额、使用日元（YEN）单位以及具体的projected costs（预估成本）列表？",
+          "是否包含了Osaka sporting events（大阪体育赛事）的相关信息？",
+          "是否包含了Chuo Area（中央区）train lines（铁路线路）的信息？",
+          "是否提供了fashion recommendations（时尚推荐）内容？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_5f9aef8639999501392c",
+        0.12125364690630727
+      ],
+      [
+        "task_3ccf6195e18599b88ff7",
+        0.04346163574873005
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:fc3e90a400449a63647bd634e85fec81e95c71379d18967fb21826fc2a994aea",
+    "task": "Replace the $ signs with correct following words.\n\nwhich, who, whose, whom, that, what, whatever, whomever\n\n$ happens, try to remain optimistic.\n\nThe young girl, $ was very dramatic, had a bright future ahead of her.\n\nGo through the door $ opens automatically.\n\nThe adolescent asked for a tutor $ could come to school during lunch.\n\nThe alliance, $ was accidental, turned out to be very successful.",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.2,
+        "error": null,
+        "criteria": [
+          "第一个句子是否被正确替换为'Whatever'以表达让步状语从句含义？",
+          "第二个句子是否被正确替换为'who'作为非限制性定语从句中指代人的主语？",
+          "第三个句子是否被正确替换为'that'或'which'作为限制性定语从句中指代物的主语？",
+          "第四个句子是否被正确替换为'who'或'that'作为限制性定语从句中指代人的主语？",
+          "第五个句子是否被正确替换为'which'作为非限制性定语从句中指代事物的主语？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_7aa159a1feaec29421eb",
+        0.3239690940824703
+      ],
+      [
+        "task_5f9aef8639999501392c",
+        0.3076310858849705
+      ],
+      [
+        "task_5a3117cdcb4717bb475e",
+        0.23492760944530144
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:21dcfbc22078343795b8592c1bd101f27d2e30758390feaa288ca95a546c5158",
+    "task": "Can I say translating",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.7,
+        "error": null,
+        "criteria": [
+          "回答是否明确指出 'translating' 是合法的英语表达，并准确定义其为 'translate' 的现在分词或动名词形式？",
+          "回答是否清晰说明了 'translating' 可以使用的具体语法结构或语境（例如：进行时态、作主语/宾语的非谓语成分等）？",
+          "回答是否提供了至少一个语法正确且符合母语习惯的例句，展示 'translating' 在完整句子中的实际应用？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_7aa159a1feaec29421eb",
+        0.28166323323717346
+      ],
+      [
+        "task_5f9aef8639999501392c",
+        0.13666679478753438
+      ],
+      [
+        "task_b983f1ab4224fe57d8f2",
+        0.1212583216479095
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:831f3e65bd417486dcf7a8f2d93ca0890728e5f72da7df25e0a1b4279e83fbba",
+    "task": "quantify the valorisable waste of  keittmangoes in kg",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": false,
+        "margin": 0.0,
+        "error": null,
+        "criteria": [
+          "是否明确定义了‘可增值废弃物’的具体物理形态或转化路径（如腐烂果、次级果、加工副产物等）？",
+          "是否清晰阐述了估算所依据的假设条件、数据来源或计算公式（如总产量、损耗率、转化率等）？",
+          "输出数值是否明确标注单位为千克（kg）且呈现方式清晰无歧义？",
+          "是否提供了支持废弃物被认定为‘可增值’的技术可行性或经济合理性依据？"
+        ]
+      }
+    ],
+    "critic": [
+      {
+        "round": 1,
+        "analysis": "任务要求量化'Keitt mangoes'（凯特芒果）的废弃物，但输入文本中存在拼写错误（task为keittmangoes，rejected回答误读为kiwitmangoes）。人工偏好明确指出chosen正确识别了'Keitt mangoes'，而rejected错误地将其识别为'kiwitmangoes'并基于此进行计算。Judge在判定rubric criterion 5, 6, 7时，认为两个回答都满足了定义、假设和单位的要求，忽略了rejected回答中核心实体名称错误这一致命缺陷。更关键的是，Judge在criterion 8上认为两个回答都缺乏技术/经济依据，导致两者得分均为0.85，未能区分出chosen回答因正确识别对象而具备的潜在有效性（尽管也缺乏具体依据，但方向正确），而rejected回答因对象错误完全无效。这表明当前的评分标准设计过于关注‘形式上的要素’（如是否有单位、是否有假设），而忽略了对‘核心约束条件（实体名称）’的严格核验。如果模型连题目中的关键实体都认错，后续所有基于该实体的量化都是无效的。因此，评分标准必须增加一条关于‘正确识别并锁定任务指定实体’的强制性核验规则。",
+        "error": null,
+        "attempts": [
+          {
+            "id": "exp_b81bdda4898546ff8897ddb542c4073a",
+            "method": {
+              "trigger": "当任务包含特定实体名称（如品种名、地名、专有名词）且存在拼写变体或易混淆项时",
+              "principle": "模型必须在回答开头明确确认并正确引用任务指定的实体名称，任何基于错误实体名称的推导均视为根本性失败，无论其内部逻辑是否自洽。",
+              "application_guide": "Generator在设计评分标准时，应设立一条高权重的‘实体一致性’检查项：1. 核对回答中引用的主体是否与Task指令完全一致（包括修正明显的拼写错误后的原意）；2. 若回答修改了实体名称（如将Keitt改为Kiwit），直接判定为不合格或大幅扣分；3. 只有实体确认无误后，才进入后续的量化逻辑、数据来源和格式检查。此规则优先于其他数值或逻辑类标准。"
+            },
+            "admitted": true,
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "task_groups": [
+      [
+        "task_5f9aef8639999501392c",
+        0.10404283865041114
+      ],
+      [
+        "task_3ccf6195e18599b88ff7",
+        0.0580171233635169
+      ],
+      [
+        "task_5a3117cdcb4717bb475e",
+        0.05116431226750567
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:02fa6c09711e624e448e904b527d7e8154b24c37cafa7689686032cb066dd5f3",
+    "task": "Script: In which Joana the office cleaner (overalls and sandals) hypnotizes David while he’s trying to impress a colleague he fancies. Soon: “yesss master…” ",
+    "selected": [
+      "exp_e8f647e3a916420099f5000b6adf78c3"
+    ],
+    "paths": [
+      {
+        "ids": [],
+        "correct": null,
+        "margin": null,
+        "error": "LLMFormatError: generator: invalid contract: each criterion requires question and weight only",
+        "criteria": []
+      },
+      {
+        "ids": [
+          "exp_e8f647e3a916420099f5000b6adf78c3"
+        ],
+        "correct": true,
+        "margin": 0.5,
+        "error": null,
+        "criteria": [
+          "剧本是否明确设定Joana为办公室清洁工，并具体描述了其穿着连体工装（overalls）和凉鞋（sandals）？",
+          "剧本是否构建了David正在努力给心仪的同事留下深刻印象的情境作为催眠发生的背景？",
+          "剧本情节是否清晰展示了Joana成功对David实施了催眠过程？",
+          "剧本中是否准确包含了指定的台词'yesss master…'"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_5a3117cdcb4717bb475e",
+        0.2704224427951295
+      ],
+      [
+        "task_b983f1ab4224fe57d8f2",
+        0.2536039683745831
+      ],
+      [
+        "task_5f9aef8639999501392c",
+        0.23312701513287595
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:8ecaf5f14a2da4722a508c333c8373aa859dcc462fd6bf69f5a02fcd22217bb4",
+    "task": "could you an write an YTV commercial about making fun at Teletoon's Cartoon Roulette airing old cartoons and watch new shows like anime and other things on ytv at they like not like some old Roulette in the past years on their 60s and 70s like Yogi Bear  Magilla Gorilla Pink the Pink Panther show and Bionix is an The block primarily featured acquired Japanese anime series aimed at mature audience. Bionix is on 5pm to 10pm",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.45,
+        "error": null,
+        "criteria": [
+          "文案是否以幽默或讽刺的口吻明确调侃了Teletoon的Cartoon Roulette及其播放的老卡通风格？",
+          "文案中是否具体提及了至少两个指定的老卡通角色或节目名称（如Yogi Bear, Magilla Gorilla, Pink Panther）？",
+          "文案是否清晰推广了YTV的新节目类型（如动漫等），并暗示其比旧节目更具吸引力？",
+          "文案是否准确包含了Bionix时段的播出时间信息（下午5点至10点）且无事实错误？",
+          "文案整体结构是否具备商业广告的基本要素（如吸引人的开头、主体内容和行动号召）？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_3aa8d8d32ef579b61d5a",
+        0.25814552771001287
+      ],
+      [
+        "task_5a3117cdcb4717bb475e",
+        0.2550339143965046
+      ],
+      [
+        "task_b983f1ab4224fe57d8f2",
+        0.2153506481212465
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:6424be23fddfeb9f0a0214c75388edad378c9b286824b094e598c831198e93ab",
+    "task": "how true is that?",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": false,
+        "margin": 0.0,
+        "error": null,
+        "criteria": [
+          "用户是否明确提供了一个具体的待验证命题或陈述（即 'that' 所指代的内容）？"
+        ]
+      }
+    ],
+    "critic": [
+      {
+        "round": 1,
+        "analysis": "人工偏好明确指出 rejected 回答（Response 1）存在严重缺陷，即包含与 prompt 无关的'pangram'和'fox'信息（hallucination），而 chosen 回答（Response 2）仅请求澄清且未添加无关内容。然而，现有的评分标准（Rubric 2）仅关注‘用户是否提供了具体命题’这一前提条件。由于两个回答都正确识别了该前提缺失并请求澄清，导致两者在该标准下得分相同（均为0或同等低分），无法区分出 rejected 中‘幻觉/添加无关信息’这一关键错误。这表明当前标准遗漏了对‘模型是否严格基于上下文、避免引入外部无关事实’这一核心要求的校验，导致无法有效惩罚幻觉行为。",
+        "error": null,
+        "attempts": [
+          {
+            "id": "exp_da6b6db8a85e48c8b7b5e6a28857d5e7",
+            "method": {
+              "trigger": "当任务涉及验证陈述真伪（如 'how true is that'）且上下文缺失时",
+              "principle": "评分标准必须显式禁止模型引入上下文中不存在的假设性事实或无关示例作为解释，否则无法区分‘仅请求澄清’与‘虚构背景’的优劣。",
+              "application_guide": "设计标准时，应增加一条关于‘信息边界’的校验项：检查模型回答中是否存在任何未在用户输入或已知上下文中明确提及的具体实体、定义或案例（如特定的句子、故事）。若模型主动引用此类外部信息进行说明，即使其逻辑看似合理，也应判定为不符合要求（扣分或视为负面特征），除非该引用是作为通用知识且明确标注为假设。此标准需独立于‘用户是否提供上下文’的前提校验，专门针对模型生成的内容范围进行约束。"
+            },
+            "admitted": true,
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "task_groups": [
+      [
+        "task_a657ec806e73ecacb23d",
+        0.3308363457604143
+      ],
+      [
+        "task_af57e04ab1d39d30178b",
+        0.2827714251007259
+      ],
+      [
+        "task_b983f1ab4224fe57d8f2",
+        0.21946828430059317
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:75f8f629f33270fe103eca78bde3c710c33efab4725c810f149fab4b5054c900",
+    "task": "Make a rap from Menacing Molly, being an animatronic sold by Spirit Halloween for the 2017 and 2018 Halloween seasons. It resembled a girl with a sinister-looking face, pale skin, black hair tied in braided pigtails, and sharp teeth. When activated, she rocked back and forth while speaking one of four phrases before bending backwards and revealing her face with glowing red eyes.",
+    "selected": [
+      "exp_e8f647e3a916420099f5000b6adf78c3",
+      "exp_b81bdda4898546ff8897ddb542c4073a"
+    ],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.2,
+        "error": null,
+        "criteria": [
+          "歌词是否生动描绘了Menacing Molly的核心外貌特征（苍白皮肤、黑色编发双马尾、尖牙及恐怖面容）？",
+          "歌词是否完整描述了人偶激活后的关键动作序列（前后摇摆、发声/念白、向后弯腰、露出发光红眼）？",
+          "歌词是否明确提及或强烈暗示该人偶来自Spirit Halloween且属于2017或2018万圣节季节？",
+          "歌词是否采用了标准的说唱（rap）格式，具备清晰的押韵模式、节奏感和分节结构？",
+          "歌词整体是否成功营造出与该人偶设定相符的阴森、危险或诡异的氛围？"
+        ]
+      },
+      {
+        "ids": [
+          "exp_e8f647e3a916420099f5000b6adf78c3"
+        ],
+        "correct": true,
+        "margin": 0.6,
+        "error": null,
+        "criteria": [
+          "歌词是否明确提及或生动描绘了Menacing Molly的外貌特征（苍白皮肤、黑色编发双马尾、尖牙、恐怖面容）？",
+          "歌词是否描述了人偶激活后的关键动作序列（前后摇摆、发声、向后弯腰并显现发光红眼）？",
+          "歌词是否体现了该人偶属于Spirit Halloween品牌且适用于2017或2018万圣节季的背景信息？",
+          "歌词是否采用了说唱（rap）的格式，包含明显的节奏感、押韵和分节结构？",
+          "歌词是否营造出符合该人偶设定的阴森、危险或诡异的氛围？"
+        ]
+      },
+      {
+        "ids": [
+          "exp_b81bdda4898546ff8897ddb542c4073a"
+        ],
+        "correct": true,
+        "margin": 0.55,
+        "error": null,
+        "criteria": [
+          "歌词是否明确提及或生动描绘了Menacing Molly的外貌特征（苍白皮肤、黑色编发双马尾、尖牙、恐怖面容）？",
+          "歌词是否准确描述了人偶激活后的关键动作序列（前后摇摆、向后弯腰、露出发光红眼）？",
+          "歌词是否体现了该人偶属于Spirit Halloween品牌且适用于2017或2018万圣节季的背景信息？",
+          "歌词是否采用了说唱（rap）的格式，包含明显的节奏感、押韵和分节结构？",
+          "歌词是否营造出符合该人偶设定的阴森、危险或诡异的氛围？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_af57e04ab1d39d30178b",
+        0.2992778820493426
+      ],
+      [
+        "task_b9e9dd22f3de9dad474c",
+        0.2862090653697482
+      ],
+      [
+        "task_b983f1ab4224fe57d8f2",
+        0.2769333111277617
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:a3e1f3ecef9d7b86be0209af64341b8550c535fe1fa0a8a99b5a79fff6337701",
+    "task": "Write this script, with plenty of very realistic dialogue: Stella (Tilda Swinton) is an ageing hipster who owns a cafe. Her part-time employee, student David, has been working there a couple of weeks. He doesn’t know that he is a susceptible and unresisting hypnotic subject. One hot summer afternoon, David’s older sister Ruth, pops in to see him. After a while, Stella casually brings up the topic of hypnosis, and then to Ruth’s amazement, Stella hypnotizes David right there in front of her with a rapid induction technique. While’s he’s under, Stella commands David to mindlessly give his sister a foot massage. Ruth is gleefully amused by the whole situation: her brother at her bare feet like some kind of slave!. Stella then commands David to forget what happened and wake up, leaving him oblivious to the secret suggestion planted in his mind. ",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.85,
+        "error": null,
+        "criteria": [
+          "剧本是否包含充足且逼真的对话，准确体现 Stella 作为年长嬉皮士的独特语调、David 的学生身份特征以及 Ruth 从惊讶到戏谑的情绪转变？",
+          "剧本是否清晰呈现了 Stella 在热天午后咖啡馆场景中，先自然提及催眠话题，随即使用快速诱导技术使 David 瞬间进入无抵抗状态的连贯情节？",
+          "剧本是否包含 Stella 在 David 被催眠状态下，明确下达‘毫无思考地’给 Ruth 做足部按摩的具体指令，并有相应的执行描写？",
+          "剧本是否通过对话或舞台提示生动展现了 Ruth 对看到哥哥像奴隶一样服务自己双脚时的‘欣喜若狂’与‘娱乐’态度？",
+          "剧本结尾是否完整包含 Stella 解除 David 催眠、使其遗忘过程，同时确保秘密暗示已植留在其潜意识中的流程？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_8e7b8523f4d18bc17aa7",
+        0.6119894663868615
+      ],
+      [
+        "task_af57e04ab1d39d30178b",
+        0.30863323261441067
+      ],
+      [
+        "task_b983f1ab4224fe57d8f2",
+        0.27883839051325965
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:cef6af1824ddc29e84798aef12937a72ab1e834b9b2ab3aeadd84df2503221a3",
+    "task": "give me a response to ```My favorite place in nature is the forest near my home. I love to go for walks there and just take in the beauty of the trees, the wildlife, and the sounds of the birds singing. It's a place where I can go to just be myself and appreciate all that nature has to offer.``` to send in a discussion, VERY SHORT, CONCISE & CLEAR. ONLY RETURN THE RAW MESSAGE, DO NOT SAY \"Hey here is the message you asked\"",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.35,
+        "error": null,
+        "criteria": [
+          "回复内容是否极其简短、简洁且清晰？",
+          "回复的语气是否友好、具有共鸣感且适合讨论场景？",
+          "输出是否完全由原始消息文本组成，不包含任何解释性前缀、后缀或元数据？",
+          "回复内容是否直接回应了用户关于森林散步和自然体验的分享？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_7aa159a1feaec29421eb",
+        0.30394768672645345
+      ],
+      [
+        "task_a657ec806e73ecacb23d",
+        0.2655551078178575
+      ],
+      [
+        "task_9e030008bb179483eae8",
+        0.2644530850072031
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:6639cc320ea463526e6cf171e6337f474a304f0999851624e887b7c5283e966e",
+    "task": "Ho to write this professionally? \nAs a way of introduction, I work for Bill Johnson in Global Tech ( nice meeting you ). A situation presented itself where your expertise is needed to be able to address it correctly and find a viable solution that keep us in compliance with the HR rules .\n\nTo make the story short, one of our employees ( Koletta Kruk ) works in Poland and she occasionally work hours after 10:00 PM Poland time . Koletta supports Workjam one of our SAAS application and she currently works flexible shift that falls beyond the 10:00 PM Poland time.\n\nBased on the email she drafted to me below , I am hoping that you can shad some lights on how to deal with her asks . Koletta is great performer and she a flexible work hours suits the business well and aligns with the NA support hours .  \n",
+    "selected": [
+      "exp_b81bdda4898546ff8897ddb542c4073a"
+    ],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.1,
+        "error": null,
+        "criteria": [
+          "是否采用了标准的正式商务邮件格式，包括得体的称呼、清晰的段落结构以及专业的结尾敬语？",
+          "是否完整且准确地保留了所有关键事实信息（发件人Bill Johnson、公司Global Tech、员工Koletta Kruk、地点Poland、应用Workjam、22:00后工作时间、HR合规诉求及业务价值），无任何遗漏或歪曲？",
+          "是否彻底修正了原文中的拼写与语法错误（如将'shad some lights'改为'shine some light'或类似表达，修正'a flexible work hours'的语法）并消除了不恰当的非正式用语（如'To make the story short'）？",
+          "邮件的语气是否专业、客观且礼貌，清晰表达了寻求HR合规建议的请求，同时恰当地肯定了员工的绩效表现？",
+          "是否消除了原文中语境不符的表达（如纯文本邮件中'nice meeting you'的不适用性），并确保了从背景介绍到问题陈述的逻辑连贯性？"
+        ]
+      },
+      {
+        "ids": [
+          "exp_b81bdda4898546ff8897ddb542c4073a"
+        ],
+        "correct": false,
+        "margin": 0.0,
+        "error": null,
+        "criteria": [
+          "是否准确保留了所有关键事实实体（Bill Johnson, Global Tech, Koletta Kruk, Poland, Workjam, 22:00后工作时间）且无遗漏、拼写错误或歪曲？",
+          "是否彻底修正了原文中的语法错误、拼写错误（如'shad', 'a flexible'）及不恰当的非正式表达（如'To make the story short'），并替换为标准的商务用语？",
+          "是否消除了原文中可能引起歧义的表达（如'nice meeting you'在纯文本邮件中的适用性），并重构了自我介绍部分以符合专业商务信函格式？",
+          "邮件语气是否专业、礼貌且清晰，明确表达了寻求关于HR合规建议的请求，同时恰当地肯定了员工的绩效和业务价值？",
+          "邮件的逻辑结构是否连贯，能够清晰地阐述问题背景（波兰员工超时工作）、具体需求（HR合规指导）及业务必要性（NA支持覆盖）？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_af57e04ab1d39d30178b",
+        0.27589077775349813
+      ],
+      [
+        "task_7aa159a1feaec29421eb",
+        0.2595337156738298
+      ],
+      [
+        "task_3aa8d8d32ef579b61d5a",
+        0.23216310911432547
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:82025bb71c2c5ebcb343cc2651bf61517294966850848a7a7ce04af85b25bacb",
+    "task": "(In the school literature clubroom…)\n\nMonika: “…where’s Natsuki? She said she’d be here by now.”\n\nSayori: “Yeah, I wonder where she could be. Maybe she got caught up with something.”\n\nYuri: “She did mention having a newborn to take care of. MC, have you heard from her recently?”\n\nMC: “I haven’t heard from her today, but I can give her a call to see if everything’s okay.”\n\nMonika: “That would be great, thank you. I hope she’s just running a little late and nothing serious has happened.”\n\n(MC calls Natsuki and puts the phone on speaker.)\n\nNatsuki: “Hey, MC! Sorry I’m late. Sakura decided to",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": false,
+        "margin": 0.0,
+        "error": null,
+        "criteria": [
+          "续写内容是否以Natsuki完成'Sakura decided to...'这句话开头，并逻辑通顺地解释了迟到的具体原因？",
+          "所有现存角色（Monika, Sayori, Yuri, MC）的台词是否符合其原作性格特征且语气自然？",
+          "输出格式是否严格遵循剧本形式，包含正确的角色名、对话内容及括号内的动作/情境描述？",
+          "续写部分是否延续了前文关于‘照顾新生儿’的背景设定，未出现逻辑矛盾或角色认知偏差？",
+          "情节发展是否在合理的篇幅内给出了一个完整的回应或转折，使片段具有叙事闭环感？"
+        ]
+      }
+    ],
+    "critic": [
+      {
+        "round": 1,
+        "analysis": "任务要求续写以'Sakura decided to...'开头的句子。初稿Rubric（criterion 6）和修订版Rubric（criterion 6）均将'逻辑通顺地解释迟到原因'作为核心标准，且权重最高（0.35）。然而，Judge在评判时，对Chosen和Rejected都判定为'符合'该标准，导致两者在该项上得分相同（均为满分），最终总分平局（1.0 vs 1.0），未能区分优劣。分析具体文本发现：Chosen回答中Natsuki说'Sakura decided to make an early appearance... in the hospital'（早产住院），这与前文Yuri提到的'newborn'及MC去医院的语境高度契合，解释了'迟到的具体原因'；而Rejected回答中Natsuki说'Sakura decided to get all fussy... calm her down'（宝宝哭闹难哄），这虽然也是原因，但与前文'去医院'的紧急感略有脱节，且'fussy'通常指刚出生不久在家护理的情况，与'late'（迟到到俱乐部）的紧迫性匹配度不如'hospital'高。问题的关键在于Rubric中的'逻辑通顺地解释'这一表述过于宽泛，未明确界定'解释必须基于前文提供的特定线索（如医院、早产等）'或'必须消除歧义'。Judge因为两个回答都提供了'理由'，就机械地认为都满足'逻辑通顺'，忽略了'逻辑'应当是与上下文强相关的'合理推导'。因此，评分标准设计缺乏对'上下文约束下的逻辑合理性'的显式校验，导致无法区分'通用理由'与'精准衔接理由'。",
+        "error": null,
+        "attempts": [
+          {
+            "id": "exp_d2701ca7ca454b5f84b116bff1c91f01",
+            "method": {
+              "trigger": "当任务要求续写未完成句子或解释特定行为原因，且前文明确提供了背景线索（如地点、状态、人物关系）时",
+              "principle": "评分标准中的逻辑校验必须显式包含对'上下文线索一致性'的核验，不能仅满足于模型提供了一个通用的解释理由，否则无法识别出虽有理据但与前文设定不匹配的'伪逻辑'。",
+              "application_guide": "Generator在设计评分标准时，应将'逻辑连贯性'细化为'上下文约束下的因果一致性'：1. 明确指出前文中已设定的关键事实（如'在医院'、'早产'、'新生儿'）；2. 要求模型的解释必须直接引用或呼应这些事实，而非引入独立于上下文的通用情境（如'宝宝哭闹'若无前文铺垫则视为弱逻辑）；3. 若模型的解释与前文设定的关键事实存在冲突或未利用关键事实，应判定为逻辑瑕疵。此标准需独立于'是否提供了解释'，专门针对'解释的质量与上下文的绑定程度'进行判定。"
+            },
+            "admitted": true,
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "task_groups": [
+      [
+        "task_b983f1ab4224fe57d8f2",
+        0.35297330216852424
+      ],
+      [
+        "task_7aa159a1feaec29421eb",
+        0.3145949395255513
+      ],
+      [
+        "task_af57e04ab1d39d30178b",
+        0.29014201764159453
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:c4f98f6ea37fd8936037345800a8a1dabfbb4b0c5c1d95a3bde7b2bfbf0d3780",
+    "task": "90s song performed by a female that has lyrics before we say goodbye ",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": false,
+        "margin": -0.3,
+        "error": null,
+        "criteria": [
+          "歌曲的正式发行年份是否在1990年至1999年之间？",
+          "歌曲的主唱或主要表演者是否为女性？",
+          "歌曲的歌词中是否明确包含短语'before we say goodbye'？"
+        ]
+      }
+    ],
+    "critic": [
+      {
+        "round": 1,
+        "analysis": "任务要求识别一首1990年代发行、由女性演唱且歌词包含'before we say goodbye'的歌曲。Chosen回答（Whitney Houston）虽然时间（1992）和性别（女性）正确，但核心事实错误：该歌曲实际不包含此短语。Rejected回答（Jessica Folcker）编造了不存在的歌曲及歌词，但在形式上满足了所有三个硬性约束条件（年份、性别、短语存在）。Judge判定Chosen失败是因为它声称包含该短语但实际上没有（幻觉），而Rejected成功是因为它引用的歌词片段确实包含该短语（尽管歌曲不存在）。\n\nRubric设计问题在于：Criterion 3仅询问'是否包含短语'，这导致Generator无法区分'真实包含'与'虚假声称包含'。当模型产生幻觉时，只要它自信地陈述包含某短语，基于文本的简单匹配标准就会误判为正确。因此，评分标准需要增加一个核验维度：不能仅依赖模型声称的文本内容，必须通过外部知识或逻辑自洽性验证该短语在目标实体中是否真实存在。当前的Rubric缺乏对'事实真实性'的独立校验，仅关注'文本提及'，这是导致误判的根本原因。",
+        "error": null,
+        "attempts": [
+          {
+            "id": "exp_38d8749d3f4443079a73a45fcde1141c",
+            "method": {
+              "trigger": "当任务要求验证特定实体（如歌曲、书籍、产品）的属性（如歌词、章节、功能）是否存在时",
+              "principle": "评分标准必须将'模型声称的内容'与'实体客观事实'分离校验，不能仅依据模型回答中的文本描述进行判断，否则无法识别模型幻觉导致的虚假满足。",
+              "application_guide": "Generator在设计标准时，应设立一条独立的'事实真实性'检查项：1. 确认回答中提到的实体名称是否正确；2. 针对具体属性（如歌词短语），要求标准明确表述为'经核实，该实体[实体名]中确实包含[具体内容]'，而非仅问'回答是否提到...'；3. 若回答基于错误的实体或虚构的内容来构建答案，即使格式完美，也应判定为不合格。此核验需依赖外部知识库或明确的逻辑矛盾检测，而非单纯比对回答文本。"
+            },
+            "admitted": true,
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "task_groups": [
+      [
+        "task_af57e04ab1d39d30178b",
+        0.28674085065444266
+      ],
+      [
+        "task_7aa159a1feaec29421eb",
+        0.20721583743911842
+      ],
+      [
+        "task_5f9aef8639999501392c",
+        0.19319979226529874
+      ]
+    ],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:a33d4d324a4473f9ef68ca4149fc32f639ca80ec5416bae052275f9c3378ecdf",
+    "task": "summarize this without paraphrasing it in 300 words\"\nThe purpose of this research study was to examine the effect of sports sponsorship on the promotion of sports events. While scholars have explored the main reasons why corporations sponsor sports events, they have not illustrated the overall effects of sponsorship on the promotion of the  events and the factors affecting these outcomes. For this study, a quantitative approach with the use of a questionnaire was adopted; data were collected  from 400 managers and organisers of sports events. The research questions addressed how the brand image of the sponsors improves when they sponsor sports events and what effect sponsorship has on the success of the events. Our findings showed that businesses that sponsor sports event gain improved brand image, increased exposure to customers and increased sales. Sports event managers and individual players also benefit from sponsorships. The study findings indicated that sponsors give technical, expert and financial support in exchange for improved brand awareness and brand image, which ultimately increases their revenues. The importance and popularity of sports over the past 50 years have given rise to a new industry, the sports industry. The past three decades have seen significant growth in this industry (Saeed et al., 2014). The fantasy sports industry relies highly on efficient customer relationship management (CRM) for much of its success. The ability for a provider to deliver quick, accurate and descriptive information to its consumers will result in customer loyalty and retention (Smith et al., 2010). Major sports events have become an important feature of global business and sports sponsorship has increased because professional sports organisations cannot function effectively without the revenues generated from commercial activities (Faed et al., 2012). Sports organisations rely on the sale of telecasting/broadcasting  rights, sponsorship income and ticket sales to hold sports events. The present study focused on the revenue stream generated from sponsorship because it is a major source of funding for many sports organisations. In 2017, expenditures on sports sponsorship were approximately USD 16.62 billion in North America; this number is expected to reach USD 19.88 billion by 2021. Total worldwide sponsorship spending in 2012 was USD 40 billion and is predicted to reach USD 62.7 billion by 2018 (Statista, 2018). Sports sponsorship plays a significant role in promoting and financing various games (Houghton et al., 2014). Donlan (2014) explained that, although sports sponsorship significantly helps to build consumer-based brand equity, a range of factors, including the strength of the sponsor-event and the leverage of activities affects it. According to him, the most successful sponsorships contribute to brand quality and brand loyalty. Koronios et al. (2016) claimed that sports sponsorships promote various sports through the provision of funds as well as sponsors’ products and services. A special strategy known as ‘event marketing’, which has developed over the past three decades, has been adapted to promote companies’ products and services when an event is sponsored. According to BusinessDictionary.com (2018), “event marketing is the activity of designing or developing a themed activity, occasion, display, or exhibit (such as a sporting event, music festival, fair, or concert) to promote a product, cause, or organization.” A sub-theme of event marketing is ‘marketing through sports’, in  which major sports events like the Olympic Games, the Union of European Football Associations (UEFA) Champions League, the World Marathon Majors and the Fédération Internationale de Football Association (FIFA) World Cup are sponsored and live advertisements of companies’ products and services are shown continuously. This is a big boost for marketing (Lynn and Close, 2011). The funding of sports events can be extended to various levels, from small-town or city-level events to world-level competitions such as the Olympics Games. As an example of the latter, Toyota signed an eight-year, USD 1.64 billion deal with the International Olympic Committee in 2015, covering the years 2017 to 2024 (Sport Business, 2016). The other four firms involved in the top five sports sponsorship deals  of 2015 were AB InBev [USD 1.4 billion deal with the National Football League for  six years (2017 to 2022)], Nike [USD 1 billion deal with the National Basketball Association (NBA) for eight years (2017/2018 to 2024/ 2025)], Adidas [USD 940 million deal with Bayern Munich for 15 years (2015/2016 to 2029/2030)] and Verizon  [USD 400 million deal with the NBA for three years (2015/2016 to 2017/2018)]. Some firms sponsor many games, while others extend financing to one or two specific sports. For instance, the sport of cricket is sponsored mostly by PepsiCo, Toyota, Coca Cola and Adidas. The major sponsors of soccer are Coca Cola, Nike, Adidas and Telecom. Rugby is sponsored by Coca Cola, Unilever and Adidas, while golf is sponsored by Rolex, Anheuser-Busch, Emirates, MasterCard and Coca Cola (PRO Sports, 2015). The relationship between sports sponsorship and the marketing of companies’ products and services is very strong. The commercialisation of sports has increased  the promotion and sponsorship of sports events. The involvement of businesses in sponsorship programs results in increased brand awareness and a strengthened brand image. Doshybekov et al. (2016) explained that engagement in sports sponsorship ensures that sports organisations obtain the financial assistance they need to enhance the quality of the sports events. On the other side, sponsoring businesses achieve both tangible and intangible benefits, including boosting brand exposure and communicating a positive image of the business to stakeholders. Studies conducted by Bocşe et al. (2012) and Kwak et al. (2011) revealed that supporters are emotionally attached to the sport when they attend sports events. Multinational corporations use this at layout attachment as an opportunity to associate their products and services with the events. While several studies have reported on the effects of sports sponsorship on business development and sales, few researchers have studied the effects of sponsorship on the promotion of sports events. The present study was undertaken to assess the effects of sponsorship on the promotion of sports events. This study was undertaken to bridge this gap, especially as it applies to the UK. The objective of the present study was to answer the following questions: Does sponsorship of sports events enhance the performance of sports organisations? And, how are sponsors benefitting from sponsoring? The paper is structured as follows: Section 1 introduces the subject of sports sponsorship, Section 2 reviews sponsorship literature and Section 3 discusses the chosen research methodology. Section 4 gives the results of the statistical analyses, Section 5 is the discussion of the study while Section 6 presents the conclusions. Our research was conducted to ascertain the effects of sponsorship on sports events promotion and vice versa. The following conclusions were drawn from our findings: • Sponsorship significantly affects sports events as well as awareness of brand image. • Sponsorship is not only a source of financial assistance to sports organisations but is also an important part of businesses’ promotion of their products and services. • There are positive associations and relationship between the sponsorship and promotion of sport events. • Sponsorship is an important part of the promotional mix of sports organisations and companies. • Sponsorship can be a powerful tool for marketing sports events as well as the promotion of companies’ products and services. • Sponsorship is a popular medium for corporate communication. • The growth of sponsorship programs is associated with an increase in the use of alternative ways to promote products and services. • Sports sponsorship is important from the perspective of the audience because it promotes a distinct image of an event in their minds. • The increase in the cost of media advertising is an important factor affecting the growth of sports sponsorship, which is expected to grow in the future. • Sponsorship programs are cost-effective. • The decisions to select sponsors for sports events need wise understanding and planning, including taking into account the perspective of clients and customers. The findings of the study have policy implications as well. It is important for sports event managers and sports organisations to integrate sponsorships into their marketing and promotional strategies. In addition, it is important for businesses to sponsor sports  events to enhance their brand image and communicate their marketing message to large audiences. \"",
+    "selected": [],
+    "paths": [
+      {
+        "ids": [],
+        "correct": false,
+        "margin": 0.0,
+        "error": null,
+        "criteria": [
+          "输出内容的总词数是否严格不超过300个单词？",
+          "输出是否完整保留了原文的核心要素（研究目的、定量方法/样本量400人、主要发现、具体结论及政策建议），且无关键信息遗漏？",
+          "输出是否严格避免了实质性改写，即关键概念、术语和核心表述是否直接源自原文而未使用同义词替换或重构句子？",
+          "输出内容的逻辑流是否与原文一致，清晰呈现了从行业背景、研究问题、方法论到结果和结论的叙述顺序？"
+        ]
+      }
+    ],
+    "critic": [
+      {
+        "round": 1,
+        "analysis": "任务明确要求'summarize this without paraphrasing it'（在不改写原文的前提下总结）。这是一个强约束，意味着模型应尽可能直接引用原文的措辞、术语和句式，仅做必要的删减以控制字数。然而，两份回答（chosen和rejected）均大量使用了同义词替换（如将'examine the effect'改为'investigates the impact'，'questionnaire was adopted'改为'collected data'）和句式重构，这本质上构成了paraphrasing。Judge在评判Criterion 7时正确指出了这一点，并认为这是违反核心约束的表现。问题在于，原有的评分标准（Rubric）虽然包含了‘避免实质性改写’这一项，但并未明确界定‘不改写’的具体操作边界：即当原文过长无法在不改写的情况下压缩至300词时，模型是否被允许进行最小程度的改写？或者标准是否隐含了‘若无法做到完全不改写则视为失败’？目前的Rubric未能强制要求模型在生成前评估‘不改写’与‘字数限制’的兼容性，导致模型倾向于选择更易实现的‘改写摘要’而非严格遵循指令的‘摘录式摘要’。因此，需要一条经验来指导设计者：当任务包含‘禁止改写’且伴随长度限制时，评分标准必须显式规定核验方法——检查输出是否保留了原文的关键短语原样，若发现大量同义替换，无论字数如何，均应判定为违规。",
+        "error": null,
+        "attempts": [
+          {
+            "id": "exp_7a9dae8066244759b7fb3f7f199a28b9",
+            "method": {
+              "trigger": "任务指令中包含'without paraphrasing'或类似禁止改写约束，且同时存在字数/长度限制",
+              "principle": "评分标准必须定义'不改写'的最低保留单位（如关键短语或句子片段），并规定当原文无法在保留这些单位的同时满足字数限制时，模型应优先遵守'不改写'原则（即使导致字数超标或内容极度精简），而非通过改写来凑字数；任何非必要的同义词替换或句式重构都应被视为对核心约束的违背。",
+              "application_guide": "在设计此类任务的Rubric时，需增加一个具体的核验步骤：选取原文中的3-5个核心概念句（如研究目的、具体数据、结论陈述），检查输出中是否完整保留了这些句子的原始词汇和结构。若输出将这些句子拆解并用同义词重组，即便总字数符合限制，也应判定为'未满足不改写约束'。同时，需在提示词或标准说明中明确告知模型：若无法在300词内完成无改写总结，应截断原文而非改写，而非自行概括。"
+            },
+            "admitted": false,
+            "result": false,
+            "error": null
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "analysis": "在上一轮尝试中，经验#1被提出并用于修订Rubric。然而，该次尝试被标记为'incorrect'（失败），原因是生成的新Rubric（Rubric 3）虽然纳入了'不改写'约束，但Judge的判定结果显示两个回答在所有核心维度（字数、完整性、不改写、逻辑流）上得分完全一致（均为0.25或0），导致无法区分优劣（margin=0.0）。深入分析发现，问题出在经验#1的应用指南过于理想化且缺乏可操作性的量化边界：它要求模型在'无法保留关键短语同时满足字数限制时优先遵守不改写原则'，但这在实际操作中是一个模糊的决策点。对于生成式模型，当原文过长时，它要么改写摘要（违反指令），要么截断（可能丢失信息）。现有的评分标准未能提供明确的'降级处理'规则（例如：若必须改写才能满足字数，是否算部分违规？还是直接判错？）。此外，Judge在判定Criterion 11（不改写）时，对两个回答都给出了'false'，说明两者都严重违反了该约束，这导致该维度的区分度失效。根本原因在于：任务本身存在内在冲突（'不改写' vs '300词总结'），而评分标准未定义这种冲突下的优先级和容错机制，导致所有回答在该维度上同归于尽。因此，需要一条新的经验来指导设计者：当任务指令包含互斥约束（如严格不改写与严格字数限制）时，评分标准必须明确界定'不可行性'的处理方式，即设定一个明确的阈值或替代方案（如允许最小程度的必要连接词调整，但禁止词汇替换；或者规定若无法在不改写的情况下完成，则视为任务失败，而非部分得分）。",
+        "error": null,
+        "attempts": [
+          {
+            "id": "exp_158c6c4d4d7342918398b713ee360487",
+            "method": {
+              "trigger": "任务指令中包含强约束的'禁止改写/paraphrasing'要求，且伴随严格的字数/长度限制，导致原文内容无法在不改写的前提下完整压缩至目标长度",
+              "principle": "评分标准必须显式定义'不可行情况'下的处理规则：明确告知模型若无法在保留原文核心表述的同时满足字数限制，应优先执行'截断'策略而非'改写'，并将'因字数不足而被迫改写'的行为定义为严重违规（权重高），而非部分扣分；同时，评分项需将'改写程度'从定性描述转化为定量核验（如计算非原文原词的替换比例），以便在两者都违规时仍能通过严重程度进行区分。",
+              "application_guide": "在设计此类Rubric时，需在'不改写'准则中增加具体操作指引：1. 定义'核心表述'清单（如研究目的句、关键数据句），要求这些句子必须逐字保留；2. 若保留这些句子后字数超标，强制要求删除后续非核心内容而非修改句式；3. 在评分时，若模型选择改写而非截断，无论字数是否达标，均判定为'未满足核心约束'（Fail），而非部分得分。这样能确保在任务本身存在冲突时，评分标准能准确反映模型是否遵循了指令的优先级顺序。"
+            },
+            "admitted": true,
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    ],
+    "task_groups": [],
+    "historical_selected": []
+  },
+  {
+    "sample_id": "helpsteer3:train:4329983e55d870fb87bb211c4a7898791aaf9bff78ec2a7dc3c1c2d931e162a9",
+    "task": "script about scott frost ranked no 10 in the country (10-2) vs no 7 gus malzahn (13-0), peach bowl",
+    "selected": [
+      "exp_b81bdda4898546ff8897ddb542c4073a"
+    ],
+    "paths": [
+      {
+        "ids": [],
+        "correct": true,
+        "margin": 0.2,
+        "error": null,
+        "criteria": [
+          "脚本是否明确提及Peach Bowl作为比赛名称？",
+          "脚本是否正确描述Scott Frost执教排名第10且战绩为10-2的球队？",
+          "脚本是否正确描述Gus Malzahn执教排名第7且战绩为13-0的球队？",
+          "脚本是否清晰体现了两队排名差距（第10名对第7名）及胜负记录的对比（10-2对13-0）？",
+          "脚本是否采用适合表演的格式（包含场景、动作或对话指示等元素）？",
+          "脚本内容是否聚焦于本场比赛的对决主题，未偏离至其他无关赛事或虚构不存在的比赛结果？"
+        ]
+      },
+      {
+        "ids": [
+          "exp_b81bdda4898546ff8897ddb542c4073a"
+        ],
+        "correct": false,
+        "margin": -0.35,
+        "error": null,
+        "criteria": [
+          "脚本是否明确提及Peach Bowl作为比赛名称？",
+          "脚本是否正确将斯科特·弗罗斯特（Scott Frost）描述为执教排名第10且战绩为10-2的球队的主教练？",
+          "脚本是否正确将古斯·马尔扎恩（Gus Malzahn）描述为执教排名第7且战绩为13-0的球队的主教练？",
+          "脚本是否清晰体现了两队之间的排名对比（第10对第7）及胜负记录差异（10-2对13-0）？",
+          "脚本是否采用了标准的剧本格式（包含场景描述、动作提示或角色对话等元素）？",
+          "脚本内容是否紧密围绕本场比赛的对决主题，未偏离至其他无关赛事或虚构不存在的背景？"
+        ]
+      }
+    ],
+    "critic": [],
+    "task_groups": [
+      [
+        "task_af57e04ab1d39d30178b",
+        0.16613839727480229
+      ],
+      [
+        "task_fab371359ddd9fb3d88d",
+        0.16501318339037158
+      ],
+      [
+        "task_9e030008bb179483eae8",
+        0.15585110507036984
+      ]
+    ],
+    "historical_selected": []
+  }
+]

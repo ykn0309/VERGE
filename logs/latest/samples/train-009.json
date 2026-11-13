@@ -1,0 +1,202 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:fc3e90a400449a63647bd634e85fec81e95c71379d18967fb21826fc2a994aea",
+    "task": "Replace the $ signs with correct following words.\n\nwhich, who, whose, whom, that, what, whatever, whomever\n\n$ happens, try to remain optimistic.\n\nThe young girl, $ was very dramatic, had a bright future ahead of her.\n\nGo through the door $ opens automatically.\n\nThe adolescent asked for a tutor $ could come to school during lunch.\n\nThe alliance, $ was accidental, turned out to be very successful.",
+    "chosen": "Sure, I'd be happy to help! Here are the sentences with the correct words:\n\n* **Whatever** happens, try to remain optimistic.\n* The young girl, **who** was very dramatic, had a bright future ahead of her.\n* Go through the door **that** opens automatically.\n* The adolescent asked for a tutor **who** could come to school during lunch.\n* The alliance, **which** was accidental, turned out to be very successful.\n\nThese words are called relative pronouns, and they are used to connect a clause to a noun or pronoun. Here's a brief explanation of when to use each one:\n\n* **Who**: refers to people and is used as the subject of a verb or the complement of a linking verb.\n* **Whom**: refers to people and is used as the object of a verb or preposition.\n* **Whose**: shows possession and can be used with people or things.\n* **Which**: refers to things or animals and is used as the subject or object of a relative clause.\n* **That**: can refer to people or things and is used as the subject or object of a restrictive relative clause.\n* **What**: is used to refer to things or ideas and is the subject of a clause.\n* **Whatever** and **whomever**: are used to refer to people or things in a general or unspecified way.\n\nI hope this helps! Let me know if you have any other questions.",
+    "rejected": "The young girl, who was very dramatic, had a bright future ahead of her.\n\nGo through the door that opens automatically.\n\nThe adolescent asked for a tutor who could come to school during lunch.\n\nThe alliance, which was accidental, turned out to be very successful.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15383,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it includes all of the sentences in the prompt and gives an explanation of when to use each relative pronoun. ",
+          "feedback1": "The response is partially helpful. The model correctly inserts the words from the list to complete the sentences. The first sentence from the prompt is missing and therefore the response is not complete. There is no explanation as to why the model chose the words it did for each sentence. The third sentence could have used 'who' or 'that' but the model only identified 'who' and did not give the other option. ",
+          "feedback2": "The response is mostly helpful. The model correctly chooses the words from the list to complete the sentences. The explanation of when to use each relative pronoun is helpful in giving support for how the model chose to complete the sentences. The fourth sentence could have used 'who' or 'that', but the model only identifies one of those options, without indicating it could have been either. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 1 is missing the first sentence and @Response 2, while verbose, has all five. ",
+          "feedback1": "The response is partially helpful. It mostly addresses the user's prompt by replacing the dollar signs with the given list of words. There is nothing to fact check in the response being that it is fictional. The model leaves out one of the lines from the prompt- the first one. This makes the response not fully satisfying, so it is only partially helpful. ",
+          "feedback2": "The response is mostly helpful. It fully addresses the user's prompt by taking all five sentences and replacing the dollar signs with the list of words. There is nothing to fact check in the response being that it is fictional. The response is very verbose, and it adds unnecessary information like the definitions of each word. Therefore the response is mostly helpful. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It responds to all parts of the question and doesn't miss a sentence like @Response 1. Although @Response 2 has extra information not asked in the prompt, it is more helpful than @Response 1 because it has no missing information.",
+          "feedback1": "The response is slightly helpful. Although it did do most of the sentences correct it missed the first sentence specified in the prompt. It also should have been clearer by bolding the words used to help see exactly what was used. It should also have a small introduction and not just jump into the sentences.",
+          "feedback2": "The response is mostly helpful. The respond used the correct word on all the sentences as explained in the prompt. It followed instructions correctly but it went above and beyond what was asked for. It goes on to give an explanation on each of the pronouns used which is extra to what the prompt was ."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_7aa159a1feaec29421eb",
+        0.3239690940824703
+      ],
+      [
+        "task_5f9aef8639999501392c",
+        0.3076310858849705
+      ],
+      [
+        "task_5a3117cdcb4717bb475e",
+        0.23492760944530144
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_e8f647e3a916420099f5000b6adf78c3"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_e8f647e3a916420099f5000b6adf78c3",
+        0.36537748668850345
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_e8f647e3a916420099f5000b6adf78c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.36537748668850345
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_4bfa4fbcf24e48a2a5138da796e135b9",
+    "criteria": [
+      {
+        "criterion_id": "rubric_4bfa4fbcf24e48a2a5138da796e135b9_1",
+        "question": "第一个句子'$ happens...'是否被正确替换为'Whatever'以表达'无论发生什么'的含义？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_4bfa4fbcf24e48a2a5138da796e135b9_2",
+        "question": "第二个句子'The young girl, $ was very dramatic...'是否被正确替换为'who'作为非限制性定语从句的主语指代人？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_4bfa4fbcf24e48a2a5138da796e135b9_3",
+        "question": "第三个句子'Go through the door $ opens automatically...'是否被正确替换为'that'或'which'作为限制性定语从句的主语指代物？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_4bfa4fbcf24e48a2a5138da796e135b9_4",
+        "question": "第四个句子'The adolescent asked for a tutor $ could come to school...'是否被正确替换为'who'或'that'作为定语从句的主语指代人？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_4bfa4fbcf24e48a2a5138da796e135b9_5",
+        "question": "第五个句子'The alliance, $ was accidental...'是否被正确替换为'which'作为非限制性定语从句的主语指代事物？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "任务要求从给定的8个关系代词/连接代词选项中，为5个包含$占位符的句子选择正确的词汇进行替换。核验标准需确保每个句子的语法功能（主语、宾语、定语等）与时态逻辑匹配所选词的适用性，且最终输出仅包含修正后的完整句子，无多余内容。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121",
+        "criteria": [
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_1",
+            "question": "第一个句子是否被正确替换为'Whatever'以表达让步状语从句含义？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_2",
+            "question": "第二个句子是否被正确替换为'who'作为非限制性定语从句中指代人的主语？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_3",
+            "question": "第三个句子是否被正确替换为'that'或'which'作为限制性定语从句中指代物的主语？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_4",
+            "question": "第四个句子是否被正确替换为'who'或'that'作为限制性定语从句中指代人的主语？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_5",
+            "question": "第五个句子是否被正确替换为'which'作为非限制性定语从句中指代事物的主语？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求从指定列表中为5个含$占位符的句子选择正确的关系代词或连接代词。修订阶段需基于初稿标准检查答案的准确性，重点核验每个句子中先行词的性质（人或物）、从句类型（限制性或非限制性）以及在从句中的语法成分（主语等），确保所选词汇符合语法规则且来自给定选项列表。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121",
+        "normalized_weights": {
+          "rubric_cf940f3ccc2a4c6fa524d97272fc1121_1": 0.2,
+          "rubric_cf940f3ccc2a4c6fa524d97272fc1121_2": 0.2,
+          "rubric_cf940f3ccc2a4c6fa524d97272fc1121_3": 0.2,
+          "rubric_cf940f3ccc2a4c6fa524d97272fc1121_4": 0.2,
+          "rubric_cf940f3ccc2a4c6fa524d97272fc1121_5": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答将第一个句子的$替换为'Whatever'，构成了让步状语从句'Whatever happens'，符合题目要求和语法逻辑。",
+            "rejected_reason": "回答中完全缺失第一个句子（'Whatever happens, try to remain optimistic.'）的填空结果，无法判断是否被正确替换为'Whatever'。"
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答将第二个句子的$替换为'who'，正确用于非限制性定语从句中指代先行词'the young girl'（人）并在从句中作主语。",
+            "rejected_reason": "回答中包含第二个句子的正确填空：'The young girl, who was very dramatic...'，使用了'who'作为非限制性定语从句中指代人的主语。"
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答将第三个句子的$替换为'that'，正确用于限制性定语从句中指代先行词'door'（物）并在从句中作主语，符合'that'或'which'的选项要求。",
+            "rejected_reason": "回答中包含第三个句子的正确填空：'Go through the door that opens automatically.'，使用了'that'作为限制性定语从句中指代物的主语。"
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答将第四个句子的$替换为'who'，正确用于限制性定语从句中指代先行词'a tutor'（人）并在从句中作主语，符合'who'或'that'的选项要求。",
+            "rejected_reason": "回答中包含第四个句子的正确填空：'The adolescent asked for a tutor who could come to school during lunch.'，使用了'who'作为限制性定语从句中指代人的主语。"
+          },
+          {
+            "criterion_id": "rubric_cf940f3ccc2a4c6fa524d97272fc1121_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答将第五个句子的$替换为'which'，正确用于非限制性定语从句中指代先行词'the alliance'（事物/抽象概念）并在从句中作主语。",
+            "rejected_reason": "回答中包含第五个句子的正确填空：'The alliance, which was accidental...'，使用了'which'作为非限制性定语从句中指代事物的主语。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.8,
+        "margin": 0.2,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

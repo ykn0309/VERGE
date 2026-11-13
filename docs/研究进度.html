@@ -11,7 +11,7 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1暂定三项方向：聚类使用对侧类别关联分布并交替更新；Critic结合人工理由检查选择、生成和评判，依据不足时放弃提案；Generator先生成任务初稿，再按经验修订，各初始子集共享初稿。均未实现或实测。已确认无经验路也修订一次；Judge误判仍未解决，候选准入和信用规则本次未改。</p><div class="pulse"><span>当前：v3.1三项方向暂定，四路同等修订已确认</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1训练最多三条经验平等试用，不分首选与探索：三个单经验路加无经验路，共享初稿、各修订一次，逐条积累相对无经验的信用及提供关联。任一经验路成功不进Critic；全失败且无经验失败时进入，无经验成功分支仍待讨论。推理最多用一条，选择策略另议。组合选择暂缓，代码和实验均未开始。</p><div class="pulse"><span>当前：训练四路平等试用已定，Critic分支与推理策略待讨论</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
 <div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-13</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
@@ -1580,6 +1580,10 @@
       {
         "type": "p",
         "text": "这是方向暂定，尚未实现或实验。对侧全为单成员时没有新增的共享类别信号，新任务无关联时仍按文本查询；权重、门槛和初始化细节继续讨论。不能用组数减少认证类别合理或最终收益改善，原v3数据与实现保持不变。"
+      },
+      {
+        "type": "p",
+        "text": "最新v3.1每路只用一条，但同题训练最多分别试用三条。三条入池经验实际提供后均记录任务关联，一题最多三条边；共享任务只表示分别试用，不认证组合有效。两侧仍按对侧类别分布比较，来源候选验证不计关联。"
       }
     ],
     "sources": [
@@ -1629,7 +1633,7 @@
       },
       {
         "type": "p",
-        "text": "方案尚未实现或实测；本次不改候选准入、预算和下游信用规则。Critic及人工理由都可能出错，来源通过不证明泛化，后续独立任务验证继续必要；候选减少本身不是成功，还需审查是否遗漏有价值的方法。"
+        "text": "方案尚未实现或实测。每轮最多一条、最多两轮，准入仍为候选单条判对；来源不记信用或关联，后续对每个单经验分支记录相对无经验的差值。训练三条平等试用，任一成功不触发Critic；全失败且无经验失败时进入，无经验成功分支仍待讨论。候选减少和来源通过均不证明可靠或泛化。"
       },
       {
         "type": "p",
@@ -1657,13 +1661,13 @@
   },
   {
     "id": "generator31",
-    "title": "v3.1：先生成任务初稿，再按经验修订",
+    "title": "v3.1：三条经验分别试用，四路平等对照",
     "status": "方向暂定 · 未实现",
     "parent": "main",
     "previous": "critic31",
     "following": null,
-    "transition": "继续讨论Judge噪声和v3.1其余细节",
-    "question": "先建立任务本身的评价要求，再用经验修订，能否减少额外义务？",
+    "transition": "继续讨论Critic分支与推理选择一条的策略",
+    "question": "怎样增加经验验证覆盖，并利用逐条效果指导后续选择？",
     "story": [
       {
         "type": "p",
@@ -1671,11 +1675,11 @@
       },
       {
         "type": "callout",
-        "text": "2026-11-13用户暂定：Generator先只看task生成共享初稿，各初始子集都从同一初稿出发修订一次。随后明确无经验路也只根据task与初稿修订；E1、E2及组合路各带对应经验共同修订。训练和推理同用两阶段，推理只走所选集合一路。"
+        "text": "2026-11-13用户进一步明确：训练最多选择三条经验，三条平等参与，无首选／探索之分；每条单独一路，加无经验共最多四路，共享任务初稿、各修订一次。任一经验路判对就不进入Critic，三条全失败时才需考虑Critic。推理仍最多使用一条，选择策略另议。"
       },
       {
         "type": "p",
-        "text": "修订需要任务或合理评价依据，经验不适用可保留初稿；初稿错误或遗漏可以纠正，仍需检查新增义务、遗漏要求和评价目标变化。实际路径仍事前固定，不借标签挑最优子集，未更改信用公式或候选准入规则。"
+        "text": "修订需要任务或合理评价依据，经验不适用可保留初稿内容，原稿错误可纠正。每条入池经验分别积累r(E_i)−r(∅)及本题提供关联；缺失路只使相应信用未知，不抹去其他有效对照。每题每经验一份证据，任一路成功的覆盖率不等于推理单路准确率。"
       },
       {
         "type": "p",
@@ -1683,11 +1687,11 @@
       },
       {
         "type": "p",
-        "text": "Judge单次误判尚未解决。Critic只在实际路径最终判错时触发，不能覆盖所有误判，候选准入仍可能受Judge噪声影响；本次未采用重复评分、投票或自动更正。"
+        "text": "Judge误判尚未解决。所有实际试用经验路及无经验均明确失败时可进入Critic，仍允许依据不足不提案；无经验成功而经验全失败时是否进入，正在讨论。技术未知不当作判错，候选准入仍可能受Judge噪声影响。"
       },
       {
         "type": "p",
-        "text": "此前担心无经验直接用初稿、有经验多一次修订会混入额外修订步骤的影响。用户已确认无经验路也修订一次，四路数量不变，统一修订指令与设置；该问题不再作为待定项。此举只控制这一处流程差异，不认证经验收益或消除Judge噪声，代码和实验尚未开始。"
+        "text": "决策经历了四路组合、单经验两路，再到三个单经验路加无经验；保留每路只用一条及无经验同等修订，同时增加训练试用覆盖。组合选择仍暂缓，Critic每轮最多一条、最多两轮，来源验证不记候选信用或关联；没有把此前首选／探索建议纳入方案。尚未实现或实测。"
       }
     ],
     "sources": [

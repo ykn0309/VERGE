@@ -192,7 +192,7 @@ d_i为两侧Boolean判别差，S_i为标准声明的来源，多来源均分；P
 ## 11. 实施与验收记录
 
 - 新主链已替换旧Reflector/对话修订；默认Fake及OpenAI/Qwen示例配置改为`modules.application: critic_candidate_validation`。历史实验配置原样保留，新CLI拒绝旧策略/开关/角色。
-- 字段与版本见[工程设计第9节](../工程设计.md)：独立`proposal_attempts`/`application_attempts`，声明采用标准ID和双通道Credit，manifest/Memory/trajectory版本2。固定E包含原始文本及使用前证据视图；第二轮替换C。
+- 字段与版本见[工程设计第9节](../历史设计/2026-11-13-v3/工程设计.md)：独立`proposal_attempts`/`application_attempts`，声明采用标准ID和双通道Credit，manifest/Memory/trajectory版本2。固定E包含原始文本及使用前证据视图；第二轮替换C。
 - 230项测试通过，包含保留的数据准备、网络/鉴权/日志隐私、向量缓存、独立Judge和并行冻结测试，以及新预算、拒绝反馈、严格来源、错误隔离、P=N>0更新、零信用与负信用成功入池、ADD/MERGE版本与续跑边界。旧兼容、Reflector、普通修订和诊断测试已删除或改写，没有skip。
 - `tests/test_candidate_http_pipeline.py`用MockTransport走最坏4次候选生成、4次Admission、2轮独立应用，核对实际system/user、前后证据各一次、拒绝反馈、新候选替换、来源原文及最终双通道Memory。无真实API调用。
 - 浏览器以临时Fake运行核验概览、样本/角色和经验页，JavaScript错误为0、无横向溢出；局部预览服务已关闭。截图保存在`/tmp/verge-plan31-{overview,sample,memory}.png`，已有output截图未改写。

@@ -16,11 +16,9 @@ import {
 } from "./ui.mjs";
 import { callRecords } from "./calls.mjs";
 import {
-  subsetLabel,
-  subsetProtocol,
-  usedPath,
+  trialLabel,
+  initialStatus,
   resultOf,
-  citedIds,
   sampleOutcome,
   criticCandidates,
   resolveCriticRound,
@@ -28,7 +26,8 @@ import {
 
 export const stages = [
   ["selection", "经验选择"],
-  ["rubric", "初始生成标准"],
+  ["draft", "共享初稿"],
+  ["rubric", "各路修订标准"],
   ["judge", "初始评判"],
   ["critic", "Critic提经验"],
   ["candidate_rubric", "候选生成标准"],
@@ -38,11 +37,11 @@ export const stages = [
 
 export function traceStageGroups(record) {
   return [
-    { label: "初始流程", round: null, stages: stages.slice(0, 3) },
+    { label: "初始流程", round: null, stages: stages.slice(0, 4) },
     ...(record.critic_rounds || []).map((r) => ({
       label: `第${r.round_number}轮`,
       round: r.round_number,
-      stages: stages.slice(3, 6),
+      stages: stages.slice(4, 7),
     })),
   ];
 }
@@ -146,15 +145,6 @@ function pathSection(path, title, data, actions, judgments = false) {
       ),
       node("p", c.question, "question"),
     );
-    const sources = node("div", undefined, "source-line");
-    add(
-      sources,
-      node("span", "依据：", "muted"),
-      ...((c.source_experiences || []).length
-        ? c.source_experiences.map((id) => eLink(id, data, actions))
-        : [node("span", "任务本身", "muted")]),
-    );
-    if (!subsetProtocol(data)) add(item, sources);
     if (judgments) {
       const j = js.get(c.criterion_id);
       const pair = node("div", undefined, "judgment-pair");
@@ -184,22 +174,6 @@ function pathSection(path, title, data, actions, judgments = false) {
         `analysis-${path.rubric.rubric_id}`,
       ),
     );
-    if (path.rubric.experience_usage?.length)
-      add(
-        section,
-        fold(
-          "各条经验实际怎么用",
-          table(
-            ["经验", "使用情况", "说明"],
-            path.rubric.experience_usage.map((u) => [
-              eLink(u.experience_id, data, actions),
-              u.used ? "已引用" : "未使用",
-              u.reason,
-            ]),
-          ),
-          `usage-${path.rubric.rubric_id}`,
-        ),
-      );
   }
   return section;
 }
@@ -282,12 +256,9 @@ function critic(record, data, actions, roundNumber) {
     round.attempts.forEach((a, index) => {
       const card = node("article", undefined, "candidate-card");
       const reasons = {
-        standalone_correct: "单条验证判对",
-        joint_correct: "组合验证判对，一起准入",
+        source_correct: "来源验证判对",
         embedding_failure: "向量生成技术失败",
-        cited_and_correct: "实际引用且判对",
         incorrect: "仍未判对",
-        not_cited: "未被正权重标准引用",
         technical_failure: "验证技术失败",
       };
       add(
@@ -343,7 +314,7 @@ function candidateValidation(record, state, actions) {
       judging
         ? `${state.round ? `第${state.round}轮：` : ""}Judge评判`
         : `${state.round ? `第${state.round}轮：` : ""}Generator应用候选经验`,
-      "按本轮已保存的单条与组合路径查看Generator和Judge；无经验基线复用初始结果。",
+      "本轮候选复用共享初稿，单独修订后评判；无经验基线不重跑。",
     ),
   );
   if (!candidates.length)
@@ -365,16 +336,6 @@ function candidateValidation(record, state, actions) {
     path: c.attempt.path,
     attempts: [c.attempt],
   }));
-  const pair = round?.subset_paths?.find(
-    (p) => p.provided_experience_ids.length === 2,
-  );
-  if (pair)
-    options.push({
-      key: `pair:${state.round}`,
-      label: "候选1＋候选2",
-      path: pair,
-      attempts: candidates.map((c) => c.attempt),
-    });
   const selected = options.find((c) => c.key === state.candidate) || options[0];
   state.candidate = selected.key;
   const control = node("div", undefined, "candidate-picker");
@@ -419,9 +380,7 @@ function candidateValidation(record, state, actions) {
       box,
       node(
         "p",
-        subsetProtocol(state.data)
-          ? "来源验证只决定准入：不累计信用，不建立来源任务关联。单条结果与组合结果分别保留。"
-          : "来源即时验证不等于下游有效。",
+        "来源验证只决定准入，不累计信用或建立来源关联。",
         "muted admission-note",
       ),
     );
@@ -559,7 +518,7 @@ function calls(record, state, actions) {
 export function traceView(record, state, actions) {
   const data = state.data;
   const box = node("section", undefined, "trace-detail");
-  const status = record.error ? "技术失败" : resultOf(usedPath(record));
+  const status = record.error ? "技术失败" : initialStatus(record);
   add(
     box,
     heading(
@@ -647,56 +606,14 @@ export function traceView(record, state, actions) {
     add(box, candidateValidation(record, state, actions));
   else if (state.stage === "calls") add(box, calls(record, state, actions));
   else {
-    const pair = node(
-      "div",
-      undefined,
-      record.actual ? "paths-grid" : "paths-grid single",
-    );
-    if (record.subset_paths?.length) {
-      for (const path of record.subset_paths) {
-        const label = subsetLabel(
-          path,
-          record.actual?.provided_experience_ids || [],
-        );
-        const actual =
-          path.provided_experience_ids.length ===
-            (usedPath(record)?.provided_experience_ids.length ?? -1) &&
-          path.provided_experience_ids.every((id) =>
-            usedPath(record).provided_experience_ids.includes(id),
-          );
-        add(
-          pair,
-          pathSection(
-            path,
-            label + (actual ? " · 本次实际路径" : " · 对照"),
-            data,
-            actions,
-            state.stage === "judge",
-          ),
-        );
-      }
+    const pair = node("div", undefined, "paths-grid");
+    if (state.stage === "draft") {
+      add(pair, pathSection({rubric: record.draft}, "共享任务初稿R0", data, actions));
     } else {
-      add(
-        pair,
-        pathSection(
-          record.baseline,
-          record.actual ? "无经验对照" : "无经验路径",
-          data,
-          actions,
-          state.stage === "judge",
-        ),
-      );
-      if (record.actual)
-        add(
-          pair,
-          pathSection(
-            record.actual,
-            "本次使用经验",
-            data,
-            actions,
-            state.stage === "judge",
-          ),
-        );
+      for (const path of record.paths || []) {
+        add(pair, pathSection(path, trialLabel(path, Object.keys(record.selection_reasons)),
+          data, actions, state.stage === "judge"));
+      }
     }
     add(box, pair);
   }

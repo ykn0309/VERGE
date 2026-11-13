@@ -109,66 +109,33 @@ def load_run(directory):
     checkpoint = directory / "checkpoint.json"
     saved = json.loads(checkpoint.read_text())
     schema = saved.get("schema")
-    if schema == "verge-history-learning-v1":
-        # Archival projection only. Legacy data never enters the training loader.
-        samples, experiences, feedback = (
-            saved[k] for k in ("trajectories", "experiences", "feedback")
-        )
-        clusters = saved["clustering"]
-        task_groups = clusters["assignments"]["task"]
-        experience_groups = clusters["assignments"]["experience"]
-        references = {tid: [] for tid in task_groups}
-        for tid, eid in clusters["citations"]:
-            references[tid].append(eid)
-        grouped = {}
-        seen = set()
-        for row in feedback:
-            if row.get("phase") != "downstream" or row.get("error"):
-                continue
-            for eid in row["experience_ids"]:
-                key = (row["task_id"], eid)
-                if key in seen:
-                    continue
-                seen.add(key)
-                group = task_groups.get(row["task_id"])
-                if group:
-                    grouped.setdefault((group, eid), []).append(
-                        int(row["actual_correct"]) - int(row["baseline_correct"])
-                    )
-        statistics = [
-            {
-                "task_group": g,
-                "experience_id": eid,
-                "mean_reward": sum(values) / len(values),
-                "tasks": len(values),
-            }
-            for (g, eid), values in grouped.items()
-        ]
-    else:
-        memory = ExperienceMemory.load(checkpoint)
-        samples = [r.to_dict() for r in memory.trajectories.values()]
-        experiences = [e.to_dict() for e in memory.experiences.values()]
-        feedback = [
-            {**asdict(r), "phase": "downstream", "credits": r.credits}
-            for r in memory.ledger.records
-        ]
-        task_groups = memory.clusters.assignments("task")
-        experience_groups = memory.clusters.assignments("experience")
-        references = {
-            tid: sorted(memory.clusters.references("task", tid)) for tid in task_groups
+    memory = ExperienceMemory.load(checkpoint)
+    samples = [r.to_dict() for r in memory.trajectories.values()]
+    experiences = [e.to_dict() for e in memory.experiences.values()]
+    feedback = [
+        {**asdict(r), "phase": "downstream", "credits": r.credits}
+        for r in memory.ledger.records
+    ]
+    task_groups = memory.clusters.assignments("task")
+    experience_groups = memory.clusters.assignments("experience")
+    references = {
+        tid: sorted(memory.clusters.references("task", tid)) for tid in task_groups
+    }
+    statistics = [
+        {
+            "task_group": g,
+            "experience_id": eid,
+            "mean_reward": value.mean_reward,
+            "tasks": value.tasks,
         }
-        statistics = [
-            {
-                "task_group": g,
-                "experience_id": eid,
-                "mean_reward": value.mean_reward,
-                "tasks": value.tasks,
-            }
-            for (g, eid), value in memory.ledger.by_task_group(task_groups).items()
-        ]
+        for (g, eid), value in memory.ledger.by_task_group(task_groups).items()
+    ]
     return {
         "name": directory.name,
         "schema": schema,
+        "cluster_update": (
+            asdict(memory.clusters.last_update) if memory.clusters.last_update else None
+        ),
         "manifest": json.loads((directory / "manifest.json").read_text()),
         "samples": samples,
         "experiences": experiences,

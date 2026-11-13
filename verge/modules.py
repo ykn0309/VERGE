@@ -113,13 +113,21 @@ def experience_payload(e):
 
 
 class LLMSelector:
-    def __init__(self, backend, max_selected=2, **options):
-        if type(max_selected) is not int or not 0 <= max_selected <= 2:
-            raise ValueError("max_selected must be 0..2")
+    def __init__(self, backend, max_selected=3, **options):
+        if type(max_selected) is not int or not 0 <= max_selected <= 3:
+            raise ValueError("max_selected must be 0..3")
         self.backend, self.max_selected, self.options = backend, max_selected, options
 
-    def select(self, task, routes: CandidateRoutes, pool: dict[str, Experience]):
-        if not routes.candidates or not self.max_selected:
+    def select(
+        self,
+        task,
+        routes: CandidateRoutes,
+        pool: dict[str, Experience],
+        *,
+        training=True,
+    ):
+        limit = self.max_selected if training else min(1, self.max_selected)
+        if not routes.candidates or not limit:
             return [], {}
         candidates = []
         for c in routes.candidates:
@@ -149,7 +157,7 @@ class LLMSelector:
             if (
                 not isinstance(ids, list)
                 or any(not isinstance(x, str) for x in ids)
-                or len(ids) > self.max_selected
+                or len(ids) > limit
                 or len(set(ids)) != len(ids)
                 or set(ids) - allowed
             ):
@@ -174,7 +182,7 @@ class LLMSelector:
         return request(
             self.backend,
             "selector",
-            {"task": task, "candidates": candidates, "max_selected": self.max_selected},
+            {"task": task, "candidates": candidates, "max_selected": limit},
             validate,
             **self.options,
         )
@@ -184,9 +192,22 @@ class LLMGenerator:
     def __init__(self, backend, **options):
         self.backend, self.options = backend, options
 
-    def generate(self, task, experiences):
-        if len(experiences) > 2:
-            raise ValueError("Generator accepts at most two experiences")
+    def draft(self, task):
+        return self._generate({"task": task, "stage": "draft"})
+
+    def revise(self, task, draft, experiences):
+        if len(experiences) > 1:
+            raise ValueError("each revision accepts at most one experience")
+        return self._generate(
+            {
+                "task": task,
+                "stage": "revise",
+                "draft": draft.to_dict(),
+                "experiences": [experience_payload(e) for e in experiences],
+            }
+        )
+
+    def _generate(self, payload):
 
         def validate(data):
             if (
@@ -214,7 +235,7 @@ class LLMGenerator:
         return request(
             self.backend,
             "generator",
-            {"task": task, "experiences": [experience_payload(e) for e in experiences]},
+            payload,
             validate,
             **self.options,
         )
@@ -293,7 +314,9 @@ class CriticSession:
 
 
 class LLMCritic:
-    def __init__(self, backend, max_candidates=2, **options):
+    def __init__(self, backend, max_candidates=1, **options):
+        if max_candidates != 1:
+            raise ValueError("Critic proposes at most one candidate")
         self.backend, self.max_candidates, self.options = (
             backend,
             max_candidates,

@@ -44,6 +44,7 @@ assert.deepEqual(
   stages.map(([id]) => id),
   [
     "selection",
+    "draft",
     "rubric",
     "judge",
     "critic",
@@ -60,7 +61,7 @@ const { resolveCriticRound } = await import("../verge/web_assets/metrics.mjs");
 assert.deepEqual(
   traceStageGroups(record).map((g) => [g.label, g.round, g.stages.length]),
   [
-    ["初始流程", null, 3],
+    ["初始流程", null, 4],
     ["第1轮", 1, 3],
     ["第2轮", 2, 3],
     ["第3轮", 3, 3],

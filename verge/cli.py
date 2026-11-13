@@ -143,10 +143,13 @@ def evaluation_summary(records, checkpoint_hash):
     return {
         "tasks": len(records),
         "correct": sum(
-            r.used_path is not None and r.used_path.correct is True for r in records
+            r.prediction_path is not None and r.prediction_path.correct is True
+            for r in records
         ),
         "errors": sum(
-            r.error is not None or r.used_path is None or r.used_path.error is not None
+            r.error is not None
+            or r.prediction_path is None
+            or r.prediction_path.error is not None
             for r in records
         ),
         "frozen_sha256": checkpoint_hash,

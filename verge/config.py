@@ -17,13 +17,14 @@ _DEFAULTS = {
     "roles": {},
     "clustering": {
         "reference_weight": 0.5,
-        "task_threshold": 0.75,
-        "experience_threshold": 0.75,
+        "task_threshold": 0.35,
+        "experience_threshold": 0.50,
         "max_rounds": 5,
+        "search_rounds": 100,
     },
     "retrieval": {"task_group_limit": 3, "historical": 6, "semantic": 4},
-    "selection": {"max_selected": 2},
-    "critic": {"max_candidates": 2, "max_rounds": 2},
+    "selection": {"max_selected": 3},
+    "critic": {"max_candidates": 1, "max_rounds": 2},
     "requests": {"retries": 2, "input_bytes": 100000},
 }
 
@@ -52,13 +53,13 @@ def load_config(path):
     ]:
         if type(config[section][key]) is not int or config[section][key] < 1:
             raise ValueError(f"{section}.{key} must be positive integer")
-    if config["critic"]["max_candidates"] > 2 or config["critic"]["max_rounds"] > 2:
-        raise ValueError("Critic is limited to two candidates and two rounds")
+    if config["critic"]["max_candidates"] != 1 or config["critic"]["max_rounds"] > 2:
+        raise ValueError("Critic is limited to one candidate and two rounds")
     if (
         type(config["selection"]["max_selected"]) is not int
-        or not 0 <= config["selection"]["max_selected"] <= 2
+        or not 0 <= config["selection"]["max_selected"] <= 3
     ):
-        raise ValueError("selection.max_selected must be 0..2")
+        raise ValueError("selection.max_selected must be 0..3")
     if (
         type(config["requests"]["retries"]) is not int
         or not 0 <= config["requests"]["retries"] <= 5

@@ -226,11 +226,8 @@ def test_legacy_projection_is_read_only_and_never_a_training_checkpoint(tmp_path
     (tmp_path / "checkpoint.json").write_text(json.dumps(legacy))
     (tmp_path / "manifest.json").write_text('{"status":"completed"}')
     before = (tmp_path / "checkpoint.json").read_bytes()
-    value = load_run(tmp_path)
-    assert value["schema"] == "verge-history-learning-v1"
-    assert value["references"] == {"t": ["e"]}
-    assert value["group_statistics"][0]["mean_reward"] == 1
-    assert "credits" not in value["feedback"][0]
+    with pytest.raises(ValueError, match="unsupported"):
+        load_run(tmp_path)
     assert (tmp_path / "checkpoint.json").read_bytes() == before
     with pytest.raises(ValueError, match="unsupported"):
         ExperienceMemory.load(tmp_path / "checkpoint.json")

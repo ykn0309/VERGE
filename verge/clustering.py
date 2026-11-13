@@ -1,40 +1,31 @@
-"""Incremental task/experience grouping with fixed vectors and citation sets.
-
-Task groups support individual ranking; experience groups are analysis only.
-Neither grouping is an applicability or quality judgment.
-No embeddings are trained here, and querying never changes the learning state.
-"""
+"""Online, alternating task/experience clustering from text and provision edges."""
 
 from __future__ import annotations
-
-from dataclasses import dataclass
-from math import fsum, hypot, isclose, isfinite
+from collections import Counter
+from dataclasses import dataclass, asdict, field
+from math import hypot, isfinite
 from typing import Iterable, Literal
+import hashlib
+import json
+import numpy as np
 
+from verge.partitioning import ModularitySearch, canonical
 
 Kind = Literal["task", "experience"]
 Key = tuple[Kind, str]
+KINDS = ("task", "experience")
 
 
-def _unit_vector(values: Iterable[float]) -> tuple[float, ...]:
+def _unit_vector(values):
     vector = tuple(values)
     if not vector or any(
         type(v) not in (int, float) or not isfinite(v) for v in vector
     ):
         raise ValueError("vector must contain finite numbers")
     norm = hypot(*vector)
-    if norm == 0 or not isfinite(norm):
-        raise ValueError("vector must have a finite positive norm")
-    return tuple(value / norm for value in vector)
-
-
-def _strictly_better(left: float, right: float) -> bool:
-    # Equal geometric scores can differ by a few floating-point rounding bits.
-    return left > right and not isclose(left, right, rel_tol=0, abs_tol=1e-12)
-
-
-def _meets_threshold(score: float, threshold: float) -> bool:
-    return not _strictly_better(threshold, score)
+    if not norm or not isfinite(norm):
+        raise ValueError("vector must have finite positive norm")
+    return tuple(v / norm for v in vector)
 
 
 @dataclass(frozen=True)
@@ -44,17 +35,15 @@ class ClusterItem:
     text: str
     vector: tuple[float, ...]
 
-    def __post_init__(self) -> None:
-        if self.kind not in ("task", "experience"):
-            raise ValueError("kind must be task or experience")
-        if any(
+    def __post_init__(self):
+        if self.kind not in KINDS or any(
             not isinstance(v, str) or not v.strip() for v in (self.object_id, self.text)
         ):
-            raise ValueError("object_id and text must be nonempty strings")
+            raise ValueError("invalid cluster item identity")
         object.__setattr__(self, "vector", _unit_vector(self.vector))
 
     @property
-    def key(self) -> Key:
+    def key(self):
         return self.kind, self.object_id
 
 
@@ -65,325 +54,341 @@ class ClusterUpdate:
     stable: bool
     new_items: int
     new_edges: int
+    status: str
+    half_rounds: list
+    initializations: list = field(default_factory=list)
 
 
 class OnlineClustering:
-    """Exact member-average grouping; parameters are supplied by the caller.
-
-    An update validates all inputs before changing state, inserts new objects,
-    and makes bounded sequential relocation sweeps. Group IDs are never reused.
-    """
-
     def __init__(
         self,
         *,
-        reference_weight: float,
-        task_threshold: float,
-        experience_threshold: float,
-        max_rounds: int = 5,
-    ) -> None:
+        reference_weight=0.5,
+        task_threshold=0.35,
+        experience_threshold=0.50,
+        max_rounds=5,
+        search_rounds=100,
+    ):
         for value in (reference_weight, task_threshold, experience_threshold):
             if (
-                type(value) not in (int, float)
+                type(value) not in (float, int)
                 or not isfinite(value)
                 or not 0 <= value <= 1
             ):
-                raise ValueError(
-                    "weights and thresholds must be finite numbers in [0, 1]"
-                )
-        if type(max_rounds) is not int or max_rounds < 1:
-            raise ValueError("max_rounds must be a positive integer")
+                raise ValueError("weights and thresholds must be finite in [0,1]")
+        if min(task_threshold, experience_threshold) <= 0:
+            raise ValueError("group floors must be positive")
+        if (
+            any(type(v) is not int or v < 1 for v in (max_rounds, search_rounds))
+            or max_rounds > 5
+        ):
+            raise ValueError("round budgets must be positive integers")
         self.reference_weight = reference_weight
-        self.thresholds = {"task": task_threshold, "experience": experience_threshold}
-        self.max_rounds = max_rounds
-        self._items: dict[Key, ClusterItem] = {}
-        self._references: dict[Key, set[str]] = {}
-        self._membership: dict[Key, str] = {}
-        self._groups: dict[str, set[Key]] = {}
-        self._next_group = 1
-        self._pair_scores: dict[tuple[Key, Key], float] = {}
-        self._dimension: int | None = None
+        self.thresholds = dict(task=task_threshold, experience=experience_threshold)
+        self.max_rounds, self.search_rounds = max_rounds, search_rounds
+        self._items, self._references, self._membership = {}, {}, {}
+        self._dimension = None
+        self.last_update = None
 
-    def assignments(self, kind: Kind) -> dict[str, str]:
-        return {
-            key[1]: group for key, group in self._membership.items() if key[0] == kind
-        }
+    def assignments(self, kind):
+        return {oid: group for (k, oid), group in self._membership.items() if k == kind}
 
-    def groups(self, kind: Kind) -> dict[str, tuple[str, ...]]:
-        return {
-            group: tuple(sorted(key[1] for key in members))
-            for group, members in self._groups.items()
-            if next(iter(members))[0] == kind
-        }
+    def groups(self, kind):
+        groups = {}
+        for oid, group in self.assignments(kind).items():
+            groups.setdefault(group, []).append(oid)
+        return {g: tuple(sorted(m)) for g, m in sorted(groups.items())}
 
-    def references(self, kind: Kind, object_id: str) -> frozenset[str]:
+    def references(self, kind, object_id):
         return frozenset(self._references[(kind, object_id)])
 
-    def similarity(self, kind: Kind, left: str, right: str) -> float:
-        a, b = (kind, left), (kind, right)
-        pair = tuple(sorted((a, b)))
-        if pair not in self._pair_scores:
-            self._pair_scores[pair] = self._score(
-                self._items[a].vector,
-                self._references[a],
-                self._items[b].vector,
-                self._references[b],
-            )
-        return self._pair_scores[pair]
+    def _profile(self, key):
+        other = "experience" if key[0] == "task" else "task"
+        refs = self._references[key]
+        counts = Counter(self._membership[(other, oid)] for oid in refs)
+        return {g: n / len(refs) for g, n in counts.items()} if refs else {}
 
-    def _score(
-        self,
-        left: tuple[float, ...],
-        left_refs: set[str],
-        right: tuple[float, ...],
-        right_refs: set[str],
-    ) -> float:
-        text = max(0.0, min(1.0, fsum(a * b for a, b in zip(left, right))))
-        if not left_refs or not right_refs:
+    def similarity(self, kind, left, right):
+        a, b = (kind, left), (kind, right)
+        text = float(
+            np.clip(np.dot(self._items[a].vector, self._items[b].vector), 0, 1)
+        )
+        pa, pb = self._profile(a), self._profile(b)
+        if not pa or not pb:
             return text
-        support = min(len(left_refs), len(right_refs))
-        weight = self.reference_weight * support / (support + 1)
-        overlap = len(left_refs & right_refs) / len(left_refs | right_refs)
+        keys = pa.keys() | pb.keys()
+        overlap = sum(min(pa.get(g, 0), pb.get(g, 0)) for g in keys) / sum(
+            max(pa.get(g, 0), pb.get(g, 0)) for g in keys
+        )
+        m = min(len(self._references[a]), len(self._references[b]))
+        weight = self.reference_weight * m / (m + 1)
         return (1 - weight) * text + weight * overlap
 
-    def _group_score(self, key: Key, group: str) -> float:
-        others = sorted(self._groups[group] - {key})
-        if not others:
-            return self.thresholds[key[0]]
-        return fsum(
-            self.similarity(key[0], key[1], other[1]) for other in others
-        ) / len(others)
+    def _matrix(self, kind, *, text_only=False):
+        ids = sorted(self.assignments(kind))
+        if not ids:
+            return ids, np.zeros((0, 0))
+        vectors = np.array([self._items[(kind, oid)].vector for oid in ids])
+        matrix = np.clip(vectors @ vectors.T, 0, 1)
+        if not text_only:
+            profiles = [self._profile((kind, oid)) for oid in ids]
+            counts = [len(self._references[(kind, oid)]) for oid in ids]
+            for i, pa in enumerate(profiles):
+                if not pa:
+                    continue
+                for j in range(i):
+                    pb = profiles[j]
+                    if not pb:
+                        continue
+                    keys = pa.keys() | pb.keys()
+                    overlap = sum(min(pa.get(g, 0), pb.get(g, 0)) for g in keys) / sum(
+                        max(pa.get(g, 0), pb.get(g, 0)) for g in keys
+                    )
+                    m = min(counts[i], counts[j])
+                    weight = self.reference_weight * m / (m + 1)
+                    matrix[i, j] = matrix[j, i] = (1 - weight) * matrix[
+                        i, j
+                    ] + weight * overlap
+        np.fill_diagonal(matrix, 0)
+        return ids, matrix
 
-    def _best_group(self, key: Key, *, exclude: str | None = None) -> str | None:
-        candidates = [
-            group
-            for group, members in self._groups.items()
-            if group != exclude and next(iter(members))[0] == key[0]
-        ]
-        if not candidates:
-            return None
-        best = min(candidates)
-        for group in sorted(candidates):
-            if _strictly_better(
-                self._group_score(key, group), self._group_score(key, best)
-            ):
-                best = group
-        return best
+    def _partition(self, kind, ids):
+        positions = {oid: i for i, oid in enumerate(ids)}
+        return canonical(
+            [positions[oid] for oid in members]
+            for members in self.groups(kind).values()
+        )
 
-    def _place(self, key: Key, group: str | None) -> None:
-        previous = self._membership.get(key)
-        if previous is not None:
-            self._groups[previous].remove(key)
-            if not self._groups[previous]:
-                del self._groups[previous]
-        if group is None:
-            group = f"{key[0]}_{self._next_group:012d}"
-            self._next_group += 1
-            self._groups[group] = set()
-        self._groups[group].add(key)
-        self._membership[key] = group
+    def _publish(self, kind, ids, groups):
+        for group in groups:
+            # Canonical ID based on members; no arbitrary cluster numbering.
+            members = [ids[i] for i in group]
+            gid = (
+                kind
+                + "_"
+                + hashlib.sha256(json.dumps(members).encode()).hexdigest()[:20]
+            )
+            for oid in members:
+                self._membership[(kind, oid)] = gid
 
-    def update(
-        self,
-        items: Iterable[ClusterItem] = (),
-        citations: Iterable[tuple[str, str]] = (),
-    ) -> ClusterUpdate:
-        """Commit item/citation additions, then check every item for relocation.
+    def _signature(self):
+        return tuple(tuple(sorted(self.groups(kind).values())) for kind in KINDS)
 
-        Each citation is (task ID, experience ID). Resubmitting an immutable
-        object or existing edge is safe; changing an existing item is rejected.
-        """
-        additions: dict[Key, ClusterItem] = {}
+    def _half(self, kind, number):
+        other = "experience" if kind == "task" else "task"
+        opposite = self.assignments(other)
+        ids, matrix = self._matrix(kind)
+        search = ModularitySearch(matrix, self.thresholds[kind], self.search_rounds)
+        result = search.run(self._partition(kind, ids))
+        self._publish(kind, ids, result.groups)
+        minimums = {}
+        for group in result.groups:
+            if len(group) > 1:
+                gid = self._membership[(kind, ids[group[0]])]
+                minimums[gid] = float(
+                    (matrix[np.ix_(group, group)].sum(axis=1) / (len(group) - 1)).min()
+                )
+        return {
+            "round": number,
+            "kind": kind,
+            "object_ids": ids,
+            "opposite_assignments": opposite,
+            "matrix_sha256": hashlib.sha256(matrix.tobytes()).hexdigest(),
+            "quality": result.quality,
+            "minimum_member_averages": minimums,
+            "repairs": [
+                {**r, "object_id": ids[r["object_index"]]} for r in result.repairs
+            ],
+            "moves": result.moves,
+            "budget": result.budget,
+        }
+
+    def update(self, items=(), citations=()):
+        additions = {}
         dimension = self._dimension
         for item in items:
             if dimension is not None and len(item.vector) != dimension:
-                raise ValueError("all vectors must use the same embedding dimension")
+                raise ValueError("inconsistent embedding dimensions")
             dimension = len(item.vector)
             previous = additions.get(item.key, self._items.get(item.key))
             if previous is not None and previous != item:
-                raise ValueError(f"immutable cluster item changed: {item.object_id}")
+                raise ValueError("immutable cluster item changed")
             additions[item.key] = item
         edges = set(citations)
         known = self._items.keys() | additions.keys()
-        for task_id, experience_id in edges:
-            if ("task", task_id) not in known or (
-                "experience",
-                experience_id,
-            ) not in known:
-                raise ValueError("citation endpoints must exist in the same snapshot")
-        # All external input validation completes before mutation.
-        new_keys = sorted(additions.keys() - self._items.keys())
+        if any(
+            ("task", t) not in known or ("experience", e) not in known for t, e in edges
+        ):
+            raise ValueError("citation endpoints must exist")
+        new = sorted(additions.keys() - self._items.keys())
         self._dimension = dimension
         self._items.update(additions)
-        for key in new_keys:
+        for key in new:
             self._references[key] = set()
-        changed: set[Key] = set()
-        new_edges = 0
-        for task_id, experience_id in sorted(edges):
-            task, experience = ("task", task_id), ("experience", experience_id)
-            if experience_id not in self._references[task]:
-                self._references[task].add(experience_id)
-                self._references[experience].add(task_id)
-                changed.update((task, experience))
-                new_edges += 1
-        self._pair_scores = {
-            pair: score
-            for pair, score in self._pair_scores.items()
-            if not changed.intersection(pair)
-        }
-        for key in new_keys:
-            group = self._best_group(key)
-            if group is not None and _meets_threshold(
-                self._group_score(key, group), self.thresholds[key[0]]
-            ):
-                self._place(key, group)
-            else:
-                self._place(key, None)
-        moves = 0
-        for round_number in range(1, self.max_rounds + 1):
-            moved = 0
-            for key in sorted(self._items):
-                current = self._membership[key]
-                current_score = self._group_score(key, current)
-                best = self._best_group(key, exclude=current)
-                if (
-                    best is not None
-                    and _meets_threshold(
-                        self._group_score(key, best), self.thresholds[key[0]]
-                    )
-                    and _strictly_better(self._group_score(key, best), current_score)
-                ):
-                    self._place(key, best)
-                elif len(self._groups[current]) > 1 and _strictly_better(
-                    self.thresholds[key[0]], current_score
-                ):
-                    self._place(key, None)
-                else:
-                    continue
-                moved += 1
-            moves += moved
-            if not moved:
-                return ClusterUpdate(
-                    round_number, moves, True, len(new_keys), new_edges
+            self._membership[key] = key[0] + "_new_" + key[1]
+        count = 0
+        for t, e in sorted(edges):
+            if e not in self._references[("task", t)]:
+                self._references[("task", t)].add(e)
+                self._references[("experience", e)].add(t)
+                count += 1
+        initializations = []
+        # New objects are text-initialized without reassigning old objects.
+        for kind in KINDS:
+            ids, matrix = self._matrix(kind, text_only=True)
+            movable = [i for i, oid in enumerate(ids) if (kind, oid) in new]
+            if movable:
+                search = ModularitySearch(
+                    matrix, self.thresholds[kind], self.search_rounds
                 )
-        return ClusterUpdate(self.max_rounds, moves, False, len(new_keys), new_edges)
+                first = len(movable) == len(ids)
+                result = search.run(
+                    self._partition(kind, ids), movable=None if first else movable
+                )
+                self._publish(kind, ids, result.groups)
+                initializations.append(
+                    {
+                        "kind": kind,
+                        "quality": result.quality,
+                        "budget": result.budget,
+                        "moves": result.moves,
+                        "matrix_sha256": hashlib.sha256(matrix.tobytes()).hexdigest(),
+                    }
+                )
+        seen, halves, moves = {self._signature()}, [], 0
+        status = "round_cap"
+        for number in range(1, self.max_rounds + 1):
+            old = self._signature()
+            for kind in KINDS:
+                diagnostic = self._half(kind, number)
+                halves.append(diagnostic)
+                moves += diagnostic["moves"]
+            signature = self._signature()
+            if signature == old:
+                status = "stable"
+                break
+            if signature in seen:
+                status = "cycle"
+                break
+            seen.add(signature)
+        if any(h["budget"] for h in [*initializations, *halves]):
+            status = "budget"
+        for h in halves:
+            other = "experience" if h["kind"] == "task" else "task"
+            h["current_opposite"] = h["opposite_assignments"] == self.assignments(other)
+        self.last_update = ClusterUpdate(
+            number,
+            moves,
+            status == "stable",
+            len(new),
+            count,
+            status,
+            halves,
+            initializations,
+        )
+        return self.last_update
 
-    def query_task_groups(
-        self, vector: Iterable[float], *, limit: int = 3
-    ) -> list[tuple[str, float]]:
-        """Rank matching task groups without inserting the query or new edges."""
+    def _query(self, vector):
         query = _unit_vector(vector)
         if self._dimension is not None and len(query) != self._dimension:
-            raise ValueError("query uses a different embedding dimension")
-        if type(limit) is not int or limit < 1:
-            raise ValueError("limit must be a positive integer")
-        matches = []
-        for group, members in self._groups.items():
-            if next(iter(members))[0] != "task":
-                continue
-            score = fsum(
-                self._score(
-                    query, set(), self._items[key].vector, self._references[key]
-                )
-                for key in sorted(members)
-            ) / len(members)
-            if _meets_threshold(score, self.thresholds["task"]):
-                matches.append((group, score))
-        return sorted(matches, key=lambda match: (-match[1], match[0]))[:limit]
+            raise ValueError("query embedding dimension differs")
+        return np.array(query)
 
-    def query_experiences(
-        self, vector: Iterable[float], *, limit: int
-    ) -> list[tuple[str, float]]:
-        """Search all individual experience texts, regardless of group or edges."""
-        query = _unit_vector(vector)
-        if self._dimension is not None and len(query) != self._dimension:
-            raise ValueError("query uses a different embedding dimension")
+    def query_task_groups(self, vector, *, limit=3):
+        query = self._query(vector)
         if type(limit) is not int or limit < 1:
-            raise ValueError("limit must be a positive integer")
+            raise ValueError("limit must be positive")
         matches = [
             (
-                key[1],
-                self._score(query, set(), item.vector, set()),
+                g,
+                float(
+                    np.mean(
+                        [
+                            np.clip(
+                                np.dot(query, self._items[("task", oid)].vector), 0, 1
+                            )
+                            for oid in members
+                        ]
+                    )
+                ),
             )
-            for key, item in self._items.items()
-            if key[0] == "experience"
+            for g, members in self.groups("task").items()
         ]
-        return sorted(matches, key=lambda match: (-match[1], match[0]))[:limit]
+        return sorted(matches, key=lambda m: (-m[1], m[0]))[:limit]
 
-    def to_dict(self) -> dict:
-        """Persist exact membership; loading must not silently recluster history."""
-        from dataclasses import asdict
+    def query_experiences(self, vector, *, limit):
+        query = self._query(vector)
+        if type(limit) is not int or limit < 1:
+            raise ValueError("limit must be positive")
+        matches = [
+            (oid, float(np.clip(np.dot(query, item.vector), 0, 1)))
+            for (kind, oid), item in self._items.items()
+            if kind == "experience"
+        ]
+        return sorted(matches, key=lambda m: (-m[1], m[0]))[:limit]
 
+    def to_dict(self):
         return {
             "parameters": {
                 "reference_weight": self.reference_weight,
                 "task_threshold": self.thresholds["task"],
                 "experience_threshold": self.thresholds["experience"],
                 "max_rounds": self.max_rounds,
+                "search_rounds": self.search_rounds,
             },
             "items": [asdict(self._items[key]) for key in sorted(self._items)],
             "citations": [
-                (key[1], eid)
-                for key in sorted(self._items)
-                if key[0] == "task"
-                for eid in sorted(self._references[key])
+                (oid, e)
+                for (kind, oid) in sorted(self._items)
+                if kind == "task"
+                for e in sorted(self._references[(kind, oid)])
             ],
-            "assignments": {
-                kind: self.assignments(kind) for kind in ("task", "experience")
-            },
-            "next_group": self._next_group,
+            "assignments": {kind: self.assignments(kind) for kind in KINDS},
+            "last_update": asdict(self.last_update) if self.last_update else None,
         }
 
     @classmethod
-    def from_dict(cls, data: dict):
+    def from_dict(cls, data):
         if set(data) != {
             "parameters",
             "items",
             "citations",
             "assignments",
-            "next_group",
+            "last_update",
         }:
             raise ValueError("invalid cluster snapshot fields")
         state = cls(**data["parameters"])
         for raw in data["items"]:
             item = ClusterItem(**raw)
-            if abs(hypot(*raw["vector"]) - 1) > 1e-12:
-                raise ValueError("stored vector is not normalized")
-            # Preserve serialized normalized bits for immutable-item comparisons.
-            object.__setattr__(item, "vector", tuple(raw["vector"]))
-            if item.key in state._items:
-                raise ValueError("duplicate cluster item")
+            if abs(hypot(*raw["vector"]) - 1) > 1e-12 or item.key in state._items:
+                raise ValueError("invalid stored vector or duplicate item")
             if state._dimension is not None and len(item.vector) != state._dimension:
                 raise ValueError("inconsistent embedding dimensions")
+            object.__setattr__(item, "vector", tuple(raw["vector"]))
             state._dimension = len(item.vector)
             state._items[item.key] = item
             state._references[item.key] = set()
         for kind, assignments in data["assignments"].items():
-            if kind not in ("task", "experience"):
+            if kind not in KINDS:
                 raise ValueError("unknown cluster kind")
             for oid, group in assignments.items():
-                key = (kind, oid)
                 if (
-                    key not in state._items
+                    (kind, oid) not in state._items
                     or not isinstance(group, str)
                     or not group.startswith(kind + "_")
                 ):
                     raise ValueError("invalid group assignment")
-                state._membership[key] = group
-                state._groups.setdefault(group, set()).add(key)
+                state._membership[(kind, oid)] = group
         if state._membership.keys() != state._items.keys():
             raise ValueError("incomplete group assignments")
-        for task, eid in data["citations"]:
-            if ("task", task) not in state._items or (
-                "experience",
-                eid,
-            ) not in state._items:
+        for t, e in data["citations"]:
+            if ("task", t) not in state._items or ("experience", e) not in state._items:
                 raise ValueError("unknown citation endpoint")
-            state._references[("task", task)].add(eid)
-            state._references[("experience", eid)].add(task)
-        state._next_group = data["next_group"]
-        if type(state._next_group) is not int or state._next_group <= max(
-            (int(group.rsplit("_", 1)[1]) for group in state._groups), default=0
-        ):
-            raise ValueError("invalid group counter")
+            if e in state._references[("task", t)]:
+                raise ValueError("duplicate citation")
+            state._references[("task", t)].add(e)
+            state._references[("experience", e)].add(t)
+        state.last_update = (
+            ClusterUpdate(**data["last_update"]) if data["last_update"] else None
+        )
         return state

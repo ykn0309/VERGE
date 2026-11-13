@@ -9,6 +9,7 @@ from verge.llm import (
     LLMRequestError,
     LLMFormatError,
 )
+from verge.models import Rubric, Criterion
 from verge.modules import LLMGenerator
 
 
@@ -117,7 +118,9 @@ def test_format_retry_keeps_task_experience_and_modified_guide(monkeypatch):
 
     b = backend(monkeypatch, handler)
     try:
-        rubric = LLMGenerator(b, retries=1).generate("原任务", [])
+        rubric = LLMGenerator(b, retries=1).revise(
+            "原任务", Rubric("r", [Criterion("c", "初稿", 1)]), []
+        )
         assert rubric.criteria and len(bodies) == 2
         assert bodies[0]["task"] == bodies[1]["task"] == "原任务"
         assert bodies[1]["experiences"] == [] and "validation_feedback" in bodies[1]

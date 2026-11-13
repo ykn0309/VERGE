@@ -1,483 +1,314 @@
-"""The new complete protocol, using deterministic backend fixtures only."""
+"""v3.1 control flow, information boundaries, persistence, and frozen inference."""
 
 from copy import deepcopy
 from dataclasses import replace
+from itertools import product
 from pathlib import Path
-from threading import Event
-from types import SimpleNamespace
 import json
 import pytest
 import yaml
 
 from verge.calculator import calculate_rubric_judgment
-from verge.cli import Components, run
-from verge.clustering import ClusterItem, OnlineClustering
+from verge.cli import Components, run, evaluate, execution_protocol
+from verge.clustering import OnlineClustering
 from verge.config import load_config
-from verge.llm import FakeEmbedding, FakeLLMBackend, LLMFormatError, LLMSampleError
-from verge.memory import ExperienceMemory
-from verge.models import (
-    Method,
-    Experience,
-    PreferenceSample,
-    ExecutionPath,
-    Criterion,
-    Rubric,
-    CriterionJudgment,
-    TrajectoryRecord,
-)
-from verge.modules import (
-    LLMSelector,
-    LLMGenerator,
-    LLMJudge,
-    LLMCritic,
-    RoleModules,
-    CriticSession,
-)
-from verge.pipeline import PipelineRunner, SampleResult
-from verge.retrieval import retrieve_candidates
+from verge.llm import FakeEmbedding, FakeLLMBackend, LLMSampleError, LLMFormatError
+from verge.memory import ExperienceMemory, downstream_feedback
+from verge.models import PreferenceSample, Rubric, Criterion, CriterionJudgment
+from verge.modules import LLMSelector, LLMGenerator, LLMJudge, LLMCritic, RoleModules
+from verge.pipeline import PipelineRunner, preference_evidence
 from verge.scheduling import run_training_stream
 
 
-def sample(i=0):
-    return PreferenceSample(f"s{i}", f"task {i}", "chosen text", "rejected text", {})
-
-
-def state(tmp_path=None):
-    return ExperienceMemory(
-        "p",
-        OnlineClustering(
-            reference_weight=0.3, task_threshold=0.75, experience_threshold=0.75
-        ),
-        path=tmp_path / "checkpoint.json" if tmp_path else None,
+def sample(i=0, metadata=None):
+    return PreferenceSample(
+        f"s{i}", f"task {i}", "preferred answer", "other answer", metadata or {}
     )
 
 
-def runner(backend=None):
+def runner(backend=None, selected=3):
     b = backend or FakeLLMBackend()
     return PipelineRunner(
-        RoleModules(LLMSelector(b), LLMGenerator(b), LLMJudge(b), LLMCritic(b)),
+        RoleModules(
+            LLMSelector(b, selected), LLMGenerator(b), LLMJudge(b), LLMCritic(b)
+        ),
         FakeEmbedding(),
     )
 
 
-def test_source_candidate_cited_and_correct_is_admitted_without_reapplication(tmp_path):
-    b = FakeLLMBackend()
-    r = runner(b)
-    s = state(tmp_path)
-    result = r.run_sample(sample(), s.snapshot())
-    assert result.record.baseline.correct is False and len(result.admitted) == 1
-    assert len(result.record.critic_rounds) == 1
-    assert result.record.critic_rounds[0].attempts[0].admitted
-    assert [role for role, _ in b.calls].count("generator") == 2
-    assert [role for role, _ in b.calls].count("judge") == 4
-    assert not any("checker" in role or "updater" in role for role, _ in b.calls)
-    s.commit(result)
-    assert len(s.experiences) == 1 and s.ledger.records == ()
-    assert len(s.clusters.references("task", sample().task_id)) == 0
-    loaded = ExperienceMemory.load(s.path)
-    assert loaded.to_dict() == s.to_dict()
-    with pytest.raises(ValueError, match="read-only"):
-        loaded.commit(result)
-
-
-def test_two_round_budget_stops_failed_candidates_and_passes_failure_trace():
-    b = FakeLLMBackend("unrepairable")
-    s = state()
-    result = runner(b).run_sample(sample(), s)
-    assert not result.admitted and len(result.record.critic_rounds) == 2
-    critic_calls = [p for role, p in b.calls if role == "critic"]
-    assert "chosen" in critic_calls[0] and "previous_attempts" in critic_calls[1]
-    assert "task" not in critic_calls[1] and "chosen" not in critic_calls[1]
-    assert all(not a.admitted for r in result.record.critic_rounds for a in r.attempts)
-
-
-
-def test_normal_downstream_pairs_are_accounted_once_and_restart_is_exact(tmp_path):
-    s = state(tmp_path)
-    r = runner()
-    s.commit(r.run_sample(sample(0), s.snapshot()))
-    second = r.run_sample(sample(1), s.snapshot())
-    s.commit(second)
-    assert second.record.actual is not None and second.record.actual.correct is True
-    assert len(s.ledger.records) == 1
-    eid = next(iter(s.experiences))
-    assert s.ledger.for_experience(eid).tasks == 1
-    assert s.ledger.for_experience(eid).mean_reward == 1
-    with pytest.raises(ValueError, match="already committed"):
-        s.commit(second)
-    loaded = ExperienceMemory.load(s.path, read_only=False)
-    assert loaded.to_dict() == s.to_dict()
-    third = r.run_sample(sample(2), loaded.snapshot())
-    loaded.commit(third)
-    assert loaded.ledger.for_experience(eid).tasks == 2
-
-
-def test_inference_runs_only_the_used_path_and_never_mutates_memory():
-    s = state()
-    b = FakeLLMBackend()
-    r = runner(b)
-    s.commit(r.run_sample(sample(), s.snapshot()))
-    before = deepcopy(s.to_dict())
-    b.calls = []
-    record = r.run_sample(sample(1), s.snapshot(), training=False).record
-    assert record.baseline is None and record.actual.correct
-    assert [role for role, _ in b.calls].count("generator") == 1
-    assert not record.critic_rounds and s.to_dict() == before
-
-
-def test_true_initial_success_does_not_call_critic():
-    b = FakeLLMBackend("correct")
-    result = runner(b).run_sample(sample(), state())
-    assert (
-        result.record.baseline.correct
-        and not result.record.critic_rounds
-        and not result.admitted
+def memory(tmp_path=None):
+    return ExperienceMemory(
+        "p", OnlineClustering(), path=tmp_path / "checkpoint.json" if tmp_path else None
     )
 
 
-def test_two_candidates_are_individually_validated_and_both_can_enter():
-    class Two(FakeLLMBackend):
-        def generate(self, role, payload, **kw):
-            result = super().generate(role, payload, **kw)
-            if role == "critic":
-                result["candidates"].append(
-                    {
-                        "method": {
-                            "trigger": "另一种适用条件",
-                            "principle": "另一条核心方法",
-                            "application_guide": "另一条使用指南",
-                        },
-                        "parent_ids": [],
-                    }
-                )
-            return result
-
-    b = Two()
-    result = runner(b).run_sample(sample(), state())
-    assert len(result.admitted) == 2 and len(result.record.critic_rounds) == 1
-    candidate_generations = [
-        p for role, p in b.calls if role == "generator" and p["experiences"]
-    ]
-    assert sorted(len(p["experiences"]) for p in candidate_generations) == [1, 1, 2]
+def seeded(count=3):
+    m = memory()
+    for i in range(count):
+        r = runner(selected=0).run_sample(sample(i), m.snapshot())
+        m.commit(r)
+    assert len(m.experiences) == count
+    return m
 
 
-def test_technical_failures_do_not_become_zero_reward_or_content_revision():
-    class Timeout(FakeLLMBackend):
-        def generate(self, role, payload, **kw):
-            raise LLMSampleError("timeout")
+class TrialGenerator:
+    def __init__(self):
+        self.drafts = 0
+        self.inputs = []
 
-    b = Timeout()
-    result = runner(b).run_sample(sample(), state())
-    assert result.record.baseline.error and not result.record.critic_rounds
+    def draft(self, task):
+        self.drafts += 1
+        return Rubric("draft", [Criterion("draft-c", "task-only", 1)], "draft analysis")
 
-
-def test_checkpoint_publication_failure_leaves_live_state_unmodified(
-    tmp_path, monkeypatch
-):
-    s = state(tmp_path)
-    result = runner().run_sample(sample(), s.snapshot())
-    before = s.to_dict()
-
-    def fail(*args):
-        raise OSError("disk full")
-
-    monkeypatch.setattr("verge.memory.atomic_json", fail)
-    with pytest.raises(OSError):
-        s.commit(result)
-    assert s.to_dict() == before
+    def revise(self, task, draft, experiences):
+        assert len(experiences) <= 1
+        self.inputs.append((draft.to_dict(), [e.experience_id for e in experiences]))
+        key = experiences[0].experience_id if experiences else "baseline"
+        return Rubric(key, [Criterion(key + "-c", key, 1)], "revision analysis")
 
 
-def test_cluster_snapshot_does_not_recluster_or_renormalize_saved_bits():
-    s = state()
-    s.clusters.update(
-        [
-            ClusterItem("t", "task", "a", (0.123, 0.456, 0.789)),
-            ClusterItem("e", "experience", "b", (0.2, 0.3, 0.4)),
-        ],
-        [("t", "e")],
-    )
-    restored = OnlineClustering.from_dict(s.clusters.to_dict())
-    assert restored.to_dict() == s.clusters.to_dict()
-    assert (
-        restored.update(
-            [ClusterItem("t", "task", "a", (0.123, 0.456, 0.789))]
-        ).new_items
-        == 0
-    )
+class TrialJudge:
+    def __init__(self, outcomes):
+        self.outcomes = outcomes
 
-
-def test_rolling_workers_refill_before_slow_peer_finishes():
-    slow = Event()
-    third = Event()
-    s = state()
-    starts = []
-
-    class Controlled:
-        def run_sample(self, x, snapshot, **kw):
-            starts.append(x.sample_id)
-            if x.sample_id == "s0":
-                assert third.wait(3)
-                slow.set()
-            if x.sample_id == "s2":
-                third.set()
-            return SampleResult(
-                TrajectoryRecord(x, {}, {}, None, None, error="fixture failure"), None, []
-            )
-
-    run_training_stream(
-        [sample(i) for i in range(3)], s, lambda _: Controlled(), workers=2
-    )
-    assert slow.is_set() and len(s.trajectories) == 3
-
-
-def test_new_cases_see_committed_experience_and_not_unfinished_peer():
-    s = state()
-    counts = []
-
-    class Observe:
-        def __init__(self, x):
-            self.x = x
-
-        def run_sample(self, x, snapshot, **kw):
-            counts.append(len(snapshot.experiences))
-            return runner().run_sample(x, snapshot)
-
-    run_training_stream([sample(i) for i in range(3)], s, Observe, workers=1)
-    assert counts == [0, 1, 1]
-
-
-def test_selector_generator_judge_visibility_and_weights():
-    b = FakeLLMBackend()
-    r = runner(b)
-    s = state()
-    s.commit(r.run_sample(sample(), s.snapshot()))
-    b.calls = []
-    r.run_sample(sample(1), s.snapshot(), training=False)
-    for role, payload in b.calls:
-        if role in ("selector", "generator"):
-            assert (
-                "chosen" not in payload
-                and "rejected" not in payload
-                and "metadata" not in payload
-            )
-        if role == "selector":
-            assert all("q_posterior" not in e for e in payload["candidates"])
-        if role == "judge":
-            assert set(payload) == {"task", "criteria", "response"} and all(
-                set(c) == {"criterion_id", "question"} for c in payload["criteria"]
-            )
-
-
-def test_scoring_normalizes_exact_decimal_weights_and_tie_is_not_success():
-    rubric = Rubric("r", [Criterion("a", "a", 2), Criterion("b", "b", 1)])
-    result = calculate_rubric_judgment(
-        rubric,
-        [
-            CriterionJudgment("a", True, False, "yes", "no"),
-            CriterionJudgment("b", False, True, "no", "yes"),
-        ],
-    )
-    assert result.chosen_score == pytest.approx(
-        2 / 3
-    ) and result.margin == pytest.approx(1 / 3)
-    tie = calculate_rubric_judgment(
-        rubric,
-        [
-            CriterionJudgment("a", True, True, "yes", "yes"),
-            CriterionJudgment("b", False, False, "no", "no"),
-        ],
-    )
-    assert tie.margin == 0 and not tie.success
-
-
-def config_file(tmp_path, tasks=3):
-    train = tmp_path / "train.jsonl"
-    train.write_text(
-        "".join(json.dumps(sample(i).to_dict()) + "\n" for i in range(tasks))
-    )
-    path = tmp_path / "config.yaml"
-    path.write_text(
-        yaml.safe_dump(
-            {
-                "run": {"output_dir": str(tmp_path / "run"), "train_workers": 1},
-                "dataset": {"paths": {"train": str(train)}},
-            }
+    def judge(self, task, rubric, chosen, rejected):
+        value = self.outcomes.get(rubric.rubric_id, True)
+        if value is None:
+            raise LLMSampleError("offline timeout")
+        return calculate_rubric_judgment(
+            rubric,
+            [
+                CriterionJudgment(c.criterion_id, value, False, "fixture", "fixture")
+                for c in rubric.criteria
+            ],
         )
-    )
-    return path
 
 
-def test_cli_pause_resume_and_protocol_hash_guard(tmp_path):
-    path = config_file(tmp_path)
-    manifest = run(path, stop_after_train=1)
-    assert manifest["status"] == "paused" and manifest["train_completed"] == 1
-    manifest = run(path, resume=True)
-    assert (
-        manifest["status"] == "training_completed" and manifest["train_completed"] == 3
-    )
-    state_data = ExperienceMemory.load(tmp_path / "run/checkpoint.json")
-    assert len(state_data.ledger.records) == 2
-    with pytest.raises(ValueError, match="completed"):
-        run(path, resume=True)
-
-
-def test_cli_limit_must_be_positive(tmp_path):
-    path = config_file(tmp_path)
-    with pytest.raises(ValueError, match="positive"):
-        run(path, stop_after_train=0)
-    assert not (tmp_path / "run").exists()
-
-
-def test_old_memory_and_configuration_are_rejected(tmp_path):
-    old = tmp_path / "old.json"
-    old.write_text('{"schema_version":14}')
-    with pytest.raises(ValueError, match="unsupported"):
-        ExperienceMemory.load(old)
-    config = tmp_path / "old.yaml"
-    config.write_text("modules: {reliability: {implementation: bayesian}}")
-    with pytest.raises(ValueError, match="unsupported"):
-        load_config(config)
-
-
-def test_corrupt_checkpoint_does_not_change_feedback_or_embedded_method_silently(
-    tmp_path,
-):
-    s = state(tmp_path)
-    r = runner()
-    s.commit(r.run_sample(sample(0), s.snapshot()))
-    s.commit(r.run_sample(sample(1), s.snapshot()))
-    original = json.loads(s.path.read_text())
-    broken = deepcopy(original)
-    broken["experiences"][0]["method"]["principle"] = "已被改写的正文"
-    s.path.write_text(json.dumps(broken, ensure_ascii=False))
-    with pytest.raises(ValueError, match="embedded text|admitted candidates"):
-        ExperienceMemory.load(s.path)
-    broken = deepcopy(original)
-    broken["feedback"][0]["actual_correct"] = False
-    s.path.write_text(json.dumps(broken, ensure_ascii=False))
-    with pytest.raises(ValueError, match="saved subset|single experience"):
-        ExperienceMemory.load(s.path)
-    broken = deepcopy(original)
-    broken["feedback"].append(broken["feedback"][0])
-    s.path.write_text(json.dumps(broken, ensure_ascii=False))
-    with pytest.raises(ValueError, match="duplicate feedback"):
-        ExperienceMemory.load(s.path)
-
-
-def test_large_finite_generator_weights_cannot_overflow_normalization():
-    class Large(FakeLLMBackend):
-        def generate(self, role, payload, **kwargs):
-            result = super().generate(role, payload, **kwargs)
-            if role == "generator":
-                row = result["criteria"][0]
-                row["weight"] = 1e308
-                result["criteria"].append(dict(row))
-            return result
-
-    rubric = LLMGenerator(Large()).generate("task", [])
-    assert [c.weight for c in rubric.criteria] == [0.5, 0.5]
-
-
-def test_cli_rejects_duplicate_task_before_creating_a_run(tmp_path):
-    path = config_file(tmp_path, tasks=3)
-    source = tmp_path / "train.jsonl"
-    source.write_text(
-        json.dumps(sample(0).to_dict())
-        + "\n"
-        + json.dumps(sample(1).to_dict())
-        + "\n"
-        + json.dumps({**sample(0).to_dict(), "sample_id": "duplicate"})
-        + "\n"
-    )
-    with pytest.raises(ValueError, match="duplicate normalized task"):
-        run(path)
-    assert not (tmp_path / "run").exists()
-
-
-def test_separate_frozen_evaluation_never_retrains_or_changes_pool(tmp_path):
-    from verge.cli import evaluate, digest
-
-    config = config_file(tmp_path)
-    run(config)
-    checkpoint = tmp_path / "run/checkpoint.json"
-    before = digest(checkpoint)
-    test = tmp_path / "test.jsonl"
-    test.write_text(json.dumps(sample(20).to_dict()) + "\n")
-    manifest = evaluate(config, checkpoint, test, tmp_path / "evaluation")
-    assert manifest["status"] == "completed" and manifest["test"]["tasks"] == 1
-    assert manifest["training_overlap"] == 0 and digest(checkpoint) == before
-    assert manifest["test"]["errors"] == 0
-
-
-def test_evaluation_rejects_changed_execution_protocol(tmp_path):
-    from verge.cli import evaluate
-
-    path = config_file(tmp_path)
-    run(path)
-    config = yaml.safe_load(path.read_text())
-    config["selection"] = {"max_selected": 1}
-    path.write_text(yaml.safe_dump(config))
-    with pytest.raises(ValueError, match="protocol changed"):
-        evaluate(
-            path,
-            tmp_path / "run/checkpoint.json",
-            tmp_path / "train.jsonl",
-            tmp_path / "evaluation",
-        )
-    assert not (tmp_path / "evaluation").exists()
-
-
-
-def test_critic_receives_real_selection_explanation_and_short_provided_ids():
-    s = state()
-    r = runner()
-    s.commit(r.run_sample(sample(), s.snapshot()))
-    b = FakeLLMBackend("unrepairable")
-    runner(b).run_sample(sample(1), s.snapshot())
-    payload = next(p for role, p in b.calls if role == "critic")
-    assert payload["selection_reasons"] and payload["retrieval_candidates"]
+@pytest.mark.parametrize("values", list(product([False, True, None], repeat=4)))
+def test_three_equal_trials_independent_credit_and_all_failed_gate(values):
+    m = seeded()
+    ids = list(m.experiences)
+    b = FakeLLMBackend()
+    r = runner(b)
+    r.modules.generator = TrialGenerator()
+    r.modules.judge = TrialJudge(dict(zip(["baseline", *ids], values)))
+    result = r.run_sample(sample(10), m.snapshot())
+    paths = result.record.paths
+    assert len(paths) == 4 and all(len(p.provided_experience_ids) <= 1 for p in paths)
+    assert result.record.prediction_path is None
+    assert r.modules.generator.drafts == 1
     assert all(
-        not value.startswith("exp_")
-        for value in payload["actual_experience_ids"]
+        draft == result.record.draft.to_dict()
+        for draft, _ in r.modules.generator.inputs
+    )
+    assert bool(result.record.critic_rounds) == all(v is False for v in values)
+    feedback = downstream_feedback(result.record, "p")
+    for row in feedback:
+        index = ids.index(row.experience_id) + 1
+        expected = (
+            None
+            if values[0] is None or values[index] is None
+            else {row.experience_id: int(values[index]) - int(values[0])}
+        )
+        assert row.credits == expected
+    m.commit(result)
+    assert all(
+        m.clusters.references("experience", eid) == {sample(10).task_id} for eid in ids
     )
 
 
-def test_candidate_transport_failure_does_not_trigger_content_rewrite():
-    class FailingValidation(FakeLLMBackend):
-        def generate(self, role, payload, **kwargs):
-            if role == "generator" and payload["experiences"]:
-                raise LLMSampleError("temporary transport failure")
-            return super().generate(role, payload, **kwargs)
+def test_source_reuses_draft_no_credit_or_association_then_downstream(tmp_path):
+    m = memory(tmp_path)
+    b = FakeLLMBackend()
+    r = runner(b)
+    first = r.run_sample(sample(), m.snapshot())
+    m.commit(first)
+    assert len(first.record.paths) == 1 and len(first.record.critic_rounds) == 1
+    eid = next(iter(m.experiences))
+    assert m.clusters.references("experience", eid) == set()
+    assert not m.ledger.records
+    generated = [payload for role, payload in b.calls if role == "generator"]
+    assert [p["stage"] for p in generated] == ["draft", "revise", "revise"]
+    assert generated[1]["draft"] == generated[2]["draft"]
+    second = r.run_sample(sample(1), m.snapshot())
+    m.commit(second)
+    assert len(m.ledger.records) == 1 and m.ledger.records[0].credits == {eid: 1}
+    assert ExperienceMemory.load(m.path).to_dict() == m.to_dict()
 
-    result = runner(FailingValidation()).run_sample(sample(), state())
-    assert len(result.record.critic_rounds) == 1
-    assert result.record.critic_rounds[0].attempts[0].reason == "technical_failure"
-    assert not result.admitted
+
+def test_two_round_failure_reuses_draft_and_baseline():
+    m = memory()
+    b = FakeLLMBackend("unrepairable")
+    result = runner(b).run_sample(sample(), m.snapshot())
+    assert len(result.record.critic_rounds) == 2
+    calls = [p for role, p in b.calls if role == "generator"]
+    assert [p["stage"] for p in calls] == ["draft", "revise", "revise", "revise"]
+    assert len({json.dumps(p["draft"], sort_keys=True) for p in calls[1:]}) == 1
+    m.commit(result)
+    assert not m.experiences
 
 
-@pytest.mark.parametrize("exhaust", [False, True])
-def test_unknown_experience_retries_and_does_not_stop_following_samples(exhaust):
-    class HallucinatedUsage(FakeLLMBackend):
-        def __init__(self):
-            super().__init__("correct")
-            self.first_calls = 0
+@pytest.mark.parametrize("stage", ["draft", "candidate"])
+def test_technical_failure_never_becomes_critic_content_evidence(stage):
+    class Fail(FakeLLMBackend):
+        def _generate(self, role, payload, **kw):
+            if role == "generator" and (
+                (stage == "draft" and payload["stage"] == "draft")
+                or (stage == "candidate" and payload.get("experiences"))
+            ):
+                raise LLMSampleError("fixture transport failure")
+            return super()._generate(role, payload, **kw)
 
-        def _generate(self, role, payload, **kwargs):
-            output = super()._generate(role, payload, **kwargs)
-            if role == "generator" and payload["task"] == "task 0":
-                self.first_calls += 1
-                if exhaust or self.first_calls == 1:
-                    output["experience_usage"] = [
-                        {"experience_id": "999", "used": False, "reason": "invalid ID"}
-                    ]
-            return output
+    m = memory()
+    r = runner(Fail()).run_sample(sample(), m.snapshot())
+    m.commit(r)
+    if stage == "draft":
+        assert r.record.error and not r.record.paths and not r.record.critic_rounds
+    else:
+        assert (
+            len(r.record.critic_rounds) == 1
+            and r.record.critic_rounds[0].attempts[0].path.correct is None
+        )
+    assert not m.ledger.records
 
-    b = HallucinatedUsage()
-    memory = state()
-    run_training_stream([sample(0), sample(1)], memory, lambda _: runner(b), workers=1)
-    assert len(memory.trajectories) == 2
-    assert b.first_calls == (3 if exhaust else 2)
-    first = memory.trajectories[sample(0).task_id]
-    second = memory.trajectories[sample(1).task_id]
-    assert bool(first.baseline.error) is exhaust
-    assert second.baseline.correct is True
+
+def test_inference_selects_one_only_no_baseline_or_mutation():
+    m = seeded()
+    before = m.to_dict()
+    b = FakeLLMBackend()
+    result = runner(b).run_sample(sample(20), m.snapshot(), training=False)
+    assert result.record.mode == "inference" and len(result.record.paths) == 1
+    assert len(result.record.prediction_path.provided_experience_ids) == 1
+    assert result.record.baseline is None and not result.record.critic_rounds
+    assert m.to_dict() == before
+    assert next(p for role, p in b.calls if role == "selector")["max_selected"] == 1
+    with pytest.raises(ValueError, match="inference"):
+        m.commit(result)
+
+
+def test_human_reasons_only_reach_critic_with_response_mapping():
+    metadata = {
+        "chosen_response": 2,
+        "individual_preference": [
+            {"reasoning": "unique annotation", "score": 2},
+            {"reasoning": "disagreement", "score": -1},
+        ],
+    }
+    s = sample(metadata=metadata)
+    b = FakeLLMBackend()
+    runner(b).run_sample(s, memory().snapshot())
+    critic = next(p for role, p in b.calls if role == "critic")
+    assert (
+        critic["preference_evidence"]["individual_preference"]
+        == metadata["individual_preference"]
+    )
+    assert critic["preference_evidence"]["original_response_mapping"] == {
+        "response_1": "rejected",
+        "response_2": "chosen",
+    }
+    for role, p in b.calls:
+        if role != "critic":
+            assert "unique annotation" not in json.dumps(p)
+        if role in ("generator", "selector"):
+            assert s.chosen not in json.dumps(p) and s.rejected not in json.dumps(p)
+        if role == "judge":
+            assert set(p) == {"task", "criteria", "response"}
+    assert (
+        preference_evidence(sample())["original_response_mapping"]["response_1"]
+        == "unknown"
+    )
+
+
+def test_critic_can_abstain_on_judge_only_failure():
+    class Abstain(FakeLLMBackend):
+        def _generate(self, role, payload, **kw):
+            if role == "critic":
+                return {
+                    "analysis": "Only Judge execution is unsupported; no rubric defect established.",
+                    "candidates": [],
+                }
+            return super()._generate(role, payload, **kw)
+
+    result = runner(Abstain()).run_sample(sample(), memory())
+    assert len(result.record.critic_rounds) == 1 and not result.admitted
+
+
+def test_checkpoint_rejects_source_edge_and_tampered_feedback(tmp_path):
+    m = seeded(1)
+    m.path = tmp_path / "checkpoint.json"
+    m.save()
+    raw = m.to_dict()
+    eid = next(iter(m.experiences))
+    raw["clustering"]["citations"] = [[m.experiences[eid].source_task_id, eid]]
+    m.path.write_text(json.dumps(raw))
+    with pytest.raises(ValueError, match="associations"):
+        ExperienceMemory.load(m.path)
+    m.commit(runner().run_sample(sample(30), m.snapshot()))
+    raw = m.to_dict()
+    raw["feedback"][0]["experience_correct"] = False
+    m.path.write_text(json.dumps(raw))
+    with pytest.raises(ValueError, match="feedback"):
+        ExperienceMemory.load(m.path)
+
+
+def test_atomic_publish_rollback(tmp_path, monkeypatch):
+    m = memory(tmp_path)
+    before = m.to_dict()
+    result = runner().run_sample(sample(), m.snapshot())
+    monkeypatch.setattr(
+        "verge.memory.atomic_json",
+        lambda *_: (_ for _ in ()).throw(OSError("disk full")),
+    )
+    with pytest.raises(OSError):
+        m.commit(result)
+    assert m.to_dict() == before
+
+
+def test_unknown_id_retry_and_weight_overflow_normalization():
+    class Hallucinate(FakeLLMBackend):
+        def _generate(self, role, payload, **kw):
+            result = super()._generate(role, payload, **kw)
+            if role == "selector" and "validation_feedback" not in payload:
+                result["selected_experience_ids"] = ["nonexistent"]
+            if role == "generator":
+                result["criteria"] = [
+                    {"question": "one", "weight": 1e308},
+                    {"question": "two", "weight": 1e308},
+                ]
+            return result
+
+    b = Hallucinate()
+    m = seeded()
+    result = runner(b).run_sample(sample(40), m.snapshot())
+    assert len([1 for role, _ in b.calls if role == "selector"]) == 2
+    assert [c.weight for c in result.record.draft.criteria] == [0.5, 0.5]
+
+
+def test_cli_pause_resume_and_frozen_evaluation(tmp_path):
+    config = load_config("configs/default.yaml")
+    config["run"]["output_dir"] = str(tmp_path / "run")
+    train = tmp_path / "train.jsonl"
+    train.write_text("\n".join(sample(i).to_json() for i in range(3)) + "\n")
+    config["dataset"]["paths"]["train"] = str(train)
+    path = tmp_path / "config.yaml"
+    path.write_text(yaml.safe_dump(config))
+    first = run(path, stop_after_train=1)
+    assert first["status"] == "paused"
+    final = run(path, resume=True)
+    assert final["status"] == "completed" and final["test"]["tasks"] > 0
+    cp = tmp_path / "run" / "checkpoint.json"
+    before = cp.read_bytes()
+    report = evaluate(path, cp, "configs/data/demo_test.jsonl", tmp_path / "evaluation")
+    assert report["status"] == "completed" and cp.read_bytes() == before
+    assert ExperienceMemory.load(cp).protocol_id == execution_protocol(config)
+
+
+def config_file(tmp_path, tasks=2):
+    config = load_config("configs/default.yaml")
+    data = tmp_path / "train.jsonl"
+    data.write_text("\n".join(sample(i).to_json() for i in range(tasks)) + "\n")
+    config["dataset"]["paths"] = {"train": str(data)}
+    config["run"].update(output_dir=str(tmp_path / "run"), train_workers=1)
+    path = tmp_path / "config.yaml"
+    path.write_text(yaml.safe_dump(config))
+    return path

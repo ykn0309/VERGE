@@ -25,17 +25,17 @@ embedding:
   max_retries: 2
 clustering:
   reference_weight: 0.5
-  task_threshold: 0.75
-  experience_threshold: 0.75
+  task_threshold: 0.35
+  experience_threshold: 0.50
   max_rounds: 5
 retrieval:
   task_group_limit: 3
   historical: 6
   semantic: 4
 selection:
-  max_selected: 2
+  max_selected: 3
 critic:
-  max_candidates: 2
+  max_candidates: 1
   max_rounds: 2
 requests:
   retries: 2

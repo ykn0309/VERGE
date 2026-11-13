@@ -26,7 +26,7 @@ def retrieve(state, ledger=None, vector=(1, 0), **kwargs):
     )
 
 
-def test_no_matching_task_group_uses_semantic_search_over_all_experiences():
+def test_zero_similarity_task_group_is_returned_but_has_no_weighted_history():
     state = clusters()
     state.update(
         [
@@ -36,8 +36,8 @@ def test_no_matching_task_group_uses_semantic_search_over_all_experiences():
         ]
     )
     result = retrieve(state)
-    assert result.semantic_only
-    assert result.task_groups == () and result.historical.scored == ()
+    assert not result.semantic_only
+    assert len(result.task_groups) == 1 and result.historical.scored == ()
     assert result.semantic == (("close", 1), ("far", 0))
     assert result.historical.unknown_ids == ("close", "far")
 
@@ -60,7 +60,7 @@ def test_matched_history_and_unlinked_semantic_experiences_are_both_available():
         [("past", "known")],
     )
     ledger = FeedbackLedger(
-        "test", [CreditFeedback("r", "past", "test", ("known",), False, True, (True,))]
+        "test", [CreditFeedback("r", "past", "test", "known", False, True)]
     )
     result = retrieve(state, ledger)
     assert not result.semantic_only
@@ -97,7 +97,7 @@ def test_experience_cluster_membership_cannot_change_the_routes():
             [("past", "E1")],
         )
         ledger = FeedbackLedger(
-            "test", [CreditFeedback("r", "past", "test", ("E1",), False, True, (True,))]
+            "test", [CreditFeedback("r", "past", "test", "E1", False, True)]
         )
         result = retrieve(state, ledger)
         results.append(
@@ -119,7 +119,7 @@ def test_retrieval_is_read_only_and_accepts_a_query_iterator():
         [("past", "E")],
     )
     ledger = FeedbackLedger(
-        "test", [CreditFeedback("r", "past", "test", ("E",), False, True, (True,))]
+        "test", [CreditFeedback("r", "past", "test", "E", False, True)]
     )
     before = state.assignments("task"), state.assignments("experience"), ledger.records
     first = retrieve(state, ledger, vector=iter((1, 0)))
@@ -236,7 +236,7 @@ def test_full_retrieval_applies_the_default_quota_after_global_semantic_search()
     ledger = FeedbackLedger(
         "test",
         [
-            CreditFeedback(f"r{i}", "past", "test", (f"E{i:02}",), False, True, (True,))
+            CreditFeedback(f"r{i}", "past", "test", f"E{i:02}", False, True)
             for i in range(8)
         ],
     )

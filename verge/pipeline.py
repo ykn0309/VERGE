@@ -1,11 +1,10 @@
-"""Bounded subset execution, fixed actual results, and source-only validation."""
+"""Shared task-only draft, equal singleton trials, and source-only repair."""
 
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 from contextvars import copy_context
 from dataclasses import asdict, dataclass
-from itertools import combinations
 import json
 
 from verge.llm import LLMFormatError, LLMSampleError
@@ -23,6 +22,27 @@ class SampleResult:
     admitted: list
 
 
+def preference_evidence(sample):
+    """Preserve annotator disagreement and original response numbering.
+
+    Never infer the original order from the normalized chosen/rejected strings.
+    Missing metadata remains explicitly unknown.
+    """
+    chosen = sample.metadata.get("chosen_response")
+    return {
+        "original_response_mapping": {
+            "response_1": (
+                "chosen" if chosen == 1 else "rejected" if chosen == 2 else "unknown"
+            ),
+            "response_2": (
+                "chosen" if chosen == 2 else "rejected" if chosen == 1 else "unknown"
+            ),
+        },
+        "score_convention": "negative favors original response_1; positive favors original response_2; zero is a tie",
+        "individual_preference": sample.metadata.get("individual_preference", []),
+    }
+
+
 class PipelineRunner:
     def __init__(
         self,
@@ -33,16 +53,20 @@ class PipelineRunner:
         quota=CandidateQuota(),
         critic_rounds=2,
     ):
+        if not 0 <= critic_rounds <= 2:
+            raise ValueError("Critic permits at most two rounds")
         self.modules = modules
         self.embedder = embedder
         self.task_group_limit = task_group_limit
         self.quota = quota
         self.critic_rounds = critic_rounds
 
-    def execute(self, sample, experiences):
+    def execute(self, sample, draft, experiences):
+        if len(experiences) > 1:
+            raise ValueError("a path accepts at most one experience")
         path = ExecutionPath([e.experience_id for e in experiences])
         try:
-            path.rubric = self.modules.generator.generate(sample.task, experiences)
+            path.rubric = self.modules.generator.revise(sample.task, draft, experiences)
             path.judgment = self.modules.judge.judge(
                 sample.task, path.rubric, sample.chosen, sample.rejected
             )
@@ -50,37 +74,11 @@ class PipelineRunner:
             path.error = f"{type(exc).__name__}: {exc}"
         return path
 
-    def execute_subsets(self, sample, experiences, *, baseline=None):
-        """Run each distinct subset once; reuse the task's existing baseline."""
-        if len(experiences) > 2:
-            raise ValueError("subset execution accepts at most two experiences")
-        subsets = [
-            list(c)
-            for size in range(len(experiences) + 1)
-            for c in combinations(experiences, size)
-        ]
-        paths = {}
-        if baseline is not None:
-            if baseline.provided_experience_ids:
-                raise ValueError("baseline must provide no experience")
-            paths[()] = baseline
-        pending = [s for s in subsets if tuple(e.experience_id for e in s) not in paths]
-        if pending:
-            with ThreadPoolExecutor(max_workers=len(pending)) as executor:
-                futures = [
-                    (
-                        subset,
-                        executor.submit(
-                            copy_context().run, self.execute, sample, subset
-                        ),
-                    )
-                    for subset in pending
-                ]
-                for subset, future in futures:
-                    paths[tuple(e.experience_id for e in subset)] = future.result()
-        return [paths[tuple(e.experience_id for e in subset)] for subset in subsets]
-
     def run_sample(self, sample, state, *, training=True):
+        record = TrajectoryRecord(
+            sample, {}, {}, mode="train" if training else "inference"
+        )
+        vector = None
         try:
             vector = self.embedder.embed(sample.task)
             routes = retrieve_candidates(
@@ -90,42 +88,41 @@ class PipelineRunner:
                 task_group_limit=self.task_group_limit,
                 quota=self.quota,
             )
-            selected, reasons = self.modules.selector.select(
-                sample.task, routes, state.experiences
+            record.retrieval = asdict(routes)
+            selected, record.selection_reasons = self.modules.selector.select(
+                sample.task, routes, state.experiences, training=training
             )
+            if len(selected) > (3 if training else 1):
+                raise ValueError("Selector exceeded the mode-specific budget")
+            record.draft = self.modules.generator.draft(sample.task)
         except RECOVERABLE as exc:
-            record = TrajectoryRecord(
-                sample, {}, {}, None, None, error=f"{type(exc).__name__}: {exc}"
-            )
-            return SampleResult(record, None, [])
-        if len(selected) > 2:
-            raise ValueError("Selector exceeded the two-experience budget")
-        if training:
-            paths = self.execute_subsets(sample, selected)
-            baseline = paths[0]
-            actual = paths[-1] if selected else None
-        else:
-            path = self.execute(sample, selected)
-            baseline, actual = (None, path) if selected else (path, None)
-            paths = [path]
-        record = TrajectoryRecord(
-            sample, asdict(routes), reasons, baseline, actual, subset_paths=paths
-        )
+            record.error = f"{type(exc).__name__}: {exc}"
+            return SampleResult(record, vector, [])
+
+        inputs = [[], *([e] for e in selected)] if training else [selected]
+        with ThreadPoolExecutor(max_workers=len(inputs)) as executor:
+            futures = [
+                executor.submit(
+                    copy_context().run, self.execute, sample, record.draft, es
+                )
+                for es in inputs
+            ]
+            record.paths = [f.result() for f in futures]
         result = SampleResult(record, vector, [])
-        if not training or record.used_path.correct is not False:
-            return result
-        self._repair(sample, state, routes, selected, record, result)
+        if training and all(p.correct is False for p in record.paths):
+            self._repair(sample, state, routes, record, result)
         return result
 
-    def _repair(self, sample, state, routes, selected, record, result):
+    def _repair(self, sample, state, routes, record, result):
         session = CriticSession()
         parents = [c.experience_id for c in routes.candidates]
         payload = {
             "task": sample.task,
             "chosen": sample.chosen,
             "rejected": sample.rejected,
-            "initial_paths": [p.to_dict() for p in record.subset_paths],
-            "actual_experience_ids": [e.experience_id for e in selected],
+            "preference_evidence": preference_evidence(sample),
+            "draft": record.draft.to_dict(),
+            "initial_paths": [p.to_dict() for p in record.paths],
             "experiences": [
                 experience_payload(state.experiences[eid]) for eid in parents
             ],
@@ -148,65 +145,32 @@ class PipelineRunner:
                     CriticRound(number, "", [], f"{type(exc).__name__}: {exc}")
                 )
                 return
-            if len(candidates) > 2:
-                raise ValueError("Critic exceeded the two-candidate budget")
+            if len(candidates) > 1:
+                raise ValueError("Critic exceeded the single-candidate budget")
             round_record = CriticRound(number, analysis, [])
             record.critic_rounds.append(round_record)
             if not candidates:
                 return
-            paths = self.execute_subsets(sample, candidates, baseline=record.baseline)
-            round_record.subset_paths = paths
-            singles = paths[1 : 1 + len(candidates)]
-            passing = [i for i, path in enumerate(singles) if path.correct is True]
-            joint = len(candidates) == 2 and not passing and paths[-1].correct is True
-            admitted = set()
-            embedding_errors = {}
-            # Joint-only repair is published as a pair; embedding failure cannot
-            # silently downgrade its evidence to a standalone admission.
-            groups = [list(range(2))] if joint else [[i] for i in passing]
-            for group in groups:
-                embedded = []
+            experience = candidates[0]
+            path = self.execute(sample, record.draft, [experience])
+            accepted = False
+            reason = "technical_failure" if path.correct is None else "incorrect"
+            if path.correct is True:
                 try:
-                    for i in group:
-                        e = candidates[i]
-                        text = json.dumps(
-                            e.method.to_dict(), ensure_ascii=False, sort_keys=True
-                        )
-                        embedded.append((e, self.embedder.embed(text)))
+                    text = json.dumps(
+                        experience.method.to_dict(), ensure_ascii=False, sort_keys=True
+                    )
+                    embedded = self.embedder.embed(text)
                 except RECOVERABLE as exc:
-                    for i in group:
-                        embedding_errors[i] = f"embedding_failure: {exc}"
+                    reason = f"embedding_failure: {exc}"
                 else:
-                    result.admitted.extend(embedded)
-                    admitted.update(group)
-            for i, (experience, path) in enumerate(zip(candidates, singles)):
-                accepted = i in admitted
-                reason = (
-                    ("joint_correct" if joint else "standalone_correct")
-                    if accepted
-                    else (
-                        embedding_errors.get(i)
-                        or ("technical_failure" if path.error else "incorrect")
-                    )
-                )
-                subset = (
-                    (
-                        [e.experience_id for e in candidates]
-                        if joint
-                        else [experience.experience_id]
-                    )
-                    if accepted
-                    else []
-                )
-                round_record.attempts.append(
-                    CandidateAttempt(experience, path, accepted, reason, subset)
-                )
-            if admitted:
+                    result.admitted.append((experience, embedded))
+                    accepted, reason = True, "source_correct"
+            round_record.attempts.append(
+                CandidateAttempt(experience, path, accepted, reason)
+            )
+            if accepted or path.correct is not False:
                 return
-            # Format/transport/embedding failures are not semantic counterexamples.
-            if not any(p.correct is False for p in singles) or embedding_errors:
-                return
-            payload = {
-                "previous_attempts": [a.to_dict() for a in round_record.attempts],
-                "validation_paths": [p.to_dict() for p in paths],
-            }
+            # Same Critic conversation carries the original evidence. Only an
+            # explicit content failure, not a technical error, permits round 2.
+            payload = {"previous_attempt": round_record.attempts[0].to_dict()}

@@ -18,11 +18,9 @@ import {
   groupName,
 } from "./ui.mjs";
 import {
-  subsetProtocol,
+  learningProtocol,
   summarize,
-  usedPath,
   resultOf,
-  citedIds,
   feedbackOutcome,
   sampleOutcome,
   matchesFilter,
@@ -51,7 +49,7 @@ export function overview(state, actions) {
     progress,
     heading(
       "运行进度",
-      `${state.run} · ${subsetProtocol(d) ? "四路信用协议" : "旧两路协议（只读）"}`,
+      `${state.run} · ${learningProtocol(d) ? "v3.1单经验试用" : "不支持的协议"}`,
       badge(
         statusLabel(d.manifest.status),
         d.manifest.status === "running" ? "live" : "neutral",
@@ -95,9 +93,9 @@ export function overview(state, actions) {
     add(
       node("section", undefined, "metric-grid"),
       metric(
-        "初始路径判对",
+        "无经验基线判对",
         `${s.correct} / ${s.completed}`,
-        "Critic修复前，本次实际采用的路径",
+        "各经验路独立试用，不汇总为推理准确率",
         () => actions.samples("all"),
       ),
       metric(
@@ -113,8 +111,8 @@ export function overview(state, actions) {
         () => actions.page("experiences"),
       ),
       metric(
-        subsetProtocol(d) ? "下游提供经验" : "下游实际引用",
-        subsetProtocol(d) ? s.selected : s.cited,
+        "下游提供经验",
+        s.selected,
         `选择了经验的任务共 ${s.selected} 道`,
         () => actions.samples("selected"),
       ),
@@ -126,24 +124,9 @@ export function overview(state, actions) {
     heading(
       "提供经验后，结果如何变化",
       `${s.paired}条有效配对 · ${s.invalidPairs}条因技术错误无法比较`,
-      node("span", `净改善 ${signed(s.gain, 0)}题`, "net-gain"),
+      node("span", `净改善 ${signed(s.gain, 0)}条配对`, "net-gain"),
     ),
   );
-  const scope = node("div", undefined, "segmented");
-  for (const [key, label] of [
-    ["provided", "全部提供经验的配对"],
-    ["cited", "只看实际引用"],
-  ]) {
-    add(
-      scope,
-      button(
-        label,
-        () => actions.pairScope(key),
-        state.pairScope === key ? "active" : "",
-      ),
-    );
-  }
-  if (!subsetProtocol(d)) add(paired, scope);
   const outcomes = node("div", undefined, "outcome-grid");
   for (const [label, hint] of [
     ["改善", "无经验错 → 有经验对"],
@@ -165,11 +148,7 @@ export function overview(state, actions) {
     outcomes,
     node(
       "p",
-      subsetProtocol(d)
-        ? "比较初始实际路径与无经验基线；单条信用另由完整子集结果计算。来源验证不计入收益。"
-        : state.pairScope === "cited"
-          ? "只统计实际引用且两路有效的下游配对；来源即时验证不计入。"
-          : `统计已提供经验且两路有效的下游配对，其中${s.uncitedPairs}题未实际引用；来源即时验证不计入。`,
+      "逐条经验与同题基线比较；同题多条配对不代表多个独立任务。来源验证不计收益。",
       "caption",
     ),
   );
@@ -390,26 +369,14 @@ export function samples(state, actions) {
           badge(status, tone(status)),
         );
       const paths = node("div", undefined, "sample-status-paths");
-      add(
-        paths,
-        statusRow("无经验基线", info.baseline),
-        statusRow("已有经验", info.actual || "未运行"),
-      );
-      if (subsetProtocol(d) && info.initialSubsets.length === 4) {
-        for (const item of info.initialSubsets.filter((x) =>
-          ["经验1", "经验2"].includes(x.label),
-        ))
-          add(paths, statusRow(item.label, item.result));
-      }
+      for (const item of info.initialTrials) add(paths, statusRow(item.label, item.result));
       add(b, paths);
       const use = node("div", undefined, "sample-use");
       add(
         use,
         node(
           "span",
-          subsetProtocol(d)
-            ? `提供${info.selected ?? "—"}条`
-            : `选${info.selected ?? "—"}条 · 引用${info.cited}条`,
+          `提供${info.selected ?? "—"}条`,
           "muted",
         ),
       );
@@ -428,15 +395,6 @@ export function samples(state, actions) {
       add(b, use);
       if (info.rounds) {
         const criticBox = node("div", undefined, "sample-critic-status");
-        for (const pair of info.pairResults)
-          add(
-            criticBox,
-            add(
-              node("div", undefined, "sample-candidate-result"),
-              node("span", `${pair.round}轮·两条组合`, "status-label"),
-              badge(pair.result, tone(pair.result)),
-            ),
-          );
         for (const candidate of info.candidateResults) {
           const item = node("div", undefined, "sample-candidate-result");
           add(
@@ -449,13 +407,9 @@ export function samples(state, actions) {
             badge(candidate.result, tone(candidate.result)),
           );
           const notes = [];
-          if (!subsetProtocol(d) && ["判对", "判错"].includes(candidate.result))
-            notes.push(candidate.cited ? "引用" : "未引用");
           notes.push(
             candidate.admitted
-              ? candidate.joint
-                ? "组合准入"
-                : "准入"
+              ? "准入"
               : "未准入",
           );
           add(
@@ -581,21 +535,12 @@ export function experiences(state, actions) {
           add(
             node("div", undefined, "experience-status-row"),
             node("span", `来源验证：${status.sourceResult}`),
-            node(
-              "span",
-              status.sourceCited === null
-                ? ""
-                : status.sourceCited
-                  ? "已引用"
-                  : "未引用",
-              "muted",
-            ),
           ),
           add(
             node("div", undefined, "experience-status-row"),
             node(
               "span",
-              `${subsetProtocol(d) ? "下游提供" : "下游引用"} ${status.citedTasks}题`,
+              `${"下游提供"} ${status.providedTasks}题`,
               "muted",
             ),
             node("span", `有效 ${status.validTasks}题`, "muted"),
@@ -611,7 +556,7 @@ export function experiences(state, actions) {
             node("div", undefined, "experience-status-row"),
             node(
               "span",
-              `平均${subsetProtocol(d) ? "信用" : "参与收益"} ${signed(status.meanReward)}`,
+              `平均${"信用"} ${signed(status.meanReward)}`,
               "muted",
             ),
             status.technicalFailures
@@ -644,7 +589,7 @@ export function experiences(state, actions) {
   state.experience = e.experience_id;
   const detail = node("section", undefined, "panel");
   const feedback = d.feedback.filter((f) =>
-    f.experience_ids.includes(e.experience_id),
+    f.experience_id === e.experience_id,
   );
   const valid = feedback.filter((f) => !f.error && f.phase === "downstream");
   const gain = valid.reduce(
@@ -668,11 +613,9 @@ export function experiences(state, actions) {
       node("div", undefined, "mini-metrics"),
       metric("有效下游任务", valid.length, "不包含来源即时修复"),
       metric(
-        subsetProtocol(d) ? "平均分配信用" : "平均参与收益",
+        "平均信用",
         signed(experienceListSummary(e, d).meanReward),
-        subsetProtocol(d)
-          ? "完整子集比较估计；不含来源验证"
-          : "组合表现，不是独立贡献",
+        "单经验路减无经验路；不含来源验证",
       ),
     ),
   );
@@ -711,17 +654,17 @@ export function experiences(state, actions) {
   add(
     detail,
     heading(
-      subsetProtocol(d) ? "后续在哪些任务中被提供" : "后续在哪些任务中被引用",
+      "后续在哪些任务中被提供",
     ),
     table(
-      ["任务", "配对结果", ...(subsetProtocol(d) ? ["分配信用"] : []), "跳转"],
+      ["任务", "配对结果", "信用", "跳转"],
       feedback.map((f) => {
         const id = sourceSample(f.task_id, d),
           sample = d.samples.find((s) => s.sample.sample_id === id);
         return [
           sample?.sample.task.slice(0, 140) || short(f.task_id),
           badge(feedbackOutcome(f), tone(feedbackOutcome(f))),
-          ...(subsetProtocol(d) ? [signed(f.credits?.[e.experience_id])] : []),
+          signed(f.credits?.[e.experience_id]),
           id ? button("查看", () => actions.sample(id, "judge"), "link") : "—",
         ];
       }),
@@ -729,12 +672,12 @@ export function experiences(state, actions) {
   );
   add(
     detail,
-    heading("分任务组的历史收益", "无记录的组合保持未知"),
+    heading("分任务组的历史收益", "无记录的任务组—经验配对保持未知"),
     table(
       [
         "任务组",
         "有效任务",
-        subsetProtocol(d) ? "平均分配信用" : "平均参与收益",
+        "平均信用",
       ],
       d.group_statistics
         .filter((g) => g.experience_id === e.experience_id)
@@ -758,7 +701,7 @@ export function clusters(state, actions) {
     root,
     node(
       "p",
-      "文本相似度与引用共同影响分组；成员单一归属，查询可以参考多个任务组。",
+      "文本与对侧类别分布共同影响分组；成员单一归属，查询可参考多个任务组。",
       "page-intro",
     ),
   );
@@ -796,11 +739,9 @@ export function clusters(state, actions) {
         "单成员不等于分组错误",
       ),
       metric(
-        "引用关系",
+        "提供关系",
         Object.values(d.references || {}).reduce((n, es) => n + es.length, 0),
-        subsetProtocol(d)
-          ? "仅后续独立任务关联；来源验证不计，按任务—经验去重"
-          : "含来源和下游引用，按任务—经验去重",
+        "仅后续独立任务关联；来源验证不计，按任务—经验去重",
       ),
     ),
   );
@@ -864,7 +805,7 @@ export function clusters(state, actions) {
     heading(
       groupName(id),
       kind === "task"
-        ? "查看实际成员，以及它们引用了哪些经验"
+        ? "查看实际成员，以及它们提供了哪些经验"
         : "经验组仅作分析，不参与收益排序，也不自动合并经验正文",
     ),
   );
@@ -874,14 +815,14 @@ export function clusters(state, actions) {
     add(
       detail,
       table(
-        ["任务成员", "引用经验", "查看轨迹"],
+        ["任务成员", "提供经验", "查看轨迹"],
         members.map((tid) => {
           const sid = sourceSample(tid, d),
             rec = d.samples.find((s) => s.sample.sample_id === sid);
           return [
             rec?.sample.task.slice(0, 180) || short(tid),
             (d.references?.[tid] || []).map((e) => expName(e, d)).join("、") ||
-              "无引用",
+              "无提供",
             sid ? button("查看", () => actions.sample(sid), "link") : "—",
           ];
         }),
@@ -898,9 +839,9 @@ export function clusters(state, actions) {
     );
     add(
       detail,
-      heading("关联的经验组", "引用任务数按任务去重，不表示收益"),
+      heading("关联的经验组", "提供任务数按任务去重，不表示收益"),
       table(
-        ["经验组", "引用任务数", "查看成员"],
+        ["经验组", "提供任务数", "查看成员"],
         [...linked].map(([group, ts]) => [
           groupName(group),
           ts.size,
@@ -954,9 +895,9 @@ export function clusters(state, actions) {
     });
     add(
       detail,
-      heading("被哪些任务组引用", "共同引用可能表示相似或互补，不证明内容等价"),
+      heading("被哪些任务组提供", "共同提供可能表示相似或互补，不证明内容等价"),
       table(
-        ["任务组", "引用任务数", "查看成员"],
+        ["任务组", "提供任务数", "查看成员"],
         [...linked].map(([group, ts]) => [
           groupName(group),
           ts.size,

@@ -15,7 +15,7 @@ def experiences(count):
     ]
 
 
-@pytest.mark.parametrize("count", [0, 1, 2])
+@pytest.mark.parametrize("count", [0, 1])
 def test_generator_example_and_model_output_have_no_attribution(count):
     payload = {
         "task": "保留原意改写",
@@ -24,8 +24,10 @@ def test_generator_example_and_model_output_have_no_attribution(count):
     example = output_example("generator", payload)
     assert set(example) == {"analysis", "criteria"}
     assert set(example["criteria"][0]) == {"question", "weight"}
-    rubric = LLMGenerator(FakeLLMBackend()).generate(
-        payload["task"], experiences(count)
+    rubric = LLMGenerator(FakeLLMBackend()).revise(
+        payload["task"],
+        LLMGenerator(FakeLLMBackend()).draft(payload["task"]),
+        experiences(count),
     )
     assert "experience_usage" not in rubric.to_dict()
     assert "source_experiences" not in rubric.criteria[0].to_dict()
@@ -40,10 +42,10 @@ def test_legacy_attribution_is_retried_with_same_input_then_recovers():
             return result
 
     b = Recover()
-    rubric = LLMGenerator(b, retries=1).generate("task", experiences(1))
+    rubric = LLMGenerator(b, retries=1).draft("task")
     assert rubric.criteria
     assert len(b.calls) == 2
-    assert b.calls[0][1]["experiences"] == b.calls[1][1]["experiences"]
+    assert b.calls[0][1]["task"] == b.calls[1][1]["task"]
     assert "不要输出经验引用" in b.calls[1][1]["validation_feedback"]
 
 
@@ -56,12 +58,12 @@ def test_invalid_contract_exhausts_bounded_budget_without_silent_cleanup():
 
     b = Bad()
     with pytest.raises(LLMFormatError):
-        LLMGenerator(b, retries=2).generate("task", [])
+        LLMGenerator(b, retries=2).draft("task")
     assert len(b.calls) == 3
 
 
-def test_generator_rejects_more_than_two_before_calling_model():
+def test_generator_rejects_multiple_experiences_before_calling_model():
     b = FakeLLMBackend()
     with pytest.raises(ValueError):
-        LLMGenerator(b).generate("task", experiences(3))
+        LLMGenerator(b).revise("task", None, experiences(2))
     assert b.calls == []

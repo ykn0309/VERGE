@@ -1,10 +1,9 @@
-"""Atomic checkpoints for subset trajectories and independent downstream credit."""
+"""Atomic checkpoints for shared-draft singleton trials and independent downstream credit."""
 
 from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import asdict
-from itertools import combinations
 from pathlib import Path
 import json
 import os
@@ -14,7 +13,7 @@ from verge.clustering import ClusterItem, OnlineClustering
 from verge.feedback import CreditFeedback, FeedbackLedger
 from verge.models import Experience, TrajectoryRecord
 
-SCHEMA = "verge-subset-learning-v2"
+SCHEMA = "verge-v3.1"
 
 
 def atomic_json(path, value):
@@ -37,123 +36,111 @@ def _invalid_constant(value):
 
 
 def downstream_feedback(record, protocol_id):
-    """Only the original selection receives credit; never inspect Critic rounds."""
-    if record.actual is None:
-        return None
-    ids = tuple(record.actual.provided_experience_ids)
-    indexed = {frozenset(p.provided_experience_ids): p for p in record.subset_paths}
-    baseline = indexed.get(frozenset())
-    singles = [indexed.get(frozenset([eid])) for eid in ids]
-    paths = [baseline, *singles, record.actual]
-    errors = [
-        p.error if p is not None else "missing subset"
-        for p in paths
-        if p is None or p.correct is None
-    ]
-    return CreditFeedback(
-        record.sample.sample_id,
-        record.sample.task_id,
-        protocol_id,
-        ids,
-        baseline.correct if baseline else None,
-        record.actual.correct,
-        tuple(p.correct if p else None for p in singles),
-        error="; ".join(e or "missing outcome" for e in errors) or None,
-    )
+    """Independent pairs only; Critic source attempts never enter the ledger."""
+    records = []
+    baseline = record.baseline
+    for path in record.paths:
+        if not path.provided_experience_ids:
+            continue
+        eid = path.provided_experience_ids[0]
+        errors = [
+            p.error or "missing judgment"
+            for p in (baseline, path)
+            if p is not None and p.correct is None
+        ]
+        if baseline is None:
+            errors.append("missing baseline")
+        records.append(
+            CreditFeedback(
+                record.sample.sample_id + ":" + eid,
+                record.sample.task_id,
+                protocol_id,
+                eid,
+                baseline.correct if baseline else None,
+                path.correct,
+                "; ".join(errors) or None,
+            )
+        )
+    return records
 
 
 def _initial_edges(record, pool):
-    if record.actual is None:
-        return []
-    task = record.sample.task_id
     edges = []
-    for eid in record.actual.provided_experience_ids:
-        if eid not in pool:
-            raise ValueError("initial path refers to an unknown experience")
-        if pool[eid].source_task_id != task:
+    task = record.sample.task_id
+    for path in record.paths:
+        for eid in path.provided_experience_ids:
+            if eid not in pool or pool[eid].source_task_id == task:
+                raise ValueError(
+                    "initial provision must reference an independent existing experience"
+                )
             edges.append((task, eid))
     return edges
 
 
-def _validate_record(record):
-    if record.used_path is None:
-        if not record.error or record.subset_paths:
-            raise ValueError("missing execution without a task error")
-        return
-    ids = record.actual.provided_experience_ids if record.actual else []
-    if len(ids) > 2 or len(ids) != len(set(ids)):
-        raise ValueError("invalid selected experience set")
-    expected = {
-        frozenset(c) for size in range(len(ids) + 1) for c in combinations(ids, size)
-    }
-    indexed = {frozenset(p.provided_experience_ids): p for p in record.subset_paths}
-    if len(indexed) != len(record.subset_paths) or set(indexed) != expected:
-        raise ValueError("initial subsets are incomplete or duplicated")
-    if (
-        record.baseline is None
-        or record.baseline.to_dict() != indexed[frozenset()].to_dict()
-    ):
-        raise ValueError("baseline differs from saved subset")
-    if record.actual and record.actual.to_dict() != indexed[frozenset(ids)].to_dict():
-        raise ValueError("actual differs from predetermined full subset")
-    if set(record.selection_reasons) != set(ids):
-        raise ValueError("selection reasons differ from selected experience set")
-    for path in record.subset_paths:
-        if path.error is None and (path.rubric is None or path.judgment is None):
-            raise ValueError("execution has no outcome and no error")
-    for round_ in record.critic_rounds:
-        if any(
-            a.experience.source_task_id != record.sample.task_id
-            for a in round_.attempts
+def _validate_path(path):
+    if len(path.provided_experience_ids) > 1:
+        raise ValueError("combination paths are not supported")
+    if path.error is None and (path.rubric is None or path.judgment is None):
+        raise ValueError("execution has no outcome and no error")
+    if path.judgment is not None:
+        from verge.calculator import calculate_rubric_judgment
+
+        if (
+            path.rubric is None
+            or calculate_rubric_judgment(
+                path.rubric, path.judgment.criterion_judgments
+            ).to_dict()
+            != path.judgment.to_dict()
         ):
-            raise ValueError("candidate source differs from its validation task")
-        candidate_ids = [a.experience.experience_id for a in round_.attempts]
-        if len(candidate_ids) > 2 or len(candidate_ids) != len(set(candidate_ids)):
-            raise ValueError("invalid Critic candidates")
-        if not candidate_ids:
-            continue
-        expected = {
-            frozenset(c)
-            for size in range(len(candidate_ids) + 1)
-            for c in combinations(candidate_ids, size)
-        }
-        paths = {frozenset(p.provided_experience_ids): p for p in round_.subset_paths}
-        if set(paths) != expected or len(paths) != len(round_.subset_paths):
-            raise ValueError("candidate validation subsets are incomplete")
-        if paths[frozenset()].to_dict() != record.baseline.to_dict():
-            raise ValueError("candidate baseline was replaced")
-        for attempt in round_.attempts:
-            eid = attempt.experience.experience_id
-            if attempt.path.to_dict() != paths[frozenset([eid])].to_dict():
-                raise ValueError("candidate singleton differs from its validation path")
-            if not attempt.admitted:
-                if attempt.admission_subset:
-                    raise ValueError("failed candidate claims admission")
-                continue
-            subset = frozenset(attempt.admission_subset)
+            raise ValueError("saved judgment differs from program calculation")
+
+
+def _validate_record(record):
+    if record.mode != "train":
+        raise ValueError("inference cannot enter training memory")
+    if record.draft is None:
+        if not record.error or record.paths or record.critic_rounds:
+            raise ValueError("missing draft requires task failure without paths")
+        return
+    ids = [eid for p in record.paths for eid in p.provided_experience_ids]
+    if (
+        record.error
+        or not record.paths
+        or record.paths[0].provided_experience_ids
+        or len(record.paths) != 1 + len(ids)
+        or len(ids) > 3
+        or len(set(ids)) != len(ids)
+        or set(record.selection_reasons) != set(ids)
+    ):
+        raise ValueError("initial singleton trials are incomplete or duplicated")
+    for path in record.paths:
+        _validate_path(path)
+    if record.critic_rounds and not all(p.correct is False for p in record.paths):
+        raise ValueError("Critic requires all initial paths explicitly incorrect")
+    if len(record.critic_rounds) > 2:
+        raise ValueError("Critic round budget exceeded")
+    for number, round_ in enumerate(record.critic_rounds, 1):
+        if round_.round_number != number or len(round_.attempts) > 1:
+            raise ValueError("invalid Critic round or candidate count")
+        if number > 1:
+            previous = record.critic_rounds[number - 2]
             if (
-                eid not in subset
-                or subset not in paths
-                or paths[subset].correct is not True
+                previous.error
+                or not previous.attempts
+                or previous.attempts[0].admitted
+                or previous.attempts[0].path.correct is not False
             ):
-                raise ValueError("admission lacks a successful validation subset")
-            if len(subset) == 2:
-                partners = [
-                    a for a in round_.attempts if a.experience.experience_id in subset
-                ]
-                if any(
-                    not a.admitted or frozenset(a.admission_subset) != subset
-                    for a in partners
-                ):
-                    raise ValueError(
-                        "joint admission must publish both candidates together"
-                    )
-                if any(
-                    paths[frozenset([partner])].correct is True for partner in subset
-                ):
-                    raise ValueError(
-                        "joint admission cannot bypass successful singleton policy"
-                    )
+                raise ValueError("second proposal requires explicit candidate failure")
+        for attempt in round_.attempts:
+            _validate_path(attempt.path)
+            if (
+                attempt.experience.source_task_id != record.sample.task_id
+                or attempt.path.provided_experience_ids
+                != [attempt.experience.experience_id]
+            ):
+                raise ValueError("candidate provenance differs from validation path")
+            if attempt.admitted and attempt.path.correct is not True:
+                raise ValueError("admission requires successful source validation")
 
 
 class ExperienceMemory:
@@ -197,7 +184,7 @@ class ExperienceMemory:
             or data["schema"] != SCHEMA
         ):
             raise ValueError(
-                "unsupported learning state; use a new v2 run, never resume legacy evidence"
+                "unsupported learning state; start a new v3.1 run, never resume legacy evidence"
             )
         if protocol_id is not None and data["protocol_id"] != protocol_id:
             raise ValueError("execution protocol changed")
@@ -257,20 +244,12 @@ class ExperienceMemory:
         expected_edges = set()
         for record in state.trajectories.values():
             expected_edges.update(_initial_edges(record, state.experiences))
-            feedback = downstream_feedback(record, state.protocol_id)
-            if feedback:
-                # An initial result cannot credit a candidate from its source task.
-                if any(
-                    state.experiences[e].source_task_id == record.sample.task_id
-                    for e in feedback.experience_ids
-                ):
-                    raise ValueError("source task entered downstream credit")
-                expected_feedback.append(feedback)
+            expected_feedback.extend(downstream_feedback(record, state.protocol_id))
         supplied = [CreditFeedback(**raw) for raw in data["feedback"]]
         if len({r.record_id for r in supplied}) != len(supplied):
             raise ValueError("duplicate feedback events")
         if expected_feedback != supplied:
-            raise ValueError("feedback differs from saved subset execution")
+            raise ValueError("feedback differs from saved independent trials")
         if set(map(tuple, data["clustering"]["citations"])) != expected_edges:
             raise ValueError("associations differ from independent initial provision")
         state.ledger = FeedbackLedger(state.protocol_id, supplied)
@@ -331,8 +310,7 @@ class ExperienceMemory:
             )
         edges = _initial_edges(record, self.experiences)
         next_state.clusters.update(items, edges)
-        feedback = downstream_feedback(record, self.protocol_id)
-        if feedback:
+        for feedback in downstream_feedback(record, self.protocol_id):
             next_state.ledger.append(feedback)
         next_state.trajectories[record.sample.task_id] = deepcopy(record)
         next_state.save()

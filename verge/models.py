@@ -277,7 +277,6 @@ class CandidateAttempt(Model):
     path: ExecutionPath
     admitted: bool
     reason: str
-    admission_subset: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -286,7 +285,6 @@ class CriticRound(Model):
     analysis: str
     attempts: list[CandidateAttempt]
     error: str | None = None
-    subset_paths: list[ExecutionPath] = field(default_factory=list)
 
 
 @dataclass
@@ -294,12 +292,17 @@ class TrajectoryRecord(Model):
     sample: PreferenceSample
     retrieval: dict[str, Any]
     selection_reasons: dict[str, str]
-    baseline: ExecutionPath | None
-    actual: ExecutionPath | None
+    draft: Rubric | None = None
+    paths: list[ExecutionPath] = field(default_factory=list)
     critic_rounds: list[CriticRound] = field(default_factory=list)
     error: str | None = None
-    subset_paths: list[ExecutionPath] = field(default_factory=list)
+    mode: Literal["train", "inference"] = "train"
 
     @property
-    def used_path(self):
-        return self.actual if self.actual is not None else self.baseline
+    def baseline(self):
+        return next((p for p in self.paths if not p.provided_experience_ids), None)
+
+    @property
+    def prediction_path(self):
+        # Training trials are equal; never select a winner using the label.
+        return self.paths[0] if self.mode == "inference" and self.paths else None

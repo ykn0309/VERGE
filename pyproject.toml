@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verge-research"
-version = "2.0.0"
+version = "3.1.0"
 requires-python = ">=3.10"
 dynamic = ["dependencies"]
 
@@ -16,3 +16,6 @@ packages = ["verge"]
 
 [tool.setuptools.package-data]
 verge = ["web_assets/*", "apple_translate.swift"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

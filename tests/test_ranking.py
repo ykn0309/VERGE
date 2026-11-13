@@ -10,7 +10,7 @@ from verge.ranking import rank_experiences
 
 def feedback(rid, task, reward, ids=("E",), **kwargs):
     ids = tuple(dict.fromkeys(ids))
-    return CreditFeedback(rid, task, "test", ids, reward < 0, reward > 0, (reward > 0,) * len(ids), **kwargs)
+    return CreditFeedback(rid, task, "test", ids[0], reward < 0, reward > 0, **kwargs)
 
 
 def test_weight_group_means_without_multiplying_by_sample_counts():
@@ -74,7 +74,7 @@ def test_development_failures_and_duplicate_tasks_do_not_affect_score():
     ledger = FeedbackLedger(
         "test",
         [
-            CreditFeedback("err", "t", "test", ("E",), None, None, (None,), error="timeout"),
+            CreditFeedback("err", "t", "test", "E", None, None, error="timeout"),
             feedback("ok", "t", 1),
             feedback("repeat", "t", -1),
         ],
@@ -101,7 +101,9 @@ def test_reassignment_recomputes_ranking_without_changing_raw_records():
 
 
 def test_equal_scores_use_id_order_and_inputs_are_unchanged():
-    ledger = FeedbackLedger("test", [feedback("a", "t", 1, ("Z", "A"))])
+    ledger = FeedbackLedger(
+        "test", [feedback("a", "t", 1, ("Z",)), feedback("b", "t", 1, ("A",))]
+    )
     stats = ledger.by_task_group({"t": "G"})
     weights = {"G": 0.8}
     before = {key: asdict(value) for key, value in stats.items()}

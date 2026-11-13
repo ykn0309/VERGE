@@ -690,7 +690,7 @@ class FakeLLMBackend:
                 ],
             }
         if role == "generator":
-            experiences = payload["experiences"]
+            experiences = payload.get("experiences", [])
             return {
                 "analysis": "offline fixture",
                 "criteria": [
@@ -703,7 +703,6 @@ class FakeLLMBackend:
                         "weight": 1.0,
                     }
                 ],
-
             }
         if role == "judge":
             return {

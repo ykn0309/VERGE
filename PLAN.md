@@ -1,6 +1,6 @@
 # VERGE 项目计划
 
-[设计方案](docs/设计方案.md) · [研究看板](docs/研究进度.html) · [工程设计](docs/工程设计.md) · [研究经验](EXPERIENCE.md)
+[设计方案](docs/设计方案.md) · [工程设计](docs/工程设计.md)
 
 ## 当前状态
 

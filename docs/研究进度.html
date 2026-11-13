@@ -11,7 +11,7 @@
 .branchname{font-size:12px;fill:#687d6c;text-anchor:middle;paint-order:stroke;stroke:var(--paper);stroke-width:5;stroke-linejoin:round}svg#nav{max-height:650px}@media(max-width:600px){svg#nav{min-width:1000px}}
 </style>
 <header><div class="brand">VERGE / RESEARCH LOG<span>看清主线，也留下转弯的理由</span></div><div class="tools"><a href="../PLAN.md">当前计划</a><button id="home">回到当前</button></div></header>
-<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1训练最多三条经验平等试用，不分首选与探索：三个单经验路加无经验路，共享初稿、各修订一次，逐条积累相对无经验的信用及提供关联。任一经验路成功不进Critic；全失败且无经验失败时进入，无经验成功分支仍待讨论。推理最多用一条，选择策略另议。组合选择暂缓，代码和实验均未开始。</p><div class="pulse"><span>当前：训练四路平等试用已定，Critic分支与推理策略待讨论</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
+<main><section class="hero"><div class="eyebrow">WHERE WE ARE · 当前研究位置</div><h1>主线仍是：经验能否改善新任务的评分标准？</h1><p>v3.1训练最多三条经验平等试用，不分首选与探索：三个单经验路加无经验路，共享初稿、各修订一次，逐条积累相对无经验的信用及提供关联。任一路（含无经验）成功不进Critic，仅全部路径均明确失败时进入。推理最多用一条，选择策略另议。组合选择暂缓，代码和实验均未开始。</p><div class="pulse"><span>当前：训练试用与Critic触发已定，推理选择策略待讨论</span><span>正式参数估计：暂停</span><span>有限重试 · 单题错误不全局停机</span></div></section>
 <div class="layout"><aside><div class="navhead"><span>研究分支图</span><input id="search" type="search" placeholder="搜索问题、尝试…" aria-label="搜索研究路径"></div><div class="graphlegend"><span>● 已探索 / 已采用</span><span class="focuslegend">● 当前 / 下一步</span><span>连线：问题的归属与分支</span></div><div class="graphscroll"><svg id="nav" viewBox="0 0 1870 1440" role="group" aria-label="可点击的研究分支图"></svg></div><p class="graphhint">点击节点查看依据与尝试；可搜索节点，或用Tab和回车选择。从主线向下展开研究分支；绿色连线标出当前节点的归属路径。探索先后与转向理由请看节点详情。</p><div class="asidefoot">主线 → 问题 → 探索 → 决策<br>点击节点查看当时为什么改变方向。<br><br>历史按阶段重建，非逐条聊天记录。<br>最后整理：2026-11-13</div></aside><section><article id="detail" class="card" aria-live="polite"></article><footer>维护入口：PLAN.md ＋ docs/plans/ ＋ 实验报告。静态单文件，双击可用，无服务、无外部依赖。状态以证据为准，建议不自动视作已实施。</footer></section></div></main>
 <script id="research-data" type="application/json">
 [
@@ -1633,7 +1633,7 @@
       },
       {
         "type": "p",
-        "text": "方案尚未实现或实测。每轮最多一条、最多两轮，准入仍为候选单条判对；来源不记信用或关联，后续对每个单经验分支记录相对无经验的差值。训练三条平等试用，任一成功不触发Critic；全失败且无经验失败时进入，无经验成功分支仍待讨论。候选减少和来源通过均不证明可靠或泛化。"
+        "text": "方案尚未实现或实测。每轮最多一条、最多两轮，准入仍为候选单条判对；来源不记信用或关联，后续对每个单经验分支记录相对无经验的差值。训练三条平等试用，任一路（含无经验）成功不触发Critic；仅所有路径均明确失败时进入。无经验成功、经验全失败时仅记录负收益，不新增经验。候选减少和来源通过均不证明可靠或泛化。"
       },
       {
         "type": "p",
@@ -1666,7 +1666,7 @@
     "parent": "main",
     "previous": "critic31",
     "following": null,
-    "transition": "继续讨论Critic分支与推理选择一条的策略",
+    "transition": "继续讨论推理选择一条经验或不用的策略",
     "question": "怎样增加经验验证覆盖，并利用逐条效果指导后续选择？",
     "story": [
       {
@@ -1675,7 +1675,7 @@
       },
       {
         "type": "callout",
-        "text": "2026-11-13用户进一步明确：训练最多选择三条经验，三条平等参与，无首选／探索之分；每条单独一路，加无经验共最多四路，共享任务初稿、各修订一次。任一经验路判对就不进入Critic，三条全失败时才需考虑Critic。推理仍最多使用一条，选择策略另议。"
+        "text": "2026-11-13用户进一步明确：训练最多选择三条经验，三条平等参与，无首选／探索之分；每条单独一路，加无经验共最多四路，共享任务初稿、各修订一次。任一路（含无经验）判对就不进入Critic，仅全部路径均明确失败时进入。推理仍最多使用一条，选择策略另议。"
       },
       {
         "type": "p",
@@ -1687,7 +1687,7 @@
       },
       {
         "type": "p",
-        "text": "Judge误判尚未解决。所有实际试用经验路及无经验均明确失败时可进入Critic，仍允许依据不足不提案；无经验成功而经验全失败时是否进入，正在讨论。技术未知不当作判错，候选准入仍可能受Judge噪声影响。"
+        "text": "Judge误判尚未解决。所有实际试用经验路及无经验均明确失败时可进入Critic，仍允许依据不足不提案；用户已确认无经验成功、经验全失败时不进入，只记录各条负收益；这不等于认定经验正文错误。技术未知不当作判错，候选准入仍可能受Judge噪声影响。"
       },
       {
         "type": "p",

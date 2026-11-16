@@ -1,0 +1,10 @@
+{
+  "experience_id": "exp_d514e467bac945048ab9ca330888fcbf",
+  "method": {
+    "trigger": "当任务指令中包含明确的单复数数量限定词（如'a word', 'one example', 'a single sentence'）时",
+    "principle": "必须将‘输出实体的数量严格匹配’确立为独立的准入或高权重否决维度，严禁仅评估内容质量而忽略数量违规。",
+    "application_guide": "Generator在设计Rubric时，若任务明确要求生成单一实体，第一条标准应设为：'回复是否仅包含一个符合要求的实体？'。若模型输出了多个实体（即使每个都正确），在此维度直接判为不合格或大幅扣分。此标准独立于内容准确性，旨在防止模型通过列举多个选项来规避'单一性'约束。"
+  },
+  "source_task_id": "a350aa003365432bc0e09282052c68dd7d3bb22f16113452f0782ceb561b1987",
+  "parent_ids": []
+}

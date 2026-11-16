@@ -1,0 +1,396 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:f2828d8eb2af97b5ab207cf98ffe95db30bdcf3205e66c6e5e1966659c1c089f",
+    "task": "what is wo dong le",
+    "chosen": "\"Wo dong le\" (我懂了) is a Mandarin Chinese phrase that means **\"I understand\"**. \n\nHere's a breakdown:\n\n* **Wo (我)**: means \"I\"\n* **Dong (懂)**: means \"to understand\"\n* **Le (了)**: a particle indicating completion or realization\n\nSo, when someone says \"Wo dong le,\" they are indicating that they have comprehended something.",
+    "rejected": "\"Wo dong le\" is a phrase in Chinese (simplified: 我等了; traditional: 我等了; pinyin: wǒ děng le). Here's a breakdown:\n\n- \"Wo\" (我) means \"I\"\n- \"Deng\" (等) means \"wait\"\n- \"Le\" (了) is a perfective aspect particle, indicating that the action is completed\n\nSo, \"Wo dong le\" means \"I have waited\" or \"I waited.\" It's in the past tense. If you want to say \"I am waiting\" (present tense), you would say \"Wo zai deng\" (我在等).",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 19659,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 gives a breakdown of each word's translation and then puts it together to define the phrase. Conversely, @Response 2 defines it correctly at the end, but when defining each word it defines \"Deng\" instead of \"Dong.\" ",
+          "feedback1": "The response is mostly helpful. It translates the Chinese phrase into English accurately with an example. One thing is missing, however: the phrase is also the name of a very popular Chinese song about heartbreak. After the definition, the model could mention its other use, as it does for successful English songs where people love the song so much they associate the phrase itself with the title.",
+          "feedback2": "The response is not helpful. While the prompt requests the meaning of \"Wo dong le,\" the response defines \"Wo deng li,\" which is confusing to the user. They mean roughly the same thing; however, it is unclear why the model used deng (\"wait\") instead of the provided \"dong.\" Then, it goes on to say the correct phrase with an accurate definition: \"Wo dong le means have waited or waited,\" so 'Deng' must be the past tense of dong which should have been explained"
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 provides an accurate explanation of the phrase \"wo dong le\", with a helpful breakdown. The last sentence repeats the explanation and breakdown, which can be considered unnecessary and makes @Response 1 a little verbose. @Response 2 omits the meaning of \"dong\" but explains the meaning of \"deng\" which, although correct, is irrelevant as it is not in the prompt. This suggests that the model mistook \"deng\" for \"dong\", which are two different Chinese characters with different meanings. The meaning of \"wo\" and \"le\" is correct, but due to this mistake, the translation of the phrase is incorrect and can be misleading.",
+          "feedback1": "The response is mostly helpful. The explanation of the phrase is correct, and the breakdown is accurate and helpful. However, the last sentence repeats the explanation of the phrase and the breakdown, which can be considered unnecessary. The response could have been more concise if it had not added the last sentence.",
+          "feedback2": "The response is slightly helpful. It explains the meaning of \"deng\", which is not in the prompt and is irrelevant, and omits the meaning of \"dong\". This suggests that the model mistook \"deng\" for \"dong\", which are two different Chinese characters with different meanings. The meaning of \"wo\" and \"le\" is correct, but the translation of the phrase is incorrect because of the mistake."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it provides answers to the prompt question that are complete and correct. @Response 2 provides contradictory information which is incorrect and does not answer the prompt question. ",
+          "feedback1": "The response is mostly helpful. The response provides answers to the prompt question by explaining the meaning of \"Wo dong le,\" which was verified to be true. The response also provides a more broken down meaning for each word. The response is simple, concise, and well-formatted. Finally, the response provides very useful information overall. ",
+          "feedback2": "The response is not helpful. The response hallucinates and misunderstands the prompt. The response provided meaning for \"wo deng le\" instead of \"wo dong le\". Although the response is verified to provide the correct meaning, the response contradicts the prompt request. Overall, the response does not provide any useful information. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_4ae6ccd4bcf62d059eb3",
+        0.33810420333462654
+      ],
+      [
+        "task_328c96d6fef5dfdabef7",
+        0.3117026058788585
+      ],
+      [
+        "task_44d062cb13ebc04766df",
+        0.24727407181400496
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_44d062cb13ebc04766df",
+              "similarity": 0.24727407181400496,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:ecc6de81b73d049891636bf8d3a7c48b9cd925c3c604c6fe4e717c1fa8a4927c:exp_361ecafec8d9458097e223b1c718c0b0"
+                ],
+                "task_ids": [
+                  "1dac785dc87a498dd1cf859f054b0010711191846c6e752548df5f82cb32f892"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_44d062cb13ebc04766df",
+              "similarity": 0.24727407181400496,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:4745bff75a64fe0f4aac2099ecc221ebf8cf48edc8c9b902e3c518f1a64e748c:exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+                ],
+                "task_ids": [
+                  "3374dea268663dae172c537f2b3784897304674651e421a3c041aeeca6462bfb"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_e37095358e1745d097f85791b39c38db",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_44d062cb13ebc04766df",
+              "similarity": 0.24727407181400496,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:2257ba6ec2135544a57a0917437a17995b962a468e0f0ac917211f9fb220be09:exp_e37095358e1745d097f85791b39c38db"
+                ],
+                "task_ids": [
+                  "786b0084bf30caffe9585b1b418ee04fd193ede4ddaa69192e803773e42b4247"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        0.3137232221939614
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.24134772870416854
+      ],
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.23751241995945227
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.2114220883382269
+      ],
+      [
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        0.20603555525474818
+      ],
+      [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        0.1915412704495409
+      ],
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.18973370071117365
+      ],
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.18156070968919397
+      ],
+      [
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        0.17960544098905157
+      ],
+      [
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        0.17773605278743024
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.18973370071117365
+      },
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3137232221939614
+      },
+      {
+        "experience_id": "exp_e37095358e1745d097f85791b39c38db",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24134772870416854
+      },
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23751241995945227
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2114220883382269
+      },
+      {
+        "experience_id": "exp_d0fc1d21306b43f080cfa5933a207380",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20603555525474818
+      },
+      {
+        "experience_id": "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1915412704495409
+      },
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18156070968919397
+      },
+      {
+        "experience_id": "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17960544098905157
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_42f447cc2b9b4e5cacc74fa49f616aa9": "任务'what is wo dong le'要求解释一个特定的核心实体（'wo dong le'），根据经验2的触发条件，当任务针对特定概念或实体进行解释时，必须将‘核心实体/主题的严格一致性’作为最高优先级核验维度，确保回答主体确实是用户询问的该实体，而非其他相似或无关对象。"
+  },
+  "draft": {
+    "rubric_id": "rubric_31f1b23bc7024428a959661c38ab4ac0",
+    "criteria": [
+      {
+        "criterion_id": "rubric_31f1b23bc7024428a959661c38ab4ac0_1",
+        "question": "回答是否明确指出'wo dong le'在中文中意为'我知道了'或'我懂了'？",
+        "weight": 0.6
+      },
+      {
+        "criterion_id": "rubric_31f1b23bc7024428a959661c38ab4ac0_2",
+        "question": "回答是否说明该短语通常用于表达对信息或情况的理解与接受？",
+        "weight": 0.4
+      }
+    ],
+    "analysis": "任务要求解释'wo dong le'的含义。该短语为中文口语，意为'我知道了'或'我懂了'，用于表达理解、明白或意识到某事。评分标准需验证回答是否准确传达此核心语义，并说明其作为回应理解的标准用法。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_8c17803e3a93488fa9fccb10d2895fe9",
+        "criteria": [
+          {
+            "criterion_id": "rubric_8c17803e3a93488fa9fccb10d2895fe9_1",
+            "question": "回答是否明确指出'wo dong le'在中文中意为'我明白了'、'我知道了'或'我懂了'？",
+            "weight": 0.7
+          },
+          {
+            "criterion_id": "rubric_8c17803e3a93488fa9fccb10d2895fe9_2",
+            "question": "回答是否说明该短语通常用于表达对信息、情况的理解或接受这一语用功能？",
+            "weight": 0.3
+          }
+        ],
+        "analysis": "任务要求解释'wo dong le'的含义。该短语是中文拼音，对应汉字“我懂了”或“我知道了”，属于口语表达，用于表示对信息的理解、接受或意识到某事。评分标准需严格核验回答是否准确指出其核心语义（即‘明白了’），并说明其作为回应理解的常见语用功能。由于用户允许不同的实现方式（如仅解释含义或同时提供例句），标准应聚焦于核心事实的准确性而非形式多样性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_8c17803e3a93488fa9fccb10d2895fe9",
+        "normalized_weights": {
+          "rubric_8c17803e3a93488fa9fccb10d2895fe9_1": 0.7,
+          "rubric_8c17803e3a93488fa9fccb10d2895fe9_2": 0.3
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_8c17803e3a93488fa9fccb10d2895fe9_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出'Wo dong le'意为'I understand'，并在括号中提供了中文翻译'我懂了'，符合标准中关于指出其含义的要求。",
+            "rejected_reason": "回答错误地将'wo dong le'的汉字写为'我等了'（拼音应为wǒ děng le），并解释其意为'I have waited'或'I waited'。实际上，用户询问的'wo dong le'对应的正确汉字是'我懂了'，意为'我明白了'或'我知道了'。回答未明确指出正确的含义，反而提供了错误的字义和翻译。"
+          },
+          {
+            "criterion_id": "rubric_8c17803e3a93488fa9fccb10d2895fe9_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答在结尾处说明该短语用于表明说话者已经'comprehended something'（理解了某事），这准确描述了其表达对信息或情况理解的语用功能。",
+            "rejected_reason": "由于回答将短语错误地解释为表示过去时态的等待动作（I waited），完全偏离了该短语作为表达理解或接受信息这一语用功能的正确用法。因此，回答未能说明其通常用于表达对信息、情况的理解或接受。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b5982adf7ca34bc6b560b437b423e403",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b5982adf7ca34bc6b560b437b423e403_1",
+            "question": "回答是否明确指出'wo dong le'对应的中文含义为'我知道了'、'我懂了'或同义表达？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_b5982adf7ca34bc6b560b437b423e403_2",
+            "question": "回答是否说明该短语通常用于表达对信息、情况的理解、明白或作为回应？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务要求解释中文短语'wo dong le'的含义。核心核验点在于回答是否准确识别该拼音对应的汉字含义（我知道了/我懂了）以及其语用场景（表示理解或接受）。提供的经验强调核心实体一致性，在此体现为必须确认回答针对的是'wo dong le'这一特定短语，而非其他类似发音或无关概念。修订后的标准将保留初稿中关于语义和用法的验证，并隐含对主题一致性的前置确认逻辑，权重分配侧重于核心语义的准确性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b5982adf7ca34bc6b560b437b423e403",
+        "normalized_weights": {
+          "rubric_b5982adf7ca34bc6b560b437b423e403_1": 0.6,
+          "rubric_b5982adf7ca34bc6b560b437b423e403_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b5982adf7ca34bc6b560b437b423e403_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出'wo dong le'对应的中文含义为'I understand'（我理解），并给出了中文翻译'我懂了'，符合标准中要求的'我知道了'、'我懂了'或同义表达。",
+            "rejected_reason": "回答错误地将'wo dong le'解释为'我等了'（wǒ děng le），并声称其含义是'I have waited'，完全未指出该短语正确的中文含义应为'我知道了'或'我懂了'。"
+          },
+          {
+            "criterion_id": "rubric_b5982adf7ca34bc6b560b437b423e403_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答在解释各词汇含义后，明确说明该短语用于表示说话者已经理解了某事（indicating that they have comprehended something），即表达了对信息或情况的理解和明白。",
+            "rejected_reason": "回答说明该短语用于表达等待动作的完成（'I waited'），而非用于表达对信息、情况的理解或明白，与评分标准要求的语义功能不符。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

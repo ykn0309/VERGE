@@ -1,0 +1,470 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:86768203fa894e05a54cda6d1c50ebb58efed61796afc301a0e034d29155b3e4",
+    "task": "Rewrite this script ",
+    "chosen": "I'd be happy to help! However, I don't see a script provided. Could you please share the script you'd like me to rewrite? I want to make sure I understand your request correctly so I can provide the best possible assistance.",
+    "rejected": "Here's a revised version of the script:\n\n```python\n# Import necessary libraries\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Generate random data\nx = np.random.rand(100)\ny = np.random.rand(100)\n\n# Create scatter plot\nplt.scatter(x, y)\n\n# Add title and axis labels\nplt.title(\"Random Scatter Plot\")\nplt.xlabel(\"X-axis\")\nplt.ylabel(\"Y-axis\")\n\n# Display the plot\nplt.show()\n```\n\nThis script generates a scatter plot using randomly generated data points. It imports the necessary libraries, creates the data, and then plots it using `matplotlib`. The plot is then displayed with a title and axis labels.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 25727,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it does not provide a random script that would be no help to the user.",
+          "feedback1": "The response is not helpful. The response just provides a random Python script and says it is an updated version of the script provided by the user, but the user provided no such script. The response is completely made up of a random script and sends it to the user without any context, which is unhelpful. The response should have addressed that the user needs to provide a script.",
+          "feedback2": "The response is perfectly helpful. The response says to the user that the model would be able to help, but until the user provides a script the model can't do anything to help. The response also mentions that it can do multiple types of rewriting and editing so the user should be sure to state clearly what they want the model to help with."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 addresses an issue in the prompt in a clear and courteous manner, whereas @Response 1 is entirely hallucinated.",
+          "feedback1": "The response is not helpful. In the prompt, the user requests that a script be rewritten, but fails to include one. A proper response would have been for the model to acknowledge the request and ask for the script. Instead, the model hallucinated a response without any basis in the prompt.",
+          "feedback2": "The response is perfectly helpful. The user requests that a script be rewritten, but does not provide one in the prompt. The model acknowledges the request, asks for the script, and states that it wants to understand so that it can provide the best possible assistance. While this last sentence is not strictly necessary, it does not detract from the response and adds a touch of politeness. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it appropriately responds to the request by asking for the required context to assist the user properly. @Response 1 completely hallucinates a snippet of code as the script; however, there was no reference script to begin with.",
+          "feedback1": "The response is not helpful. It provides a snippet of code in response to the prompt asking to \"rewrite this script.\" Although the prompt is vague and does not contain any reference material for the model to rewrite, the appropriate response would be to clarify the request. The model completely hallucinates a snippet of code to \"rewrite,\" and it is irrelevant to the user's request. The response is not helpful or useful to the user's intent. ",
+          "feedback2": "The response is mostly helpful. It responds appropriately to the request asking to rewrite a script, understanding that it needs more context. The response clarifies the request effectively, using a polite and helpful tone. However, the response could be slightly improved to use more suitable word choice. The phrase \"doesn't see a script\" implies that the model can \"see,\" thus hinting at anthropomorphic capabilities. Although the phrase is relevant in this context, it is unnecessary to include because the following sentence achieves the same meaning—that there was no script provided to reference. Thus, the response is mostly helpful with room for improvement. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_07eba516fa071bbf0c9a",
+        0.2911667651687862
+      ],
+      [
+        "task_f963a5374e72fe33f314",
+        0.26499078033760964
+      ],
+      [
+        "task_4ae6ccd4bcf62d059eb3",
+        0.2555513503943443
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.3118869366484396
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.30555414331094527
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.2882373718658435
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.28598687844490234
+      ],
+      [
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        0.27499019594279217
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.27050035203752604
+      ],
+      [
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        0.2640388138153407
+      ],
+      [
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        0.26375232145865535
+      ],
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.2526326019734984
+      ],
+      [
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        0.252262914623703
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3118869366484396
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30555414331094527
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2882373718658435
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28598687844490234
+      },
+      {
+        "experience_id": "exp_340739c0de45423b8cc2fbbca1c04749",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27499019594279217
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27050035203752604
+      },
+      {
+        "experience_id": "exp_3896dc1be1064d1baa083a6260d514cb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2640388138153407
+      },
+      {
+        "experience_id": "exp_7f22623f17124cd28b5425f286128b5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26375232145865535
+      },
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2526326019734984
+      },
+      {
+        "experience_id": "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.252262914623703
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_f3f9b2a00c4144b3a848d7b197b1acd4",
+    "criteria": [
+      {
+        "criterion_id": "rubric_f3f9b2a00c4144b3a848d7b197b1acd4_1",
+        "question": "重写后的脚本是否保留了原始脚本的核心功能逻辑和预期输出行为？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_f3f9b2a00c4144b3a848d7b197b1acd4_2",
+        "question": "重写后的脚本语法是否正确且符合目标编程语言的规范？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_f3f9b2a00c4144b3a848d7b197b1acd4_3",
+        "question": "重写后的脚本是否在可读性或结构清晰度上相较于原文档有所体现（如更清晰的变量名、注释或模块化）？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_f3f9b2a00c4144b3a848d7b197b1acd4_4",
+        "question": "重写后的脚本是否完整输出了所有必要的代码块，无截断或缺失？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "当前任务为将提供的脚本重写（Rewrite this script），阶段为draft，意味着需生成初稿。交付物应为完整的重写后脚本代码。涉及对象包括原始脚本的逻辑、结构及输出行为，以及重写后的脚本本身。数量上仅需一份重写后的脚本。范围限定于保持原有功能逻辑不变的前提下进行表达形式的优化或重构，允许不同的实现方式（如改变变量命名、调整控制流结构、使用不同但等效的算法等），只要最终行为一致即可。格式限制通常遵循原脚本的语言规范。本次设计标准旨在确保重写后的脚本在功能等价性、代码质量及可读性方面达到基本要求。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd",
+        "criteria": [
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_1",
+            "question": "重写后的脚本是否严格保留了原始脚本的核心功能逻辑和所有预期的输出行为？",
+            "weight": 0.45
+          },
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_2",
+            "question": "重写后的脚本语法是否正确且完全符合目标编程语言的规范？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_3",
+            "question": "重写后的脚本是否在变量命名、注释或模块化结构上体现了比原文档更高的可读性或清晰度？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_4",
+            "question": "重写后的脚本是否完整输出了所有必要的代码块，无任何截断或缺失？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务阶段为revise，需基于提供的draft对重写后的脚本进行核验。交付物是重写后的脚本代码。核心要求是在保持原始脚本功能逻辑和预期输出不变的前提下，优化语法规范性、可读性及结构清晰度。允许不同的实现方式（如变量重命名、结构调整），只要行为等价即可。标准设计聚焦于：1. 功能逻辑的保留（权重最高）；2. 语法的正确性；3. 可读性与结构的改进；4. 内容的完整性（无截断）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd",
+        "normalized_weights": {
+          "rubric_63a36b91ea66463e8d70552a4f2d0fdd_1": 0.45,
+          "rubric_63a36b91ea66463e8d70552a4f2d0fdd_2": 0.25,
+          "rubric_63a36b91ea66463e8d70552a4f2d0fdd_3": 0.2,
+          "rubric_63a36b91ea66463e8d70552a4f2d0fdd_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "由于用户未提供原始脚本，模型无法执行重写任务，因此未能保留任何核心功能逻辑或输出行为。",
+            "rejected_reason": "任务要求重写脚本，但用户未提供原始脚本内容。由于缺乏原始参考，无法判断重写后的脚本是否严格保留了原始的核心功能逻辑和预期输出行为。"
+          },
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "模型仅输出了询问信息，并未生成任何目标编程语言的代码，因此不存在语法符合性可言。",
+            "rejected_reason": "提供的Python代码语法正确，导入了必要的库（numpy, matplotlib），变量定义、函数调用及注释格式均符合Python语言规范。"
+          },
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "模型没有输出任何代码块、变量命名或模块化结构，无法体现对原文档可读性的提升。",
+            "rejected_reason": "代码包含了清晰的行内注释说明各部分功能（如导入库、生成数据、绘图等），变量命名直观（x, y），结构模块化且易于阅读，体现了良好的清晰度。"
+          },
+          {
+            "criterion_id": "rubric_63a36b91ea66463e8d70552a4f2d0fdd_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "模型回复中不包含任何代码块，属于内容缺失，无法满足完整输出必要代码块的要求。",
+            "rejected_reason": "回答完整输出了包含所有必要步骤的代码块，从导入库到显示图像的逻辑完整，没有发生截断或缺失关键代码的情况。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.55,
+        "margin": -0.55,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务要求重写脚本，但用户未提供原始脚本。Rejected回答幻觉出一个随机脚本并声称是重写结果，Chosen回答指出缺失输入并请求澄清。Judge基于Rubric（假设存在原始脚本）判定：1. 功能逻辑保留（Criterion 5）：认为两者都因无原始脚本而失败（Chosen为无法执行，Rejected为无法判断），此处Chosen实际上正确识别了不可行性，但Rubric将其视为‘未能保留’的负面项，忽略了‘无输入即无法重写’的前提；2. 语法/完整性（Criterion 6-8）：Judge认为Chosen无代码故扣分，Rejected有代码故得分。问题在于Rubric设计未包含‘前提条件检查’这一核心维度。当任务依赖特定输入（如‘重写此脚本’隐含‘请提供脚本’）时，评分标准必须将‘识别输入缺失并澄清’设为最高优先级或独立否决项，而非仅评估输出内容的质量。Judge在判定Chosen时，虽然结论正确（Chosen更好），但其理由是基于Rubric中预设的‘重写动作’逻辑，未能识别出Chosen的正确行为（澄清）应被奖励而非惩罚，这反映了Rubric缺乏对‘指令不可行性处理’的显式定义。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_f41ead200e5a4fca970f0f1e2c6162c2",
+            "method": {
+              "trigger": "当任务指令依赖于特定输入内容（如‘重写此文档’、‘分析此数据’）且该输入在上下文中明确缺失时",
+              "principle": "必须将‘识别输入缺失并主动寻求澄清’确立为最高优先级的正向评价维度，严禁在未定义澄清机制前就强制要求模型生成虚构内容或仅因未生成内容而判负。",
+              "application_guide": "Generator在设计Rubric时，若检测到任务指令隐含对特定输入文件的依赖：第一条标准应设为‘模型是否准确识别了指令所需的输入内容缺失，并提供了合理的解释及澄清请求？’。只有在该条件满足（即模型正确拒绝或澄清）时，才视为符合任务意图；若模型在未收到输入的情况下生成了虚构内容，应在此维度直接判为严重错误（幻觉）。避免使用‘是否保留了原始逻辑’等预设输入存在的描述作为首要标准，防止模型被迫编造。"
+            },
+            "source_task_id": "10493ed0c6b57568ea7914af48690c78f41186402327a46168f64c11f426c056",
+            "parent_ids": [
+              "exp_cfdc8659ba1549d79cad41f0d5bc7307"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_f41ead200e5a4fca970f0f1e2c6162c2"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_1",
+                  "question": "修订后的评分标准是否保留了原初稿中关于‘核心功能逻辑与预期输出行为一致性’的核验维度？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_2",
+                  "question": "修订后的评分标准是否保留了原初稿中关于‘目标编程语言语法规范性’的核验维度？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_3",
+                  "question": "修订后的评分标准是否保留了原初稿中关于‘代码可读性或结构清晰度改进’的核验维度？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_4",
+                  "question": "修订后的评分标准是否保留了原初稿中关于‘代码块完整性（无截断或缺失）’的核验维度？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "当前任务为'Rewrite this script'（重写此脚本），阶段为'revise'，意味着需基于提供的草稿进行修订。交付物应为修正后的评分标准（Rubric）。涉及对象包括原始脚本（隐含在任务中）、重写后的脚本以及本次生成的评分标准本身。数量上仅需一份完整的评分标准。范围限定于确保重写后的脚本在功能等价性、语法正确性、可读性及完整性方面达到要求，允许不同的实现方式（如变量重命名、结构优化），只要行为一致即可。格式限制为符合JSON Schema的特定字段结构。关于经验引用：提供的经验指出若输入缺失应优先澄清，但本任务描述中明确提及'Rewrite this script'且提供了draft（包含假设存在的原始脚本逻辑），未显示输入缺失的上下文特征，因此不强制将‘识别输入缺失’作为首要标准，而是聚焦于重写质量本身的核验。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83",
+              "normalized_weights": {
+                "rubric_c60ebde9ebf34437bed2c8089f25bb83_1": 0.4,
+                "rubric_c60ebde9ebf34437bed2c8089f25bb83_2": 0.25,
+                "rubric_c60ebde9ebf34437bed2c8089f25bb83_3": 0.2,
+                "rubric_c60ebde9ebf34437bed2c8089f25bb83_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未提供修订后的评分标准，也未提及‘核心功能逻辑与预期输出行为一致性’的核验维度。",
+                  "rejected_reason": "提供的回答仅包含修订后的Python脚本代码及简短描述，并未包含任何关于‘核心功能逻辑与预期输出行为一致性’的评分标准或核验维度说明。"
+                },
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未提供修订后的评分标准，也未提及‘目标编程语言语法规范性’的核验维度。",
+                  "rejected_reason": "提供的回答仅展示了代码实现，未列出任何关于‘目标编程语言语法规范性’的评分标准或核验维度。"
+                },
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未提供修订后的评分标准，也未提及‘代码可读性或结构清晰度改进’的核验维度。",
+                  "rejected_reason": "提供的回答中未包含任何关于‘代码可读性或结构清晰度改进’的评分标准或核验维度内容。"
+                },
+                {
+                  "criterion_id": "rubric_c60ebde9ebf34437bed2c8089f25bb83_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未提供修订后的评分标准，也未提及‘代码块完整性（无截断或缺失）’的核验维度。",
+                  "rejected_reason": "提供的回答未包含任何关于‘代码块完整性（无截断或缺失）’的评分标准或核验维度说明。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "本次失败轨迹的核心问题在于Judge对任务交付物的误判。Task要求是'Rewrite this script'（重写脚本），但在上一轮尝试中，提供的经验（ID 11）导致生成的Rubric（ID 3）将任务目标错误地定义为‘生成修订后的评分标准’（即把Task当成了‘设计Rubric’的任务）。Judge依据这个错误的Rubric去评价两个回答：Chosen回答正确指出了输入缺失并请求澄清（符合原始Task意图），Rejected回答幻觉生成了代码（不符合原始Task意图）。然而，Judge的Rubric却判定两者都‘未提供修订后的评分标准’，因此都给了0分。这表明Judge完全忽略了当前Task的实际指令（重写脚本），而机械地执行了由错误经验推导出的、针对‘生成Rubric’任务的检查项。根本原因在于经验ID 11的trigger虽然正确识别了‘输入缺失’场景，但其application_guide引导Generator将‘识别缺失’作为首要标准，却未明确界定当Task本身是‘重写内容’而非‘设计标准’时，评分标准应如何适配。更深层的问题是，在缺乏原始脚本的情况下，任何基于‘保留原脚本逻辑’的评分标准（如ID 11建议避免的）都是无效的，但本次Judge的Rubric甚至没有尝试去评估‘是否识别缺失’或‘是否拒绝幻觉’，而是直接陷入了‘寻找不存在的Rubric’的死胡同。这说明经验ID 11未能有效指导Generator构建一个能处理‘无输入重写任务’的通用Rubric模板，反而导致了Rubric生成逻辑的错位（从评估重写质量变成了评估Rubric生成质量）。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+            "method": {
+              "trigger": "当任务指令要求对特定内容进行操作（如重写、分析、总结），但该内容的引用在上下文中明确缺失时",
+              "principle": "必须将‘识别上下文缺失并拒绝幻觉/请求澄清’确立为唯一且最高的核心核验维度，严禁在此类场景下设立任何关于‘内容质量’、‘格式规范’或‘逻辑保留’的次级维度，防止因次级维度的预设导致对正确澄清行为的误判或对错误幻觉行为的漏判。",
+              "application_guide": "Generator在设计Rubric时，若检测到任务依赖特定输入（如‘此文档’、‘该数据’）而输入不存在：1. 第一条（且通常是唯一）准则应设为‘模型是否准确识别了指令所需的输入缺失，并采取了正确的澄清或拒绝行动？’；2. 严禁添加任何假设输入存在才能评估的准则（如‘语法是否正确’、‘逻辑是否一致’），除非模型已先通过了第一步的澄清验证；3. 若模型在未澄清的情况下生成了虚构内容，应在该核心维度直接判为严重错误（幻觉），无需进入后续质量评估。"
+            },
+            "source_task_id": "10493ed0c6b57568ea7914af48690c78f41186402327a46168f64c11f426c056",
+            "parent_ids": [
+              "exp_cfdc8659ba1549d79cad41f0d5bc7307"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_65eb4d0281424d54b48ecd4c6c12dee5"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_61b354aa8c7a4485a5fb891a1d455306",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_61b354aa8c7a4485a5fb891a1d455306_1",
+                  "question": "模型是否准确识别出任务所需的原始脚本内容在上下文中缺失，并采取了澄清请求或明确拒绝生成虚构内容的行动？",
+                  "weight": 0.6
+                },
+                {
+                  "criterion_id": "rubric_61b354aa8c7a4485a5fb891a1d455306_2",
+                  "question": "若原始脚本内容实际存在（即非幻觉场景），重写后的脚本是否严格保留了原始脚本的核心功能逻辑和预期输出行为？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_61b354aa8c7a4485a5fb891a1d455306_3",
+                  "question": "重写后的脚本语法是否正确且完全符合目标编程语言的规范？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "当前任务为'Rewrite this script'，阶段为'revise'，意味着需基于提供的草稿进行修订或验证。交付物是最终的重写脚本。涉及对象包括原始脚本（隐含在任务指令中）、重写后的脚本以及相关的编程规范。数量上为一份脚本。范围限定在保持功能逻辑不变的前提下优化代码结构、可读性或风格，允许不同的实现方式（如变量重命名、模块化重构）。格式限制遵循目标语言规范。前提核实：任务要求重写'script'，但上下文中未提供具体的原始脚本内容。根据经验指导，当任务依赖特定输入而输入缺失时，首要核验维度必须是模型是否识别了输入缺失并采取了澄清或拒绝行动，而非假设输入存在去评估代码质量。因此，标准设计将优先包含对输入缺失处理的核查，若模型错误地生成了虚构的脚本，则视为严重失败；若模型正确识别缺失，则后续关于代码质量的权重应归零或该路径不适用。本设计将核心置于‘输入完整性与幻觉规避’，其次才是代码本身的质量（仅在输入存在或模型合理处理缺失后讨论，但鉴于这是revise阶段且draft已给出具体标准，若draft未处理缺失问题，修订需纠正此点）。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_61b354aa8c7a4485a5fb891a1d455306",
+              "normalized_weights": {
+                "rubric_61b354aa8c7a4485a5fb891a1d455306_1": 0.6,
+                "rubric_61b354aa8c7a4485a5fb891a1d455306_2": 0.25,
+                "rubric_61b354aa8c7a4485a5fb891a1d455306_3": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_61b354aa8c7a4485a5fb891a1d455306_1",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "模型准确识别出任务所需的原始脚本内容在上下文中缺失，并明确请求用户提供该脚本，未进行虚构生成。",
+                  "rejected_reason": "模型直接生成了一个Python脚本，并未识别出任务所需的原始脚本内容在上下文中缺失。面对没有提供原始脚本的指令'Rewrite this script'，模型未采取澄清请求或明确拒绝生成虚构内容的行动，而是自行创作了内容。"
+                },
+                {
+                  "criterion_id": "rubric_61b354aa8c7a4485a5fb891a1d455306_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "由于原始脚本内容缺失，模型无法执行重写操作，因此未能保留任何核心功能逻辑或预期输出行为；该回答属于澄清场景而非重写完成场景，不满足此项关于重写结果的要求。",
+                  "rejected_reason": "由于原始脚本内容未在上下文中提供，无法验证重写后的脚本是否保留了原始脚本的核心功能逻辑和预期输出行为。模型生成的内容是凭空创作的，而非对现有内容的重写。"
+                },
+                {
+                  "criterion_id": "rubric_61b354aa8c7a4485a5fb891a1d455306_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "模型仅输出了自然语言的澄清请求，并未提供编程脚本，因此不存在语法是否符合目标编程语言规范的问题，无法满足此项对脚本语法的检查要求。",
+                  "rejected_reason": "模型提供的Python代码语法正确，使用了正确的导入语句（import numpy as np, import matplotlib.pyplot as plt），调用了正确的函数（np.random.rand, plt.scatter, plt.title等），并且遵循了matplotlib的标准使用规范。"
+                }
+              ],
+              "chosen_score": 0.6,
+              "rejected_score": 0.15,
+              "margin": 0.45,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

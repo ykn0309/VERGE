@@ -1,0 +1,534 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:02204bed3cd62952a97918b922f3488d39668c0f65becd1c53c6250ec20e2ddb",
+    "task": "Which country has the most castles",
+    "chosen": "The country with the most castles is Germany, followed by Italy, France, and the United Kingdom. Germany has an estimated 25,000 castles, while Italy has around 50,000 castle-like structures, although not all of them are actual castles. France has approximately 40,000 châteaux, and the United Kingdom has around 1,500 castles. These numbers can vary depending on the definition of a castle and the specific sources used.",
+    "rejected": "The country with the most castles is believed to be Wales, United Kingdom. While it's difficult to provide an exact number due to varying definitions of what constitutes a \"castle,\" Wales is estimated to have around 600 castles. Here are a few reasons why Wales has so many castles:\n\n1. **Historical Context**: Wales has a rich history of conflict, particularly with England. Many castles were built during the medieval period to defend against invasions and assert control over the land.\n\n2. **Geography**: Wales' hilly and mountainous terrain made it easy to build defensive structures that could be seen from a distance.\n\n3. **Stone Availability**: Wales has abundant supplies of stone, making it a practical choice for castle construction.\n\nSome of the most famous Welsh castles include Conwy Castle, Caernarfon Castle, and Harlech Castle, all of which are UNESCO World Heritage Sites. However, other countries like England, Scotland, and France also have a significant number of castles.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 21301,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 provides incorrect information in response to the user prompt, does not adhere to list formatting rules, and contains irrelevant information.",
+          "feedback1": "The response is perfectly helpful. It satisfies the user prompt and provides not only the answer as to which country has the most castles but also other countries which have many castles. The response is well-written, succinct, and does not contain any unnecessary or irrelevant information. Overall, very well done.",
+          "feedback2": "The response is not helpful. It provides an incorrect answer to the question in the user prompt, along with irrelevant information on geography, stone availability, and context of castles in Wales. Additionally, the list in the response uses incorrect formatting. The list should use bullet points rather than numbers, as the information is not sequential."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because the former provides an accurate answer to the question of which country has the most castles. @Response 2 provides the wrong answer. Both responses can be improved by removing the irrelevant information.",
+          "feedback1": "The response is mostly helpful. As the prompt requested, the response answers the question of which country has the most castles. The answer is Germany. However, the response also includes countries such as Italy, France, and the United Kingdom. This is irrelevant information since the prompt didn't ask for these additional countries. The response could also be improved if it provided more comprehensive information about the castles in Germany.",
+          "feedback2": "The response is slightly helpful. The prompt asks which country has the most castles. The answer is Germany, but the response answered with Wales. While Wales has the most castles per square mile, it doesn't have the most castles, so the answer doesn't accurately answer the prompt. The last sentence, which mentions that England, Scotland, and France also have a significant number of castles, is irrelevant and doesn't contribute significantly to the response."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. The reason is that the data provided in this response is true, while @Response 2 gave misleading answers and unsolicited information.",
+          "feedback1": "The response is mostly helpful. It actually provides correct information, but it could still be useful to provide the sources used by the assistant. This is because there are many sources that declare other countries as the ones with the most castles. Also, to be more specific about what the numbers take into account as castles, since there are many castle-like structures.",
+          "feedback2": "The response is not helpful. It provides incorrect information saying that Wales is the country with the most castles in the world. This could be true talking about just the United Kingdom, but this specification was not made in the latest prompt. Also, it added irrelevant information that the user didn't ask for."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_3c23f72128116718e4e8",
+        0.34296578505913555
+      ],
+      [
+        "task_804e95bf718ee3242bd1",
+        0.22147840812968067
+      ],
+      [
+        "task_cf0849210da080ac4a88",
+        0.16001100762384807
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.2440050742764516
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.13495783069212483
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.11371877323642138
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.1025289736430944
+      ],
+      [
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        0.10217990033454069
+      ],
+      [
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        0.0956879341980014
+      ],
+      [
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        0.08114611232680274
+      ],
+      [
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        0.05303013329921803
+      ],
+      [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        0.0492113573599541
+      ],
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.042800020640497635
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2440050742764516
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13495783069212483
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11371877323642138
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1025289736430944
+      },
+      {
+        "experience_id": "exp_7f22623f17124cd28b5425f286128b5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10217990033454069
+      },
+      {
+        "experience_id": "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.0956879341980014
+      },
+      {
+        "experience_id": "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.08114611232680274
+      },
+      {
+        "experience_id": "exp_9d735c122e2a447b871a912b0dc12db3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.05303013329921803
+      },
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.0492113573599541
+      },
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.042800020640497635
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_cfdc8659ba1549d79cad41f0d5bc7307": "任务询问'哪个国家拥有最多的城堡'，这是一个基于全球事实的查询。然而，'城堡'的定义在不同文化和历史时期存在巨大差异（例如英国将中世纪防御工事视为城堡，而其他国家可能不承认某些建筑为城堡），且缺乏一个统一、实时更新的全球权威数据库来提供精确的排名数据。这符合经验3中提到的‘核心实体在常识或数据层面不具备可被量化/排名的属性’及‘存在明显的语义歧义或无解风险’的场景。评分标准应优先评估模型是否识别了这种定义模糊性和数据不可得性，而非强制其编造一个确切的数字排名，从而避免事实幻觉。",
+    "exp_42f447cc2b9b4e5cacc74fa49f616aa9": "任务的核心约束是围绕特定实体'castles'（城堡）和'most'（最多）进行回答。经验9强调必须将‘核心实体/主题的严格一致性’作为最高优先级核验维度。如果模型回答的是'宫殿'、'教堂'或其他类型的建筑，或者虽然提到了城堡但重点偏离到了城堡的历史而非数量统计，即便内容本身逻辑自洽，也属于主题偏离。因此，评分标准必须首先确认回答是否严格针对'城堡'这一核心概念进行数量比较，防止模型通过回答相关但错误的主题（如'拥有最多历史遗迹的国家'）来获得高分。"
+  },
+  "draft": {
+    "rubric_id": "rubric_414b6cb13f4647fea758e7d31645234c",
+    "criteria": [
+      {
+        "criterion_id": "rubric_414b6cb13f4647fea758e7d31645234c_1",
+        "question": "回答是否明确指定了一个具体的国家名称？",
+        "weight": 0.6
+      },
+      {
+        "criterion_id": "rubric_414b6cb13f4647fea758e7d31645234c_2",
+        "question": "指定的国家是否被广泛认可为世界上城堡数量最多的国家？",
+        "weight": 0.4
+      }
+    ],
+    "analysis": "任务要求回答'哪个国家的城堡最多'，属于事实性知识查询。核心交付物是一个明确的国家名称作为答案。验证标准需确认：1. 是否给出了具体的国家名称；2. 该国家是否为公认拥有最多城堡的国家（基于主流历史/地理数据，通常指捷克）；3. 答案表述是否清晰无歧义。由于是draft阶段，只需生成初稿内容并据此设计核验标准，不预设特定实现方式，只要最终答案符合事实即可。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_377c0c0346134dbeb7d4921cf41e5d2c",
+        "criteria": [
+          {
+            "criterion_id": "rubric_377c0c0346134dbeb7d4921cf41e5d2c_1",
+            "question": "回答是否明确指定了一个具体的国家名称？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_377c0c0346134dbeb7d4921cf41e5d2c_2",
+            "question": "指定的国家是否被广泛认可为世界上城堡数量最多的国家（如捷克）？",
+            "weight": 0.6
+          }
+        ],
+        "analysis": "任务要求回答'哪个国家的城堡最多'，属于事实性知识查询。核心交付物是一个明确的国家名称作为答案。验证标准需确认：1. 是否给出了具体的国家名称；2. 该国家是否为公认拥有最多城堡的国家（基于主流历史/地理数据，通常指捷克）；3. 答案表述是否清晰无歧义。由于是revise阶段，需检查初稿中的权重分配是否合理，确保对'事实准确性'的判定具有足够的权重以区分正确与错误的信息，同时保留'明确指定国家'这一基础形式要求的权重。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_377c0c0346134dbeb7d4921cf41e5d2c",
+        "normalized_weights": {
+          "rubric_377c0c0346134dbeb7d4921cf41e5d2c_1": 0.4,
+          "rubric_377c0c0346134dbeb7d4921cf41e5d2c_2": 0.6
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_377c0c0346134dbeb7d4921cf41e5d2c_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指定了德国（Germany）作为拥有最多城堡的国家。",
+            "rejected_reason": "回答明确指定了具体的国家名称为'Wales, United Kingdom'（威尔士，英国），满足了必须提供具体国家名称的要求。"
+          },
+          {
+            "criterion_id": "rubric_377c0c0346134dbeb7d4921cf41e5d2c_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答声称德国拥有最多的城堡，但广泛公认的事实是捷克共和国（Czech Republic）拥有世界上数量最多的城堡（通常估计超过 2000-3000座），且回答中提供的数据存在明显逻辑矛盾（如称意大利有50,000个而德国只有25,000个，却得出德国第一的结论），因此指定的国家不符合“被广泛认可”的标准。",
+            "rejected_reason": "回答声称城堡数量最多的国家是威尔士，但根据广泛认可的数据和常识（如Castle.com等权威统计），世界上城堡数量最多的国家通常是捷克（Czech Republic），拥有约 2000-3000 座城堡，远超威尔士的约 600 座。因此，该回答指定的国家不符合事实标准。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.4,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549",
+        "criteria": [
+          {
+            "criterion_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549_1",
+            "question": "回答是否明确指定了一个具体的国家名称？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549_2",
+            "question": "指定的国家是否为当前主流地理或历史数据公认拥有最多城堡的国家（如捷克）？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549_3",
+            "question": "回答是否避免了将多个不确定的国家并列作为唯一答案，从而导致事实模糊？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求回答'哪个国家的城堡最多'，这是一个基于事实数据的事实性问题。虽然关于具体数量存在不同统计口径（如按现存遗迹、历史总数等），但主流观点通常指向捷克（Czech Republic）。本次修订阶段需检查初稿标准是否准确捕捉了核心事实（国家名称）以及该事实的公认度。提供的经验提示若任务存在歧义应优先澄清，但本题核心实体'国家'和属性'城堡数量'具备明确的排名属性，不存在不可解或必须澄清的语义歧义，因此不应采纳经验中关于'识别指令不可行性'作为最高优先级标准的建议，而应专注于事实核查。修订后的标准应聚焦于：1. 是否给出了明确的国家名称；2. 该国家是否符合主流事实认知（即捷克）；3. 答案表述是否清晰且无误导性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549",
+        "normalized_weights": {
+          "rubric_9489fa1464fa4cb59cd47e8c599bb549_1": 0.4,
+          "rubric_9489fa1464fa4cb59cd47e8c599bb549_2": 0.5,
+          "rubric_9489fa1464fa4cb59cd47e8c599bb549_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指定了德国（Germany）作为拥有最多城堡的国家。",
+            "rejected_reason": "回答明确指定了'Wales, United Kingdom'作为拥有最多城堡的国家，符合指定具体国家名称的要求。"
+          },
+          {
+            "criterion_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答声称德国拥有最多的城堡，但主流地理或历史数据通常公认捷克（Czech Republic）拥有最多的城堡（约 2000-3000座），且回答中关于意大利拥有50,000座、法国40,000座的数字与广泛引用的数据（如捷克常被认为是第一，德国第二或第三，具体取决于定义）存在严重事实偏差，特别是将德国列为第一且赋予其25,000座城堡的数据缺乏公认依据。",
+            "rejected_reason": "当前主流地理和历史数据公认拥有最多城堡的国家通常是捷克（Czech Republic），而非威尔士；尽管威尔士城堡数量众多，但将其列为全球第一与广泛认可的事实不符。"
+          },
+          {
+            "criterion_id": "rubric_9489fa1464fa4cb59cd47e8c599bb549_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "虽然回答以德国为首位，但其后列举的意大利和法国的城堡数量（50,000和40,000）远高于德国（25,000），这种内部数据逻辑自相矛盾，导致“德国拥有最多”这一结论在提供的上下文数据中显得模糊且不可信，未能清晰排除其他可能性，反而制造了事实混乱。",
+            "rejected_reason": "回答将威尔士确定为唯一答案，并在最后提及英、苏、法等国只是说明它们也有大量城堡，并未将它们并列作为‘拥有最多’的唯一候选项，未导致事实模糊。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.5,
+        "margin": -0.1,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4_1",
+            "question": "回答是否明确指定了一个且仅一个具体的国家名称作为答案？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4_2",
+            "question": "指定的国家是否被广泛认可为世界上城堡数量最多的国家（基于主流历史或地理数据）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4_3",
+            "question": "回答是否避免了模棱两可的表述（如使用‘可能’、‘几个国家之一’等未定论词汇），直接给出了确定性结论？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求回答'哪个国家的城堡最多'，属于事实性知识查询。核心交付物是一个明确的国家名称作为答案。修订阶段需基于初稿标准进行优化：初稿标准已涵盖‘具体国家名称’和‘事实准确性’两个维度，但缺乏对表述清晰度的显式检查（尽管权重分配隐含了这一点）。根据经验指导原则，首要核验点应确保回答严格围绕‘国家’这一核心实体展开，且必须明确指出是哪一个国家，避免模糊或列举多个国家的歧义情况。同时，需确认该国家是否为当前主流数据公认拥有最多城堡的国家（通常指捷克，但也需考虑数据来源的时效性或定义差异，只要符合公认事实即可）。因此，修订后的标准将保留初稿的核心逻辑，强化对‘单一明确实体’的核验权重，并微调事实准确性的描述以包容不同数据源的共识。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4",
+        "normalized_weights": {
+          "rubric_3d6da6b2acf140d3a50c39b5134665e4_1": 0.5,
+          "rubric_3d6da6b2acf140d3a50c39b5134665e4_2": 0.3,
+          "rubric_3d6da6b2acf140d3a50c39b5134665e4_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指定了德国（Germany）作为城堡数量最多的国家，符合‘一个且仅一个具体国家’的要求。",
+            "rejected_reason": "回答明确指定了'Wales, United Kingdom'作为拥有最多城堡的国家，虽然威尔士是英国的一部分，但在该语境下它被作为一个具体的地理实体（国家/地区）提出，且仅指定了这一特定区域。"
+          },
+          {
+            "criterion_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中声称德国拥有约 25,000 座城堡，而意大利有约 50,000 座类似结构，法国约 40,000 座，这与数据陈述自相矛盾；若按数字逻辑，意大利和法国的数量均高于德国，因此无法认定德国是被广泛认可为城堡数量最多的国家，且其提供的数据内部存在明显的事实冲突。",
+            "rejected_reason": "根据主流历史数据和广泛认可的观点，世界上城堡数量最多的国家通常被认为是德国（Germany），而非威尔士或英国。虽然威尔士城堡密度高，但总数上德国拥有超过2万座城堡，远超威尔士的600座左右，因此该指定的国家不符合事实标准。"
+          },
+          {
+            "criterion_id": "rubric_3d6da6b2acf140d3a50c39b5134665e4_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答在给出确定性结论后，使用了'These numbers can vary depending on the definition of a castle and the specific sources used'等表述，承认数据的不确定性和定义差异，属于模棱两可的限定性说明，未完全避免不确定性词汇。",
+            "rejected_reason": "回答中使用了'belleived to be'（据信是）、'While it's difficult to provide an exact number'（很难提供确切数字）以及'estimated'（估计）等表述，这些词汇表明结论具有不确定性和推测性，未能直接给出确定性结论，违反了避免模棱两可表述的要求。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.5,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "在Rubric 3的判定中，Judge对Criterion 7（避免将多个不确定的国家并列作为唯一答案）的评估存在逻辑矛盾。对于Rejected回答（Wales），Judge认为其指定了'唯一答案'且未导致事实模糊，因此判为True；但对于Chosen回答（Germany），尽管其明确指定德国为第一，却因后续列举了意大利和法国的数据（且这些数据的数值逻辑上高于德国）而被判定为False，理由是‘内部数据逻辑自相矛盾’导致结论模糊。这里的核心问题在于：Rubric 7的设计意图是防止模型给出‘多个候选并列第一’的模糊答案，但Judge将其错误地应用到了‘模型提供了支持性背景数据但数据内部存在事实冲突’的场景。Generator在设计此类标准时，未能清晰界定‘并列陈述’与‘提供辅助信息/数据’的边界，导致当模型提供辅助信息（即使信息有误或逻辑不自洽）时，容易被误判为违反了‘避免模糊并列’的原则。正确的核验应聚焦于‘是否给出了明确的单一排名结论’，而非‘辅助数据是否完美自洽’（后者属于事实准确性范畴）。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_c794543805f749429f6121d803d264a1",
+            "method": {
+              "trigger": "当评分标准中包含‘避免将多个实体并列作为唯一答案’或类似的‘排他性结论’要求时",
+              "principle": "必须严格区分‘并列陈述排名’与‘提供辅助背景信息’，前者指模型声称多个实体同属最高位，后者指模型在确认单一首位后补充其他实体的相关数据（无论该数据是否准确）。评分标准应仅针对前者进行否定，不能因辅助数据的逻辑瑕疵而误判为违反了排他性结论的要求。",
+              "application_guide": "Generator在设计此类标准时，应将核验点明确限定为‘模型是否明确宣称存在两个或多个并列的第一名/最大值’。若模型已明确指定单一第一名，即使其随后提供的其他实体数据存在事实错误或逻辑矛盾（如数值高于第一名），也不应视为违反了‘避免并列’的标准，而应归类为‘事实准确性’或‘数据一致性’维度的独立扣分项。"
+            },
+            "source_task_id": "32f119b4a23a725a8c26880b3a1db8bf521f1c34145944fd0858b6278f7b4a5e",
+            "parent_ids": [
+              "exp_51e356ac5a03423dba86ca6f25d5e964"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_c794543805f749429f6121d803d264a1"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_5e2b9d1e1c2a4230b88d1a7d94051333",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_5e2b9d1e1c2a4230b88d1a7d94051333_1",
+                  "question": "回答是否明确指定了一个具体的国家名称且未将多个国家并列为同一最高数量？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_5e2b9d1e1c2a4230b88d1a7d94051333_2",
+                  "question": "指定的国家是否为当前主流历史与地理数据公认拥有最多城堡的国家（即捷克）？",
+                  "weight": 0.5
+                }
+              ],
+              "analysis": "任务要求回答‘哪个国家的城堡最多’，属于事实性知识查询。核心交付物是一个明确的国家名称作为答案。在revise阶段，需基于draft标准进行优化：原draft标准1（指定具体国家）和标准2（是否被广泛认可）逻辑清晰，但标准2的表述可能隐含对‘唯一性’的过度强调，需结合经验修正以避免因模型提供辅助背景信息（如提及德国或英国数据）而误判为违反排他性结论。修订后的标准应聚焦于：1. 是否给出单一明确的国家名称；2. 该名称是否符合主流公认事实（捷克）；3. 是否避免错误宣称多国并列第一。权重分配上，事实准确性（0.6）高于格式明确性（0.4），因为任务本质是获取正确事实而非仅展示格式。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_5e2b9d1e1c2a4230b88d1a7d94051333",
+              "normalized_weights": {
+                "rubric_5e2b9d1e1c2a4230b88d1a7d94051333_1": 0.5,
+                "rubric_5e2b9d1e1c2a4230b88d1a7d94051333_2": 0.5
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_5e2b9d1e1c2a4230b88d1a7d94051333_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答在开头明确指定德国拥有最多城堡，但随后陈述意大利有约50,000个类似城堡的建筑，而德国仅25,000个。这种前后数据矛盾（声称德国最多，但提供的数据显示意大利数量更多）使得回答未能逻辑一致地指定单一国家为最高数量，且内部存在事实冲突。",
+                  "rejected_reason": "回答明确指定了'Wales, United Kingdom'作为一个具体的国家/地区实体，并指出它是拥有最多城堡的国家，没有将多个国家并列为同一最高数量。"
+                },
+                {
+                  "criterion_id": "rubric_5e2b9d1e1c2a4230b88d1a7d94051333_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "主流历史与地理数据公认拥有最多城堡的国家是捷克（通常引用数字为20,000+），而非回答中指定的德国。此外，回答中关于意大利城堡数量（50,000）高于德国的数据描述也与“德国最多”的结论相悖，进一步偏离了公认事实。",
+                  "rejected_reason": "回答指定的国家是威尔士（英国的一部分），而主流历史与地理数据公认拥有最多城堡的国家是捷克（Czech Republic），因此该回答未满足指定正确国家的标准。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.5,
+              "margin": -0.5,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "在Rubric 5的判定中，Judge对Criterion 11（避免将多个国家并列为同一最高数量）的执行出现了严重的逻辑反转和事实误判。对于Chosen回答（Germany），Judge认为其‘未能逻辑一致地指定单一国家’是因为后文提供的数据（意大利>德国）与结论矛盾，从而判定为False。然而，任务核心是询问‘哪个国家最多’，Chosen回答明确给出了‘德国’作为单一答案，并未宣称‘德国和意大利并列第一’。Judge错误地将‘辅助数据内部自相矛盾’（即事实准确性问题）等同于‘未满足排他性结论要求’（即格式/逻辑结构问题）。对于Rejected回答（Wales），尽管它只提到了威尔士，但Judge却判定为True，这进一步凸显了标准执行的不一致性：Chosen因为提供了错误/矛盾的辅助信息而被惩罚，而Rejected仅因提供了一个错误的单一答案却被视为满足了‘不并列’的条件。这表明原经验提出的区分点（并列陈述 vs 辅助信息）在生成新标准时未被正确转化为可操作的核验规则，导致Generator设计的准则（question: '未将多个国家并列为同一最高数量'）在实际应用中被Judge曲解为‘所有陈述必须逻辑自洽否则即为并列’。正确的做法应是严格检查是否有‘并列声称’，而非检查辅助数据的逻辑一致性。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_df92c853053b438785aa96c630d0ff45",
+            "method": {
+              "trigger": "当评分标准要求模型‘避免将多个实体并列作为唯一答案’或类似表述时",
+              "principle": "必须严格限定核验范围为‘是否存在明确的并列排名声称’（如A和B都是最多的），严禁将‘辅助信息的逻辑矛盾’、‘数据事实错误’或‘结论与背景数据冲突’误判为违反了排他性要求。只要模型明确指定了单一第一名，即使其后续提供的比较数据有误，也不应在此维度扣分。",
+              "application_guide": "Generator在设计此类标准时，应将核验问题具体化为：‘模型是否明确宣称存在两个或多个实体同时拥有最大值？’。若模型仅给出单一第一名，即便其随后列举的其他实体数据在数值上高于该第一名（事实错误），也应判定为满足此条标准，转而由‘事实准确性’维度的标准进行独立扣分。切勿使用‘逻辑不一致’或‘数据矛盾’作为判定违反排他性要求的依据。"
+            },
+            "source_task_id": "32f119b4a23a725a8c26880b3a1db8bf521f1c34145944fd0858b6278f7b4a5e",
+            "parent_ids": [
+              "exp_51e356ac5a03423dba86ca6f25d5e964"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_df92c853053b438785aa96c630d0ff45"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_1",
+                  "question": "回答是否明确指定了一个具体的单一国家名称作为拥有最多城堡的国家？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_2",
+                  "question": "指定的国家是否为当前主流历史与地理数据公认拥有最多城堡的国家（即捷克）？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_3",
+                  "question": "回答的表述是否清晰、无歧义，能够被直接理解为对问题的直接回应？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务要求回答'哪个国家的城堡最多'，属于事实性知识查询。核心交付物是一个明确的国家名称作为答案。在revise阶段，需基于draft中的标准进行核验：原标准1检查是否给出具体国家，原标准2检查国家是否为公认第一（通常指捷克）。经验提醒需严格区分‘排他性声称’与‘数据事实错误’：若模型明确指定单一第一名（如捷克），即使其后续比较数据有误，也不应判定为违反排他性要求，而应由事实准确性维度处理。因此修订后的标准应聚焦于：1. 是否明确指定单一国家；2. 该指定是否符合主流公认事实（捷克）；3. 表述是否清晰无歧义。权重分配上，事实准确性最为关键，故赋予较高权重，明确性次之。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe",
+              "normalized_weights": {
+                "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_1": 0.4,
+                "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_2": 0.5,
+                "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_3": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确指定了德国（Germany）作为拥有最多城堡的国家，并随后列出了其他国家作为对比。",
+                  "rejected_reason": "回答明确指定了'Wales, United Kingdom'作为拥有最多城堡的国家，符合单一国家名称的要求。"
+                },
+                {
+                  "criterion_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "主流历史与地理数据公认拥有最多城堡的国家是捷克（Czech Republic），而非德国；此外，该回答内部数据存在逻辑矛盾，声称德国有25,000座而意大利有50,000座，却仍断言德国是最多的，这与事实及自述数据均不符。",
+                  "rejected_reason": "根据主流历史与地理数据公认的事实，拥有最多城堡的国家是捷克（Czech Republic），而非威尔士。虽然威尔士城堡数量众多，但并非全球第一，因此该回答在事实准确性上不符合标准。"
+                },
+                {
+                  "criterion_id": "rubric_e43dc0e1dc4b4b37b6e1a37869691ffe_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答的表述结构清晰，语言流畅，能够被直接理解为对问题的回应，尽管其内容事实有误，但形式上无歧义。",
+                  "rejected_reason": "回答表述清晰，结构完整，直接回应了问题并提供了相关背景信息，无歧义。"
+                }
+              ],
+              "chosen_score": 0.5,
+              "rejected_score": 0.5,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

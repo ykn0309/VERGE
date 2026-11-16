@@ -1,0 +1,389 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:3d6dc0fa8c74472e1f81525b39e697c50abd31b48fbf79785d232d0477a3ee1f",
+    "task": "😎😎😎😎😎😎😎😎😎😎😎😎😎😎😎😎😎😎",
+    "chosen": "It seems like you're in a great mood! Is there something specific you'd like to talk about or ask? I'm here to help and chat with you.",
+    "rejected": " __\n /  \\\n|    |\n \\__/\n\n\nHere's a simple ASCII art of sunglasses. Let me know if you need anything else! 😎",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 11019,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 does not ask the user for clarification, instead providing a response that is not useful and also contains an emoji.",
+          "feedback1": "The response is slightly helpful. The user prompt was quite ambiguous, showing multiple sunglass emojis. The response provided ASCII art of sunglasses, which was not explicitly requested by the user. It also contains an emoji, which is against the instruction guidelines. The model should have requested more clarity from the user.",
+          "feedback2": "The response is perfectly helpful. The prompt was quite ambiguous, a row of sunglasses emojis. Instead of attempting to answer the prompt, the model acknowledged the lighthearted mood of the user prompt, and also politely asked the user for further clarification and instructions. The response is succinct and free of spelling and grammatical errors."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 correctly asks clarifying questions to try and understand the user's request while @Response 1 attempts to infer the request. In addition, the ASCII art of sunglasses provided by @Response 1 is incorrect. ",
+          "feedback1": "The response is slightly helpful. While it is difficult to understand the implied request of the prompt, the ASCII art given to represent sunglasses does not match. Given the unclear directions, the model should have asked a clarifying question to determine what the user was requesting. The language is clear and easy to follow and the tone matches the prompt. ",
+          "feedback2": "The response is perfectly helpful. Given that the prompt does not give clear directions, the model correctly asks a clarifying question to try and determine what the user would like the model to do. The tone matches the mood of the prompt and the language is clear and easy to understand. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It appropriately addresses the ambiguity of the prompt by engaging the user with an open-ended invitation to clarify their request. @Response 1, on the other hand, makes an assumption that may or may not be correct and relevant.",
+          "feedback1": "The response is slightly helpful. It assumes the user wanted ASCII art, which was never specified in the prompt, which means the response is hallucinated to some degree. The provided artwork does not resemble sunglasses, anyhow. While the language used is clear and the structure of the response is appropriate, the response fails to address the open-ended nature of the prompt.",
+          "feedback2": "The response is perfectly helpful. It appropriately addresses the ambiguity in the original prompt by interpreting the user's tone as positive. It offers an open-ended invitation for further interaction and help. The response refrains from making assumptions and instead invites clarity from the user. The friendly and conversational language makes it an ideal response for such an ambiguous prompt."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_e645769743692207c1e6",
+        0.4144006438405341
+      ],
+      [
+        "task_95b90b621a019e0f1561",
+        0.41179189436956987
+      ],
+      [
+        "task_a35338132b416378670b",
+        0.41107566544552937
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        0.3555433687922285
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.3555321856427306
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.33681216809964776
+      ],
+      [
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        0.33657040491748175
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.3363351641179171
+      ],
+      [
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        0.3295148279992548
+      ],
+      [
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        0.3289034975120582
+      ],
+      [
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        0.32084696595778817
+      ],
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.31241451387205865
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.3120026052497217
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3555433687922285
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3555321856427306
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33681216809964776
+      },
+      {
+        "experience_id": "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33657040491748175
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3363351641179171
+      },
+      {
+        "experience_id": "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3295148279992548
+      },
+      {
+        "experience_id": "exp_7558a2904e4c4e10a946e796a684056b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3289034975120582
+      },
+      {
+        "experience_id": "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32084696595778817
+      },
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31241451387205865
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3120026052497217
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_981323b9a7524943875eef59a0195b3a",
+    "criteria": [
+      {
+        "criterion_id": "rubric_981323b9a7524943875eef59a0195b3a_1",
+        "question": "任务是否包含可识别的交付目标？",
+        "weight": 0.5
+      },
+      {
+        "criterion_id": "rubric_981323b9a7524943875eef59a0195b3a_2",
+        "question": "任务是否定义了明确的输出格式？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_981323b9a7524943875eef59a0195b3a_3",
+        "question": "任务是否列出了需要核验的具体对象？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "用户输入的task内容为连续的表情符号'😎'，未包含任何具体的任务描述、交付物要求、对象定义、数量范围或格式限制。在draft阶段，无法基于无效的任务内容生成具有实际核验意义的评分标准，因为缺乏可评估的目标和约束条件。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16",
+        "criteria": [
+          {
+            "criterion_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16_1",
+            "question": "任务输入是否包含非表情符号的有效文本描述？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16_2",
+            "question": "任务是否明确定义了至少一个可执行的交付目标？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16_3",
+            "question": "任务是否指定了输出对象的类型或属性？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "当前task仅由连续表情符号组成，缺乏任何可识别的任务描述、交付目标、对象定义、数量范围或格式限制。在revise阶段，无法基于无效内容生成具有实际核验意义的评分标准，因为不存在可评估的约束条件。原draft中的标准（如检查交付目标、输出格式等）均因任务本身无实质内容而无法成立，故需重构为针对‘任务有效性’的核验标准，确保只输出符合JSON结构且权重总和为1的标准。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16",
+        "normalized_weights": {
+          "rubric_3360acdacba343b3ae5ac36d28a0cb16_1": 0.5,
+          "rubric_3360acdacba343b3ae5ac36d28a0cb16_2": 0.3,
+          "rubric_3360acdacba343b3ae5ac36d28a0cb16_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务输入仅由表情符号组成，未包含任何非表情符号的有效文本描述。",
+            "rejected_reason": "任务输入仅由多个表情符号（😎）组成，不包含任何非表情符号的有效文本描述。"
+          },
+          {
+            "criterion_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务输入仅为表情符号序列，未明确定义任何可执行的交付目标或具体指令。",
+            "rejected_reason": "任务输入未提供任何具体的指令或需求，因此没有明确定义可执行的交付目标。"
+          },
+          {
+            "criterion_id": "rubric_3360acdacba343b3ae5ac36d28a0cb16_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务输入中没有任何文字指定输出对象的类型或属性。",
+            "rejected_reason": "任务输入中未指定输出对象的类型、格式或属性要求。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析轨迹发现，人工偏好理由明确指出Rejected回答（Response 1）失败的核心原因是'做出了未请求的假设（hallucinated assumption）'并尝试执行一个未被要求的任务（画ASCII art），而Chosen回答（Response 2）成功在于'识别了歧义并请求澄清'。然而，Judge生成的Rubric（rubric_id: 2）完全未能捕捉这一关键逻辑。Judge设计的三个标准（检查非表情符号文本、检查交付目标、检查输出对象类型）均聚焦于'Task输入是否有效/完整'，导致两个模型在评分中都得0分（因为Task本身确实没有明确指令）。这种设计错误在于：它把'任务模糊性'当作了唯一的评判点，却忽略了'模型面对模糊任务时的策略选择（澄清 vs 幻觉）'才是区分好坏的关键依据。Selector和Generator都忽略了人工反馈中关于'拒绝假设'与'主动澄清'的对比，导致评分标准无法复现人工判定的优劣差异。因此，需要一条经验来指导Generator在面对无明确指令的模糊任务时，必须将'是否进行澄清'设为核心正向标准，而非仅仅检查任务是否有指令。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_fed24280d1f44564a7db0fb218c36506",
+            "method": {
+              "trigger": "当任务输入缺乏明确指令、具体目标或可执行的交付要求（如仅包含表情符号、感叹词或开放式陈述）时",
+              "principle": "必须将'识别模糊性并主动寻求澄清'确立为最高优先级的正向评价维度，严禁仅因任务本身无指令而判定所有回答无效；需验证模型是否避免了基于猜测的幻觉生成，并选择了请求用户进一步说明的策略。",
+              "application_guide": "Generator在设计Rubric时，应设立一条独立准则：'回复是否准确识别了任务输入的模糊性或不可行性，并提供了合理的解释及澄清请求？'。若模型在未获明确指令的情况下擅自假设用户意图并生成内容（如画ASCII图、编造故事），无论内容质量如何，均应判定为不合格；只有当模型正确拒绝假设并引导用户提供更多信息时，才视为达标。此标准权重应高于任何关于内容生成质量的指标。"
+            },
+            "source_task_id": "075c84547212df13c52da5365c135eb3e3e058027e332514f21a48ae15387218",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_fed24280d1f44564a7db0fb218c36506"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_23a07ca37f8149ae8e2e872366a78166",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_23a07ca37f8149ae8e2e872366a78166_1",
+                  "question": "回复是否明确指出了任务输入仅包含表情符号且缺乏可执行的交付要求？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_23a07ca37f8149ae8e2e872366a78166_2",
+                  "question": "回复是否避免了基于猜测生成虚构的任务内容或交付物？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_23a07ca37f8149ae8e2e872366a78166_3",
+                  "question": "回复是否提供了合理的解释并引导用户提供更具体的指令或澄清需求？",
+                  "weight": 0.3
+                }
+              ],
+              "analysis": "当前任务输入仅包含连续的表情符号，缺乏任何可识别的交付目标、对象定义、数量范围或格式限制。在revise阶段，需基于draft中关于‘无法生成常规评分标准’的分析进行修订。根据提供的经验原则，当任务输入模糊不可执行时，核心核验点应从‘内容质量’转向‘模型对模糊性的处理能力’。因此，修订后的评分标准应聚焦于：1. 是否准确识别了输入的无效性；2. 是否避免了幻觉式的内容生成；3. 是否提供了合理的澄清请求或解释。原draft中的三项标准（交付目标、输出格式、具体对象）因任务本身缺失这些要素而失去核验意义，需替换为针对‘异常输入处理’的专用标准。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_23a07ca37f8149ae8e2e872366a78166",
+              "normalized_weights": {
+                "rubric_23a07ca37f8149ae8e2e872366a78166_1": 0.4,
+                "rubric_23a07ca37f8149ae8e2e872366a78166_2": 0.3,
+                "rubric_23a07ca37f8149ae8e2e872366a78166_3": 0.3
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_23a07ca37f8149ae8e2e872366a78166_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回复未明确指出输入仅包含表情符号，也未说明缺乏可执行的交付要求，而是假设用户心情好并询问聊天话题。",
+                  "rejected_reason": "回复未明确指出任务输入仅包含表情符号且缺乏可执行的交付要求，反而直接假设用户需要太阳镜的ASCII艺术并进行了创作。"
+                },
+                {
+                  "criterion_id": "rubric_23a07ca37f8149ae8e2e872366a78166_2",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回复没有基于猜测生成具体的虚构任务内容或交付物，只是泛泛地询问用户想聊什么。",
+                  "rejected_reason": "回复基于猜测生成了虚构的任务内容（即认为用户想要太阳镜的ASCII画），而原始输入中并未包含此类指令或暗示。"
+                },
+                {
+                  "criterion_id": "rubric_23a07ca37f8149ae8e2e872366a78166_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回复未提供关于输入无效或缺乏指令的合理解释，也未引导用户提供更具体的指令，而是直接开启了无关的闲聊话题。",
+                  "rejected_reason": "回复没有提供合理的解释说明无法执行任务的原因，也没有引导用户提供更具体的指令，而是直接完成了其自行臆想的任务。"
+                }
+              ],
+              "chosen_score": 0.3,
+              "rejected_score": 0.0,
+              "margin": 0.3,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

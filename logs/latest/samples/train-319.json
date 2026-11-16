@@ -1,0 +1,292 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:0193e3eb462ef8f85d9528751950e1e8674f7cebadc1a75494aa8f9ed9c608ee",
+    "task": "Traduci in inglese:\n\nIl giorno della partita",
+    "chosen": "The day of the game",
+    "rejected": " \"The Day of the Game\"\n\nThis translation maintains the original meaning and context of the Spanish phrase \"El día del partido,\" which refers to the day when a sports match or game is scheduled to take place.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 26118,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 directly answers the prompt's request for an English translation. The translation it provides is accurate. @Response 2 misidentifies the original language as Spanish.",
+          "feedback1": "The response is perfectly helpful. The prompt is requesting an english translation of the italian phrase \"Il giorno della partita\". This translates to \"The day of the match\" or \"Game day\". The response identified the proper English translation and delivered in the most succinct and direct way possible. The response can't be made objectively better.",
+          "feedback2": "The response is slightly helpful. The response correctly translates the Italian phrase \"Il giorno della partita\" into English, which is \"Day of the match\" or \"game day\". However, the response contains an irrelevant piece of information after the translation that identifies it as having translated from Spanish. This makes the response less helpful than it could be with just a simple direct translation. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it accurately and succinctly translated the user's Italian text into English. @Response 2 also translated the text, but incorrectly referenced the text to Spanish and provided irrelevant details explaining the phrase.",
+          "feedback1": "The response is perfectly helpful. The user provided a prompt in Italian that asked for a phrase (Il giorno della partita), to be translated into English. Based on the evidence found and multiple translation applications, the response accurately translated the user's text to \"The day of the game.\" The response accurately translated the user's instructions and provided phrase from Italian to English in the most succinct manner.",
+          "feedback2": "The response is partially helpful. The user's prompt was in Italian and asked for a short phrase (Il giorno della partita) to be translated to English. The response accurately translated the phrase. However, it inaccurately stated the phrase was Spanish, when it was Italian, and then mentioned that the translation maintained the original meaning and provided the phrase in Spanish. \n\nOverall, the response accurately translated the phrase. However, it inaccurately mentioned the phrase was Spanish and then included irrelevant details explaining it."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 and @Response 2 provide the correct translation. However, @Response 2 contains irrelevant information and hallucination.",
+          "feedback1": "The response is perfectly helpful. It follows the instructions and provides a translation of the Italian word in English. The translation is correct and coherent with the original word. The response is correct, complete, and speaks in a straightforward, clear, and succinct manner. It does not contain any other explanation or choice of translation.",
+          "feedback2": "The response is partially helpful. It provides the correct translation of \"Il giorno della partita\" in English. However, this response contains a hallucination saying that it maintains the original meaning and context of the Spanish phrase, while the word to be translated is in Italian. Moreover, this explanation is not relevant."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_a35338132b416378670b",
+        0.3194112492932166
+      ],
+      [
+        "task_0a629c05a9726352d0f0",
+        0.2778810126588006
+      ],
+      [
+        "task_f8219f43e3099e6e1fe3",
+        0.27764326399880107
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.31348548617431404
+      ],
+      [
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        0.2721407169598292
+      ],
+      [
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        0.24556062326440758
+      ],
+      [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        0.22499096225348386
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.22451180034256474
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.219703118348907
+      ],
+      [
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        0.2105017265375838
+      ],
+      [
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        0.21028189967840402
+      ],
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.20977188364351723
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.20752334650036636
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31348548617431404
+      },
+      {
+        "experience_id": "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2721407169598292
+      },
+      {
+        "experience_id": "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24556062326440758
+      },
+      {
+        "experience_id": "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22499096225348386
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22451180034256474
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.219703118348907
+      },
+      {
+        "experience_id": "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2105017265375838
+      },
+      {
+        "experience_id": "exp_d514e467bac945048ab9ca330888fcbf",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21028189967840402
+      },
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20977188364351723
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20752334650036636
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_01d951f8e0e64129bb684fc47f363a93",
+    "criteria": [
+      {
+        "criterion_id": "rubric_01d951f8e0e64129bb684fc47f363a93_1",
+        "question": "译文是否准确表达了 'Il giorno della partita' 中 '比赛之日' 的核心含义？",
+        "weight": 0.6
+      },
+      {
+        "criterion_id": "rubric_01d951f8e0e64129bb684fc47f363a93_2",
+        "question": "译文是否为标准的英语表达且语法正确？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_01d951f8e0e64129bb684fc47f363a93_3",
+        "question": "输出是否仅包含翻译后的英文短语，未包含额外的解释、元数据或非请求内容？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求将意大利语短语 'Il giorno della partita' 翻译成英语。交付物为单一的英文翻译结果。核心对象是源文本的语义，需准确传达 '比赛的那一天' 的含义。范围限定为短语翻译，不涉及上下文扩展或风格修饰（除非有特定语境暗示，但此处无）。格式限制为纯文本输出。在 draft 阶段，只需生成符合基本语义准确的初稿。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696",
+        "criteria": [
+          {
+            "criterion_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_1",
+            "question": "译文是否准确传达了 'Il giorno della partita' 中关于‘比赛之日’的核心含义？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_2",
+            "question": "译文是否为符合英语习惯且语法正确的表达？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_3",
+            "question": "输出是否仅包含翻译后的英文内容，未包含额外的解释、元数据或非请求内容？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求将意大利语短语 'Il giorno della partita' 翻译成英语。交付物为单一的英文翻译结果。核心对象是源文本的语义，需准确传达 '比赛的那一天' 的含义。范围限定为短语翻译，不涉及上下文扩展或风格修饰（除非有特定语境暗示，但此处无）。格式限制为纯文本输出。在 revise 阶段，需基于 draft 中的标准检查译文是否满足准确性、语法规范及格式纯净度，确保没有遗漏或错误。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696",
+        "normalized_weights": {
+          "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_1": 0.6,
+          "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_2": 0.3,
+          "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "译文 'The day of the game' 准确对应了意大利语原文 'Il giorno della partita' 中关于‘比赛之日’的核心含义，其中 'game' 正确翻译了 'partita'。",
+            "rejected_reason": "虽然译文 'The Day of the Game' 在字面上正确表达了‘比赛之日’的含义，但模型在解释中错误地将源语言描述为西班牙语（Spanish）和错误的短语（"
+          },
+          {
+            "criterion_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "该译文符合英语语法规范及表达习惯，结构自然流畅，没有语法错误。",
+            "rejected_reason": "译文 'The Day of the Game' 符合英语语法规范且表达自然，是地道的英语表达。"
+          },
+          {
+            "criterion_id": "rubric_fe17dfa5fb9c4dd49765ae035b7ab696_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "输出内容仅包含翻译后的英文句子 'The day of the game'，未包含任何额外的解释、元数据或非请求的文本。",
+            "rejected_reason": "输出包含了翻译结果之外的额外内容，即一段关于该翻译的中文解释性文字，违反了‘仅包含翻译后的英文内容’的要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.3,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

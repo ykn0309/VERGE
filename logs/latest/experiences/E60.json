@@ -1,0 +1,12 @@
+{
+  "experience_id": "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+  "method": {
+    "trigger": "当任务指令中包含明确的复数数量限定词（如'other words', 'multiple examples', 'a list of...'）且该数量要求是任务核心目标时",
+    "principle": "必须将‘输出实体的数量严格匹配指令要求’确立为独立的准入或高权重否决维度，严禁仅评估内容质量而忽略数量违规。",
+    "application_guide": "Generator在设计Rubric时，若任务明确要求生成多个实体（使用复数形式如'words', 'examples'），必须增设一条独立标准：'回复是否提供了指令所要求的多个（>1个）替代方案/示例？'。若模型仅输出了一个实体，即使该实体语义准确、语法完美，在此维度直接判为不合格或大幅扣分。此标准独立于内容准确性，旨在防止模型通过提供单一选项来规避‘多选项’的约束，确保评分能反映对指令字面数量的遵守情况。"
+  },
+  "source_task_id": "644b3eefd98ebf22fc3cd3dcb71aefa0128216593b87906a747f36550eb7be5a",
+  "parent_ids": [
+    "exp_d514e467bac945048ab9ca330888fcbf"
+  ]
+}

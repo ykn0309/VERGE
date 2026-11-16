@@ -1,0 +1,336 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:a9c3d2925952b4df1e7729ebf2444e4c3ab3e135d0df2a5ec74e0915151e6c18",
+    "task": "What is Rick Ross' most popular song to date?",
+    "chosen": "Rick Ross' most popular song to date is likely either \"Aston Martin Music\", the fourth single from his fourth studio album, Teflon Don, or \"Hustlin',\" which was released in 2006 as the lead single from his debut studio album, \"Port of Miami\". \"Aston Martin Music\" appears to have more streams, but depending on plays in other media, it could go either way.\n\nIf you count songs where Rick Ross is featured, then Drake's \"Money in the Grave\" featuring Rick Ross beats both by a large margin.",
+    "rejected": "Rick Ross' most popular song to date is \"Stay Schemin',\" which was released on April 17, 2012. The song features Rick Ross alongside Drake and French Montana and has been a total hit since its release. According to Genius website, \"Stay Schemin'\" is Rick Ross' most popular song, and it has garnered significant attention and acclaim in the rap industry.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15687,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it is more complete and also correct. @Response 1 only answered the prompt's question for the best song of Rick Ross, while missing Rick's performance along with other singers, such as Drake.",
+          "feedback1": "The response is mostly helpful. It can be improved by stating Rick Ross's top performance alone, instead of his best performance along with other singers such as Drake. Otherwise, \"Stay Schemin\" is his best song; also correct is the song's release date of April 17, 2012. The response states correctly that the Genius website considers this song Rick Ross's most popular one, as it has received significant attention and acclaim in the rap industry. ",
+          "feedback2": "The response is perfectly helpful. It responds to the prompt request by nuancing the answer by separating Rick Ross's own performance as a rap singer from his performance with other singers such as Drake. Based on the open sources available, the information in the response is all correct, clear, and not misleading."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it correctly lists the most popular song by Rick Ross. @Response 1 uses only page views by a single website to incorrectly claim the most popular song. @Response 2 offers more accurate claims based on the number of plays.",
+          "feedback1": "The response is slightly helpful. The response claims \"Stay Schemin'\" is the most popular song by Rick Ross, but that is only according to Genius.com page views and does not reflect popularity as a whole. \"Aston Martin Music\" has Rick Ross as the main artist and has the most Spotify and YouTube plays, which makes it the most popular song based on plays.",
+          "feedback2": "The response is perfectly helpful. The response accurately assesses \"Aston Martin Music\" as the most popular song, with Rick Ross as the main artist, and mentions \"Hustlin'\" as second. These are accurate according to the most plays on both Youtube and Spotify along with agreement from Kworb.net. \"Hustlin'\" is his most iconic song, if not based solely on number of plays. The response goes on to accurately claim that \"Money in the Grave\" by Drake is even more popular using plays, if counting Rick Ross as just a contributing artist."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1.\n\n@Response 1 based its assessment of song popularity on one website, \"Genius,\" which ranked songs based on their lyric page views. The most reliable method to rank songs is Billboard stats, utilized by @Response 2, which is mostly correct in its assertions.",
+          "feedback1": "The response is slightly helpful. It names \"Stay Schemin'\" as Ross' \"most popular song to date,\" based on the \"Genius website.\" Genius bases this determination on how many views its lyric pages get, meaning it's only his most popular song on that specific website. A more accepted method for determining a song's popularity is the Billboard charts. Billboard combines physical and digital sales, streaming, and radio airplay in the USA, making it a more reliable method for determining popularity. The response is slightly verbose, containing fluff: \"and it has garnered significant attention and acclaim in the rap industry.\" This is implied by being a popular rap song and isn't necessary to include.",
+          "feedback2": "The response is mostly helpful. It correctly assesses Ross' most popular song as being \"Aston Martin Music,\" and correctly assesses the most popular song he is featured on as \"Money in the Grave,\" but the assertion it makes about \"Hustlin'\" being in competition with \"Aston Martin Music\" for the title of 'most popular' isn't logical. \"Hustlin'\" ranked much lower (54 vs 30) on the charts and remained there for fewer weeks (17 vs 20), so it's obviously lower ranked than \"Aston Martin Music.\" It is otherwise factually correct, and well-written."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_78981577c0d4929fe18d",
+        0.3175030138620222
+      ],
+      [
+        "task_f60a309e9011b4375419",
+        0.2737460437312032
+      ],
+      [
+        "task_4b594065ae3918e5af0d",
+        0.19925169543354537
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_23270a99f4464e2fb928cd02f328fd67",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_3ab19d7aed0949edafbad582dec47a2e",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_6146745a8c1e457ab7122dfa3fc770a0",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_71a63834f56d46d884d0ecf1d6628617",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2b4eddaa2be45a983ff4bc072ef7372",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_a796676716be4906b8fea66019710d3a",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b30649747ad94e468f6c89a125c9e74e",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_c96c04d5bf8d4648966881eb9481ddbe",
+        "exp_cda61e23c69c4146a3a79ac2beddffba",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc1d73a5d46404e9edd43264476c9b9",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "exp_fed24280d1f44564a7db0fb218c36506"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        0.19801112666108867
+      ],
+      [
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        0.15366060171395973
+      ],
+      [
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        0.14484528321943482
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.14344555913108778
+      ],
+      [
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        0.14027894644886968
+      ],
+      [
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        0.13577600174894966
+      ],
+      [
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        0.12335198496807792
+      ],
+      [
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        0.1231305008312524
+      ],
+      [
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        0.12308619175025673
+      ],
+      [
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        0.1168993228681278
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19801112666108867
+      },
+      {
+        "experience_id": "exp_b437dfe96ffe48cb87478fa70685773b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15366060171395973
+      },
+      {
+        "experience_id": "exp_7558a2904e4c4e10a946e796a684056b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.14484528321943482
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.14344555913108778
+      },
+      {
+        "experience_id": "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.14027894644886968
+      },
+      {
+        "experience_id": "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13577600174894966
+      },
+      {
+        "experience_id": "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.12335198496807792
+      },
+      {
+        "experience_id": "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1231305008312524
+      },
+      {
+        "experience_id": "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.12308619175025673
+      },
+      {
+        "experience_id": "exp_7f22623f17124cd28b5425f286128b5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1168993228681278
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_a5265f522be84f6189984454d9c6e850",
+    "criteria": [
+      {
+        "criterion_id": "rubric_a5265f522be84f6189984454d9c6e850_1",
+        "question": "是否明确指出了Rick Ross的一首具体歌曲名称？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_a5265f522be84f6189984454d9c6e850_2",
+        "question": "是否提供了支持该歌曲为'最流行'的具体衡量指标或数据（如Spotify播放量、Billboard排名等）？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_a5265f522be84f6189984454d9c6e850_3",
+        "question": "所引用的数据源是否为权威且可验证的音乐行业平台或记录？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_a5265f522be84f6189984454d9c6e850_4",
+        "question": "回答是否清晰界定了'受欢迎'的定义范围（例如：单首单曲还是包含合作曲目），并据此得出结论？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求确定Rick Ross迄今为止最受欢迎的歌曲。核心交付物是具体的歌曲名称。由于'最受欢迎'的定义可能基于不同指标（如流媒体播放量、排行榜最高名次、销量或综合影响力），标准设计需涵盖对数据来源的确认以及该数据在行业内的公认度，同时允许不同的合理定义方式作为最终答案的基础，只要其有充分依据。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397",
+        "criteria": [
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_1",
+            "question": "是否明确指出了Rick Ross的一首具体歌曲名称作为答案？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_2",
+            "question": "是否提供了支持该歌曲为'最流行'的具体衡量指标或数据（如Spotify播放量、Billboard排名等）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_3",
+            "question": "所引用的数据源是否为权威且可验证的音乐行业平台或记录？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_4",
+            "question": "回答是否清晰界定了'受欢迎'的定义范围（例如：单首单曲还是包含合作曲目），并据此得出结论？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务核心是识别Rick Ross迄今为止最受欢迎的歌曲。由于'最受欢迎'缺乏单一绝对标准，允许基于不同权威指标（如流媒体数据、排行榜成绩、销量或综合影响力）得出结论，但必须明确指定具体歌曲名称并给出支撑依据。修订后的标准保留了初稿对数据来源和定义清晰度的要求，同时修正了权重分配以突出'明确指定歌曲'这一核心交付物的首要性，确保回答既准确又有据可依。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397",
+        "normalized_weights": {
+          "rubric_ea4b5e7f77e7476aa748f81be85ab397_1": 0.4,
+          "rubric_ea4b5e7f77e7476aa748f81be85ab397_2": 0.35,
+          "rubric_ea4b5e7f77e7476aa748f81be85ab397_3": 0.15,
+          "rubric_ea4b5e7f77e7476aa748f81be85ab397_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指出了具体的歌曲名称，包括\"Aston Martin Music\"、\"Hustlin'\"以及作为合作曲目的\"Money in the Grave\"。",
+            "rejected_reason": "回答明确指出了歌曲名称为\"Stay Schemin'\"。"
+          },
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然提到了\"streams\"（流媒体播放量）和\"beats both by a large margin\"（大幅超越），但并未提供任何具体的衡量指标数值或详细数据（如具体的播放次数、排名数字等）来支持其结论。",
+            "rejected_reason": "回答仅使用了\"significant attention and acclaim\"等定性描述，未提供任何具体的衡量指标或数据（如播放量、排名数值等）来支持该歌曲为最流行。"
+          },
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中未引用任何权威且可验证的音乐行业平台或记录名称（如Spotify官方数据、Billboard榜单、RIAA认证等），仅使用了模糊的表述如\"appears to have more streams\"。",
+            "rejected_reason": "虽然引用了Genius网站，但该网站主要提供歌词和注释，并非公认用于统计播放量或排名的权威音乐行业数据平台，且回答中未展示可验证的具体数据记录。"
+          },
+          {
+            "criterion_id": "rubric_ea4b5e7f77e7476aa748f81be85ab397_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答清晰地界定了定义范围，首先讨论了Rick Ross作为主要艺人的单曲情况，随后在第二段明确提出了如果计算他作为客串艺人（featured）的歌曲时的不同结果，并据此得出了不同的结论。",
+            "rejected_reason": "回答未清晰界定\"受欢迎\"的定义范围（例如是否包含合作曲目），也未说明是基于何种标准（如流媒体、销量或电台播放）得出该结论的。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.4,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

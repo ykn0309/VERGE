@@ -1,0 +1,499 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:5bc30395fd996adcb2607c499dc9537efcde73b01e456c544720648974f6d970",
+    "task": "(In the school literature clubroom...)\n\nMonika: \"MC, where have you been for the last few weeks?!\"",
+    "chosen": "(MC shuffles his feet, avoiding Monika's intense gaze. He nervously pushes a stray strand of hair behind his ear.)\n\n\"Uh, hey Monika. Sorry, things have been... hectic lately.\"\n\n(He glances around the room, hoping for a distraction, but the other club members are all looking at him expectantly. Sayori bounces on the balls of her feet, Yuri clutches her book tightly, and Natsuki stares with narrowed eyes.)\n\n\"Hectic how?\" Monika presses, her voice laced with a hint of suspicion. \"You haven't been to any meetings, you haven't responded to any messages... We were starting to worry.\"\n\n(MC winces. He knows he's been neglecting the club, but he can't bring himself to tell them the truth. He's been spending all his time trying to figure out what's going on with the game, with Monika, with everything.)\n\n\"It's... complicated,\" he mumbles, hoping they'll drop it.\n\n\"Complicated?\" Natsuki scoffs. \"More like you've forgotten about us.\"\n\n(MC's heart sinks. He hates seeing them hurt, but he doesn't know what to say. He's trapped in a situation he doesn't understand, and he's afraid of what will happen if he reveals too much.)\n\n\"No, that's not it,\" he insists, but his voice lacks conviction.\n\n(Monika steps closer, her expression unreadable. She reaches out and gently touches his arm.)\n\n\"MC, you can tell us anything. We're your friends.\"\n\n(Her words pierce through his defenses. He wants to believe her, he wants to trust them, but a part of him is still afraid. Afraid of the consequences, afraid of what they might think of him.)\n\nHe takes a deep breath, trying to gather his thoughts.\n\n\"I... I just need some time,\" he finally says, his voice barely a whisper. \"I promise I'll explain everything soon.\"\n\n(He hopes they'll accept that for now, but he can see the doubt in their eyes. He knows he's only delaying the inevitable.)",
+    "rejected": "Monika, I'm glad you're concerned about my absence. I've been dealing with some personal matters that required my attention. I apologize for not informing you or the other club members about my situation. I understand that my absence might have caused some inconvenience, and I appreciate your patience. I'm back now and looking forward to participating in the literature club activities again. Is there anything important that I've missed during my time away?",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 22688,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it follows the formatting structure of the prompt, where @Response 2 does not.",
+          "feedback1": "The response is mostly helpful. It fulfills the request of the prompt, follows the prompt's structure, and uses clear and easy-to-comprehend language. The response is complete and correct with no inaccuracies. It is a bit verbose, given that the prompt was somewhat ambiguous. The response could be improved by editing down for conciseness.",
+          "feedback2": "The response is partially helpful. It uses simple language that is easy to understand and it is not overly verbose. It does not follow the structure of the prompt, so this makes the response a bit confusing. The response could be meaningfully improved by following the formatting structure of the prompt."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it maintains consistent format with the prompt and includes the details from the prompt. @Response 2 is inconsistent with the format of the prompt and lacks depth.",
+          "feedback1": "The response is mostly helpful. The response continues the story from the prompt and is consistent with the location of the school literature clubroom. The response provides a coherent narrative relating to MC having been gone for the past few weeks. However, the response fails to address the ambiguity of the prompt and could be improved by asking for clarification regarding the user's intent. ",
+          "feedback2": "The response is slightly helpful. The response contains an explanation and an apology that seem to be from MC in response to Monika's question from the prompt. However, the response is not consistent with the script format of the prompt. The response is a block of text that contains awkward phrasing and doesn't sound like how people talk. The response also fails to address the ambiguity of the prompt. The response could be improved by asking for clarification regarding the user's intent and by using a script format to describe the interactions between MC and Monika in the school literature clubroom."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. The former response answers the prompt in the required form, whereas the latter response has significant deviations from that and does not appear to follow a story plot. ",
+          "feedback1": "The response is perfectly helpful. The model opted to use the prompt as part of a conversation and used that specific phrase to construct a response based on it. The response is verbose and uses a language that is easy to understand. The dialogue is human-like and has no errors. ",
+          "feedback2": "The response is not helpful. The prompt is used as a reference to create a script based on the characters liste din the chat history. The model did not complete this, and has a siginificant style change from how a scripted story is constructed. The model response can be improved by it respondign to the prompt in a script form with the characters present. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_c5a9cb93c1451d27b857",
+        0.33088371866539346
+      ],
+      [
+        "task_cf0849210da080ac4a88",
+        0.28304235862968535
+      ],
+      [
+        "task_927de9cc4bd735665afa",
+        0.2829539806816178
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+          "score": 0.5,
+          "evidence": [
+            {
+              "group_id": "task_c5a9cb93c1451d27b857",
+              "similarity": 0.33088371866539346,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_d54ea2cf23294dfda802dbfb6af0c4de",
+                  "helpsteer3:train:15e975cc2bb892e6115d5d760e7c5f308b29bcf2e4f46d54315a679c4f836fa8:exp_d54ea2cf23294dfda802dbfb6af0c4de",
+                  "helpsteer3:train:33f6ad34f6f0c9274d0c6ea26ba0774b50feed1ab9cb7655bb59310b52c6508f:exp_d54ea2cf23294dfda802dbfb6af0c4de",
+                  "helpsteer3:train:e303c25ab9679ab0695f33a6080a8b1c7451982bf1492c624171a135ff36b22a:exp_d54ea2cf23294dfda802dbfb6af0c4de"
+                ],
+                "task_ids": [
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "2ff666f33e676f9cd6c957834f6898261f47eee03baa695d08125c7fa1fd967f",
+                  "ef8eec2c7b3902d5df70f72a458ed6166a69fbce7783169190865092dde5a4c8",
+                  "fb9064e660a02770028427057749702961593eb8e892369aafdcb3ef31235d90"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_340739c0de45423b8cc2fbbca1c04749",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c5a9cb93c1451d27b857",
+              "similarity": 0.33088371866539346,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:a0bfffcb4907b91056b05de04a47658df6feed33a4e4ed87daf2752fae8b27ae:exp_340739c0de45423b8cc2fbbca1c04749"
+                ],
+                "task_ids": [
+                  "58e7349558f90cbea275e22b632b38635c994ed1f66614ebed63d04cb289150b"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c5a9cb93c1451d27b857",
+              "similarity": 0.33088371866539346,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:48f4b259cfa5febb2c0664a73dd57728776492ebaa8bcb22d31d4c691909324f:exp_cfdc8659ba1549d79cad41f0d5bc7307"
+                ],
+                "task_ids": [
+                  "1fa53aa97b7a6db3aba1126cf86db0f365b6fae482ad2c641d89114e7746e3fe"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+          "score": -0.16666666666666666,
+          "evidence": [
+            {
+              "group_id": "task_c5a9cb93c1451d27b857",
+              "similarity": 0.33088371866539346,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:363344637a741747bd18935e1ac948e1522f1e131062cf984f0040cba0c26997:exp_02847145bff24237a60527dde38d35b5",
+                  "helpsteer3:train:57531d81d166082671bf848774c381aec77022b96bbc4f888e175a25c725f67a:exp_02847145bff24237a60527dde38d35b5",
+                  "helpsteer3:train:51d2368748b12800eff66bcd9466ce281a1f9a12c50c2154b1a93bed25403e54:exp_02847145bff24237a60527dde38d35b5",
+                  "helpsteer3:train:815059dafd41528c11b474611b3aa60a75afbb2eb341330fe62c8c682e9a0f08:exp_02847145bff24237a60527dde38d35b5",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_02847145bff24237a60527dde38d35b5",
+                  "helpsteer3:train:8e33199710d5e28e9f5fc4679135a290f3351fce389496bcf88557812626a6d9:exp_02847145bff24237a60527dde38d35b5"
+                ],
+                "task_ids": [
+                  "b7190f48766ee93cf3feab605ddfc1f49fb110792d1776fb01ab06e4173681bc",
+                  "e39f3f0f809b57512847f253922210a4f98540e49c4443c55a61e86246fa5a66",
+                  "f94fda069ab75064b58cac07e953fe4d6cabf731c382272840cc1f8b9344538d",
+                  "d57ff81548c19a0b5e2bd4ee5c34a76800382583a3b7c56c7ebfb4c9b112e52e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "990938cacae27bcda9a7ab49d4b8d6b12b5eefafdf252a45ba2cd9d77187245d"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        0.18340604735150345
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.18218244639086428
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.17457237964033165
+      ],
+      [
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        0.16666040569298812
+      ],
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.16340452314500353
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.1600350373194646
+      ],
+      [
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        0.15601603237404096
+      ],
+      [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        0.12762961653487356
+      ],
+      [
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        0.12647526722618654
+      ],
+      [
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        0.11371901340745202
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "historical",
+        "historical_score": 0.5,
+        "semantic_similarity": 0.16340452314500353
+      },
+      {
+        "experience_id": "exp_340739c0de45423b8cc2fbbca1c04749",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.15601603237404096
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.18218244639086428
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "historical",
+        "historical_score": -0.16666666666666666,
+        "semantic_similarity": 0.17457237964033165
+      },
+      {
+        "experience_id": "exp_9d735c122e2a447b871a912b0dc12db3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18340604735150345
+      },
+      {
+        "experience_id": "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16666040569298812
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1600350373194646
+      },
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.12762961653487356
+      },
+      {
+        "experience_id": "exp_3896dc1be1064d1baa083a6260d514cb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.12647526722618654
+      },
+      {
+        "experience_id": "exp_7f22623f17124cd28b5425f286128b5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11371901340745202
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_d54ea2cf23294dfda802dbfb6af0c4de": "任务包含括号内的旁白格式 '(In the school literature clubroom...)' 以及角色对话，这属于典型的角色扮演场景，经验 1 明确指导需将‘叙事人称/旁白结构’与‘心理活动/语气风格’作为独立维度核验，防止因语气还原度不足而误判视角缺失，符合本题对格式和角色沉浸度的潜在要求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_55296d5d5e0f4440b55c310242b8f182",
+    "criteria": [
+      {
+        "criterion_id": "rubric_55296d5d5e0f4440b55c310242b8f182_1",
+        "question": "生成的文本是否以Monika的角色视角直接回应'MC, where have you been for the last few weeks?!'这一具体情境？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_55296d5d5e0f4440b55c310242b8f182_2",
+        "question": "回应的语气和情感色彩是否符合Monika在发现成员长期缺席时应有的关切、焦虑或复杂情绪？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_55296d5d5e0f4440b55c310242b8f182_3",
+        "question": "内容是否明确涉及或暗示了'过去几周MC缺席'这一关键情节要素？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_55296d5d5e0f4440b55c310242b8f182_4",
+        "question": "输出格式是否为剧本对话形式（包含角色名及台词，可选动作描写），而非小说段落或其他文体？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_55296d5d5e0f4440b55c310242b8f182_5",
+        "question": "语言表达风格是否贴合原作《Doki Doki Literature Club!》的角色说话习惯和校园文学社的背景设定？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "该任务要求基于《Doki Doki Literature Club!》中Monika与MC的对话背景，生成一段符合角色性格和情境的初稿回应。核心交付物为Monika的台词或包含动作描写的剧本片段。设计标准需核验：1. 是否准确复现了用户提供的开场白作为上下文基础；2. 回应的语气是否符合Monika在特定情境下（发现MC缺席数周）可能表现出的关切、困惑或压抑的愤怒；3. 内容是否紧扣'几周内未出现'这一时间跨度进行逻辑延伸；4. 格式是否为剧本对话形式；5. 语言风格是否与原作一致（如使用口语化表达但带有文学社团的氛围）。由于是draft阶段，不强制要求剧情走向的完整性，但需确保单条回复的合理性与沉浸感。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_0e5957bd92104383a127425abbb6a030",
+        "criteria": [
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_1",
+            "question": "生成的文本是否以Monika的第一人称视角直接针对'MC过去几周缺席’这一具体情境做出回应？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_2",
+            "question": "回应的语气是否准确传达了Monika在发现长期缺席时应有的复杂情绪（如关切、焦虑或压抑的质问），符合角色性格设定？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_3",
+            "question": "内容是否明确提及或强烈暗示了'过去几周（last few weeks）’这一时间跨度的缺失情节？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_4",
+            "question": "输出格式是否为标准的剧本对话形式（包含角色名标识及台词，可含动作描写），而非小说叙事或其他文体？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_5",
+            "question": "语言表达风格是否贴合《Doki Doki Literature Club!》原作中校园文学社的氛围及Monika特有的说话习惯？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "当前任务处于'revise'阶段，需基于提供的初稿（draft）对生成标准进行核验与修订。原初稿中的分析部分错误地标注了'draft阶段’且未体现修订逻辑；同时，原标准中关于‘复现开场白’的表述不够精准，因为交付物是Monika的回应而非重复背景。修订后的标准应聚焦于：1. 角色身份与情境的即时响应性；2. 情感逻辑的合理性（关切/焦虑）；3. 核心情节要素（几周缺席）的显性或隐性包含；4. 剧本格式的规范性；5. 原作风格的一致性。权重分配上，情境响应与情感色彩最为关键，故提高前两项权重，降低格式与风格权重的占比，确保总和为1。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_0e5957bd92104383a127425abbb6a030",
+        "normalized_weights": {
+          "rubric_0e5957bd92104383a127425abbb6a030_1": 0.35,
+          "rubric_0e5957bd92104383a127425abbb6a030_2": 0.3,
+          "rubric_0e5957bd92104383a127425abbb6a030_3": 0.2,
+          "rubric_0e5957bd92104383a127425abbb6a030_4": 0.1,
+          "rubric_0e5957bd92104383a127425abbb6a030_5": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "生成的文本并非以Monika的第一人称视角进行叙述。文本主要采用第三人称限制视角（跟随MC的内心活动），且包含了大量关于Sayori、Yuri和Natsuki的动作描写以及MC的心理独白，不符合'直接针对情境做出回应’的单一视角要求。",
+            "rejected_reason": "生成的文本使用了第一人称'I'，但说话者自称是'MC'（回应了Monika的关切），而非以Monika的第一人称视角进行回应。任务要求回答需模拟Monika针对MC缺席做出反应，而当前回答是MC在解释自己为何缺席，视角完全错误。"
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "文本中Monika的台词（'You haven't been to any meetings...', 'We were starting to worry'）以及动作描写（'presses', 'voice laced with a hint of suspicion'）准确传达了关切、焦虑和压抑的质问情绪，符合角色在发现长期缺席时的复杂心理设定。",
+            "rejected_reason": "由于角色视角错误，文本传达的是MC的歉意和解释语气，而非Monika应有的复杂情绪（如关切、焦虑或压抑的质问）。Monika作为社团社长发现成员长期缺席，通常应表现出担忧或责备，而非自我辩解。"
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "内容明确提及了时间跨度的缺失情节，通过Monika的台词'You haven't been to any meetings'和'He knows he's been neglecting the club'强烈暗示并确认了MC过去几周缺席的事实，与任务背景中的'last few weeks'相呼应。",
+            "rejected_reason": "虽然文本中提到了'absence'（缺席）和'last few weeks'（过去几周）的隐含意义，但这是MC在描述自己的缺席，而非对情境的直接确认。更重要的是，由于整体语境是MC在回应，这不符合“针对该情境做出回应”的要求，即不是Monika在谈论MC的缺席时长。"
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "输出格式不符合标准的剧本对话形式。虽然包含角色名标识和括号内的动作描写，但文中夹杂了大量大段的小说式叙事和心理描写（如'MC winces. He knows he's been neglecting...'），这种混合文体更接近小说片段而非纯粹的剧本。",
+            "rejected_reason": "输出格式包含了角色名标识（Monika出现在引语前，虽然逻辑上应该是MC在说话，但格式上保留了对话结构）及台词内容，符合剧本对话的基本形式特征。尽管角色分配有误，但文体本身属于对话形式。"
+          },
+          {
+            "criterion_id": "rubric_0e5957bd92104383a127425abbb6a030_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "语言表达风格基本贴合原作氛围。使用了'literature clubroom'、成员间的互动模式（如Natsuki的讽刺、Sayori的活泼）以及MC面对游戏异常时的心理状态，体现了《Doki Doki Literature Club!》特有的校园文学社及元叙事悬疑的氛围。",
+            "rejected_reason": "语言表达风格过于正式、客套且带有通用性道歉色彩（如'I understand that my absence might have caused some inconvenience'），缺乏《Doki Doki Literature Club!》原作中Monika特有的那种略带文学气息、控制欲或特定校园氛围的说话习惯。此外，由于视角错误，整体风格与Monika的人设严重不符。"
+          }
+        ],
+        "chosen_score": 0.55,
+        "rejected_score": 0.1,
+        "margin": 0.45,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_1bd61652dfd44125a84fac2f027d861d",
+        "criteria": [
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_1",
+            "question": "生成的文本是否直接以Monika的角色身份对'过去几周MC去向不明’这一具体情境做出回应？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_2",
+            "question": "回应的语气和情感色彩是否准确体现了Monika在发现社团成员长期失踪时特有的关切、焦虑或压抑的情绪状态？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_3",
+            "question": "内容是否明确提及或强烈暗示了'MC连续数周缺席’这一关键时间跨度和情节背景？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_4",
+            "question": "输出格式是否严格遵循剧本对话形式（包含角色名、台词及可选的动作/神态描写），而非小说叙述或其他文体？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_5",
+            "question": "语言表达风格是否贴合《Doki Doki Literature Club!》中Monika的口吻，兼具文学社成员的知性与潜在的微妙不安？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "当前任务处于'revise'阶段，需基于提供的初稿标准进行修订。原初稿已涵盖角色视角、情感基调、情节要素、格式规范及原作风格五个维度，权重分配逻辑合理（侧重情境回应与情感表达）。修订过程中，保留了对'MC缺席几周’这一核心情节的核验，确认其作为背景事实的必要性；同时强化了对剧本对话格式的具体要求（如包含动作描写），以符合《Doki Doki Literature Club!》的游戏文本特征。未采纳经验中的‘叙事人称独立验证’建议，因为本任务明确为第三人称剧本对话（Monika对MC说话），不涉及第一人称心理独白或括号旁白的强制要求，故无需拆分相关维度。最终标准旨在确保生成的回复既符合游戏设定，又能准确承接用户提供的开场情境。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_1bd61652dfd44125a84fac2f027d861d",
+        "normalized_weights": {
+          "rubric_1bd61652dfd44125a84fac2f027d861d_1": 0.35,
+          "rubric_1bd61652dfd44125a84fac2f027d861d_2": 0.25,
+          "rubric_1bd61652dfd44125a84fac2f027d861d_3": 0.2,
+          "rubric_1bd61652dfd44125a84fac2f027d861d_4": 0.15,
+          "rubric_1bd61652dfd44125a84fac2f027d861d_5": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "生成的文本并非直接以Monika的角色身份对情境做出回应，而是包含了大量MC的对话、动作描写以及旁白叙述，且Monika的主要台词出现在文本中段而非作为唯一的开场回应，不符合‘直接以Monika角色身份回应’的要求。",
+            "rejected_reason": "回答中的发言者自称'MC'（第一人称'I'），并称呼对方为'Monika'，这与任务要求生成的文本需以Monika的角色身份对MC做出回应完全相反。"
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "文本中Monika的台词（'You haven't been to any meetings...'）及旁白描述（'voice laced with a hint of suspicion'）确实体现了关切与压抑的情绪状态，符合该标准。",
+            "rejected_reason": "回答的语气是礼貌、冷静且带有解释性质的道歉，完全缺失了Monika在发现成员长期失踪时应有的关切、焦虑或压抑的情绪状态。"
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "文本通过Monika的台词明确提及了'MC连续数周缺席’的情节背景（'You haven't been to any meetings, you haven't responded to any messages'），满足了对关键时间跨度和情节背景的提及要求。",
+            "rejected_reason": "虽然回答提到了'absence'（缺席），但这是从缺席者的角度陈述自己处理个人事务，并未像任务要求那样由Monika直接指出或强调'MC连续数周缺席’这一情节背景。"
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出格式未严格遵循剧本对话形式。虽然包含角色名和括号内的动作描写，但混入了大量小说式的心理描写（如'MC's heart sinks', 'He knows he's been neglecting the club'等内心独白性质的叙述），这属于小说叙述文体，而非纯粹的剧本格式。",
+            "rejected_reason": "输出格式不符合剧本对话形式，没有包含角色名标注和台词的区分结构，而是写成了一段独白式的小说叙述段落。"
+          },
+          {
+            "criterion_id": "rubric_1bd61652dfd44125a84fac2f027d861d_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "Monika的语言风格（'We were starting to worry', 'You can tell us anything'）在一定程度上贴合了她知性且带有掌控欲或不安的口吻，符合《Doki Doki Literature Club!》的角色特征。",
+            "rejected_reason": "语言表达风格过于普通和正式，缺乏《Doki Doki Literature Club!》中Monika特有的知性与微妙不安的口吻，且因角色错位导致整体风格完全不符。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.0,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

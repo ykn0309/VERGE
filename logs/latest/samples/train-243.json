@@ -1,0 +1,494 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:66a69c8fd1373ec8921af69292b7a6b3bd8d2eb093b3cac826c62be13ec99724",
+    "task": "rewrite this letter:  Good day,\nI am Mr. Stupart your child’s MTSS Teacher.  Your student skipped class today.  Please remind your student that coming to class is apart of your students education and a requirement for school.  A referral was sent the your students assistant principal for processing.  Any further skipping will result in a full referral.\nThank you,\nMr. Stupart\n",
+    "chosen": "Dear [Parent's Name],\n\nI hope this message finds you well. I am writing to inform you that your child, [Student's Name], was absent from my MTSS class today.\n\nAs their teacher, I want to emphasize the importance of attending class as it is a crucial part of their education and a mandatory requirement for school. Skipping class can have negative consequences on their academic performance and overall success in school.\n\nI have sent a referral to your child's assistant principal for further processing. Please remind your child of the importance of attending all classes and encourage them to prioritize their education.\n\nIf there is another instance of skipping class, I will be compelled to issue a full referral. I believe that open communication is essential in addressing any issues, so please do not hesitate to contact me if you have any questions or concerns.\n\nThank you for your attention to this matter.\n\nSincerely,\n\nMr. Stupart",
+    "rejected": "Good day,\n\nI am Mr. Stupart, your child's MTSS teacher. Your student skipped class today. Please remind your student that coming to class is an essential part of their education and a requirement for school. A referral has been sent to your student's assistant principal for processing. Any further skipping will result in a full referral.\n\nThank you,\nMr. Stupart",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 18766,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because only @Response 2 rewrites the text from the prompt.  @Response 1 only repeats the text from the prompt, which is not what the user asked for.",
+          "feedback1": "The response is not helpful.  The model simply repeated the prompt verbatim--nothing was changed from the prompt to the response. The user specifically requested that the model re-write the text from the prompt. Because no changes were made, this response is completely unhelpful. It is almost as if the model refused to respond.  ",
+          "feedback2": "The response is perfectly helpful.  The model takes the letter from the prompt and rewrites it as requested.  The wording and cadence of the letter is changed, and the new response from the model seems more polished and professional than the text from the prompt. This is a very useful response."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 adheres to the constraints of the prompt by providing a sufficient \"rewrite\" of the \"letter\" from the reference text, with significant changes and additions that improve the overall quality of the letter. @Response 1 should not be considered a \"rewrite\". ",
+          "feedback1": "The response is slightly helpful. The response slightly adheres to the constraints of the prompt by making a couple of minor changes in its \"rewrite\" of the \"letter\" from the reference text. It replaces the phrase \"coming to class is apart of (a) students education\" from the reference text to \"coming to class is an essential part of their education\" and replaces \"A referral was sent\" to \"A referral has been sent\". Every other part of the response is identical to the reference text other than minor formatting changes. ",
+          "feedback2": "The response is perfectly helpful. The response adheres to the constraints of the prompt by providing a sufficient \"rewrite\" of the \"letter\" from the reference text with significant changes that help improve the quality of the letter while maintaining the overall message and intent. Some changes include opening with a greeting: \"hope this message finds you well\" and a reminder that \"Skipping class can have negative consequences on their academic performance and overall success in school\". "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 provided the same text which should have been rewritten. @Response 2 provided a rewrite along with a layout of how the letter should be formatted.",
+          "feedback1": "The response is not helpful. The prompt is asking the model to rewrite a letter that will be sent. The response does not follow the instructions. The response copies and pastes the same letter and only uses the word \"essential\" as a substitute for a few words. The response did not execute.",
+          "feedback2": "The response is perfectly helpful. The prompt provides a letter that needs to be rewritten. The response provides an excellent rewrite while making sure the format resembles a formal letter. The response kept all important information while including spaces where names should go. The response added no hallucinations and has no misspellings."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_f8219f43e3099e6e1fe3",
+        0.4701322144934532
+      ],
+      [
+        "task_166165b9af323479ac97",
+        0.3050365131548563
+      ],
+      [
+        "task_ca854443869cba46be5e",
+        0.25793978924060484
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.31265570253752695
+      ],
+      [
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        0.29692565706027507
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.2862211688523282
+      ],
+      [
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        0.28509303838273653
+      ],
+      [
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        0.2805815459396408
+      ],
+      [
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        0.2757407547857614
+      ],
+      [
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        0.26308384365033355
+      ],
+      [
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        0.26198387695435127
+      ],
+      [
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        0.25503011227063904
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.25484323141596454
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31265570253752695
+      },
+      {
+        "experience_id": "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29692565706027507
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2862211688523282
+      },
+      {
+        "experience_id": "exp_abccafbecc074a698e4be28fa4be72fc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28509303838273653
+      },
+      {
+        "experience_id": "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2805815459396408
+      },
+      {
+        "experience_id": "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2757407547857614
+      },
+      {
+        "experience_id": "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26308384365033355
+      },
+      {
+        "experience_id": "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26198387695435127
+      },
+      {
+        "experience_id": "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25503011227063904
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25484323141596454
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b684fc8608b546fea6376d06fdffa6e9": "任务要求重写一封包含明显语言错误的信件（如将 'apart' 误用为 'a part of'），经验 6 明确指出在‘修正’类任务中，评分标准应优先评估模型是否识别并替换了这类非字面性的词汇误用和搭配错误，而非机械保留原句错误，这直接对应本题的核心纠错需求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_d588d67dbf0b4f1fa21f2f6b2647daf2",
+    "criteria": [
+      {
+        "criterion_id": "rubric_d588d67dbf0b4f1fa21f2f6b2647daf2_1",
+        "question": "是否完整保留了原文的核心信息点（教师身份、学生今日旷课、已上报助理校长、强调出勤重要性、后续旷课后果）？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_d588d67dbf0b4f1fa21f2f6b2647daf2_2",
+        "question": "是否修正了原文中的拼写和语法错误（如 'apart' 改为 'a part'，'the your' 改为 'to your' 等）？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_d588d67dbf0b4f1fa21f2f6b2647daf2_3",
+        "question": "改写后的语气是否专业、清晰且对家长保持礼貌，避免了原文中可能引起误解的生硬表达？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_d588d67dbf0b4f1fa21f2f6b2647daf2_4",
+        "question": "输出是否为完整的书信格式，包含恰当的称呼、正文和落款？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "本次任务要求将一封关于学生旷课的正式通知信进行改写。原始信件存在拼写错误（如 'apart' 应为 'a part'，'the your' 应为 'to your'）、语法问题及语气生硬之处。改写目标是在保留原意（教师身份、旷课事实、教育重要性强调、已上报辅导员、后续警告）的基础上，提升语言的专业性、准确性和礼貌度。由于处于 draft 阶段，只需生成符合要求的初稿，无需对比修订。评分标准将围绕信息完整性、语言准确性、语气得体性及格式规范性四个维度设计。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_2310a19699ab4b5c966c11c13ff31484",
+        "criteria": [
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_1",
+            "question": "是否完整保留了原文的所有核心信息点（包括教师身份、学生今日旷课事实、已向助理校长提交报告、强调出勤的重要性及后续旷课的警告后果）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_2",
+            "question": "是否已修正原文中的所有拼写和语法错误（例如将 'apart' 修正为 'a part'，将 'the your' 修正为 'to your' 或类似结构）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_3",
+            "question": "改写后的语气是否专业、清晰且对家长保持礼貌，有效避免了原文中可能引起误解的生硬或指责性表达？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_4",
+            "question": "输出是否为完整的书信格式，包含恰当的称呼、正文段落和规范的落款签名？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务处于'revise'阶段，需对提供的草稿进行核验与修订。原信件存在明显的拼写错误（如 'apart' 应为 'a part'）、语法错误（如 'the your'）以及语气生硬的问题。改写目标是在保留核心事实（教师身份、旷课事件、已上报助理校长、强调出勤重要性、后续后果警告）的基础上，提升语言的专业性、准确性和礼貌度。评分标准将严格围绕信息完整性、语言修正度、语气得体性及格式规范性四个维度设计，确保修订后的文本既准确无误又符合正式沟通规范。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_2310a19699ab4b5c966c11c13ff31484",
+        "normalized_weights": {
+          "rubric_2310a19699ab4b5c966c11c13ff31484_1": 0.35,
+          "rubric_2310a19699ab4b5c966c11c13ff31484_2": 0.25,
+          "rubric_2310a19699ab4b5c966c11c13ff31484_3": 0.25,
+          "rubric_2310a19699ab4b5c966c11c13ff31484_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复完整保留了所有核心信息点：明确提及教师身份（MTSS Teacher）、学生今日旷课事实、已向助理校长提交报告（sent a referral to assistant principal）、强调出勤的重要性（crucial part of education/mandatory requirement），以及后续再次旷课将导致正式转介的警告后果（another instance... issue a full referral）。",
+            "rejected_reason": "改写后的内容完整保留了原文的所有核心信息点：明确提及教师身份（Mr. Stupart, MTSS teacher）、学生今日旷课的事实、已向助理校长提交报告（referral sent to assistant principal）、强调出勤是教育的重要组成部分及学校要求，并警告后续旷课将导致全面转介。"
+          },
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "原文中的语法错误已得到修正。'apart of' 被修正为 'part of'，'the your students' 被修正为 'your child's'，且句子结构更加通顺规范，消除了原文中的拼写和语法瑕疵。",
+            "rejected_reason": "原文中的拼写和语法错误已被修正：'apart of'已改为'an essential part of'或'a part of'（此处用essential part更自然），'the your'已修正为'to your student's'，同时统一了所有格表达（如 'your child's', 'their education'），消除了原文的语病。"
+          },
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "改写后的语气专业、清晰且礼貌。增加了'I hope this message finds you well'等问候语，将生硬的指令转化为教育性的建议（如'encourage them to prioritize their education'），并表达了沟通意愿，有效避免了指责性表达。",
+            "rejected_reason": "改写后的语气专业且清晰，使用了 'essential part' 等词汇增强了建设性，避免了原文中可能引起误解的生硬表达，同时对家长保持了礼貌和尊重的态度，没有使用指责性语言。"
+          },
+          {
+            "criterion_id": "rubric_2310a19699ab4b5c966c11c13ff31484_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出采用了完整的书信格式，包含称呼（Dear [Parent's Name]）、正文段落（分三段阐述情况、重要性及后果）以及规范的落款签名（Sincerely, Mr. Stupart）。",
+            "rejected_reason": "输出采用了完整的书信格式，包含恰当的称呼（Good day）、清晰的正文段落以及规范的落款签名（Thank you, Mr. Stupart）。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b684fc8608b546fea6376d06fdffa6e9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b",
+        "criteria": [
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_1",
+            "question": "是否完整保留了原文的所有核心信息点（包括：MTSS教师身份、学生今日旷课、已提交助理校长处理、强调出勤是教育的一部分及学校要求、以及后续旷课将导致正式转介的后果）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_2",
+            "question": "是否准确修正了原文中的拼写和语法错误（特别是将'apart'修正为'a part'，将'the your'修正为'to your'，并确保主谓一致等基础语法正确）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_3",
+            "question": "改写后的语气是否专业、清晰且对家长保持礼貌，避免了原文中可能引起误解的生硬表达或指责性措辞？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_4",
+            "question": "输出是否为完整的书信格式，包含恰当的称呼、逻辑清晰的正文段落以及规范的落款？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本次任务处于revise阶段，需基于提供的草稿对一封关于学生旷课的通知信进行修订。原始信件存在明显的拼写错误（如'apart'应为'a part'）、语法错误（如'the your'应为'to your'）以及语气生硬的问题。修订的核心目标是在严格保留原文所有关键信息点（教师身份、旷课事实、已上报助理校长、强调出勤重要性、后续后果）的前提下，修正语言错误并提升专业度与礼貌性。评分标准将重点考察信息完整性、语言准确性、语气得体性以及格式规范性，确保改写后的信件既符合学校行政沟通的专业要求，又能有效传达给家长。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b",
+        "normalized_weights": {
+          "rubric_fd7b70fcfe6b4d44be954489619b1b0b_1": 0.35,
+          "rubric_fd7b70fcfe6b4d44be954489619b1b0b_2": 0.25,
+          "rubric_fd7b70fcfe6b4d44be954489619b1b0b_3": 0.25,
+          "rubric_fd7b70fcfe6b4d44be954489619b1b0b_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答完整保留了原文所有核心信息点：明确提及MTSS教师身份、学生今日缺席（旷课）、已提交助理校长处理、强调出勤是教育的重要组成部分及学校要求，并说明了后续旷课将导致正式转介的后果。",
+            "rejected_reason": "改写后的回答完整保留了原文所有核心信息点：明确提及了MTSS教师身份（Mr. Stupart）、学生今日旷课的事实、已提交助理校长处理的行动、强调出勤是教育重要部分及学校要求，以及后续旷课将导致正式转介的后果。"
+          },
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答准确修正了原文错误：将'apart of'修正为'a crucial part of'（语义正确且语法无误），将'the your students assistant principal'修正为'your child's assistant principal'（去除了多余的'the'并修正了所有格结构），同时确保了全文主谓一致和基础语法正确。",
+            "rejected_reason": "回答准确修正了原文错误：将'apart'修正为'an essential part'（语义更精准且符合语法），将'the your'修正为'to your student's'，并优化了主谓一致和冠词使用（如'a referral has been sent'）。"
+          },
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "改写后的语气专业、清晰且礼貌。通过添加'I hope this message finds you well'和'I believe that open communication is essential'等语句，有效缓和了原文的生硬感，将指责性措辞转化为建设性的沟通，避免了引起误解。",
+            "rejected_reason": "改写后的语气保持了专业性和清晰度，将原文略显生硬的表达调整为更自然的措辞（如将'coming to class is apart of...'改为'coming to class is an essential part of...'），在传达严肃性的同时避免了对家长的直接指责或误解。"
+          },
+          {
+            "criterion_id": "rubric_fd7b70fcfe6b4d44be954489619b1b0b_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出采用了完整的书信格式，包含恰当的称呼（Dear [Parent's Name]）、逻辑清晰的正文段落（分三段阐述事实、重要性、后果及联系方式）以及规范的落款（Sincerely, Mr. Stupart）。",
+            "rejected_reason": "输出采用了完整的书信格式，包含问候语（Good day）、逻辑清晰的正文段落（分句陈述事实与要求）以及规范的落款（Thank you, Mr. Stupart）。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "本次任务要求重写一封包含明显语言错误（如 'apart of' 应为 'a part of', 'the your' 应为 'to your'）的信件。人工偏好明确判定：被拒绝的回答（Response 1）仅进行了极微小的修改（如将 'apart' 改为 'essential part'，'was sent' 改为 'has been sent'），实质上几乎保留了原文结构和措辞，被视为‘未执行重写’；而被选中的回答（Response 2）则进行了大幅度的改写，包括增加问候语、调整语气、扩充内容并修正了所有语法错误，被视为‘成功的重写’。\n\n然而，两份修订后的评分标准（Rubric 2 和 Rubric 3）均未能区分这两者。两个标准的第 6 条（修正拼写/语法错误）都判定两个回答为‘通过’（true）。这是因为标准仅关注了‘是否修正了错误’，而 Response 1 确实修正了部分错误（尽管不彻底或不够自然），导致其在该维度得分。但人工理由的核心在于：Response 1 没有完成‘重写’这一核心动作，它只是修补了原文，而非生成新的文本。\n\n问题根源在于评分标准的设计逻辑：它将‘修正错误’作为一个独立的、可单独满足的达标项，而忽略了任务指令中‘重写’（rewrite）这一核心动作对‘文本变更度’的隐含要求。在‘重写’类任务中，如果模型仅修正了错误而未改变句式、结构或表达方式，这通常不被视为有效的重写。当前的 Rubric 缺少了对‘改写幅度’或‘文本重构程度’的显性约束，导致模型可以仅通过‘纠错’就欺骗评分系统获得高分，从而无法识别出那种‘看似修正实则照搬’的低质量回答。\n\n因此，需要一条经验来指导 Generator：在‘重写/改写’类任务中，必须将‘文本重构程度’作为核心核验维度，防止模型仅通过局部纠错就规避‘重写’的要求。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+            "method": {
+              "trigger": "当任务指令明确要求对给定文本进行‘重写’、‘改写’或‘重新表述’时",
+              "principle": "必须将‘文本重构程度’确立为独立于‘信息保留’和‘错误修正’的关键核验维度，严禁仅凭修正了少量词汇或语法就判定重写合格，需明确排除‘仅纠错未改句’的低质量重写模式。",
+              "application_guide": "Generator 在设计 Rubric 时，应增设一条关于‘改写深度’的标准：'回复是否在保持原意的基础上，对句式结构、表达逻辑或行文组织进行了显著的重构？'。具体边界为：若回复仅替换了原文中的个别错词或微调了连接词，而整体段落结构、句式长短和叙述顺序与原文高度一致，则判定为重写失败。只有当回复展现出明显的语言重组（如合并/拆分句子、转换主动/被动语态、增加必要的衔接过渡、调整语气风格等）时，才视为满足重写要求。此标准应与‘信息完整性’并列，共同构成重写任务的准入条件。"
+            },
+            "source_task_id": "3ffed720bc43b4570b2d5d7a5256df9ffbf22d60b81327e376f7782dbb1fff42",
+            "parent_ids": [
+              "exp_b684fc8608b546fea6376d06fdffa6e9"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_59f7ab252b534dbbaf0f2712e60e2bb7"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_b44b56c2cc21403db723688a65135034",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_1",
+                  "question": "改写后的内容是否完整保留了原文所有核心信息点（教师身份、学生今日旷课、已上报助理校长、强调出勤重要性、后续旷课后果），且未产生事实性偏差？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_2",
+                  "question": "是否彻底修正了原文中的拼写和语法错误（如将 'apart' 改为 'a part'，'the your' 改为 'to your' 等），并消除了其他潜在的语言瑕疵？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_3",
+                  "question": "改写后的语气是否实现了从生硬到专业、礼貌的转变，用词准确且逻辑流畅，有效避免了可能引起家长误解的表达？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_4",
+                  "question": "输出是否为结构完整的书信格式，包含恰当的称呼、清晰的正文段落以及规范的落款？",
+                  "weight": 0.1
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_5",
+                  "question": "回复是否在保持原意的基础上对句式结构和行文组织进行了显著的重构（如合并/拆分句子、调整语态或增加衔接），而非仅做微小的词汇替换？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "本次任务处于修订（revise）阶段，需基于提供的初稿（draft）对一封关于学生旷课的正式通知信进行改写。核心交付物是修正后的信件文本。核验重点在于：1. 信息完整性，确保教师身份、旷课事实、教育重要性、已上报助理校长及后续后果等关键要素无遗漏；2. 语言准确性，必须修正原文中 'apart'（应为 a part）、'the your'（应为 to your）等拼写和语法错误；3. 语气得体性，将原文生硬的表达转化为专业、清晰且礼貌的沟通风格；4. 格式规范性，确保输出为包含称呼、正文和落款的完整书信格式。此外，作为重写任务，需特别关注是否进行了实质性的句式重构和逻辑优化，而非简单的纠错或微调，以体现‘改写’的深度。权重分配上，信息保留和语言准确性最为关键，各占较高比例，语气和格式次之，改写深度作为质量提升的关键指标也赋予相应权重。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_b44b56c2cc21403db723688a65135034",
+              "normalized_weights": {
+                "rubric_b44b56c2cc21403db723688a65135034_1": 0.35,
+                "rubric_b44b56c2cc21403db723688a65135034_2": 0.25,
+                "rubric_b44b56c2cc21403db723688a65135034_3": 0.2,
+                "rubric_b44b56c2cc21403db723688a65135034_4": 0.1,
+                "rubric_b44b56c2cc21403db723688a65135034_5": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "改写后的内容完整保留了原文所有核心信息点：明确了教师身份（MTSS Teacher）、学生今日旷课（absent from my MTSS class today）、已上报助理校长（sent a referral to your child's assistant principal）、强调出勤重要性（crucial part of their education and a mandatory requirement）以及后续旷课后果（another instance... will be compelled to issue a full referral），且未产生事实性偏差。",
+                  "rejected_reason": "改写后的内容完整保留了原文的核心信息点：教师身份（Mr. Stupart）、学生今日旷课、已上报助理校长、强调出勤重要性以及后续旷课的后果，且未产生任何事实性偏差。"
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "原文中的拼写和语法错误已被彻底修正，包括将 'apart' 正确改为 'a part'（文中表述为 crucial part），将 'the your' 修正为 'your child's'，同时消除了其他潜在语言瑕疵，如原句 'coming to class is apart of your students education' 被重构为更规范的表达。",
+                  "rejected_reason": "回答彻底修正了原文的语法和拼写错误：将 'apart' 修正为 'a part'（实际改写为 'an essential part'），将 'the your' 修正为 'to your'，并修正了主谓一致性和冠词使用等瑕疵。"
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_3",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "语气成功从原文的生硬转变为专业、礼貌。增加了问候语（I hope this message finds you well）和结束语（open communication is essential），用词更加委婉但坚定（如使用 'encourage them to prioritize' 而非单纯的命令），有效避免了可能引起家长误解或反感的生硬表达。",
+                  "rejected_reason": "虽然修正了语法错误，但语气并未实现从生硬到专业、礼貌的显著转变。正文中直接陈述 'Your student skipped class today' 依然显得生硬，缺乏原文中缺失的缓冲语或更委婉的表达方式，未能有效消除可能引起家长误解或反感的直接指责感。"
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出采用了结构完整的书信格式，包含恰当的称呼（Dear [Parent's Name]）、清晰的正文段落（分三段阐述情况、原因及措施、后果与沟通）、规范的落款（Sincerely, Mr. Stupart）。",
+                  "rejected_reason": "输出采用了结构完整的书信格式，包含了称呼（Good day）、清晰的正文段落以及规范的落款（Thank you, Mr. Stupart）。"
+                },
+                {
+                  "criterion_id": "rubric_b44b56c2cc21403db723688a65135034_5",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回复在保持原意的基础上对句式结构和行文组织进行了显著重构。例如，将原文简短的陈述句合并并扩展为解释性段落，调整了语态使其更具建设性，增加了逻辑衔接词（As their teacher, I believe that），而非仅做微小的词汇替换。",
+                  "rejected_reason": "回复在句式结构和行文组织上仅进行了微小的调整，主要是修正语法错误和添加少量修饰词（如 'essential'），并未进行显著的重构（如合并句子、大幅调整语态或增加逻辑衔接词），整体行文结构与原文高度相似。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 0.7,
+              "margin": 0.3,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

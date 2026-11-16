@@ -1,0 +1,12 @@
+{
+  "experience_id": "exp_cda61e23c69c4146a3a79ac2beddffba",
+  "method": {
+    "trigger": "当任务明确要求生成特定数量的文档单元（如'one slide', 'a single page'）或限定输出范围时",
+    "principle": "必须设立独立的‘输出范围合规性’核验准则，将‘实际生成的单元数量’与‘任务指定的目标数量’进行严格比对，任何超出指定范围的生成内容均视为不满足基础约束，而非仅仅是内容冗余。",
+    "application_guide": "Generator在设计Rubric时，应首先提取任务中的数量限定词（如'a slide', 'three points'），并设立一条权重较高的标准（如Criterion X）提问：'输出是否严格限制在任务指定的数量范围内？'。该标准的判定逻辑应为：若任务要求生成N个单元，而回答生成了M个单元且M > N，则直接判定为False；若M < N，同样判定为False。严禁仅评估内容质量而忽略数量约束，防止模型因提供额外信息而被误判为高分。"
+  },
+  "source_task_id": "7e986857cbe329ad329b7a1491bb0d86cf6ceba6a7a7afd2654d65e9c135a20a",
+  "parent_ids": [
+    "exp_f3d7e61e1d0549f5ac66a490fdbe9a60"
+  ]
+}

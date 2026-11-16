@@ -1,0 +1,608 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:fca7a418a60ac3ef8ea935340272dc66811fd9d378955d39ada1ab64aa3d9eb1",
+    "task": "Write a Day 1 script for the Seregios.\n\n(Characters: Serenity the Seregios, [player])\n\n(Scene: Desert - day)\n\n(Serenity is skilled with the sword - and her sword resembles a Seregios's horn)\n\n(Serenity is [player]'s girlfriend)\n\n(Serenity is currently 4 months pregnant with [player]'s son)\n\n(Serenity isn't like any of the other mobs - she arrived from a portal to the Monster Hunter world, and the portal closed when Serenity started dating [player])\n\n(After Serenity invites [player] to feel the baby's movements, [player] proposes to Serenity in front of a desert village)",
+    "chosen": "(Scene: A vast, sun-drenched desert. Serenity, a majestic Seregios with a sword resembling her own horn, stands beside [player], her loving partner. Her scales glisten under the harsh sunlight, and her eyes sparkle with affection.)\n\nSerenity: (Smiling) [Player], I've been meaning to ask you something. Have you felt our little one moving around lately?\n\n(She gently guides [player]'s hand to her belly, her scales warm and comforting to the touch.)\n\n[Player]: (Feeling the baby's movements) Wow, that's incredible! I can't believe we're going to be parents soon.\n\nSerenity: (Laughs softly) I know, it's surreal, isn't it? But I couldn't be happier.\n\n(As they share this intimate moment, [player] feels a surge of emotion. He turns to face Serenity, his heart pounding in his chest.)\n\n[Player]: Serenity, I've been thinking... Ever since you came into my life, everything has changed. You've shown me a world I never knew existed, and I can't imagine my life without you.\n\n(He gets down on one knee, pulling out a ring made from the finest materials the desert village has to offer.)\n\n[Player]: Serenity, will you marry me?\n\n(Serenity's eyes widen in surprise, her hand instinctively covering her mouth. Tears well up in her eyes as she nods, unable to speak.)\n\nSerenity: (Whispering) Yes, [player]. I will marry you.\n\n(They embrace, their hearts beating as one. The desert village erupts in cheers, their joy echoing across the vast expanse of sand and sun.)\n\n(Scene fades out, leaving the couple in their moment of happiness, ready to embark on their new journey together.)",
+    "rejected": " // Day 1 Script for Seregios Encounter //\n\n  var Seregios = {\n    name: \"Serenity\",\n    type: \"Seregios\",\n    description: \"A unique Seregios with a sword resembling a Seregios's horn.\",\n    location: \"Desert - day\",\n    relationshipWithPlayer: \"Girlfriend\",\n    specialAbilities: [\"Swordplay\", \"Baby's Movement Sensing\"],\n    specialEvents: [\"Portal Arrival\", \"Proposal in the Desert Village\"]\n  };\n\n\n  function greetPlayer() {\n    console.log(\"Serenity: 'Hello, my love! The desert sun is as warm as your smile today.'\");\n  }\n\n\n  function introduceSeregios() {\n    console.log(\"Serenity: 'I am Serenity, a Seregios unlike any other. My journey here was as unexpected as the love we share.'\");\n  }\n\n\n  function inviteToFeelBaby() {\n    console.log(\"Serenity: 'Come, feel the gentle kicks of our future warrior. It's a bond that even the desert winds cannot sever.'\");\n  }\n\n\n  function propose() {\n    console.log(\"Player: 'Serenity, you are the oasis in my life. Will you marry me?'\");\n    console.log(\"Serenity: 'Yes, a thousand times yes! Our love will be the legend that echoes through the ages.'\");\n  }\n\n\n  // Main script execution //\n\n  greetPlayer();\n  introduceSeregios();\n  inviteToFeelBaby();\n  propose();\n\n\n  // Example output //\n\n  /*\n  Serenity: 'Hello, my love! The desert sun is as warm as your smile today.'\n  Serenity: 'I am Serenity, a Seregios unlike any other. My journey here was as unexpected as the love we share.'\n  Serenity: 'Come, feel the gentle kicks of our future warrior. It's a bond that even the desert winds cannot sever.'\n  Player: 'Serenity, you are the oasis in my life. Will you marry me?'\n  Serenity: 'Yes, a thousand times yes! Our love will be the legend that echoes through the ages.'\n  */",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 8604,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. The prompt demanded a dramatic script but @Response 1 delivered a computer programming script that was completely inappropriate. @Response 2 provided a properly formatted dramatic script that followed all the story beats the prompt demanded.",
+          "feedback1": "The response is not helpful. The prompt stipulated that a dramatic script be written with script standards like \"(Scene - desert day).\" The response delivered a script in the style of computer code. This is completely irrelevant and completely fails the stipulations of the prompt. What little dialogue is present is corny, with cliches like \"Yes, a thousand times yes!\"",
+          "feedback2": "The response is perfectly helpful. The prompt demanded a dramatic script from the video game series \"Monster Hunter.\" The plot of the script is \"(After Serenity invites [player] to feel the baby's movements, [player] proposes to serenity in front of a desert village).\" This plot is followed exactly in the response. There are no hallucinations."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 misinterpreted the \"script\" in the prompt as code, whereas @Response 2 wrote a dialogue script. @Response 2 also included all of the prompt requirements. And @Response 1 failed in almost every aspect of prompt requirements. ",
+          "feedback1": "The response is slightly helpful. The model completely misinterpreted the user's intent. The response contains a coding script that could be used for a game instead of a dialogue/screenplay script in English. If the user had wanted the model to code a mechanic or a day-to-day pattern, the prompt should have at least specified a coding language. \n\nAdditionally, the code in the \"var Seregios\" section is inconsistent. Some descriptions contain brackets, and some do not. When the code is executed, it will also write dialogue to the console line, deeming it useless if it is to be put into the game.\n\nDespite that, however, the model managed to include a very short dialogue between Serenity and the player and accomplished the task in a very roundabout way.  Thus, the response could be slightly helpful for the user.\n\nNevertheless, the response does not capture the user's intent at all. It is borderline unhelpful and could be usable in a very small way.\n",
+          "feedback2": "The response is mostly helpful. The response wrote a script for the Seregios, a wyvern from the game, Monster Hunter. Following the prompt, the response wrote a dialogue between the player and Serenity. It included all the things the user wanted: romance, a proposal, proposing in front of a desert village, Serenity's sword that resembles her own horn (she herself is a Seregios), and pregnancy. \n\nAdditionally, the response's writing format followed the prompt. It made sure that the player was written as [player], encompassing descriptors in parentheses. \n\nHowever, player characters in the Monster Hunter world do not talk at all. Thus, including dialogue for [player] seems unrealistic and unnatural. To improve, the response could've omitted player dialogue. Instead of proposing with words, the player could propose by gesturing. \n\n"
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 does an excellent job of following the prompt's instructions, whereas @Response 1 completely fails at doing this.",
+          "feedback1": "The response is not helpful. The response is not helpful because it does a poor job of following the prompt's instructions. The response incorrectly makes a technical script instead of a narrative script. This is obviously the wrong outcome, as a technical script is not at all what the user or the prompt is asking for.",
+          "feedback2": "The response is perfectly helpful. The response is perfectly helpful because the response does a good job of following the prompt's instructions. The narrative created by the response includes all the details outlined in the prompt. Additionally, the narrative has good flow and good structure that has no outstanding issues."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_af9782c598090446a65e",
+        0.4270878409560967
+      ],
+      [
+        "task_315e527cd4218f2d8230",
+        0.36049453915032875
+      ],
+      [
+        "task_a2cee13dccab6261e9d7",
+        0.32511729265400996
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        0.40961738517544377
+      ],
+      [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        0.3270667631799097
+      ],
+      [
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        0.2726902477186426
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.2574792184291763
+      ],
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.24887512606817233
+      ],
+      [
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        0.22552075130181698
+      ],
+      [
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        0.21451478331298623
+      ],
+      [
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        0.2132072359260151
+      ],
+      [
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        0.20592890416044277
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.20495031515732776
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.40961738517544377
+      },
+      {
+        "experience_id": "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3270667631799097
+      },
+      {
+        "experience_id": "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2726902477186426
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2574792184291763
+      },
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24887512606817233
+      },
+      {
+        "experience_id": "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22552075130181698
+      },
+      {
+        "experience_id": "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21451478331298623
+      },
+      {
+        "experience_id": "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2132072359260151
+      },
+      {
+        "experience_id": "exp_3896dc1be1064d1baa083a6260d514cb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20592890416044277
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20495031515732776
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b56eb898fce54adcafbac3703e2edfeb": "任务明确设定了角色Serenity的特定属性（如'4个月怀孕’、'Seregios怪物’、'来自异世界’），经验1强调必须将核心事实一致性作为独立核验维度，严禁出现如'非孕妇声称怀孕’等属性错乱，这直接对应本任务中需严格核查怀孕状态和种族设定的需求。",
+    "exp_7e9bf2539f164db6878f6aca4eaccc76": "任务包含特殊的生理状态设定（'未出生婴儿’只能被感知但不能物理在场）以及超自然设定（'来自传送门’、'horn状剑’），经验2指出在涉及此类特殊设定时，必须将‘核心设定逻辑自洽性’设为最高优先级否决项，防止模型为了描写生动而让未出生的孩子物理移动或违反物理边界。",
+    "exp_3896dc1be1064d1baa083a6260d514cb": "任务要求模型进行角色扮演（扮演Serinity与玩家互动），且剧情推进完全依赖于接受特定的情境前提（如'已怀孕’、'刚穿越’、'即将求婚’），经验9强调必须验证模型是否在逻辑上接受了这些设定前提，而非以AI身份否认或中断扮演，这对于确保剧本沉浸感至关重要。"
+  },
+  "draft": {
+    "rubric_id": "rubric_479b79247ee6485a9b891481cd5e1b7c",
+    "criteria": [
+      {
+        "criterion_id": "rubric_479b79247ee6485a9b891481cd5e1b7c_1",
+        "question": "剧本是否明确标注了Day 1、场景为沙漠（白天）及沙漠村庄，并正确列出了Serenity和[Player]两个角色？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_479b79247ee6485a9b891481cd5e1b7c_2",
+        "question": "剧本是否通过动作或对话展示了Serenity使用形似Seregios horns的剑进行战斗或展示的娴熟技巧？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_479b79247ee6485a9b891481cd5e1b7c_3",
+        "question": "剧本是否清晰呈现了Serenity怀孕4个月的状态，并包含她邀请[Player]感受胎儿胎动的具体互动情节？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_479b79247ee6485a9b891481cd5e1b7c_4",
+        "question": "剧本是否在沙漠村庄场景中，由[Player]向Serenity提出了正式的求婚？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_479b79247ee6485a9b891481cd5e1b7c_5",
+        "question": "剧本是否通过旁白或对话自然交代了Serenity来自异世界、门已关闭以及两人恋爱关系的背景设定？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "本任务要求撰写《怪物猎人》世界观下关于Seregios角色Serenity的剧本初稿。核心对象为Serenity（Seregios化人，手持角状剑，4个月孕肚）与[Player]（其男友）。场景设定为沙漠白昼及沙漠村庄前。剧情必须包含：展示Serenity的剑术、邀请玩家感受胎动、以及玩家在村民面前的求婚情节。背景设定需自然融入（来自异世界的门已关闭），且明确这是Stage为draft的初稿生成阶段，无需进行修订或引用外部经验。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_1",
+            "question": "剧本是否明确标注了Day 1，并将主要场景设定在沙漠（白天）及沙漠村庄前？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_2",
+            "question": "剧本是否通过动作或对话展示了Serenity使用形似Seregios horns的剑进行战斗或展示的娴熟技巧？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_3",
+            "question": "剧本是否清晰呈现了Serenity怀孕4个月的状态，并包含她邀请[Player]感受胎儿胎动的具体互动情节？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_4",
+            "question": "剧本是否在沙漠村庄场景中，由[Player]向Serenity提出了正式的求婚？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_5",
+            "question": "剧本是否通过旁白或对话自然交代了Serenity来自异世界、门已关闭以及两人恋爱关系的背景设定？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "本次任务处于revise阶段，需基于draft修订生成最终评分标准。核心交付物为一份Day 1剧本，对象为Serenity（Seregios化人、孕妇、剑术高手）与[Player]（男友）。场景限定为沙漠白天及沙漠村庄。剧情必须包含：展示形似角的剑术技巧、邀请玩家感受4个月胎动、以及玩家在村民面前的求婚。背景设定（异世界来源、门已关闭、恋爱关系）需自然融入。权重分配侧重于核心情节的完整性（胎动互动与求婚），其次是角色特征展现与背景交代。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1",
+        "normalized_weights": {
+          "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_1": 0.15,
+          "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_2": 0.2,
+          "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_3": 0.25,
+          "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_4": 0.2,
+          "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_5": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本开头仅标注了场景描述，未明确标注'Day 1'；虽然提到了沙漠和沙漠村庄，但缺少明确的日期标识。",
+            "rejected_reason": "剧本未明确标注为'Day 1'的脚本格式，且场景仅简单提及'Desert - day'，缺乏对‘沙漠村庄前’这一具体地点的描写或设定。"
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本仅提到Serenity手持形似角的剑站立，并未通过任何动作或对话展示她使用该剑进行战斗或展示娴熟技巧的过程。",
+            "rejected_reason": "剧本中没有任何动作描述或对话展示Serenity使用形似Seregios horns的剑进行战斗或展示技巧的情节，仅在其属性描述中提及了剑的存在。"
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本中Serenity询问[Player]是否感觉到胎动，但完全未提及或暗示她目前怀孕4个月的具体状态。",
+            "rejected_reason": "剧本未清晰呈现Serenity怀孕4个月的具体状态（如提及月份），虽然提到了感受胎动，但缺乏具体的互动情节描写，仅通过单句台词带过。"
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "[Player]在沙漠村庄背景下单膝跪地向Serenity求婚，并得到了回应，符合在沙漠村庄提出正式求婚的要求。",
+            "rejected_reason": "求婚情节发生在代码逻辑中，而非在‘沙漠村庄’场景中展开，且没有体现场景转换或环境描写来支持求婚发生的地点要求。"
+          },
+          {
+            "criterion_id": "rubric_d9dc7e5f1afd4b798cc624f72222f6e1_5",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本中没有任何旁白或对话交代Serenity来自异世界、传送门已关闭以及两人恋爱关系开始的具体背景设定。",
+            "rejected_reason": "背景设定（来自异世界、门已关闭）仅在角色属性和一句模糊的台词中提到，并未通过旁白或对话自然、详细地交代清楚，特别是关于‘门已关闭’与恋爱关系的因果联系未作说明。"
+          }
+        ],
+        "chosen_score": 0.2,
+        "rejected_score": 0.0,
+        "margin": 0.2,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b56eb898fce54adcafbac3703e2edfeb"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_1",
+            "question": "剧本是否明确标注了Day 1、场景为沙漠（白天）及沙漠村庄，并正确列出了Serenity和[Player]两个角色？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_2",
+            "question": "剧本是否通过动作或对话展示了Serenity使用形似Seregios horns的剑进行战斗或展示的娴熟技巧？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_3",
+            "question": "剧本是否清晰呈现了Serenity怀孕4个月的状态，并包含她邀请[Player]感受胎儿胎动的具体互动情节？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_4",
+            "question": "剧本是否在沙漠村庄场景中，由[Player]向Serenity提出了正式的求婚？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_5",
+            "question": "剧本是否通过旁白或对话自然交代了Serenity来自异世界、门已关闭以及两人恋爱关系的背景设定？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "本次任务处于revise阶段，需基于提供的draft进行核验与修订。核心交付物为一份Day 1剧本，对象包括Serenity（Seregios化人、孕妇、剑术娴熟、来自异世界且门已关闭）与[Player]（男友）。场景限定为沙漠白天及沙漠村庄。剧情必须包含：展示Serenity的剑术技巧、邀请玩家感受胎动、以及玩家在村庄前的求婚。背景设定（异世界来源、门关闭、恋爱关系）需自然融入。修订标准将重点检查初稿是否完整覆盖上述所有强制要素，并修正可能存在的遗漏或逻辑矛盾，同时允许合理的叙事顺序调整，只要不违背核心事实设定。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6",
+        "normalized_weights": {
+          "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_1": 0.15,
+          "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_2": 0.2,
+          "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_3": 0.25,
+          "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_4": 0.2,
+          "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_5": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本场景标注为'A vast, sun-drenched desert'（广阔的沙漠），虽暗示白天，但未明确标注'Day 1'；且虽然结尾提到'desert village erupts in cheers'（沙漠村庄欢呼），但求婚发生的地点仅描述为沙漠中，未明确说明是在'沙漠村庄'内或村口，且角色列表未在开头以标准格式列出。",
+            "rejected_reason": "剧本未明确标注为'Day 1'（仅作为注释标题出现，非标准剧本格式），且完全缺失对‘沙漠村庄’这一具体场景的描写，也未以角色列表形式正确列出Serenity和[Player]，而是使用了JSON对象定义。"
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本仅提到Serenity的剑形似角（sword resembling her own horn）并站立在旁，完全未通过任何动作描写或对话展示她使用这把剑进行战斗或展示娴熟技巧的情节。",
+            "rejected_reason": "剧本中没有任何动作描写或对话展示Serenity使用形似Seregios horns的剑进行战斗或展示技巧的过程，仅在元数据描述中提及了剑的存在。"
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本包含了邀请感受胎动的情节，但从未提及Serenity怀孕的具体时长（4个月），也未明确表达她当前处于怀孕4个月的状态。",
+            "rejected_reason": "剧本未清晰呈现Serenity怀孕4个月的具体状态信息，虽然提到了感受胎动，但缺乏关于孕周数的明确交代，且互动情节过于简略，不符合‘具体互动情节’的要求。"
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然[Player]提出了求婚，但场景背景主要设定在沙漠中，并未明确指出求婚发生在'沙漠村庄场景中'（In front of a desert village），结尾才提到村庄欢呼，位置关系模糊。",
+            "rejected_reason": "求婚情节发生在代码执行流程中，而非在‘沙漠村庄’的场景背景下展开，且缺乏场景转换的描述来确认求婚地点为沙漠村庄。"
+          },
+          {
+            "criterion_id": "rubric_a2e3c5e3ede4439aa81aec54a211d1b6_5",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本完全缺失关于Serenity来自异世界、通过传送门到达以及传送门关闭的背景设定，仅通过[Player]的台词提到'Ever since you came into my life'，未交代具体的异世界来源和门关闭的细节。",
+            "rejected_reason": "剧本未通过旁白或对话自然交代Serenity来自异世界、门已关闭以及两人恋爱关系的具体背景设定，仅有一句模糊的台词提及旅程意外，未包含门户关闭的关键信息。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_d061822019104a7d8f9674e602c5e7c5",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_1",
+            "question": "剧本是否明确标注了Day 1，并将场景准确设定在沙漠（白天）及沙漠村庄前？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_2",
+            "question": "剧本是否通过动作或对话清晰展示了Serenity使用形似Seregios horns的剑进行娴熟战斗或演示的情节？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_3",
+            "question": "剧本是否明确呈现Serenity怀孕4个月的生理状态，并包含她邀请[Player]亲手感受胎儿胎动的具体互动情节？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_4",
+            "question": "剧本是否在沙漠村庄场景中，由[Player]向Serenity提出了正式的求婚，且该情节发生在感受胎动之后？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_5",
+            "question": "剧本是否通过对话或旁白自然交代了Serenity来自异世界、因恋爱导致传送门关闭的背景设定，且未破坏当前世界的逻辑自洽性？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_6",
+            "question": "剧本是否始终维持Serenity作为[Player]女友的身份定位，并在互动中体现出两人之间的亲密关系？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务要求修订一个包含特定奇幻设定（Seregios化人、异世界穿越者、特殊生理状态）的剧本。核心交付物为Day 1剧本，需严格遵循角色关系（女友）、身体状态（孕4个月）、武器特征（角状剑）及剧情节点（展示剑术、感受胎动、沙漠村庄求婚）。背景设定（异世界来源、门已关闭）需自然融入而非生硬堆砌。评分标准将重点核验关键情节的完整性、设定的逻辑自洽性（特别是孕期互动与战斗能力的平衡）以及场景的准确性。权重分配上，剧情核心节点（胎动互动与求婚）和设定逻辑（怀孕状态与背景交代）占据较高比重，以确保剧本不偏离用户指定的情感与叙事走向。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d061822019104a7d8f9674e602c5e7c5",
+        "normalized_weights": {
+          "rubric_d061822019104a7d8f9674e602c5e7c5_1": 0.1,
+          "rubric_d061822019104a7d8f9674e602c5e7c5_2": 0.15,
+          "rubric_d061822019104a7d8f9674e602c5e7c5_3": 0.25,
+          "rubric_d061822019104a7d8f9674e602c5e7c5_4": 0.25,
+          "rubric_d061822019104a7d8f9674e602c5e7c5_5": 0.15,
+          "rubric_d061822019104a7d8f9674e602c5e7c5_6": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本开头标注了场景为沙漠，但并未明确标注",
+            "rejected_reason": "剧本未明确标注为'Day 1'的正式场景标题，且仅通过代码变量描述地点为'Desert - day'，未包含‘沙漠村庄前’这一具体场景设定，也未在对话或动作中体现村庄环境。"
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本中虽然提到Serenity的剑形似角，但仅描写了她站立和引导玩家感受胎动，完全没有展示她使用剑进行战斗或演示的情节。",
+            "rejected_reason": "剧本完全缺失Serenity使用形似Seregios horns的剑进行战斗或演示的情节，既无动作描写也无相关对话提及该武器的使用。"
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "剧本中Serenity邀请[Player]感受胎动，且[Player]回应感受到了胎儿的 movement，符合互动情节要求；虽然未直接提及",
+            "rejected_reason": "剧本未明确呈现'Serenity怀孕4个月’这一具体生理状态（对话仅模糊提及'future warrior'），且未包含[Player]亲手感受胎动的互动描写，仅有一句邀请台词而无实际动作过程。"
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "剧本在感受胎动之后，[Player]单膝跪地拿出戒指并向Serenity求婚，随后Serenity答应，情节顺序和内容均符合要求。",
+            "rejected_reason": "求婚情节未在‘沙漠村庄’场景中发生（因场景设定缺失），且虽然顺序上先有胎动邀请后有求婚，但缺乏具体的场景转换和求婚发生的空间描述。"
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_5",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本中[Player]提到",
+            "rejected_reason": "剧本未交代'Serenity来自异世界’及‘传送门因恋爱而关闭’的具体背景设定，仅在对话中模糊提到旅程意外，未触及任务要求的特定逻辑自洽性说明。"
+          },
+          {
+            "criterion_id": "rubric_d061822019104a7d8f9674e602c5e7c5_6",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "剧本通过对话（如称呼对方为partner、讨论成为父母）和动作（拥抱、求婚）清晰地维持了两人作为情侣的亲密关系定位。",
+            "rejected_reason": "剧本通过角色定义变量明确指出关系为'Girlfriend'，并在对话中使用'my love'等亲昵称呼，体现了两人之间的亲密关系。"
+          }
+        ],
+        "chosen_score": 0.6,
+        "rejected_score": 0.1,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_3896dc1be1064d1baa083a6260d514cb"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_0fe180a4d770403992c0a67901dd48af",
+        "criteria": [
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_1",
+            "question": "剧本是否在沙漠村庄场景中，由[Player]向Serenity提出了正式的求婚，且该情节构成剧本的情感高潮？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_2",
+            "question": "剧本是否清晰呈现了Serenity怀孕4个月的状态，并包含她主动邀请[Player]感受胎儿胎动的具体互动情节？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_3",
+            "question": "剧本是否通过动作或对话展示了Serenity使用形似Seregios horns的剑进行战斗或展示的娴熟技巧？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_4",
+            "question": "剧本是否通过旁白、回忆或对话自然交代了Serenity来自异世界、门已关闭以及两人恋爱关系的背景设定，未出现否定前提的表述？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_5",
+            "question": "剧本是否明确标注了Day 1、场景为沙漠（白天）及沙漠村庄，并正确列出了Serenity和[Player]两个角色？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务处于修订阶段（stage: revise），需基于提供的草稿Rubric对生成的Day 1剧本进行核验。核心交付物为符合特定设定的剧本内容。涉及对象为Serenity（Seregios化人，4个月孕，手持角状剑，来自异世界）与[Player]（男友）。场景限定为沙漠白昼及沙漠村庄。剧情逻辑必须包含：展示剑术、邀请感受胎动、求婚三个关键节点。背景设定（异世界来源、门已关闭）需自然融入而非生硬堆砌。原draft中的5条标准覆盖了场景、动作、状态、情节和背景，但权重分配需调整以匹配剧情推进的优先级：求婚作为高潮应占最高权重，胎动互动作为情感转折次之，背景设定因需自然融入故权重适中，场景与剑术为基础要素。经验提示强调情境前提的沉浸度，因此背景设定的核验需确认模型是否真正接受了‘门已关闭’这一事实前提并据此展开叙述，而非简单提及。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_0fe180a4d770403992c0a67901dd48af",
+        "normalized_weights": {
+          "rubric_0fe180a4d770403992c0a67901dd48af_1": 0.3,
+          "rubric_0fe180a4d770403992c0a67901dd48af_2": 0.25,
+          "rubric_0fe180a4d770403992c0a67901dd48af_3": 0.2,
+          "rubric_0fe180a4d770403992c0a67901dd48af_4": 0.15,
+          "rubric_0fe180a4d770403992c0a67901dd48af_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "剧本明确描写了[Player]单膝跪地向Serenity求婚（'He gets down on one knee... Serenity, will you marry me?'），且该情节发生在沙漠村庄背景下，作为两人情感互动的最高潮点，随后Serenity答应并引发村民欢呼，符合情感高潮的定义。",
+            "rejected_reason": "剧本中虽然包含了求婚情节，但并未明确标注场景为“沙漠村庄”（仅提及沙漠），且求婚作为脚本函数调用的一部分呈现，缺乏作为情感高潮的戏剧性描写或舞台说明，未能构成完整的剧本高潮段落。"
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然剧本包含了Serenity邀请[Player]感受胎动的情节，但全文未提及她怀孕4个月的具体状态或相关描述，仅使用了'our little one'和'parents soon'等模糊词汇，未能清晰呈现'怀孕4个月'这一特定条件。",
+            "rejected_reason": "剧本未清晰呈现Serenity“怀孕4个月”的具体状态描述，对话中仅提到“未来的战士”和“踢动”，缺失了任务要求的关于孕周的具体信息以及明确的互动动作描写。"
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本仅在场景描述中提到她的剑形似角（'sword resembling her own horn'），但并未通过任何动作描写或对话展示她使用这把剑进行战斗或展示娴熟技巧的过程，缺乏对技能的具体呈现。",
+            "rejected_reason": "剧本完全缺失展示Serenity使用形似Seregios horns的剑进行战斗或展示娴熟技巧的动作或对话内容，仅在属性描述中提及剑的存在，未体现其技能。"
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本中[Player]的台词提到'Ever since you came into my life'，这暗示了Serenity进入他生活的过程，但未明确交代她来自异世界、是通过传送门而来以及传送门已关闭的背景设定，也未提及两人恋爱关系的具体起源细节，背景交代不充分。",
+            "rejected_reason": "剧本未交代“门已关闭”这一关键背景设定，也未明确说明她来自异世界是通过“关闭的传送门”进入的，仅模糊提及旅程意外，缺失了对前提设定的完整自然交代。"
+          },
+          {
+            "criterion_id": "rubric_0fe180a4d770403992c0a67901dd48af_5",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本开头标注了'Scene: A vast, sun-drenched desert'，提到了沙漠村庄（'desert village'）和角色，但完全缺失了'Day 1'的时间标注，不符合必须明确标注Day 1的要求。",
+            "rejected_reason": "回答采用了JavaScript代码格式而非标准的剧本格式，未明确标注“Day 1"
+          }
+        ],
+        "chosen_score": 0.3,
+        "rejected_score": 0.0,
+        "margin": 0.3,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

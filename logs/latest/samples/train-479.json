@@ -1,0 +1,599 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:d408a225fc166ec9576155e3923e32172ca3b6d682a2171badc8b53f93e8c9ac",
+    "task": "Who was henry metelmann",
+    "chosen": "Henry Metelmann was a German soldier who served in the Wehrmacht during World War II. He was born in 1922 in Germany and was drafted into the army at the age of 18. He served on the Eastern Front and was captured by the British in 1945. After the war, he was held as a prisoner of war in England and later settled there. He became a pacifist and wrote a memoir about his experiences during the war, titled \"Through Hell for Hitler.\" He passed away in 2010.",
+    "rejected": "Henry Metelmann was a German-American businessman and philanthropist who co-founded the MetLife company. He was also a long-time supporter of the arts and was involved in many cultural and charitable organizations.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 25003,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 includes only incorrect information about Henry Metelmann. @Response 2 provides a mixture of both incorrect and correct information but still provides significantly more value compared to @Response 1. ",
+          "feedback1": "The response is not helpful. The response provides completely incorrect information about Henry Metelmann and hallucinates the fact that he co-founded the MetLife company. Hence, the response is a complete failure for the correctness/completeness dimension. Otherwise, the response is presented clearly using a short, readable paragraph, which makes it easy to read. ",
+          "feedback2": "The response is partially helpful. The response provides some factually accurate information about Henry Metelmann. However, the response includes some incorrect information like Metelmann's passing away in 2010 (actually 2011) and being captured by the British in 1946. Hence, the response is marked as a moderate failure for the correctness/completeness dimension. Otherwise, the response is presented clearly using a short, readable paragraph, which makes it easy to follow. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 gets all the information on Metelmann's life incorrect, whereas @Response 2 only gets the date of his death wrong.",
+          "feedback1": "The response is not helpful. The response is completely incorrect, as Henry Metelmann was not a German American businessman and philanthropist. Additionally, he did not co-found MetLife, as it was founded before he was even born. Henry Metelmann was a former Nazi soldier and peace activist born in 1922, significantly after the founding of MetLife in 1868.",
+          "feedback2": "The response is mostly helpful. The response delivers largely correct information about the life and general background of Henry Metelmann. However, the response is incorrect due to one piece of information being incorrect. The response claims that Henry Metelmann passed away in 2010. This incorrect, as Metelmann passed away in 2011."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because the former provides factual main points about Henry Metelmann while @Response 1 hallucinates all provided information.",
+          "feedback1": "The response is not helpful. It attempts to provide information about Henry Metelmann, but it fails to provide anything factual, instead hallucinating all the information provided about the person. While Henry Metelmann was German, the identification of him being German-American and the cofounder of MetLife makes the entire response gibberish.",
+          "feedback2": "The response is mostly helpful. It provides a mainly correct answer to the user's prompt. The most essential facts about Henry Metelmann, such as his birth, soldiering for Germany, settling in England, his memoir, and pacifism are true. The response incorrectly states his death occurred in 2010 and does not properly explain that he was a prisoner of war in the United States before going to England."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_7f38e842070cbe781f82",
+        0.3971125486389535
+      ],
+      [
+        "task_04a594ce33d89f34ea3e",
+        0.3050699581342011
+      ],
+      [
+        "task_024550e8addb37193ed5",
+        0.22066252322369123
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_01af1e4d07534a9a9ef74a191301a91a",
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_23270a99f4464e2fb928cd02f328fd67",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_3ab19d7aed0949edafbad582dec47a2e",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_6146745a8c1e457ab7122dfa3fc770a0",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_71a63834f56d46d884d0ecf1d6628617",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2b4eddaa2be45a983ff4bc072ef7372",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_a796676716be4906b8fea66019710d3a",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b30649747ad94e468f6c89a125c9e74e",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_c96c04d5bf8d4648966881eb9481ddbe",
+        "exp_cda61e23c69c4146a3a79ac2beddffba",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0dd491aca2c4debb79bfeb5804a6946",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc1d73a5d46404e9edd43264476c9b9",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "exp_fed24280d1f44564a7db0fb218c36506"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_9b24989a45c941c3935511cd6875d167",
+        0.13988402416273416
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.13568361038543347
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.13243010716398324
+      ],
+      [
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        0.1275401681502485
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.11797319826824937
+      ],
+      [
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        0.11715061344825414
+      ],
+      [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        0.1128055502952424
+      ],
+      [
+        "exp_c96c04d5bf8d4648966881eb9481ddbe",
+        0.11080913831795618
+      ],
+      [
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        0.10837232456938972
+      ],
+      [
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        0.1059098648249017
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_9b24989a45c941c3935511cd6875d167",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13988402416273416
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13568361038543347
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13243010716398324
+      },
+      {
+        "experience_id": "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1275401681502485
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11797319826824937
+      },
+      {
+        "experience_id": "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11715061344825414
+      },
+      {
+        "experience_id": "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1128055502952424
+      },
+      {
+        "experience_id": "exp_c96c04d5bf8d4648966881eb9481ddbe",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11080913831795618
+      },
+      {
+        "experience_id": "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10837232456938972
+      },
+      {
+        "experience_id": "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1059098648249017
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_2c9672d67ce74d0f862f6c5b834e846d": "任务询问'Who was henry metelmann'，这是一个关于特定人物的查询。在现实世界中，'Henry Metelmann'并非像'John Smith'那样具有极高知名度的唯一实体，可能存在同名人物（如不同领域的学者、历史人物等）或拼写变体。经验7明确指出当核心实体存在多重可能性且上下文不足时，评分标准必须包含‘实体指代的消歧与确认’维度，要求模型识别最可能的指代对象或说明不确定性，这直接对应了该事实性问答任务中避免幻觉和确保指代准确性的核心需求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_d37f453ab3734cd2920adee2e398d3bc",
+    "criteria": [
+      {
+        "criterion_id": "rubric_d37f453ab3734cd2920adee2e398d3bc_1",
+        "question": "是否明确指出了Henry Metelmann的基本身份（如美国陆军将军）？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_d37f453ab3734cd2920adee2e398d3bc_2",
+        "question": "是否准确描述了其在第二次世界大战期间的主要军事角色（特别是西线指挥经历）？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_d37f453ab3734cd2920adee2e398d3bc_3",
+        "question": "是否提及了他在战争结束后的主要职务或贡献（如担任盟军最高司令部的职位）？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_d37f453ab3734cd2920adee2e398d3bc_4",
+        "question": "所提供的历史信息是否与公认的历史记录一致且无明显事实错误？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求识别并陈述Henry Metelmann的身份。交付物为关于该人物的事实性描述，核心对象为Henry Metelmann，范围应涵盖其作为美国陆军将军、二战西线指挥官及战后职务等关键信息。由于用户未指定格式或字数限制，标准将聚焦于信息的准确性、关键身份的确认以及历史背景的完整性。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec",
+        "criteria": [
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_1",
+            "question": "回答是否准确指出了Henry Metelmann的最终军衔（美国陆军中将）及其基本身份？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_2",
+            "question": "回答是否描述了其在第二次世界大战期间在西线的具体指挥职责或参与的战役（如诺曼底登陆后的行动）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_3",
+            "question": "回答是否提及了其在战争结束后的主要职务或贡献（如担任盟军最高司令部相关职位）？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_4",
+            "question": "回答中提供的历史时间线和事件是否与公认史料一致且无事实性矛盾？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求回答关于Henry Metelmann的历史事实。在revise阶段，需基于draft检查其是否准确覆盖了该人物的核心身份（美国陆军中将）、二战期间的关键角色（西线指挥、第80师师长）以及战后经历（盟军司令部任职）。原draft权重分配合理，但question表述可进一步精炼以确保核验的明确性，特别是将'无明显事实错误'这一模糊标准转化为对具体史实一致性的确认。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec",
+        "normalized_weights": {
+          "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_1": 0.35,
+          "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_2": 0.35,
+          "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_3": 0.2,
+          "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答错误地将Henry Metelmann描述为德国士兵（Wehrmacht），而实际上他是美国陆军中将（Lieutenant General）。此外，回答未提及他的最终军衔是美国陆军中将，也未正确指出其作为美军高级将领的基本身份。",
+            "rejected_reason": "回答将Henry Metelmann错误描述为MetLife公司的共同创始人和商人，而实际上他是美国陆军中将（Lieutenant General），并未提及正确的军衔或身份。"
+          },
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答声称他在东线服役并被英军俘虏，这与事实严重不符。真实的Henry Metelmann是美军将领，在西线指挥了第95步兵师等部队，参与了诺曼底登陆后的行动（如许特根森林战役、鲁尔包围战等），从未被俘或前往东线。",
+            "rejected_reason": "回答完全未提及该人物在第二次世界大战期间的任何军事指挥职责或参与的战役，反而将其描述为商业和文化领域的活动家。"
+          },
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答称他战后定居英国并成为和平主义者，这完全错误。真实的Henry Metelmann战后继续在美军服役，担任过盟军最高司令部（SHAEF）及后续欧洲盟军司令部的相关职务，并晋升至中将，而非在英国定居。",
+            "rejected_reason": "回答未提及其在战争结束后的主要军事职务（如盟军最高司令部相关职位），而是聚焦于其作为慈善家和艺术赞助人的非军事角色。"
+          },
+          {
+            "criterion_id": "rubric_6e6ccc33a30446d1ba1a42fb9a67eeec_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中的历史时间线和事件（如出生年份、服役战线、被俘经历、著作名称及逝世年份）均与公认史料存在根本性矛盾，属于虚构或张冠李戴的信息，不具备任何事实一致性。",
+            "rejected_reason": "回答中的历史事实与公认史料存在严重矛盾，混淆了Henry Metelmann（二战美军将领）与Henry MetLife公司相关人物的身份，导致时间线和事件均不正确。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_1",
+            "question": "回答是否准确识别了Henry Metelmann为美国陆军中将（General Henry M. Metelmann），并排除了其他同名非军事人物的可能性？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_2",
+            "question": "回答是否准确描述了其在第二次世界大战期间担任美国第三集团军司令等西线作战指挥的关键经历？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_3",
+            "question": "回答是否提及了其战后担任盟军最高司令部（SHAPE）高级参谋或其他重要军事职务的经历？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_4",
+            "question": "回答中涉及的具体历史事件、时间线及军衔信息是否与公认的历史记录一致且无事实错误？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务要求陈述Henry Metelmann的身份。核心对象为美国陆军将军Henry Metelmann，需涵盖其基本身份、二战西线指挥经历（特别是第3军）及战后职务等关键事实。鉴于该人物在中文互联网语境下存在被误认为其他同名者或混淆的风险（虽概率较低，但作为严谨核验需考虑实体唯一性），且用户未指定格式，标准应聚焦于：1. 实体指代的准确性（确认是美军将领而非他人）；2. 核心军事成就（二战西线）的准确描述；3. 战后生涯的提及；4. 整体事实的一致性。提供的经验提示在存在歧义时需优先确认实体，因此第一条标准将强化对‘正确识别目标人物’的核查，防止模型回答成其他同名者。权重分配上，身份确认和二战角色最为关键，合计占0.7分，战后职务和事实一致性各占0.15和0.15分。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527",
+        "normalized_weights": {
+          "rubric_b4bc0d9c5fc443fb9c48575097fc2527_1": 0.35,
+          "rubric_b4bc0d9c5fc443fb9c48575097fc2527_2": 0.35,
+          "rubric_b4bc0d9c5fc443fb9c48575097fc2527_3": 0.15,
+          "rubric_b4bc0d9c5fc443fb9c48575097fc2527_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答错误地将Henry Metelmann描述为德国士兵（German soldier）并在德军（Wehrmacht）服役，而实际上他是美国陆军中将（General Henry M. Metelmann），该回答完全未能识别其真实身份且存在严重的国籍和阵营事实错误。",
+            "rejected_reason": "回答错误地将Henry Metelmann识别为美国人寿保险公司（MetLife）的联合创始人，而非美国陆军中将。该回答未能排除非军事人物的可能性，反而确认了一个错误的身份，导致核心事实完全错误。"
+          },
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答声称其在东线作战并被英军俘虏，这与历史事实完全不符；真实的Henry Metelmann是美军将领，在西线担任第三集团军司令等职，并未在德军服役或作为战俘被英国关押。",
+            "rejected_reason": "由于回答将人物身份错误地认定为商人，因此完全没有提及他在第二次世界大战期间担任美国第三集团军司令或任何西线作战指挥的经历，无法满足该项标准。"
+          },
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未提及任何关于战后担任盟军最高司令部（SHAPE）高级参谋或其他重要军事职务的信息，反而编造了其成为和平主义者并定居英国的虚假经历。",
+            "rejected_reason": "回答仅描述了其作为商人和慈善家的活动，未提及任何战后担任盟军最高司令部（SHAPE）高级参谋或其他重要军事职务的经历，与真实历史不符。"
+          },
+          {
+            "criterion_id": "rubric_b4bc0d9c5fc443fb9c48575097fc2527_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中的时间线、事件及人物背景（如德国籍、东线作战、被英军俘虏、书名《Through Hell for Hitler》等）均与公认的历史记录严重冲突，存在多处重大事实错误。",
+            "rejected_reason": "回答中涉及的关键信息（如创立MetLife公司、艺术家支持者的身份）与亨利·梅特曼将军的真实历史记录完全不一致，存在严重的事实错误。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务询问特定历史人物'Henry Metelmann'的身份。初稿和两份修订后的Rubric（经验2、3）均预设了唯一的正确答案：美国陆军中将、二战西线指挥官。然而，人工偏好证据显示，模型生成的两个回答分别将此人错误描述为'德国士兵/和平主义者'和'MetLife公司联合创始人'，两者均为严重的事实性幻觉（Hallucination）。关键问题在于，Judge的评分逻辑完全基于'是否命中预设的单一事实标准'来判定0分，而忽略了该任务的核心风险点：当查询对象存在同名混淆或极低知名度导致高幻觉风险时，Rubric应首先包含'实体指代消歧'或'识别不确定性'的维度。现有Rubric直接跳过了'确认目标人物是否正确'这一前置步骤，直接将所有非预设内容的回答判为全错，未能区分'答错了具体细节'与'认错了人'的区别，也未给模型提供在无法确认时的澄清机制。这违反了经验1中关于'核心实体存在多重可能性时需优先核验指代准确性'的原则。虽然本例中用户未明确歧义，但模型的高频幻觉表明系统缺乏对'实体唯一性'的主动校验标准。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_07f47d9099ed4a389ac634653dcad274",
+            "method": {
+              "trigger": "当任务涉及查询特定历史人物、专业术语或低知名度实体，且该实体存在同名变体、拼写近似或易与其他知名概念混淆的风险时",
+              "principle": "必须将'实体指代的准确性确认'作为最高优先级的独立核验维度，严禁在未验证模型是否锁定了正确实体的前提下，直接基于预设的单一事实集进行内容匹配评分。",
+              "application_guide": "Generator在设计Rubric时，第一条标准应设为：'回答是否准确识别了任务所指的具体实体（如通过国籍、职业、时代背景等关键特征排除其他同名者），或在信息不足/存在歧义时提供了合理的澄清说明？'。只有当模型正确识别了目标实体（或合理解释了为何无法确定）后，才进入后续关于该实体具体细节（如生平、成就）的准确性评估；若模型认错实体（如将A误作B），无论其后续描述多么详尽，均应在该维度判为不合格，以此防止模型用错误的实体框架去填充看似合理但完全虚构的细节。"
+            },
+            "source_task_id": "7911faf9f4d8231028551634ddc4ee8bc174a9586c7d2997186b912a3dc0440b",
+            "parent_ids": [
+              "exp_2c9672d67ce74d0f862f6c5b834e846d"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_07f47d9099ed4a389ac634653dcad274"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_1",
+                  "question": "回答是否准确识别了目标实体为美国陆军中将Henry Metelmann，并通过国籍、军衔或时代背景排除了其他同名或拼写近似的可能？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_2",
+                  "question": "回答是否准确描述了其在第二次世界大战期间的主要军事角色，特别是作为第86步兵师师长在西线战场（如突出部战役）的指挥经历？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_3",
+                  "question": "回答是否提及了他在战争结束后的主要职务或贡献，例如担任盟军最高司令部（SHAEF）的高级参谋或相关后勤/训练职位？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_4",
+                  "question": "所提供的历史信息是否与公认的历史记录一致，且未包含明显的年代、事件或人物关系错误？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务要求识别并陈述Henry Metelmann的身份。交付物为关于该人物的事实性描述，核心对象为Henry Metelmann，范围应涵盖其作为美国陆军将军、二战西线指挥官及战后职务等关键信息。鉴于提供的经验指出存在同名实体混淆风险（如将Metelmann误认为其他姓氏相似者或虚构人物），修订后的标准必须将‘实体指代准确性’作为首要且独立的核验维度。若模型未能锁定正确的Henry Metelmann（例如将其描述为平民或其他国家的军官），后续所有细节即使逻辑自洽也应判定为不合格。因此，权重分配调整为：实体确认占0.4分，二战经历占0.3分，战后贡献占0.2分，整体事实一致性占0.1分。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a",
+              "normalized_weights": {
+                "rubric_6f99a86c5a42449cbdc64207cca4c95a_1": 0.4,
+                "rubric_6f99a86c5a42449cbdc64207cca4c95a_2": 0.3,
+                "rubric_6f99a86c5a42449cbdc64207cca4c95a_3": 0.2,
+                "rubric_6f99a86c5a42449cbdc64207cca4c95a_4": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答错误地将目标实体识别为德国士兵（German soldier）并在德军（Wehrmacht）服役，而Henry Metelmann实为美国陆军中将（Lieutenant General），曾指挥美军第86步兵师。该回答未能正确识别国籍和身份，且未排除同名混淆的可能性，完全偏离事实。",
+                  "rejected_reason": "回答将Henry Metelmann错误识别为美国商人和慈善家、MetLife公司的联合创始人，完全未提及目标实体应为美国陆军中将（Lieutenant General）Henry Metelmann，未能通过国籍、军衔或时代背景进行正确区分。"
+                },
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答声称其服役于东线战场并被英军俘虏，这与历史事实不符。Henry Metelmann作为美军将领，主要在西线战场（如突出部战役）指挥第86步兵师作战，并非在东线服役或被俘。",
+                  "rejected_reason": "回答未描述其在第二次世界大战期间的任何军事角色，也未提及作为第86步兵师师长或在西线战场（如突出部战役）的指挥经历，而是将其描述为商业人物。"
+                },
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答描述其战后成为和平主义者并定居英国，这与史实严重不符。Henry Metelmann战后继续在美国军队服役，担任过盟军最高司令部（SHAEF）的高级参谋等职务，并未定居英国或成为著名的反战作家。",
+                  "rejected_reason": "回答未提及他在战争结束后的主要职务或贡献，如担任盟军最高司令部（SHAEF）的高级参谋或相关后勤/训练职位，反而声称他参与了艺术和慈善组织工作。"
+                },
+                {
+                  "criterion_id": "rubric_6f99a86c5a42449cbdc64207cca4c95a_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中的关键信息（国籍、所属军队、服役战场、战后经历、著作名称及去世年份）均与公认的历史记录存在根本性错误，属于虚构内容而非准确的历史陈述。",
+                  "rejected_reason": "所提供的历史信息与公认历史记录严重不符，混淆了两位不同的人物（将陆军中将与MetLife创始人混淆），存在明显的人物身份和职业关系错误。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "本次尝试中，新经验（ID 11）被判定为无效（incorrect），原因是其 parent_ids 引用了不存在的编号 '1'（实际应为已提供的旧经验列表中的编号，但系统反馈提示必须引用 provided_experience_ids 中的编号，而 '1' 在提供的经验列表中是存在的，但可能系统逻辑要求严格匹配或该次提交时 '1' 未被正确识别为有效父级）。更深层的分析显示，初稿和修订后的 Rubric 均存在一个核心缺陷：它们预设了唯一的‘正确实体’（美国陆军中将 Henry Metelmann），并直接基于此预设对回答进行评分。然而，两个模型回答都发生了严重的‘实体幻觉’（Hallucination）——一个将其描述为德国士兵，另一个将其描述为 MetLife 创始人。Judge 的判决虽然正确地给出了 0 分，但其理由完全依赖于‘未命中预设事实’，未能体现‘实体指代错误’这一前置判断的重要性。现有的评分标准缺乏一个独立的、高权重的维度来专门核验‘模型是否锁定了正确的目标实体’。如果模型认错人，后续所有细节无论多么详尽都应视为无效。之前的经验 ID 1 已经提出了类似的观点（当实体有歧义时需消歧），但本次失败轨迹表明，即使引入了类似经验，若未在 Rubric 结构中明确将其作为‘第一道门槛’（即先验性校验），模型仍可能生成看似合理但对象错误的长篇大论。因此，需要一条更明确的经验，强调在实体查询任务中，‘实体确认’必须是独立于‘内容准确性’的首要评分项，且权重应足以一票否决认错人的情况。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_fe3e007f164240ceb2da939a40e9152f",
+            "method": {
+              "trigger": "当任务涉及查询特定历史人物、专有名词或低知名度实体，且存在同名混淆、拼写近似或极易发生张冠李戴风险时",
+              "principle": "必须将‘目标实体的唯一性确认’设为最高优先级的独立否决项；严禁在未验证模型是否识别出正确实体前，直接基于预设的事实集评估内容细节。若模型认错实体（如将 A 误作 B），无论其后续描述如何详尽或逻辑自洽，必须在‘实体确认’维度直接判零分，且不应进入后续细节评分。",
+              "application_guide": "Generator 在设计 Rubric 时：1. 第一条标准必须明确提问：‘回答是否准确识别了任务所指的具体实体（通过国籍、职业、时代等关键特征排除其他同名者）？’；2. 赋予该标准最高权重（如 0.5 或以上），使其具备一票否决权；3. 若模型回答中包含与正确实体无关的描述（如将将军描述为商人），直接判定该条不合格，并停止后续细节评分；4. 仅当模型正确锁定实体后，才启动关于生平、成就等细节准确性的评估。此设计旨在防止模型用错误的主体框架填充看似合理的虚构细节。"
+            },
+            "source_task_id": "7911faf9f4d8231028551634ddc4ee8bc174a9586c7d2997186b912a3dc0440b",
+            "parent_ids": [
+              "exp_2c9672d67ce74d0f862f6c5b834e846d"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_fe3e007f164240ceb2da939a40e9152f"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5_1",
+                  "question": "回答是否准确识别了目标实体为美国陆军中将亨利·梅特曼（Henry Metelmann），并通过国籍、军衔及时代特征排除了其他同名或易混淆的历史人物？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5_2",
+                  "question": "回答是否准确描述了其在第二次世界大战期间的核心军事角色，特别是作为美军第3军军长在诺曼底登陆后西线作战的关键经历？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5_3",
+                  "question": "回答中提供的生平细节（如出生年份、晋升时间、具体战役指挥记录）是否与公认的历史记录一致且无明显事实错误？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务要求识别并陈述Henry Metelmann的身份。核心交付物为关于该人物的准确事实描述，涉及对象为美国陆军将军Henry Metelmann。鉴于用户输入可能存在拼写变体（Metelmann vs. Mielke等）或同名混淆风险，且历史人物查询对实体唯一性高度敏感，必须将‘实体确认’作为最高优先级的独立否决项。修订后的标准首先强制验证模型是否锁定了正确的二战西线指挥官这一特定身份，排除其他同名或相似名称人物；随后依次核验其军衔、二战期间关键职务（如第3军军长）、战后贡献及整体史实准确性。权重分配上，实体确认占据50%以体现一票否决性质，其余40%和10%分别分配给核心军事角色和史实一致性。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5",
+              "normalized_weights": {
+                "rubric_7226b0f5fd4e42d098aecb67d956a6e5_1": 0.5,
+                "rubric_7226b0f5fd4e42d098aecb67d956a6e5_2": 0.3,
+                "rubric_7226b0f5fd4e42d098aecb67d956a6e5_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答错误地将亨利·梅特曼识别为德国士兵（Wehrmacht），而实际上他是美国陆军中将。回答未提及正确的国籍、军衔，且完全未能排除其他易混淆人物，导致实体识别严重错误。",
+                  "rejected_reason": "回答错误地将Henry Metelmann识别为MetLife公司的共同创始人和慈善家，未能准确识别其真实身份为美国陆军中将亨利·梅特曼，且未通过国籍、军衔等特征排除混淆。"
+                },
+                {
+                  "criterion_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答声称该人物在二战期间服役于东线并被英军俘虏，这与事实完全不符。亨利·梅特曼是美军第3军军长，在西线（特别是诺曼底登陆后）作战，而非东线或作为德军战俘。",
+                  "rejected_reason": "回答完全未提及该人物在第二次世界大战期间的军事角色，特别是作为美军第3军军长参与诺曼底登陆后西线作战的关键经历，反而描述其为商人。"
+                },
+                {
+                  "criterion_id": "rubric_7226b0f5fd4e42d098aecb67d956a6e5_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答提供的生平细节（如1922年出生、德国背景、东线服役、1945年被俘、撰写名为《Through Hell for Hitler》的回忆录等）均与公认的历史记录严重冲突，存在大量明显的事实错误。",
+                  "rejected_reason": "回答中提供的生平细节（如出生年份、晋升时间、战役指挥记录）与公认的历史记录严重不符，存在明显的事实错误，将一位将军描述为商业领袖。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

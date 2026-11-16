@@ -1,0 +1,443 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:34c580e9238369714952e55cbb7ffb62c35e5f267fa45a72971cb5647eea4086",
+    "task": "Islamic Arab pharmacies were called?",
+    "chosen": "In the Islamic Golden Age, pharmacies were often part of hospitals and were called \"Dar al-Shifa\" or \"Dar al-Sihha\", which translates to \"House of Cures\" or \"House of Health\". These were places where drugs were prepared and distributed. They also served as medical centers where patients were treated. The most famous of these was the bimaristan (hospital) of al-Mansur Qalawun in Cairo, Egypt. The pharmacist was known as a \"saydalani\".",
+    "rejected": "Islamic Arab pharmacies were called \"Al-Majlis al-Tibbiyya\" or \"Al-Majlis al-Misriyya.\" These terms refer to the traditional Islamic medical institutions that served as centers for pharmacy, medicine, and healthcare during the Islamic Golden Age. These institutions were often attached to mosques or other religious buildings and were staffed by qualified physicians and pharmacists who were knowledgeable in both Islamic medical sciences and the use of herbal remedies.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 21213,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it is partially correct. Repsonse 2 appears to be a complete hallucination. While @Response 1 can be improved for clarity and correctness, it is more than partially correct. ",
+          "feedback1": "The response is partially helpful. However, it is a bit garbled. The Arabic word for pharmacy is saydalia, which is directly related to the word provided in this response for a pharmacist. The response states that pharmacies were often part of hospitals, and then provides the word for hospital rather than pharmacy. This is not correct and not what the user asked for. The user also did not specifically ask about the Golden Age; it's not clear if the user had any time period in mind for this question. ",
+          "feedback2": "The response is not helpful. It appears to be a hallucination. The term Tibbiyya does refer to medicine in Arabic, but only in a very specific context; it is used as a phrase relating to a specific prayer of medicine. There is no indication that this term was used for pharmacies, which are now known as sayadlia. The other word it uses is Misriyya, which just means Egyptian in Arabic, and is not directly related to pharmacies. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 provides accurate terminology regarding Islamic pharmacies and is well-supported by historical context, while @Response 2 presents inaccurate terms that are not widely recognized in relevant literature. This undermines its helpfulness, making @Response 1 a more reliable option aligned with established terminology.",
+          "feedback1": "The response is mostly helpful. It provides accurate terminology and historical examples regarding Islamic pharmacies, it could benefit from more context about their functions and cultural significance. The clarity and coherence of the writing enhance its effectiveness, but additional details would enrich the overall understanding of the topic. Consequently, the response is solid but leaves room for improvement in completeness and depth.",
+          "feedback2": "The response is slightly helpful. It attempts to provide information about Islamic pharmacies and medical institutions during the Islamic Golden Age but contains inaccuracies regarding the terminology used for pharmacies. The terms \"Al-Majilis al Tibbiyya\" and \"Al-Majilis al Misriyya\" are not widely recognized in historical texts, and more accurate terms like \"Dar al Shifa\" are essential for clarity. While it mentions the connection to mosques and healthcare, it lacks specific supporting evidence, leading to potential confusion. Overall, the response has some relevant points but falls short due to these inaccuracies."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it contains the correct answer to the user's question about the Arab term for \"pharmacies,\" while @Response 2 is entirely inaccurate.",
+          "feedback1": "The response is partially helpful. While it contains the correct answer, which is that the Arabic word for pharmacy is \"saydalani,\" it starts by incorrectly saying that pharmacies were called \"Dar al-Shifa\" or \"Dar al-Sihha.\" Those terms are most closely translated as \"hospital.\" While al-Mansur Qalawun is a notable example, it does not appear to be \"the most famous.\" The response could be improved by focusing exclusively on the translation for pharmacy.",
+          "feedback2": "The response is not helpful. It fails to provide a translation to Arabic for \"pharmacy.\" While it accurately describes historical Arab hospitals, known as \"bimaristan\" or \"dar al-shifa,\" the names it gives are inaccurate. There does not appear to be any connection between these terms and healthcare. The response could be improved by accurately answering the user's question."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_eaa2da1ff95ab758d80c",
+        0.38389334179269896
+      ],
+      [
+        "task_d15d81c0e64e23e326ae",
+        0.21928023303836575
+      ],
+      [
+        "task_f963a5374e72fe33f314",
+        0.21669544480847647
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_d15d81c0e64e23e326ae",
+              "similarity": 0.21928023303836575,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:b3ad01d682078c8ef1239610ea9cb74646b82070ae8785c82877733f8a46f554:exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+                ],
+                "task_ids": [
+                  "fe256acbbcb9b7e9810a8e702118f054fbcc84785b9c77d1c7420d2ae2e08b4b"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        0.11602504170127093
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.11498440431961633
+      ],
+      [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        0.11155427645678156
+      ],
+      [
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        0.10912360522147546
+      ],
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.10565697169072145
+      ],
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.1053455244271122
+      ],
+      [
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        0.10437907517543805
+      ],
+      [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        0.09357649533719858
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.0886492839173122
+      ],
+      [
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        0.0869193128225387
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.11155427645678156
+      },
+      {
+        "experience_id": "exp_3896dc1be1064d1baa083a6260d514cb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11602504170127093
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11498440431961633
+      },
+      {
+        "experience_id": "exp_7f22623f17124cd28b5425f286128b5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10912360522147546
+      },
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10565697169072145
+      },
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1053455244271122
+      },
+      {
+        "experience_id": "exp_340739c0de45423b8cc2fbbca1c04749",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10437907517543805
+      },
+      {
+        "experience_id": "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.09357649533719858
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.0886492839173122
+      },
+      {
+        "experience_id": "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.0869193128225387
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_42f447cc2b9b4e5cacc74fa49f616aa9": "任务明确要求回答'Islamic Arab pharmacies were called?'（伊斯兰阿拉伯药房被称为什么），核心在于识别并输出特定的历史实体名称。经验1强调必须将‘核心实体/主题的严格一致性’作为最高优先级，若模型回答的是其他类型的药房或错误概念，即使内容详实也应判定为不达标，这完全符合该事实性问答任务的评分需求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_a16bf0397d3b4fd4935842bbed86a525",
+    "criteria": [
+      {
+        "criterion_id": "rubric_a16bf0397d3b4fd4935842bbed86a525_1",
+        "question": "是否提供了伊斯兰阿拉伯药房被广泛认可的历史名称（例如 Bimaristan）？",
+        "weight": 1.0
+      }
+    ],
+    "analysis": "任务要求识别伊斯兰阿拉伯药房的历史名称。在初稿阶段（draft），核心交付物是提供准确的历史术语。该问题涉及历史事实，主要对象为'伊斯兰阿拉伯药房'的特定称呼。数量上应为单一或一组公认的标准术语。范围限定于伊斯兰黄金时代及相关的阿拉伯世界药房体系。格式无特殊限制，但答案需清晰明确。允许的不同实现方式包括直接给出术语（如Bimaristan, Dawa Khana等）或附带简要解释，只要术语准确即可。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_3de2086ed8b449b3a3018179b91f6475",
+        "criteria": [
+          {
+            "criterion_id": "rubric_3de2086ed8b449b3a3018179b91f6475_1",
+            "question": "是否明确提供了伊斯兰阿拉伯药房在历史上被广泛认可的标准名称（例如 Bimaristan）？",
+            "weight": 1.0
+          }
+        ],
+        "analysis": "当前任务要求识别伊斯兰阿拉伯药房的历史名称，处于修订阶段。需核验初稿是否准确提供了被历史学界广泛认可的具体术语（如Bimaristan）。评分标准应聚焦于答案的准确性与相关性，排除非相关或错误术语。权重分配上，由于仅有一个核心事实点，该标准占据全部权重。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_3de2086ed8b449b3a3018179b91f6475",
+        "normalized_weights": {
+          "rubric_3de2086ed8b449b3a3018179b91f6475_1": 1.0
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_3de2086ed8b449b3a3018179b91f6475_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然提到了'Bimaristan'，但将其定义为'hospital'（医院）而非药房的专用名称。同时，回答将'Dar al-Shifa'和'Dar al-Sihha'作为主要答案，这两个术语通常指代整个医疗中心或医院综合体，而非专门指代负责配药的药房部分（药房在伊斯兰医学史中更常被称为'Maktab al-Tibb'或直接作为Bimaristan内的特定部门）。因此，该回答未能准确提供历史上被广泛认可且专门指代'药房'的标准名称。",
+            "rejected_reason": "回答中提供的名称'Al-Majlis al-Tibbiyya'和'Al-Majlis al-Misriyya'并非历史上伊斯兰阿拉伯药房或医疗机构被广泛认可的标准名称。事实上，历史上这类机构（包含药房功能）通常被称为'Bimaristan'（意为医院），而专门的药房部门常称为'Saqal'或'Dar al-Dawa'。回答中的术语属于事实错误，未能提供正确的标准名称。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b4abe65c29ed45e6ab31d08e5d0bf529",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b4abe65c29ed45e6ab31d08e5d0bf529_1",
+            "question": "回答是否明确提供了伊斯兰阿拉伯药房被广泛认可的历史名称（如 Bimaristan 等），且未将主体概念替换为其他非相关类型的医疗机构？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_b4abe65c29ed45e6ab31d08e5d0bf529_2",
+            "question": "所提供的历史名称是否符合伊斯兰黄金时代及阿拉伯世界药房体系的公认史实，且表述清晰无歧义？",
+            "weight": 0.5
+          }
+        ],
+        "analysis": "任务要求识别伊斯兰阿拉伯药房的历史名称。在修订阶段（revise），需基于初稿标准检查其是否准确覆盖核心事实。初稿仅设定了单一权重为1.0的标准，虽聚焦了核心术语（Bimaristan），但缺乏对回答完整性的区分（如是否遗漏其他常见称呼）以及格式清晰度的考量。根据经验指引，首要核验维度必须是‘核心实体/主题的严格一致性’，即回答必须明确指向‘伊斯兰阿拉伯药房’的特定历史名称，而非泛指的药店或其他文化背景下的机构。同时，考虑到历史事实的多样性，应允许包含多个公认术语（如Bimaristan, Dawa Khana等）作为有效回答，因此标准设计需兼顾准确性与包容性。修订后的标准将拆分为主题一致性与事实准确性两个维度，前者确保未偏离核心对象，后者确保提供的术语符合历史事实。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b4abe65c29ed45e6ab31d08e5d0bf529",
+        "normalized_weights": {
+          "rubric_b4abe65c29ed45e6ab31d08e5d0bf529_1": 0.5,
+          "rubric_b4abe65c29ed45e6ab31d08e5d0bf529_2": 0.5
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b4abe65c29ed45e6ab31d08e5d0bf529_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未能明确提供伊斯兰阿拉伯药房被广泛认可的历史名称。虽然提到了'Bimaristan'，但明确指出这是'hospital'（医院），而非药房；同时提供的'Dar al-Shifa'和'Dar al-Sihha'通常指代综合医疗中心或医院，并非专门指代药房的术语。此外，回答将主体概念从'pharmacies'替换为'hospitals'和'medical centers'，未直接回答药房的特定名称（如'Saydalani'是药剂师职称而非机构名）。",
+            "rejected_reason": "回答未提供伊斯兰阿拉伯药房被广泛认可的历史名称（如 Bimaristan），而是编造了'Al-Majlis al-Tibbiyya'或'Al-Majlis al-Misriyya'等不存在的术语，且错误地将主体概念描述为附属于清真寺的机构，未能准确对应历史上以药房和医疗功能著称的特定机构类型。"
+          },
+          {
+            "criterion_id": "rubric_b4abe65c29ed45e6ab31d08e5d0bf529_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "所提供的历史名称不符合史实中针对'药房'这一特定机构的公认命名。Bimaristan 是伊斯兰黄金时代对医院的称呼，Dar al-Shifa 也是指医院或医疗中心，而非专门用于存放和调配药物的药房（Pharmacy）的专有名称。回答混淆了医院与药房的概念，导致表述在专业定义上存在歧义和不准确。",
+            "rejected_reason": "所提供的历史名称'Al-Majlis al-Tibbiyya'和'Al-Majlis al-Misriyya'不符合伊斯兰黄金时代及阿拉伯世界药房体系的公认史实，这些术语在历史文献中并无记载，且关于其依附于清真寺的描述也缺乏历史依据，导致表述存在严重事实错误和歧义。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析轨迹发现，人工反馈明确指出：Chosen回答虽然提供了部分正确信息（如'saydalani'是药剂师），但核心错误在于将'hospital'（医院）的术语（Bimaristan, Dar al-Shifa）误答为'pharmacy'（药房）的名称。Judge在初稿和修订稿中均判定Chosen得分为0.0，理由是混淆了主体概念（医院 vs 药房）。然而，人工偏好理由中提到'partially correct'且分数为-2（负分表示选1好），说明Chosen并非完全错误，而是存在'主体概念替换'的严重瑕疵。现有经验1强调'核心实体/主题的严格一致性'作为最高优先级，这解释了为何Chosen得分低。但在Rubric设计中，问题在于：现有的标准（如经验1的衍生）似乎过于依赖'是否提供特定术语'这一单一事实点，而未显式建立'若主体概念被错误替换（如用医院名答药房问），则直接否决'的强逻辑边界。Judge的判定逻辑隐含了这一点，但Rubric文本（如criterion 3 '未将主体概念替换...'）在表述上可能不够清晰，导致模型难以区分'相关但错误的主题'与'完全不相关的主题'。更重要的是，人工反馈指出Chosen'部分正确'，而Judge判0分，这暗示评分标准可能需要更精细地处理'主体概念错误'与'内容细节正确'之间的权重关系，或者明确'主体概念错误'即为不可接受的硬性门槛。目前的失败在于：Rubric未能清晰界定'主体概念替换'这一特定错误类型的判定阈值，导致模型可能因包含部分正确细节而被误判，或反之。核心问题在于缺乏一个明确的、针对'概念偷换'的独立核验步骤，该步骤应优先于内容准确性评估。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_000db806ae3349e5a629ad445d1e5578",
+            "method": {
+              "trigger": "当任务要求识别特定核心概念（如X的名称、定义或属性）时",
+              "principle": "必须设立一条独立的'概念主体一致性'否决项，明确判定规则：若回答提供的核心术语属于Y（与X相关但非X）的概念范畴，即使关于Y的描述准确，也视为主体概念错误，直接判定不满足基础意图，不得通过其他维度的高分抵消。",
+              "application_guide": "Generator在设计Rubric时，第一条标准应设为：'回答是否使用了任务指定的核心概念（X）的专属术语？'。判定逻辑需细化：若模型使用了X的关联概念（如用'医院'名称回答'药房'问题），无论该关联概念的描述多么详尽准确，此条直接判为False（或0分）。严禁在未设立此前置核验的情况下，允许模型通过描述一个'相关但错误'的主体来获得及格分。此标准旨在防止'答非所问'但'言之有理'的情况。"
+            },
+            "source_task_id": "7843e620d620cebe38c5e54e228ed61515c1aaf11c2456ed09f1d3b2239fb761",
+            "parent_ids": [
+              "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_000db806ae3349e5a629ad445d1e5578"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_482b76ec37174bf8a652ead4b54dd0d9",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_482b76ec37174bf8a652ead4b54dd0d9_1",
+                  "question": "回答是否明确使用了专指‘伊斯兰阿拉伯药房’的历史术语（如Dawa Khana, Al-Hukmah等），而非泛指‘医院’、‘诊所’或虽包含药房功能但主体定义为综合医疗机构的术语（如Bimaristan）？",
+                  "weight": 0.6
+                },
+                {
+                  "criterion_id": "rubric_482b76ec37174bf8a652ead4b54dd0d9_2",
+                  "question": "回答中是否提供了至少一个被历史学界广泛认可的、特指该时期阿拉伯世界药房的准确名称？",
+                  "weight": 0.4
+                }
+              ],
+              "analysis": "任务要求识别伊斯兰阿拉伯药房的历史名称。在修订阶段（revise），需基于初稿标准，结合提供的经验原则进行优化。初稿标准仅关注是否提供了名称，未严格区分‘药房’与‘医院’等易混淆概念（如Bimaristan实为综合医院，虽含药房功能但主体定义不同）。根据经验1，必须设立前置核验项，确保回答的核心术语准确指向‘药房’这一特定对象，防止模型用相关但错误的主体（如笼统的‘医院’或‘诊所’）通过验证。因此，修订后的标准将拆分：第一条强制核验核心概念的准确性（是否为药房专属术语），第二条确认具体历史名称的正确性。权重分配上，概念主体的正确性是基础，赋予较高权重；具体术语的准确性紧随其后。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_482b76ec37174bf8a652ead4b54dd0d9",
+              "normalized_weights": {
+                "rubric_482b76ec37174bf8a652ead4b54dd0d9_1": 0.6,
+                "rubric_482b76ec37174bf8a652ead4b54dd0d9_2": 0.4
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_482b76ec37174bf8a652ead4b54dd0d9_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中使用的术语'Dar al-Shifa'和'Dar al-Sihha'在历史语境下通常指代综合医疗机构（即医院或医疗中心），而非专指药房；同时回答明确提到了'Bimaristan'作为最著名的例子，这属于综合医疗机构术语，未满足‘避免使用泛指医院或综合医疗机构术语’的排除条件。",
+                  "rejected_reason": "回答中使用的术语'Al-Majlis al-Tibbiyya'和'Al-Majlis al-Misriyya'并非历史上专指伊斯兰阿拉伯药房的术语，且描述将其定义为包含医院、诊所功能的综合医疗机构（centers for pharmacy, medicine, and healthcare），不符合标准中要求的排除泛指机构或主体为综合医疗机构的术语的要求。"
+                },
+                {
+                  "criterion_id": "rubric_482b76ec37174bf8a652ead4b54dd0d9_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未能提供被历史学界广泛认可的、特指伊斯兰阿拉伯时期‘药房’（Pharmacy/Drugstore）的独立准确名称。虽然提到了药剂师被称为'saydalani'，但这只是职业称谓，且文中将药房功能完全依附于医院（Dar al-Shifa/Bimaristan）进行描述，未给出如'Dawakhana'等特指药房的独立专有名词。",
+                  "rejected_reason": "回答提供的名称'Al-Majlis al-Tibbiyya'和'Al-Majlis al-Misriyya'在历史学界并不被认可为特指该时期阿拉伯世界药房的准确名称，属于虚构或错误信息，因此未满足提供至少一个广泛认可准确名称的要求。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "上一轮尝试（经验11）失败的原因是Rubric设计存在逻辑漏洞：标准5要求‘避免使用泛指医院...的术语’，这实际上是在定义什么是‘错误答案’，而非正向核验‘是否使用了正确术语’。更关键的是，标准6要求提供‘特指药房的独立专有名词’，但历史事实中，伊斯兰时期的药房往往没有像现代那样完全独立的通用专有名词（如Dawakhana更多是波斯语词源且常混用），或者其核心特征就是作为Bimaristan的一部分。Judge判定Chosen得0分是因为它混淆了主体（用医院名答药房问），但Rubric并未明确设立一个‘一票否决’的机制来捕捉这种‘概念偷换’行为，而是将其混同于‘未提供独立名称’。人工反馈明确指出Chosen‘部分正确’（提到了saydalani等），但Judge判0分，说明评分标准未能区分‘主体概念错误’和‘细节缺失’。根本问题在于：当任务询问特定实体X的名称时，如果回答提供了实体Y（与X相关但非X）的名称，无论Y的描述多么准确，都应视为直接失败。现有Rubric缺乏这种显式的、优先于内容准确性的‘主体一致性’强制校验，导致模型可能因包含部分正确信息（如药剂师名字）而获得不应有的分数，或者因为无法找到完美的独立名词而被误杀。需要提炼的经验是：在概念识别任务中，必须将‘主体概念匹配度’设为最高优先级的否决项，明确禁止用关联概念替代目标概念。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_42c6f20d124f4784bdfefabfb4501d47",
+            "method": {
+              "trigger": "当任务要求识别特定核心实体（如X的名称、定义或属性）时",
+              "principle": "必须将‘核心实体的严格匹配’确立为最高优先级的否决项。若回答提供的核心术语属于与X相关但非X的概念范畴（即主体概念替换），即使关于该替代概念的描述完全准确，也应直接判定为不满足基础意图，不得通过其他维度的高分抵消。",
+              "application_guide": "Generator在设计Rubric时，第一条标准应明确设定为：'回答是否使用了专指任务核心实体（X）的术语？'。判定逻辑需细化：若模型使用了X的关联概念（如用'医院'名称回答'药房'问题），无论该关联概念的描述多么详尽准确，此条直接判为False（或0分）。严禁在未设立此前置核验的情况下，允许模型通过描述一个'相关但错误'的主体来获得及格分。此标准旨在防止'答非所问'但'言之有理'的情况，确保评分聚焦于对目标实体的精准识别。"
+            },
+            "source_task_id": "7843e620d620cebe38c5e54e228ed61515c1aaf11c2456ed09f1d3b2239fb761",
+            "parent_ids": [
+              "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_42c6f20d124f4784bdfefabfb4501d47"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_fd98ffa0dce544ddaa2cf67470cf3e0c",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_fd98ffa0dce544ddaa2cf67470cf3e0c_1",
+                  "question": "回答是否提供了专指伊斯兰阿拉伯药房的历史术语（例如 Siqaniya, Dawa Khana, Attar 等），而非仅指代医院（Bimaristan）或其他无关概念？",
+                  "weight": 1.0
+                }
+              ],
+              "analysis": "任务要求识别伊斯兰阿拉伯药房的历史名称。修订阶段需基于初稿进行核验与修正。初稿仅包含一条权重为1.0的标准，询问是否提供了'Bimaristan'等名称。然而，根据历史事实，'Bimaristan'特指伊斯兰世界的医院或诊疗中心，而非专门用于储存和分发药物的'药房'（Pharmacy）。虽然两者在机构功能上常有重叠且同属医疗体系，但在术语定义上存在主体概念差异（医院 vs 药房）。提供的经验指出，当核心实体匹配错误时（如用医院名称回答药房问题），应判定为不满足基础意图。因此，初稿标准存在事实性偏差风险，必须修订：将核验重点从单一可能的错误示例（Bimaristan）调整为对正确术语（如'Siqaniya'、'Attar'、'Dawa Khana'或描述其功能的通用词）的准确识别，并明确排除将医院术语直接等同于药房术语的情况。修订后的标准需确保模型提供的是专指药房的术语，而非广义医疗机构。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_fd98ffa0dce544ddaa2cf67470cf3e0c",
+              "normalized_weights": {
+                "rubric_fd98ffa0dce544ddaa2cf67470cf3e0c_1": 1.0
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_fd98ffa0dce544ddaa2cf67470cf3e0c_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答中提到的'Dar al-Shifa'和'Dar al-Sihha'是医院或医疗中心的通用名称（意为‘治愈之家’），并非专指药房的历史术语；同时，回答将重点放在了Bimaristan（医院）上，未能提供如Siqaniya、Dawa Khana或Attar等专门指代伊斯兰阿拉伯药房的术语。",
+                  "rejected_reason": "回答提供的术语'Al-Majlis al-Tibbiyya'和'Al-Majlis al-Misriyya'并非历史上专指伊斯兰阿拉伯药房的准确术语，且回答错误地将这些机构描述为附属于清真寺的医疗中心，混淆了药房（通常称为Dawakhana、Attar或Siqaniya）与医院（Bimaristan）或其他机构的区别，未能满足提供正确历史术语的要求。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

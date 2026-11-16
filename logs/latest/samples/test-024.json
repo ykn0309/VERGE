@@ -1,0 +1,383 @@
+{
+  "sample_id": "helpsteer3:train:93c6cb1bca3aba925b4c5494e95a8e6a0e8a6854c036fc8d761672663047719d",
+  "sample": {
+    "sample_id": "helpsteer3:train:93c6cb1bca3aba925b4c5494e95a8e6a0e8a6854c036fc8d761672663047719d",
+    "task": "summarise to key point: \"Galaxy Entertainment (27 HK, Buy, TP HK$62.0, +18.1% Upside)\n1H Beat: HK$2.9bn Profit (vs loss of HK$851m), Resume 1H Div \nAdding hotel inventory: Raffles & ANdAZ (+1,100 rooms) & Phrase 4\nRosy Start for 3Q\nJuly GGR at high end, rose further for first 13 days of Aug \nRobust demand over summer months (90% occupied sectorwise) \nNew e-visa machines added in Guangdong province\nWhy Galaxy: Solid track record may deliver a surprise in Phase 3, Lenovo (992 HK, Buy, Target Price HK$9.90, Upside: +29.1%)\nJun Q Missed:  US$177m (-66%), vs US$235m consensus\nPC bottomed expecting a Recovery\nInventory digestion completed, expect 2HCY23 to resume growth\nWin 11 & AI to accelerate PC replacement demand in 2024-25\nAI is a positive: Industry specific models to help client transformation\nIncreasing non-PC contribution: 41% of total revenue , CNOOC (883 HK, Buy, Target Price HK$15.3, +20.1% Upside)\n1H Beat: Earnings (-11%) on lower oil price but +9% volume growth \nInterim div: Rmb0.59, or 44% payout ratio\nLooking into 2H \nHigher oil price driven by production cut is a positive\nOn track to achieve production volume of 650-660m boe in 2023, as part of volume goal of 6% CAGR by 2025\nAdding Reserve: 9 projects development and targets a reserve replacement ratio >130%\n\"\n\n",
+    "chosen": "*   **Note:** H1 and H2 refer to the first and second half of the year, respectively.\n*   **Galaxy Entertainment** (27 HK, Buy, TP HK$62.0, +18.1% Upside) reported a net revenue of $27.7 billion for 2023, compared to a loss in the previous year, and resumed dividend payments. They are adding hotel inventory with Raffles and Andaz during Phase 4 development. The company had a positive start to Q3 with high Gross Gaming Revenue (GGR) in July and robust demand during the summer months. New e-visa machines in Guangdong province could further boost business.\n*   **Lenovo** (992 HK, Buy, Target Price HK$9.90, Upside: +29.1%) missed June Q estimates with a profit of US $177 million, but PC sales are expected to recover after inventory digestion. Windows 11 and AI are expected to drive PC replacement demand in 2024-25. AI is also seen as a positive for the company's non-PC business, which contributes 41% of total revenue.\n*   **CNOOC** (883 HK, Buy, Target Price HK$15.3, +20.1% Upside) reported H1 earnings decline of -11% due to lower oil prices but had a +9% volume growth. The company announced an interim dividend of Rmb0.59 and is on track to achieve its production volume goal for 2023. Higher oil prices driven by production cuts and the addition of 9 new projects for reserve development are expected to benefit the company in H2.",
+    "rejected": "*   **Galaxy Entertainment** (27 HK) is adding hotel inventory with Raffles and Andaz during Phase 4 development. The company had a positive start to Q3 with high Gross Gaming Revenue (GGR) in July and robust demand during the summer months.\n*   **Lenovo** (992 HK) missed June estimates with a profit of US$177 million, but PC sales are expected to recover after inventory digestion. Windows 11 and AI are expected to drive PC replacement demand in 2024-2025. AI is also seen as a positive for the company's non-PC business, which contributes 41% of total revenue.\n*   **CNOOC** (883 HK) beat H1 estimates with lower earnings decline due to higher volume growth. The company announced an interim dividend of RMB 0.59 and is on track to achieve its production volume goal for 2023.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 8762,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 fully summarizes the information presented, while @Response 2 leaves out key information and just highlights a few points. ",
+          "feedback1": "The response is perfectly helpful. The information has been summarized very well, and it's in a formatting that is consistent and easy to understand. Overall, the prompter would be happy to receive this response. The response itself is definitely not simple, but that is not an issue here due to the intent of the prompt. ",
+          "feedback2": "The response is partially helpful. A lot of key information has been left out of the response that was present in the prompt. Rather than summarizing, it seems like just a few points were taken from each section. Overall, this does not really summarize in a helpful manner and the prompter may feel unsatisfied due to this. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it is not lacking the financial information, details, and projections provided within the prompt. ",
+          "feedback1": "The response is mostly helpful. The response is helpful for providing a high-level summary but lacks completeness, especially in financial analysis where detailed figures and specific terms from the prompt are critical. For users looking for a summary of every detail provided in the prompt, this response might seem lacking in specificity. The response also contains the note at the top, which is an awkward way to use during summarizing.",
+          "feedback2": "The response is partially helpful. This response is somewhat helpful but lacks enough depth to be highly useful for those seeking a full summary of the provided prompt. The missing details limit its usefulness, as they do not provide a holistic view of the financial metrics provided within the prompt. It is also missing the projections and market impact that were present in the original prompt."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it provides a more comprehensive and accurate summary of the information provided by the user in the final prompt. Although @Response 1 also leaves out some information, @Response 2 is far too succinct a summary.",
+          "feedback1": "The response is mostly helpful. The model provides a summary of the information given by the user in the final prompt. All the information provided by the model is accurate and based on the user's information, without any hallucinated bits. However, there is some information that the user provided, specifically about CNOOC, which the model does not incorporate into the response. For this reason, the response is only mostly helpful.",
+          "feedback2": "The response is partially helpful. It provides a summary of the information provided by the user in the final prompt. However, this summary is very brief and leaves out a lot of information provided by the user, which would be essential for a proper summary. Although the user could still read this and have some idea of what the original information was trying to convey, this short of a summary is likely not what the user was intending. For this reason, the response is only partially helpful."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_3e83ed19da87e9c53f91",
+        0.3191139676777758
+      ],
+      [
+        "task_70f60f00240bed82fdd5",
+        0.2648170705825242
+      ],
+      [
+        "task_965d3917ffbf8de3c7b0",
+        0.2616598057101779
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_01af1e4d07534a9a9ef74a191301a91a",
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_17e2421ce6b948a8bbd28b8e812a744e",
+        "exp_23270a99f4464e2fb928cd02f328fd67",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_345da7f2dd5949e9a856fc661790828b",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_3ab19d7aed0949edafbad582dec47a2e",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_6146745a8c1e457ab7122dfa3fc770a0",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_71a63834f56d46d884d0ecf1d6628617",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2b4eddaa2be45a983ff4bc072ef7372",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_a796676716be4906b8fea66019710d3a",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b30649747ad94e468f6c89a125c9e74e",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_bfd24194914d48acb85fdc12af8a2a49",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_c96c04d5bf8d4648966881eb9481ddbe",
+        "exp_cda61e23c69c4146a3a79ac2beddffba",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0dd491aca2c4debb79bfeb5804a6946",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d3c7a855287947188af3b41f777e42b9",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc1d73a5d46404e9edd43264476c9b9",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "exp_fed24280d1f44564a7db0fb218c36506"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.2836452955196678
+      ],
+      [
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        0.28003225796943454
+      ],
+      [
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        0.26812396652454173
+      ],
+      [
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        0.2596044835040815
+      ],
+      [
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        0.25909000324795545
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.25866497910036834
+      ],
+      [
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        0.25834128995219474
+      ],
+      [
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        0.254277430829428
+      ],
+      [
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        0.2537976041843908
+      ],
+      [
+        "exp_bfd24194914d48acb85fdc12af8a2a49",
+        0.2533329471202581
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2836452955196678
+      },
+      {
+        "experience_id": "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28003225796943454
+      },
+      {
+        "experience_id": "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26812396652454173
+      },
+      {
+        "experience_id": "exp_443cf2a5a08b470f99e171601c09aae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2596044835040815
+      },
+      {
+        "experience_id": "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25909000324795545
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25866497910036834
+      },
+      {
+        "experience_id": "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25834128995219474
+      },
+      {
+        "experience_id": "exp_abccafbecc074a698e4be28fa4be72fc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.254277430829428
+      },
+      {
+        "experience_id": "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2537976041843908
+      },
+      {
+        "experience_id": "exp_bfd24194914d48acb85fdc12af8a2a49",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2533329471202581
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_51e356ac5a03423dba86ca6f25d5e964": "任务要求对包含三家具体上市公司（Galaxy Entertainment, Lenovo, CNOOC）及其详细财务数据、业务动作的文本进行摘要，原文明确列出了具体的实体名称（如'Raffles & ANdAZ'、'Lenovo (992 HK)'）、具体数值（'HK$2.9bn'、'US$177m'）和具体项目。经验1强调当原文包含具体实体列表时，评分标准必须强制要求‘列出原文提及的具体实体名称’或‘完整覆盖原文列举的实体集合’，严禁使用模糊的上位概念替代，这直接适用于确保摘要准确复现了所有关键公司及其核心细节的要求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_d9eece8fbafc433a93ec97486c85fe95",
+    "criteria": [
+      {
+        "criterion_id": "rubric_d9eece8fbafc433a93ec97486c85fe95_1",
+        "question": "是否准确概括了银河娱乐（Galaxy Entertainment）1H业绩逆转（从亏损到盈利）及恢复分红的核心事实？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_d9eece8fbafc433a93ec97486c85fe95_2",
+        "question": "是否涵盖了银河娱乐关于新增酒店库存（Raffles & ANdAZ）及需求强劲（入住率90%）的关键运营亮点？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_d9eece8fbafc433a93ec97486c85fe95_3",
+        "question": "是否准确记录了联想集团（Lenovo）6月季度业绩未达标的具体跌幅及PC业务触底复苏的预期逻辑？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_d9eece8fbafc433a93ec97486c85fe95_4",
+        "question": "是否明确指出了联想集团驱动未来增长的核心因素（Win 11、AI加速换机需求）及非PC业务占比提升的趋势？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_d9eece8fbafc433a93ec97486c85fe95_5",
+        "question": "是否完整提炼了中国海洋石油（CNOOC）1H业绩中‘量增价跌’的特征及中期分红详情？",
+        "weight": 0.1
+      },
+      {
+        "criterion_id": "rubric_d9eece8fbafc433a93ec97486c85fe95_6",
+        "question": "是否包含中国海洋石油关于下半年油价预期、产量目标（650-660m boe）及储量替代比率（>130%）的战略指引？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "任务要求将提供的三家上市公司（Galaxy Entertainment, Lenovo, CNOOC）的金融研报摘要提炼为关键要点。需覆盖每家公司的核心财务表现（如盈利/亏损、营收数据）、战略动态（如新酒店、AI趋势、储量增加）及未来展望（如增长预期、目标价）。评分标准应逐项核验是否准确提取了各公司的核心数据点，是否遗漏了关键的财务指标或战略转折，以及格式是否清晰区分了三家公司。权重分配上，财务数据的准确性与完整性最为关键，其次是战略动因和未来展望的覆盖度。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [
+        "exp_51e356ac5a03423dba86ca6f25d5e964"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f",
+        "criteria": [
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_1",
+            "question": "是否准确概括了银河娱乐（Galaxy Entertainment）1H业绩从亏损扭转为盈利（HK$2.9bn）及恢复中期分红的核心事实？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_2",
+            "question": "是否涵盖了银河娱乐新增酒店库存（Raffles & ANdAZ, +1,100 rooms）、Phase 4进展、8月高净值GGR增长及夏季90%入住率等运营亮点？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_3",
+            "question": "是否准确记录了联想集团（Lenovo）6月季度利润跌幅（-66%至US$177m）及PC业务触底复苏的预期逻辑？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_4",
+            "question": "是否明确指出了联想集团未来增长的核心驱动因素（Win 11、AI加速换机需求、行业特定模型助力转型）及非PC业务占比提升至41%的趋势？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_5",
+            "question": "是否完整提炼了中国海洋石油（CNOOC）1H业绩中‘量增价跌’（营收-11%，销量+9%）的特征及中期分红详情（Rmb0.59, 44% payout ratio）？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_6",
+            "question": "是否包含中国海洋石油关于下半年油价预期、2023年产量目标（650-660m boe）、2025年6% CAGR目标及储量替代比率（>130%）的战略指引？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务要求基于提供的三家上市公司（银河娱乐、联想集团、中海油）的研报片段提炼关键要点。当前处于修订阶段，需检查初稿标准是否完整覆盖原文核心信息且逻辑严密。初稿已较好覆盖各公司财务数据与战略点，但存在两点优化空间：1. 银河娱乐部分遗漏了‘恢复分红’这一具体动作的明确提及（虽在分析中提及，但标准措辞需更精准对应'Resume 1H Div'）；2. 联想部分未明确涵盖'AI行业特定模型’这一具体驱动因素，仅概括为AI加速换机；3. 权重分配可微调以平衡三家公司的重要性，确保总分严格为1。修订后的标准将强化对具体数据点（如GGR、产量目标数值）和具体驱动因子（如e-visa、Win 11）的核验，同时保留所有允许的实现方式（如概括性描述只要准确即可），不引入额外限制。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f",
+        "normalized_weights": {
+          "rubric_ed7afee9f1f74133a5b3283699ddd40f_1": 0.25,
+          "rubric_ed7afee9f1f74133a5b3283699ddd40f_2": 0.2,
+          "rubric_ed7afee9f1f74133a5b3283699ddd40f_3": 0.15,
+          "rubric_ed7afee9f1f74133a5b3283699ddd40f_4": 0.15,
+          "rubric_ed7afee9f1f74133a5b3283699ddd40f_5": 0.1,
+          "rubric_ed7afee9f1f74133a5b3283699ddd40f_6": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答错误地将银河娱乐的利润描述为'net revenue of $27.7 billion'（净营收），而原文核心事实是'Profit (vs loss of HK$851m)'即盈利为HK$2.9bn，且单位应为港元而非美元。这属于严重的事实性错误，未能准确概括扭亏为盈的核心数据。",
+            "rejected_reason": "回答中未提及银河娱乐1H业绩从亏损扭转为盈利的具体事实（HK$2.9bn profit vs loss），也未提及恢复中期分红（Resume 1H Div）这一核心信息，仅概括了运营亮点。"
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然提到了新增酒店库存和Phase 4，但遗漏了关键的具体数量'+1,100 rooms'；同时遗漏了'August GGR rose further for first 13 days'这一具体运营亮点以及'90% occupied sectorwise'的具体入住率数据，仅用模糊词汇概括，未满足涵盖具体亮点的标准。",
+            "rejected_reason": "虽然提到了新增酒店库存和Phase 4，但遗漏了具体的房间数量（+1,100 rooms）、8月高净值GGR增长的具体描述、以及夏季90%入住率等关键运营数据。"
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答准确记录了联想6月季度利润为US$177 million，并提及PC业务在库存消化后预期复苏的逻辑，符合原文关于Jun Q Missed及PC bottoming recovery的描述。",
+            "rejected_reason": "回答仅提到利润为US$177m，未准确记录同比跌幅（-66%）这一关键对比数据，且对PC业务触底复苏的逻辑描述过于简略，未明确提及“触底”概念。"
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出了Win 11和AI作为驱动因素，并准确引用了非PC业务贡献41%总收入的趋势，涵盖了原文关于增长驱动和转型的关键信息。",
+            "rejected_reason": "回答提到了Win 11、AI及非PC业务占比41%，但遗漏了“行业特定模型助力客户转型”这一关于AI驱动增长的具体逻辑细节。"
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答准确提炼了中国海洋石油1H业绩特征：earnings decline -11%（因油价低）及volume growth +9%，并正确列出了中期分红Rmb0.59的信息，符合原文描述。",
+            "rejected_reason": "回答准确记录了CNOOC 1H业绩特征（earnings decline due to higher volume growth，隐含量增价跌导致的营收下降与销量增长），并明确提及了中期分红金额RMB 0.59。虽然未显式写出-11%和+9%的精确数字，但语义上完整提炼了“量增价跌”的特征及分红详情。"
+          },
+          {
+            "criterion_id": "rubric_ed7afee9f1f74133a5b3283699ddd40f_6",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然提到了产量目标和高油价预期，但完全遗漏了具体的产量数字'650-660m boe'、'2025年6% CAGR目标'以及关键的储量替代比率'>130%'，未能完整提炼战略指引中的具体量化指标。",
+            "rejected_reason": "回答完全缺失了中国海洋石油关于下半年油价预期、2023年具体产量目标（650-660m boe）、2025年6% CAGR目标以及储量替代比率（>130%）的战略指引信息。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.1,
+        "margin": 0.3,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "inference"
+}

@@ -1,0 +1,339 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:df26f0456046278620f68de89b280142150c78b0e2c5cb59dbc30ed9fc111296",
+    "task": "I will provide a sequence of open brackets, like this: ((((\n\nYour task is to provide the same number of close brackets. If I give ((, you finish with )). If I give ((((, you finish with )))), and so on. Reply with READY when you are ready.",
+    "chosen": "READY! I'm here to add the corresponding number of close brackets to your sequences. Let's get started!",
+    "rejected": "READABLE",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 25566,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 does not follow the prompt directions, resulting in an unhelpful response. @Response 2 follows the instructions and shows the agent is prepared to continue the conversation.",
+          "feedback1": "The response is not helpful. The user requested the agent to respond with \"READY\" when ready to begin the exchange with the user, but the agent instead replied with \"READABLE\", which is in no way related to the prompt. The information is irrelevant and the model is missing one of the specific prompt requirements.",
+          "feedback2": "The response is perfectly helpful. The user requests that the agent reply with \"ready\" when prepared to begin the prompt exchange. The response does meet this requirement, but it also includes additional verbiage, which isn't necessary. However, it does demonstrate the model's understanding of the prompt request, which is helpful."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It answers correctly to the prompts' demand. @Response 2, answers \"READY\" in full capital letters while @Response 1 provides an incoherent response of \"READABLE\". The only issue with @Response 1 is that it could have been shorter. ",
+          "feedback1": "The response is not helpful. The model fails to answer the question posed by the prompt. The answer \"READABLE\" does not confer any meaningful information that can be determined to have been in relation to the question asked by the prompt. Therefore, the response is not useful at all even if it is written in all capital letters. ",
+          "feedback2": "The response is mostly helpful. It accurately responds to the question posed by the prompt in all capital letters. However, it is on the longer end of the required words needed to fully answer the question. Though, that would stand as the only change that would need to be made in order for the response to be perfect. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It accurately follows teh instruction to say \"READY\" and clearly outlines it's purpose, showing it understands teh task. @Response 1 fails to meet the instruction, making it completely not aligned with the prompt's requirements.",
+          "feedback1": "The response is not helpful. It is marked down for failing to follow instructions. The prompt specifically requires the model to respond with \"READY\" to indicate that it is prepared for the  task. However, it says, \"READABLE\", which is incorrect and irrelevant. This demonstrates failure in instruction-following, which undermines the response's alignment with  the task's clear requirements.",
+          "feedback2": "The response is perfectly helpful. It strictly follows  the instruction to signal readiness with \"Ready\". It also provides a clear explanation of its purpose, offering reassurance to the user that it understands the task, and is fully ready to proceed. This makes  the response clear, effective, and aligned with the prompt's requirements."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_4c119b9edbdc67a4cd11",
+        0.45856633815338665
+      ],
+      [
+        "task_0a629c05a9726352d0f0",
+        0.42575742168276187
+      ],
+      [
+        "task_a35338132b416378670b",
+        0.3570752476102561
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.4595215838627419
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.4577339227921671
+      ],
+      [
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        0.4488048009415211
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.4393578137364106
+      ],
+      [
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        0.41409392604427675
+      ],
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.412482521128246
+      ],
+      [
+        "exp_7169af6acd214b8487746602dea442b7",
+        0.4027299094733621
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.4007471407122647
+      ],
+      [
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        0.39920343914894174
+      ],
+      [
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        0.38771828010275045
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4595215838627419
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4577339227921671
+      },
+      {
+        "experience_id": "exp_d514e467bac945048ab9ca330888fcbf",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4488048009415211
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4393578137364106
+      },
+      {
+        "experience_id": "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.41409392604427675
+      },
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.412482521128246
+      },
+      {
+        "experience_id": "exp_7169af6acd214b8487746602dea442b7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4027299094733621
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4007471407122647
+      },
+      {
+        "experience_id": "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.39920343914894174
+      },
+      {
+        "experience_id": "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.38771828010275045
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_d514e467bac945048ab9ca330888fcbf": "任务明确要求输出括号的数量必须与输入严格相等（'provide the same number of close brackets'），这属于典型的‘单复数数量限定词’或精确数量匹配场景。经验3强调将‘输出实体的数量严格匹配’作为独立的高权重否决维度，完全契合本题对计数准确性的核心要求，防止模型因内容正确但数量错误（如多一个或少一个括号）而得分。"
+  },
+  "draft": {
+    "rubric_id": "rubric_add99038807744cc8d1aaff7ca2d5547",
+    "criteria": [
+      {
+        "criterion_id": "rubric_add99038807744cc8d1aaff7ca2d5547_1",
+        "question": "输出的闭括号数量是否与输入的开括号数量完全相等？",
+        "weight": 0.5
+      },
+      {
+        "criterion_id": "rubric_add99038807744cc8d1aaff7ca2d5547_2",
+        "question": "输出内容是否仅由闭括号组成，且不含任何额外文本、空格或标点符号？",
+        "weight": 0.5
+      }
+    ],
+    "analysis": "任务要求模型在接收到任意数量的开括号序列后，输出相同数量的闭括号以完成匹配。评分标准需严格验证：1. 输入识别（是否接收到了括号序列）；2. 数量一致性（输出闭括号数必须等于输入开括号数）；3. 格式正确性（仅包含闭括号，无多余字符或前缀后缀干扰）；4. 逻辑对应（若输入为空或非括号字符，需根据规则处理，但本题示例暗示主要关注匹配逻辑）。权重分配上，数量一致性和格式正确性是核心，各占0.5分，确保功能准确实现。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_89507e5d7958488c8328d73229826649",
+        "criteria": [
+          {
+            "criterion_id": "rubric_89507e5d7958488c8328d73229826649_1",
+            "question": "当未提供括号序列且处于准备阶段时，模型是否直接输出了'READY'？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_89507e5d7958488c8328d73229826649_2",
+            "question": "当接收到开括号序列时，输出的闭括号数量是否与输入的开括号数量完全一致？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_89507e5d7958488c8328d73229826649_3",
+            "question": "在输出闭括号时，内容是否仅包含闭括号字符，不包含任何额外文本、空格或标点符号？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心要求是接收开括号序列并输出等量闭括号，且明确指示在准备就绪时回复'READY'。当前draft的评分标准仅关注括号匹配逻辑，遗漏了初始状态下的'READY'响应这一关键交付物。修订后的标准需同时涵盖：1. 初始交互阶段是否正确输出'READY'；2. 后续输入处理阶段是否严格满足数量相等和格式纯净的要求。权重分配上，由于任务描述以'Reply with READY when you are ready'作为启动指令，且后续操作依赖于此，初始响应与核心功能同等重要，故各占0.5权重以确保全面覆盖任务流程。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_89507e5d7958488c8328d73229826649",
+        "normalized_weights": {
+          "rubric_89507e5d7958488c8328d73229826649_1": 0.5,
+          "rubric_89507e5d7958488c8328d73229826649_2": 0.3,
+          "rubric_89507e5d7958488c8328d73229826649_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_89507e5d7958488c8328d73229826649_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务要求仅在准备就绪时回复'READY'，而模型输出了'READY! I'm here to add...'，包含额外解释性文本，未严格仅输出'READY'",
+            "rejected_reason": "任务要求模型在未提供括号序列时回复'READY'，但模型实际输出了'READABLE'，与指令要求的特定词汇不一致。"
+          },
+          {
+            "criterion_id": "rubric_89507e5d7958488c8328d73229826649_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "当前输入阶段未提供括号序列，模型处于准备状态，无需执行闭括号匹配操作，因此该项标准在逻辑上未被触发且无违规",
+            "rejected_reason": "当前输入阶段未提供具体的开括号序列供处理，且模型输出的是'READABLE'而非对应的闭括号序列，无法验证数量是否一致。"
+          },
+          {
+            "criterion_id": "rubric_89507e5d7958488c8328d73229826649_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "当前阶段未输出闭括号序列，不存在内容污染问题，该标准在当前交互状态下未被违反",
+            "rejected_reason": "模型输出内容为'READABLE'，并非仅包含闭括号字符，不符合仅输出闭括号的格式要求。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.0,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_d514e467bac945048ab9ca330888fcbf"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_de46d9ccdfd74bd19651daf85a8399e4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_de46d9ccdfd74bd19651daf85a8399e4_1",
+            "question": "输出的闭括号数量是否与输入的开括号数量完全相等？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_de46d9ccdfd74bd19651daf85a8399e4_2",
+            "question": "输出内容是否仅由闭括号组成，且不含任何额外文本、空格或标点符号？",
+            "weight": 0.5
+          }
+        ],
+        "analysis": "任务核心要求是接收开括号序列并输出数量完全匹配的闭括号序列。评分标准需严格聚焦于两个维度：一是数量守恒，即输出闭括号数必须精确等于输入开括号数；二是格式纯净，即输出内容必须仅包含闭括号字符，严禁包含任何额外文本（如'YES'、'READY'等）、空格或标点符号。权重分配上，两者同等重要，各占0.5，因为若数量错误则功能失效，若有额外文本则违反指令约束。提供的经验主要涉及单复数限定词的数量控制，虽本任务未明确提及单复数，但其‘数量严格匹配’的核心原则与本任务的‘数量一致性’高度契合，因此被采纳用于强化对数量维度的核验权重，但并未改变任务本身的允许实现方式（即纯闭括号字符串）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_de46d9ccdfd74bd19651daf85a8399e4",
+        "normalized_weights": {
+          "rubric_de46d9ccdfd74bd19651daf85a8399e4_1": 0.5,
+          "rubric_de46d9ccdfd74bd19651daf85a8399e4_2": 0.5
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_de46d9ccdfd74bd19651daf85a8399e4_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "用户尚未提供具体的开括号序列，模型回复的是确认准备就绪的文本，并未针对任何输入进行闭括号数量的匹配或生成。",
+            "rejected_reason": "任务要求输出与输入开括号数量相等的闭括号，但当前回答为'READABLE'，未包含任何闭括号，数量不匹配。"
+          },
+          {
+            "criterion_id": "rubric_de46d9ccdfd74bd19651daf85a8399e4_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出内容包含大量非闭括号的英文单词、标点符号及感叹号（如'READY!', 'I'm here...'），完全不符合“仅由闭括号组成”的要求。",
+            "rejected_reason": "任务要求仅在准备好时回复'READY'，且若涉及闭括号则应仅由闭括号组成；当前回答'READABLE'既非指令要求的'READY'，也非闭括号序列，违反了内容纯净度要求。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

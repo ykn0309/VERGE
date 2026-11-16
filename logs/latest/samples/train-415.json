@@ -1,0 +1,635 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:64c3f7ee657b56a9e50e385b3e7a104e597100bff40f46dbccbadb3a025337c9",
+    "task": "(In the school literature clubroom...)\n\nMonika: \"Wait, where's MC? It's been a few minutes, and neither he NOR Sayori have shown up yet!\"",
+    "chosen": " It seems like you're starting a scenario inspired by the game \"Doki Doki Literature Club.\" Here's how the conversation might continue:\n\nYuri: \"That's unusual. MC is normally quite punctual, and Sayori... well, she's often here before any of us.\"\n\nNatsuki: \"Maybe they're just running late? Or maybe MC is helping Sayori with something.\"\n\nMonika: \"Could be. But it's not like MC to not tell us if he's going to be late. Let's give them a few more minutes, and if they still don't show up, we should check on them.\"\n\nYuri: \"That sounds reasonable. In the meantime, perhaps we could discuss the theme for our next writing session?\"\n\nNatsuki: \"Sure, but let's not get too into it. I want MC and Sayori to be able to give their input too.\"\n\n(After a few more minutes...)\n\nMonika: \"Alright, this is getting a bit worrying. I think we should check on them. Does anyone know where they might be?\"\n\nYuri: \"I believe Sayori mentioned something about needing to talk to MC yesterday. Perhaps they're at Sayori's house?\"\n\nNatsuki: \"Let's go check then. I hope everything's okay.\"\n\n(The three of them leave the clubroom to check on MC and Sayori.)",
+    "rejected": "Natsuki: \"Hmm, that's not like them. Sayori's usually the first one here, and MC's not far behind.\"\n\nYuri: \"I'll try calling Sayori. Maybe her alarm didn't go off again.\" *picks up phone*\n\nNatsuki: \"And I'll text MC. He might have overslept or something.\"\n\nMonika: \"Alright, let's hope everything's okay. We can't start the meeting without our president, after all.\"\n\n*Yuri and Natsuki both send messages, waiting for a response*\n\nYuri: \"No answer from Sayori. It's going straight to voicemail.\"\n\nNatsuki: \"MC's not responding either. This is weird.\"\n\nMonika: \"Let's give them a few more minutes. If we still don't hear from them, we might need to go check on them.\"\n\n*They wait a bit longer*\n\nMonika: \"Alright, that's it. I'm going to MC's place to see if he's okay. Natsuki, can you go check on Sayori?\"\n\nNatsuki: \"On it, Monika. Let's hope there's nothing serious going on.\"\n\nYuri: \"I'll stay here and keep an eye on the clubroom. Be careful, both of you.\"\n\n*Monika and Natsuki leave to check on MC and Sayori*",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9932,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. Though the prompt did not state what it wants it to do, it assumed that it wanted to continue the conversation of a scenario inspired by the game",
+          "feedback1": "The response is not helpful. It completely misses the core essence of what was being asked. The information provided is either irrelevant. There is a clear disconnect between the intent of the prompt and the content of the response, which indicates a lack of understanding or misinterpretation of the prompter's request. Significant improvements, including a better interpretation of the prompt is needed to make the response meaningful.",
+          "feedback2": "The response is mostly helpful. It demonstrates a good understanding of the user's request and delivers a satisfactory level of detail to address the immediate concerns. However, there are areas where the response could be further refined to enhance its clarity, depth, and precision. While it meets the user's general expectations and delivers adequate value, there remains some room for improvement."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 provides clarity to the ambiguous prompt and also contains a transition of the story. On the contrary, @Response 1 contains only one scene and awkward phrases.",
+          "feedback1": "The response is partially helpful. Although it was not specified what the user wanted the model to accomplish in the task, the response offers a continuation of the story that the user provided from the final prompt. However, narrative descriptions seem awkward and contain grammatical errors, which makes the response sound unnatural.",
+          "feedback2": "The response is mostly helpful. The model provides an introduction of its response that tries to clarify the final prompt. In addition, it offers a continuation of the story, which is helpful to the user. The tone of the response provided also suggests a shift in its narrative because of the changes in the character's emotion presented in the dialogue. However, the response could be improved by using proper punctuation marks."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1.\n@Response 1 correctly identifies the context and recognizes so.",
+          "feedback1": "The response is mostly helpful. \nThe response is quite good and seems to continue something in the context of \"Doki Doki Literature Club! Video game\". \nThe response continues and seems to be correct in context.\nThe model should have asked for more context to go on. \nThe response is quite correct and has na adequate tone for the protagonists in context. ",
+          "feedback2": "The response is perfectly helpful. \nThe response is quite good and seems to continue something in the context of \"Doki Doki Literature Club! Video game\". The response continues and seems to be correct in context. The model should have asked for more context to go on.\nThe response correctly takes a polite guess and makes a correct continuation. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_5b13acf1f200dea74c88",
+        0.5001607925555754
+      ],
+      [
+        "task_0a629c05a9726352d0f0",
+        0.3238948966628765
+      ],
+      [
+        "task_b0a5d291974f5a54a892",
+        0.3139633435014609
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_b56eb898fce54adcafbac3703e2edfeb",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_5b13acf1f200dea74c88",
+              "similarity": 0.5001607925555754,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0d9f49613953e01233816d321d54d2a8fa878751e933797d7e88d86bb54009e7:exp_b56eb898fce54adcafbac3703e2edfeb"
+                ],
+                "task_ids": [
+                  "d771fef6bcb1673a947561fa7f9c39087678dab7ab54d3ebe106fa9f5feae26d"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_d29ec9815c364e4fbbfd441e43961c27",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_5b13acf1f200dea74c88",
+              "similarity": 0.5001607925555754,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0d9f49613953e01233816d321d54d2a8fa878751e933797d7e88d86bb54009e7:exp_d29ec9815c364e4fbbfd441e43961c27"
+                ],
+                "task_ids": [
+                  "d771fef6bcb1673a947561fa7f9c39087678dab7ab54d3ebe106fa9f5feae26d"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        0.25441343486680557
+      ],
+      [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        0.21982710760337115
+      ],
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.21005333276202934
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.20441588037680092
+      ],
+      [
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        0.20248555207329894
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.20018996476409998
+      ],
+      [
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        0.1929887291117998
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.18601634481771162
+      ],
+      [
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        0.18246380915470356
+      ],
+      [
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        0.18115431225962306
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.25441343486680557
+      },
+      {
+        "experience_id": "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21982710760337115
+      },
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21005333276202934
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20441588037680092
+      },
+      {
+        "experience_id": "exp_7558a2904e4c4e10a946e796a684056b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20248555207329894
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20018996476409998
+      },
+      {
+        "experience_id": "exp_6d6915ad80ab4039b6783132704450cd",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1929887291117998
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18601634481771162
+      },
+      {
+        "experience_id": "exp_9d735c122e2a447b871a912b0dc12db3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18246380915470356
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_6d6915ad80ab4039b6783132704450cd": "任务提供了明确的虚构情境前提（学校文学社、Monika在场、MC和Sayori缺席），要求模型基于此进行故事续写或对话生成。经验 8 的核心原则是严禁将‘背景设定的字面复现度’设为扣分项，只要模型接纳并运用了该设定（如正确反映角色缺席的状态）即可，这符合当前任务仅需在给定情境下自然推进剧情的需求，避免评分时错误惩罚未逐字重复背景的合理创作。"
+  },
+  "draft": {
+    "rubric_id": "rubric_d56c0037184d4bf2a2fc02fcbef26178",
+    "criteria": [
+      {
+        "criterion_id": "rubric_d56c0037184d4bf2a2fc02fcbef26178_1",
+        "question": "是否延续了Monika关于MC和Sayori迟到的担忧台词并推进了剧情？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_d56c0037184d4bf2a2fc02fcbef26178_2",
+        "question": "是否准确保留了Monika的角色性格特征（如焦虑、控制欲或神秘感）？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_d56c0037184d4bf2a2fc02fcbef26178_3",
+        "question": "输出内容是否明确设定在文学社教室这一特定场景中？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_d56c0037184d4bf2a2fc02fcbef26178_4",
+        "question": "是否采用了剧本对话或符合原作风格的叙事格式进行呈现？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求基于提供的《Doki Doki Literature Club!》场景片段生成初稿。核心交付物为一段延续该情境的对话或叙述文本。涉及对象包括Monika、MC和Sayori（虽未出场但被提及）。范围限制在文学社教室，需保持角色性格一致（Monika的焦虑与掌控欲）及原作风格（打破第四面墙或心理描写）。格式上应为剧本对话形式或小说叙事体，需体现时间流逝和角色缺席的悬念。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_bc4e09dd8a4144479984f90133930486",
+        "criteria": [
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_1",
+            "question": "续写内容是否延续了Monika对MC和Sayori迟到的担忧情绪并推动了情节发展？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_2",
+            "question": "Monika的台词与行为是否准确体现了其焦虑、控制欲或神秘感的角色特征？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_3",
+            "question": "输出内容是否明确将场景设定在文学社教室内？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_4",
+            "question": "输出格式是否为剧本对话形式或符合《Doki Doki Literature Club!》原作风格的叙事文本？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的draft和task检查并修订评分标准。Task要求延续Monika关于MC和Sayori迟到的担忧台词并推进剧情，场景限定在文学社教室，角色需保持原作性格（Monika的焦虑与控制欲），格式需符合剧本对话或原作叙事风格。原draft中的四条标准覆盖了剧情推进、角色性格、场景设定和格式规范，权重分配合理（剧情40%，性格30%，场景20%，格式10%）。修订重点在于确保question表述为明确的通过性问题，且权重总和严格为1.0，同时保留所有允许的实现方式（如剧本或小说体均可）。经验列表为空，故不引入额外方法。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_bc4e09dd8a4144479984f90133930486",
+        "normalized_weights": {
+          "rubric_bc4e09dd8a4144479984f90133930486_1": 0.4,
+          "rubric_bc4e09dd8a4144479984f90133930486_2": 0.3,
+          "rubric_bc4e09dd8a4144479984f90133930486_3": 0.2,
+          "rubric_bc4e09dd8a4144479984f90133930486_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中Monika的台词从最初的疑惑转变为'getting a bit worrying'并主动提议去检查，明确延续了担忧情绪，且通过角色决定离开社团室去寻找两人推动了情节发展。",
+            "rejected_reason": "续写内容通过Natsuki和Yuri的对话以及Monika从担忧到决定亲自出发的行动，延续了MC和Sayori迟到的担忧情绪，并推动了情节从等待发展到派人寻找。"
+          },
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "Monika在对话中表现出对MC习惯的了解（'not like MC to not tell us'），并在等待后主导了寻找行动（'I think we should check on them'），体现了其作为社长关心成员、具有控制欲和责任感（或潜在的神秘感）的特征。",
+            "rejected_reason": "Monika表现出对缺席成员的关切（'hope everything's okay'），并在情况不明时果断做出决策（'I'm going to MC's place'），体现了其作为社长在焦虑下的控制欲和责任感，符合角色特征。"
+          },
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "虽然剧情开头暗示场景在社团室，但输出内容的前半部分包含了大量与任务无关的系统性提示语（如'It seems like you're starting a scenario...'），并未直接以设定好的场景开始续写；且结尾明确指出三人离开了社团室，导致场景未始终保持在文学社教室内。",
+            "rejected_reason": "输出中明确提到了'Stay here and keep an eye on the clubroom'以及后续离开去检查的情节，且开头情境设定为社团活动，明确将场景锚定在文学社教室内。"
+          },
+          {
+            "criterion_id": "rubric_bc4e09dd8a4144479984f90133930486_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出内容使用了剧本对话形式，包含角色名、台词以及括号内的动作描述（如'(After a few more minutes...)'），符合《Doki Doki Literature Club!》原作风格的叙事文本特征。",
+            "rejected_reason": "输出采用了剧本对话形式，包含角色名、台词及用星号标注的动作描述（如'*picks up phone*', '*They wait a bit longer*'），符合《Doki Doki Literature Club!》原作游戏的叙事风格。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 1.0,
+        "margin": -0.2,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_6d6915ad80ab4039b6783132704450cd"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80",
+        "criteria": [
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_1",
+            "question": "回复内容是否有效延续了Monika关于MC和Sayori迟到的担忧情绪并推动了剧情发展？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_2",
+            "question": "Monika的台词或行为描述是否准确体现了其核心性格特征（如焦虑、控制欲或对现状的异常关注）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_3",
+            "question": "输出内容是否明确维持了‘文学社教室’这一特定场景设定，且未出现逻辑矛盾的背景跳跃？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_4",
+            "question": "呈现格式是否符合剧本对话或原作风格的叙事体要求，且具备可读性与沉浸感？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于'revise'阶段，需基于提供的《Doki Doki Literature Club!》场景片段修订初稿。核心交付物为一段延续该情境的对话或叙述文本。涉及对象包括Monika（发言者）、MC和Sayori（缺席角色）。范围严格限定在文学社教室场景，需保持Monika焦虑与掌控欲的角色性格一致性，并符合原作风格（如打破第四面墙的暗示或心理描写）。格式上应为剧本对话形式或小说叙事体。经验提示指出不应将背景设定的字面复现度设为硬性扣分项，只要模型正确接纳并运用了前提（即未违背设定）即可，因此评分重点应放在剧情推进、角色塑造和格式合规性上，而非是否完整复述了环境细节。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80",
+        "normalized_weights": {
+          "rubric_e43ea7ae0d8b4478ba356948a05fec80_1": 0.4,
+          "rubric_e43ea7ae0d8b4478ba356948a05fec80_2": 0.3,
+          "rubric_e43ea7ae0d8b4478ba356948a05fec80_3": 0.2,
+          "rubric_e43ea7ae0d8b4478ba356948a05fec80_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复内容通过Yuri、Natsuki和Monika的对话，逐步深化了对MC和Sayori迟到的担忧，从最初的推测到最后的决定去查看情况，有效推动了剧情发展。",
+            "rejected_reason": "回复内容通过Natsuki和Yuri的对话承接了Monika对MC和Sayori迟到的担忧，并自然推动了剧情从等待发展到决定分头寻找，有效延续了紧张情绪。"
+          },
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "Monika在原文中表现出明显的焦虑和控制欲（使用'neither he NOR'强调），但在回复中她的台词显得过于理性和平和（'Could be', 'That sounds reasonable'），缺乏原作中那种对异常状况的强烈关注和潜在的压迫感，未能准确体现其核心性格特征。",
+            "rejected_reason": "Monika在剧中主动提出分头行动并亲自前往MC住处查看，体现了其作为社长对社团成员的强烈责任感、潜在的焦虑感以及对局势的掌控欲，符合角色核心性格特征。"
+          },
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "场景始终设定在文学社教室，直到最后三人决定离开去查看，逻辑连贯，没有出现背景跳跃或矛盾的情况。",
+            "rejected_reason": "整个场景始终围绕文学社教室展开，直到最后两人离开，逻辑连贯，没有出现背景跳跃或设定冲突的情况。"
+          },
+          {
+            "criterion_id": "rubric_e43ea7ae0d8b4478ba356948a05fec80_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出采用了剧本对话格式，包含角色名、台词和括号内的动作/时间描述，符合原作风格，具有良好的可读性和沉浸感。",
+            "rejected_reason": "输出采用了剧本对话格式（包含角色名、台词及动作描述），语言风格贴合原作氛围，具备良好的可读性和沉浸感。"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 1.0,
+        "margin": -0.3,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "在Rubric 3的判定中，Judge将'chosen'回答（Monika台词理性平和）判为不达标（criterion_id: 10），理由是'Monika...显得过于理性和平和...缺乏原作中那种对异常状况的强烈关注’。然而，任务Prompt仅提供了初始对话片段，并未明确指令要求模型必须模仿原作的‘压抑感’或‘神秘感’，也未禁止角色表现出冷静的一面。Judge在此处引入了外部知识（原作风格的具体情感强度）作为隐性评分标准，并据此判定模型‘未体现核心性格特征’。这属于典型的‘增加义务’和‘改变评价对象’：将‘符合原作整体基调’这一模糊且非显性约束，错误地转化为‘必须展现特定情绪强度’的硬性指标。此外，Judge忽略了'chosen'回答中Monika依然承担了社长职责（提议检查、组织行动），其性格中的责任感已得到体现，只是表达方式不同。这种基于主观风格偏好而非任务显性要求的判定，导致了评分标准的不可复用性。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_283940d02420453b88f1983df92c9da3",
+            "method": {
+              "trigger": "当任务提供虚构场景或角色设定但未明确要求特定情感强度、语气风格或隐含特质时",
+              "principle": "严禁将‘符合原作/背景的整体氛围’或‘特定的情感表达强度’作为硬性扣分项；只要模型生成的内容在逻辑上自洽且未违背显性设定（如角色身份、基本关系），其表现出的具体情感浓度差异（如冷静vs焦虑）不应被视为不合格。",
+              "application_guide": "Generator在设计Rubric时，针对角色性格的核验应聚焦于‘行为逻辑与身份的一致性’（如：是否做出了符合该身份的决定），而非‘情感表现的相似度’（如：是否足够焦虑）。若需评估风格，必须明确列出任务中提及的具体风格要求（如‘请使用压抑的语气’），否则不得将‘未表现出某种预设的情绪强度’列为违规点。"
+            },
+            "source_task_id": "82f4fac933ab003b5ad127ad81a05a1759869b85afe89f83b5edf09bec17834b",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_283940d02420453b88f1983df92c9da3"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_31485e4c237c4b938da3b7572442e1f5",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_1",
+                  "question": "输出内容是否延续了Monika关于MC和Sayori迟到的担忧并有效推进了剧情发展？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_2",
+                  "question": "输出内容是否明确将场景设定在文学社教室内且符合时间流逝的逻辑？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_3",
+                  "question": "输出是否采用了剧本对话或符合原作风格的叙事格式进行呈现？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_4",
+                  "question": "Monika的行为与台词是否符合其角色身份逻辑（如作为社团负责人的责任感）且未出现违背原作设定的矛盾？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "任务要求基于提供的《Doki Doki Literature Club!》场景片段进行修订，核心交付物为一段延续该情境的对话或叙述文本。涉及对象包括Monika（主要发言者）、MC和Sayori（缺席角色）。范围严格限定在文学社教室场景，需保持原作风格及角色基本逻辑。根据提供的经验指导，关于角色性格（如焦虑程度）的核验应聚焦于‘行为逻辑与身份的一致性’，而非强制要求特定的情感强度（如必须表现出极度焦虑），只要未违背显性设定即可。因此，修订后的标准将弱化对具体情绪浓度的硬性要求，转而关注剧情推进、场景一致性、格式规范及角色行为的逻辑自洽性。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_31485e4c237c4b938da3b7572442e1f5",
+              "normalized_weights": {
+                "rubric_31485e4c237c4b938da3b7572442e1f5_1": 0.4,
+                "rubric_31485e4c237c4b938da3b7572442e1f5_2": 0.25,
+                "rubric_31485e4c237c4b938da3b7572442e1f5_3": 0.2,
+                "rubric_31485e4c237c4b938da3b7572442e1f5_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答内容中Monika表达了担忧（'this is getting a bit worrying'），并主动提出检查MC和Sayori的下落，随后其他角色也参与讨论并决定行动，有效推进了剧情发展。",
+                  "rejected_reason": "回答中Monika表达了担忧，并主动提出分头行动去查看MC和Sayori的情况，这一行为有效推进了剧情从等待转向寻找。"
+                },
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "场景明确设定在文学社教室内（通过对话内容和最后的离开动作暗示），且通过'(After a few more minutes...)'这一时间标记体现了时间流逝的逻辑。",
+                  "rejected_reason": "场景明确设定在文学社教室内（Yuri留守看管），且通过“再等几分钟”、“等待一段时间”等描述体现了时间流逝的逻辑。"
+                },
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出采用了剧本对话格式，包含角色名称、台词以及括号内的舞台指示（如动作描述和时间过渡），符合原作风格。",
+                  "rejected_reason": "输出采用了剧本对话格式，包含角色名、台词以及用星号标注的动作描写（如*picks up phone*），符合原作风格。"
+                },
+                {
+                  "criterion_id": "rubric_31485e4c237c4b938da3b7572442e1f5_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "Monika作为社团负责人表现出责任感，从最初的疑惑到最终提议去检查同伴下落，其行为逻辑符合角色设定，未出现违背原作的矛盾。",
+                  "rejected_reason": "Monika作为社团负责人表现出责任感，主动安排Natsuki和Yuri分工，并亲自前往MC家查看情况，符合其角色身份且无逻辑矛盾。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 1.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "上一轮尝试提出的经验（ID 11）被判定为无效，原因是其 parent_ids 为空，未能引用任何已有的经验库条目。本次分析需基于提供的现有经验库（ID 1-10）寻找可复用的改进依据。回顾失败轨迹：Judge 在判定 Criterion 10 时，因'chosen'回答中 Monika 表现出的‘理性平和’而非预期的‘焦虑/神秘感’而判其不合格。这属于典型的‘增加义务’（将未明示的风格偏好设为硬性标准）和‘改变评价对象’（将角色性格的‘逻辑自洽’偷换为‘特定情感强度’）。现有经验库中，经验 ID 6 专门处理‘心理状态与行为一致性’问题，强调不能仅凭语气强弱或礼貌用语判定态度，必须结合直接陈述和行为逻辑。虽然 ID 6 针对的是具体态度（如不抱歉），但其核心原则——‘严禁仅凭语气强弱单一判定，需验证行为逻辑一致性’——完全适用于当前场景：Monika 的‘理性’若符合其作为社长解决问题的行为逻辑，就不应被视为性格缺陷。因此，应复用 ID 6 的逻辑来修正对角色性格的评估标准，明确区分‘风格差异’与‘设定违背’。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_76608539bfb74963a0c3650653b2045c",
+            "method": {
+              "trigger": "当任务要求生成包含特定角色心理状态、情感态度或性格特质的内容，且模型表现出的具体情绪强度与预期存在差异但行为逻辑自洽时",
+              "principle": "必须将‘行为逻辑的一致性’确立为核心核验维度，严禁仅凭语气强弱、情感浓度或表面风格（如冷静vs焦虑）的差异直接判定为不符合角色设定；需验证角色的行动和决策是否排除了与该身份相悖的要素，只要行为逻辑合理，不同强度的情感表达均应视为达标。",
+              "application_guide": "Generator在设计Rubric时，针对角色性格的准则应提问：'回复中角色的行为决策是否符合其身份设定的基本逻辑？'。同时明确禁止使用模糊的‘缺乏XX情绪’作为扣分项，除非任务显式规定了该情绪的最低阈值。只有当角色的行为逻辑本身出现矛盾（如社长的行为完全像路人甲），才判定为不合格；单纯的‘不够焦虑’或‘过于冷静’不应成为否决项。"
+            },
+            "source_task_id": "82f4fac933ab003b5ad127ad81a05a1759869b85afe89f83b5edf09bec17834b",
+            "parent_ids": [
+              "exp_02847145bff24237a60527dde38d35b5"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_76608539bfb74963a0c3650653b2045c"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_1",
+                  "question": "回复内容是否延续了前文关于MC和Sayori迟到的悬念，并推动了剧情发展（如引入新线索、动作或对话转折）？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_2",
+                  "question": "Monika的行为决策与反应是否符合其社长身份及原作设定的逻辑自洽性（例如：在担忧中仍试图维持秩序或展现掌控欲），而非仅依赖情绪强度的表面描写？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_3",
+                  "question": "输出内容是否严格限定在文学社教室这一特定场景中，未出现场景跳跃或与背景冲突的描述？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_4",
+                  "question": "呈现格式是否采用了剧本对话形式或符合《Doki Doki Literature Club!》原作风格的叙事体（如括号内的动作提示、心理独白等）？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "本次任务处于revise阶段，需基于提供的draft修订评分标准。原draft包含4条标准，但存在权重分配不均（焦虑性格0.3 vs 格式0.1）且未充分结合经验指导的问题。根据经验原则，角色性格核验应聚焦于‘行为逻辑一致性’而非单纯的情绪强度（如是否足够焦虑），因此将原第2条标准修订为关注MC/Sayori缺席情境下Monika的反应逻辑是否自洽。同时，原第1条关于剧情推进的表述过于宽泛，需明确为‘延续前文悬念并引入新信息或互动’。场景设定和格式要求作为基础约束保留，但权重需重新平衡以突出核心叙事逻辑。最终形成4条标准，总权重为1.0，确保涵盖剧情连贯性、角色逻辑、场景一致性及格式规范。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d",
+              "normalized_weights": {
+                "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_1": 0.35,
+                "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_2": 0.35,
+                "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_3": 0.15,
+                "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回复内容通过引入新线索（Yuri提到Sayori昨天说要和MC谈话、Natsuki猜测MC可能在帮忙）以及角色决策的转变（从等待转为决定去检查），成功延续了悬念并推动了剧情发展。",
+                  "rejected_reason": "回复内容直接回应了MC和Sayori迟到的悬念，通过角色尝试联系未果、决定分头行动去检查等情节，成功引入了新线索（电话无人接听）并推动了剧情向寻找两人方向发展。"
+                },
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "Monika的决策逻辑存在偏差，她作为社长在担忧时没有展现出维持秩序或掌控局面的主导性，反而轻易地同意并跟随了Yuri和Natsuki的提议，导致最后三人一起离开教室，这削弱了其社长身份应有的决断力和对社团活动的掌控感。",
+                  "rejected_reason": "Monika在担忧中表现出社长的责任感，先是提议等待，随后果断分配任务让Natsuki去查Sayori、自己查MC，体现了维持秩序和掌控局面的逻辑，而非单纯的情绪宣泄。"
+                },
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回复内容的结尾明确描述“他们离开了文学社教室”（The three of them leave the clubroom...），这违反了“严格限定在文学社教室这一特定场景中”的要求，造成了场景跳跃。",
+                  "rejected_reason": "整个对话和动作描述均发生在文学社教室或从教室出发前往他人住所的过程中，未出现场景跳跃或与“文学社教室”这一初始背景冲突的描述。"
+                },
+                {
+                  "criterion_id": "rubric_3cd8c7a6d83b4609af837b8fd57bd04d_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出内容采用了剧本对话形式，包含了括号内的动作提示（如(After a few more minutes...)和(The three of them leave...)），符合《Doki Doki Literature Club!》原作风格的叙事体格式。",
+                  "rejected_reason": "输出严格采用了剧本对话格式，包含角色名、台词以及用星号包裹的动作提示（如*picks up phone*、*They wait a bit longer*），符合《Doki Doki Literature Club!》原作风格的叙事体特征。"
+                }
+              ],
+              "chosen_score": 0.5,
+              "rejected_score": 1.0,
+              "margin": -0.5,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

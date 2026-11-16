@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "/Users/kainan/Documents/code/research/Rubric/VERGE/verge/scheduling.py", line 45, in run_training_stream
+    done, _ = wait(pending, return_when=FIRST_COMPLETED)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/concurrent/futures/_base.py", line 305, in wait
+    waiter.event.wait(timeout)
+  File "/opt/anaconda3/lib/python3.12/threading.py", line 655, in wait
+    signaled = self._cond.wait(timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/threading.py", line 355, in wait
+    waiter.acquire()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/kainan/Documents/code/research/Rubric/VERGE/artifacts/v31-general500-125/run_experiment.py", line 53, in <module>
+    try:main()
+        ^^^^^^
+  File "/Users/kainan/Documents/code/research/Rubric/VERGE/artifacts/v31-general500-125/run_experiment.py", line 16, in main
+    manifest=run(CONFIG,resume=(ROOT/"manifest.json").exists())
+             ^^^^^^^^^^^
+  File "/Users/kainan/Documents/code/research/Rubric/VERGE/verge/cli.py", line 230, in run
+    run_training_stream(
+  File "/Users/kainan/Documents/code/research/Rubric/VERGE/verge/scheduling.py", line 28, in run_training_stream
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/concurrent/futures/_base.py", line 647, in __exit__
+    self.shutdown(wait=True)
+  File "/opt/anaconda3/lib/python3.12/concurrent/futures/thread.py", line 238, in shutdown
+    t.join()
+  File "/opt/anaconda3/lib/python3.12/threading.py", line 1149, in join
+    self._wait_for_tstate_lock()
+  File "/opt/anaconda3/lib/python3.12/threading.py", line 1169, in _wait_for_tstate_lock
+    if lock.acquire(block, timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

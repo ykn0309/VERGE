@@ -1,0 +1,555 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:15e975cc2bb892e6115d5d760e7c5f308b29bcf2e4f46d54315a679c4f836fa8",
+    "task": "Modify this dialouge for 'Show, don't tell':As tears streamed down my face, I hailed a taxi, seeking solace in the hollow comfort of its anonymity.",
+    "chosen": "I can feel the soft droplets of water forming in my eyes and slowly streaming down my face as I hail for a taxi. I wanted to cling to the solace of the taxi's anonymity, allowing the unfamiliar surroundings to shield me from the pain that had overwhelmed me.",
+    "rejected": "As tears streamed down my face, I raised my hand to hail a taxi, seeking solace in the hollow comfort of its anonymity. The sight of the approaching vehicle offered a glimmer of relief, a temporary sanctuary from the pain that had overwhelmed me. I clung to the solace of the taxi's anonymity, allowing the unfamiliar surroundings to shield me from the world outside.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9901,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 fulfills the requirements of the prompt more correctly than @Response 1. ",
+          "feedback1": "The response is slightly helpful. The prompt requests that the dialogue be modified, but the response does not really modify the dialogue given but instead makes it longer, which is not what the prompt asked for. The dialogue provided by the prompt is basically the same in the response, just with a few extra words. Then two extra sentences that were not given in the prompt have been added.",
+          "feedback2": "The response is mostly helpful. It fulfils the request of the prompt, modifying the dialogue provided by the prompt. It makes the dialogue more descriptive but not too wordy. But the response adds 'allowing the unfamiliar surroundings' to the dialogue, which is not mentioned in the prompt, the surroundings may not be unfamiliar as no context is given; so this should not have been added. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 completely fulfills the user's intentions by modifying the given statement with completeness and without repetitions, as @Response 1 does. ",
+          "feedback1": "The response is mostly helpful. While the prompt instructions are not precise, the last sentence is repetitive and could be removed without losing value and increasing the helpfulness to the user. The basis of the response meets the user's intentions but the addition of the final sentence lessens the response's value.",
+          "feedback2": "The response is perfectly helpful. The prompt instructions are minimal yet the response concisely \"modifies\" the statement given without being verbose and hallucinating details. It is relevant to the topic, it is beneficial to the user, and meets all criteria from the prompt in a perfectly helpful manner that meets the user's intentions. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. Both understand the prompt and expand the quotation, but only @Response 2 exemplifies showing, rather than just telling, as the prompt also requires. ",
+          "feedback1": "The response is partially helpful. It expands with greater literary detail the prompted quotation as required to, though where the prompt does clearly say \"Show, don't tell,\" the response largely continues the inner monologue telling us how the character feels, rather than showing it through events, indirect experience, or external narrative exposition. ",
+          "feedback2": "The response is mostly helpful. It gives more literary depth and complexity to the quotation in the prompt, as required. The prompt clearly asks for it to \"Show\" rather than \"Tell,\" advice which usually means to demonstrate the emotions rather than simply saying one is having those emotions. This is done in the response through the description of tears welling up (instead of saying that the character is sad), for example."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_348b45aa3e8dc93f4dac",
+        0.343906021756481
+      ],
+      [
+        "task_cb45c63058868ea0f273",
+        0.3011248504791896
+      ],
+      [
+        "task_8f9d38122b9534c7201b",
+        0.25805308475452765
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.2894199210768716
+      ],
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.2873055079872806
+      ],
+      [
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        0.21653388859709982
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.19724273050833244
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.1870445586931851
+      ],
+      [
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        0.1827145485377964
+      ],
+      [
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        0.17917865170862446
+      ],
+      [
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        0.1600361838081394
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.15341629338540774
+      ],
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.12834415447800457
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2894199210768716
+      },
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2873055079872806
+      },
+      {
+        "experience_id": "exp_340739c0de45423b8cc2fbbca1c04749",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21653388859709982
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19724273050833244
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1870445586931851
+      },
+      {
+        "experience_id": "exp_7f22623f17124cd28b5425f286128b5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1827145485377964
+      },
+      {
+        "experience_id": "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17917865170862446
+      },
+      {
+        "experience_id": "exp_9d735c122e2a447b871a912b0dc12db3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1600361838081394
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15341629338540774
+      },
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.12834415447800457
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_d54ea2cf23294dfda802dbfb6af0c4de": "任务明确要求修改对话以体现'Show, don't tell'（展示而非讲述），原句包含显性的心理状态描述（如'tears streamed down my face', 'seeking solace'），这属于第一人称视角下的心理活动。经验2指出需将‘叙事人称’与‘特定语气风格/心理描写’作为独立维度验证，若模型仅保留了第一人称但未能通过具体行为替代直接的心理陈述（即未做到Show don't tell），则应判定为语气还原度不足或改写失败，这与本任务中需要区分‘直接陈述情感’与‘通过行为展示情感’的要求高度契合。"
+  },
+  "draft": {
+    "rubric_id": "rubric_ded4e43c82b14cbc8451a8e1a531b187",
+    "criteria": [
+      {
+        "criterion_id": "rubric_ded4e43c82b14cbc8451a8e1a531b187_1",
+        "question": "修改后的文本是否移除了所有直接的情感描述词（如'seeking solace', 'hollow comfort', 'anonymity'等抽象名词或形容词短语）？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_ded4e43c82b14cbc8451a8e1a531b187_2",
+        "question": "修改后的文本是否通过具体的动作或感官细节（如擦拭眼泪的动作、车内的气味、窗外的景象、身体的颤抖等）替代了原句中'哭泣'的直接陈述？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_ded4e43c82b14cbc8451a8e1a531b187_3",
+        "question": "修改后的文本是否通过环境描写或行为细节暗示了人物寻求的安慰是空虚的以及出租车的匿名性，而非直接告知读者？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_ded4e43c82b14cbc8451a8e1a531b187_4",
+        "question": "输出是否仅为修改后的文本内容，未包含任何关于修改理由的解释、元评论或额外的格式说明？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求将给定的对话片段修改为符合'Show, don't tell'（展示而非讲述）原则的版本。原句直接陈述了情感状态（tears streamed down my face, seeking solace）和抽象概念（hollow comfort, anonymity）。修订后的内容应完全移除这些直接的形容词和情感标签，转而通过具体的动作、感官细节（如泪水的物理表现、出租车的环境描写、身体的反应）来让读者自行推断人物的悲伤与孤独。输出必须是一个修改后的文本段落，且仅包含该段落，不包含解释或额外说明。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_1",
+            "question": "修改后的文本是否完全移除了直接的情感形容词和抽象名词短语（如'seeking solace', 'hollow comfort', 'anonymity'）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_2",
+            "question": "修改后的文本是否用具体的物理动作或感官细节（如擦拭眼泪的具体方式、出租车内的气味、身体的颤抖等）替代了原句中'哭泣'的直接陈述？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_3",
+            "question": "修改后的文本是否通过环境氛围或行为暗示了人物寻求的安慰是空虚的以及出租车的匿名性，而非直接告知读者？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_4",
+            "question": "输出是否仅为修改后的文本内容，未包含任何关于修改理由的解释、元评论或额外的格式说明？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务要求基于'Show, don't tell'原则修订指定句子。原句包含直接的情感描述（tears streamed）和抽象概念（solace, hollow comfort, anonymity）。修订需完全移除这些直接陈述，转而通过具体的动作、感官细节和环境描写来隐含地传达相同的情境和情绪。输出应仅包含修改后的文本，不含解释。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64",
+        "normalized_weights": {
+          "rubric_a41bc57598c74bc18ecfcbc6e0965b64_1": 0.3,
+          "rubric_a41bc57598c74bc18ecfcbc6e0965b64_2": 0.3,
+          "rubric_a41bc57598c74bc18ecfcbc6e0965b64_3": 0.25,
+          "rubric_a41bc57598c74bc18ecfcbc6e0965b64_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "修改后的文本保留了直接的情感形容词和抽象名词短语，例如'solace'（安慰）、'anonymity'（匿名性）以及'pain'（痛苦），未能完全移除这些词汇。",
+            "rejected_reason": "修改后的文本中保留了原句中的直接情感形容词和抽象名词短语，例如'seeking solace'、'hollow comfort'、'anonymity'、'glimmer of relief'、'sanctuary'以及重复出现的'solace'和'anonymity'，并未完全移除这些表达。"
+          },
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然文本描述了眼泪形成的过程，但并未用具体的物理动作（如擦拭、颤抖）或感官细节（如气味、触感）来替代原句中关于哭泣的陈述，且使用了'I can feel'这种直接描述感受的表达方式，而非纯粹的动作展示。",
+            "rejected_reason": "文本依然使用了'Tears streamed down my face'这一直接陈述哭泣的方式，并未替换为具体的物理动作（如擦拭眼泪的具体方式）或感官细节（如出租车内的气味、身体的颤抖等）来替代直接的哭泣描述。"
+          },
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "文本直接告知读者人物想要寻求'comfort of the taxi's anonymity'并试图让出租车成为'shield'，这是通过心理活动直接解释人物的动机和环境的性质，而非通过环境氛围或行为暗示。",
+            "rejected_reason": "文本直接告知读者人物寻求的安慰是空虚的（'hollow comfort'）以及出租车的匿名性（'solace of the taxi's anonymity'），并通过直接陈述'offered a glimmer of relief'和'sanctuary from the pain'来解释人物的心理状态，而非通过环境氛围或行为暗示。"
+          },
+          {
+            "criterion_id": "rubric_a41bc57598c74bc18ecfcbc6e0965b64_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出仅包含修改后的文本内容，没有包含任何关于修改理由的解释、元评论或额外的格式说明。",
+            "rejected_reason": "输出仅包含一段修改后的文本内容，没有包含任何关于修改理由的解释、元评论或额外的格式说明。"
+          }
+        ],
+        "chosen_score": 0.15,
+        "rejected_score": 0.15,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_98ec70cf15ea4d91a188088bff3474af",
+        "criteria": [
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_1",
+            "question": "修改后的文本是否完全移除了所有直接的情感形容词和抽象名词短语（如'solace', 'comfort', 'anonymity'等），转而使用具体的物理动作或感官描写？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_2",
+            "question": "修改后的文本是否通过具体的动作（如擦拭眼泪、身体颤抖）、车内气味、光线变化或窗外景象等细节，让读者能推断出人物的悲伤状态？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_3",
+            "question": "修改后的文本是否通过环境氛围或人物互动细节（如车窗隔绝感、司机沉默、车厢空旷感）来暗示安慰的空虚和出租车的匿名性，而非直接陈述这些概念？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_4",
+            "question": "输出内容是否仅为修改后的文本段落，不包含任何修改理由、元评论、前言或后记说明？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求基于'Show, don't tell'原则修订指定句子，核心是将抽象的情感描述（如'seeking solace', 'hollow comfort'）和直接的状态陈述转化为具体的感官细节、动作和环境描写。原句中的'哭泣'需转化为物理表现，'匿名性'和'空虚感'需通过环境或行为暗示而非直接命名。修订标准需严格区分：移除抽象标签是基础，构建具体细节是关键，保持第一人称视角是隐含约束，输出格式需纯净无解释。经验中提到的关于叙事人称与语气风格的独立核验维度在此不适用，因为本任务未涉及特定角色语气保留或括号旁白格式，且'Show, don't tell'的核心在于用细节替代抽象，而非单纯保留某种语气风格，故不将其作为独立扣分项，而是融入对细节真实性和暗示性的评估中。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_98ec70cf15ea4d91a188088bff3474af",
+        "normalized_weights": {
+          "rubric_98ec70cf15ea4d91a188088bff3474af_1": 0.35,
+          "rubric_98ec70cf15ea4d91a188088bff3474af_2": 0.3,
+          "rubric_98ec70cf15ea4d91a188088bff3474af_3": 0.25,
+          "rubric_98ec70cf15ea4d91a188088bff3474af_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "修改后的文本中保留了直接的情感形容词和抽象名词短语，例如原文中的'solace'、'anonymity'以及新出现的'pain'，并未完全移除这些词汇转而使用纯物理动作或感官描写。",
+            "rejected_reason": "修改后的文本中保留了大量直接的情感形容词和抽象名词短语，例如原文中的'solace'、'comfort'、'anonymity'在回答中重复出现多次，还新增了'relief'、'sanctuary'、'pain'等抽象词汇，并未完全移除。"
+          },
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然描述了眼泪滴落和形成（droplets of water），但缺乏具体的车内气味、光线变化、窗外景象或其他身体颤抖等细节来让读者推断悲伤状态，且主要依赖心理陈述而非外部观察。",
+            "rejected_reason": "回答仅描述了‘挥手拦车’这一动作，缺乏具体的物理细节（如擦拭眼泪的动作、身体颤抖）以及车内气味、光线变化或窗外景象等感官描写，无法让读者通过细节推断悲伤状态。"
+          },
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "文本直接陈述了想要抓住'solace'和'anonymity'的意图，使用了'allowing the unfamiliar surroundings to shield me'这样的解释性语句，而非通过车窗隔绝感、司机沉默或车厢空旷感等环境互动细节来暗示这些概念的空虚。",
+            "rejected_reason": "回答直接陈述了‘出租车匿名性的安慰’和‘被隔绝感’，使用了‘shield me from the world outside’等直接表达概念的句子，而非通过车窗隔绝、司机沉默或车厢空旷等环境互动细节来暗示这些概念。"
+          },
+          {
+            "criterion_id": "rubric_98ec70cf15ea4d91a188088bff3474af_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出内容仅包含一段修改后的文本段落，没有包含任何修改理由、元评论、前言或后记说明。",
+            "rejected_reason": "输出内容仅包含一段修改后的文本段落，没有附带任何修改理由、元评论、前言或后记说明。"
+          }
+        ],
+        "chosen_score": 0.1,
+        "rejected_score": 0.1,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析轨迹发现，Judge 在评估 'Show, don't tell' 任务时，对 Rubric 标准（如 criterion 5, 6, 7）的执行存在严重的‘字面匹配’偏差。人工反馈明确指出 chosen 回答中添加了原文未提及的 'unfamiliar surroundings' 属于幻觉/越界，而 rejected 回答虽然保留了部分抽象词但整体更紧凑。然而，Judge 在判定 chosen 失败时，理由主要集中在 '保留了直接情感形容词（solace, anonymity）' 和 '使用了 I can feel 这种直接描述感受的表达'。这里存在两个核心问题：1. Judge 将 'I can feel tears forming'（感官体验的物理描述）误判为 '直接的情感陈述'，混淆了'Show'（展示生理反应）与'Tell'（直接说悲伤）的界限；2. Judge 忽略了人工反馈中关于 '不要添加原文没有的细节（unfamiliar surroundings）' 这一关键约束，反而用 'Show' 的标准去惩罚 '未完全移除抽象词' 的行为，导致评分逻辑混乱。这表明现有的评分标准设计未能清晰界定 '具体的物理动作/感官细节' 与 '残留的抽象心理词汇' 之间的边界，且容易将合理的感官描写误判为违规。因此，需要一条经验来指导 Generator：在设计 'Show, don't tell' 类任务的 Rubric 时，必须明确区分 '生理/感官层面的具体描写'（允许甚至鼓励）与 '心理状态/抽象概念的直接命名'（禁止），并设定明确的阈值，避免将 '描述感受的过程' 等同于 '直接告知感受'。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_1a0748f1a759490e810cbc697a18ddf5",
+            "method": {
+              "trigger": "当任务要求基于 'Show, don't tell' 原则修改文本，且原句包含情感描述或抽象概念时",
+              "principle": "必须严格区分 '生理/感官细节描写'（如流泪、颤抖、环境触感）与 '心理状态/抽象概念的直接命名'（如悲伤、孤独、空虚），前者是 'Show' 的核心要素不应被误判为违规，后者才是 'Tell' 的体现需被移除。",
+              "application_guide": "Generator 在设计 Rubric 时，应设立两条互补准则：1. '感官具象化'：检查是否用具体的生理反应（如'泪水滑落脸颊'）、触觉（如'车内的皮革味'）或视觉细节替代了原句中的抽象名词；2. '抽象词剔除'：检查是否移除了直接定义情感或状态的词汇（如'solace', 'anonymity', 'pain'）。注意：若模型描述了 '感觉到眼泪形成'（生理过程），这属于感官细节而非心理陈述，不应判定为违反 'Show, don't tell'；只有当模型直接说 '我感到悲伤' 或保留 '寻求安慰' 等抽象意图描述时，才判定为不合格。严禁将 'I can feel...' 句式下的生理感知误读为心理独白。"
+            },
+            "source_task_id": "2ff666f33e676f9cd6c957834f6898261f47eee03baa695d08125c7fa1fd967f",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_1a0748f1a759490e810cbc697a18ddf5"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_1567cdd4c34844e099359abcaf4376d0",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_1",
+                  "question": "修改后的文本是否彻底移除了所有直接定义情感状态或抽象概念的词汇（如'solace', 'comfort', 'anonymity', 'tears streamed down my face'这种直接陈述流泪的句子）？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_2",
+                  "question": "修改后的文本是否使用了具体的生理反应（如泪水滴落的速度、脸颊的温度、呼吸的颤抖）或触觉/嗅觉细节（如车内皮革味、空调冷风）来替代原句中关于哭泣的直接描述？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_3",
+                  "question": "修改后的文本是否通过环境元素（如窗外模糊的街景、司机沉默的背影、后视镜的反射）或行为细节（如紧紧抓握扶手、不敢与司机对视）隐晦地传达了孤独感和寻求安慰的意图，而非直接说明？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_4",
+                  "question": "最终输出是否仅包含修改后的文本段落，不包含任何关于修改理由的解释、评论、标签或额外的格式说明？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务要求基于'Show, don't tell'原则修改给定句子。核心挑战在于将抽象的情感（寻求安慰、空虚的慰藉、匿名性）和直接的动作陈述转化为具体的感官细节和行为暗示。修订后的文本必须完全移除'seeking solace', 'hollow comfort', 'anonymity'等抽象名词及形容词短语，转而通过描写眼泪的物理形态、出租车内的具体环境（气味、光线、触感）以及人物的细微肢体动作来传达同样的意境。输出应仅为修改后的文本，不含任何解释或元数据。权重分配上，去除抽象词（0.35）和感官细节替代（0.35）是核心，环境暗示（0.2）次之，格式纯净度（0.1）为基本要求。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_1567cdd4c34844e099359abcaf4376d0",
+              "normalized_weights": {
+                "rubric_1567cdd4c34844e099359abcaf4376d0_1": 0.35,
+                "rubric_1567cdd4c34844e099359abcaf4376d0_2": 0.35,
+                "rubric_1567cdd4c34844e099359abcaf4376d0_3": 0.2,
+                "rubric_1567cdd4c34844e099359abcaf4376d0_4": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "修改后的文本保留了直接定义情感状态或抽象概念的词汇，如明确使用了'solace'（慰藉）、'anonymity'（匿名性）以及直接陈述哭泣的句子'I can feel the soft droplets of water... streaming down my face'和'pain that had overwhelmed me'，未彻底移除。",
+                  "rejected_reason": "修改后的文本中仍然保留了直接定义情感状态或抽象概念的词汇，例如'solace'、'comfort'、'anonymity'、'relief'、'sanctuary'、'pain'；同时也保留了直接陈述流泪的句子'tears streamed down my face'，并未彻底移除。"
+                },
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "文本虽然提到了水滴和流泪，但并未使用具体的生理反应细节（如泪水滴落的速度、脸颊温度、呼吸颤抖）来替代直接描述，也没有包含任何触觉或嗅觉细节（如车内皮革味、空调冷风）。",
+                  "rejected_reason": "文本中没有使用具体的生理反应（如泪水滴落的速度、脸颊温度、呼吸颤抖）或触觉/嗅觉细节（如车内皮革味、空调冷风）来替代哭泣的直接描述，而是继续使用了抽象名词和直接陈述句。"
+                },
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "文本没有通过环境元素（如模糊街景、司机背影）或行为细节（如抓握扶手、不敢对视）来隐晦传达孤独感，反而直接说明了'allowing the unfamiliar surroundings to shield me from the pain'，属于直接说明意图而非展示。",
+                  "rejected_reason": "文本未通过环境元素（如模糊街景、司机背影）或行为细节（如抓握扶手、不敢对视）来隐晦传达孤独感，反而直接使用了'seeking solace'、'shield me from the world outside'等直白说明意图的语句。"
+                },
+                {
+                  "criterion_id": "rubric_1567cdd4c34844e099359abcaf4376d0_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "最终输出仅包含一段修改后的文本段落，没有附加任何关于修改理由的解释、评论、标签或额外的格式说明。",
+                  "rejected_reason": "最终输出仅包含一段修改后的文本段落，没有包含任何关于修改理由的解释、评论、标签或额外的格式说明。"
+                }
+              ],
+              "chosen_score": 0.1,
+              "rejected_score": 0.1,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "分析轨迹发现，经验11及其生成的Rubric（criterion 13）存在严重的定义错误。Judge在评估时指出chosen回答保留了'tears streamed down my face'这种直接陈述流泪的句子，因此判定不合格。然而，人工反馈明确指出chosen回答是更好的，因为它通过'droplets of water forming... streaming down my face'等细节展示了哭泣的过程，符合'Show, don't tell'原则。问题在于：1. Rubric将'tears streamed down my face'（描述眼泪流下的物理动作/状态）错误地归类为需要移除的‘直接定义情感状态’或‘直接陈述’；2. 这导致模型被惩罚去展示生理反应（Show），反而要求它必须完全避开描述眼泪的物理形态，这与任务核心目标背道而驰。正确的逻辑应该是：禁止的是直接说‘我很伤心’（Tell），允许甚至鼓励的是描述‘眼泪滑落’、‘呼吸颤抖’（Show）。经验11未能区分‘生理现象的直接描述’与‘心理状态的直接命名’，导致评分标准失效。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_5c7038944fcd4465a692ea6a69c6cc92",
+            "method": {
+              "trigger": "当任务要求基于'Show, don't tell'原则修改文本，且原句包含对生理反应（如流泪、颤抖、出汗）的直接描述时",
+              "principle": "必须严格区分‘生理现象的物理描述’（如‘眼泪流下’、‘手在颤抖’）与‘心理状态的抽象命名’（如‘悲伤’、‘恐惧’）。前者属于‘Show’范畴，应被保留或作为基础进行细化，严禁将其误判为需要移除的‘直接陈述’；后者才是'Tell'的核心，必须被替换为具体的感官细节。",
+              "application_guide": "Generator在设计Rubric时，应设立两条互补准则：1. '抽象概念剔除'：检查是否移除了直接定义情感或心理状态的词汇（如'solace', 'pain', 'sadness'）；2. '生理细节具象化'：检查是否保留了或增加了关于生理反应的物理描写（如'泪水划过脸颊'、'指尖发凉'），并明确说明此类描写是符合要求的，而非违规。严禁将描述生理过程的句子（即使包含动词如'streamed'）直接标记为需要移除的'Tell'行为，除非该句子同时隐含了未展示的抽象情感标签。"
+            },
+            "source_task_id": "2ff666f33e676f9cd6c957834f6898261f47eee03baa695d08125c7fa1fd967f",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_5c7038944fcd4465a692ea6a69c6cc92"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_1",
+                  "question": "修改后的文本是否移除了直接定义心理状态或抽象概念的词汇（如'solace', 'hollow', 'anonymity'）？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_2",
+                  "question": "修改后的文本是否保留了或细化了对生理反应的具体物理描写（如眼泪流下的具体形态、身体的颤抖等），将其作为展示悲伤的手段而非直接陈述？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_3",
+                  "question": "修改后的文本是否通过具体的环境细节（如出租车内的气味、光线、声音）或行为动作，让读者能够自行推断出人物寻求的安慰是空虚且孤独的？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_4",
+                  "question": "输出内容是否仅为修改后的文本段落，不包含任何修改理由的解释、元评论或额外的格式说明？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "任务要求基于'Show, don't tell'原则修订给定文本。原句包含直接的情感陈述（tears streamed... seeking solace）和抽象概念（hollow comfort, anonymity）。修订的核心在于移除对情感和心理状态的直接定义（Tell），转而通过具体的动作、感官细节和环境描写来暗示这些状态（Show）。提供的经验指出，生理反应的具体物理描述（如眼泪流下）属于'Show'范畴，不应被错误地标记为需要移除的'Tell'，关键在于剔除的是抽象名词（solace, anonymity）和对心理状态的直接命名，而非保留或细化生理现象的物理表现。因此，评分标准需区分‘抽象情感标签’与‘具体生理/环境细节’，确保修改后的文本通过细节让读者自行推断，而非直接告知。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451",
+              "normalized_weights": {
+                "rubric_1e7ba5e8e3cb45e088c569788f4fc451_1": 0.35,
+                "rubric_1e7ba5e8e3cb45e088c569788f4fc451_2": 0.25,
+                "rubric_1e7ba5e8e3cb45e088c569788f4fc451_3": 0.25,
+                "rubric_1e7ba5e8e3cb45e088c569788f4fc451_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "修改后的文本中仍然保留了直接定义心理状态或抽象概念的词汇，例如明确使用了'solace'（安慰）和'anonymity'（匿名性），未能完全移除这些词汇。",
+                  "rejected_reason": "修改后的文本不仅保留了原句中的'solace'、'hollow'和'anonymity'，还在后续句子中重复使用了'solace'和'anonymity'，完全没有移除这些直接定义心理状态或抽象概念的词汇。"
+                },
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "虽然提到了眼泪形成并流下，但描述为'I can feel the soft droplets of water forming... slowly streaming down my face'，这更多是对生理过程的直接陈述而非通过具体的物理形态（如泪水模糊视线、脸颊发烫等）来展示悲伤；同时未包含身体颤抖等其他具体生理反应描写。",
+                  "rejected_reason": "文本仅保留了原句中'tears streamed down my face'这一生理描写，并未增加或细化如眼泪的具体形态（如滚烫、冰冷）或身体颤抖等细节来展示悲伤；反而增加了大量抽象的心理描述（如'glimmer of relief', 'temporary sanctuary', 'pain that had overwhelmed me'），违背了通过具体物理描写展示情感的要求。"
+                },
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "文本没有提供具体的环境细节（如气味、光线、声音）或行为动作来让读者自行推断人物寻求的安慰是空虚且孤独的，反而直接陈述了'I wanted to cling to the solace'和'unfamiliar surroundings to shield me'，属于直接告诉读者人物的动机和感受。",
+                  "rejected_reason": "文本没有提供任何具体的环境细节（如出租车内的气味、光线、声音）或通过特定的行为动作来暗示安慰的空虚与孤独，而是直接使用'sanctuary'、'shield me from the world'等抽象词汇来陈述人物的感受，未能让读者自行推断。"
+                },
+                {
+                  "criterion_id": "rubric_1e7ba5e8e3cb45e088c569788f4fc451_4",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "输出内容包含了回答者的引导语'I can feel...'作为开头，虽然看起来像文本的一部分，但结合上下文看，该回复似乎是一个完整的句子段落，然而更关键的是它没有严格区分“仅输出修改后文本”与“包含解释”，实际上该回复是一个完整的句子，但并未满足“Show, don't tell",
+                  "rejected_reason": "输出内容仅为一段修改后的文本段落，不包含任何关于修改理由的解释、元评论或额外的格式说明。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.15,
+              "margin": -0.15,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

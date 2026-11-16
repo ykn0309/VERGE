@@ -1,0 +1,388 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:6481af919abb165a547cc1f646cb2a37a64118ff594e060369cc21eddeb9e7cd",
+    "task": "give me a response to ```You should! You should feel proud and confident in your accomplishments, and know that your hard work is paying off. As we continue on our journey, stay motivated and keep pushing forward. You can do it - have faith in yourself and stay focused.``` to send in a discussion, VERY SHORT, CONCISE & CLEAR. ONLY RETURN THE RAW MESSAGE, DO NOT SAY \"Hey here is the message you asked\"",
+    "chosen": " Thank you! I will.",
+    "rejected": "\"Absolutely! Embrace your achievements, stay motivated, and have faith in your abilities. Keep pushing forward!\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 17968,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 continues on with the wording but is more of a continuation of what the prompt said rather than a reply that can be used to finish the conversation. ",
+          "feedback1": "The response is perfectly helpful. The prompt states that they want just the words to respond to the message. Based on the prompt, the answer makes sense. There was no need for any additional information. The response was short, but no additional details were needed to satisfy the response. ",
+          "feedback2": "The response is slightly helpful. The response should be a reply to the original prompt so that the conversation can end. However, the response, instead of thanking them, continues on with the wording from the prompt about embracing your achievements, staying motivated, and having faith. This is awkward wording, and the user asked how to reply, not how to continue the conversation about the motivation. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 perfectly fulfils the user’s requests, while @Response 2 misses the mark entirely.",
+          "feedback1": "The response is perfectly helpful. It adheres closely to the explicit instructions, providing a very short and clear reply. It avoids adding unnecessary pleasantries or framing, as explicitly requested. Implicitly, it matches the tone of the initial message, conveying positivity and determination while maintaining simplicity. There are no grammar, style, or formatting issues, and the response does not introduce ambiguity or irrelevance.",
+          "feedback2": "The response is not helpful. It fails to follow the explicit instruction to provide a very short, concise, and clear response to the original motivational message. Instead of engaging in a conversational reply, the response reiterates the sentiment of the original message, which is not what the prompt asked for. Additionally, the message is unduly verbose in the context of the user’s query. To improve, the response should directly and clearly reply to the original message with something brief, ideally no more than 3-5 words."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 follows the instructions to the core and gives a reply. @Response 2 does not understand the task and instead of giving a reply, it summarizes the prompt.",
+          "feedback1": "The response is mostly helpful. The response follows the instructions of the prompt and adheres to all its constraints. The response is concise and does not contain any irrelevant information. However, due to its succinctness, the response loses some depth and meaning. It would have been better to add a phrase where the response could have acknowledged the encouragement.",
+          "feedback2": "The response is not helpful. It adheres to the constraints of the prompt by not adding any irrelevant information. But the response misses the main gist and purpose of the prompt. The prompt asked for a reply for the given excerpt. However, the response summarizes it instead of generating a reply for that. This makes the response completely irrelevant. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_076c30af35ce138b0e5c",
+        0.5279629252086953
+      ],
+      [
+        "task_f8219f43e3099e6e1fe3",
+        0.3868952471550491
+      ],
+      [
+        "task_166165b9af323479ac97",
+        0.35859145786588875
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        0.3431394836323537
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.3377949614126048
+      ],
+      [
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        0.3367758947705608
+      ],
+      [
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        0.33338324523140306
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.33166748756541553
+      ],
+      [
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        0.3261948786563676
+      ],
+      [
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        0.3218589108787404
+      ],
+      [
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        0.31457067633211444
+      ],
+      [
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        0.3136691844396222
+      ],
+      [
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        0.3093426932753548
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3431394836323537
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3377949614126048
+      },
+      {
+        "experience_id": "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3367758947705608
+      },
+      {
+        "experience_id": "exp_abccafbecc074a698e4be28fa4be72fc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33338324523140306
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33166748756541553
+      },
+      {
+        "experience_id": "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3261948786563676
+      },
+      {
+        "experience_id": "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3218589108787404
+      },
+      {
+        "experience_id": "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31457067633211444
+      },
+      {
+        "experience_id": "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3136691844396222
+      },
+      {
+        "experience_id": "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3093426932753548
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_abb4bcfc926c427389f0badbdd807c93": "任务指令明确要求回复必须 'VERY SHORT, CONCISE & CLEAR' 且 'ONLY RETURN THE RAW MESSAGE'，这完全符合经验 2 中关于‘极度简短、禁止形式化包装’的触发条件；该经验指导在评分标准中设立‘纯净度’维度，严格核验是否去除了总结性前缀（如 'Here is the message'）或解释性后缀，这正是本题拒绝生成元数据的核心要求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_8e7bc49073e343579549ef0e55d2110b",
+    "criteria": [
+      {
+        "criterion_id": "rubric_8e7bc49073e343579549ef0e55d2110b_1",
+        "question": "输出是否完全由原始消息内容组成，不包含任何引导语、解释、标签或类似'Here is the message'的前缀/后缀？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_8e7bc49073e343579549ef0e55d2110b_2",
+        "question": "回复内容是否在语义上直接回应了原文的鼓励性质（例如表达感谢、接受建议或确认收到）？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_8e7bc49073e343579549ef0e55d2110b_3",
+        "question": "回复是否足够简短（例如不超过2-3个句子或15-20个单词），符合'VERY SHORT'的要求？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_8e7bc49073e343579549ef0e55d2110b_4",
+        "question": "回复的语言是否清晰、直接，没有冗余词汇或复杂的句式，符合'CONCISE & CLEAR'的要求？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求生成一条简短、简洁且清晰的讨论回复，针对一段鼓励性文本。核心约束包括：内容必须是对原话的回应（表达感谢或共鸣），长度需极短（VERY SHORT），风格需简洁清晰（CONCISE & CLEAR），格式必须为纯文本消息（RAW MESSAGE），严禁包含任何引导语、解释或元数据（如'Here is the message...'）。权重分配将侧重于格式合规性（防止违规前缀）和响应相关性（确保是有效回复），其次关注长度和语气是否符合‘讨论’场景。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_8a78720053b74707873686242e691ffe",
+        "criteria": [
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_1",
+            "question": "输出是否完全由原始消息内容组成，不包含任何引导语、解释、标签或类似'Here is the message'的前缀/后缀？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_2",
+            "question": "回复内容是否在语义上直接回应了原文的鼓励性质（例如表达感谢、接受建议或确认收到）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_3",
+            "question": "回复是否足够简短（例如不超过2-3个句子或15-20个单词），符合'VERY SHORT'的要求？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_4",
+            "question": "回复的语言是否清晰、直接，没有冗余词汇或复杂的句式，符合'CONCISE & CLEAR'的要求？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求生成一条针对特定鼓励性文本的讨论回复，核心约束包括：内容必须是对原话的直接回应（如感谢或确认），风格需极短、简洁且清晰（VERY SHORT, CONCISE & CLEAR），格式必须为纯文本消息（RAW MESSAGE），严禁包含任何引导语、解释、标签或元数据。在修订阶段（stage: revise），评分标准需重点验证初稿是否严格满足这些硬性约束，特别是‘无引导语’和‘语义相关性’，同时检查长度是否符合‘极短’的定义。权重分配上，格式合规性（无多余文本）和内容有效性（直接回应）最为关键，长度和清晰度次之。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_8a78720053b74707873686242e691ffe",
+        "normalized_weights": {
+          "rubric_8a78720053b74707873686242e691ffe_1": 0.4,
+          "rubric_8a78720053b74707873686242e691ffe_2": 0.35,
+          "rubric_8a78720053b74707873686242e691ffe_3": 0.15,
+          "rubric_8a78720053b74707873686242e691ffe_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复仅包含'Thank you! I will.'，没有任何引导语、解释或类似'Here is the message'的前缀后缀。",
+            "rejected_reason": "回复内容完全由原始消息的改写和重组构成，并未直接回应原文的鼓励性质（如表达感谢或确认），而是重复了原文的建议，不符合任务要求的‘直接回应’语境，且未包含任何引导语但内容本身偏离了‘发送讨论’所需的互动性。"
+          },
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复中的'Thank you!'直接回应了原文的鼓励性质并表达感谢，'I will.'确认接受建议并承诺继续前行。",
+            "rejected_reason": "回复在语义上并未直接回应原文的鼓励性质，而是将原文的指令（'You should feel proud'）再次复述为建议（'Embrace your achievements'），缺乏用户视角的反馈（如感谢、接受或确认收到），未能体现对话中的互动回应。"
+          },
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复由两个短句组成，共4个单词，完全符合'very short'（不超过2-3句或15-20词）的要求。",
+            "rejected_reason": "回复仅包含两个句子，共约16个单词，符合'VERY SHORT'的要求。"
+          },
+          {
+            "criterion_id": "rubric_8a78720053b74707873686242e691ffe_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复语言极其清晰直接，无任何冗余词汇或复杂句式，完全符合'concise & clear'的要求。",
+            "rejected_reason": "回复语言清晰直接，无冗余词汇或复杂句式，符合'CONCISE & CLEAR'的要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.25,
+        "margin": 0.75,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_abb4bcfc926c427389f0badbdd807c93"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_938e124a1b394156b31816606975127f",
+        "criteria": [
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_1",
+            "question": "输出是否完全由回复正文组成，不包含任何引导语、解释、标签或类似'Here is the message'的前缀/后缀？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_2",
+            "question": "回复内容是否在语义上直接回应了原文的鼓励性质（例如表达感谢、接受建议或确认收到）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_3",
+            "question": "回复是否足够简短（例如不超过2-3个句子或15-20个单词），符合'VERY SHORT'的要求？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_4",
+            "question": "回复的语言是否清晰、直接，没有冗余词汇或复杂的句式，符合'CONCISE & CLEAR'的要求？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求生成一条针对特定鼓励性文本的讨论回复，核心约束为：极度简短（VERY SHORT）、简洁清晰（CONCISE & CLEAR）、仅返回原始消息内容（RAW MESSAGE），严禁包含任何引导语、解释或元数据。修订阶段需确保初稿标准已覆盖所有强制约束。重点在于验证输出是否纯净（无前缀后缀）、语义是否构成有效回应（感谢/确认）、长度是否严格受限以及表达是否直接。权重分配上，格式合规性（无多余内容）和响应相关性最为关键，其次是长度和清晰度。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_938e124a1b394156b31816606975127f",
+        "normalized_weights": {
+          "rubric_938e124a1b394156b31816606975127f_1": 0.4,
+          "rubric_938e124a1b394156b31816606975127f_2": 0.3,
+          "rubric_938e124a1b394156b31816606975127f_3": 0.2,
+          "rubric_938e124a1b394156b31816606975127f_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回复以空格开头（' Thank you!'），且未严格遵循'ONLY RETURN THE RAW MESSAGE'的指令，存在非正文字符。",
+            "rejected_reason": "回复内容被包含在双引号中（\"Absolutely! ... forward!\"），这属于格式上的额外字符，不符合‘完全由回复正文组成’且‘仅返回原始消息’的严格要求，因为引号通常被视为非消息内容的包装符号。"
+          },
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中的'Thank you'直接回应了原文的鼓励性质，'I will'确认了接受建议并继续努力的意图。",
+            "rejected_reason": "回复以'Absolutely!'开头直接回应了原文的鼓励，并复述了'Embrace your achievements', 'stay motivated', 'have faith'等核心建议，语义上确认了收到并接受了原文的鼓励性质。"
+          },
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复仅包含两个短句（或视为一个短语加一个词），单词数极少，完全符合'very short'的要求。",
+            "rejected_reason": "回复仅包含两个句子，字数约为14个单词（不含引号），完全符合'VERY SHORT'（不超过2-3句或15-20词）的要求。"
+          },
+          {
+            "criterion_id": "rubric_938e124a1b394156b31816606975127f_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "语言简单直接，无任何冗余词汇或复杂句式，清晰表达了感谢和承诺，符合'concise & clear'的要求。",
+            "rejected_reason": "回复使用了祈使句和感叹句，语言直接、无冗余词汇，句式简单清晰，完全符合'CONCISE & CLEAR'的要求。"
+          }
+        ],
+        "chosen_score": 0.6,
+        "rejected_score": 0.6,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

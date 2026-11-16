@@ -1,12 +1,9 @@
-# 最新实验：v3.1小样本完整流程124
+# 最新实验125：500题训练＋200题冻结测试
 
-20题在线训练＋5题冻结推理。代码7b9f119，Qwen3.5-Flash关闭思考，从空经验池开始。这里只验证运行与内容问题，不是泛化效果结论。
+- [实验报告](../../docs/实验分析/125-v3.1五百题训练与冻结测试.md)
+- [700题轨迹索引](samples/README.md)：训练各路平等试用，测试为事先选定单路。
+- [69条经验索引](experiences/README.md)及[完整经验池](experience_pool.json)。
+- [原始请求回复与测试对照](raw/runs/v31-general500-125/)；[输入、摘要及分析](raw/artifacts/v31-general500-125/)。
+- [原文件与分段摘要](manifest.json)：全部UTF-8文本，按parts顺序拼接可恢复原字节，没有压缩包。
 
-- [总体报告124](../../docs/实验分析/124-v3.1小样本真实流程验证.md)
-- [逐题轨迹](samples/README.md)：全部25题完整任务、回答、初稿、各路修订、Judge及Critic。
-- [经验索引](experiences/README.md)与[全部经验](experience_pool.json)。
-- [原始模型请求及回复](raw/runs/v31-smoke124/role_io.jsonl.parts/)：按记录分段，均为UTF-8文本。
-- [输入、配置、协议、旁路校验与人工审查](raw/artifacts/v31-smoke124/)。
-- [原文件及分段摘要](manifest.json)：顺序拼接parts可恢复原字节，全部校验通过。没有压缩包。
-
-上一轮v3的120／121／122证据已无损移入忽略的logs/archive/2026-11-13-before124，映射见[archive-index.json](archive-index.json)。Git中仍可通过[7b9f119时的旧日志](https://github.com/ykn0309/VERGE/tree/7b9f119/logs/latest)直接读取。数据集输入目录不属于实验日志，不归档。
+旧124日志已无损归档至忽略的logs/archive/2026-11-16-before125；[归档索引](archive-index.json)。Git历史f5f5627仍可读取原124文本日志，更早120～122见7b9f119。训练过程的启动中断及未提交尝试保留，不当新增证据。

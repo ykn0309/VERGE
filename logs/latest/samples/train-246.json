@@ -1,0 +1,372 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:523e40916fcb196b590bcb32feb2708e2fb50495d4a44e0c52e92709ade7d26b",
+    "task": "how do I open a door. reply shortly.",
+    "chosen": "Press down on the handle, then pull or push the door, depending on its design. If it's a knob, turn it and then pull or push.",
+    "rejected": "To open a door, follow these simple steps:\n\n1. Approach the door: Walk towards the door you want to open.\n\n2. Identify the handle or knob: Locate the handle or knob, which is usually on the right side of the door.\n\n3. Grasp the handle or knob: Use your hand to grasp the handle or knob firmly.\n\n4. Turn the handle or knob: Apply pressure and turn the handle or knob counterclockwise (to the left) if it's a knob, or pull it down if it's a lever-style handle.\n\n5. Pull or push the door: Once the latch is released, you can either push the door open if it swings inward or pull it open if it swings outward.\n\n6. Step through the doorway: Enter the room or space, being mindful of any objects or people in the way.\n\nRemember to always close the door behind you by reversing the process.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9387,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 is far more concise and therefore would be preferable.",
+          "feedback1": "The response is mostly helpful. The user wants a concise description of how to open a door. The response does well to format the response as a numbered, step by step list. The response may be a bit longer than what the prompt intended, however, the response is short enough to not be considered in breach of the prompt instructions.",
+          "feedback2": "The response is perfectly helpful. The prompt asks for instruction for opening a door in a concise format. The response is about as concise as possible, only covering the absolute essential steps for opening a door. The response fully satisfies the prompt and complies with all constraints and instructions given."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. Both responses are clear and free from grammatical errors, but @Response 1 fails to follow the prompt's instruction to be concise and also contains repetition. ",
+          "feedback1": "The response is partially helpful. It is clear and free from grammatical errors. The response fully addresses the prompt's request to explain how to open a door. However, the prompt asks that the explanation be short. This explanation is too verbose to satisfy this criterion. Also, the response repeats ideas multiple times. For instance, it says: \"grasp the handle or knob: use your hand to grasp the handle or knob.\"",
+          "feedback2": "The response is perfectly helpful. It is clear, concise, and free from grammatical and spelling errors. It fully addresses the prompt's instructions to explain how to open a door and to keep this explanation brief. The response manages to provide a thorough explanation without adding any unnecessary phrases or repetition. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1.\n@Response 2 provides a concise and straightforward explanation of how to open a door. On the other hand, @Response 1 is overly detailed, including unnecessary steps that go beyond what was needed, making it less suitable for the short reply asked for.",
+          "feedback1": "The response is partially helpful. As the prompt requested, it explains the process of opening a door in a clear and detailed manner, providing step-by-step instructions. However, the response does not align with the request for brevity, as it includes excessive details that go beyond what was needed. The response could be improved by being more concise and focusing only on the core action of opening the door rather than providing a detailed description of each step.",
+          "feedback2": "The response is perfectly helpful. As the prompt requested, it provides a clear and concise explanation of how to open a door, addressing the key actions without unnecessary detail. The language is straightforward and easy to follow, making the steps simple to understand. It meets the prompt's request for brevity while remaining informative."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_076c30af35ce138b0e5c",
+        0.355544283863961
+      ],
+      [
+        "task_f8219f43e3099e6e1fe3",
+        0.3456013165319731
+      ],
+      [
+        "task_0a629c05a9726352d0f0",
+        0.33637332286532906
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.3188206678364606
+      ],
+      [
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        0.2950576122650712
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.29123808623727754
+      ],
+      [
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        0.2850936537481332
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.2732448382183187
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.26138853035704435
+      ],
+      [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        0.2577219771513747
+      ],
+      [
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        0.25532970947343686
+      ],
+      [
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        0.2547879612847583
+      ],
+      [
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        0.2427110316988651
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3188206678364606
+      },
+      {
+        "experience_id": "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2950576122650712
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29123808623727754
+      },
+      {
+        "experience_id": "exp_d514e467bac945048ab9ca330888fcbf",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2850936537481332
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2732448382183187
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26138853035704435
+      },
+      {
+        "experience_id": "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2577219771513747
+      },
+      {
+        "experience_id": "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25532970947343686
+      },
+      {
+        "experience_id": "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2547879612847583
+      },
+      {
+        "experience_id": "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2427110316988651
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_d514e467bac945048ab9ca330888fcbf": "任务指令中明确包含数量限定词 'a door'（一扇门），经验 4 要求将‘输出实体的数量严格匹配’确立为独立维度，防止模型列举多个门或提供冗长的多选项列表，这直接对应任务中 'open a door' 的单一实体约束。",
+    "exp_abb4bcfc926c427389f0badbdd807c93": "任务明确要求 'reply shortly'（简短回复），经验 5 专门针对极度简短且禁止形式化包装的场景，指导设计者设立‘无冗余废话’标准，强制剔除总结性前缀、解释性后缀等填充内容，确保回复符合‘简短’的核心诉求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_4638c84a7c8f4987925da67f47d70b2b",
+    "criteria": [
+      {
+        "criterion_id": "rubric_4638c84a7c8f4987925da67f47d70b2b_1",
+        "question": "是否提供了开门的具体操作步骤或方法？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_4638c84a7c8f4987925da67f47d70b2b_2",
+        "question": "回复是否保持简短且无冗余信息？",
+        "weight": 0.6
+      }
+    ],
+    "analysis": "任务要求回答如何开门，并明确要求回复简短（reply shortly）。设计标准需聚焦于内容的准确性（开门的基本方法）和格式的简洁性（避免冗长解释），权重分配上确保核心指令‘简短’得到满足。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_453566c265524183924652314d065353",
+        "criteria": [
+          {
+            "criterion_id": "rubric_453566c265524183924652314d065353_1",
+            "question": "回复是否提供了至少一种有效的开门基本方法或步骤？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_453566c265524183924652314d065353_2",
+            "question": "回复内容是否足够简短，未包含不必要的背景解释、警告或冗余信息？",
+            "weight": 0.5
+          }
+        ],
+        "analysis": "任务核心要求为回答‘如何开门’并明确指令‘简短回复’。修订阶段需验证初稿标准是否准确覆盖了内容准确性（开门方法）和格式约束（简洁性）。原草案权重分配合理，但需确保问题表述更直接对应‘简短’的硬性指标，且排除对开门具体情境（如门锁类型）的过度假设，仅核验是否提供了通用或基础的开门指引。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_453566c265524183924652314d065353",
+        "normalized_weights": {
+          "rubric_453566c265524183924652314d065353_1": 0.5,
+          "rubric_453566c265524183924652314d065353_2": 0.5
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_453566c265524183924652314d065353_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复明确提供了两种有效的开门基本方法：按压把手后推拉，以及转动旋钮后推拉，涵盖了常见门的设计。",
+            "rejected_reason": "回复明确提供了开门的六个具体步骤，包括接近门、识别把手、抓握、转动/下压把手以及推拉开门，内容完整且有效。"
+          },
+          {
+            "criterion_id": "rubric_453566c265524183924652314d065353_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复直接给出了操作步骤，未包含背景介绍、安全警告或其他冗余信息，符合简短回答的要求。",
+            "rejected_reason": "任务明确要求“简短回答”（reply shortly），但回复包含了分步详解、关于左右侧位置的假设性描述、对向内/向外开启的区分说明以及关门提醒，篇幅过长且包含大量不必要的背景解释和冗余信息，不符合简短要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.5,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_d514e467bac945048ab9ca330888fcbf"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_56c0b3caf3c5486b9b5b938633d1f7f4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_56c0b3caf3c5486b9b5b938633d1f7f4_1",
+            "question": "回复是否提供了开门的有效且通用的具体方法或步骤？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_56c0b3caf3c5486b9b5b938633d1f7f4_2",
+            "question": "回复是否严格保持简短，无背景介绍、多余解释或冗长句式？",
+            "weight": 0.6
+          }
+        ],
+        "analysis": "任务要求回答如何开门，并明确指令为简短回复（reply shortly）。修订阶段需基于初稿标准进行核验。初稿将权重分配给操作步骤和简洁性，符合任务核心需求。提供的经验主要涉及单复数数量限定词（如'a word'），而当前任务仅要求'shortly'（简短），属于长度/风格约束而非严格的实体数量限制（如'one sentence'或'no more than 5 words'），因此该经验不直接作为独立的数量否决维度引入，而是融入对'简洁性'维度的深度评估中，即检查是否包含不必要的冗余信息导致超出'简短'范畴。最终标准保留内容准确性和格式简洁性两个核心维度，确保覆盖任务的所有显式要求。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_56c0b3caf3c5486b9b5b938633d1f7f4",
+        "normalized_weights": {
+          "rubric_56c0b3caf3c5486b9b5b938633d1f7f4_1": 0.4,
+          "rubric_56c0b3caf3c5486b9b5b938633d1f7f4_2": 0.6
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_56c0b3caf3c5486b9b5b938633d1f7f4_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复明确提供了开门的具体步骤：压下把手后拉或推，以及转动旋钮后拉或推，这些是适用于大多数门的有效通用方法。",
+            "rejected_reason": "回复提供了从接近门、识别把手、握住、转动到推拉开门的完整且通用的具体步骤，涵盖了不同门把手类型（旋钮和杠杆）的操作方法。"
+          },
+          {
+            "criterion_id": "rubric_56c0b3caf3c5486b9b5b938633d1f7f4_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复仅包含必要的操作指令，没有背景介绍、多余解释或冗长句式，符合简短回复的要求。",
+            "rejected_reason": "任务明确要求'简短回复'（reply shortly），但回答包含了6个详细步骤、具体的方向说明（逆时针/向左）、额外提示（注意障碍物）以及关门建议，整体篇幅冗长，不符合简短的要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.4,
+        "margin": 0.6,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_abb4bcfc926c427389f0badbdd807c93"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_3baa7584edb24de1b66940f9ef6b6675",
+        "criteria": [
+          {
+            "criterion_id": "rubric_3baa7584edb24de1b66940f9ef6b6675_1",
+            "question": "回复是否提供了开门的具体操作步骤或基本方法？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_3baa7584edb24de1b66940f9ef6b6675_2",
+            "question": "回复是否去除了所有非必要的元数据、总结性引导词（如 To summarize）、解释性后缀及与核心操作无关的复述？",
+            "weight": 0.7
+          }
+        ],
+        "analysis": "任务要求回答‘如何开门’且明确限制回复简短（reply shortly）。修订阶段需基于初稿标准，结合提供的经验原则，重点强化对‘简洁性’的核验维度。经验指出不能仅看句数，必须剔除总结性前缀、解释性后缀及无效填充。因此，修订后的标准将原‘无冗余信息’细化为更严格的‘纯净度’检查，确保回复直接切入核心操作，无任何形式化包装或废话。同时保留对开门方法准确性的基础核查。权重分配上，鉴于用户特别强调‘简短’且经验提示这是强约束，提升简洁性维度的权重至0.7，准确性保持0.3。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_3baa7584edb24de1b66940f9ef6b6675",
+        "normalized_weights": {
+          "rubric_3baa7584edb24de1b66940f9ef6b6675_1": 0.3,
+          "rubric_3baa7584edb24de1b66940f9ef6b6675_2": 0.7
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_3baa7584edb24de1b66940f9ef6b6675_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复明确提供了开门的具体操作步骤，包括按下把手并推拉、转动旋钮并推拉，涵盖了不同门的设计情况。",
+            "rejected_reason": "回复中明确列出了从接近门、识别把手、抓握、转动到推拉开门及通过的六个具体操作步骤，满足了提供开门方法的要求。"
+          },
+          {
+            "criterion_id": "rubric_3baa7584edb24de1b66940f9ef6b6675_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复直接陈述操作内容，未包含任何元数据、总结性引导词（如'To summarize'）、解释性后缀或与核心操作无关的复述。",
+            "rejected_reason": "回复包含了非必要的元数据和引导性语句，例如开头的 'To open a door, follow these simple steps:' 以及结尾的 'Remember to always close the door behind you by reversing the process.'，且任务明确要求简短回复（reply shortly），该回答篇幅过长，未去除无关复述和总结性后缀。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.3,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

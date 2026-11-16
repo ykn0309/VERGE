@@ -1,0 +1,594 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:c44ace69ce0c9b5b2e8772840e506e859a6f568b567a8da063efebad09044619",
+    "task": "Generate an etsy title for a art work that can be added to mugs, painting, tshirt, etc within 140 characters Dragon",
+    "chosen": "Here are some Etsy titles for dragon artwork under 140 characters:\n\n**Short & Sweet:**\n\n* Fiery Dragon Art Print\n* Dragon Illustration for Mugs\n* Mythical Dragon Design\n\n**Descriptive:**\n\n* Roaring Dragon Graphic for T-Shirts\n* Watercolor Dragon Art for Prints & More\n* Fantasy Dragon Illustration - Customizable\n\n**Unique:**\n\n* Dragon Spirit Artwork - Digital Download\n* Hand-Drawn Dragon for Creative Projects\n* Unleash Your Inner Dragon - Printable Art\n\n**Remember to also include relevant keywords in your tags!**",
+    "rejected": "\"Dragon Art: Mug, Painting, T-Shirt\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9414,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 @Response 2 is more comprehensible, follows the prompt's constraints, and provides the most favored format. @Response 1 uses vague language, and the response is verbatim to the prompt.",
+          "feedback1": "The response is not helpful. It is too vague, and does not correspond with what the prompt is asking for. It also repeats the words within the prompt, and thus creates a verbatim response. The prompt is asking for ideas for a logo to place on mugs, paintings, and t-shirts. It is not asking for the logo to say \"Mug, Painting, T-shirt\".",
+          "feedback2": "The response is perfectly helpful. It provides a detailed list of ideas regarding the prompt. The titles provided remain under 140 characters, and stay within the limits of a dragon theme. The format is comprehensible, and is well organized. The response is not too verbose, and provides just the right amount of Etsy title ideas. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. Both responses provided a perspective on the prompt. @Response 2 provided more direct information and provided options as well. ",
+          "feedback1": "The response is slightly helpful. It follows the final prompt. However, the response only provides a single option to the prompt. This is an area of opportunity as it limits the options available and will require modifying the prompt to receive options. Additionally, the caption generated was not a very one. It simply restated the key words in the prompt. ",
+          "feedback2": "The response is mostly helpful. Using the key requirements of the prompt, it provided options. One strength of this response was that it created paradigms. Giving the prompter options under: short and sweet, descriptive, and unique. Additionally, all the given options were with the 140 character limit stipulated by the prompt. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 provides a wider range of more interesting and stylistically unique options.",
+          "feedback1": "The response is mostly helpful. The response adequately follows instructions, and writes a title for an Etsy artwork product that can be placed on different products. The response could be improved, however, in two key ways. First, for the title of a product, it is rather boring. It doesn't grab attention, and has little in the way of stylistic flair. More importantly, the title is somewhat vague. It does not really capture that the seller is selling artwork, as opposed to objects which feature this artwork. Making this clearer would improve the title.",
+          "feedback2": "The response is perfectly helpful. While the response is verbose, the response gives a multitude of possible options in response to the prompt. These options are all stylistically different and provide a nice range for the user to select from. They also capture the nature of the product as described in the prompt. Overall, the response cannot meaningfully be improved. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_f963a5374e72fe33f314",
+        0.5861770130816712
+      ],
+      [
+        "task_db33cf1b646dac438c39",
+        0.35046520901975
+      ],
+      [
+        "task_7422339df1cca927fe88",
+        0.3351803729449616
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_db33cf1b646dac438c39",
+              "similarity": 0.35046520901975,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:49c62117a51f04a1a058456e32483dcee28766d3a8a25689faef75af37e7786f:exp_cfdc8659ba1549d79cad41f0d5bc7307"
+                ],
+                "task_ids": [
+                  "1785405ca823ad6ae1b7aac0b4629b89ab99c06c06adc000d7f1db78b7e7cfff"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        0.36330577433295863
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.35473808497217274
+      ],
+      [
+        "exp_9b24989a45c941c3935511cd6875d167",
+        0.3306418851522382
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.30987667680867587
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.3058542977539922
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.2960846990660423
+      ],
+      [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        0.2884225573665793
+      ],
+      [
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        0.2861073363527318
+      ],
+      [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        0.2771170460451008
+      ],
+      [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        0.272350014305652
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": 0.2960846990660423
+      },
+      {
+        "experience_id": "exp_d0fc1d21306b43f080cfa5933a207380",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.36330577433295863
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.35473808497217274
+      },
+      {
+        "experience_id": "exp_9b24989a45c941c3935511cd6875d167",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3306418851522382
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30987667680867587
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3058542977539922
+      },
+      {
+        "experience_id": "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2884225573665793
+      },
+      {
+        "experience_id": "exp_6d6915ad80ab4039b6783132704450cd",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2861073363527318
+      },
+      {
+        "experience_id": "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2771170460451008
+      },
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.272350014305652
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_dddd918fa0f446e7a44d7a0e99cb6f8e": "任务明确要求生成内容长度限制为'within 140 characters'，经验 5 专门针对此类严格字符数限制的评分标准设计提供了指导，帮助明确是‘不超过’还是‘精确等于’，防止因定义模糊导致评分失效。",
+    "exp_42f447cc2b9b4e5cacc74fa49f616aa9": "任务核心实体非常具体（Etsy 标题、Dragon 主题、适用载体），经验 10 强调必须将‘核心实体/主题的严格一致性’作为最高优先级核验维度，确保生成的标题紧扣'Dragon'这一核心概念且符合 Etsy 场景，防止模型偏离主题。"
+  },
+  "draft": {
+    "rubric_id": "rubric_ebe31190d6fd4981a81e3b0497e3cb6a",
+    "criteria": [
+      {
+        "criterion_id": "rubric_ebe31190d6fd4981a81e3b0497e3cb6a_1",
+        "question": "生成的标题是否严格控制在140个字符以内（包含所有空格和标点）？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_ebe31190d6fd4981a81e3b0497e3cb6a_2",
+        "question": "生成的标题中是否明确包含了单词 'Dragon'？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_ebe31190d6fd4981a81e3b0497e3cb6a_3",
+        "question": "生成的标题是否描述了可应用于多种商品（如马克杯、T恤等）的艺术品属性或风格？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_ebe31190d6fd4981a81e3b0497e3cb6a_4",
+        "question": "生成的标题是否为非空的英文字符串且无明显语法错误？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求生成一个适用于Etsy平台的艺术品标题，该作品可应用于马克杯、绘画、T恤等多种商品。核心约束包括：必须包含关键词'Dragon'，字符数严格限制在140个以内（含空格），且需符合Etsy标题的搜索优化特性（如包含相关属性词）。评分标准将围绕长度合规性、关键词包含情况以及内容相关性进行设计。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_1",
+            "question": "生成的标题字符总数（含空格和标点）是否严格小于或等于140？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_2",
+            "question": "生成的标题中是否明确包含单词 'Dragon'（不区分大小写）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_3",
+            "question": "生成的标题是否包含暗示该艺术品可应用于多种商品（如印刷品、服装、家居用品等）的描述性词汇或风格词？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_4",
+            "question": "生成的标题是否为非空字符串且由英文组成，无明显拼写或语法错误？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求生成一个Etsy艺术品标题，核心约束为：必须包含关键词'Dragon'，字符数严格限制在140以内（含空格），且需体现适用于多种商品（如马克杯、T恤等）的属性。修订阶段需验证初稿是否满足这些硬性指标及内容相关性。权重分配上，长度合规性和关键词存在性为最基础且关键的要素，各占较高比重；内容对多场景的适用性描述次之；语言规范性作为基础要求占比较低。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3",
+        "normalized_weights": {
+          "rubric_d80f72b99c1e4377b476c8bb32b60aa3_1": 0.35,
+          "rubric_d80f72b99c1e4377b476c8bb32b60aa3_2": 0.35,
+          "rubric_d80f72b99c1e4377b476c8bb32b60aa3_3": 0.2,
+          "rubric_d80f72b99c1e4377b476c8bb32b60aa3_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "任务要求生成一个标题，但回答提供了多个标题选项以及额外的说明文字（如'Here are some Etsy titles...'、'Remember to also include relevant keywords in your tags!'等），导致整体输出内容远超140个字符的限制。",
+            "rejected_reason": "生成的标题为\"Dragon Art: Mug, Painting, T-Shirt\"，经统计字符总数（含空格和标点）为32个，严格小于140。"
+          },
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中列出的所有标题选项均明确包含单词'Dragon'，满足该条件。",
+            "rejected_reason": "生成的标题中明确包含单词\"Dragon\"，符合不区分大小写的要求。"
+          },
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中的标题包含了暗示可应用于多种商品的词汇，例如'Mugs'、'T-Shirts'、'Prints & More'、'Creative Projects'、'Digital Download'等，符合描述性词汇的要求。",
+            "rejected_reason": "标题中列出了\"Mug\", \"Painting\", \"T-Shirt\"等具体商品名称，明确暗示了该艺术品可应用于多种商品。"
+          },
+          {
+            "criterion_id": "rubric_d80f72b99c1e4377b476c8bb32b60aa3_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的标题均为非空英文字符串，且无明显拼写或语法错误。",
+            "rejected_reason": "生成的标题为非空字符串，完全由英文组成，且无明显的拼写或语法错误。"
+          }
+        ],
+        "chosen_score": 0.65,
+        "rejected_score": 1.0,
+        "margin": -0.35,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_de651bf09c0f422d8c196c8086e2b13f",
+        "criteria": [
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_1",
+            "question": "生成的标题总字符数是否小于或等于140个（包含所有空格、标点符号及换行符）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_2",
+            "question": "生成的标题中是否明确包含单词 'Dragon'（不区分大小写匹配）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_3",
+            "question": "生成的标题是否描述了可应用于多种商品（如马克杯、绘画、T恤等）的艺术品特征、风格或用途？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_4",
+            "question": "生成的标题是否为非空字符串且符合英文语法规范（无明显拼写或语法错误）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求生成一个Etsy标题，核心约束为：1. 必须包含关键词'Dragon'；2. 字符数严格限制在140个以内（含空格和标点）；3. 内容需体现适用于多种商品（如马克杯、T恤等）的艺术品属性。评分标准将重点核查长度合规性、关键词存在性及内容相关性。关于经验中提到的'only N'歧义问题，本任务明确表述为'within 140 characters'，即'不超过140字符'，因此判定标准为'小于等于140'而非'精确等于'，无需额外注释。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_de651bf09c0f422d8c196c8086e2b13f",
+        "normalized_weights": {
+          "rubric_de651bf09c0f422d8c196c8086e2b13f_1": 0.35,
+          "rubric_de651bf09c0f422d8c196c8086e2b13f_2": 0.35,
+          "rubric_de651bf09c0f422d8c196c8086e2b13f_3": 0.2,
+          "rubric_de651bf09c0f422d8c196c8086e2b13f_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "任务要求生成一个标题，但回答提供了多个标题选项以及大量解释性文字（如'Here are some Etsy titles...'、分类标题等），导致整体输出内容远超140个字符的限制。",
+            "rejected_reason": "生成的标题为\"Dragon Art: Mug, Painting, T-Shirt\"，经统计包含空格和标点在内的总字符数为30个，小于140个字符的限制。"
+          },
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "提供的多个标题选项中均包含单词'Dragon'（如'Fiery Dragon Art Print'、'Dragon Illustration for Mugs'等），满足关键词包含要求。",
+            "rejected_reason": "生成的标题中明确包含了单词'Dragon'，符合不区分大小写匹配的要求。"
+          },
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "部分标题明确提到了适用商品或特征，例如'Mugs'、'T-Shirts'、'Prints & More'、'Customizable'、'Creative Projects'和'Digital Download'，符合描述可应用于多种商品的特征要求。",
+            "rejected_reason": "标题中列出了'Mug'（马克杯）、'Painting'（绘画）和'T-Shirt'（T恤），明确描述了该艺术作品可应用于多种商品，符合任务描述。"
+          },
+          {
+            "criterion_id": "rubric_de651bf09c0f422d8c196c8086e2b13f_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中的英文标题拼写正确，语法规范，无明显的拼写或语法错误。",
+            "rejected_reason": "生成的标题是非空字符串，且英文拼写正确，语法结构清晰（名词短语组合），无明显错误。"
+          }
+        ],
+        "chosen_score": 0.65,
+        "rejected_score": 1.0,
+        "margin": -0.35,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_c1561c0be76147c8890031e0ae9f4284",
+        "criteria": [
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_1",
+            "question": "生成的标题是否严格控制在140个字符以内（包含所有空格和标点符号）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_2",
+            "question": "生成的标题中是否明确且完整地包含了单词 'Dragon'？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_3",
+            "question": "生成的标题是否通过词汇描述了该艺术品可应用于多种商品（如马克杯、绘画、T恤等）的通用属性或风格？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_4",
+            "question": "生成的标题是否为非空的英文字符串且无明显语法或拼写错误？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务要求生成一个适用于Etsy平台的艺术品标题，核心约束包括：必须包含关键词'Dragon'、字符数严格限制在140个以内（含空格）、需体现可应用于多种商品（如马克杯、T恤等）的属性。评分标准将重点核验长度合规性、关键词强制性、场景通用性描述以及语言规范性。修订阶段将确保所有标准均能逐项通过验证，无遗漏或逻辑错误。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_c1561c0be76147c8890031e0ae9f4284",
+        "normalized_weights": {
+          "rubric_c1561c0be76147c8890031e0ae9f4284_1": 0.35,
+          "rubric_c1561c0be76147c8890031e0ae9f4284_2": 0.35,
+          "rubric_c1561c0be76147c8890031e0ae9f4284_3": 0.2,
+          "rubric_c1561c0be76147c8890031e0ae9f4284_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "任务要求生成一个标题，但回答提供了多个标题选项以及额外的介绍和提示文字。虽然单个标题可能满足长度限制，但整个回复内容并非一个单一的、严格控制在140字符以内的标题，且未明确指定哪一个是最终生成的唯一标题供用户直接使用。",
+            "rejected_reason": "生成的标题为'Dragon Art: Mug, Painting, T-Shirt'，经统计包含空格和标点符号共35个字符，严格控制在140个字符以内。"
+          },
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "提供的多个标题选项中均明确包含了单词 'Dragon'（如 Fiery Dragon Art Print, Dragon Illustration for Mugs 等）。",
+            "rejected_reason": "标题开头明确包含了单词'Dragon'，符合必须完整包含该单词的要求。"
+          },
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "部分标题通过词汇描述了通用属性或适用商品，例如 'for Mugs', 'for T-Shirts', 'for Prints & More', 'for Creative Projects'，体现了可应用于多种商品的特性。",
+            "rejected_reason": "标题中列出了'Mug, Painting, T-Shirt'等具体商品名称，清晰描述了该艺术品可应用于多种商品的通用属性。"
+          },
+          {
+            "criterion_id": "rubric_c1561c0be76147c8890031e0ae9f4284_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中的标题均为非空英文字符串，且无明显语法或拼写错误。",
+            "rejected_reason": "标题为非空英文字符串，拼写正确（Dragon, Art, Mug, Painting, T-Shirt），语法结构合理且无明显错误。"
+          }
+        ],
+        "chosen_score": 0.65,
+        "rejected_score": 1.0,
+        "margin": -0.35,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，所有修订路径（Rubric 2, 3, 4）均判定 'chosen' 回答在字符数限制（Criterion 5/9/13）上失败。其核心逻辑是：任务要求生成“一个”标题（singular），但模型输出了包含多个选项、分类标题和额外说明的完整回复，导致总字符数远超 140。然而，人工偏好理由明确指出 'chosen' 是更好的回答，因为它提供了“多种选择”、“格式清晰”且“符合用户期望”。这表明 Judge 对任务意图的理解存在偏差：任务中的“within 140 characters”应被理解为“每个生成的标题选项必须满足此长度限制”，而非“整个回复的总字符数不能超过 140”。Judge 将“列表式输出”本身视为违规，忽略了模型在提供多个合规选项的同时满足了用户获取多样性的需求。这是一个典型的评分标准设计缺陷：未明确界定约束范围是应用于“单个输出单元”还是“整体响应文本”，导致正确执行了多选项策略的模型被误判。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_252b85830b4144299ea67b8acaa16eac",
+            "method": {
+              "trigger": "当任务要求生成内容并附带长度限制（如 within N characters），且该任务通常支持或隐含允许多个独立条目（如列表、选项、变体）时",
+              "principle": "必须明确区分‘单条内容的长度约束’与‘整体响应的长度约束’；若任务允许或鼓励生成多个独立实体，长度限制应仅适用于每个独立的实体，而非将所有实体及解释性文字累加计算。",
+              "application_guide": "Generator 在设计 Rubric 时，若检测到任务可能涉及多选项输出（如'titles', 'ideas', 'options'），长度类标准必须表述为：'生成的每一个候选标题/选项是否严格控制在 N 字符以内？'。严禁使用模糊的'生成的标题总字符数'作为判定依据，除非任务明确要求只输出单一结果且无任何列表结构。同时，应排除非内容性的辅助文字（如'Here are some...'）对核心约束计数的影响，除非这些文字本身构成了违规的冗余。"
+            },
+            "source_task_id": "69959a560499b7675fd38bba71e6669dc7c62228fb1a22cd6bc38814e616e842",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_252b85830b4144299ea67b8acaa16eac"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_1",
+                  "question": "生成的标题是否严格控制在140个字符以内（包含所有空格和标点符号）？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_2",
+                  "question": "生成的标题中是否明确包含了单词 'Dragon'？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_3",
+                  "question": "生成的标题是否体现了该艺术品可应用于多种商品（如马克杯、绘画、T恤等）的通用性或适配性描述？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_4",
+                  "question": "生成的标题是否为非空的英文字符串且无明显拼写或语法错误？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务要求生成一个适用于Etsy平台的艺术品标题，核心约束包括：必须包含关键词'Dragon'，字符数严格限制在140个以内（含空格和标点），且需体现可应用于多种商品（如马克杯、T恤等）的通用属性。修订阶段需确保初稿标准能准确覆盖这些硬性指标。经验提示指出需区分单条内容的长度约束，因此标准中应明确针对‘生成的标题’这一单一实体进行字符计数检查，排除解释性文字干扰。权重分配上，长度限制和关键词包含是核心硬性条件，赋予较高权重；内容相关性和语言规范性作为辅助条件，赋予较低权重。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2",
+              "normalized_weights": {
+                "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_1": 0.35,
+                "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_2": 0.35,
+                "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_3": 0.2,
+                "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_4": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "任务要求生成一个标题，但回答提供了多个选项及分类说明，且包含大量非标题内容（如加粗标题、列表符号、建议语），整体远超140字符限制。",
+                  "rejected_reason": "生成的标题为\"Dragon Art: Mug, Painting, T-Shirt\"，经计算包含空格和标点符号共计34个字符，严格小于140个字符的限制。"
+                },
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "提供的每个候选标题中均明确包含了单词 'Dragon'。",
+                  "rejected_reason": "生成的标题开头明确包含了单词'Dragon'，符合指定关键词要求。"
+                },
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "虽然部分标题提及了特定商品（如Mugs, T-Shirts）或使用了'Prints & More', 'Customizable', 'Creative Projects'等词汇暗示通用性，但作为整体输出，它未能提供一个单一、完整且明确体现“适用于多种商品”的通用性描述的最终标题，而是提供了多个分散的选项。",
+                  "rejected_reason": "标题中列出了'Mug'（马克杯）、'Painting'（绘画）和'T-Shirt'（T恤），直接体现了该艺术品可应用于多种商品的通用性或适配性。"
+                },
+                {
+                  "criterion_id": "rubric_5dd3d84ef6704fe5a01dc57740d8f2e2_4",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "任务要求生成“一个”标题，但回答返回的是包含多个标题的列表以及额外的解释性文本，不符合“生成一个标题”的单值输出要求，且整个响应内容并非一个单一的英文字符串标题。",
+                  "rejected_reason": "生成的内容为非空英文字符串，且单词拼写正确，语法结构清晰，无明显错误。"
+                }
+              ],
+              "chosen_score": 0.35,
+              "rejected_score": 1.0,
+              "margin": -0.65,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "",
+      "attempts": [],
+      "error": "LLMFormatError: critic: invalid contract: parent IDs must reference provided experiences"
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

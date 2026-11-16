@@ -1,0 +1,10 @@
+{
+  "experience_id": "exp_a2b4eddaa2be45a983ff4bc072ef7372",
+  "method": {
+    "trigger": "当任务包含逻辑推理题，且推导过程可能导致'无必然结论'（No option is necessarily true）或'多解'（Multiple valid scenarios exist）时",
+    "principle": "必须将'准确识别逻辑边界与无解状态'作为核心正向维度，严禁将'未选出单一必然选项'直接判定为错误；需验证模型是否通过穷举或反证法证明了所有选项均非必然，而非强行凑出一个答案。",
+    "application_guide": "Generator 在设计 Rubric 时，针对此类逻辑题：1. 设立独立准则'逻辑完备性检查'，提问'模型是否验证了所有选项的必然性？若发现无选项满足'Must be true'，是否明确陈述了这一点并给出了推导依据？'。2. 避免使用'推导出唯一确定的其他位置'这类绝对化表述，改为'推导出所有可能的合法安排，并据此判断哪些选项是必然成立的'。3. 若正确答案确实是'None of the above'，则模型选择该选项并给出正确推导应得满分，而非因未匹配预设选项而扣分。"
+  },
+  "source_task_id": "2b4c3a2d4ef9171183a9fe7b9f8aadc70854c7e5bb4cc7f6194346365574c01b",
+  "parent_ids": []
+}

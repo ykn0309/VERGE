@@ -1,0 +1,423 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:cc4f9ff2f9239a4bbf4de8e3967562a3d751223e61e269f06eb12f0da5f2e2e6",
+    "task": "Rewrite in ABBA rhyming scheme.\n\n\"All wisdom is from the Lord,\n   and with him it remains for ever.\nThe sand of the sea, the drops of rain,\n   and the days of eternity—who can count them?\nThe height of heaven, the breadth of the earth,\n   the abyss, and wisdom—who can search them out?\nWisdom was created before all other things,\n   and prudent understanding from eternity.\nThe root of wisdom—to whom has it been revealed?\n   Her subtleties—who knows them?\nThere is but one who is wise, greatly to be feared,\n   seated upon his throne—the Lord.\nIt is he who created her;\n   he saw her and took her measure;\n   he poured her out upon all his works,\nupon all the living according to his gift;\n   he lavished her upon those who love him.\"",
+    "chosen": "From the Lord comes wisdom so grand,  \nCan we count the grains of sand?  \nEverlasting, in His holy hand,  \nOr raindrops that fall by His command?\n\nThe abyss and wisdom, secrets untold,  \nHow can we fathom their vast depth?  \nThe heavens' height, and earth's breadth,  \nOnly the Lord knows, brave and bold.\n\nWisdom’s root, revealed to whom?  \nHer secrets, known in life’s deep gloom.  \nOne alone, revered and wise,  \nHis throne, so high, feared by all eyes.\n\nHe created wisdom, first of all,  \nHe lavished it for all to see.  \nUpon His works, so living and free,  \nAnd measured her, standing tall.\n",
+    "rejected": "To ensure the ABBA scheme is consistent, I'll revise: \n\nFrom the Lord, wisdom's grand, in his hand, \nEverlasting, who can understand? \nCounting sand or raindrops, who can? \nWisdom's depth, by him only spanned.\n\nAbyss and wisdom, secrets they hold, \nHeavens' height, earth's breadth, untold. \nWho can fathom, who can measure? \nOnly Lord, wise and bold.\n\nWisdom's root, to whom revealed? \nOne alone, wise, revered. \nHer secrets, in life's gloom concealed, \nBy him, in love, cleared.\n\nHe created wisdom, first of all, \nPoured her on his works, great and small. \nMeasured her, then gave, standing tall, \nTo those who love him, he did call.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 14672,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it carries out the request from the Final Prompt more correctly. Meanwhile, @Response 1 does not contain any correct aspects.",
+          "feedback1": "The response is not helpful. Although the response does change the text to implement some rhyming and to better resemble a poem, it does not implement the requested ABBA rhyme scheme. In addition, the text is rewritten in such a way that some information from the original is lost, altering the meaning slightly. For these reasons, the response is not helpful to the user.",
+          "feedback2": "The response is mostly helpful. The model attempts to rewrite the text provided in the Final Prompt, using an ABBA rhyme scheme, and partially succeeds. The majority of the meaning behind the original text is maintained. However, the response is not perfectly helpful, since the third stanza is written using the AABB rhyming scheme, not the requested ABBA scheme. For this reason, the response is only mostly helpful. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. It follows the prompt's instructions to create an ABBA rhyme scheme at times, unlike the latter, which doesn't do that at all.",
+          "feedback1": "The response is not helpful. It does not follow the prompt's instructions of arranging and making clear this poem in an ABBA rhyme scheme. Instead, the rhyme scheme put together in the response is AABA. It also alters the original content of the poem and does this without fulfilling the prompt's rhyming request.",
+          "feedback2": "The response is partially helpful. In some places, like the second and fourth stanzas, the response follows the prompt's request to schematize the poem as ABBA. In other places though, it does not. In the first stanza, the rhyme pattern is AAAA, and in the third stanza, the rhyme pattern is AABB."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 follows the prompt's requisites for 50% of its answer, and @Response 1 follows 0% of the requisites.",
+          "feedback1": "The response is not helpful. ABBA in this sense refers to the first and last lines rhyming in each stanza. ABBA in this sense also refers to the second and third lines rhyming. The response has none of this. The response would be improved if the directions in the prompt had been followed just once.",
+          "feedback2": "The response is partially helpful. The response does not follow the directions fully. The second and third stanzas do not follow the ABBA rhyming scheme. For improvement, the response should follow its recipe for the first and last stanzas that it followed. Since half of the response is wrong, it is only partially satisfying the model."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_a2cee13dccab6261e9d7",
+        0.33028926236952794
+      ],
+      [
+        "task_09a6193f4087aee86380",
+        0.30797936251927205
+      ],
+      [
+        "task_4ad7b31442ade75f2200",
+        0.2811949496776762
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.32645659580517705
+      ],
+      [
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        0.3154047098623964
+      ],
+      [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        0.3067896040869297
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.3051949524325155
+      ],
+      [
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        0.29999307441737244
+      ],
+      [
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        0.2921623917903882
+      ],
+      [
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        0.28880298264262727
+      ],
+      [
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        0.28411847590087547
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.28132193778083137
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.28046690502893995
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32645659580517705
+      },
+      {
+        "experience_id": "exp_d0fc1d21306b43f080cfa5933a207380",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3154047098623964
+      },
+      {
+        "experience_id": "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3067896040869297
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3051949524325155
+      },
+      {
+        "experience_id": "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29999307441737244
+      },
+      {
+        "experience_id": "exp_7558a2904e4c4e10a946e796a684056b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2921623917903882
+      },
+      {
+        "experience_id": "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28880298264262727
+      },
+      {
+        "experience_id": "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28411847590087547
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28132193778083137
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28046690502893995
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_763a8f74efc74e779bb2694a313d1bf0",
+    "criteria": [
+      {
+        "criterion_id": "rubric_763a8f74efc74e779bb2694a313d1bf0_1",
+        "question": "输出是否为严格的ABBA押韵格式（即每四行一组，第1行与第4行押韵，第2行与第3行押韵），且全篇无例外？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_763a8f74efc74e779bb2694a313d1bf0_2",
+        "question": "重写后的文本是否完整保留了原文关于‘智慧源自上帝’、‘智慧创造于万物之前’以及‘上帝赐予爱祂之人’的核心神学主题？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_763a8f74efc74e779bb2694a313d1bf0_3",
+        "question": "重写是否涵盖了原文的关键意象群（包括：沙粒、雨滴、永恒之日、天高、地阔、深渊、宝座、创造与倾倒）？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_763a8f74efc74e779bb2694a313d1bf0_4",
+        "question": "重写的诗句在语法和逻辑上是否通顺，且符合英语诗歌的基本节奏感？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "任务要求将提供的圣经经文（智慧篇）重写为ABBA押韵格式。由于原文是散文体且包含复杂的意象，重写需保留原意、核心意象（如智慧源于主、永恒、天地深渊等）及宗教语境。ABBA方案意味着每四行诗节中，第一行与第四行押韵，第二行与第三行押韵。评分标准将聚焦于押韵结构的严格执行、语义的忠实度、诗歌的韵律流畅性以及是否保留了原文的核心神学信息。权重分配上，结构合规性最为关键，其次是内容完整性，最后是语言质量。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0",
+        "criteria": [
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_1",
+            "question": "输出文本是否严格遵循ABBA押韵结构（即每四行诗节中，第1行与第4行押韵，第2行与第3行押韵），且全篇无例外？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_2",
+            "question": "重写后的文本是否完整保留了原文关于‘智慧源自上帝’、‘智慧创造于万物之前’以及‘上帝赐予爱祂之人’的核心神学主题？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_3",
+            "question": "重写的诗句是否涵盖了原文的关键意象群（包括：沙粒、雨滴、永恒之日、天高、地阔、深渊、宝座、创造与倾倒）？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_4",
+            "question": "重写的诗句在语法和逻辑上是否通顺，且符合英语诗歌的基本节奏感与可读性？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求将提供的圣经经文重写为ABBA押韵格式。在修订阶段，需重点核验初稿标准是否准确覆盖了'严格ABBA结构'、'核心神学主题保留'、'关键意象覆盖'及'语言流畅度'四个维度。初稿中关于ABBA的定义（每四行一组）是正确的，但需确保权重分配合理，其中结构合规性作为形式要求应占最高权重，内容完整性次之，语言质量再次之。修订后的标准将明确界定ABBA的具体执行方式（即AABB或ABBA的严格交替，此处指ABBA），并确认所有原始意象和神学观点未被遗漏或扭曲。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0",
+        "normalized_weights": {
+          "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_1": 0.4,
+          "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_2": 0.3,
+          "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_3": 0.2,
+          "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出文本未严格遵循ABBA押韵结构。例如，第一诗节中第1行（grand）与第4行（command）押韵，但第2行（sand）与第3行（hand）虽押韵，却未能构成标准的四行ABBA模式（实际为AABB或变体，且第3行与第2行押韵但位置不对应ABBA的B-B关系，更关键的是第二诗节：第1行told与第4行bold押韵(A-A)，但第2行depth与第3行breadth不押韵(B-C)，导致该诗节完全不符合ABBA要求）。此外，第四诗节中第1行all与第4行tall押韵，但第2行see与第3行free押韵，形成AABB而非ABBA。全篇多处存在押韵失败的情况。",
+            "rejected_reason": "输出文本未严格遵循ABBA押韵结构。例如第一节中，第2行'understand'与第3行'who can'不押韵（AABB或ABC B结构而非ABBA）；第二节中，第2行'untold'与第3行'measure'也不押韵；第三节和第四节同样存在多处非ABBA的押韵情况（如第三节第2行'revered'与第3行'concealed'不押韵）。"
+          },
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "重写后的文本完整保留了核心神学主题：首段提及智慧源自上帝（From the Lord comes wisdom），中间段落提到上帝是唯一的智者并坐在宝座上，结尾明确表达上帝创造智慧并将其倾注给祂所爱的人（He lavished it for all to see / upon His works... and those who love him implied in context of 'His works' and 'living' though slightly condensed, the core message of creation and gift remains present）。特别是‘智慧创造于万物之前’（Wisdom's root... first of all）和‘赐予爱祂之人’（lavished... upon all his works/loving him context）均有体现。",
+            "rejected_reason": "重写后的文本完整保留了核心神学主题：提到了智慧源自上帝（'From the Lord'）、智慧是首要被造的（'first of all'），以及上帝将智慧赐予爱祂的人（'To those who love him'）。"
+          },
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "重写的诗句涵盖了原文的关键意象群：沙粒（grains of sand）、雨滴（raindrops）、永恒之日（Everlasting）、天高（heavens' height）、地阔（earth's breadth）、深渊（the abyss）、宝座（His throne）、创造（created wisdom）以及倾倒（poured/lavished）。虽然部分意象在翻译中略有简化，但核心意象均被保留并融入诗中。",
+            "rejected_reason": "文本涵盖了原文的关键意象群：包含了沙粒雨滴（'sand or raindrops'）、天高地阔深渊（'Heavens' height, earth's breadth', 'Abyss'）、宝座（隐含在'Lord...wise and bold'及上下文语境中）、创造与倾倒（'created wisdom', 'Poured her'）。"
+          },
+          {
+            "criterion_id": "rubric_1b39b51fb68b4ba090c2bc8bac896ca0_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "重写的诗句在语法上基本通顺，逻辑连贯，能够传达原文的意思。虽然在某些地方为了押韵牺牲了部分自然流畅度（如第四诗节的语序调整），但整体符合英语诗歌的基本节奏感和可读性，没有明显的语法错误或逻辑断裂。",
+            "rejected_reason": "重写的诗句在语法上基本通顺，逻辑连贯，虽然部分用词略显生硬（如'cleared'指代秘密被揭示），但整体符合英语诗歌的基本节奏感和可读性要求。"
+          }
+        ],
+        "chosen_score": 0.6,
+        "rejected_score": 0.6,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务要求重写文本为'ABBA'押韵格式。初稿及修订后的Rubric（标准1/5）将ABBA定义为'每四行一组，第1行与第4行押韵，第2行与第3行押韵'。然而，在人工偏好理由中，标注者明确指出了'第三诗节是AABB'、'第一节是AAAA'等错误，并以此作为判定rejected回答不合格的关键依据。这表明标注者实际上是在评估每一组四行内的押韵模式是否严格符合ABBA。问题在于，Judge的评判理由中存在逻辑矛盾：对于chosen回答，Judge指出其第一诗节'grand/command'和'sand/hand'押韵，却认为这'未能构成标准的四行ABBA模式'且实际为'AABB或变体'。事实上，若第一行(A)与第四行(B)押韵，第二行(B)与第三行(A)押韵，则整体呈现ABA B结构（即ABBA）。但标注者显然将'ABBA'理解为特定的声韵交替模式（如a-b-b-a），而Judge在分析时似乎混淆了字母标记与实际押韵关系的对应，或者Rubric中的定义（1-4押，2-3押）本身在英语诗歌语境下容易引发歧义（通常ABBA指首尾同韵，中间同韵，但标注者的反馈暗示他们可能期待更严格的声韵对位，或者Judge误读了chosen回答的押韵情况）。\n\n更深层的问题在于：Rubric仅定义了'ABBA'的字面规则（1-4, 2-3），但未明确界定'押韵'的具体判定标准（如元音相同即可，还是需完全一致？），也未处理多音节词或近似韵的情况。更重要的是，人工反馈显示模型生成的诗节往往被判定为'AABB'或'AAAA'，这说明模型在生成时可能没有严格执行'跨行押韵'的逻辑，而是倾向于'邻行押韵'。如果Rubric仅仅询问'是否遵循ABBA'，而没有提供具体的校验步骤（例如：检查第1行和第4行的尾韵，检查第2行和第3行的尾韵），那么Generator很难设计出能准确捕捉这种复杂结构的评分标准。\n\n核心失败点：Rubric将复杂的韵律结构简化为一个单一的'是否'问题，缺乏对'押韵关系'的显式拆解和验证路径。当任务涉及多重约束（如ABBA）时，评分标准必须包含对每一对押韵关系的独立核验，而非笼统的'格式合规'。此外，Judge在分析chosen回答时出现了明显的误判（认为grand/command/sand/hand不是ABBA，实际上grand/command是A-A, sand/hand是B-B，这构成了ABBA结构，除非标注者定义的ABBA有特定含义），这反映了Rubric定义的模糊性导致了评价的不一致性。因此，需要一条经验来指导Generator设计针对复杂韵律结构的Rubric，明确要求拆解押韵对进行逐项核验。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_88c9e566a60f4df295f2f5eddcff3539",
+            "method": {
+              "trigger": "当任务指令要求生成具有特定多重押韵模式（如ABBA, ABAB, AABB等）的诗歌或文本时",
+              "principle": "必须将'押韵对的独立核验'确立为最高优先级的执行步骤，严禁使用笼统的'符合XX格式'作为单一判断项；需强制要求评分标准分别列出每一对押韵行（如1-4行，2-3行）的核验子项，逐一确认其尾韵是否匹配。",
+              "application_guide": "Generator在设计Rubric时，不应只问'是否遵循ABBA'，而应将其拆解为：'第1行与第4行尾韵是否一致？'以及'第2行与第3行尾韵是否一致？'。只有当所有指定的押韵对都通过核验时，该维度才判定为合格。同时，需在标准中明确'押韵'的定义（如：主要重读音节的元音及后续辅音相同），以避免因近似韵或方言差异导致的误判。此拆解方法可防止模型通过部分押韵蒙混过关，也能帮助Judge进行精确的事实核对。"
+            },
+            "source_task_id": "b559e69c24142c22dcc7b2c097d53d3b46f8ef4e0a9c0945d39ca6ae1f7823cd",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_88c9e566a60f4df295f2f5eddcff3539"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_1",
+                  "question": "输出是否严格遵循ABBA押韵结构？即每一组四行诗中，第1行与第4行的尾韵必须完全一致，且第2行与第3行的尾韵必须完全一致，全篇无例外。",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_2",
+                  "question": "输出文本是否完整保留了原文的核心神学主题，包括智慧源自上帝、智慧先于万物被造、上帝在宝座上掌管智慧以及智慧赐予爱祂之人？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_3",
+                  "question": "重写后的诗句是否涵盖了原文的关键意象群，具体包括沙粒、雨滴、永恒之日、天高、地阔、深渊、宝座、创造行为及倾倒恩赐？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_4",
+                  "question": "重写的诗句在英语语法和逻辑上是否通顺，且具备诗歌应有的节奏感与可读性？",
+                  "weight": 0.3
+                }
+              ],
+              "analysis": "本次任务为修订阶段，需基于‘重写为ABBA押韵格式’的指令，对提供的初稿评分标准进行核验与优化。初稿将ABBA结构作为一个整体问题（权重0.35），根据提供的经验指导，必须拆解为具体的押韵对核验以确保严格执行。因此，新标准将把‘结构合规性’拆分为两个独立的强约束项：1) 每四行组内第1行与第4行的尾韵匹配；2) 每四行组内第2行与第3行的尾韵匹配。同时，保留并微调了关于神学主题完整性、关键意象覆盖度以及语言通顺度的标准。权重分配上，由于ABBA是核心形式要求，其拆分后的两项合计权重应维持较高比例（原0.35调整为0.2+0.2=0.4），内容完整性次之（0.3），语言质量再次之（0.3）。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb",
+              "normalized_weights": {
+                "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_1": 0.2,
+                "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_2": 0.3,
+                "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_3": 0.2,
+                "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_4": 0.3
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "输出未严格遵循ABBA押韵结构。例如第一段：第1行grand与第4行command押韵（A），但第2行sand与第3行hand押韵，符合B B结构而非B A结构（应为sand/command或hand/sand等组合以形成ABBA）。更明显的错误在第四段：第1行all与第4行tall押韵（A），但第2行see与第3行free押韵（B），整体呈现为ABBA结构看似成立，但需逐行检查尾音一致性。然而第一段中第2行sand和第3行hand确实押韵，第1行grand和第4行command也押韵，看似ABBA；但第三段中第1行whom与第4行eyes不押韵，第2行gloom与第3行wise也不押韵，完全破坏ABBA结构。因此全篇存在多处不符合ABBA要求的情况。",
+                  "rejected_reason": "输出未严格遵循ABBA押韵结构。例如第一段中，第1行末尾为'hand'，第4行为'spanned'（押韵），但第2行'understand'与第3行'who can'不押韵；第二段中第2行'untold'与第3行'measure'不押韵；第三段和第四段同样存在多处不符合ABBA模式的情况，如第3行'revealed'与第2行'revered'虽押韵，但第3行与第4行'cleared'与第2行不匹配，且部分段落甚至未形成完整的四行押韵组。"
+                },
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "重写文本完整保留了原文核心神学主题：明确指出智慧源自上帝（'From the Lord comes wisdom'），智慧先于万物被造（'He created wisdom, first of all'），上帝坐在宝座上掌管智慧（'His throne, so high, feared by all eyes'），以及智慧赐予爱祂之人（'He lavished it for all to see'隐含普世恩典，虽未直译“爱祂之人”，但结合上下文仍传达出智慧由上帝主动赐予的意涵，基本覆盖主题要点）。",
+                  "rejected_reason": "重写文本保留了核心神学主题：明确提到智慧来自上帝（From the Lord, wisdom's grand）、先于万物被造（Wisdom's root... One alone... He created wisdom, first of all）、上帝在宝座上掌管（Only Lord, wise and bold... seated implied in authority context）以及赐予爱祂之人（To those who love him）。"
+                },
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "重写文本未涵盖所有关键意象群。虽然提到了沙粒、雨滴、天高、地阔、深渊、宝座和创造行为，但遗漏了“永恒之日”（days of eternity）这一重要意象，且“倾倒恩赐”（poured her out）的意象被简化为“lavished it”，未能准确体现原文中“倾倒在一切造物之上”的动态过程。此外，“谨慎的理解”（prudent understanding）作为原文特定概念也未在重写中出现。",
+                  "rejected_reason": "虽然提到了沙粒、雨滴、深渊、天高、地阔等意象，但遗漏了原文中的关键细节如“永恒之日”（days of eternity未被直接体现）、“宝座”（throne未在诗中明确出现，仅用wise and bold暗示）、“倾倒恩赐”的具体动作描述不够完整，且部分意象被简化或合并导致未能全面覆盖原文的关键意象群。"
+                },
+                {
+                  "criterion_id": "rubric_0fd08c73c8f44645ad8fe848fb8d90eb_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "重写诗句在英语语法和逻辑上存在明显问题，节奏感不足。例如第四段第3行'Upon His works, so living and free'语法混乱，'living and free'修饰对象不清；第4行'And measured her, standing tall'主语缺失，逻辑断裂。整体句式参差不齐，部分句子为凑韵脚而牺牲了语义连贯性，不具备诗歌应有的流畅性与可读性。",
+                  "rejected_reason": "诗句在英语语法和逻辑上存在明显问题，例如第一段的第二句'Everlasting, who can understand?'语法不完整且语义模糊；第四段第三行'Measured her, then gave, standing tall'逻辑混乱，'standing tall'修饰不明，且整体节奏感较差，缺乏诗歌应有的流畅性和可读性。"
+                }
+              ],
+              "chosen_score": 0.3,
+              "rejected_score": 0.3,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "",
+      "attempts": [],
+      "error": "LLMFormatError: critic: invalid contract: parent IDs must reference provided experiences"
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

@@ -1,0 +1,353 @@
+{
+  "sample_id": "helpsteer3:train:94876f237f67e2652c44c366816ac4d3b3914a4e327aebf4536c2de70e30e165",
+  "sample": {
+    "sample_id": "helpsteer3:train:94876f237f67e2652c44c366816ac4d3b3914a4e327aebf4536c2de70e30e165",
+    "task": "What is the capital of Croatia?",
+    "chosen": "The capital of Croatia is Zagreb.",
+    "rejected": "The capital of Croatia is Zagreb. It is the largest city in the country and serves as a significant cultural, scientific, economic, and political center. Zagreb is divided into three parts: Gornji Grad (Upper Town), Donji Grad (Lower Town), and Novi Zagreb (New Zagreb). The city is known for its rich history, beautiful architecture, and vibrant cultural scene.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 11861,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it provides an accurate and succinct answer to the prompt. @Response 1 is too verbose because it includes extraneous information about the city, which was not inquired about by the prompt. ",
+          "feedback1": "The response is partially helpful. While the response accurately addresses the prompt, it also provides information that is not pertinent to the request. The user is only looking for the name of the city that is the capital of Croatia, but the response explains many details that could be left out. ",
+          "feedback2": "The response is perfectly helpful. It provides a succinct and accurate answer to the prompt. Zagreb is in fact the capital of Croatia. This response cannot be meaningfully improved because it provides only the pertinent information needed and leaves out any excessive details that would make the response too verbose. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. Both responses are accurate, but @Response 1 includes extra facts that the user did not ask for. @Response 1 provides only the necessary answer.",
+          "feedback1": "The response is partially helpful. The information in the response is all factual and accurate, which could be helpful. However, the user asked for one simple piece of information. The only thing that needed to be provided was the name of the city, Zagreb. The other facts are not necessary or relevant to the prompt.",
+          "feedback2": "The response is perfectly helpful. It gives the user the exact answer they are asking for, and it is the correct answer. There is no extra or unwarranted information, so the response is not overly verbose. It is perfectly relevant and acceptable. There are no improvements needed to make the response better."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it provided the capital of Croatia without unnecessary details. @Response 1 also correctly named the capital of Croatia, but included irrelevant details that made the response verbose.",
+          "feedback1": "The response is partially helpful. The user simply asked for the capital of Croatia. The response accurately names Zagreb. However, it goes beyond just naming the capital of Croatia and provides details about the three sections it's divided into and how it's known for its rich history and beautiful architecture. While information was accurate, it was not directly relevant to the user's request making this response a bit verbose.",
+          "feedback2": "The response is perfectly helpful. The user plainly asked for the capital of Croatia. The response provides a straightforward and to-the-point accurate answer, naming Zagreb as the capital. The response fulfilled the user's request directly without additional fluff or including irrelevant details. This response cannot be meaningfully improved in any way."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_d27447cc659916a1046a",
+        0.3092639372225904
+      ],
+      [
+        "task_9191e8252d9b2cbf8fb2",
+        0.2311974189324689
+      ],
+      [
+        "task_69121d7dc3198dd41bb2",
+        0.22926592115938982
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_9191e8252d9b2cbf8fb2",
+              "similarity": 0.2311974189324689,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0146ea4283673794999e04dafa4b47a7c394a59ea44b64e6f670b077a345a858:exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+                  "helpsteer3:train:31199181897fb2c68298eef4c460a413512b9eb84d650b78b25f26f31ac8c730:exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+                ],
+                "task_ids": [
+                  "adbf75e60dfbf85a189c67fa3fe2795782d25acfeab4f13d990287a5a7656b67",
+                  "501a34d4bb04c967d9fae5181de7acb5dd32ecc70e04cedf9c228898b04df1b3"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_01af1e4d07534a9a9ef74a191301a91a",
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_17e2421ce6b948a8bbd28b8e812a744e",
+        "exp_23270a99f4464e2fb928cd02f328fd67",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_345da7f2dd5949e9a856fc661790828b",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_3ab19d7aed0949edafbad582dec47a2e",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_6146745a8c1e457ab7122dfa3fc770a0",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_71a63834f56d46d884d0ecf1d6628617",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2b4eddaa2be45a983ff4bc072ef7372",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_a796676716be4906b8fea66019710d3a",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b30649747ad94e468f6c89a125c9e74e",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_bfd24194914d48acb85fdc12af8a2a49",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_c96c04d5bf8d4648966881eb9481ddbe",
+        "exp_cda61e23c69c4146a3a79ac2beddffba",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0dd491aca2c4debb79bfeb5804a6946",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d3c7a855287947188af3b41f777e42b9",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc1d73a5d46404e9edd43264476c9b9",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "exp_fed24280d1f44564a7db0fb218c36506"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        0.17714204196877084
+      ],
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.11872689308375098
+      ],
+      [
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        0.11767838872064855
+      ],
+      [
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        0.1116799888747872
+      ],
+      [
+        "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        0.10966296308098764
+      ],
+      [
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        0.10705951714102928
+      ],
+      [
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        0.1069848460924054
+      ],
+      [
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        0.10610696734507462
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.10185266461651839
+      ],
+      [
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        0.09973263814985009
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17714204196877084
+      },
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11872689308375098
+      },
+      {
+        "experience_id": "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.11767838872064855
+      },
+      {
+        "experience_id": "exp_6d6915ad80ab4039b6783132704450cd",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1116799888747872
+      },
+      {
+        "experience_id": "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10966296308098764
+      },
+      {
+        "experience_id": "exp_b437dfe96ffe48cb87478fa70685773b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10705951714102928
+      },
+      {
+        "experience_id": "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1069848460924054
+      },
+      {
+        "experience_id": "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10610696734507462
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.10185266461651839
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_42f447cc2b9b4e5cacc74fa49f616aa9": "任务要求回答'Croatia'（克罗地亚）的首都，核心实体是明确且唯一的。经验1强调当任务针对特定核心实体时，必须将‘核心实体/主题的严格一致性’作为最高优先级核验维度。若模型回答的是其他国家（如塞尔维亚或匈牙利）的首都，即使内容准确，也属于主题偏离，应直接判定不合格。这与本题需要精准匹配'Croatia'这一特定实体的要求完全一致。"
+  },
+  "draft": {
+    "rubric_id": "rubric_03cf68c4ab424cd09b4aecc97160b5ea",
+    "criteria": [
+      {
+        "criterion_id": "rubric_03cf68c4ab424cd09b4aecc97160b5ea_1",
+        "question": "答案是否明确指出克罗地亚的首都是萨格勒布（Zagreb）？",
+        "weight": 0.8
+      },
+      {
+        "criterion_id": "rubric_03cf68c4ab424cd09b4aecc97160b5ea_2",
+        "question": "回答是否仅包含所需的事实信息，没有包含与问题无关的额外解释或背景？",
+        "weight": 0.1
+      },
+      {
+        "criterion_id": "rubric_03cf68c4ab424cd09b4aecc97160b5ea_3",
+        "question": "回答的语言是否与用户提问的语言（英语）保持一致？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求回答克罗地亚的首都，这是一个事实性问题。交付物为直接的答案文本。由于是draft阶段且未提供草稿，评分标准需聚焦于答案的准确性、明确性以及是否包含无关信息。权重分配上，准确性占绝对主导，因为这是核心事实；其他如格式和简洁性作为辅助约束。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3",
+        "criteria": [
+          {
+            "criterion_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_1",
+            "question": "回答是否明确将克罗地亚的首都识别为萨格勒布（Zagreb），且未将其与其他国家或城市混淆？",
+            "weight": 0.8
+          },
+          {
+            "criterion_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_2",
+            "question": "回答是否仅包含核心事实（首都名称），未添加与问题无关的背景解释、历史沿革或额外评论？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_3",
+            "question": "回答的语言是否与用户提问的英语保持一致？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求回答克罗地亚的首都，这是一个事实性问答。在revise阶段，需基于draft检查并优化评分标准。原draft中的criteria已覆盖准确性、简洁性和语言一致性，但缺乏对‘核心实体’这一前置条件的显式强调，且未明确区分背景信息与核心答案的边界。修订后的标准将第一条设为核心实体核验（确保主体是克罗地亚而非其他国家），作为通过其他维度（如准确性）的前提；同时保留并微调原标准的表述，使其更聚焦于‘明确指出’和‘无无关信息’。权重分配上，核心实体与准确性合并为最高优先级（0.8），语言一致性（0.1）和格式简洁性（0.1）作为辅助约束。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3",
+        "normalized_weights": {
+          "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_1": 0.8,
+          "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_2": 0.1,
+          "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确将克罗地亚的首都识别为萨格勒布（Zagreb），且未提及任何其他国家或城市，无混淆。",
+            "rejected_reason": "回答明确指出了克罗地亚的首都是萨格勒布（Zagreb），且没有将其与其他国家或城市混淆。"
+          },
+          {
+            "criterion_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答仅包含核心事实'Zagreb is the capital of Croatia'，未添加任何背景解释、历史沿革或额外评论。",
+            "rejected_reason": "回答不仅包含首都名称，还添加了关于城市规模、功能分区、历史和文化背景等与问题核心无关的额外信息，违反了“仅包含核心事实”的要求。"
+          },
+          {
+            "criterion_id": "rubric_125f1760dcfb40ee8ee9a1b9a4f831c3_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "用户提问为英语，回答也完全使用英语表达，语言保持一致。",
+            "rejected_reason": "用户提问为英语，回答也完全使用英语，语言保持一致。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.9,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "inference"
+}

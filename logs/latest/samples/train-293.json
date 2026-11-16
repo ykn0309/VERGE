@@ -1,0 +1,550 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:0e0e646a60f2c760953d70cafeeeb0907c7d2ed7235d3c75bf95d4a198da83a0",
+    "task": "Create a thrilling story for me to play through. I'll be picking from choices you give me. Some of them are in my favour and some of them are not. The outcome is only revealed after I make my choice.\n\nI'm Tommy Rollins, the main character of this fighting game (similar to Streets of Rage, Final Fight etc). I face the following person in their level:\n\nLevel: Elite School\nEnemy: Cheerleader\n\nAbility Points range from 1 (very weak) to 10 (very strong).\n\nTommy Rollins' Ability Points:\n\nUper Body: 7\nLower Body: 7\nStriking: 7\nGrappling: 8\nSubmissions: 4\nAerial: 5\nSpeed: 7\nHealth: 8\nStamina: 7\nToughness: 8\nFlexibility: 4\n\nCheerleader's Ability Points:\nUper Body: 3\nLower Body: 10\nStriking: 7\nGrappling: 6\nSubmissions: 8\nAerial: 9\nSpeed: 9\nHealth: 5\nStamina: 8\nToughness: 5\nFlexibility: 10\n\nEnd every post with several choices for me to pick from, not revealing their outcome to me.",
+    "chosen": "As you step into the Elite School level, you're greeted by the sight of a Cheerleader, her pompoms in hand, ready for a fight. She may look harmless, but her Ability Points tell a different story. You need to be strategic to take her down.\n\nChoices:\n\nA) Use your superior Upper Body strength to deliver a powerful punch.\nB) Try to outmaneuver her with your Speed and deliver a kick to her Lower Body.\nC) Utilize your Grappling skills to get her in a hold and wear her down.\nD) Attempt a Submission move, hoping to catch her off guard.\n\n(Please reply with the letter of the choice you make.)",
+    "rejected": "You're Tommy Rollins, a seasoned fighter, and you've been called to Elite School to handle a situation. The cheerleader, known for her agility and flexibility, is causing trouble. What's your strategy?\n\n1. Engage in a grappling match.\n2. Use your speed to outmaneuver her.\n3. Try to take her down with a powerful strike.\n4. Attempt an aerial maneuver.\n\nRemember, the outcome is not revealed until you make your choice.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 14153,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 offers more details to the gamer than @Response 1. @Response 2 has more orientations than @Response 1. ",
+          "feedback1": "The response is slightly helpful. It does not capture what the user is looking for. The response is useful and helful in a small way This is a vague response. It is not a thrilling story. So, it is not faithful to the prompt. It just tries to give some superficial clues to the reader. The reader will not be satisfied with this answer.",
+          "feedback2": "The response is partially helpful. It misses the overall goal of the user's query/input in some way. The response is not going to satisfy what the user is looking for. This is not a thrilling story. It is partially faithful to the prompt. It gives some orientation for the gamer. The user could be satisfied with this answer."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 1 fails to follow some of the prompt's explicit instructions making it less accurate and complete.",
+          "feedback1": "The response is partially helpful. It follows most of the instructions given by the prompt and fulfills them. This response is clear and coherent, it is consistent in terms of content, and style of writing, and does not contradict itself. The language is straightforward making it easy to follow and understand. The response misses some of the prompt's specific instructions.",
+          "feedback2": "The response is perfectly helpful. According to the prompt's provisions, the response completely follows all laid out instructions. It is consistent in terms of content and style of writing. The sentence structure is logical and progressive making it easy to understand. The response is clear and coherent and uses easy language."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it incorporates more of the prompt's details into the response and provides an opportunity for the user to respond with an answer.",
+          "feedback1": "The response is partially helpful. While it does incorporate details into the response that acknowledge the prompt, it doesn't really provide the response that the user requests. The prompt wants a story to play through and says to give several options to choose from after every post, but there is only one post provided. The response does not ask the user to respond with their answer so that it can provide the outcome and the next series of choices, so it is unclear how the selection should be made. Adding instructions for next steps will enhance this response.",
+          "feedback2": "The response is perfectly helpful. It does a good job of taking into account all of the information in the prompt to deliver an exemplary response that utilizes the strengths of the character to combat the strengths of the other character. It also does a great job of prompting the user to make a choice and explaining how the user should make their choice (reply with the letter). This response cannot be meaningfully improved."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_07eba516fa071bbf0c9a",
+        0.5731816290586049
+      ],
+      [
+        "task_8f9d38122b9534c7201b",
+        0.30610070722783433
+      ],
+      [
+        "task_af9782c598090446a65e",
+        0.269829219913194
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        0.2999172675746045
+      ],
+      [
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        0.2954348233869158
+      ],
+      [
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        0.26297129996041313
+      ],
+      [
+        "exp_02847145bff24237a60527dde38d35b5",
+        0.26106415048890735
+      ],
+      [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        0.24148340741415103
+      ],
+      [
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        0.23094091883142043
+      ],
+      [
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        0.23072906275414015
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.2165841612707054
+      ],
+      [
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        0.21355923780846744
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.21334505458205444
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2999172675746045
+      },
+      {
+        "experience_id": "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2954348233869158
+      },
+      {
+        "experience_id": "exp_3896dc1be1064d1baa083a6260d514cb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26297129996041313
+      },
+      {
+        "experience_id": "exp_02847145bff24237a60527dde38d35b5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26106415048890735
+      },
+      {
+        "experience_id": "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24148340741415103
+      },
+      {
+        "experience_id": "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23094091883142043
+      },
+      {
+        "experience_id": "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23072906275414015
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2165841612707054
+      },
+      {
+        "experience_id": "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21355923780846744
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21334505458205444
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b56eb898fce54adcafbac3703e2edfeb": "任务明确设定了虚构情境（格斗游戏背景）及两个角色的具体属性数值（Tommy Rollins和Cheerleader的各项能力值），经验2要求将‘核心事实一致性’作为独立核验维度，必须严格核查模型是否准确使用了这些给定的属性数据来推演战斗逻辑，防止出现角色能力与设定不符的错误。",
+    "exp_3896dc1be1064d1baa083a6260d514cb": "任务要求模型扮演互动式游戏的叙事者（Game Master），并完全接受‘玩家是Tommy Rollins’、‘面临特定敌人’、‘选择后揭晓结果’等情境前提；经验3强调必须验证模型是否在逻辑上接受了这些设定进行回应，而非以AI身份拒绝或中断角色扮演，这符合本任务对沉浸感和情境一致性的核心要求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_a1cb9fee83c346ef9224f91b11b569f7",
+    "criteria": [
+      {
+        "criterion_id": "rubric_a1cb9fee83c346ef9224f91b11b569f7_1",
+        "question": "是否准确复现了Tommy Rollins和Cheerleader的所有指定能力数值（包括Upper Body拼写修正后的逻辑一致性）？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_a1cb9fee83c346ef9224f91b11b569f7_2",
+        "question": "故事背景是否设定在'Elite School'场景并明确敌人身份为Cheerleader？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_a1cb9fee83c346ef9224f91b11b569f7_3",
+        "question": "叙事风格是否符合经典清版动作游戏（如Streets of Rage）的激烈格斗氛围？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_a1cb9fee83c346ef9224f91b11b569f7_4",
+        "question": "是否在结尾提供了多个供玩家选择的行动选项？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_a1cb9fee83c346ef9224f91b11b569f7_5",
+        "question": "所有提供的选项是否均未直接透露其具体战斗结果或结局？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_a1cb9fee83c346ef9224f91b11b569f7_6",
+        "question": "选项设计是否体现了难度差异（即包含对玩家有利和不利的不同策略）？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "任务要求生成一个基于《怒之铁拳》/《快打旋风》风格的格斗游戏互动故事。主角为Tommy Rollins，对手为Elite School的Cheerleader。核心机制是：提供选项，部分有利部分不利，结果仅在玩家选择后揭示。必须严格包含双方给定的12项能力数值（注意原文拼写Uper Body应为Upper Body）。输出格式需为叙事段落结尾附带多个未揭示结果的选项。Stage为draft，故只需根据设定生成初稿，无需修正。评分标准将重点核验角色数据准确性、风格还原度、选项机制（隐藏结果）以及叙事张力。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_39b1075f361b44d6925d97203de73035",
+        "criteria": [
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_1",
+            "question": "是否准确复现了Tommy Rollins和Cheerleader的所有指定能力数值（共12项），并已将原文拼写错误'Uper Body'修正为'Upper Body'以保持逻辑一致？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_2",
+            "question": "故事背景是否明确设定在'Elite School'场景，并将敌方身份确认为'Cheerleader'？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_3",
+            "question": "叙事风格是否成功营造出类似《怒之铁拳》或《快打旋风》的经典清版动作游戏激烈格斗氛围？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_4",
+            "question": "是否在回复结尾提供了多个供玩家选择的行动选项？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_5",
+            "question": "所有提供的选项描述中是否均未直接透露具体的战斗结果或结局？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_6",
+            "question": "选项设计是否体现了难度差异，即明确包含对玩家有利和不利的不同策略倾向？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本次任务要求修订一个基于经典清版动作游戏（如Streets of Rage）风格的互动格斗故事。核心要素包括：主角Tommy Rollins与特定敌人Cheerleader在Elite School场景的对抗；必须严格包含双方指定的12项能力数值（需修正原文'Uper Body'为'Upper Body'以符合逻辑一致性）；叙事需体现激烈格斗氛围；结尾需提供多个行动选项，且选项设计需包含有利与不利两种策略，同时严禁在选项中透露具体战斗结果。评分标准将围绕数据准确性、场景设定、风格还原度、选项机制完整性及结果隐藏原则进行加权分配，确保修订后的内容完全符合互动游戏的交互规范。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_39b1075f361b44d6925d97203de73035",
+        "normalized_weights": {
+          "rubric_39b1075f361b44d6925d97203de73035_1": 0.25,
+          "rubric_39b1075f361b44d6925d97203de73035_2": 0.15,
+          "rubric_39b1075f361b44d6925d97203de73035_3": 0.15,
+          "rubric_39b1075f361b44d6925d97203de73035_4": 0.15,
+          "rubric_39b1075f361b44d6925d97203de73035_5": 0.15,
+          "rubric_39b1075f361b44d6925d97203de73035_6": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回复中未复现Tommy Rollins和Cheerleader的12项能力数值，仅提及了部分属性名称（如Upper Body, Speed, Lower Body, Grappling），且未列出具体数值（如7, 8, 3等），也未完整展示所有12项数据。",
+            "rejected_reason": "回复中未复现Tommy Rollins和Cheerleader的任意一项具体能力数值（共12项），也未提及任何关于力量、速度或柔韧性等属性的数据对比，完全缺失了任务要求的核心设定。"
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复明确提到了'Elite School level'作为场景，并确认敌方为'Cheerleader'，符合任务设定的背景要求。",
+            "rejected_reason": "回复明确提到了场景为'Elite School'，并将敌方身份确认为'cheerleader'，符合背景设定要求。"
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "叙事风格使用了'fight', 'take her down', 'pompoms in hand'等词汇，营造了清版动作游戏的格斗氛围，虽然简短但基本符合《怒之铁拳》类的设定基调。",
+            "rejected_reason": "叙事简短地引入了主角作为职业战士的背景及敌人造成的麻烦，并使用了'Engage in a grappling match'、'powerful strike'等术语，在一定程度上营造了格斗游戏的氛围。"
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复在结尾处提供了A、B、C、D四个具体的行动选项供玩家选择。",
+            "rejected_reason": "回复结尾清晰列出了四个供玩家选择的行动选项（1. 缠斗，2. 利用速度，3. 强力打击，4. 空中动作）。"
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "所有选项描述仅说明了行动意图（如'deliver a powerful punch'），未直接透露该行动成功或失败的具体结果。",
+            "rejected_reason": "所有选项仅描述了行动意图，并在末尾声明结果将在选择后揭示，没有直接透露具体的战斗输赢或结局细节。"
+          },
+          {
+            "criterion_id": "rubric_39b1075f361b44d6925d97203de73035_6",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "选项设计体现了策略差异：选项A利用优势（Upper Body 7 vs 3），选项B利用速度优势，选项C利用综合格斗技巧，而选项D尝试使用劣势属性（Submissions 4）去对抗高抗性敌人，隐含了有利与不利的不同风险倾向。",
+            "rejected_reason": "虽然提供了不同策略倾向的选项，但回复未能体现基于具体数值的难度差异。由于未展示双方属性（如Tommy的Grappling 8对Cheerleader的Submissions 8，或Cheerleader的Speed 9对Tommy的Speed 7），无法判断哪些选项在逻辑上是对玩家有利或不利的，缺乏任务要求的策略深度依据。"
+          }
+        ],
+        "chosen_score": 0.75,
+        "rejected_score": 0.6,
+        "margin": 0.15,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b56eb898fce54adcafbac3703e2edfeb"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_3442d61a7b924ebcb17fe158c3385375",
+        "criteria": [
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_1",
+            "question": "是否准确复现了Tommy Rollins和Cheerleader的所有12项指定能力数值（含将原文'Uper Body'修正为'Upper Body'后的数据一致性）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_2",
+            "question": "故事背景是否明确设定在'Elite School'场景并将对手身份锁定为'Cheerleader'？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_3",
+            "question": "叙事风格是否成功营造出类似《Streets of Rage》或《Final Fight》的经典清版动作游戏激烈格斗氛围？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_4",
+            "question": "是否在回复结尾提供了多个供玩家选择的行动选项？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_5",
+            "question": "所有提供的选项是否均未直接透露其具体战斗结果、伤害值或结局走向？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_6",
+            "question": "选项设计是否体现了策略差异，即包含对玩家有利和不利的不同风险等级选择？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务要求生成一个基于《怒之铁拳》风格的互动格斗故事，主角Tommy Rollins与Elite School的Cheerleader对决。核心约束包括：严格复现双方给定的12项能力数值（需修正原文'Uper Body'拼写为'Upper Body'以确保逻辑一致性），设定特定场景与敌人身份，保持经典清版动作游戏的叙事风格，并在结尾提供多个未揭示结果的选项，且选项需体现难度差异（有利/不利）。Stage为revise，需基于draft检查并修订标准，重点在于确保数值准确性、机制完整性（隐藏结果）及风格还原度。原draft中的分析部分错误地将stage描述为'draft'，且部分权重分配可优化以突出数据准确性这一关键约束。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_3442d61a7b924ebcb17fe158c3385375",
+        "normalized_weights": {
+          "rubric_3442d61a7b924ebcb17fe158c3385375_1": 0.3,
+          "rubric_3442d61a7b924ebcb17fe158c3385375_2": 0.15,
+          "rubric_3442d61a7b924ebcb17fe158c3385375_3": 0.15,
+          "rubric_3442d61a7b924ebcb17fe158c3385375_4": 0.1,
+          "rubric_3442d61a7b924ebcb17fe158c3385375_5": 0.15,
+          "rubric_3442d61a7b924ebcb17fe158c3385375_6": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中仅提及了部分能力点（Upper Body, Speed, Lower Body, Grappling, Submission），并未复现任务要求的所有12项指定能力数值，也未列出Tommy Rollins和Cheerleader的具体数值对比。",
+            "rejected_reason": "回答完全未复现Tommy Rollins和Cheerleader的12项能力数值，仅提及了部分定性描述（如敏捷性、柔韧性），缺失所有具体数字数据。"
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复开头明确设定场景为'Elite School'并将对手描述为'Cheerleader'，符合背景设定要求。",
+            "rejected_reason": "故事背景明确设定在'Elite School'，且对手身份确认为'cheerleader'，符合任务要求。"
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "叙事过于简短平淡，缺乏类似《Streets of Rage》或《Final Fight》那种清版动作游戏特有的激烈格斗氛围、环境描写或战斗张力，更像是一个简单的对话开场而非故事叙述。",
+            "rejected_reason": "叙事过于简略，缺乏《Streets of Rage》或《Final Fight》那种激烈的战斗氛围描写、场景细节刻画及动作张力，未能营造出预期的清版动作游戏风格。"
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复结尾提供了A、B、C、D四个具体的行动选项供玩家选择。",
+            "rejected_reason": "回复结尾提供了4个具体的行动选项供玩家选择。"
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "所有提供的选项（如“使用力量”、“尝试躲避”、“利用擒拿”等）均未直接透露具体的战斗结果、伤害数值或结局走向。",
+            "rejected_reason": "所有选项均未透露具体的战斗结果、伤害值或结局走向，仅在末尾提示结果将在选择后揭示。"
+          },
+          {
+            "criterion_id": "rubric_3442d61a7b924ebcb17fe158c3385375_6",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "选项设计未体现出明显的策略差异或风险等级区分。虽然涉及不同技能，但并未暗示哪些选项对角色有利（基于其高数值属性）或不利（基于其低数值属性），例如没有体现利用Grappling(8)优势而避免Submissions(4)劣势的策略性引导，所有选项看起来风险相似。",
+            "rejected_reason": "提供的四个选项（摔跤、速度、打击、空中技巧）虽然对应不同属性，但并未在文本中体现策略差异或风险等级的高低区分，也未暗示某些选择对玩家有利而另一些不利，缺乏任务要求的“部分有利部分不利”的策略设计感。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.4,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_3896dc1be1064d1baa083a6260d514cb"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_5db8b362f2f64782acc03c6946b7f833",
+        "criteria": [
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_1",
+            "question": "是否准确且完整地复现了Tommy Rollins和Cheerleader的所有12项指定能力数值（含对原文'Uper Body'的合理修正为'Upper Body'）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_2",
+            "question": "故事背景是否明确设定在'Elite School'并确认对手身份为'Cheerleader'？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_3",
+            "question": "叙事语调与描写是否契合经典清版动作游戏（如Streets of Rage）的激烈格斗氛围与节奏？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_4",
+            "question": "是否在段落结尾提供了多个供玩家选择的行动选项？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_5",
+            "question": "所有提供的选项是否均未直接透露其具体的战斗结果或结局？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_6",
+            "question": "选项设计是否体现了策略上的难度差异，即包含对玩家有利和不利的不同选择？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本次任务要求基于指定的角色属性（Tommy Rollins vs Cheerleader）和场景（Elite School），生成一段互动式格斗游戏风格的叙事。核心约束包括：严格复现双方12项能力数值（需修正原文'Uper Body'为'Upper Body'以保持逻辑一致）、营造《怒之铁拳》类清版动作游戏的紧张氛围、在结尾提供多个选项且不揭示结果、选项设计需体现策略差异（有利/不利）。Stage为'revise'，意味着需检查初稿是否遗漏了数据准确性或机制细节。评分标准将重点核验数据还原度、风格沉浸感、交互机制（隐藏结果与难度梯度）以及格式规范性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_5db8b362f2f64782acc03c6946b7f833",
+        "normalized_weights": {
+          "rubric_5db8b362f2f64782acc03c6946b7f833_1": 0.25,
+          "rubric_5db8b362f2f64782acc03c6946b7f833_2": 0.15,
+          "rubric_5db8b362f2f64782acc03c6946b7f833_3": 0.15,
+          "rubric_5db8b362f2f64782acc03c6946b7f833_4": 0.15,
+          "rubric_5db8b362f2f64782acc03c6946b7f833_5": 0.15,
+          "rubric_5db8b362f2f64782acc03c6946b7f833_6": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未复现任何具体的能力数值（如Uper/Upper Body: 7等），仅提及'Ability Points tell a different story'，完全缺失任务要求的详细数据展示。",
+            "rejected_reason": "回答完全未复现Tommy Rollins和Cheerleader的任意一项能力数值，仅提到了Cheerleader的敏捷和柔韧性，遗漏了所有12项具体数值（如Upper Body: 7, Lower Body: 10等）。"
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确设定场景为'Elite School level'，并确认对手身份为'Cheerleader'，符合背景要求。",
+            "rejected_reason": "回答明确设定了故事背景为'Elite School'，并确认对手身份为'cheerleader'。"
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "叙事语调过于平淡且简短，缺乏经典清版动作游戏（Streets of Rage风格）应有的激烈格斗氛围描写、动作细节或紧张节奏感。",
+            "rejected_reason": "叙事语调过于平淡简短，缺乏经典清版动作游戏（如Streets of Rage）所需的激烈格斗氛围描写、环境渲染或紧张节奏感，更像是一个简单的任务简报而非沉浸式的故事开场。"
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答在段落结尾提供了A、B、C、D四个明确的行动选项供玩家选择。",
+            "rejected_reason": "回答在结尾处提供了四个具体的行动选项（1. Engage in a grappling match... 4. Attempt an aerial maneuver）。"
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "所有提供的选项均未直接透露具体的战斗结果或结局，仅描述了行动意图。",
+            "rejected_reason": "提供的选项中均未直接透露选择后的具体战斗结果或结局，符合'outcome is only revealed after I make my choice'的要求。"
+          },
+          {
+            "criterion_id": "rubric_5db8b362f2f64782acc03c6946b7f833_6",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然选项涉及不同技能，但并未体现明显的策略难度差异或风险对比（例如未暗示某些选项因角色属性劣势而高风险），且由于未列出具体数值，无法判断选项是否基于'有利与不利'的机制设计。",
+            "rejected_reason": "虽然提供了不同战术方向的选项，但并未体现明显的策略难度差异或明确区分哪些是'有利'（in favour）哪些是'不利'（not in favour）的选择，缺乏基于双方能力数值对比的策略暗示（例如针对对方高Flexibility但低Toughness的弱点设计明显有利的选项）。"
+          }
+        ],
+        "chosen_score": 0.45,
+        "rejected_score": 0.45,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

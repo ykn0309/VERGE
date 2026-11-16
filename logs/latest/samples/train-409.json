@@ -1,0 +1,475 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:2180d81ae6b71043807308b0ff044b11635880179fd4b550e0ca2b648c287703",
+    "task": "Act like an expert Etsy SEO consultant who specializes in creating product \nlistings that will rank high. \n\nYou will help me improve product titles by rewriting them according \nto best Etsy SEO practices. Don't give any extra information. Just rewrite the title.\n\nLet’s start. Help me rewrite - Coastal Harbor Oil Painting Print / Vintage Nautical Ship Decor PRINTABLE / #284",
+    "chosen": "Vintage Nautical Ship Oil Painting Print - Coastal Harbor Decor (Printable) #284",
+    "rejected": "\"Coastal Harbor Oil Painting Print - Vintage Nautical Ship Decor, Printable Art #284 - Optimized for Etsy SEO\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 20496,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 correctly followed the prompt by rewriting the text for a product listing. On the other hand, @Response 2 failed to follow the prompt because it added extra information and words to the product listing.",
+          "feedback1": "The response is mostly helpful. The model properly followed what was asked in the prompt by rewriting the text in the product listing. The response is correct because it did not add any extra words and information to the aforementioned listing. In addition, the response is short, straightforward, and easy to follow.",
+          "feedback2": "The response is slightly helpful. The model did not follow what was asked in the prompt. The response included the word \"art,\" which is not present in the original text of the prompt. In addition, the response gave extra information by adding the words: \"Optimized for Etsy SEO.\" The prompt says \"Don't give any extra information. Just rewrite the title.\""
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 provides a robust title that is succinct, omits extraneous details, and incorporates the essential SEO keywords for Etsy's search algorithm. @Response 2 contains unnecessary information that could be condensed.",
+          "feedback1": "The response is perfectly helpful. The response largely aligns with what the user is looking for. The response completely follows the prompt's requirement by giving a product title without adding any unnecessary details. It is clear and concise. The response is completely helpful and there is no room for improvement.",
+          "feedback2": "The response is slightly helpful. The response includes unnecessary information, such as \"Optimized for Etsy SEO,\" which does not contribute to product visibility on Etsy. Additionally, phrases like \"Printable Art #284\" are completely unnecessary, making it unhelpful. A streamlined title is more effective for Etsy's algorithm. The response is a complete miss."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2.  @Response 2 does not attempt to reword the response, it only makes a few punctuation changes.  @Response 2 also contains irrelevant information. ",
+          "feedback1": "The response is perfectly helpful.  The user wanted the title rewritten to include Etsy's best SEO practices.  In order to provide a good title, the description should be first.  The response rewrites the title, putting the most descriptive information first:  \"Vintage Nautical Ship\". The title is the only thing included so the response is very succinct.  ",
+          "feedback2": "The response is slightly helpful.  The user wanted the title rewritten to meet Etsy's best SEO practices.  The response makes a few edits, such as changing a \"/\" to a \"-\" and adding a comma after decor.  Changes in wording or order could have made this title better. The response also included in the title \"Optimized for Etsy SEO.\"  This should not be added to the title, nor does it need to be added to the response. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_f963a5374e72fe33f314",
+        0.5439307145495944
+      ],
+      [
+        "task_01acc02c3961d52be4df",
+        0.3149641408755285
+      ],
+      [
+        "task_e7aba68b542848ff87a9",
+        0.30291872441098366
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        0.3177916117003299
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.31122151873124404
+      ],
+      [
+        "exp_9b24989a45c941c3935511cd6875d167",
+        0.30518520070876765
+      ],
+      [
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        0.29495606809176234
+      ],
+      [
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        0.29362864760832974
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.27518748690493383
+      ],
+      [
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        0.2695040514250978
+      ],
+      [
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        0.26140067456426197
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.260130992636828
+      ],
+      [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        0.2561301887753571
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3177916117003299
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31122151873124404
+      },
+      {
+        "experience_id": "exp_9b24989a45c941c3935511cd6875d167",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30518520070876765
+      },
+      {
+        "experience_id": "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29495606809176234
+      },
+      {
+        "experience_id": "exp_7f22623f17124cd28b5425f286128b5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29362864760832974
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27518748690493383
+      },
+      {
+        "experience_id": "exp_d0fc1d21306b43f080cfa5933a207380",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2695040514250978
+      },
+      {
+        "experience_id": "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26140067456426197
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.260130992636828
+      },
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2561301887753571
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_59f7ab252b534dbbaf0f2712e60e2bb7": "任务指令明确要求'help me rewrite the title'（帮我重写标题），这直接触发了经验#8关于‘重写’任务的触发条件。该经验强调评分标准必须包含‘文本重构程度’，即不能仅修正个别词汇，而需对句式结构进行显著重组，这对于评估Etsy标题优化是否真正符合SEO最佳实践（而非简单同义词替换）至关重要。",
+    "exp_abb4bcfc926c427389f0badbdd807c93": "任务指令中明确禁止'don't give any extra information'（不要提供任何额外信息）且要求'Just rewrite the title'（只重写标题），这符合经验#9中关于‘内容极度简短’且‘禁止任何形式化包装’的触发条件。该经验提供的‘无冗余废话’约束是设计评分标准的必要前提，用于确保模型输出严格剔除解释性话语、寒暄或总结，仅保留最终的重写结果。"
+  },
+  "draft": {
+    "rubric_id": "rubric_83b2ccb9e1e145d992fdce42d2b377a2",
+    "criteria": [
+      {
+        "criterion_id": "rubric_83b2ccb9e1e145d992fdce42d2b377a2_1",
+        "question": "输出是否仅包含重写后的产品标题，没有任何额外的解释、引言或总结？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_83b2ccb9e1e145d992fdce42d2b377a2_2",
+        "question": "重写后的标题是否包含了原始标题中的核心实体（Coastal Harbor, Oil Painting Print, Vintage Nautical Ship Decor, Printable, #284）？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_83b2ccb9e1e145d992fdce42d2b377a2_3",
+        "question": "重写后的标题是否符合Etsy SEO最佳实践，将高搜索量关键词置于标题前部且自然流畅？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_83b2ccb9e1e145d992fdce42d2b377a2_4",
+        "question": "重写后的标题是否避免了重复用词并保持了合理的字符长度（通常在140字符以内）？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "该任务要求以Etsy SEO专家的身份，仅输出重写后的产品标题，不附加任何解释或额外信息。核心约束是严格遵循Etsy最佳SEO实践（如关键词前置、长度优化、去重等），同时必须完全基于用户提供的原始标题内容进行改写，保留其核心语义（沿海港口、油画印刷品、复古航海船装饰、可打印、编号#284）。评分标准需重点验证是否仅输出标题、是否包含关键SEO元素、是否未添加多余内容以及是否保留了原始产品的核心属性。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_97e449d3012b48498c24c83ce138f645",
+        "criteria": [
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_1",
+            "question": "输出是否仅包含重写后的产品标题字符串，完全没有任何额外的解释、引言、总结或标记符号？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_2",
+            "question": "重写后的标题是否完整保留了原始输入中的核心语义实体（Coastal Harbor, Oil Painting Print, Vintage Nautical Ship Decor, Printable, #284）及其指代意义？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_3",
+            "question": "重写后的标题是否将最具搜索价值的关键词（如Oil Painting Print, Nautical Ship Decor）置于标题前部，符合Etsy SEO算法对前端权重的偏好？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_4",
+            "question": "重写后的标题是否避免了不必要的词汇重复，且字符长度控制在Etsy推荐的有效范围内（通常不超过140字符）？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本任务要求以Etsy SEO专家身份重写指定产品标题，核心约束是仅输出重写后的标题，严禁包含任何额外解释、引言或总结。评分标准需严格验证：1. 输出格式的纯净度（是否仅有标题）；2. 内容完整性（是否保留原始标题中的关键实体如Coastal Harbor, Oil Painting Print等）；3. SEO优化质量（关键词布局是否符合Etsy最佳实践，即高权重词前置且自然）；4. 格式规范性（字符长度合理且无重复用词）。由于stage为revise，需确保修订后的标准能准确覆盖原draft的意图并修正潜在模糊点，例如明确“核心实体”的定义范围及SEO的具体表现。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_97e449d3012b48498c24c83ce138f645",
+        "normalized_weights": {
+          "rubric_97e449d3012b48498c24c83ce138f645_1": 0.35,
+          "rubric_97e449d3012b48498c24c83ce138f645_2": 0.25,
+          "rubric_97e449d3012b48498c24c83ce138f645_3": 0.25,
+          "rubric_97e449d3012b48498c24c83ce138f645_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答仅包含重写后的标题字符串，没有任何额外的解释、引言、总结或标记符号，完全符合‘只重写标题’的要求。",
+            "rejected_reason": "回答在重写后的标题末尾添加了'Optimized for Etsy SEO'这一额外短语，且使用了双引号包裹整个字符串，违反了“仅包含重写后的产品标题字符串，完全没有任何额外的解释、引言、总结或标记符号”的要求。"
+          },
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "重写后的标题完整保留了原始输入中的核心语义实体：'Vintage Nautical Ship'对应'Vintage Nautical Ship Decor'，'Oil Painting Print'保留，'Coastal Harbor'保留，'Decor'保留，'(Printable)'对应'PRINTABLE'，'#284'也完整保留。",
+            "rejected_reason": "重写后的标题完整保留了原始输入中的核心语义实体：Coastal Harbor、Oil Painting Print、Vintage Nautical Ship Decor、Printable以及编号#284，其指代意义未发生改变。"
+          },
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "虽然将'Vintage Nautical Ship Oil Painting Print'置于开头，但未能将最具搜索价值的单一短语如'Oil Painting Print'或'Nautical Ship Decor'作为最前端的核心词组突出展示（例如以'Oil Painting Print'直接开头），且将'Vintage'前置可能稀释了部分关键词权重，未完全符合Etsy SEO算法对高价值关键词置于绝对前部的最佳实践偏好。",
+            "rejected_reason": "标题将最具搜索价值的关键词组合'Coastal Harbor Oil Painting Print'和'Vintage Nautical Ship Decor'置于开头部分，符合Etsy SEO算法对前端权重的偏好。"
+          },
+          {
+            "criterion_id": "rubric_97e449d3012b48498c24c83ce138f645_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "标题中避免了不必要的词汇重复（如去掉了原句中重复的'Decor PRINTABLE'结构，改为更紧凑的表达），字符长度约为56个字符，远低于Etsy推荐的140字符上限，处于有效范围内。",
+            "rejected_reason": "虽然字符长度在140字符范围内，但标题中出现了不必要的词汇重复（如同时使用Decor和Art），且由于Criterion 1的违规导致整体不符合“避免不必要词汇重复”及纯净输出的要求，特别是加入了非原始内容的营销后缀。"
+          }
+        ],
+        "chosen_score": 0.75,
+        "rejected_score": 0.5,
+        "margin": 0.25,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b9a77e74535840679da1110302a72570",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_1",
+            "question": "输出内容是否严格仅包含重写后的标题，完全没有任何引言、解释、总结或元数据标记？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_2",
+            "question": "重写后的标题是否在保持原意的基础上，对句式结构或表达逻辑进行了显著重构，而非仅进行简单的词汇替换或语序微调？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_3",
+            "question": "重写后的标题是否将高搜索量的核心关键词（如Coastal Harbor, Oil Painting Print, Nautical Ship Decor等）自然置于前部并符合Etsy SEO最佳实践？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_4",
+            "question": "重写后的标题是否去除了不必要的重复用词，保持了语言的流畅性，且长度控制在合理范围内（通常不超过140字符）？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务核心是要求以Etsy SEO专家身份重写指定产品标题，且严格限制输出仅为标题本身，禁止任何额外解释。修订阶段需基于初稿标准进行优化：首先确认‘仅输出标题’的约束必须作为最高优先级核验项；其次，初稿中关于‘保留核心实体’的表述过于机械（如强制包含'#284'），在SEO语境下应调整为验证是否保留了产品的核心语义属性而非死板保留所有字符；同时，需引入经验中的‘改写深度’原则，确保标题并非简单的词序微调，而是真正符合SEO逻辑的重构（如关键词自然前置、去重、流畅度提升）。权重分配上，形式约束（无多余内容）和SEO专业性（关键词布局与质量）应占据主要比例，原始信息完整性次之。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b9a77e74535840679da1110302a72570",
+        "normalized_weights": {
+          "rubric_b9a77e74535840679da1110302a72570_1": 0.35,
+          "rubric_b9a77e74535840679da1110302a72570_2": 0.2,
+          "rubric_b9a77e74535840679da1110302a72570_3": 0.25,
+          "rubric_b9a77e74535840679da1110302a72570_4": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "响应内容仅包含重写后的标题字符串，没有任何引言、解释、总结或元数据标记，完全符合任务要求。",
+            "rejected_reason": "回答中包含引言性词汇'Optimized for Etsy SEO'以及用于包裹内容的引号，这违反了任务中'Don't give any extra information. Just rewrite the title'的严格指令，输出内容并非仅包含重写后的标题。"
+          },
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "重写后的标题虽然调整了部分词汇顺序（如将Vintage移至开头），但整体结构仍为简单的短语拼接，未对句式结构或表达逻辑进行显著重构，更多是语序微调而非深度优化。",
+            "rejected_reason": "重写后的标题结构与原标题高度相似，仅是将斜杠替换为连字符和逗号，并添加了元数据后缀，并未对句式结构或表达逻辑进行显著重构，属于简单的语序微调而非深度优化。"
+          },
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "根据Etsy SEO最佳实践，高搜索量的核心关键词（如Coastal Harbor, Oil Painting Print）应置于标题前部以获取最大权重，但该回答将'Vintage Nautical Ship'置于最前，导致核心词'Coastal Harbor'和'Oil Painting Print'被后置，不符合SEO优先级原则。",
+            "rejected_reason": "核心关键词如'Coastal Harbor Oil Painting Print'确实被置于标题最前部，符合Etsy SEO将高搜索量词前置的最佳实践。"
+          },
+          {
+            "criterion_id": "rubric_b9a77e74535840679da1110302a72570_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "重写后的标题去除了原句中冗余的重复用词（如原标题中重复出现的PRINT/Printable概念整合），语言流畅，且字符长度明显控制在140字符以内。",
+            "rejected_reason": "虽然去除了部分冗余符号，但添加了与SEO无关的营销后缀'Optimized for Etsy SEO'，且保留了不必要的重复概念（Decor与Printable Art），导致语言不够纯粹流畅；同时，若计入额外添加的营销短语，其长度虽在140字符内，但内容质量因包含非标题信息而不达标。"
+          }
+        ],
+        "chosen_score": 0.55,
+        "rejected_score": 0.25,
+        "margin": 0.3,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_abb4bcfc926c427389f0badbdd807c93"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_9beabb59537b4c09a83631dc90c29b00",
+        "criteria": [
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_1",
+            "question": "输出内容是否严格仅包含重写后的标题，完全没有任何引言、解释、总结或元数据？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_2",
+            "question": "重写后的标题是否完整保留了原始输入中的所有核心实体（Coastal Harbor, Oil Painting Print, Vintage Nautical Ship Decor, Printable, #284）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_3",
+            "question": "重写后的标题是否将最具搜索价值的关键词（如Oil Painting Print, Nautical Ship Decor）置于标题前部以提升SEO排名？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_4",
+            "question": "重写后的标题是否消除了不必要的重复词汇并保持了合理的字符长度（符合Etsy通常建议的140字符以内）？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本次任务处于修订阶段，需严格遵循用户‘仅输出重写标题、无额外信息’的强约束。核心交付物为优化后的Etsy产品标题，需保留原始输入中的关键实体（Coastal Harbor, Oil Painting Print等）及编号#284。评分标准设计聚焦于：1. 纯净度检查，确保无任何解释性文字；2. 完整性检查，确认所有原始核心词未被遗漏；3. SEO逻辑检查，验证关键词布局是否符合Etsy最佳实践（高权重词前置）；4. 格式规范性检查，确保无重复用词且长度适宜。原draft中的经验提示了‘去重’和‘无冗余’的重要性，已将其融入标准中作为独立核验项，未引入额外义务。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_9beabb59537b4c09a83631dc90c29b00",
+        "normalized_weights": {
+          "rubric_9beabb59537b4c09a83631dc90c29b00_1": 0.35,
+          "rubric_9beabb59537b4c09a83631dc90c29b00_2": 0.25,
+          "rubric_9beabb59537b4c09a83631dc90c29b00_3": 0.25,
+          "rubric_9beabb59537b4c09a83631dc90c29b00_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "响应仅包含重写后的标题字符串，没有任何引言、解释、总结或元数据。",
+            "rejected_reason": "回答末尾包含了'Optimized for Etsy SEO'这一元数据描述，且整体使用了引号包裹，违反了‘完全没有任何引言、解释、总结或元数据’的严格限制。"
+          },
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "重写后的标题虽然包含了大部分核心实体，但将'Vintage Nautical Ship Decor'改写为'Vintage Nautical Ship Oil Painting Print'，导致原始短语'Decor'与'Ship'之间的连接词顺序变化，且未完整保留原始输入中明确的'Vintage Nautical Ship Decor'这一独立短语结构（虽然语义相近，但严格来说改变了关键词组合方式），更关键的是原始输入中的'#284'被保留，但'Coastal Harbor'的位置后移，且原始输入中的'Oil Painting Print'被拆分重组，未完全按原样保留所有核心实体的完整性。不过最明显的缺失是原始标题中的'Vintage Nautical Ship Decor'作为一个整体概念在重写后被拆解并与其他词混合，未能精确保留所有核心实体的原始形态和完整性。",
+            "rejected_reason": "重写后的标题完整保留了原始输入中的所有核心实体：Coastal Harbor, Oil Painting Print, Vintage Nautical Ship Decor, Printable（以Printable Art形式出现，包含核心词）, 以及#284。"
+          },
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "重写后的标题以'Vintage Nautical Ship Oil Painting Print'开头，成功将高价值关键词'Oil Painting Print'和'Nautical Ship'置于标题前部，符合SEO优化原则。",
+            "rejected_reason": "标题将高搜索价值的关键词组合'Coastal Harbor Oil Painting Print'和'Vintage Nautical Ship Decor'置于了最前部，符合SEO优化策略。"
+          },
+          {
+            "criterion_id": "rubric_9beabb59537b4c09a83631dc90c29b00_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "重写后的标题消除了原始输入中重复的斜杠分隔符和部分冗余词汇，字符长度明显控制在合理范围内（远少于140字符），结构紧凑。",
+            "rejected_reason": "标题去除了原文中不必要的重复符号（如多个斜杠），字符长度控制在合理范围内（约90字符），符合Etsy建议。"
+          }
+        ],
+        "chosen_score": 0.75,
+        "rejected_score": 0.65,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

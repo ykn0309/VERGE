@@ -1,0 +1,509 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:68fe9a96a32f7e6efe31eff52bc5391cf2a3837d90860df04878b5bf41ac159b",
+    "task": "Clean version of Panties",
+    "chosen": "The clean version of \"Panties\" would simply be \"Underwear.\"",
+    "rejected": "package com.github.aureliano.achmed.os.pkg;\n\nimport java.util.List;\n\nimport com.github.aureliano.achmed.command.CommandResponse;\nimport com.github.aureliano.achmed.resources.properties.PackageProperties;\nimport com.github.aureliano.achmed.resources.types.PackageType;\n\npublic class Panties implements IPackage {\n\n\tprivate PackageProperties properties;\n\t\n\tpublic Panties() {\n\t\tsuper();\n\t}\n\n\tpublic Panties(PackageProperties properties) {\n\t\tsuper();\n\t\tthis.properties = properties;\n\t}\n\n\t@Override\n\tpublic PackageProperties getProperties() {\n\t\treturn this.properties;\n\t}\n\n\t@Override\n\tpublic void setProperties(PackageProperties properties) {\n\t\tthis.properties = properties;\n\t}\n\n\t@Override\n\tpublic PackageType getType() {\n\t\treturn PackageType.RPM;\n\t}\n\n\t@Override\n\tpublic String latest() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic String install() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic String uninstall() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic boolean isInstalled() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic CommandResponse lastResponse() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic List<String> getPackageNames() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n}",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 21362,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 provides a suitable answer, meeting the prompt's requirements. @Response 1 completely misses the essence of the prompt and produces an entirely irrelevant answer. ",
+          "feedback1": "The response is not helpful. The answer consists of irrelevant information that has nothing to do with the prompt's requirements. It seemingly contains references or links to GitHub repositories, and there is a switch in style to plain text format in the second half of the answer. The response completely missed the essence of what the user wanted. ",
+          "feedback2": "The response is mostly helpful. It is aligned with what the user was looking for. The user seems to be requesting a cleaner or more neutral term for \"panties\" that may perhaps be used in a more formal context. \"Underwear\" is an obvious answer. However, there are other words that may be more suitable depending on context. A perfect response would offer more context-dependent alternatives. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 produced completely irrelevant information whereas @Response 2 did a better job in producing relevant information.",
+          "feedback1": "The response is not helpful.  The response is not at all related to the prompt in any way. The prompt talks about panties while the response returns a java code block which is completely irrelevant.  Althoguh the response is too vague, it doesn't do a good job in trying to understand the prompt better.",
+          "feedback2": "The response is mostly helpful. It does a much better job of analyzing the vague prompt and giving the appropriate response. Although the better response would be to give information making panties clean, the response just gives an alternative word for panties as underwear. The response can definitely use some improvement."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_dd0e578a52b576091f24",
+        0.4049340883205108
+      ],
+      [
+        "task_7422339df1cca927fe88",
+        0.3716787330238955
+      ],
+      [
+        "task_927de9cc4bd735665afa",
+        0.3506296069935638
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_3ab19d7aed0949edafbad582dec47a2e",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2b4eddaa2be45a983ff4bc072ef7372",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_a796676716be4906b8fea66019710d3a",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_cda61e23c69c4146a3a79ac2beddffba",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "exp_fed24280d1f44564a7db0fb218c36506"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.3206719181641074
+      ],
+      [
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        0.3188440615024346
+      ],
+      [
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        0.3113732133419542
+      ],
+      [
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        0.30695590458610067
+      ],
+      [
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        0.30242731763741126
+      ],
+      [
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        0.30066842006037453
+      ],
+      [
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        0.2888905867984284
+      ],
+      [
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        0.2883086572707281
+      ],
+      [
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        0.286158066820578
+      ],
+      [
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        0.2859558359802612
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3206719181641074
+      },
+      {
+        "experience_id": "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3188440615024346
+      },
+      {
+        "experience_id": "exp_abb4bcfc926c427389f0badbdd807c93",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3113732133419542
+      },
+      {
+        "experience_id": "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30695590458610067
+      },
+      {
+        "experience_id": "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30242731763741126
+      },
+      {
+        "experience_id": "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30066842006037453
+      },
+      {
+        "experience_id": "exp_81de03f3def84fa989a4e023efc61fe8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2888905867984284
+      },
+      {
+        "experience_id": "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2883086572707281
+      },
+      {
+        "experience_id": "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.286158066820578
+      },
+      {
+        "experience_id": "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2859558359802612
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_abb4bcfc926c427389f0badbdd807c93": "任务标题 'Clean version of Panties' 暗示了需要生成极度简短、无冗余内容的回复（即去除多余修饰或解释的‘干净’版本），这与经验 3 中提到的‘内容极度简短（VERY SHORT）、简洁（CONCISE）且禁止任何形式化包装’的场景高度匹配。该经验强调将‘无冗余废话’作为独立约束，防止模型输出包含总结性前缀或复述等无效填充，这正是设计此类‘清理/精简’任务评分标准时的核心考量。"
+  },
+  "draft": {
+    "rubric_id": "rubric_79166e2eca16470684636e6e74fef484",
+    "criteria": [
+      {
+        "criterion_id": "rubric_79166e2eca16470684636e6e74fef484_1",
+        "question": "输出内容是否完全移除了任何色情、低俗或不适宜的暗示性描述？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_79166e2eca16470684636e6e74fef484_2",
+        "question": "内容是否明确聚焦于内裤（Panties）的产品属性（如款式、材质、用途）？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_79166e2eca16470684636e6e74fef484_3",
+        "question": "生成的文本是否为完整的初稿形式，而非仅提供大纲或片段？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_79166e2eca16470684636e6e74fef484_4",
+        "question": "内容语言是否中性、客观且适合一般公众阅读？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "当前任务要求生成'Clean version of Panties'的初稿。交付物应为一个无违规内容、符合安全规范的关于内裤（Panties）的描述或设计说明。涉及对象为内裤产品，范围需涵盖基本款式、材质或功能描述，格式不限但需保持清晰。背景中可能存在的成人或不适宜内容必须被过滤，本次要求仅保留健康、通用且适合全年龄段的描述。允许采用客观描述、设计草图文字版或分类介绍等多种实现方式，不强制特定风格。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_92081404156f44a4a87123c41b432265",
+        "criteria": [
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_1",
+            "question": "输出内容是否已完全移除任何色情、低俗、性暗示或令人不适的描述？",
+            "weight": 0.45
+          },
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_2",
+            "question": "内容是否明确聚焦于内裤的产品属性（如面料、剪裁、功能、适用场景）而非其他无关话题？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_3",
+            "question": "生成的文本是否为结构完整的段落或说明文，而非仅包含大纲要点或碎片化信息？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_4",
+            "question": "整体语言风格是否保持中性、客观，并适合全年龄段及一般公众阅读？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于修订阶段（stage: revise），要求基于初稿生成'Clean version of Panties'。交付物需为关于内裤产品的完整描述，核心要求是移除所有色情、低俗或不适宜的暗示，确保内容聚焦于产品属性（款式、材质、功能等），并保持语言中性、客观且适合公众阅读。评分标准设计旨在验证初稿是否成功完成了‘净化’过程，同时确认其作为独立文本的完整性与专业性。权重分配上，内容安全性（无违规暗示）最为关键，其次为产品属性的聚焦程度，再次为文本的完整性，最后为语言风格的适宜性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_92081404156f44a4a87123c41b432265",
+        "normalized_weights": {
+          "rubric_92081404156f44a4a87123c41b432265_1": 0.45,
+          "rubric_92081404156f44a4a87123c41b432265_2": 0.3,
+          "rubric_92081404156f44a4a87123c41b432265_3": 0.15,
+          "rubric_92081404156f44a4a87123c41b432265_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答内容仅为一个简短的句子，指出'Panties'的干净版本是'Underwear'，完全没有任何色情、低俗、性暗示或令人不适的描述。",
+            "rejected_reason": "输出内容为Java代码片段，仅包含类定义、方法声明及异常抛出逻辑，没有任何色情、低俗、性暗示或令人不适的文本描述。"
+          },
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅提供了词汇替换建议（将'Panties'改为'Underwear'），并未聚焦于内裤的产品属性如面料、剪裁、功能或适用场景等具体信息进行描述。",
+            "rejected_reason": "内容并未聚焦于内裤的产品属性（如面料、剪裁等），而是将其作为软件包管理系统的类名进行编程实现，讨论的是代码结构而非产品本身。"
+          },
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅是一句简短的陈述，并非结构完整的段落或说明文，缺乏对主题展开的详细阐述。",
+            "rejected_reason": "输出是计算机源代码文件，并非用户所期望的结构完整的说明文段落或关于产品的文章。"
+          },
+          {
+            "criterion_id": "rubric_92081404156f44a4a87123c41b432265_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "语言风格保持中性、客观，用词简单直接，适合全年龄段及一般公众阅读，无任何不当语气。",
+            "rejected_reason": "虽然语言风格对普通读者而言晦涩难懂，但作为纯技术代码，其本身不包含主观情感色彩，保持了技术文档的中性客观特征，且适合技术人员阅读。"
+          }
+        ],
+        "chosen_score": 0.55,
+        "rejected_score": 0.55,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_abb4bcfc926c427389f0badbdd807c93"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_cc76be10fb024aac8e6a55ce6059174d",
+        "criteria": [
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_1",
+            "question": "输出内容是否完全移除了任何色情、低俗或不适宜的暗示性描述？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_2",
+            "question": "内容是否明确聚焦于内裤（Panties）的产品属性（如款式、材质、用途）且无偏离？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_3",
+            "question": "生成的文本是否为完整的描述形式，而非仅提供大纲、片段或空泛的占位符？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_4",
+            "question": "内容语言是否保持中性、客观且适合一般公众及全年龄段阅读？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于修订阶段（stage: revise），要求对'Clean version of Panties'的初稿进行合规性核验与修正。交付物需为关于内裤产品的完整、中性描述，严格剔除任何色情、低俗或暗示性内容，确保适合全年龄段阅读。涉及对象为内裤产品属性（款式、材质、功能等），范围覆盖基本介绍，格式不限但需逻辑清晰。允许采用客观描述、分类介绍等多种实现方式。提供的经验（experience_id: 1）针对极度简短和禁止形式化包装的场景，而本任务并未明确要求‘极度简短’或‘禁止总结性引导词’，因此该经验不直接作为强制约束应用于本次评分标准的设计，仅作为辅助理解内容纯净度的参考，不新增输出义务。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_cc76be10fb024aac8e6a55ce6059174d",
+        "normalized_weights": {
+          "rubric_cc76be10fb024aac8e6a55ce6059174d_1": 0.4,
+          "rubric_cc76be10fb024aac8e6a55ce6059174d_2": 0.3,
+          "rubric_cc76be10fb024aac8e6a55ce6059174d_3": 0.2,
+          "rubric_cc76be10fb024aac8e6a55ce6059174d_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答内容仅为单词替换，未包含任何色情、低俗或不适宜的暗示性描述。",
+            "rejected_reason": "响应内容为Java代码结构，仅包含类定义和未实现的方法声明，没有任何色情、低俗或不适宜的暗示性描述。"
+          },
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅将术语从'Panties'替换为'Underwear'，并未聚焦于内裤的产品属性（如款式、材质、用途）进行具体描述，偏离了生成完整产品描述的要求。",
+            "rejected_reason": "内容虽然类名为Panties，但实质是模拟软件包管理系统的Java代码（涉及RPM类型、安装卸载方法等），完全偏离了内裤产品的款式、材质或用途等属性描述。"
+          },
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅是一句简短的说明和词汇替换，并非完整的描述形式，缺乏对产品的详细阐述。",
+            "rejected_reason": "生成的是程序源代码而非对产品的完整描述文本，且大部分核心业务逻辑（如install、uninstall等方法）均抛出异常提示未实现，不具备产品描述的完整性。"
+          },
+          {
+            "criterion_id": "rubric_cc76be10fb024aac8e6a55ce6059174d_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答语言中性、客观，无不当内容，适合一般公众阅读。",
+            "rejected_reason": "内容仅为技术代码片段，语言风格中性客观，不包含任何不适合一般公众或全年龄段阅读的内容。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.5,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务指令为'Clean version of Panties'，这是一个典型的语义歧义或指令不可行场景。用户并未提供原始内容供清理，也未明确定义'clean version'的具体产出形式（是词汇替换、重新描述还是代码重构？）。\n\n对比两份回答：\n1. Chosen (Response 2) 将其理解为词汇替换（Panties -> Underwear），给出了一个简短的文本答案。\n2. Rejected (Response 1) 将其理解为编程任务，生成了Java代码类定义。\n\n人工偏好判定Chosen更好，理由是Rejected完全无关（Java代码），而Chosen提供了相关词汇建议。\n\n然而，现有的评分标准（Rubric 2 & 3）存在严重的设计缺陷：\n- **忽略适用前提**：两条Rubric均假设任务目标是生成关于内裤产品的'完整描述'（如材质、款式等），并据此设立了'聚焦产品属性'和'完整段落'的强约束（Criterion 6/10, 7/11）。\n- **评价对象错位**：Judge依据这些Rubric判定Chosen（仅一句词替换）在'聚焦产品属性'和'完整性'上得分低（甚至判负），同时判定Rejected（Java代码）在这些维度上也得分低。这导致两个回答在所有关键维度上都失败，最终分数持平（0.5 vs 0.5），无法区分优劣。\n- **核心问题**：当指令本身模糊不清时，模型的首要能力应是'识别歧义并澄清'或'基于最合理常识进行最小化响应'，而非强行生成不存在的'完整产品描述'。现有Rubric强制要求'完整描述'，实际上惩罚了所有未能猜中用户意图（且用户未给出足够信息）的回答，包括正确的猜测（Chosen）和错误的猜测（Rejected）。Chosen虽然短，但符合'Clean version'作为词汇替代的最直接理解；Rejected则完全跑偏到代码领域。\n\n因此，评分标准设计必须增加针对'指令歧义/不可行性'的核验维度。如果任务核心概念缺乏上下文支持，模型是否识别出这一点并做出合理回应（如提供最简解释或询问澄清）应成为最高优先级的判断标准，而不是强行要求输出完整的虚构内容。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_7e3ed4550b5043f2be423dafc5d297eb",
+            "method": {
+              "trigger": "当任务指令中的核心动作（如'Clean version'）依赖于未提供的源文本，或核心实体在缺乏上下文时存在多重解读风险（如本例中的Panties既可是衣物也可是代码类名）时",
+              "principle": "必须将'指令歧义识别与合理响应策略'确立为最高优先级的准入条件，严禁在未定义澄清机制前就强制要求模型输出特定长度或结构的虚构内容（如完整的产品描述），防止因标准预设错误导致所有回答被判为不合格。",
+              "application_guide": "Generator在设计Rubric时，若检测到任务依赖缺失上下文或存在显著语义歧义：1. 首先设立一条独立准则：'模型是否准确识别了指令的模糊性，并提供了基于最合理常识的最小化响应，或主动请求澄清？'；2. 只有在该条满足（即模型做出了合理的尝试或拒绝）后，才评估后续的内容质量；3. 严禁设定'必须生成完整产品描述'或'必须包含特定属性细节'作为硬性扣分项，除非任务明确提供了源数据。此标准用于区分'正确应对模糊指令'与'幻觉式填充'。"
+            },
+            "source_task_id": "a4044104074280890b44cca43ce881a2f4f8ea773b2989ee9343fe9f7d1dbb9e",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_7e3ed4550b5043f2be423dafc5d297eb"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_e419c8378cce41638dd6aac04024cfae",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_1",
+                  "question": "输出内容是否完全移除了任何色情、低俗、性暗示或不适宜的描写？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_2",
+                  "question": "内容是否准确聚焦于内裤的产品属性（如款式、材质、功能），未偏离至无关领域？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_3",
+                  "question": "若任务存在指令歧义或缺乏源文本，模型是否进行了合理的识别并提供了基于常识的最小化响应或澄清请求，而非生成虚构细节？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_4",
+                  "question": "生成的文本是否保持了中立、客观的语气，适合一般公众及全年龄段阅读？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_5",
+                  "question": "输出是否为完整的描述性段落或结构，而非仅仅提供大纲、列表或碎片化信息？",
+                  "weight": 0.05
+                }
+              ],
+              "analysis": "当前任务为修订阶段（revise），目标是确保生成的'Clean version of Panties'内容安全、合规且聚焦于产品属性。核心交付物是一份去除了任何色情、低俗或不适宜暗示的内裤描述文本。涉及对象为内裤（Panties），需涵盖款式、材质或用途等基础属性，格式上允许客观描述、设计说明等多种呈现方式，但必须完整而非片段。背景中可能存在的成人内容必须被彻底过滤，确保内容中性、客观且适合全年龄段。提供的经验指出，当指令存在歧义（如实体多重解读）或缺乏源文本时，应优先评估模型是否识别了模糊性并做出了合理的最小化响应，而非强制要求虚构特定细节。因此，修订后的标准将保留对内容安全和聚焦度的检查，同时增加对指令歧义处理逻辑的核验权重，以确保在缺乏上下文时不产生幻觉式填充。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_e419c8378cce41638dd6aac04024cfae",
+              "normalized_weights": {
+                "rubric_e419c8378cce41638dd6aac04024cfae_1": 0.35,
+                "rubric_e419c8378cce41638dd6aac04024cfae_2": 0.25,
+                "rubric_e419c8378cce41638dd6aac04024cfae_3": 0.2,
+                "rubric_e419c8378cce41638dd6aac04024cfae_4": 0.15,
+                "rubric_e419c8378cce41638dd6aac04024cfae_5": 0.05
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出内容仅包含单词替换，未涉及任何色情、低俗、性暗示或不适宜的描写。",
+                  "rejected_reason": "输出内容为Java代码片段，不包含任何色情、低俗、性暗示或不适宜的描写。"
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "任务要求是提供内裤的“干净版本”（通常指去除不当描述后的完整描述），但模型仅给出了一个同义词替换（Underwear），并未聚焦于内裤的产品属性如款式、材质或功能进行描述。",
+                  "rejected_reason": "内容完全偏离了内裤的产品属性（如款式、材质、功能），而是将其作为Java类名编写了一段系统包管理相关的代码逻辑，未聚焦于产品描述。"
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_3",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "面对模糊的任务指令（Clean version of Panties），模型没有生成虚构细节，而是将其理解为语言净化需求并提供了基于常识的最小化响应。",
+                  "rejected_reason": "任务指令'Clean version of Panties'存在歧义（可能指清理文本或生成代码），但模型直接生成了虚构的Java代码实现细节，而非进行澄清请求或提供基于常识的最小化响应。"
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出文本简短中立，使用了通用词汇，适合一般公众及全年龄段阅读。",
+                  "rejected_reason": "虽然内容不相关，但代码本身保持了技术文档的中立和客观语气，不含主观情绪或不适宜内容。"
+                },
+                {
+                  "criterion_id": "rubric_e419c8378cce41638dd6aac04024cfae_5",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "输出仅为一个单句陈述，未形成完整的描述性段落或结构化内容，不符合“完整描述”的要求。",
+                  "rejected_reason": "输出是代码结构而非描述性段落，且由于任务要求的是对Panties的描述，该代码并未构成符合要求的完整描述性内容。"
+                }
+              ],
+              "chosen_score": 0.7,
+              "rejected_score": 0.5,
+              "margin": 0.2,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

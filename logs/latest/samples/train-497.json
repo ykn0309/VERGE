@@ -1,0 +1,401 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:f8519b8edc46fbe8e034646ae28b9b03e1224443fd548867a006c9d9acb7fd21",
+    "task": "Match the vocabulary with the correct definition and write a–f next to the numbers 1–6. \n1…….. to stem from                                               a. to weaken\n2…….. to master something                               b. to depend on\n3…….. to witness something                              c. to learn to do something well\n4…….. to wither                                                        d. to start or develop from\n5…….. to reinforce something                            e. to see something happen\n6…….. to rely on                                                        f. to give strength or support to something\n",
+    "chosen": "1…….. d. to start or develop from\n2…….. c. to learn to do something well\n3…….. e. to see something happen\n4…….. a. to weaken\n5…….. f. to give strength or support to something\n6…….. b. to depend on",
+    "rejected": "1. f. to give strength or support to something\n2. c. to learn to do something well\n3. e. to see something happen\n4. a. to weaken\n5. f. to give strength or support to something\n6. b. to depend on\n\nThe correct matches are:\n1. d. to start or develop from -> 5. f. to give strength or support to something\n2. c. to learn to do something well -> 2. c. to learn to do something well\n3. e. to see something happen -> 3. e. to see something happen\n4. a. to weaken -> 4. a. to weaken\n5. f. to give strength or support to something -> 1. f. to give strength or support to something\n6. b. to depend on -> 6. b. to depend on",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 10223,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it does not contain incorrect information. @Response 2 has correct information and follows the user's request.",
+          "feedback1": "The response is slightly helpful. The formatting of this model may be hard to navigate. Also, the prompt requested the model to match the vocabulary with the correct definition, however, this response failed to do so with all of the vocabulary. For example, it matched number 1 with f, which is incorrect. ",
+          "feedback2": "The response is mostly helpful. The response matched the vocabulary to the correct definition as the user requested. It is simple and easy to follow. Although this model is good, there is still room for improvement. For example, the prompt requested writing the letters a-f next to the numbers 1-6; the user may prefer the numbers and letters to have no spacing in between. Also, maybe a phrase before giving the answers."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 due to having correct answers as well as more efficient formatting.",
+          "feedback1": "The response is partially helpful. 'To stem from' should be matched with 'to start or develop from', rather than 'to give strength or support to something'. The assistant's response includes two matches to 'f', with no matches to 'd'. This means that its answer was incorrect. Furthermore, the format used in the 'correct matches' section was not efficient, and simply repeated the same information from the first section. Since most of the answers were correct, the response was still marked as partially helpful.",
+          "feedback2": "The response is perfectly helpful. It is possible that adding the definitions alongside the letters was unnecessary; however, it helps with readability. Furthermore, the vocabulary has been verified to match the correct definitions. Since the user asks for a straightforward prompt of the vocabulary alongside the matches, which the assistant correctly does, the response is perfectly helpful."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it answers the prompt's request correctly except that the exact format was unclear. @Response 1 is incorrect and has other errors such as not following the specific requests, like the format. It also has incorrect information, is too long and confusing.",
+          "feedback1": "The response is slightly helpful. The prompt asks for a request in a specific format and although the response tries to complete this task, it fails to do so in the correct format, making it slightly helpful. The response not only has incorrect formatting, failing to complete a specific request, but also has repetition, incorrect details, and missing details.",
+          "feedback2": "The response is mostly helpful. The prompt asks for a specific format, and the response answers in a format that could be the format the prompt requested. The prompt was somewhat unclear about what exactly it meant by the format it requested, and the response did not address this issue. Thus, the format could be incorrect. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_c31fa181caf8a1f04c7e",
+        0.36018047212357734
+      ],
+      [
+        "task_0a629c05a9726352d0f0",
+        0.3374856202095802
+      ],
+      [
+        "task_51a8e52e841c7f78aa49",
+        0.30312885393689604
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_01af1e4d07534a9a9ef74a191301a91a",
+        "exp_02847145bff24237a60527dde38d35b5",
+        "exp_12f1ddfe9bf54f57af3cc5bc37f7067d",
+        "exp_17e2421ce6b948a8bbd28b8e812a744e",
+        "exp_23270a99f4464e2fb928cd02f328fd67",
+        "exp_27b04c337ad74d3eab162fc09fce87a1",
+        "exp_2c9672d67ce74d0f862f6c5b834e846d",
+        "exp_340739c0de45423b8cc2fbbca1c04749",
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        "exp_3896dc1be1064d1baa083a6260d514cb",
+        "exp_3ab19d7aed0949edafbad582dec47a2e",
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "exp_43a7842b25cd451ead590771723e4380",
+        "exp_443cf2a5a08b470f99e171601c09aae5",
+        "exp_51e356ac5a03423dba86ca6f25d5e964",
+        "exp_56f11c2367dd495691aaf2f75d8bf730",
+        "exp_57267ae0a3cd46fd9db43f60425c6e7f",
+        "exp_59f7ab252b534dbbaf0f2712e60e2bb7",
+        "exp_6146745a8c1e457ab7122dfa3fc770a0",
+        "exp_65eb4d0281424d54b48ecd4c6c12dee5",
+        "exp_680d81c5307944f6971de3c6d1e54cb4",
+        "exp_6b920cdd8b24474a926f1f2d9c7a1902",
+        "exp_6d6915ad80ab4039b6783132704450cd",
+        "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+        "exp_6febdf13e5b64e6b8acfe047a64adecc",
+        "exp_7169af6acd214b8487746602dea442b7",
+        "exp_71a63834f56d46d884d0ecf1d6628617",
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        "exp_7e9bf2539f164db6878f6aca4eaccc76",
+        "exp_7f22623f17124cd28b5425f286128b5d",
+        "exp_7f9bdc4ea69d4edd806dc3088e7ada59",
+        "exp_81de03f3def84fa989a4e023efc61fe8",
+        "exp_8371d9b8d45e4476bbd55e6b48be4366",
+        "exp_9b24989a45c941c3935511cd6875d167",
+        "exp_9d735c122e2a447b871a912b0dc12db3",
+        "exp_a2b4eddaa2be45a983ff4bc072ef7372",
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "exp_a49651395fbe467ca6846e0ba0ae6102",
+        "exp_a774c61efbeb42dca7f6dee505d819cc",
+        "exp_a796676716be4906b8fea66019710d3a",
+        "exp_ab2b6f008d634a5783c22b59c40be32e",
+        "exp_abb4bcfc926c427389f0badbdd807c93",
+        "exp_abccafbecc074a698e4be28fa4be72fc",
+        "exp_b30649747ad94e468f6c89a125c9e74e",
+        "exp_b437dfe96ffe48cb87478fa70685773b",
+        "exp_b56eb898fce54adcafbac3703e2edfeb",
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "exp_bc9fa8c45df047d3a91b84e9d8a305df",
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "exp_bfd24194914d48acb85fdc12af8a2a49",
+        "exp_c1fa93dce2d8499896885fd0fcedda27",
+        "exp_c96c04d5bf8d4648966881eb9481ddbe",
+        "exp_cda61e23c69c4146a3a79ac2beddffba",
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "exp_d0dd491aca2c4debb79bfeb5804a6946",
+        "exp_d0fc1d21306b43f080cfa5933a207380",
+        "exp_d29ec9815c364e4fbbfd441e43961c27",
+        "exp_d514e467bac945048ab9ca330888fcbf",
+        "exp_d54ea2cf23294dfda802dbfb6af0c4de",
+        "exp_dddd918fa0f446e7a44d7a0e99cb6f8e",
+        "exp_dfc1d73a5d46404e9edd43264476c9b9",
+        "exp_dfc9620462b24ca58ea8ac58889e6d5d",
+        "exp_e37095358e1745d097f85791b39c38db",
+        "exp_f3d7e61e1d0549f5ac66a490fdbe9a60",
+        "exp_fc9933aed16b4f68a0bb0420ee4e3a9b",
+        "exp_fed24280d1f44564a7db0fb218c36506"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_361ecafec8d9458097e223b1c718c0b0",
+        0.3826513948590696
+      ],
+      [
+        "exp_7558a2904e4c4e10a946e796a684056b",
+        0.36906421224923663
+      ],
+      [
+        "exp_b684fc8608b546fea6376d06fdffa6e9",
+        0.3580956929882142
+      ],
+      [
+        "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+        0.3189242933599433
+      ],
+      [
+        "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        0.3180010802518055
+      ],
+      [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        0.31169650241698876
+      ],
+      [
+        "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        0.30521832718507713
+      ],
+      [
+        "exp_dfc1d73a5d46404e9edd43264476c9b9",
+        0.3034770134757885
+      ],
+      [
+        "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        0.30344465176121194
+      ],
+      [
+        "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        0.30256031446370885
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_361ecafec8d9458097e223b1c718c0b0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3826513948590696
+      },
+      {
+        "experience_id": "exp_7558a2904e4c4e10a946e796a684056b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.36906421224923663
+      },
+      {
+        "experience_id": "exp_b684fc8608b546fea6376d06fdffa6e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3580956929882142
+      },
+      {
+        "experience_id": "exp_6ea47a7d89b944d1858ddb8c141d3bf4",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3189242933599433
+      },
+      {
+        "experience_id": "exp_7e3ed4550b5043f2be423dafc5d297eb",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3180010802518055
+      },
+      {
+        "experience_id": "exp_42f447cc2b9b4e5cacc74fa49f616aa9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31169650241698876
+      },
+      {
+        "experience_id": "exp_bf3c79aca86f496998ab6c70b7b3ba01",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30521832718507713
+      },
+      {
+        "experience_id": "exp_dfc1d73a5d46404e9edd43264476c9b9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3034770134757885
+      },
+      {
+        "experience_id": "exp_a2e1bf0002214e9aa60ac78d3a60fc4d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30344465176121194
+      },
+      {
+        "experience_id": "exp_cfdc8659ba1549d79cad41f0d5bc7307",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30256031446370885
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_42f447cc2b9b4e5cacc74fa49f616aa9": "任务明确要求将特定的词汇（如 'to stem from'）与定义进行匹配，这属于针对特定核心实体（词汇项）的精确对应要求。经验 6 强调必须将‘核心实体/主题的严格一致性’作为最高优先级核验维度，即模型回答的主体对象（词汇及其对应定义）必须严格符合任务指定的列表，若出现张冠李戴（如将 'stem from' 的定义配给了 'wither'），无论其他部分多正确都应判定不合格，这与本题一一对应的匹配逻辑完全契合。"
+  },
+  "draft": {
+    "rubric_id": "rubric_789220aa90b045fc8d9113a2585d700f",
+    "criteria": [
+      {
+        "criterion_id": "rubric_789220aa90b045fc8d9113a2585d700f_1",
+        "question": "是否完成了全部6个词汇与定义的配对？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_789220aa90b045fc8d9113a2585d700f_2",
+        "question": "词汇'stem from'是否正确匹配为'd. to start or develop from'？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_789220aa90b045fc8d9113a2585d700f_3",
+        "question": "词汇'master something'是否正确匹配为'c. to learn to do something well'？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_789220aa90b045fc8d9113a2585d700f_4",
+        "question": "词汇'witness something'是否正确匹配为'e. to see something happen'？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_789220aa90b045fc8d9113a2585d700f_5",
+        "question": "词汇'wither'是否正确匹配为'a. to weaken'？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_789220aa90b045fc8d9113a2585d700f_6",
+        "question": "词汇'reinforce something'和'rely on'是否分别正确匹配为'f. to give strength or support to something'和'b. to depend on'？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "任务要求将6个动词短语（1-6）与其对应的英文定义（a-f）进行匹配，并按指定格式输出字母。需核验：1. 所有6对词汇是否全部完成匹配；2. 每个定义的语义是否与对应词汇准确一致；3. 输出格式是否符合'数字后接字母'的规范；4. 是否存在重复或遗漏的字母使用。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c",
+        "criteria": [
+          {
+            "criterion_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c_1",
+            "question": "是否所有6个词汇（1-6）均完成了与定义（a-f）的一一对应配对？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c_2",
+            "question": "每个词汇与其匹配的字母所代表的定义是否在语义上准确一致？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c_3",
+            "question": "输出格式是否严格符合'数字后接单个字母'（如1d, 2c）的规范？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求将6个动词短语（1-6）与其对应的英文定义（a-f）进行准确匹配，并按'数字后接字母'的格式输出。修订后的标准需确保：1. 所有6对词汇与定义的对应关系在语义上完全正确；2. 输出严格遵循指定格式（如'1d', '2c'等），无多余字符或格式错误；3. 每个定义字母仅被使用一次，无重复或遗漏。原draft中部分问题过于具体且权重分配不均，新标准将合并具体词汇核验为整体语义准确性检查，并强化格式与唯一性约束。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c",
+        "normalized_weights": {
+          "rubric_50d3f1d21fc44ff78ea53f607336e53c_1": 0.4,
+          "rubric_50d3f1d21fc44ff78ea53f607336e53c_2": 0.4,
+          "rubric_50d3f1d21fc44ff78ea53f607336e53c_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中包含了编号1至6的所有词汇，且每个词汇都配对了一个唯一的字母（d, c, e, a, f, b），完成了全部6个一一对应配对。",
+            "rejected_reason": "回答中词汇与定义的配对存在重复和缺失。编号1和编号5都匹配了定义f，而编号2的正确答案（to master something）对应的定义c在初始列表中虽被提及，但逻辑上编号2应匹配c，然而后续解释部分出现了混乱的对应关系，且整体未形成清晰的一一对应（例如编号2在开头列表写的是c，但后面解释部分又出现'2. c...'这种冗余表述，且编号1和5重复使用f导致6个词汇无法一一对应6个唯一选项）。更严重的是，编号1（stem from）实际应匹配d，但回答中编号1匹配了f，编号5（reinforce）匹配了f，导致定义d未被正确分配给编号1，定义a、b、e、c的分配也存在逻辑错误。"
+          },
+          {
+            "criterion_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "所有语义匹配均准确：stem from对应start or develop from (d)，master对应learn to do something well (c)，witness对应see something happen (e)，wither对应weaken (a)，reinforce对应give strength or support (f)，rely on对应depend on (b)。",
+            "rejected_reason": "多个匹配在语义上不准确。具体而言：1号词'stem from'意为'起源于'，正确匹配应为'd'（to start or develop from），但回答中将其匹配为'f'（to give strength...），这是错误的；5号词'reinforce'意为'加强'，正确匹配应为'f'，回答中虽然匹配了f，但1号词的匹配错误导致整体语义不一致；此外，回答中编号2匹配c（to learn to do something well）是正确的，但编号1的错误直接违反了语义准确一致的要求。"
+          },
+          {
+            "criterion_id": "rubric_50d3f1d21fc44ff78ea53f607336e53c_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出格式不符合'数字后接单个字母'的严格规范。回答中使用了'1…….. d.'的格式，包含省略号、空格和点号等多余字符，而非如'1d'或'1. d'那样的简洁紧凑形式。",
+            "rejected_reason": "输出格式不符合'数字后接单个字母'的规范。回答使用了'1. f.'、'2. c.'等带句点和空格的格式，而非要求的'1f'或类似紧凑形式。此外，回答还包含了额外的解释性文本（如'The correct matches are:...'及其后的复杂映射描述），完全超出了简单的配对输出格式要求。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 0.0,
+        "margin": 0.8,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_42f447cc2b9b4e5cacc74fa49f616aa9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a_1",
+            "question": "是否完成了全部6个词汇与定义的配对，且无遗漏？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a_2",
+            "question": "词汇'stem from'、'master something'、'witness something'、'wither'、'reinforce something'和'rely on'是否分别准确匹配为'd'、'c'、'e'、'a'、'f'和'b'？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a_3",
+            "question": "输出格式是否严格遵循'数字后接字母'（如 1..d, 2..c）的规范，且未包含多余的说明文字？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务要求将6个指定的动词短语（1-6）与6个英文定义（a-f）进行准确匹配，并按'数字后接字母'的格式输出。核验重点在于：1. 所有6组配对是否完整且无遗漏；2. 每个词汇与其对应定义的语义逻辑是否严格一致；3. 输出是否严格遵循了'数字...字母'的指定格式；4. 是否存在字母重复使用或跳号等逻辑错误。修订后的标准保留了初稿中关于核心词汇匹配的准确性检查，但优化了权重分配，将'全部完成配对'作为基础门槛赋予较高权重，并合并了对剩余词汇对的检查以提高效率，同时明确纳入了格式和唯一性约束。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a",
+        "normalized_weights": {
+          "rubric_a494b72bc02e4a2999cfd126b5c86c0a_1": 0.35,
+          "rubric_a494b72bc02e4a2999cfd126b5c86c0a_2": 0.5,
+          "rubric_a494b72bc02e4a2999cfd126b5c86c0a_3": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中包含了从1到6的全部六个词汇与定义的配对，没有遗漏任何一项。",
+            "rejected_reason": "回答中列出了1至6的完整配对，没有遗漏任何一项词汇与定义的匹配。"
+          },
+          {
+            "criterion_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中的匹配结果完全正确：'stem from'对应'd'，'master something'对应'c'，'witness something'对应'e'，'wither'对应'a'，'reinforce something'对应'f'，'rely on'对应'b'，与评分标准要求的映射一致。",
+            "rejected_reason": "第1题将'stem from'错误匹配为'f'（实际应为'd'），第5题将'reinforce something'错误匹配为'f'（实际应为'f'但位置错乱，且重复使用了选项f，导致逻辑混乱）。具体而言：1..stem from..应配d，回答给的是f；5..reinforce something..应配f，但回答在第1行和第5行都用了f，且第1行的定义描述错误对应了reinforce而非stem from的定义。正确匹配应为：1-d, 2-c, 3-e, 4-a, 5-f, 6-b。回答中的前六行显示：1-f(错), 2-c(对), 3-e(对), 4-a(对), 5-f(错，因1已占f且定义错位), 6-b(对)。实际上1和5的匹配均错误。"
+          },
+          {
+            "criterion_id": "rubric_a494b72bc02e4a2999cfd126b5c86c0a_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出格式未严格遵循‘数字后接字母’的规范。虽然包含了正确的数字和字母，但保留了原题中的省略号（……..）以及定义文本本身（如 'to start or develop from'），而评分标准要求仅包含数字和字母且无多余说明文字。",
+            "rejected_reason": "回答包含了大量多余的说明文字，如'The correct matches are:'以及后续的箭头对照列表，违反了‘未包含多余的说明文字’的要求，且格式并非严格遵循简单的‘数字后接字母’规范（如 1..d）。"
+          }
+        ],
+        "chosen_score": 0.85,
+        "rejected_score": 0.35,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

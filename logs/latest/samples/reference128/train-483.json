@@ -1,0 +1,572 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:d5033b9b5f747e3cbf892e58c13b344a714cc17b3809e3eab931ae46c77b6ad0",
+    "task": "when a genius teen snaps, what does this sentence mean",
+    "chosen": "The phrase \"when a genius teen snaps\" is a figurative expression that suggests a sudden change in behavior or mental state of a highly intelligent teenager, often due to stress, pressure, or overwhelming circumstances. The term \"snaps\" is used metaphorically to describe a breaking point, where the individual may exhibit uncharacteristic emotions or actions. However, without additional context, it's hard to provide a more specific interpretation.",
+    "rejected": "This sentence is grammatically incorrect and does not make sense. It is likely that the author meant to say \"when a genius teenager snaps\" or \"when a genius teen snaps\".",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9963,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It gives a clear definition of the phrase as required by the prompt, whereas @Response 1 tells the user their prompt does not make sense. ",
+          "feedback1": "The response is not helpful. It completely misses the essence of the prompt. Although \"when a genius teen snaps\" is not a complete sentence, the model could have provided that bit of information in the beginning of the response and then gone on to describe what the phrase meant. Instead, it gives an incomprehensible explanation about what the author likely meant by repeating the same phrase again and then changing \"teen\" to \"teenager,\" but never answering the question.",
+          "feedback2": "The response is perfectly helpful. The answer perfectly aligns with the prompt. There are no missing details. The model corrects the user's use of the word \"sentence\" by replacing it with \"phrase\" in the opening sentence of the response. Then, it goes on to describe \"genius\" as \"highly intelligent\", and \"snaps\" as a \"change in mental state due to stress or other circumstances.\" The language is explanatory and clarifying."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. This is because it provides superior explanations of the phrase given in the prompt and does not refuse to answer.",
+          "feedback1": "The response is not helpful. The structure of the prompt is fine. The response claims that the sentence is grammatically incorrect and makes no sense, but then claims that \"When a genius teen snaps\" would be correct. However, this is exactly what the prompt said, which is a significant contradiction. Furthermore, the response does not try to explain what the phrase means.",
+          "feedback2": "The response is mostly helpful. The phrase \"when a genius teen snaps\" is not a commonly used one, and the response should mention this fact. Furthermore, the response should make it clear that this is all theoretical, perhaps by stating that the phrase could mean something, and it is not definitive."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because @Response 2 answers the user's prompt correctly and appropriately asks for more information. ",
+          "feedback1": "The response is not helpful. The user requested the meaning behind the phrase \"when a genius teen snaps\" and the model responds with information that, while correct, is neither helpful nor complete. For example, the model claims that it is not grammatically correct, which is true, but then suggests that the author meant to say either \"when a genius teenager snaps\" or \"when a genius teen snaps,\" which is technically still wrong and a repeat of the prompt, still not fulfilling the dependent clause with an independent clause. Furthermore, even if it is grammatically incorrect, the model should be capable of performing the task of explaining what the sentence logically means. ",
+          "feedback2": "The response is perfectly helpful. The user is requesting an explanation for the phrase \"when a genius teen snaps\" and the model provides the logical interpretation of the phrase while requesting more information to be able to infer the context and inform the user specifically. There is no meaningful information that can be added to this response to improve it. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_c4dfba5eab304ce312ca",
+        0.4013293622542974
+      ],
+      [
+        "task_95b90b621a019e0f1561",
+        0.33008466099009715
+      ],
+      [
+        "task_444ab6a5d5da9dd4d7b4",
+        0.2906749136149328
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.4013293622542974,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_2732b913fc5d4915b4f316fee2203a6b"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.4013293622542974,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_95b90b621a019e0f1561",
+              "similarity": 0.33008466099009715,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f74425d114da2a13d1b5d25d007e3fee744c3c012d5827351fcc1d638c057f43:exp_c80505c0967d4b13a55b0dca34c181d9"
+                ],
+                "task_ids": [
+                  "8b3ee3f5ceead893701da037c28374d40cef8c4e26ddae0483f3bb099794b585"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_00c17ea2e79148b8a9b991e79eb788fa",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_444ab6a5d5da9dd4d7b4",
+              "similarity": 0.2906749136149328,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:fc5c18c851380d46338faf9d9e617e8100f0cc0f2a9fcb7804c7523a9734d753:exp_00c17ea2e79148b8a9b991e79eb788fa"
+                ],
+                "task_ids": [
+                  "fddad008cd772a1da0d593995c4a515cd88e0bbac87644e9a082b3ef1f9351c0"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_021b1f4bcc0c43cf9acfd88584e44161",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_444ab6a5d5da9dd4d7b4",
+              "similarity": 0.2906749136149328,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:fc5c18c851380d46338faf9d9e617e8100f0cc0f2a9fcb7804c7523a9734d753:exp_021b1f4bcc0c43cf9acfd88584e44161"
+                ],
+                "task_ids": [
+                  "fddad008cd772a1da0d593995c4a515cd88e0bbac87644e9a082b3ef1f9351c0"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_444ab6a5d5da9dd4d7b4",
+              "similarity": 0.2906749136149328,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:fc5c18c851380d46338faf9d9e617e8100f0cc0f2a9fcb7804c7523a9734d753:exp_113620ca64b541438bf3b03b2428882e"
+                ],
+                "task_ids": [
+                  "fddad008cd772a1da0d593995c4a515cd88e0bbac87644e9a082b3ef1f9351c0"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.37414765827131147
+      ],
+      [
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        0.36667995505716733
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.36297039199022185
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.3515717071774064
+      ],
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.34988035076034185
+      ],
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.34945155095397595
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.34931325020001436
+      ],
+      [
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        0.34504189276300135
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.3406453637730722
+      ],
+      [
+        "exp_539b197b848543669215c3ae88caa7b8",
+        0.3365487338840316
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.36297039199022185
+      },
+      {
+        "experience_id": "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": 0.34945155095397595
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.37414765827131147
+      },
+      {
+        "experience_id": "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.36667995505716733
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3515717071774064
+      },
+      {
+        "experience_id": "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.34988035076034185
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_c80505c0967d4b13a55b0dca34c181d9": "任务中的短语 'snaps' 具有多义性（可指‘发脾气/崩溃’或‘折断’），且输入未提供具体语境，符合经验 3 关于‘输入包含多义性词汇且未指定语境’的触发条件；评分标准需优先考核模型是否准确识别了用户最可能的意图（即青少年情绪失控）而非仅罗列字面含义。",
+    "exp_42ff0411dd264c3cbb29f7da9cf35801": "该任务同样涉及多义词 'snaps'，且存在显著的特定语境含义（如心理学上的情绪爆发、网络俚语等），符合经验 8 关于‘存在显著区别于通用字面义的特定领域/亚文化含义’的触发条件；评分标准应设定‘意图匹配度’维度，确保回答锁定主流非字面含义，避免因拘泥于字面意思而扣分。"
+  },
+  "draft": {
+    "rubric_id": "rubric_0c782e195516450e90a323458574ef5f",
+    "criteria": [
+      {
+        "criterion_id": "rubric_0c782e195516450e90a323458574ef5f_1",
+        "question": "是否准确识别了主语 'genius teen'（天才青少年）的身份特征？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_0c782e195516450e90a323458574ef5f_2",
+        "question": "是否解释了时间状语 'when' 所暗示的情境触发条件？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_0c782e195516450e90a323458574ef5f_3",
+        "question": "是否清晰阐述了核心动词 'snaps' 在此语境下的含义（如情绪爆发、精神崩溃或行为失常）？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_0c782e195516450e90a323458574ef5f_4",
+        "question": "整体解释是否逻辑通顺且符合英语习惯用法？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "当前任务要求解释句子 'when a genius teen snaps' 的含义。交付物为对该句子的语义解析，需涵盖主语（天才少年）、触发情境（当...时）及核心动作/状态（snap，意为情绪崩溃或行为失控）。不涉及特定背景故事、数量限制或格式约束，允许采用直接释义或结合语境的描述方式。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_43990550401546a4b1d147a3313a0f3b",
+        "criteria": [
+          {
+            "criterion_id": "rubric_43990550401546a4b1d147a3313a0f3b_1",
+            "question": "是否准确阐释了'snaps'在此语境下指代天才青少年因压力或心理临界点而爆发的情绪失控或精神崩溃？",
+            "weight": 0.45
+          },
+          {
+            "criterion_id": "rubric_43990550401546a4b1d147a3313a0f3b_2",
+            "question": "是否清晰描述了该句子所构建的情境，即强调在特定条件下天才青少年发生反常行为的转折意味？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_43990550401546a4b1d147a3313a0f3b_3",
+            "question": "解释内容是否涵盖了'teen'与'genius'结合后可能隐含的智力与情绪管理冲突的背景张力？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_43990550401546a4b1d147a3313a0f3b_4",
+            "question": "整体表述是否通顺且符合英语习惯，能够被非母语者准确理解其深层含义？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务为修订阶段，需基于原句 'when a genius teen snaps' 的语义解析标准进行核验。原初稿将重点放在语法成分拆解（主语、状语、动词）上，但用户核心诉求是理解整句含义。修订后的标准应更侧重于对句子整体情境和隐喻意义的准确传达，而非机械的词汇对应。权重分配上，核心动作'snaps'的语境化解释最为关键，其次是整体语境的逻辑自洽性，身份特征和触发条件作为辅助要素适当降低权重。"
+      },
+      "judgment": null,
+      "error": "LLMFormatError: judge: invalid contract: Boolean and nonempty reason required"
+    },
+    {
+      "provided_experience_ids": [
+        "exp_c80505c0967d4b13a55b0dca34c181d9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_750b8f109ecf493b9495ba464680b338",
+        "criteria": [
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_1",
+            "question": "回答是否准确识别并阐述了主语 'genius teen' 所隐含的高压力或特殊心理状态背景？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_2",
+            "question": "回答是否清晰解释了 'when' 引导的情境条件，即强调该行为发生的特定时间点或转折关系？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_3",
+            "question": "回答是否准确将 'snaps' 解释为语境下的‘情绪爆发’、‘精神崩溃’或‘行为失控’，而非仅停留在字面的‘断裂’含义？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_4",
+            "question": "回答的整体逻辑是否通顺，能够自然地将各要素整合为一个符合英语习惯的完整语义解释？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "当前任务要求解释短语 'when a genius teen snaps' 的语义。交付物是对该句子的含义解析，需涵盖主语特征（天才青少年）、触发条件（当...时）及核心动词 'snaps' 的特定语境义（通常指情绪崩溃、失控或精神失常）。任务未限制具体背景故事或格式，允许采用直接释义或结合心理/社会语境的描述方式。修订阶段需重点检查初稿标准是否遗漏了 'snaps' 的多义性辨析（如区分字面断裂与隐喻崩溃）以及整体解释的逻辑连贯性。提供的经验提示在词汇多义时应优先考核意图匹配度，但本题中 'snaps' 在此类语境下隐喻义高度固化，因此评分标准应侧重于确认回答是否准确锁定了‘精神崩溃’这一核心隐喻义，而非强制要求罗列所有字典义项。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_750b8f109ecf493b9495ba464680b338",
+        "normalized_weights": {
+          "rubric_750b8f109ecf493b9495ba464680b338_1": 0.2,
+          "rubric_750b8f109ecf493b9495ba464680b338_2": 0.15,
+          "rubric_750b8f109ecf493b9495ba464680b338_3": 0.4,
+          "rubric_750b8f109ecf493b9495ba464680b338_4": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出了主语'genius teen'隐含的高压力或特殊心理状态背景，具体提到了'often due to stress, pressure, or overwhelming circumstances'以及'highly intelligent teenager'。",
+            "rejected_reason": "回答未识别或阐述'genius teen'隐含的高压力背景，反而直接断言句子语法错误且无意义。"
+          },
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答清晰解释了'when'引导的情境条件，将其描述为'sudden change'发生的时刻，并指出该短语暗示了行为或心理状态的突变，体现了特定时间点或转折关系。",
+            "rejected_reason": "回答未解释'when'引导的情境条件，而是将其归咎于作者笔误。"
+          },
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答准确将'snaps'解释为隐喻意义上的'breaking point'（崩溃点），并进一步说明表现为'uncharacteristic emotions or actions'（非典型情绪或行为），而非字面的物理断裂含义。",
+            "rejected_reason": "回答未对'snaps'进行语境下的情绪爆发或精神崩溃解释，完全忽略了该词义。"
+          },
+          {
+            "criterion_id": "rubric_750b8f109ecf493b9495ba464680b338_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答整体逻辑通顺，从短语的比喻意义、触发原因到具体表现进行了自然整合，符合英语习惯的语义解释方式。",
+            "rejected_reason": "回答整体逻辑不通顺，未能整合各要素提供符合英语习惯的语义解释，反而得出了错误的否定结论。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_42ff0411dd264c3cbb29f7da9cf35801"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_1b9b1aa385af43d487dedabca6607bcb",
+        "criteria": [
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_1",
+            "question": "回答是否准确识别并解释了核心动词 'snaps' 在此语境下指代的情绪爆发、精神崩溃或行为失控等隐喻含义？",
+            "weight": 0.45
+          },
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_2",
+            "question": "回答是否清晰阐述了主语 'genius teen'（天才青少年）与 'snaps' 之间的因果或情境关联？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_3",
+            "question": "回答是否明确说明了时间状语 'when' 所构建的假设性或条件性情境框架？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_4",
+            "question": "整体解释是否符合英语语言习惯，且逻辑通顺无歧义？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务要求解释句子 'when a genius teen snaps' 的含义。交付物为对该句子的语义解析，需涵盖主语（天才少年）、触发情境（当...时）及核心动作/状态（snap，意为情绪崩溃或行为失控）。不涉及特定背景故事、数量限制或格式约束，允许采用直接释义或结合语境的描述方式。在修订阶段，重点检查初稿标准是否准确捕捉了 'snaps' 这一多义词在青少年语境下的核心隐喻义（精神崩溃/失控），而非仅停留在字面含义。经验提示指出当词汇存在显著区别于通用字面义的特定含义时，应优先考核回答是否锁定了最可能的意图（即心理/情绪层面的崩溃），因此将‘核心词义语境化’的权重提升至最高，并细化了对逻辑通顺性的要求，确保解释符合英语习惯用法。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_1b9b1aa385af43d487dedabca6607bcb",
+        "normalized_weights": {
+          "rubric_1b9b1aa385af43d487dedabca6607bcb_1": 0.45,
+          "rubric_1b9b1aa385af43d487dedabca6607bcb_2": 0.25,
+          "rubric_1b9b1aa385af43d487dedabca6607bcb_3": 0.15,
+          "rubric_1b9b1aa385af43d487dedabca6607bcb_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答准确识别了'snaps'的隐喻含义，明确指出其指代行为或心理状态的突然改变、达到临界点（breaking point），并列举了情绪爆发或失控的具体表现（uncharacteristic emotions or actions）。",
+            "rejected_reason": "回答未解释核心动词 'snaps' 的隐喻含义（如情绪爆发或精神崩溃），反而直接断言句子无意义且语法错误，完全忽略了该词在特定语境下的实际用法。"
+          },
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答清晰阐述了主语与动词的关联，解释了天才青少年（highly intelligent teenager）在压力（stress）、重压（pressure）或无法承受的情况（overwhelming circumstances）下发生这种状态变化的情境因果。",
+            "rejected_reason": "回答未阐述主语 'genius teen' 与 'snaps' 之间的关联，而是将重点放在质疑句子的合法性上，未能分析天才青少年这一身份与崩溃行为之间可能存在的因果或情境联系。"
+          },
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答通过开头指出该短语是描述一种情况（suggests a... situation）以及后续提到缺乏具体语境难以进一步解释，隐含地构建了'当...发生时'这一假设性或条件性的时间情境框架。",
+            "rejected_reason": "回答未说明时间状语 'when' 构建的条件性情境框架，没有指出该词引导的是一个假设性的时间点或事件触发条件。"
+          },
+          {
+            "criterion_id": "rubric_1b9b1aa385af43d487dedabca6607bcb_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "整体回答使用地道的英语表达，语法正确，逻辑连贯，对短语的解释符合语言习惯且无歧义。",
+            "rejected_reason": "整体解释不符合英语语言习惯中的理解逻辑，因为 "
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

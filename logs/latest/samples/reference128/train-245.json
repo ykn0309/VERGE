@@ -1,0 +1,530 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:f07cd26fb7c9728b83c94c6ee963f79d5a42e039d14c2f785f2655f5ffe38684",
+    "task": "hello I am new to this app and most likely will need assistance ",
+    "chosen": "Welcome to the app! I'm here to help you with any questions or concerns you may have. Please feel free to ask me anything, and I'll do my best to assist you. How can I help you get started today?",
+    "rejected": "Hello! Welcome to Brainly. I'm glad you found us. We're here to help you with any questions you have, so don't hesitate to reach out if you need assistance. You can post your question by clicking on the \"Ask\" button at the top of the page. Our community of experts and students will do their best to provide you with a clear, concise, and correct answer. Good luck, and happy learning!",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 10388,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 @Response 2 gave a direct format to assist the user without additional information, while @Response 1 didn't follow the instructions of the prompt and had irrelevant information.",
+          "feedback1": "The response is slightly helpful. The response failed to address the level of assistance and it did not show what the prompt intended. It should have used a better line or sentence to show empathy and ask if the user might need assistance. It should have asked how it might assist the user; it had irrelevant information.",
+          "feedback2": "The response is mostly helpful.  The response was well-written and had an assistance format question; it was very direct and helpful for the user. It showed a salutation and offered to assist the user with any questions or concerns they might have. It was excellently straightforward and satisfied what the user was looking for."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It is succinct and clear, providing a simple response to the uncertain user. The latter has misinformation about the Brainly app, which isn't even mentioned in the prompt; it is unclear all around.",
+          "feedback1": "The response is slightly helpful. One area that it is flawed is in its description of Brainly. Brainly is an AI-powered app, and the answers are only reviewed by experts and potentially students. The AI is providing the actual answer though not the experts as the response claims. The prompt also does not mention an app name in it so it is slightly confusing that Brainly is now mentioned. Overall the response is just unclear and contains misinformation about the example app that it used.",
+          "feedback2": "The response is perfectly helpful. It is succinct and gets to the point. This is important because the user stated that they are going to need assistance and they are a beginner; a clear, well stated response is necessary. It keeps it simple, offers help, and maintains a friendly conversational tone throughout. Overall a perfectly useful response."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 as it is the only one that addresses the user concern of finding a way to get assistance using the app. Although @Response 2 includes information on using the app, it misses the essence of the query and misdirects the user.",
+          "feedback1": "The response is slightly helpful. The prompt is asking for general assistance. The answer seems to suggest contradictorily that the way to get help on how to use the app is by making use of the core functionality which generally answers questions about homework directly. This is misleading and unclear for the user.",
+          "feedback2": "The response is mostly helpful. It recognizes that this is a new user who might need some general guidance using the app and provides an avenue to better address the concerns. It could improve by including some general information to familiarize the user with the app as well as by providing some suggested topics or questions."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_d4210e66d6dfa94fd045",
+        0.4061268843771928
+      ],
+      [
+        "task_7422339df1cca927fe88",
+        0.38431249303310255
+      ],
+      [
+        "task_7ef074b48a3f4c718e14",
+        0.35239860668770645
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_7ef074b48a3f4c718e14",
+              "similarity": 0.35239860668770645,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:eca61f0e945a34930daad51d285de8b5205ae80928ca6c4b0ffb6d95893042a9:exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+                ],
+                "task_ids": [
+                  "ed2f09fe9b7e395eddc064da2d4394e1666e005c2b721c93d41ceacbcaec0e66"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_7ef074b48a3f4c718e14",
+              "similarity": 0.35239860668770645,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:eca61f0e945a34930daad51d285de8b5205ae80928ca6c4b0ffb6d95893042a9:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "ed2f09fe9b7e395eddc064da2d4394e1666e005c2b721c93d41ceacbcaec0e66"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.37935498732730083
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.3712809828017307
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.339594918291935
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.3279243854751289
+      ],
+      [
+        "exp_392a33af46744dbf91e8754240ac16de",
+        0.32769007557655927
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.32592377850491305
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.32394696285728836
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.3205812981335956
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.3195669792590259
+      ],
+      [
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        0.3175255340505774
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3195669792590259
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.37935498732730083
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3712809828017307
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.339594918291935
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3279243854751289
+      },
+      {
+        "experience_id": "exp_392a33af46744dbf91e8754240ac16de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32769007557655927
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32592377850491305
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32394696285728836
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3205812981335956
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_f589e4c6a08945d498eccbea1df77ae5": "任务明确表达用户是新手且需要协助（'need assistance'），属于典型的分享意图或寻求引导场景，且未提供具体细节；经验 5 指出此时评分标准应优先核验 AI 是否识别了用户的分享/求助意图并做出恰当引导，而非强制生成具体内容，这与任务中用户尚未给出具体问题的情境完全匹配。"
+  },
+  "draft": {
+    "rubric_id": "rubric_eb82401c213746f8a4593e9072ddfeab",
+    "criteria": [
+      {
+        "criterion_id": "rubric_eb82401c213746f8a4593e9072ddfeab_1",
+        "question": "响应是否明确识别并回应了用户'新用户'的身份声明？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_eb82401c213746f8a4593e9072ddfeab_2",
+        "question": "响应是否提供了清晰的入门引导或帮助入口以解决用户潜在的协助需求？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_eb82401c213746f8a4593e9072ddfeab_3",
+        "question": "响应的语气是否友好、包容且符合新用户体验的语境？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_eb82401c213746f8a4593e9072ddfeab_4",
+        "question": "响应是否避免了过度复杂的术语或假设用户已具备特定知识？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "当前任务为草稿阶段（draft），用户输入仅表达了作为新用户的身份及潜在求助意向，未提出具体交付物、数据要求或格式限制。因此，评分标准的设计重点在于确认系统是否准确识别了用户的新手身份、是否提供了恰当的欢迎引导以及是否建立了有效的后续支持路径。由于没有具体的产出物需要核验，标准将聚焦于响应内容的适切性和功能性。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_c09fa7d66c084a38a1671794d78e9e57",
+        "criteria": [
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_1",
+            "question": "响应是否明确识别并正面回应了用户自称'新用户'的身份声明？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_2",
+            "question": "响应是否提供了清晰的入门指引、功能概览或具体的帮助入口以解决用户的协助需求？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_3",
+            "question": "响应的整体语气是否保持友好、包容且符合新用户体验建立的语境？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_4",
+            "question": "响应内容是否避免了过度复杂的术语或对用户已具备特定知识的假设？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于修订阶段（revise），需基于用户输入'hello I am new to this app and most likely will need assistance'及提供的初稿草稿进行核验。用户明确表达了新用户身份和潜在求助需求，但未指定具体交付物、格式或数量限制。初稿中的四条标准涵盖了身份识别、引导提供、语气适切性及术语复杂度，逻辑完整且权重分配合理（总计1.0）。本次修订将保留这些核心维度，仅对问题表述进行微调以确保其作为明确的通过性问题（Yes/No）更加清晰，同时确保所有标准均直接对应任务中隐含的‘友好响应’与‘有效引导’要求，无新增义务或范围缩减。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_c09fa7d66c084a38a1671794d78e9e57",
+        "normalized_weights": {
+          "rubric_c09fa7d66c084a38a1671794d78e9e57_1": 0.4,
+          "rubric_c09fa7d66c084a38a1671794d78e9e57_2": 0.3,
+          "rubric_c09fa7d66c084a38a1671794d78e9e57_3": 0.2,
+          "rubric_c09fa7d66c084a38a1671794d78e9e57_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复以'Welcome to the app!'开头，明确识别了用户作为新用户的身份并表达了欢迎。",
+            "rejected_reason": "响应以'Hello! Welcome to Brainly.'开头，直接回应了用户作为新用户的身份，表达了欢迎之意。"
+          },
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回复虽然邀请用户提问，但未提供具体的入门指引、功能概览或明确的帮助入口（如菜单链接、新手教程等），仅停留在通用邀请层面。",
+            "rejected_reason": "响应明确提供了具体的帮助入口，指导用户点击页面顶部的'Ask'按钮来提问，并解释了后续流程。"
+          },
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复使用了'Welcome'、'feel free'、'do my best'等措辞，整体语气友好、包容，符合建立新用户体验的语境。",
+            "rejected_reason": "整体语气热情友好（使用'glad', 'don't hesitate', 'Good luck'等词汇），营造了包容和积极的入门氛围。"
+          },
+          {
+            "criterion_id": "rubric_c09fa7d66c084a38a1671794d78e9e57_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复内容简洁，未使用任何专业术语，也未假设用户具备特定知识，易于理解。",
+            "rejected_reason": "响应使用了简单易懂的语言，没有堆砌专业术语，也未假设用户具备特定知识，适合新用户理解。"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 1.0,
+        "margin": -0.3,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_f589e4c6a08945d498eccbea1df77ae5"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22",
+        "criteria": [
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_1",
+            "question": "响应是否明确识别并口头确认了用户的'新用户'身份及其求助意图？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_2",
+            "question": "响应是否提供了通用的帮助入口（如菜单指引、常见问题链接）或主动邀请用户说明具体需求，而未擅自虚构用户未提供的细节？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_3",
+            "question": "响应的整体语气是否友好、包容且符合新用户体验的语境，消除了潜在的距离感？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_4",
+            "question": "响应是否避免了使用行业黑话或假设用户具备特定操作知识，确保语言通俗易懂？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务处于修订阶段（revise），需基于用户输入的'新用户求助'场景，对提供的初稿评分标准进行核验与优化。初稿已涵盖身份识别、引导提供、语气适切及术语控制四个维度，权重分配合理。经验提示指出，当用户表达分享或求助意图但未提供具体内容时，不应强制要求生成虚构内容，而应侧重确认意图和邀请补充。初稿中的第2条标准（提供入门引导）若被解读为必须生成具体功能列表则可能偏离经验原则，因此修订后的标准应明确：响应是否提供了通用的帮助入口或邀请用户进一步说明需求，而非强制生成特定内容。同时，需确保所有标准均聚焦于'回应质量'而非'内容产出量'。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22",
+        "normalized_weights": {
+          "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_1": 0.35,
+          "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_2": 0.35,
+          "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_3": 0.15,
+          "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复以'Welcome to the app!'明确欢迎新用户，并直接表达了提供帮助的意愿（'I'm here to help you'），确认了用户的求助意图。",
+            "rejected_reason": "响应开头明确使用'Hello! Welcome to Brainly'确认了用户的到来，并紧接着表示'We're here to help you with any questions you have'，直接回应并确认了用户表达的求助意图。"
+          },
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回复虽然主动邀请用户说明需求（'How can I help you get started today?'），但未提供通用的帮助入口（如菜单指引或常见问题链接），不符合该标准中关于提供具体入口的要求。",
+            "rejected_reason": "响应提供了具体的通用帮助入口指引（'clicking on the \"Ask\" button at the top of the page'），并主动邀请用户提问（'don't hesitate to reach out'），同时未虚构任何用户未提供的细节。"
+          },
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复使用了热情友好的措辞（'Welcome', 'Please feel free', 'do my best'），语气包容且消除了距离感，符合新用户体验语境。",
+            "rejected_reason": "整体语气非常友好且包容，使用了'glad you found us'、'don't hesitate'和'Good luck, and happy learning!'等表达，有效消除了新用户的距离感，符合欢迎语境。"
+          },
+          {
+            "criterion_id": "rubric_11d899fcfeea43b2a36f2cdfbce9eb22_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复全程使用简单、日常的英语表达，未出现任何行业黑话或对用户操作知识的假设，通俗易懂。",
+            "rejected_reason": "响应语言通俗易懂，仅使用了'app'界面中常见的通用术语（如'Ask' button），没有使用行业黑话或假设用户具备特定的高级操作知识。"
+          }
+        ],
+        "chosen_score": 0.65,
+        "rejected_score": 1.0,
+        "margin": -0.35,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务轨迹显示，在两次修订尝试中（Rubric 2 和 Rubric 3），Judge 均判定 'rejected' 回答（Brainly 官方回复）优于 'chosen' 回答（通用 AI 助手回复）。核心分歧点在于 Criterion 6/10：Judge 认为 'chosen' 仅停留在‘邀请提问’而未提供‘具体的入门指引或帮助入口’（如点击按钮、菜单链接等），因此判为失败；而 'rejected' 因提供了具体的'Ask'按钮指引被判成功。然而，用户原始输入仅为'hello I am new to this app and most likely will need assistance'，这是一个模糊的求助意向表达，并未指定需要具体的操作指引或功能介绍。'chosen' 回答通过询问'How can I help you get started today?'精准地识别了用户的新手身份并引导其明确需求，这是符合对话逻辑的恰当回应。Judge 的错误在于将评分标准中的‘提供具体帮助入口’解读为必须包含 UI 操作指引（如点击按钮），这实际上是在未收到具体指令的情况下，强制要求 AI 生成特定的功能介绍或虚构了用户需要的操作路径（因为用户并未说明是哪个 App 的具体界面）。这种评判逻辑违背了经验 1 的原则：当用户意图模糊且未提供细节时，不应强制要求 AI 自行生成具体内容或特定格式的指引，而应优先核验是否准确识别意图并引导澄清。当前的评分标准设计问题在于 Criterion 6/10 的表述过于具体化（隐含了必须提供‘入口’的要求），导致模型无法区分‘恰当的引导性提问’与‘过度的功能介绍’，从而错误地惩罚了简洁且聚焦于澄清需求的回答。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+            "method": {
+              "trigger": "当用户输入表达模糊的求助意图（如‘需要帮助’、‘新手咨询’）且未指定具体场景、功能或交付物时",
+              "principle": "严禁将‘提供具体操作指引、功能列表或特定入口’设为正向得分的必要条件；应优先核验 AI 是否通过开放式提问或确认性陈述来引导用户澄清具体需求，而非强行生成可能不相关的功能介绍。",
+              "application_guide": "Generator 在设计此类评分标准时，针对‘引导/帮助’维度的提问应调整为：'AI 是否识别了用户的模糊意图并通过提问或确认邀请用户进一步说明具体需求？'。若回答提供了超出用户当前语境的详细功能指引（如具体的按钮位置、菜单路径），除非任务明确要求，否则不应视为加分项，甚至可考虑作为偏离意图的扣分项。需明确区分‘引导澄清’与‘信息灌输’的边界。"
+            },
+            "source_task_id": "4834ac335d5768291b826b3213bb3685318fb71f35176ad573b899facbfe99bc",
+            "parent_ids": [
+              "exp_f589e4c6a08945d498eccbea1df77ae5"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_4c7d35b8aa5b4aee91e312c48c9c18d9"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_1",
+                  "question": "响应是否明确识别并确认了用户的'新用户'身份及潜在的求助意向？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_2",
+                  "question": "响应是否通过开放式提问或邀请式陈述来引导用户澄清具体的协助需求，而非直接提供可能不相关的详细功能指引？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_3",
+                  "question": "响应的整体语气是否友好、包容且符合新用户体验的语境？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_4",
+                  "question": "响应是否避免了假设用户具备特定知识或使用过度复杂的术语？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "当前任务处于修订阶段（revise），需基于用户模糊的求助意图（'新用户'、'需要协助'）对初稿标准进行核验。提供的经验明确指出：严禁将提供具体操作指引设为必要条件，应优先核验AI是否通过开放式提问引导用户澄清需求，避免信息灌输。初稿中的标准2和4存在风险，可能隐含了对'清晰入门引导'或'避免术语'的过度具体化要求，忽略了'先澄清再解答'的核心原则。修订后的标准需严格聚焦于身份识别、语气适切性以及对模糊意图的澄清引导，确保不强制生成具体功能列表。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9",
+              "normalized_weights": {
+                "rubric_64bd327bf5304aa19e5b3e602ce0cba9_1": 0.35,
+                "rubric_64bd327bf5304aa19e5b3e602ce0cba9_2": 0.35,
+                "rubric_64bd327bf5304aa19e5b3e602ce0cba9_3": 0.15,
+                "rubric_64bd327bf5304aa19e5b3e602ce0cba9_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "响应以'Welcome to the app!'开头并表达'here to help you with any questions or concerns'，明确识别了用户的新身份及求助意向。",
+                  "rejected_reason": "响应中明确使用了'Welcome to Brainly'和'glad you found us'等措辞，直接确认了用户作为新用户的身份并表达了欢迎之意。"
+                },
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_2",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "响应通过开放式提问'How can I help you get started today?'引导用户澄清具体需求，未直接提供可能不相关的详细功能指引。",
+                  "rejected_reason": "响应未通过开放式提问或邀请式陈述来引导用户澄清具体需求，而是直接提供了关于如何点击'Ask'按钮的具体功能指引，这不符合标准中要求避免直接提供可能不相关详细指引的约束。"
+                },
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "整体语气热情友好（使用'Welcome', 'Please feel free'），包容性强，符合新用户体验的语境。",
+                  "rejected_reason": "整体语气使用了'Hello', 'Welcome', 'glad', 'Good luck'等词汇，表现出友好、包容的态度，符合新用户体验的语境。"
+                },
+                {
+                  "criterion_id": "rubric_64bd327bf5304aa19e5b3e602ce0cba9_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "响应语言简单直白，未假设用户具备特定知识，也未使用任何复杂术语或技术行话。",
+                  "rejected_reason": "响应语言通俗易懂，未使用任何假设用户具备特定知识的专业术语或复杂表述，仅描述了基础的点击操作。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 0.65,
+              "margin": 0.35,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

@@ -1,0 +1,524 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:ce2407d8464ae59a5d59ef78fc4f27f2af17f5068652a3b491c6a40284f681aa",
+    "task": "generate and answer for a 2.3 level 2 english Unfamiliar text using this question TEXT C: Prose In this extract from a novel, members of a whānau go hunting eels at night. River Warrior Dark’s here. I carry the lamp. Beth and Aunty Kat are on each side of me. Tom Aiken has the gaff. We walk up the river. I am the river warrior—Tom Aiken keeps saying I am—and I’m not scared. We’ll walk up the river in the dark and hook eels by their mouths and then swing them onto the rocks. Tom Aiken says he’ll go first and then I can try. “Watch the water carefully,” Tom says. “Point if you see one.” A bit of moon is high in the sky now, and the air is getting cold. Some water gets in my gumboot. Tom Aiken turns to us, then puts his finger to his lips. Then I see the eel, swimming just ahead of us in the same direction we are walking. Tom Aiken turns to us again and gives a big grin before he takes a different grip on the gaff. He lifts it up over his head and swings it, letting it cut through the water, hitting the eel’s head, then swinging it right up behind him and the eel is on the end of the hook, and Tom Aiken yells, “Yeeehhhaaa!” and keeps swinging the eel around and around like a windmill, really fast, before he smashes it down hard on the rocks, while we watch, our mouths hanging open. I feel a buzzing in the bones of my hands because I would really like to gaff an eel too. Tom Aiken asks, “Who’s next?” And everyone looks surprised when I step forward and say, “Me.” The gaff is really cold and more water gets in my gumboots, but I don’t care. River warriors don’t care about water in their gumboots. Without thinking, I kick the gumboots off and pull off my socks with one hand. The socks have fire trucks on them. River warriors don’t wear socks with fire trucks on them. My feet are bare now. I see an eel swimming ahead. I creep up behind the swimming-slow eel. He turns fast towards a dark deep part of the river and I almost stop, but I can feel Tom Aiken right behind me, so I don’t stop. I follow. I walk right into the deep dark part of the water. It comes up to the waistband of my shorts. Beth and Aunty Kat have stopped following us. I search the dark water for the eel but I can’t see him. And for a second I think of my bare toes, but I just grip tighter on the gaff and the thought goes away. We creep through the deep part. My belly button is wet.   5   10    15    20   25   30 Text (adapted): Manawatu, Becky. (2019). Auē. Makaro Press. Image: [Fishing gaff]. https://www.ebay.com/itm/174182415946 (accessed 27 April 2021).",
+    "chosen": "Level 2 Question: What is the setting and what are the characters doing in this extract?\n\nAnswer: The setting of this extract is at night near a river where the characters are going eel hunting. The characters include the narrator, who is referred to as the river warrior, Tom Aiken, Beth, and Aunty Kat. They are walking up the river with a lamp, a gaff, and are searching for eels in the water. Tom Aiken demonstrates how to catch an eel by using the gaff to hook it by the mouth and swinging it onto the rocks. The narrator then steps forward and says they want to try catching an eel as well.",
+    "rejected": "**Question:** What does the narrator do when they see an eel swimming ahead?\n\n**Answer:** The narrator creeps up behind the swimming eel, follows it into a deep, dark part of the river, and searches for the eel in the dark water.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9982,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 provides a more comprehensive answer that addresses both setting and character actions, while @Response 1 gives only a brief, partial answer to its specific question.",
+          "feedback1": "The response is slightly helpful. While it provides a basic answer that is technically correct, it fails to include supporting evidence from the text and misses key details about the narrator's actions. For a level 2 English unfamiliar text question, the response should include relevant quotes and more specific details to demonstrate understanding of the text.",
+          "feedback2": "The response is mostly helpful. It effectively identifies the key elements of the setting (nighttime river location) and clearly explains what the characters are doing (eel hunting). The answer demonstrates good comprehension by identifying all characters and explaining their roles. While the response could be strengthened with specific quotes from the text, it provides a thorough overview that would be appropriate for a Level 2 English response."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it is a more appropriate level question and answer that requires comprehension of the text.",
+          "feedback1": "The response is partially helpful. It does generate a question and answer from the text, but it's very basic and doesn't require much actual understanding of the text. Both the question and answer are basic and can be found without much difficulty. If the reasoning behind this prompt is to encourage comprehension, as it seems to be, then this response falls short.",
+          "feedback2": "The response is perfectly helpful. It answers the prompt by providing a labeled Level 2 question that requires some basic understanding of the text and putting together multiple parts of the story to create a larger picture of what's going on. The response answer is a good example of summarization."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It more properly asks a Level 2 question as Level 2 questions need to be a certain level of complexity instead of directly reiterating the text, but still does not require too much analysis.",
+          "feedback1": "The response is slightly helpful. It is too simple of a question for a level 2 English unfamiliar text. This is a much simpler question for a lower level and thus this does not properly follow the prompt and what is asked. This answer is missing quite a bit of what is being asked.",
+          "feedback2": "The response is mostly helpful. The question asked is more complex of a level 2 question, needing to do some analysis but still mostly extracting this information from the excerpt. There can be some stronger phrasing here as it is still awkward and the language used here isn't the strongest, but it still properly answers the question."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_fc9a5d24894faff0e5c6",
+        0.32269260032400426
+      ],
+      [
+        "task_9563ea4783a6169849cd",
+        0.3185010982719155
+      ],
+      [
+        "task_d36d872237abe56e8480",
+        0.27698718502931324
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_f589e4c6a08945d498eccbea1df77ae5"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.29094216503538295
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.28346180222922857
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.28093159250179683
+      ],
+      [
+        "exp_9f68a031aa164c769dd78ba249279604",
+        0.23762118018788603
+      ],
+      [
+        "exp_96802d2cee6f4f17acf028194475c639",
+        0.23346305979763132
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.20031254220561406
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29094216503538295
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28346180222922857
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28093159250179683
+      },
+      {
+        "experience_id": "exp_9f68a031aa164c769dd78ba249279604",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23762118018788603
+      },
+      {
+        "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23346305979763132
+      },
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20031254220561406
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b5504c36f1e1468ca470333f1c240342": "任务明确要求基于提供的'Prose'（散文/小说）文本生成问答，该文本具有特定的叙事文体特征（第一人称叙述、对话穿插、环境描写）。经验3强调评分标准需严格界定目标格式特征，并禁止将其他文体（如剧本或纯说明文）混淆其中。由于任务核心是理解并回答关于这篇特定'Prose'的内容，评分时必须确保AI的回答符合原文的文体逻辑和叙事风格，而非强行套用其他格式，这与经验3的原则高度契合。"
+  },
+  "draft": {
+    "rubric_id": "rubric_86a86e9323ce4b2ea52036d2fffb77bf",
+    "criteria": [
+      {
+        "criterion_id": "rubric_86a86e9323ce4b2ea52036d2fffb77bf_1",
+        "question": "生成的问题是否直接基于提供的文本内容且不引入外部信息？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_86a86e9323ce4b2ea52036d2fffb77bf_2",
+        "question": "答案是否能从文本中找到明确依据并正确解释关键细节（如人物动作、情感或象征意义）？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_86a86e9323ce4b2ea52036d2fffb77bf_3",
+        "question": "问题的难度是否适合Level 2英语水平，要求一定程度的推断或文本分析而非简单事实检索？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_86a86e9323ce4b2ea52036d2fffb77bf_4",
+        "question": "输出是否包含清晰的问题陈述和对应的完整答案，且语言符合英语学术规范？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "本任务要求基于提供的文学文本（小说节选）生成并回答一个符合'2.3级Level 2英语不熟悉文本’标准的阅读理解问题。分析需聚焦于：1) 生成的问题是否紧扣文本细节与隐含意义；2) 答案是否准确反映文本内容且无外部臆断；3) 难度是否匹配Level 2标准（涉及推断、词汇理解或情节分析）；4) 格式是否符合规范（清晰的问题陈述与完整的答案解释）。权重分配侧重于问题的相关性与答案的准确性，确保评估全面覆盖任务核心要求。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d",
+        "criteria": [
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_1",
+            "question": "生成的问题是否直接基于提供的文本内容且不引入任何外部事实或假设？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_2",
+            "question": "提供的答案是否能从文本中找到明确依据，并正确解释关键细节（如叙述者的情感转变、动作描写或象征意义）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_3",
+            "question": "问题的难度是否适合Level 2英语水平，要求考生进行一定程度的推断、词汇语境分析或情节逻辑整合，而非仅能定位单一事实？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_4",
+            "question": "输出是否同时包含清晰的问题陈述和对应的完整答案，且语言符合英语学术规范？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本任务要求基于提供的小说节选（Becky Manawatu的《Auē》）生成并回答一个符合'2.3级Level 2英语不熟悉文本’标准的阅读理解问题。修订阶段需重点核查：生成的问题是否严格源自文本且无外部信息干扰；答案是否准确捕捉关键细节（如人物动作、心理变化及文化背景暗示）；难度是否匹配Level 2要求，即需要推断而非简单检索；输出格式是否包含清晰的问题陈述与完整的答案解析。权重分配侧重于问题的文本依据和答案的深度分析，确保评估覆盖理解、推断和规范表达三个核心维度。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d",
+        "normalized_weights": {
+          "rubric_f1e5d36c10aa444bb244a654837d1d0d_1": 0.35,
+          "rubric_f1e5d36c10aa444bb244a654837d1d0d_2": 0.35,
+          "rubric_f1e5d36c10aa444bb244a654837d1d0d_3": 0.2,
+          "rubric_f1e5d36c10aa444bb244a654837d1d0d_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的问题询问的是文本中明确描述的地点（河边、夜晚）和人物行为（捕鳗鱼），完全基于提供的文本内容，未引入任何外部事实或假设。",
+            "rejected_reason": "生成的问题直接基于文本中叙述者看到鳗鱼后的具体行为（'I see an eel swimming ahead. I creep up behind...'），未引入任何外部事实或假设。"
+          },
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "答案中的每个陈述都能在原文中找到直接依据：'at night near a river'对应'Tom Aiken has the gaff... walk up the river in the dark'；'eel hunting'对应'hunting eels at night'；人物名字在文中均有提及；Tom Aiken 的动作描写（hook it by the mouth... swinging it onto the rocks）与原文一致；叙述者尝试的意愿也对应原文'Me'。",
+            "rejected_reason": "答案准确引用了文本中的关键动作细节：'creeps up behind the swimming-slow eel'，'follow... into the deep dark part of the water'，以及'I search the dark water for the eel'，所有信息均能在原文中找到明确依据。"
+          },
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "该问题的难度低于Level 2英语标准的要求。问题仅要求考生进行简单的信息定位（setting和doing什么），属于单一事实检索，缺乏对推断、词汇语境分析或情节逻辑整合的要求，未能体现Level 2所需的认知深度。",
+            "rejected_reason": "该问题的难度不符合Level 2英语推断要求。问题仅要求定位单一事实（叙述者做了什么），属于直接检索型问题，未涉及对情感转变、词汇语境分析或情节逻辑的深层推断，无法体现题目要求的‘一定程度的推断’能力。"
+          },
+          {
+            "criterion_id": "rubric_f1e5d36c10aa444bb244a654837d1d0d_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出清晰地包含了标有'Level 2 Question'的问题陈述和对应的完整答案段落，语言通顺且符合英语学术规范，结构完整。",
+            "rejected_reason": "输出清晰包含了加粗标记的问题陈述和对应的完整段落式答案，且语言符合英语学术规范，无语法错误或表达不当。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 0.8,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b5504c36f1e1468ca470333f1c240342"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_d786abe4d4d4474b876544cdb6a46110",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_1",
+            "question": "生成的问题是否直接基于提供的文本内容且不引入任何外部信息？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_2",
+            "question": "提供的答案是否能从文本中找到明确依据，并正确解释关键细节（如人物动作、情感变化或象征意义）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_3",
+            "question": "问题的难度是否适合Level 2英语水平，要求一定程度的推断或文本分析而非简单的字面事实检索？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_4",
+            "question": "最终输出是否同时包含清晰的问题陈述和对应的完整答案，且语言表达符合英语学术规范？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本任务要求针对提供的小说节选（Prose）生成并回答一个符合'2.3 Level 2英语不熟悉文本’标准的阅读理解问题。修订重点在于：1) 确保生成的问题严格基于文本内容，避免引入外部信息；2) 答案必须能从文中找到确切依据，准确解释人物动作、情感或隐含意义；3) 问题难度需匹配Level 2标准，即涉及推断、词汇理解或情节分析，而非简单的事实检索；4) 输出格式需包含清晰的问题陈述和完整的答案解释，语言符合英语学术规范。权重分配上，问题的相关性与答案的准确性为核心，各占较高比重，以确保评估全面覆盖任务核心要求。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d786abe4d4d4474b876544cdb6a46110",
+        "normalized_weights": {
+          "rubric_d786abe4d4d4474b876544cdb6a46110_1": 0.35,
+          "rubric_d786abe4d4d4474b876544cdb6a46110_2": 0.35,
+          "rubric_d786abe4d4d4474b876544cdb6a46110_3": 0.2,
+          "rubric_d786abe4d4d4474b876544cdb6a46110_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的问题询问的是场景和人物正在做什么，答案中提到的夜间、河边、捕鳗鱼以及具体人物（叙述者、Tom Aiken等）均直接源自提供的文本内容，未引入任何外部信息。",
+            "rejected_reason": "生成的问题直接基于文本中关于叙述者看到鳗鱼后的具体行为（'I see an eel swimming ahead. I creep up behind the swimming-slow eel... I follow.'），未引入任何外部信息。"
+          },
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "答案准确提取了文本中的关键细节：场景设定在夜晚的河流（'at night near a river'），人物动作包括行走（'walking up the river'）、使用灯具和鱼叉（'with a lamp, a gaff'）、寻找鳗鱼，并正确描述了Tom Aiken捕鳗的过程及叙述者尝试加入的情节，所有信息均有明确文本依据。",
+            "rejected_reason": "答案准确提取了文本中的关键动作细节：'creeps up behind', 'follows it into a deep, dark part of the river', 和'searches for the eel'，与原文描述完全一致且解释正确。"
+          },
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "该问题的难度不符合Level 2英语对于‘推断或文本分析’的要求。问题询问的是‘设置和人物在做什么’，这属于对文本显性信息的直接检索（literal fact retrieval），文中明确提到'walk up the river'、'hunting eels'等，无需进行推断或深层分析即可回答，未能体现题目要求的认知深度。",
+            "rejected_reason": "该问题的难度过低，仅要求简单的字面事实检索（literal fact retrieval）。Level 2 英语任务通常要求一定程度的推断、分析人物情感变化或理解象征意义，而本题仅需定位并复述显性句子内容，未达到'非简单的字面事实检索'的要求。"
+          },
+          {
+            "criterion_id": "rubric_d786abe4d4d4474b876544cdb6a46110_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "最终输出清晰地包含了标题为'Level 2 Question'的问题陈述和对应的完整答案段落，语言表达通顺且符合英语学术规范，结构完整。",
+            "rejected_reason": "输出清晰包含了明确的问题陈述（Question）和对应的完整答案（Answer），语言表达符合英语学术规范，语法正确且结构完整。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 0.8,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，两轮修订的Rubric（经验2和3）均将'Level 2难度要求推断或分析而非简单事实检索'作为核心扣分项（权重0.2），并判定两个回答因仅涉及'事实检索'而得分不足。然而，人工偏好理由明确指出：被选中的回答（Response 2）虽然主要描述场景和动作，但因其'综合了多个部分的故事'且'提供了适当的Level 2问题'而被认为更好；被拒绝的回答（Response 1）则因'过于简单、无需理解'而被拒。关键在于，人工判断认为Response 2的问题（询问设置和人物在做什么）是符合Level 2要求的，而Judge却判定其为'低于Level 2'或'不符合推断要求'。这表明Rubric设计者错误地将'询问设置/人物行为'这一基础阅读理解任务直接等同于'低阶事实检索'并予以否定，忽略了该任务可能包含对文本整体情境的综合概括（如Response 2中整合了环境、人物关系及具体动作）。评分标准未能准确界定Level 2英语阅读理解的边界，错误地排除了合理的概括性回答，导致无法区分'简单的单点检索'与'综合性的情境理解'。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_b7ceaefd499a409599a4943bc2d638f6",
+            "method": {
+              "trigger": "当任务要求生成或评估特定教育层级（如Level 2）的阅读理解问题时",
+              "principle": "不应将'询问背景设定、人物身份或显性行为'直接定义为'低阶事实检索'并作为扣分项，而应核验答案是否体现了对文本多要素的整合与概括能力。",
+              "application_guide": "Generator在设计此类标准时，需明确区分'单一信息定位'（如'谁做了什么'）与'综合性情境描述'（如'在什么环境下谁做了什么以及相互关系'）。若答案能整合文本中的时间、地点、人物及动作等多个显性信息形成连贯叙述，即使未涉及深层隐喻，也应视为符合基础层级的理解要求，而非直接判定为缺乏推断能力。避免预设'必须包含推断'才能达标，除非任务明确要求分析隐含意义。"
+            },
+            "source_task_id": "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_b7ceaefd499a409599a4943bc2d638f6"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_79b95111fb0e49379f9ea751a7a3a347",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_1",
+                  "question": "生成的问题是否严格基于提供的文本内容，且未引入任何外部背景知识或虚构信息？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_2",
+                  "question": "答案是否准确引用了文本中的关键细节（如人物动作、环境描写、对话内容），并能将这些信息整合成逻辑连贯的陈述？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_3",
+                  "question": "问题的难度是否适合Level 2英语水平，能够测试学生对文本表层信息的理解、词汇识别或简单的情节梳理能力？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_4",
+                  "question": "输出是否包含清晰的问题陈述和对应的完整答案，且语言表达符合英语学术规范（语法正确、用词恰当）？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "本任务处于修订阶段（stage: revise），需基于提供的小说节选（Becky Manawatu, Auē）生成并回答一个符合'2.3 Level 2英语不熟悉文本’标准的阅读理解题。原草稿标准过于侧重‘推断’和‘隐喻分析’，忽略了Level 2可能包含的整合显性信息与情境描述的能力。根据经验指引，不应将单纯的‘事实检索’或‘情节复述’直接视为低阶错误，只要答案能整合时间、地点、人物及动作等要素形成连贯叙述，即应视为达标。因此，修订后的标准将调整权重：降低对深层推断的强制要求，增加对问题与文本相关性、答案完整性（涵盖关键细节如人物、动作、环境）以及语言规范性的核验，确保评估既符合Level 2难度，又避免过度苛求未明确要求的深层分析。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_79b95111fb0e49379f9ea751a7a3a347",
+              "normalized_weights": {
+                "rubric_79b95111fb0e49379f9ea751a7a3a347_1": 0.25,
+                "rubric_79b95111fb0e49379f9ea751a7a3a347_2": 0.35,
+                "rubric_79b95111fb0e49379f9ea751a7a3a347_3": 0.2,
+                "rubric_79b95111fb0e49379f9ea751a7a3a347_4": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "生成的问题关于场景和人物行为，答案完全基于提供的文本内容（如夜晚、河边、捕鳗鱼、具体人物名字及动作），未引入任何外部背景知识或虚构信息。",
+                  "rejected_reason": "生成的问题询问叙述者看到鳗鱼时的行为，答案描述的情节（跟随鳗鱼进入深水、寻找）完全基于文本第20-25行及后续内容，未引入任何外部背景知识或虚构信息。"
+                },
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "答案准确引用了文本中的关键细节，包括时间（night）、地点（near a river）、人物（narrator, Tom Aiken, Beth, Aunty Kat）以及具体动作（walking up the river, using a lamp/gaff, hooking eel by mouth, swinging onto rocks），并将这些信息整合成了逻辑连贯的陈述。",
+                  "rejected_reason": "答案准确引用了文本中的关键动作细节：'creeps up behind the swimming-slow eel'（对应creeps up behind...）、'walk right into the deep dark part of the water'（对应follows it into a deep, dark part）以及'I search the dark water for the eel'（对应searches for the eel），并将这些分散的句子整合成了逻辑连贯的陈述。"
+                },
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "问题询问的是‘设置’和‘人物在做什么’，这属于对文本表层信息的直接提取和理解，词汇简单，情节梳理清晰，非常适合Level 2英语水平学生的认知能力。",
+                  "rejected_reason": "问题针对的是文本中明确描述的连续动作序列（看到鳗鱼->跟随->寻找），属于表层信息理解，词汇（creep, swim, deep, dark, search）符合Level 2英语难度，适合测试学生对简单情节梳理的能力。"
+                },
+                {
+                  "criterion_id": "rubric_79b95111fb0e49379f9ea751a7a3a347_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出包含了清晰的标题'Level 2 Question'、具体的问题陈述以及对应的完整答案段落；语言表达符合英语学术规范，语法正确，用词恰当（如'referred to as', 'demonstrates how to'）。",
+                  "rejected_reason": "输出包含了清晰的**Question**和**Answer**标题，问题语法正确（一般现在时），答案句子结构完整且用词恰当，符合英语学术规范。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 1.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "上一轮尝试中，经验7被错误地引入（parent_ids包含'7'），但系统提供的allowed_parent_ids列表中仅存在编号1-6的经验，导致验证失败。此外，分析发现Rubric 4虽然修正了'推断'的过度要求，但仍判定两个回答在难度上均完全符合Level 2标准（score均为1.0），未能区分人工偏好中的优劣差异（人工认为Response 2优于Response 1）。根本原因在于：原任务Prompt明确要求生成'2.3 level 2 english Unfamiliar text'的问题，其中'Unfamiliar text'通常意味着文本具有陌生性、文化背景或复杂句式，需要一定的适应性理解；而修订后的Rubric将Level 2定义为仅测试'表层信息提取'和'简单情节梳理'，忽略了'不熟悉文本'对词汇语境推断或文化背景理解的潜在要求。Judge因此无法区分'Response 2的综合概括'与'Response 1的单点复述'在应对'Unfamiliar'这一约束时的优劣。正确的评分标准应保留对'文本熟悉度'或'语境推断'的考量，而非将其完全降维为简单检索。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_b49d53b1d4184b4097dd3fe796721a03",
+            "method": {
+              "trigger": "当任务明确指定文本类型为'Unfamiliar text'（不熟悉文本）且需生成阅读理解问题时",
+              "principle": "不应将Level 2难度机械等同于'仅能进行事实检索'，而应核验问题是否涉及对陌生词汇、文化背景或隐含语境的初步推断与解释，以体现'不熟悉'带来的认知挑战。",
+              "application_guide": "Generator在设计此类标准时，需避免将答案限制在纯显性信息的罗列。若文本包含特定文化元素（如毛利语词汇、特定习俗）或陌生表达，评分标准应允许甚至鼓励回答中包含对这些元素的简要解释或语境化描述（如指出某行为的文化含义），以此作为区分'简单复述'与'有效理解'的关键维度。即使不强制深层隐喻分析，也需确认回答展现了超越字面翻译的理解能力。"
+            },
+            "source_task_id": "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0",
+            "parent_ids": [
+              "exp_8fef665fedf143edb5e00eea3758d1c3"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_b49d53b1d4184b4097dd3fe796721a03"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_667655b977b048c3ae0eb79720431c8d",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_1",
+                  "question": "生成的阅读理解问题是否直接源于提供的文本内容，且未引入任何外部事实或假设？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_2",
+                  "question": "提供的答案是否能从文本中找到明确的证据支持，并准确复述或解释关键细节（如人物的具体动作、情感状态及环境描写）？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_3",
+                  "question": "问题是否要求答题者进行适当的推断或文本分析（例如解读人物心理、象征意义或文化语境），而不仅仅是检索显性事实？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_4",
+                  "question": "答案是否展现了对文本中特定文化元素（如毛利语词汇whānau、狩猎习俗）或陌生表达的有效理解与语境化解释？",
+                  "weight": 0.1
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_5",
+                  "question": "输出的语言是否符合英语学术规范，问题陈述清晰无歧义，答案逻辑连贯且语法正确？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "本次任务旨在修订针对'2.3 Level 2英语不熟悉文本’（小说节选《Auē》）的生成与回答评分标准。核心交付物为一份包含1至8条标准的JSON，每条标准需包含明确的核验问题（question）和权重（weight），总和为1。分析重点在于：1) 确保生成的问题严格基于提供的文本，不引入外部信息；2) 答案必须能从文本中找到确切依据，并能解释关键细节（如人物动作、情感变化、文化背景暗示）；3) 难度需符合Level 2标准，即超越简单的事实检索，涉及推断、词汇理解或情节分析；4) 格式需清晰规范。修订过程将结合提供的经验，特别关注对文本中特定文化元素（如毛利语词汇whānau、行为习俗）的理解是否被纳入评估，避免仅停留在字面翻译。权重分配将侧重于问题的相关性（35%）、答案的准确性与深度（35%）、难度匹配度（20%）以及格式规范（10%）。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_667655b977b048c3ae0eb79720431c8d",
+              "normalized_weights": {
+                "rubric_667655b977b048c3ae0eb79720431c8d_1": 0.3,
+                "rubric_667655b977b048c3ae0eb79720431c8d_2": 0.3,
+                "rubric_667655b977b048c3ae0eb79720431c8d_3": 0.2,
+                "rubric_667655b977b048c3ae0eb79720431c8d_4": 0.1,
+                "rubric_667655b977b048c3ae0eb79720431c8d_5": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "生成的问题询问场景和人物活动，答案中提到的夜晚、河流、捕鳗鱼以及具体人物（叙述者、Tom Aiken、Beth、Aunty Kat）均直接源自提供的文本内容，未引入任何外部事实或假设。",
+                  "rejected_reason": "生成的问题询问叙述者看到游在前面的鳗鱼时的行为，这一内容完全基于提供的文本中'I see an eel swimming ahead... I creep up behind the swimming-slow eel'等段落，未引入任何外部事实或假设。"
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "答案准确复述了文本中的关键细节：场景设定为夜间河边，人物包括叙述者和同伴，具体动作如使用灯、gaff（叉），以及Tom Aiken如何用gaff钩住鳗鱼并甩到岩石上，这些均有明确的文本证据支持。",
+                  "rejected_reason": "答案准确复述了文本中的关键动作细节：叙述者‘creeps up behind the swimming eel’（悄悄跟在后面）、'follows it into a deep, dark part of the river'（跟随进入深水黑暗处）以及'searches for the eel in the dark water'（在暗水中寻找），这些均能在原文中找到明确证据支持。"
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "问题和答案主要集中在显性事实的检索（如“在哪里”、“谁”、“做什么”），并未要求答题者进行推断、分析人物心理（如叙述者的勇气或恐惧）、解读象征意义或深入分析文化语境，仅停留在表面信息提取层面。",
+                  "rejected_reason": "该问题和答案仅要求检索文本中显性的事实信息（即叙述者做了什么具体动作），并未要求答题者进行推断、分析人物心理（如恐惧与勇气的冲突）、解读象征意义或探讨文化语境，不符合“不仅仅是检索显性事实”的标准。"
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "虽然答案提到了文本中的词汇，但未对关键文化元素（如毛利语词汇'whānau'的含义，或'River Warrior'这一称呼在故事中的特殊文化/心理含义）进行有效的解释或语境化分析，缺乏对陌生表达的深度理解展示。",
+                  "rejected_reason": "虽然文本包含毛利语词汇（如whānau）和文化背景（狩猎习俗），但生成的问题和答案完全未涉及对这些特定文化元素的理解、解释或语境化分析，仅关注物理动作。"
+                },
+                {
+                  "criterion_id": "rubric_667655b977b048c3ae0eb79720431c8d_5",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出的英语语言符合学术规范，问题陈述清晰无歧义，答案逻辑连贯，语法正确，结构完整。",
+                  "rejected_reason": "输出的语言符合英语学术规范，问题陈述清晰无歧义，答案语法正确且逻辑连贯，能够准确回应问题。"
+                }
+              ],
+              "chosen_score": 0.7,
+              "rejected_score": 0.7,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

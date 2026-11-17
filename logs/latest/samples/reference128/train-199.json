@@ -1,0 +1,342 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:7f76655ca53d8fa4f0928f92444639a3569168c38d08142ea6e0924d39865dc2",
+    "task": "How do you say a in Mandarin Chinese?",
+    "chosen": "The pronunciation of the letter \"a\" in Mandarin Chinese is similar to the \"a\" in the English word \"father.\" It is written as 阿 (ā). However, please note that Mandarin Chinese is a tonal language, and the tone used can change the meaning of the word. The ā here is pronounced with the first tone, which is a high and level tone.",
+    "rejected": "The Mandarin Chinese word for \"a\" is **一个 (yīgè)**. \n\nHere's a breakdown:\n\n* **yī** means \"one\"\n* **gè** means \"a\" \n\nSo, \"一个\" literally translates to \"one a\". \n\n\nLet me know if you'd like to learn more about Chinese pronunciation or other words!",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9899,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 contains factually incorrect information, making it mostly unhelpful to the user. ",
+          "feedback1": "The response is perfectly helpful. The response accurately identifies and fulfills the request in the prompt. The response identifies the core request as information regarding the pronunciation of the letter a in Mandarin. The response provides the requested information and an example for the user. The response also provides background about Mandarin Chinese pronunciation.",
+          "feedback2": "The response is slightly helpful. The response contains wrong information. Mandarin Chinese does not have articles like the English language; rather, nouns are able to stand alone or with a classifier. Furthermore, the word yi is more of a direct translation to the article \"a\" in English. The response fails to provide correct information and can be misleading to the user. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2.  @Response 2 assumes written word, rather than pronunciation. ",
+          "feedback1": "The response is partially helpful. The model has given a succinct response to the pronunciation of 'a' in the Mandarin Chinese language. The response is not very thorough and although it alludes to further information that would help to clarify and produce a fuller answer, the model stops short of providing this detail. There is plenty of additional information that could be included to allow for a clearer understanding. Additionally, the model needs to address the slight ambiguity of the prompt and clarify the response in light of this. ",
+          "feedback2": "The response is slightly helpful. The model has failed to respond with the required pronunciation as requested, but has supplied some information regarding the character for the word 'a' in Mandarin Chinese. The response should be thorough in its content and should not exclude the most common information regarding pronunciation, as this is clearly what the user is asking, not a grammatical need. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. It directly addresses the pronounciation of the letter \"a\" in Mandarin, explaining both the sound and the tone, which was the main focus of the prompt. @Response 2 introduces an unrelated word. ",
+          "feedback1": "The response is mostly helpful. The response correctly explains how \"a\" is pronounced in Mandarin and provides the tonal context (first tone, high and level). However, it could benefit from clarifying that the example provided is often used as a prefix or particle rather than solely representing the phonetic sound \"a.\" While this is not completely incorrect, it could confuse someone unfamiliar with Mandarin. The explanation is clear and structured, with a logical flow. The language is precise and uses terminology suitable for a college-level audience or someone with basic linguistic knowledge. The response is concise and to the point but is almost too short. A bit more explanation would make it more complete. ",
+          "feedback2": "The response is slightly helpful. It is not entirely accurate in addressing the prompt. The word \n—↑(yige) is not simply the translation of \"a\" but actually means \"one\" in the context of counting or referring to one item. The response misses the key point of explaining how the letter \"a\" is pronounced in Mandarin, which is the actual focus of the prompt. So, while it presents a Mandarin word containing \"a,\" it doesn't address the pronunciation or tone as the prompt requests. The language is best suited to someone at a college level, with at least a basic understanding of Mandarin Chinese. The response is short but doesn't effectively explain the key concept of the prompt. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_09a6193f4087aee86380",
+        0.2843399918935243
+      ],
+      [
+        "task_9dd1b88c04719372773f",
+        0.2601276642180745
+      ],
+      [
+        "task_cf0849210da080ac4a88",
+        0.22863377744914318
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_021b1f4bcc0c43cf9acfd88584e44161",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_9dd1b88c04719372773f",
+              "similarity": 0.2601276642180745,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f468e89f57bfb815c10134d0df8ce77a4402e794fd0a563373d98fc236cda2a6:exp_021b1f4bcc0c43cf9acfd88584e44161"
+                ],
+                "task_ids": [
+                  "1a1c600329509a659fdf594ac42f169b2c9134bbe1d5553becf1c11b536fff08"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.29299881764041424
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.2592193438506861
+      ],
+      [
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        0.22721135194917733
+      ],
+      [
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        0.2163942454139769
+      ],
+      [
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        0.21129319753027995
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.21031533205270198
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.21024345356184088
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.20646724167119423
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.20453605135448905
+      ],
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.2027197301977921
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29299881764041424
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2592193438506861
+      },
+      {
+        "experience_id": "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22721135194917733
+      },
+      {
+        "experience_id": "exp_4609692fd9c043118c81db8f6cdbecba",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2163942454139769
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21129319753027995
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21031533205270198
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21024345356184088
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20646724167119423
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20453605135448905
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_748cc59b04eb4a44ad81d41d7ebe9810": "任务要求生成简短词汇（'a in Mandarin Chinese'），符合经验3的触发条件；该经验明确指出评分标准应允许在核心词汇外包含必要的解释性文字，避免将合理的引导语误判为违反‘单一输出’要求的硬伤，这对于翻译类短词任务是关键的形式约束指导。"
+  },
+  "draft": {
+    "rubric_id": "rubric_2604759dec4d4fb68a23c38d697f3d70",
+    "criteria": [
+      {
+        "criterion_id": "rubric_2604759dec4d4fb68a23c38d697f3d70_1",
+        "question": "是否提供了字母 'a' 在普通话中的标准拼音发音（如 'ā'）？",
+        "weight": 0.6
+      },
+      {
+        "criterion_id": "rubric_2604759dec4d4fb68a23c38d697f3d70_2",
+        "question": "回答是否明确针对单个字母 'a' 的发音，未混淆为单词或其他含义？",
+        "weight": 0.4
+      }
+    ],
+    "analysis": "任务要求将英文字母 'a' 翻译成普通话。交付物应为该字母在普通话中的标准发音描述或对应的汉字注音（如拼音 'ā'）。范围仅限于对单个字母 'a' 的翻译，不涉及其他语境或变体。格式上应提供清晰的语音表示。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_019b3fb20a84457e8e0f55a62e5324f4",
+        "criteria": [
+          {
+            "criterion_id": "rubric_019b3fb20a84457e8e0f55a62e5324f4_1",
+            "question": "是否提供了字母 'a' 对应的标准汉语拼音发音（例如 'ā'）？",
+            "weight": 0.7
+          },
+          {
+            "criterion_id": "rubric_019b3fb20a84457e8e0f55a62e5324f4_2",
+            "question": "回答内容是否严格限定于单个字母 'a' 的发音，未混淆为其他单词、含义或无关信息？",
+            "weight": 0.3
+          }
+        ],
+        "analysis": "任务要求将英文字母 'a' 转换为普通话中的发音表示。核心交付物是该字母在标准汉语拼音系统中的读音，通常体现为带声调的元音符号（如 ā）。由于是单个字母，需排除将其误作单词或特定词汇含义的情况。修订阶段需确保初稿标准能准确覆盖‘提供标准拼音’和‘限定对象为单字母’这两个关键维度，权重分配应侧重于发音的准确性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_019b3fb20a84457e8e0f55a62e5324f4",
+        "normalized_weights": {
+          "rubric_019b3fb20a84457e8e0f55a62e5324f4_1": 0.7,
+          "rubric_019b3fb20a84457e8e0f55a62e5324f4_2": 0.3
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_019b3fb20a84457e8e0f55a62e5324f4_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中明确提供了字母 'a' 对应的标准汉语拼音发音 'ā'，并给出了汉字示例 '阿'。",
+            "rejected_reason": "回答未提供字母 'a' 对应的标准汉语拼音发音（如 ā、á、ǎ、à），而是错误地将其解释为单词 '一个 (yīgè)'，其中 'gè' 是量词而非字母 'a' 的发音。"
+          },
+          {
+            "criterion_id": "rubric_019b3fb20a84457e8e0f55a62e5324f4_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然以字母 'a' 的发音为切入点，但引入了汉字 '阿'（表示一个具体的词/含义）以及关于声调改变词义的通用解释，内容超出了严格限定于单个字母 'a' 发音的范围，存在混淆字母与单词含义的情况。",
+            "rejected_reason": "回答内容未严格限定于单个字母 'a' 的发音，而是混淆了字母与词汇概念，将字母 'a' 误译为中文短语 '一个'，并提供了关于该短语含义的无关信息。"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 0.0,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_9035ff61de4c4de0987bfb40f8c70aac",
+        "criteria": [
+          {
+            "criterion_id": "rubric_9035ff61de4c4de0987bfb40f8c70aac_1",
+            "question": "回答是否提供了字母 'a' 在普通话中的标准拼音发音（如 'ā'）？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_9035ff61de4c4de0987bfb40f8c70aac_2",
+            "question": "回答是否明确针对单个字母 'a' 的发音，未将其混淆为其他单词含义或错误拼写？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务要求将英文字母'a'翻译为普通话发音。核心交付物是该字母对应的标准拼音（如 'ā'）。范围严格限定于单个字母的发音，不涉及单词含义或其他语境。允许的回答形式包括直接提供拼音、带声调的拼音字符或简要说明其读音，但必须准确无误。修订基于初稿，重点在于确保评分标准能明确区分‘正确发音’与‘混淆含义’，同时避免因格式（如是否包含引号）产生误判，参考经验指出应关注核心内容而非绝对化的字符限制。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_9035ff61de4c4de0987bfb40f8c70aac",
+        "normalized_weights": {
+          "rubric_9035ff61de4c4de0987bfb40f8c70aac_1": 0.6,
+          "rubric_9035ff61de4c4de0987bfb40f8c70aac_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_9035ff61de4c4de0987bfb40f8c70aac_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出了字母'a'的拼音发音为'ā'，并提供了对应的汉字'阿'。",
+            "rejected_reason": "回答未提供字母 'a' 在普通话中的标准拼音发音（如 'ā'），而是错误地将其解释为数量词“一个”的组成部分。"
+          },
+          {
+            "criterion_id": "rubric_9035ff61de4c4de0987bfb40f8c70aac_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答专门针对单个字母'a'的发音进行了解释，将其与英语单词中的发音进行了类比，并未混淆为其他单词含义或错误拼写。",
+            "rejected_reason": "回答未能明确针对单个字母 'a' 的发音，反而将其混淆为单词含义（将字母 'a' 等同于量词 'a' 的概念），并给出了错误的拼写和翻译逻辑。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

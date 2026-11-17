@@ -1,0 +1,515 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:f74425d114da2a13d1b5d25d007e3fee744c3c012d5827351fcc1d638c057f43",
+    "task": "Do you understand what this emoji means: 🙃",
+    "chosen": "Sure, I'd be happy to help! The emoji \"🙃\" is commonly used to represent a sense of sarcasm, humor, or a playful tone. It's often referred to as the \"upside-down face\" emoji and can be used to indicate a lighthearted or joking manner, especially when the message might otherwise be taken too seriously. It can also be used to convey a sense of confusion, frustration, or irony in a playful way.\n\nHere's an example of how it might be used: \"I just love it when my computer crashes right before I save my work 🙃\" In this context, the emoji helps to soften the tone and indicate that the speaker is trying to find humor in a frustrating situation.",
+    "rejected": "Yes, I do. This emoji is called a \"slightly smiling face\" and is used to express a slightly smiling or amused expression. It is typically used in text messages or social media posts to convey a lighthearted or playful tone.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 18563,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 provided inaccurate information, stating the emoji was a \"slightly smiling face\". @Response 2 on the other hand, mentioned the correct name for the emoji and complemented it with its meaning, usage and examples.",
+          "feedback1": "The response is not helpful. The response included information about a different emoji than the prompt was asking about. \"Slightly smiling face\" is not the correct emoji, although the information about the slightly smiling face was correct. Even though incorrect information was given, the response is too straightforward and does not expand on emojis meaning.",
+          "feedback2": "The response is perfectly helpful. The prompt asked about a specific emoji, and the correct response given was \"upside-down face\". It explains what it represents as being \"sarcasm, humor, or playful tone\" and how to use it. The response also uses an example to provide more information about its meaning."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it identifies the correct emoji and gives an adequate explanation.",
+          "feedback1": "The response is slightly helpful. The response attempted to identify the emoji but was unsuccessful. The response falsely states the emoji as \"slightly smiling face\" when it is actually an upside down version of it. Since this was incorrect, the description is for the wrong emoji. The response should be rewritten to identify the correct emoji and explain its uses.",
+          "feedback2": "The response is perfectly helpful. The response identified the correct emoji and gave an accurate explanation of it. The example used is spot on and natural for how the emoji is typically used over text. The response length is appropriate, fully explaining without being verbose. The style is easy to read."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 correctly identifies the emoji and the manner in which it would be used. It also provides an example for the user to understand how the emoji would be used within a conversation. ",
+          "feedback1": "The response is not helpful. It misidentifies the emoji and the usage of it. This is not a helpful response to the user as if the user relied on the information on the prompt, they would be potentially leading themselves to a social faux-pas. The \"slightly smiling face\" does not even seem to exist. ",
+          "feedback2": "The response is mostly helpful. It correctly identifies the emoji and explains the different circumstances where the emoji can be used. The addition of the example sentence is appreciated because it can be used to solidify the user's understanding. However, the response is a bit long for what the user requested. For example, the second-last sentence of the first paragraph is seemingly redundant and could be combined with the sentence before it."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_b0cd0ffae7f11f283687",
+        0.3048397844804518
+      ],
+      [
+        "task_c4dfba5eab304ce312ca",
+        0.2889090633792777
+      ],
+      [
+        "task_7ef074b48a3f4c718e14",
+        0.283359338952283
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.2889090633792777,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_2732b913fc5d4915b4f316fee2203a6b"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_7ef074b48a3f4c718e14",
+              "similarity": 0.283359338952283,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:eca61f0e945a34930daad51d285de8b5205ae80928ca6c4b0ffb6d95893042a9:exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+                ],
+                "task_ids": [
+                  "ed2f09fe9b7e395eddc064da2d4394e1666e005c2b721c93d41ceacbcaec0e66"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_7ef074b48a3f4c718e14",
+              "similarity": 0.283359338952283,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:eca61f0e945a34930daad51d285de8b5205ae80928ca6c4b0ffb6d95893042a9:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "ed2f09fe9b7e395eddc064da2d4394e1666e005c2b721c93d41ceacbcaec0e66"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_b0cd0ffae7f11f283687",
+              "similarity": 0.3048397844804518,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:7f76655ca53d8fa4f0928f92444639a3569168c38d08142ea6e0924d39865dc2:exp_748cc59b04eb4a44ad81d41d7ebe9810",
+                  "helpsteer3:train:523e40916fcb196b590bcb32feb2708e2fb50495d4a44e0c52e92709ade7d26b:exp_748cc59b04eb4a44ad81d41d7ebe9810",
+                  "helpsteer3:train:b0407ca009da186bdfef4e5e3e75f952677ac584a79d4ab2f06e47b5638a82d7:exp_748cc59b04eb4a44ad81d41d7ebe9810"
+                ],
+                "task_ids": [
+                  "ef66f8004a1dee184cacbd88e4355c93cbb1c02b0b52c0dbe17cb56975dbb28a",
+                  "739e19648ab2f99625d24635ad4f5272ef980cc4d9453ed305af52ecf79a277e",
+                  "0f3b0c42d77ae294800174eab563b16f68354c109ec66e92d1c81a6e80ef2634"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.2889090633792777,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.38491904224762674
+      ],
+      [
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        0.3422806485672506
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.3294718676289503
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.3214712526595325
+      ],
+      [
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        0.29896658830931366
+      ],
+      [
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        0.2959373908668702
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.28513161603733217
+      ],
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.27729917723782715
+      ],
+      [
+        "exp_392a33af46744dbf91e8754240ac16de",
+        0.2764860712090446
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.26349224664880966
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.28513161603733217
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.38491904224762674
+      },
+      {
+        "experience_id": "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3422806485672506
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3294718676289503
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3214712526595325
+      },
+      {
+        "experience_id": "exp_f119c00feba548d7a466b43903d7e2e1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29896658830931366
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_c80505c0967d4b13a55b0dca34c181d9": "任务询问的是表情符号'🙃'的含义，该符号具有多义性（如字面含义、反讽、无奈等），且用户未指定具体语境。经验 6 明确指出当输入包含多义性词汇且未指定语境时，评分标准应优先考核‘意图识别的准确性’，即模型是否锁定了最可能的流行用法（如反讽/倒置的笑）而非仅解释字面意义或罗列所有歧义，这与本题的核心需求完全匹配。"
+  },
+  "draft": {
+    "rubric_id": "rubric_1bee9388ba1f46658519a19b6593a1db",
+    "criteria": [
+      {
+        "criterion_id": "rubric_1bee9388ba1f46658519a19b6593a1db_1",
+        "question": "是否明确描述了该emoji为倒置的笑脸表情？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_1bee9388ba1f46658519a19b6593a1db_2",
+        "question": "是否解释了该emoji通常表达的讽刺、无奈、尴尬或反语等情感色彩？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_1bee9388ba1f46658519a19b6593a1db_3",
+        "question": "是否通过具体解释含义的方式直接回应了关于理解的提问，而非仅回答'是'或'否'？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_1bee9388ba1f46658519a19b6593a1db_4",
+        "question": "回答内容是否清晰、无歧义且符合该emoji在主流文化中的通用用法？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求确认模型是否理解倒置笑脸emoji (🙃) 的含义。在draft阶段，需生成对emoji含义的准确描述作为初稿。核验标准应聚焦于：1. 是否明确指出了该符号的字面形态（倒置的笑脸）；2. 是否涵盖了其核心语义（如讽刺、无奈、尴尬或反语等语境下的使用）；3. 回答是否直接回应了'是否理解'的提问（即通过解释含义来展示理解）。权重分配将侧重于语义覆盖的准确性与完整性。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_22746bb2328b4283b4067e951166a4e5",
+        "criteria": [
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_1",
+            "question": "是否明确指出了该emoji的字面形态为倒置的笑脸？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_2",
+            "question": "是否解释了该emoji通常表达的讽刺、无奈、尴尬或反语等情感色彩？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_3",
+            "question": "是否通过具体解释含义的方式直接回应了关于理解的提问，而非仅回答'是'或'否'？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_4",
+            "question": "回答内容是否清晰、无歧义且符合该emoji在主流文化中的通用用法？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求确认模型对倒置笑脸 (🙃) 的理解。修订阶段需基于初稿检查并优化标准，确保其能准确核验：1. 字面形态识别（倒置）；2. 核心情感语义覆盖（讽刺、无奈等）；3. 回答策略是否通过解释含义而非简单肯定来回应提问；4. 表达的清晰度与文化通用性。权重分配侧重于语义准确性和直接回应问题的有效性，同时保留对形态描述的必要性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_22746bb2328b4283b4067e951166a4e5",
+        "normalized_weights": {
+          "rubric_22746bb2328b4283b4067e951166a4e5_1": 0.25,
+          "rubric_22746bb2328b4283b4067e951166a4e5_2": 0.4,
+          "rubric_22746bb2328b4283b4067e951166a4e5_3": 0.25,
+          "rubric_22746bb2328b4283b4067e951166a4e5_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中明确提到了该emoji被称为'upside-down face'（倒置的脸），指出了其字面形态。",
+            "rejected_reason": "回答中未提及该emoji的字面形态为倒置的笑脸，仅称其为'slightly smiling face'（略带微笑的脸），忽略了其视觉上的倒置特征。"
+          },
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答详细解释了该emoji表达的讽刺（sarcasm）、幽默、尴尬或反语等情感色彩，如提到'sense of sarcasm', 'irony', 'frustration'等。",
+            "rejected_reason": "回答仅提到表达'lighthearted or playful tone'（轻松或 playful 的语气），未解释该emoji通常表达的讽刺、无奈、尴尬或反语等情感色彩，而这正是该emoji在主流用法中的核心含义。"
+          },
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答没有仅回答'是'或'否'，而是通过详细描述含义和使用场景直接回应了关于理解的提问。",
+            "rejected_reason": "回答以'Yes, I do'开头直接回应了理解提问，并随后补充了具体的含义和使用场景，而非仅回答'是'或'否'。"
+          },
+          {
+            "criterion_id": "rubric_22746bb2328b4283b4067e951166a4e5_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答内容清晰无歧义，准确描述了该emoji在主流文化中的通用用法，并提供了恰当的例子。",
+            "rejected_reason": "回答将该emoji描述为表达'lightly smiling or amused expression'和'lighthearted or playful tone'，这不符合该emoji在主流文化中通常代表讽刺、无奈或尴尬的通用用法，存在误导性且不准确。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.25,
+        "margin": 0.75,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_c80505c0967d4b13a55b0dca34c181d9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_a2f380acccf34716af9eb99412a38f12",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_1",
+            "question": "回答是否明确指出了该 emoji 的字面形态为倒置的笑脸？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_2",
+            "question": "回答是否准确解释了该 emoji 通常表达的情感色彩（如讽刺、无奈、尴尬、反语或苦中作乐）？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_3",
+            "question": "回答是否通过具体阐述含义的方式直接回应了关于理解的提问，而非仅回答‘是’或‘否’？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_4",
+            "question": "回答内容是否符合该 emoji 在主流数字文化中的通用用法且表述清晰无歧义？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求确认模型是否理解倒置笑脸表情符号 (🙃) 的含义，当前处于修订阶段。需核验初稿标准是否准确覆盖了该 emoji 的字面形态（倒置的笑脸）及其核心情感语义（讽刺、无奈、尴尬、反语等）。同时需确保回答方式直接回应了‘是否理解’的提问，即通过解释含义来展示理解，而非简单的是/否。经验提示虽提及多义词意图识别，但本任务中 emoji 含义相对固定且无显著歧义语境冲突，故重点在于对通用文化用法的准确描述与直接回应。修订后的标准将保留原 draft 的核心维度，微调权重以强化语义覆盖的准确性，并明确排除仅回答‘是’或‘否’的情况。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a2f380acccf34716af9eb99412a38f12",
+        "normalized_weights": {
+          "rubric_a2f380acccf34716af9eb99412a38f12_1": 0.2,
+          "rubric_a2f380acccf34716af9eb99412a38f12_2": 0.4,
+          "rubric_a2f380acccf34716af9eb99412a38f12_3": 0.3,
+          "rubric_a2f380acccf34716af9eb99412a38f12_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中明确提到了该 emoji 被称为 'upside-down face'（倒置的脸），直接指出了其字面形态特征。",
+            "rejected_reason": "回答未指出该 emoji 的字面形态为“倒置的笑脸”，而是将其描述为"
+          },
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答准确列举了该 emoji 表达的情感色彩，包括 sarcasm（讽刺）、humor（幽默）、irony（反语）以及 frustration（无奈/沮丧），符合通常的用法解释。",
+            "rejected_reason": "回答仅提到表达“轻微微笑”或“被逗乐”的情绪，未准确解释该 emoji（🙃）通常用于表达讽刺、无奈、尴尬、反语或苦中作乐等复杂情感色彩。"
+          },
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答没有仅用 '是' 或 '否' 回应，而是详细阐述了含义、名称及具体使用场景，直接且完整地回应了关于理解的提问。",
+            "rejected_reason": "回答虽然以 Yes 开头，但紧接着提供了关于该 emoji 名称和用途的具体阐述，直接回应了关于理解的提问，而非仅停留在简单的肯定或否定。"
+          },
+          {
+            "criterion_id": "rubric_a2f380acccf34716af9eb99412a38f12_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答内容符合主流数字文化中对 🙃 的通用理解，表述清晰，并通过具体例句展示了其在语境中的实际用法，无歧义。",
+            "rejected_reason": "回答将 🙃 描述为通用的“轻微微笑”表情，这不符合该 emoji 在主流数字文化中主要作为“倒置笑脸”代表讽刺、无奈或尴尬的通用用法，表述存在偏差且易产生歧义。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.3,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

@@ -1,0 +1,621 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:d340b48c11404ebd67b258b6860284f6f59481320e3c7012b9d7bc443a525313",
+    "task": "Write a Thank you note to A11y team in US who send gift for my new born baby.",
+    "chosen": "Dear A11y Team,\n\nI hope this message finds you all well and in good spirits. I am writing to express my heartfelt gratitude for the thoughtful and generous gift you sent for my new born baby. Your kindness and support during this special time in our lives mean the world to us.\n\nThe beautiful gift you chose is not only practical but also a wonderful addition to our baby's collection. It is clear that you put a lot of care and consideration into selecting it, and we are truly touched by your thoughtfulness. Your gift will be cherished and used with love, and it will always remind us of the amazing team that we are fortunate to be a part of.\n\nYour unwavering support and encouragement throughout my pregnancy and now during this new chapter of our lives have been invaluable. I am grateful to be part of a team that values and cares for its members so deeply. Your kindness and generosity are a testament to the incredible culture and community that we have built together.\n\nOnce again, thank you so much for your thoughtful gift and for being such an amazing team. I am looking forward to introducing our little one to all of you soon. Until then, please take care and stay safe.\n\nWarm regards,\n\n[Your Name]",
+    "rejected": "Subject: Thank You for the Thoughtful Gift!\n\nDear A11y Team,\n\nThank you so much for the wonderful gift for our new baby, [baby's name]! We are so touched by your generosity and thoughtfulness.\n\n[Optional: Mention something specific about the gift you liked, e.g., \"The [gift item] is absolutely adorable and [baby's name] already seems to love it!\"]\n\nYour kindness means a lot to us, especially during this exciting time. We are so grateful to be part of such a supportive team.\n\nWarmly,\n\n[Your Name] and [Partner's Name]",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15036,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 generates an email template with an unnecessary \"optional\" section in the middle. @Response 2 provides a well written thank you letter adressed to the appropriate team as mentioned in the prompt. ",
+          "feedback1": "The response is slightly helpful. The user is requesting help writing a letter to their accessability team (A11y) to thank them for the gifts for their newborn baby. The response generates an email template. There is an included \"optional\" section that is completely unnecessary and irrelevant. That should have just been part of the letter if the model wanted to include it in the response, but not as an optional suggestion. The user is sending this letter to the US so it is heavily implied they need assistance with writing in English. ",
+          "feedback2": "The response is perfectly helpful. The response eloquently and professionaly achieves the goal of creating a thank you letter for the user's accessability team in the US. The letter has a grateful and kind tone to it and it is free of any grammar and spelling errors. The response can't be objectively improved on and is fully helpful to the user, and it satisfies the request in the prompt in every way. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. Although @Response 2 fulfills the prompt's request, the note is verbose and lacks details. @Response 1, however, provides a generic template for an email note that falls short of being useful.",
+          "feedback1": "The response is partially helpful. Although the prompt does not include many details, it can be reasonably assumed that it wanted an actual thank you note for a baby gift directed to team members. Instead, the response provides a generic template for an email that contains basic ideas for writing a thank you note.  The template and email are not appropriate formats for conveying a personalized and heart-felt message of gratitude. It would not satisfy the user's request.",
+          "feedback2": "The response is mostly helpful. Although the prompt does not include many details, it can be reasonably assumed that it wanted an actual thank you note for a baby gift directed to team members. The response provides a personalized and heart-felt message of gratitude that would be appropriate for fulfilling the user's request. There are, however, issues of repetition of words and ideas. The word \"thoughtful\" is used three times and ideas of support and generosity are expressed twice. The repetition is a result of padding. In general, the note is too long. The note could also be improved by making it sound less generic such as specifying what the gift was and commenting on its uses. The response would partially satisfy the user's request."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it is more detailed, emotionally engaging, and personal, reflecting genuine gratitude and appreciation for the team's support and the gift. This makes it more impactful and aligned with the prompt’s intent.",
+          "feedback1": "The response is mostly helpful. It provides a clear, polite, and well-structured thank-you note that aligns with the prompt’s requirements. The tone is warm and appropriate for expressing gratitude to the A11y team, and the inclusion of optional placeholders allows for some flexibility in personalizing the note. However, the use of placeholders like \"[baby's name]\" and \"[gift item]\" without specific examples or replacements makes the response slightly incomplete. This reduces the emotional impact and personalization that would make the note more meaningful. Overall, the response is effective and fulfills the user's request, but small improvements in personalization would enhance its quality further.",
+          "feedback2": "The response is perfectly helpful. It provides a polite and warm thank-you note template that aligns well with the user's prompt. The structure is clear, and the tone is appropriate, reflecting gratitude and thoughtfulness. However, the placeholders (e.g., \"[baby's name]\" and \"[gift item]\") could have been replaced with specific details to make the response more complete and personalized. Additionally, including an example of the gift or its significance would further enhance the note’s emotional impact. While effective, these minor omissions prevent the response from achieving a perfect score."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_f9de21b5c690a06f7375",
+        0.41341992840736286
+      ],
+      [
+        "task_dc9a0d87e201ce4d49c9",
+        0.3579711568376005
+      ],
+      [
+        "task_c060f5e4253df3ebaae9",
+        0.3366715465457773
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+          "score": 0.5,
+          "evidence": [
+            {
+              "group_id": "task_c060f5e4253df3ebaae9",
+              "similarity": 0.3366715465457773,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:95de80e10fda2ba3d156fa25fe5e4931c9fb69a67c4b49003a24fae598385a6f:exp_f3d8df9469c548fda7606217b85b067d",
+                  "helpsteer3:train:6481af919abb165a547cc1f646cb2a37a64118ff594e060369cc21eddeb9e7cd:exp_f3d8df9469c548fda7606217b85b067d"
+                ],
+                "task_ids": [
+                  "31b9717e52ca92c5c6e8ceb9d390df98612dbe7d7c4be63aa67c825d2121f569",
+                  "1438dca2be1dc5ece736711e4beb23816232a9c7bc57f53c30abe702f7e95636"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_f9de21b5c690a06f7375",
+              "similarity": 0.41341992840736286,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c5da14ee8131f6779989fdcc099ffef369a8ce41960208042440fe09291e9671:exp_4c7d35b8aa5b4aee91e312c48c9c18d9"
+                ],
+                "task_ids": [
+                  "ab5b61dfb719c01ca1b4cf574fe84a271467eae44e7066bdd35ccc6df55e105e"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_dc9a0d87e201ce4d49c9",
+              "similarity": 0.3579711568376005,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:03610923a5810fb14c9eba3f90cb7cee41f7366a93d997d2f8b4b9b5717c3578:exp_6680c6d0e7b742c59507e0439024a78b"
+                ],
+                "task_ids": [
+                  "e471b87bec37aad1b94e09cccde14821f1d8f64262e78c23b17b76f27b8531e0"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c060f5e4253df3ebaae9",
+              "similarity": 0.3366715465457773,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:158892330c74d00c5ed22f66a4463c74cadba6a366c2bfcc52e09c2fa3884287:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:0a6f7e79a250595d3f1541258824883b3863f48b421120b02590d80022630a36:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:5a76c78a7c37e2717a00f84628fd63717a9cbbf879dbb7425b7fc4b81381e411:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:7f741ae88bd4374c4c27d51f867aed71836e248c48d8d9f85255fa7f0ba1de69:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:95de80e10fda2ba3d156fa25fe5e4931c9fb69a67c4b49003a24fae598385a6f:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:66a69c8fd1373ec8921af69292b7a6b3bd8d2eb093b3cac826c62be13ec99724:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:6481af919abb165a547cc1f646cb2a37a64118ff594e060369cc21eddeb9e7cd:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:defcf1db8ff9c2c1c2cf357c02a9d5f31c0a53aa187d105adea5a45473c42fa1:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:22efef89ca0b21e2dcce4316fc3b21e715b26bc429e99b73369243f368762396:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:40ca671e8ad9d966d489fe6b1db2793d41588693509b53aac6cf5e5c33296d55:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:936088f3686a90e5d3e9abef6b1a7791571ea765456214436c31a5fd2357ce8f:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "60faa8caadb3230c5f0987bd2cb0064810592fcca63714b6f2b19b3356775488",
+                  "b164e33565642c2add1f0d0c77cf294a23b404dc1940ba6b0fc2b797b98858b1",
+                  "5adea8017bca5cc52642d920bf5ca3a0b90ebac0455158f7b81f8dc80f690714",
+                  "a350aa003365432bc0e09282052c68dd7d3bb22f16113452f0782ceb561b1987",
+                  "31b9717e52ca92c5c6e8ceb9d390df98612dbe7d7c4be63aa67c825d2121f569",
+                  "3ffed720bc43b4570b2d5d7a5256df9ffbf22d60b81327e376f7782dbb1fff42",
+                  "1438dca2be1dc5ece736711e4beb23816232a9c7bc57f53c30abe702f7e95636",
+                  "46bd56ed55add4e45d9aa7872e5a5d6a039aaf0f3d1041541ed8f73b4c29378b",
+                  "4846042e6bf3e98b44591c8db38f81b1644f98e5f027f3dade0f11735fb3fe7a",
+                  "2284cd30d4cfceff8cba275c920c1d9ff013219682d1892cc511216b0b7666c3",
+                  "1de41774c88d4c423ce06a855013568be0cbdc4fa6727429897c756c118d6cf6"
+                ]
+              }
+            },
+            {
+              "group_id": "task_f9de21b5c690a06f7375",
+              "similarity": 0.41341992840736286,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c5da14ee8131f6779989fdcc099ffef369a8ce41960208042440fe09291e9671:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "ab5b61dfb719c01ca1b4cf574fe84a271467eae44e7066bdd35ccc6df55e105e"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c060f5e4253df3ebaae9",
+              "similarity": 0.3366715465457773,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:158892330c74d00c5ed22f66a4463c74cadba6a366c2bfcc52e09c2fa3884287:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:66a69c8fd1373ec8921af69292b7a6b3bd8d2eb093b3cac826c62be13ec99724:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:40ca671e8ad9d966d489fe6b1db2793d41588693509b53aac6cf5e5c33296d55:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "60faa8caadb3230c5f0987bd2cb0064810592fcca63714b6f2b19b3356775488",
+                  "3ffed720bc43b4570b2d5d7a5256df9ffbf22d60b81327e376f7782dbb1fff42",
+                  "2284cd30d4cfceff8cba275c920c1d9ff013219682d1892cc511216b0b7666c3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c060f5e4253df3ebaae9",
+              "similarity": 0.3366715465457773,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:5a76c78a7c37e2717a00f84628fd63717a9cbbf879dbb7425b7fc4b81381e411:exp_f589e4c6a08945d498eccbea1df77ae5"
+                ],
+                "task_ids": [
+                  "5adea8017bca5cc52642d920bf5ca3a0b90ebac0455158f7b81f8dc80f690714"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.4290739197020206
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.3965523589038501
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.3832560429991757
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.37132159652363506
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.3703190651012902
+      ],
+      [
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        0.3661703223102467
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.35675184063421095
+      ],
+      [
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        0.3536897736207891
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.3530339818217643
+      ],
+      [
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        0.3464836587889776
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+        "source": "historical",
+        "historical_score": 0.5,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3832560429991757
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3530339818217643
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4290739197020206
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3965523589038501
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.37132159652363506
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3703190651012902
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_8a047aa502234685891ad41a1a24d090": "任务明确要求生成针对特定对象（US A11y team）的简短沟通内容（感谢信），且输入中提供了具体背景（收到礼物、新生儿）。经验4强调在此类场景下，评分标准必须将‘幻觉信息核查’设为独立否定项，严禁模型编造任务未提及的细节（如虚构具体的礼物名称、团队的具体成员或额外的项目细节），同时需确保输出形式仅限于信件本身，不包含多余的解释性文字，这与本任务对事实准确性和格式纯度的要求高度一致。"
+  },
+  "draft": {
+    "rubric_id": "rubric_2584063b82094af383ed105041324390",
+    "criteria": [
+      {
+        "criterion_id": "rubric_2584063b82094af383ed105041324390_1",
+        "question": "是否明确提及收信方为美国的A11y团队？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_2584063b82094af383ed105041324390_2",
+        "question": "是否清晰说明感谢原因是收到新生婴儿的礼物？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_2584063b82094af383ed105041324390_3",
+        "question": "是否表达了新生儿出生带来的喜悦或情感共鸣？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_2584063b82094af383ed105041324390_4",
+        "question": "是否体现了对团队关怀或无障碍文化的认可？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_2584063b82094af383ed105041324390_5",
+        "question": "语言是否为自然流畅的英文且语气真诚友好？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "任务要求撰写一封感谢便条，收件人为美国A11y团队（无障碍团队），事由是对方赠送了新生婴儿礼物。设计标准需涵盖：明确的致谢对象与背景、对礼物的具体提及、表达对新生命的喜悦、体现专业/团队文化关联（如无障碍精神）、语气真诚得体、符合英文商务/社交礼仪规范。由于是draft阶段，重点在于内容完整性与基本语用恰当性，不强制特定长度或格式细节，但需确保核心要素齐全。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1",
+        "criteria": [
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_1",
+            "question": "是否明确提及收信方为美国的A11y团队？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_2",
+            "question": "是否清晰说明感谢原因是收到新生婴儿的礼物？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_3",
+            "question": "是否表达了新生儿出生带来的喜悦或情感共鸣？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_4",
+            "question": "是否体现了对团队关怀或无障碍文化的认可？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_5",
+            "question": "语言是否为自然流畅的英文且语气真诚友好？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求撰写一封感谢便条，收件人为美国A11y团队（无障碍团队），事由是对方赠送了新生婴儿礼物。设计标准需涵盖：明确的致谢对象与背景、对礼物的具体提及、表达对新生命的喜悦、体现专业/团队文化关联（如无障碍精神）、语气真诚得体、符合英文商务/社交礼仪规范。由于是revise阶段，重点在于检查初稿是否完整覆盖上述核心要素，并修正可能存在的遗漏或语用不当之处。权重分配上，感谢原因和对象最为关键，其次是情感表达和文化契合度，最后是语言质量。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1",
+        "normalized_weights": {
+          "rubric_213ce6bbbb514319b2cb05e2ad9007d1_1": 0.2,
+          "rubric_213ce6bbbb514319b2cb05e2ad9007d1_2": 0.25,
+          "rubric_213ce6bbbb514319b2cb05e2ad9007d1_3": 0.2,
+          "rubric_213ce6bbbb514319b2cb05e2ad9007d1_4": 0.15,
+          "rubric_213ce6bbbb514319b2cb05e2ad9007d1_5": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复开头明确称呼为'Dear A11y Team'，并在正文中多次提及团队（team），符合收信方为A11y团队的设定；虽然未显式出现'US'字样，但任务要求是写给美国的A11y团队，通常称呼'A11y Team'即指代该特定团队，且无信息表明其非美国团队，结合上下文语境视为满足。",
+            "rejected_reason": "回复中明确使用了'Dear A11y Team'作为称呼，并在正文开头提及了'Thank you so much for the wonderful gift'，虽然没有显式写出'US'字样，但任务要求是写给美国的A11y团队，而回复中的'A11y Team'直接对应了收信方身份。考虑到通常此类场景下A11y团队即指代特定部门，且未出现与'美国'冲突的信息，该条目基本满足对收信方的识别要求。"
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复第二段明确提到'thoughtful and generous gift you sent for my new born baby'，清晰说明了感谢的原因是收到了给新生婴儿的礼物。",
+            "rejected_reason": "回复正文第一句明确写道'Thank you so much for the wonderful gift for our new baby'，清晰地说明了感谢的原因是收到了给新生婴儿的礼物。"
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中使用了'special time in our lives'、'wonderful addition'、'cherished and used with love'等表达，充分传达了新生儿出生带来的喜悦和感动的情感共鸣。",
+            "rejected_reason": "回复中表达了强烈的情感，如'We are so touched by your generosity and thoughtfulness'以及'We are so grateful to be part of such a supportive team'，体现了收到礼物时的喜悦和对团队支持的感激之情。"
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复第三段特别提到'team that values and cares for its members so deeply'以及'incredible culture and community'，体现了对团队关怀文化和无障碍社区氛围的认可。",
+            "rejected_reason": "回复虽然提到了'supportive team'，但并未具体体现对'无障碍文化（accessibility culture）'或'A11y'这一特定领域关怀的认可。内容较为通用，缺乏将礼物与无障碍理念或团队专业精神相联系的具体表述。"
+          },
+          {
+            "criterion_id": "rubric_213ce6bbbb514319b2cb05e2ad9007d1_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "整篇回复使用自然流畅的英文，语法正确，语气真诚友好，情感表达得体，完全符合感谢信的要求。",
+            "rejected_reason": "整篇回复使用自然流畅的英文，语气真诚友好，结构完整，符合感谢信的写作规范。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.85,
+        "margin": 0.15,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_8a047aa502234685891ad41a1a24d090"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_e41163b6fdc84d2595e606654107c719",
+        "criteria": [
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_1",
+            "question": "是否明确提及收信方为位于美国的A11y（无障碍）团队？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_2",
+            "question": "是否清晰说明感谢的具体原因是收到了针对新生婴儿的礼物？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_3",
+            "question": "是否表达了迎接新生儿带来的喜悦、感动或对未来的美好期许？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_4",
+            "question": "是否体现了对团队关怀精神或无障碍包容文化的认可与呼应？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_5",
+            "question": "语言是否为自然流畅的英文，且整体语气真诚、友好且符合社交礼仪？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求撰写一封感谢便条，对象为美国A11y（无障碍）团队，事由是对方赠送了新生婴儿礼物。修订阶段需确保初稿在事实准确性、情感表达、文化关联及语言得体性上无遗漏或错误。标准设计聚焦于：明确收信方身份与地域背景、准确陈述致谢缘由（新生儿礼物）、自然流露喜悦情感、恰当结合无障碍团队的文化特质（关怀/包容），以及保证英文语法的流畅与语气的真诚。经验提示强调避免幻觉和越界解释，因此标准中隐含了对‘不虚构额外细节’的核查，但通过正向描述核心要素来体现合规性，而非直接引用经验编号。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_e41163b6fdc84d2595e606654107c719",
+        "normalized_weights": {
+          "rubric_e41163b6fdc84d2595e606654107c719_1": 0.2,
+          "rubric_e41163b6fdc84d2595e606654107c719_2": 0.25,
+          "rubric_e41163b6fdc84d2595e606654107c719_3": 0.2,
+          "rubric_e41163b6fdc84d2595e606654107c719_4": 0.15,
+          "rubric_e41163b6fdc84d2595e606654107c719_5": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复信的开头明确称呼收信方为'Dear A11y Team'，并在正文中多次提及团队（team），虽然未显式出现'US'或'United States'字样，但结合任务背景'A11y team in US'，信件内容完全针对该特定团队，且A11y通常指代无障碍团队，符合对收信方的明确指代要求。",
+            "rejected_reason": "回复中明确使用了'Dear A11y Team'作为称呼，且任务背景已设定该团队位于美国，符合收信方身份要求。"
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "信中明确写道'...gift you sent for my new born baby'以及'...thoughtful gift and for being such an amazing team'，清晰说明了感谢的具体原因是收到了针对新生婴儿的礼物。",
+            "rejected_reason": "正文第一句明确写道'Thank you so much for the wonderful gift for our new baby'，清晰说明了感谢的具体原因是收到了针对新生婴儿的礼物。"
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "文中表达了喜悦和感动，如'mean the world to us'、'truly touched by your thoughtfulness'，同时也表达了对未来的期许，如'I am looking forward to introducing our little one to all of you soon'。",
+            "rejected_reason": "文中表达了'We are so touched'、'exciting time'以及'grateful to be part of such a supportive team'，体现了迎接新生儿带来的喜悦和感动。"
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "信中特别提到'Your kindness and generosity are a testament to the incredible culture and community that we have built together'以及'team that values and cares for its members so deeply'，体现了对团队关怀精神和包容文化的认可与呼应。",
+            "rejected_reason": "回复中提到'received... generosity and thoughtfulness'并感谢成为'supportive team'的一部分，呼应了团队的关怀精神，虽未直接大篇幅论述无障碍文化，但通过表达感激体现了对包容性团队氛围的认可。"
+          },
+          {
+            "criterion_id": "rubric_e41163b6fdc84d2595e606654107c719_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "整封信使用自然流畅的英文，语气真诚、友好且得体，符合社交礼仪规范，没有语法错误或生硬的表达。",
+            "rejected_reason": "整篇回复使用自然流畅的英文，语气真诚友好，格式规范（包含主题行、称呼、正文、落款），符合社交礼仪。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

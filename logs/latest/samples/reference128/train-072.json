@@ -1,0 +1,398 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:568f457840ec6857a8d03aa63d47175ca4f893d31c2a16c0bc905f57f7b3f56f",
+    "task": "is there a word synonymous to/ means swept aside/ swept under the carpet ",
+    "chosen": "Yes, here are a few synonyms for \"swept aside\" and \"swept under the carpet\":\n\n1. **Ignored**:\n   - Overlooked\n   - Disregarded\n   - Neglected\n\n2. **Dismissed**:\n   - Rejected\n   - Brushed off\n   - Cast aside\n\n3. **Suppressed**:\n   - Repressed\n   - Hidden\n   - Concealed\n\n4. **Burying one's head in the sand**:\n   - Avoiding a problem by refusing to acknowledge it\n\n5. **Pretending not to notice**:\n   - Turning a blind eye\n   - Deliberately ignoring",
+    "rejected": " Yes, there are several phrases and words that convey the meaning of being ignored or not dealt with properly, similar to \"swept aside\" or \"swept under the carpet.\" Here are a few:\n\n1. Swept under the rug\n2. Swept under the carpet\n3. Swept under the table\n4. Swept under the mat\n5. Pushed under the bus\n6. Tucked away\n7. Out of sight, out of mind\n8. Ignored\n9. Overlooked\n10. Side-stepped\n\nThese phrases are often used to describe situations where problems or issues are deliberately ignored or not addressed properly.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15338,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. This is because @Response 2 follows the prompt instruction and lists words that are synonymous with the phrase, while @Response 1 fails to follow the prompt instruction and lists phrases instead of words.",
+          "feedback1": "The response is not helpful. This is because it fails to follow a major instruction from the prompt. The prompt requests words that are synonymous with \"swept under the carpet\", but the response has provided phrases that are synonymous instead of words. It also includes \"swept under the carpet\" as a synonym. This is not helpful in any way.",
+          "feedback2": "The response is partially helpful. This is because it provides the correct words that are synonymous with the phrases \"swept aside\" and \"swept under the carpet\". The response categorizes these synonyms, using numbers, headers, and bullet points. However, the fourth and fifth headers contain phrases that are synonymous with the aforementioned phrases, but the prompt asks for words."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. The first response gives misleading and irrelevant information, whereas the second one's examples are much more clear and relevant to the prompt. It is also better organized and numbered in comparison to the first response.",
+          "feedback1": "The response is partially helpful. It understands the prompt, and gives some synonyms. However, some of those examples are misleading in the sense that their meanings are quite different from sweep aside. The irrelevant information leads to a certain level of verbosity. There is also a minor problem with numbering (0 after 9).",
+          "feedback2": "The response is perfectly helpful. It follows the prompt and gives examples for synonyms for the phrasal verb 'sweep aside'. Language is clear and there is no verbosity. Each example is also divided into sub-categories to provide further similar verbs or adverbs. It could be developed by adding some definitions."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 1 provided a list of similar phrases which was not requested. @Response 2 provided a list of well-formatted words that are synonymous with the idiom in the prompt. Therefore, @Response 2 satisfied the user's request and is more helpful. ",
+          "feedback1": "The response is slightly helpful. The prompt asked for \"a word\" that is synonymous with \"swept aside/ swept  under the carpet\". The response provides several phrases that mean the same thing but only provides a few words that are synonyms. Therefore, the response missed the instruction to provide synonymous words  and not similar phrases. Overlooked and ignored are appropriate in this response, but the inclusion of the other irrelevant phrases limits the helpfulness of this response. ",
+          "feedback2": "The response is mostly helpful. The response provided a list of single words that are synonymous with \"swept under the carpet\". The words are formatted in bullet points under different headings that of how the idiom in the prompt can be interpreted as. This is very helpful. The response also included  phrases and idioms that have similar meanings, which isn't necessary to answer the prompt, as the prompt asked for singular words, not phrases. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_28eff85e54057e42378d",
+        0.28035172932900176
+      ],
+      [
+        "task_54ecc4724dfef5cb12ef",
+        0.27417939018532833
+      ],
+      [
+        "task_85b07387c12d332a8ed1",
+        0.2315911847966479
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_28eff85e54057e42378d",
+              "similarity": 0.28035172932900176,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:ce2407d8464ae59a5d59ef78fc4f27f2af17f5068652a3b491c6a40284f681aa:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_54ecc4724dfef5cb12ef",
+              "similarity": 0.27417939018532833,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:6c9efaac707ced9f07ac63656ccae35d58fc1b0d519d56d084e01d8fb33004fd:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "07994c2f436da53ed1045304b533c81ab53c7838139d400e74810d4a4fe7bba7"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f589e4c6a08945d498eccbea1df77ae5"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_9f68a031aa164c769dd78ba249279604",
+        0.26475668110436257
+      ],
+      [
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        0.2251134703956316
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.21053548172322112
+      ],
+      [
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        0.20806371378740893
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.20465444739045308
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.20000531175967934
+      ],
+      [
+        "exp_96802d2cee6f4f17acf028194475c639",
+        0.1965253577216432
+      ],
+      [
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        0.19571326844137266
+      ],
+      [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        0.19532961541432087
+      ],
+      [
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        0.19245796686033823
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.20465444739045308
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_9f68a031aa164c769dd78ba249279604",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26475668110436257
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2251134703956316
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21053548172322112
+      },
+      {
+        "experience_id": "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20806371378740893
+      },
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20000531175967934
+      },
+      {
+        "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1965253577216432
+      },
+      {
+        "experience_id": "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19571326844137266
+      },
+      {
+        "experience_id": "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19532961541432087
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_fcc695636ed649f5a7bd4ccffa98821b",
+    "criteria": [
+      {
+        "criterion_id": "rubric_fcc695636ed649f5a7bd4ccffa98821b_1",
+        "question": "是否提供了一个具体的英语单词作为答案？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_fcc695636ed649f5a7bd4ccffa98821b_2",
+        "question": "该单词的释义是否明确包含‘被忽视’、‘被搁置’或‘被刻意掩盖/隐瞒’的含义？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_fcc695636ed649f5a7bd4ccffa98821b_3",
+        "question": "是否提供了例句或上下文说明，以证明该单词可替代'swept aside'或'swept under the carpet'？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "用户请求寻找一个单词，该单词需具备'swept aside'（被搁置/被忽略）或'swept under the carpet'（被掩盖/被隐瞒）的含义。由于这两个短语在语境上略有差异（前者侧重忽视，后者侧重刻意掩盖），标准需涵盖：1. 提供的词汇必须为单个单词；2. 该单词的核心释义或常用搭配需能准确对应两个短语中的至少一个核心语义（忽视或掩盖）；3. 输出格式应清晰展示单词及其含义解释，以验证其适用性。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6",
+        "criteria": [
+          {
+            "criterion_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6_1",
+            "question": "是否提供了一个具体的英语单词（而非短语或句子）作为答案？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6_2",
+            "question": "该单词的释义或常用用法是否明确涵盖'swept aside'（被忽视/搁置）或'swept under the carpet'（被刻意掩盖/隐瞒）中的至少一种核心含义？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6_3",
+            "question": "是否提供了例句、搭配说明或上下文描述，以证明该单词在语义或语用上可替代所给短语？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "用户请求寻找一个英语单词，该单词需具备'swept aside'（被搁置/忽略）或'swept under the carpet'（被掩盖/隐瞒）的含义。由于是revise阶段且无经验输入，标准需严格基于task要求：1. 必须提供单个单词而非短语；2. 单词含义必须覆盖两个短语的核心语义之一（忽视或刻意掩盖）；3. 需提供验证其可替代性的语境证据（如例句或搭配说明）。原draft中关于‘具体英语单词’和‘释义包含特定含义’的要求合理，但将‘是否提供了例句’作为唯一验证方式可能过于绝对，应调整为‘提供证明适用性的语境说明’，允许释义、搭配或例句等多种形式。权重分配上，单词本身的存在及含义准确性为核心，占比最高；语境验证为辅助，占比次之。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6",
+        "normalized_weights": {
+          "rubric_86af450e5b6e4657a8df14a0f59f72d6_1": 0.4,
+          "rubric_86af450e5b6e4657a8df14a0f59f72d6_2": 0.4,
+          "rubric_86af450e5b6e4657a8df14a0f59f72d6_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中提供的候选词多为短语（如 'Brushed off', 'Burying one's head in the sand', 'Turning a blind eye'）或形容词/分词形式（如 'Overlooked', 'Disregarded'），且未明确区分核心动词与派生词，未能严格满足“提供一个具体的英语单词”这一单一词汇的要求。",
+            "rejected_reason": "回答主要提供了短语（如'Swept under the rug'）和动词原形列表，未明确指出哪一个具体的单词是核心答案，且大部分条目为短语而非单个单词，未满足‘提供一个具体的英语单词’的要求。"
+          },
+          {
+            "criterion_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中列出的词汇如 'Suppressed', 'Concealed', 'Hidden' 涵盖了 'swept under the carpet'（被刻意掩盖）的含义，而 'Dismissed', 'Ignored', 'Neglected' 等涵盖了 'swept aside'（被忽视/搁置）的含义，符合至少一种核心含义的要求。",
+            "rejected_reason": "回答中列出的单词如'Ignored'、'Overlooked'明确涵盖了'swept aside'的含义，同时解释部分也提到了这些词用于描述问题被故意忽视的情况，符合至少一种核心含义的覆盖要求。"
+          },
+          {
+            "criterion_id": "rubric_86af450e5b6e4657a8df14a0f59f72d6_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅提供了同义词列表和简短的定义解释（如 'Avoiding a problem by refusing to acknowledge it'），并未提供完整的例句、具体的搭配说明或上下文描述来证明该单词在实际语境中可替代原短语。",
+            "rejected_reason": "回答仅给出了单词列表和一句概括性的说明，未提供具体的例句、搭配说明或详细的上下文描述来证明该单词在语义或语用上可完全替代所给短语。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.4,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务明确要求寻找'synonymous to/ means swept aside/ swept under the carpet'的'word'（单词）。人工偏好理由明确指出：Response 1 (chosen) 提供了大量短语（如 'Brushed off', 'Burying one's head in the sand'）而非单词，尽管包含部分单词但混合了短语；Response 2 (rejected) 虽然开头列出了短语，但随后明确区分并提供了单词列表（Ignored, Overlooked等），且被标注者认为格式更清晰。然而，Judge 在评判 Criterion 4 ('是否提供了一个具体的英语单词') 时，错误地判定 Response 1 (chosen) 为 false，理由是它提供了短语；同时判定 Response 2 (rejected) 也为 false，理由是它主要提供了短语。实际上，Response 2 的核心价值在于它确实提供了单词，只是混入了短语。关键问题在于：Task 要求的是'a word'（单数或泛指单词概念），而 Judge 的标准似乎将'只要包含短语'就视为不满足'提供单词'的要求，或者未能识别出回答中存在的正确单词实体。更重要的是，人工反馈指出 Response 1 因为提供了短语而不是单词导致失败，而 Response 2 因为提供了单词且组织良好而获胜。但在 Judge 的逻辑里，Response 2 因为包含了短语也被判错。这表明评分标准设计存在缺陷：未明确界定'答案主体必须是单词'与'允许包含解释性短语'之间的边界，导致模型（Generator）在生成标准时可能错误地设定为'完全不能出现短语'，或者 Judge 在执行时忽略了回答中实际存在的单词。正确的经验是：当任务要求特定词性（如单词）时，评分标准应核验'是否存在符合要求的单词'，而非'是否仅包含单词'。如果回答包含短语作为补充说明或同义表达，只要核心答案（单词）存在且正确，不应直接判定为不合格。当前的失败轨迹显示，Judge 因回答中包含短语（即使是作为同义词列表的一部分）而全盘否定了单词的存在性，这属于对评价对象的误判（将包含短语等同于没有单词）。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_ead1450792b844a79abc92ac2021fd52",
+            "method": {
+              "trigger": "当任务明确要求提供特定词性或形式的内容（如'一个单词'、'一句话'、'代码块'）时",
+              "principle": "评分标准必须核验目标内容（如单词）的'存在性与准确性'，严禁将回答中允许的辅助性内容（如解释、例句、同义短语列表）视为对核心要求的否定，除非任务明确禁止任何非目标形式。",
+              "application_guide": "Generator 在设计此类标准时，应将核心准则表述为'是否提供了符合要求的[具体词性/形式]？'，并在应用指南中明确：若回答包含该词性的正确内容，即使伴随其他非目标形式的解释或列表，只要不影响核心答案的提取，不应判定为失败。避免使用'仅提供...'或'必须完全由...组成'等绝对化表述，除非任务有明确的排他性指令。"
+            },
+            "source_task_id": "f4ca5d0f69f55bf386143f49402c4f18240b32653b72c844b0977057db0d6f24",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_ead1450792b844a79abc92ac2021fd52"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6_1",
+                  "question": "回答中是否明确提供了一个具体的英语单词作为答案？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6_2",
+                  "question": "该单词的核心释义或常用用法是否明确包含‘被忽视’、‘被搁置’或‘被刻意掩盖/隐瞒’的含义，从而能替代'swept aside'或'swept under the carpet'？",
+                  "weight": 0.5
+                },
+                {
+                  "criterion_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6_3",
+                  "question": "是否提供了简短的解释、例句或上下文说明，以验证该单词在特定语境下可准确表达上述短语的含义？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务要求寻找一个与'swept aside'或'swept under the carpet'同义或含义相近的英语单词。核心交付物是一个具体的英文单词，其语义需涵盖‘被忽视/搁置’或‘被刻意掩盖’的含义。修订阶段的标准需确保：1. 输出确实包含一个单词；2. 该单词的释义准确对应短语的核心隐喻（忽视或掩盖）；3. 提供了必要的语境或解释以证明其适用性。原草案结构合理，但需确保权重分配聚焦于语义匹配度，因为这是判断是否满足用户请求的关键。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6",
+              "normalized_weights": {
+                "rubric_164ad0361afc49a7975ed55f6a7dfdd6_1": 0.3,
+                "rubric_164ad0361afc49a7975ed55f6a7dfdd6_2": 0.5,
+                "rubric_164ad0361afc49a7975ed55f6a7dfdd6_3": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中明确提供了多个具体的英语单词作为答案，包括 Ignored、Dismissed、Suppressed 以及短语 Turning a blind eye 等。",
+                  "rejected_reason": "回答中明确列出了多个具体的英语单词和短语作为答案，例如 'Ignored'、'Overlooked'、'Side-stepped'、'Tucked away' 等。"
+                },
+                {
+                  "criterion_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "提供的单词如 Disregarded（被忽视）、Hidden/Concealed（被掩盖）和 Turning a blind eye（故意视而不见）的核心含义均明确包含‘被忽视’、‘被搁置’或‘被刻意隐瞒’的意思，能够替代原短语的含义。",
+                  "rejected_reason": "回答提供的单词如 'Ignored'（被忽视）、'Overlooked'（被忽略/被搁置）以及短语 'Swept under the rug' 的核心含义均明确包含‘被忽视’、‘被搁置’或‘被刻意掩盖’的意思，能够替代用户询问的短语。"
+                },
+                {
+                  "criterion_id": "rubric_164ad0361afc49a7975ed55f6a7dfdd6_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答虽然列出了同义词及其相关词，但缺乏针对每个单词的具体例句或详细的上下文说明来验证其在特定语境下如何准确表达'swept aside'或'swept under the carpet'的含义，仅提供了简短的词义解释或近义词列表，未完全满足提供‘例句或上下文说明’的要求。",
+                  "rejected_reason": "回答仅提供了单词列表和一句概括性的总结说明（'These phrases are often used to describe...'），未针对具体某个单词提供独立的简短解释、例句或特定的上下文语境来验证其在句子中的准确用法。"
+                }
+              ],
+              "chosen_score": 0.8,
+              "rejected_score": 0.8,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "",
+      "attempts": [],
+      "error": "LLMFormatError: critic: invalid contract: parent IDs must reference provided experiences"
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

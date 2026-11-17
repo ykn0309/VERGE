@@ -1,0 +1,489 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:183cb5018b175171a55cfc3593fca84c90d0d4aad95edef491665a2a960a5d1b",
+    "task": "script about drake bulldogs vs aggies",
+    "chosen": "Title: \"Drake Bulldogs vs. Aggies: A Clash of Titans\"\n\nINT. SPORTS BAR - NIGHT\n\nA bustling sports bar filled with the energy of college basketball fans. The atmosphere is electric as the Drake Bulldogs prepare to face off against the Aggies.\n\nNARRATOR (V.O.)\nIn the world of college basketball, there are rivalries that stand the test of time. Tonight, we witness one such clash as the Drake Bulldogs take on the Aggies.\n\nCUT TO:\n\nINT. DRAKE BULLDOGS LOCKER ROOM - NIGHT\n\nThe Bulldogs huddle together, their faces etched with determination. COACH JONES, a seasoned veteran, delivers an impassioned speech.\n\nCOACH JONES\n(intense)\nThis is more than just a game, gentlemen. This is about pride, about legacy. Remember, we are Bulldogs. We are fierce, we are relentless, and we never back down.\n\nCUT TO:\n\nINT. AGGIES LOCKER ROOM - NIGHT\n\nThe Aggies, equally determined, prepare for the battle ahead. COACH SMITH, a tactical genius, outlines their game plan.\n\nCOACH SMITH\n(focused)\nWe know what we're up against. The Bulldogs are tough, but so are we. We've trained for this, we've prepared for this. Now, let's go out there and show them what we're made of.\n\nCUT TO:\n\nINT. BASKETBALL ARENA - NIGHT\n\nThe crowd roars as the teams take to the court. The game is intense, a back-and-forth battle of skill and strategy. The Bulldogs' aggressive offense clashes with the Aggies' solid defense.\n\nNARRATOR (V.O.)\nThe Bulldogs and the Aggies, two powerhouses of college basketball, locked in a battle for supremacy.\n\nCUT TO:\n\nINT. BASKETBALL ARENA - LATER\n\nThe game is tied, seconds left on the clock. The Bulldogs have possession. The crowd holds its breath as the final shot is taken.\n\nNARRATOR (V.O.)\nIn the end, it comes down to this. A single moment that could change everything.\n\nFADE OUT:\n\nTO BE CONTINUED...\n\nThis script sets up the rivalry between the Drake Bulldogs and the Aggies, highlighting the intensity and passion of college basketball. The outcome of the game is left open-ended, allowing for a continuation of the story.",
+    "rejected": "Title: Drake Bulldogs vs. Texas A&M Corvallis Classic Basketball Game\n\n```python\n# Importing necessary libraries\nimport datetime\nimport random\n\n# Setting up the teams\nteam_1 = {\"name\": \"Drake Bulldogs\", \"color\": \"#006400\", \"mascot\": \"Bulldog\"}\nteam_2 = {\"name\": \"Texas A&M Aggies\", \"color\": \"#101C20\", \"mascot\": \"Aggie\"}\n\n# Setting up the game details\ngame_date = datetime.date(2022, 11, 20)\ngame_location = \"Corvallis, OR\"\ngame_time = datetime.time(19, 00)\n\n# Function to simulate the game\ndef simulate_game():\n    # Setting up the teams' scores\n    drake_score = 0\n    a_m_score = 0\n\n    # Simulating the game quarters\n    for quarter in range(1, 5):\n        print(f\"\\nQuarter {quarter}:\")\n\n        # Simulating the points scored by each team in the quarter\n        drake_points = random.randint(15, 30)\n        a_m_points = random.randint(15, 30)\n\n        # Updating the scores\n        drake_score += drake_points\n        a_m_score += a_m_points\n\n        # Printing the score after each quarter\n        print(f\"{team_1['name']} ({drake_score}): {team_2['name']} ({a_m_score})\")\n\n    # Determining the winner\n    if drake_score > a_m_score:\n        winner = team_1[\"name\"]\n    else:\n        winner = team_2[\"name\"]\n\n    # Printing the final score and the winner\n    print(f\"\\nFinal Score: {drake_score}:{a_m_score}\")\n    print(f\"Winner: {winner}\")\n\n# Calling the function to simulate the game\nsimulate_game()\n\n# Printing the game details\nprint(f\"\\nGame Date: {game_date}\")\nprint(f\"Game Location: {game_location}\")\nprint(f\"Game Time: {game_time}\")\n\n# Printing the teams' details\nprint(f\"\\nTeams:\")\nfor team in [team_1, team_2]:\n    print(f\"{team['name']} ({team['color']}): {team['mascot']}\")\n```\n\nThis script simulates a basketball game between Drake Bulldogs and Texas A&M Aggies. It simulates the points scored by each team in each quarter and determines the winner based on the total scores. The script also prints the game details and the teams' details.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 19121,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 did not verify the type of script but chose the most common type. It is entertaining and satisfies the prompt.",
+          "feedback1": "The response is slightly helpful. The prompt was unclear about what type of script the response should provide. This level of professional information would not be expected unless explicitly asked for. The response can be improved by adding a step to clarify what type of script is needed before supplying the less common example.",
+          "feedback2": "The response is mostly helpful. This response successfully creates a dramatic scene as expected from two equally impressive teams battling for a win. It leaves the script open-ended with a \"TO BE CONTINUED\", setting the stage for the next scene. This response can be improved by verifying the type of scene."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 as it generates a script that adheres to the prompt constraints, while @Response 1 misunderstands the prompt and produces Python code for a basketball score simulation. ",
+          "feedback1": "The response is not helpful. Although the prompt uses the word 'script' there is no evidence to suggest that the user was asking for a Python script to predict the outcome of the game. The more common meaning of 'script' as a written representation of a movie or play is most likely intended here. The script in this response also refers to Corvallis, which is a city in Oregon, and has no relation to either of the sports teams mentioned in the prompt. ",
+          "feedback2": "The response is mostly helpful. It provides a script for what appears to be either a documentary or dramatization of a game between the Bulldogs and Aggies that is written in a plausible style and adheres to the constraints of the prompt. It could be improved by an additional request of the user asking whether they would like another version based on a more specific genre, such as a documentary or drama. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 provides a narrative script highlighting intense locker room speeches, thrilling games, and crowd reactions spurred by the rivalry. @Response 1 provides a coding script that simulates a game between the rivals and is not aligned with what the user requested. ",
+          "feedback1": "The response is not helpful. The response provides code simulating a basketball game between the Drake Bulldogs and Texas A&M Aggies. The response misunderstood the prompt entirely. The request is for a narrative script and not a coding script. Therefore, this response is completely unhelpful and does not fulfill the requirement of the prompt. ",
+          "feedback2": "The response is perfectly helpful. It provides a narrative script that describes a basketball game between the Drake Bulldogs and the Texas A&M Aggies. The script is a creative and engaging story about a basketball rivalry. It effectively transitions through key moments, switching between intense locker room speeches, thrilling game action, and crowd reactions, highlighting the rivalry's impact. The response is well-formatted and leaves the conclusion open-ended and suspenseful, keeping readers invested in the outcome."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_92263ac0c08cf60f5c0c",
+        0.24652341873027112
+      ],
+      [
+        "task_4ae6ccd4bcf62d059eb3",
+        0.24147777488614905
+      ],
+      [
+        "task_29f1c3913a4f3d11c27f",
+        0.24085479790855158
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_29f1c3913a4f3d11c27f",
+              "similarity": 0.24085479790855158,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:53abb2a41a37bbc8a737541d2fec7442df3868000cde226077344019d25164fe:exp_62add4a1e1684c5488f65574d8fdea4f"
+                ],
+                "task_ids": [
+                  "b7eb9eb3ab4bf3d82eff7bcd743c7021a56354fb7628e67bf99087880ce28de4"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_29f1c3913a4f3d11c27f",
+              "similarity": 0.24085479790855158,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:53abb2a41a37bbc8a737541d2fec7442df3868000cde226077344019d25164fe:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "b7eb9eb3ab4bf3d82eff7bcd743c7021a56354fb7628e67bf99087880ce28de4"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.18351642552711553
+      ],
+      [
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        0.16169685143857204
+      ],
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.15513480972283433
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.15008202839327964
+      ],
+      [
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        0.14298112823814335
+      ],
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.1367144940421251
+      ],
+      [
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        0.13597922231134468
+      ],
+      [
+        "exp_2adba5039571400b8862295552f46447",
+        0.1354090998941753
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.13278076053295834
+      ],
+      [
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        0.1299671714419901
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.15008202839327964
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.13278076053295834
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18351642552711553
+      },
+      {
+        "experience_id": "exp_0f69075c94084291b5f43f171d4499c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16169685143857204
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15513480972283433
+      },
+      {
+        "experience_id": "exp_670548a5fe65404ca9e76821ddc7367e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.14298112823814335
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1367144940421251
+      },
+      {
+        "experience_id": "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.13597922231134468
+      },
+      {
+        "experience_id": "exp_2adba5039571400b8862295552f46447",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1354090998941753
+      },
+      {
+        "experience_id": "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1299671714419901
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b5504c36f1e1468ca470333f1c240342": "任务明确要求生成'script'（剧本），这属于特定的文体格式约束。经验2指出当上下文包含特定文体格式（如剧本）作为核心约束时，评分标准必须明确界定该格式的具体特征（如角色名后接冒号、括号内动作等），并严格排除其他非目标文体（如纯小说叙述），这与当前任务对输出格式的严格要求完全一致。"
+  },
+  "draft": {
+    "rubric_id": "rubric_27086ff56387447ca49a7681447dc63a",
+    "criteria": [
+      {
+        "criterion_id": "rubric_27086ff56387447ca49a7681447dc63a_1",
+        "question": "剧本是否明确包含了Drake Bulldogs和Aggies两支球队及其相关比赛情境？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_27086ff56387447ca49a7681447dc63a_2",
+        "question": "剧本是否具备标准的剧本格式要素（如场景标题、动作描述、角色对白）？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_27086ff56387447ca49a7681447dc63a_3",
+        "question": "剧本是否构建了清晰的叙事弧线或戏剧冲突（如赛前紧张、赛中转折、赛后结果）？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_27086ff56387447ca49a7681447dc63a_4",
+        "question": "剧本中的角色（球员、教练、观众等）是否具有合理的动机和一致的言行？",
+        "weight": 0.1
+      },
+      {
+        "criterion_id": "rubric_27086ff56387447ca49a7681447dc63a_5",
+        "question": "剧本内容是否完整，包含开场、发展和结尾，而非片段式描述？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "本次任务要求撰写一篇关于Drake Bulldogs与Aggies（爱荷华州立大学Cyclones，此处根据语境推测为对手球队）的剧本。由于'Aggies'通常指代德州农工大学、新墨西哥州立大学等校，而Drake Bulldogs是NCAA一级联盟孟菲斯/爱荷华地区的球队，两者并非传统固定宿敌，因此需明确剧本背景（如虚构比赛、特定历史年份或跨联盟友谊赛）。作为draft阶段，重点在于构建完整的叙事结构、角色设定和对话内容，确保包含两队名称及比赛元素。格式上无严格限制，但应呈现为可执行的剧本格式（场景标题、动作描述、对白）。权重分配将侧重于核心内容完整性、戏剧冲突构建、角色一致性以及格式规范性。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_7c4836b42e57403ab7a3628d315f9666",
+        "criteria": [
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_1",
+            "question": "剧本是否明确提及并正确区分了Drake Bulldogs与具体的Aggies代表球队（如德州农工或新墨西哥州立等），且比赛情境清晰？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_2",
+            "question": "剧本是否严格遵循标准格式要素，包括场景标题、动作描述和角色对白？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_3",
+            "question": "剧本是否具备完整的叙事结构，包含开场铺垫、发展冲突及结局收束？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_4",
+            "question": "剧本中的角色言行是否符合其身份设定（球员、教练等）且具有合理的内在动机？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_5",
+            "question": "修订后的内容是否消除了初稿中可能存在的逻辑矛盾、事实错误或格式缺失？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "本次任务要求对关于Drake Bulldogs与Aggies的剧本草稿进行修订（stage: revise）。核心交付物为一份修正后的剧本，需明确包含两支球队名称、比赛情境及标准剧本格式。'Aggies'指代对象需根据上下文合理推断或明确（如德州农工或新墨西哥州立等），因Drake Bulldogs通常不与其有固定宿敌关系，剧本背景需自洽。修订过程需检查初稿是否遗漏关键要素（如完整叙事弧、角色动机）或存在格式错误，同时保留用户允许的灵活实现方式（如虚构比赛或特定历史重演）。权重分配将重点放在内容完整性（两队呈现及情境）、格式规范性及叙事逻辑上，确保修订后的作品可直接作为剧本使用。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_7c4836b42e57403ab7a3628d315f9666",
+        "normalized_weights": {
+          "rubric_7c4836b42e57403ab7a3628d315f9666_1": 0.35,
+          "rubric_7c4836b42e57403ab7a3628d315f9666_2": 0.25,
+          "rubric_7c4836b42e57403ab7a3628d315f9666_3": 0.2,
+          "rubric_7c4836b42e57403ab7a3628d315f9666_4": 0.15,
+          "rubric_7c4836b42e57403ab7a3628d315f9666_5": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "剧本虽然明确提及了Drake Bulldogs，但仅使用了泛指的'Aggies'一词，未具体指明是哪所大学的Aggies球队（如德州农工大学Texas A&M Aggies或新墨西哥州立大学New Mexico State Aggies等），导致对手身份模糊，不符合'正确区分具体Aggies代表球队'的要求。",
+            "rejected_reason": "回答中明确提及了Drake Bulldogs和Texas A&M Aggies，并正确区分了两队，比赛情境（篮球比赛）也通过代码逻辑和输出描述得到了体现。"
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "剧本包含了场景标题（如INT. SPORTS BAR - NIGHT）、动作描述（如A bustling sports bar...）以及角色对白（如COACH JONES的台词），基本遵循了标准剧本格式要素。",
+            "rejected_reason": "回答提供的是Python代码脚本，而非标准剧本格式（包含场景标题、动作描述和角色对白），不符合剧本的文体要求。"
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "剧本具备完整的叙事结构：开场在酒吧铺垫氛围和冲突背景，发展部分展示双方更衣室动员及比赛过程，结局收束于比赛最后一刻并留有悬念（TO BE CONTINUED）。",
+            "rejected_reason": "作为一段模拟比赛结果的代码，该回答缺乏叙事结构中的角色对话、情节发展和人物动机等要素，无法构成完整的叙事。"
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "角色言行符合其身份设定，教练Jones展现了激情与领导力，教练Smith展现了战术专注，球员虽无直接台词但通过动作描述体现了决心，内在动机（为荣誉而战）合理且清晰。",
+            "rejected_reason": "由于回答是程序代码而非人物对话剧本，其中不存在任何角色言行或身份设定，因此无法满足角色言行符合身份设定的要求。"
+          },
+          {
+            "criterion_id": "rubric_7c4836b42e57403ab7a3628d315f9666_5",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "由于任务要求是提供一份剧本而非修订初稿，且该回答本身并未消除任何逻辑矛盾或事实错误（例如Criterion 1中指出的对手球队不明确的问题依然存在），因此无法满足'消除初稿中可能存在的逻辑矛盾、事实错误或格式缺失'这一针对修订内容的具体要求。",
+            "rejected_reason": "任务要求是针对“修订后的内容”进行核验，但回答仅提供了一个初稿形式的代码脚本，未展示任何针对初稿问题的修订过程或消除错误的说明。"
+          }
+        ],
+        "chosen_score": 0.6,
+        "rejected_score": 0.35,
+        "margin": 0.25,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b5504c36f1e1468ca470333f1c240342"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_02bc1f41df66416084a802ba45a451df",
+        "criteria": [
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_1",
+            "question": "剧本是否明确包含了Drake Bulldogs和Aggies两支球队名称，并构建了合理的比赛情境背景？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_2",
+            "question": "剧本是否严格遵循标准剧本格式要素，包括清晰的角色名、冒号分隔的对白及括号内的动作描述？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_3",
+            "question": "剧本是否构建了清晰的叙事弧线，涵盖赛前铺垫、赛中转折及赛后结局的完整过程？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_4",
+            "question": "剧本中的角色（球员、教练、观众等）是否具有符合其身份的合理动机，且言行在全文中保持一致？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_5",
+            "question": "剧本内容是否呈现为完整的独立故事，而非片段式描述或大纲摘要？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务要求对关于'Drake Bulldogs vs Aggies'的剧本草稿进行修订核验。核心交付物为修正后的剧本，需明确包含两支球队（Drake Bulldogs与Aggies）的比赛情境。由于'Aggies'指代多所高校，且两者非传统宿敌，剧本需合理构建背景（如虚构赛事或特定年份）。修订阶段重点在于检查初稿是否具备标准剧本格式（场景标题、动作描述、角色对白），叙事弧线是否完整（赛前、赛中、赛后），以及角色动机与言行的一致性。权重分配将侧重于内容完整性与戏剧冲突（共0.55分），其次为格式规范性（0.25分）及角色逻辑（0.1分）和整体结构（0.1分）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_02bc1f41df66416084a802ba45a451df",
+        "normalized_weights": {
+          "rubric_02bc1f41df66416084a802ba45a451df_1": 0.3,
+          "rubric_02bc1f41df66416084a802ba45a451df_2": 0.25,
+          "rubric_02bc1f41df66416084a802ba45a451df_3": 0.25,
+          "rubric_02bc1f41df66416084a802ba45a451df_4": 0.1,
+          "rubric_02bc1f41df66416084a802ba45a451df_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "剧本标题及正文中明确出现了'Drake Bulldogs'和'Aggies'两支球队名称，并通过体育酒吧、更衣室演讲等场景构建了合理的赛前比赛情境背景。",
+            "rejected_reason": "回答明确包含了'Drake Bulldogs'和'Texas A&M Aggies'（Aggies）两支球队名称，并构建了比赛情境背景（如日期、地点、比分模拟过程）。"
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "剧本严格遵循了标准格式要素：使用了大写角色名（如COACH JONES）、冒号分隔对白、括号内的动作或语气描述（如(intense)、(focused)），以及标准的场景标题（如INT. SPORTS BAR - NIGHT）。",
+            "rejected_reason": "回答提供的是一段Python代码脚本，用于模拟比赛数据，而非标准剧本格式。它缺少角色名、冒号分隔的对白以及括号内的动作描述等剧本核心要素。"
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "剧本虽然包含了赛前铺垫（更衣室动员）和赛中转折（最后时刻平局），但并未呈现完整的赛后结局，而是以'TO BE CONTINUED...'结束，且后续文字说明承认结果未定，因此不符合涵盖完整过程的要求。",
+            "rejected_reason": "虽然代码逻辑涵盖了从开始到结束的过程，但这是算法执行流程，缺乏叙事弧线中的情节铺垫、人物冲突转折及情感结局，不符合剧本叙事的定义。"
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "教练Jones的动机是激发团队荣誉感和legacy，言行符合资深教练身份；Coach Smith的动机是战术执行和证明实力，言行符合战术型教练身份，且球员和观众的反应也符合其各自角色的合理预期。",
+            "rejected_reason": "回答中没有出现球员、教练或观众等具体角色，因此无法体现角色的动机、言行一致性或身份特征。"
+          },
+          {
+            "criterion_id": "rubric_02bc1f41df66416084a802ba45a451df_5",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "由于剧本在关键时刻戛然而止并标注未完待续，缺乏对比赛结果的最终交代，使其更像是一个故事的大纲摘要或片段，而非一个具有完整起承转合的独立故事。",
+            "rejected_reason": "回答呈现的是计算机程序代码及其输出说明，属于功能性工具或大纲摘要性质，并非一个完整的、具有文学性的独立故事剧本。"
+          }
+        ],
+        "chosen_score": 0.65,
+        "rejected_score": 0.3,
+        "margin": 0.35,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

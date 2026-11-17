@@ -1,0 +1,473 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:e84f94549a2bf0fb1bf496a1f9c3c7a63d041be8498d979d153e4783b6594c55",
+    "task": "rewrite below with same format:\n\nProduct: skipping rope\nDimension: 2.8m \nDetail:\n- The skipping ropes consist of a PVC cord optimized for scuff resistance, speed, and flexibility.\n- The jump rope features foam handles, ball bearing, and tangle-free cord versatile action.\n- Good for shedding weight fast, toning up and maintaining muscle tone.\n\t- Effective in building endurance, stamina, and reflexes.\n\tColor : Black ,Blue\n",
+    "chosen": "**Product:** Skipping Rope\n**Dimension:** 2.8m\n**Detail:**\n- The skipping rope consists of a PVC cord optimized for scuff resistance, speed, and flexibility.\n- The jump rope features foam handles, ball bearing, and tangle-free cord for versatile action.\n- Ideal for:\n  - Shedding weight quickly\n  - Toning up and maintaining muscle tone\n  - Building endurance, stamina, and reflexes\n**Color:** Black, Blue",
+    "rejected": "Product: Yoga Mat\nDimension: 183cm x 61cm\nDetail:\n\n* The yoga mats are made of eco-friendly TPE material, providing a non-slip surface for safe and comfortable use.\n* The mat features an alignment line for proper body positioning and a carrying strap for easy transport.\n* Ideal for various types of exercises, including yoga, pilates, and stretching.\n\t+ Helps to improve flexibility, balance, and strength.\n\t+ Effective in reducing stress and promoting relaxation.\nColor: Grey, Pink\n\nProduct: Resistance Bands\nDimension: 1.5m x 15cm (each band)\nDetail:\n\n* The resistance bands are made of high-quality natural latex, providing a durable and reliable workout tool.\n* The set includes 5 bands with different resistance levels, allowing for a customizable workout experience.\n* Great for strength training, rehabilitation, and functional training.\n\t+ Effective in building muscle strength, endurance, and flexibility.\n\t+ Helps to improve balance, coordination, and body awareness.\nColor: Black, Red, Green, Blue, Yellow",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 17524,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it fulfilled the prompt's request almost perfectly, while @Response 1 provided completely unrelated information and hallucinated two different products. Nothing in the available conversation history indicated the products mentioned in @Response 1.",
+          "feedback1": "The response is not helpful. The prompt specified to \"rewrite the text in the same format\" (implying a request to correct grammar, punctuation, and flow), but instead the model created two completely different and unrelated blocks of text \"in the same format\", for entirely different products (nothing in the available conversation history hints at these products as being mentioned).",
+          "feedback2": "The response is mostly helpful. It takes the provided text and format and rewrites it in a more succinct way. It also makes improvements to the grammar, punctuation, spelling, and format of the original text. The only room for improvement would be to move the final item \"Color\" to be aligned with the other items (Product, Dimension, and Detail)."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. The second response follows the instructions in the prompt and includes correct information.",
+          "feedback1": "The response is not helpful. The prompt clearly requests to rewrite the existing information about a skipping rope provided in the conversation history into the same format and the response does not do this. Instead, the response rewrites information in the same format, referencing different workout equipment. The response seems to be completely made up. ",
+          "feedback2": "The response is mostly helpful. The response follows the instructions and mostly rewrites the information provided in the prompt. The product name and some of the details are rewritten, while some information does stay the same. The first two bullet points could still be rewritten or shortened per the prompt's request."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1.\n\n@Response 1 fails to retain the meaning of the original text, providing 2 texts of the same format that are on different topics (different products). @Response 2 corrects the grammar of the original and is effective.",
+          "feedback1": "The response is not helpful. The final prompt requested a rewrite only. A rewrite is meant to retain the same meaning as the original. The response should just have better wording for the same things in the original text, not be written for completely different items. The response is overly verbose because it includes 2 new rewrites that are both off-topic.",
+          "feedback2": "The response is perfectly helpful. The response includes minimal rewriting that makes the text more easily digestible and highlights the features better by splitting the two points \"Shedding weight quickly\" and \"Toning up and maintaining muscle tone.\" It added a missing word to fix the grammatically incorrect \"tangle-free cord versatile action\" by adding \"for\" between \"cord\" and \"versatile.\" It also corrects some other grammar like a misplaced comma between \"black\" and \"blue.\" It does all this while maintaining the meaning of the text."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_85b07387c12d332a8ed1",
+        0.4652648751251911
+      ],
+      [
+        "task_76a181e33926fb120051",
+        0.32870817276934006
+      ],
+      [
+        "task_3a5a1b65792c42344385",
+        0.327905854188132
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": 1.0,
+          "evidence": [
+            {
+              "group_id": "task_3a5a1b65792c42344385",
+              "similarity": 0.327905854188132,
+              "statistics": {
+                "values": [
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:86768203fa894e05a54cda6d1c50ebb58efed61796afc301a0e034d29155b3e4:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "10493ed0c6b57568ea7914af48690c78f41186402327a46168f64c11f426c056"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_76a181e33926fb120051",
+              "similarity": 0.32870817276934006,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:d6257c0dcd95f0b5fa76a2ca66dd960b041fc6351a85be8a9900784db6ba53fd:exp_2732b913fc5d4915b4f316fee2203a6b"
+                ],
+                "task_ids": [
+                  "bcb15507239d8bdd259994a4443b2ecfc1849c97e8e94e3333d3217c20258cee"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_3a5a1b65792c42344385",
+              "similarity": 0.327905854188132,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:86768203fa894e05a54cda6d1c50ebb58efed61796afc301a0e034d29155b3e4:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "10493ed0c6b57568ea7914af48690c78f41186402327a46168f64c11f426c056"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_76a181e33926fb120051",
+              "similarity": 0.32870817276934006,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:d6257c0dcd95f0b5fa76a2ca66dd960b041fc6351a85be8a9900784db6ba53fd:exp_f3d8df9469c548fda7606217b85b067d"
+                ],
+                "task_ids": [
+                  "bcb15507239d8bdd259994a4443b2ecfc1849c97e8e94e3333d3217c20258cee"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        0.3356993620772838
+      ],
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.32804755884680337
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.32555938064071105
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.3185036446770769
+      ],
+      [
+        "exp_392a33af46744dbf91e8754240ac16de",
+        0.3172151227850881
+      ],
+      [
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        0.31670633150196437
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.31394656983346847
+      ],
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.3027877893421519
+      ],
+      [
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        0.30234490471140807
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.3022384180356742
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": 1.0,
+        "semantic_similarity": 0.3185036446770769
+      },
+      {
+        "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3356993620772838
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32804755884680337
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32555938064071105
+      },
+      {
+        "experience_id": "exp_392a33af46744dbf91e8754240ac16de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3172151227850881
+      },
+      {
+        "experience_id": "exp_18a8071710ea4928bd13396f432cf14a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31670633150196437
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31394656983346847
+      },
+      {
+        "experience_id": "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3027877893421519
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_f3d8df9469c548fda7606217b85b067d": "任务明确要求'with same format'，且输入文本具有严格的键值对格式（如'Product:', 'Dimension:'）和缩进层级。经验4的核心原则是要求评分标准将‘起始格式严格性’和‘特定格式约束’设为独立的高权重或否决项，严禁混淆内容语义与格式合规，这直接对应本题中必须保持原有列表结构、标签名称及缩进格式的硬性要求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_5149ad6dfe4f4453a4a69b09ff5b586b",
+    "criteria": [
+      {
+        "criterion_id": "rubric_5149ad6dfe4f4453a4a69b09ff5b586b_1",
+        "question": "输出是否严格保留了原始的字段标签顺序及键值分隔符格式（Product:, Dimension:, Detail:）？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_5149ad6dfe4f4453a4a69b09ff5b586b_2",
+        "question": "Detail部分的项目符号列表结构、缩进层级及嵌套关系是否与原文完全一致？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_5149ad6dfe4f4453a4a69b09ff5b586b_3",
+        "question": "所有原始数据点（绳长2.8m、PVC材质、泡沫手柄、轴承、防缠绕、颜色黑/蓝等）是否均被准确保留且未发生事实性错误？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_5149ad6dfe4f4453a4a69b09ff5b586b_4",
+        "question": "文本内容是否在保持原意的前提下进行了实质性的语言改写，而非直接复制原文？",
+        "weight": 0.15
+      }
+    ],
+    "analysis": "本次任务要求对提供的跳绳产品描述进行重写，核心约束是保持原始格式不变。需要核验的对象包括产品名称、尺寸、详细特性列表（含嵌套子项）、颜色信息以及整体排版结构。评分标准将聚焦于格式一致性（如冒号使用、缩进层级、列表符号）、关键信息的完整性（无遗漏或篡改）以及语言的重写质量（在保留原意基础上的表达优化）。权重分配上，格式保留和信息完整各占40%，内容重写质量占20%。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_b47fa0d606894610a4735331c7829958",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_1",
+            "question": "输出是否严格保留了原始的字段标签顺序及键值分隔符格式（Product:, Dimension:, Detail:）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_2",
+            "question": "Detail部分的项目符号列表结构、缩进层级及嵌套关系是否与原文完全一致？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_3",
+            "question": "所有原始数据点（绳长2.8m、PVC材质、泡沫手柄、轴承、防缠绕、颜色黑/蓝等）是否均被准确保留且未发生事实性错误？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_4",
+            "question": "文本内容是否在保持原意的前提下进行了实质性的语言改写，而非直接复制原文？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务为修订阶段，需基于原始Task（保持格式重写跳绳产品描述）和提供的Draft进行核验。核心约束是'相同格式'，即必须严格保留Product/Dimension/Detail的键值对结构、列表缩进层级及嵌套关系，同时确保所有事实数据（2.8m, PVC, 泡沫手柄等）准确无误且语言经过实质性改写而非抄袭。Draft中的权重分配将调整以突显格式与数据的绝对优先性，因为这是Task明确指定的硬性要求，而语言改写在保证不改变原意的前提下作为次要评分点。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b47fa0d606894610a4735331c7829958",
+        "normalized_weights": {
+          "rubric_b47fa0d606894610a4735331c7829958_1": 0.35,
+          "rubric_b47fa0d606894610a4735331c7829958_2": 0.35,
+          "rubric_b47fa0d606894610a4735331c7829958_3": 0.2,
+          "rubric_b47fa0d606894610a4735331c7829958_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未保留原始字段标签的格式。原文使用普通文本标签（Product:, Dimension:, Detail:），而回答将标签加粗并使用了 Markdown 语法（**Product:**, **Dimension:**, **Detail:**），改变了原有的键值分隔符视觉格式。",
+            "rejected_reason": "回答不仅保留了字段标签顺序，还完全改变了原始数据内容（将Product从skipping rope改为Yoga Mat和Resistance Bands，Dimension和Detail内容也全部替换），未针对原文进行改写，而是生成了全新的产品描述，违反了“rewrite below”的指令要求。"
+          },
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "Detail 部分的项目符号列表结构发生了改变。原文中 'Effective in building...' 是作为第三点 'Good for shedding weight...' 的子项存在的嵌套关系，且缩进层级固定；回答将其拆分为独立的列表项（Ideal for 下的子项），虽然内容相关，但破坏了原文特定的嵌套层级结构和缩进逻辑。",
+            "rejected_reason": "虽然回答中使用了项目符号和缩进结构，但由于内容已被完全替换为两个新产品的信息，其嵌套关系（如+号的使用）与原文的格式（-号和制表符缩进）存在差异，且整体结构因包含两个独立产品块而不同于原文的单一段落结构。"
+          },
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "所有关键数据点均被准确保留：绳长 2.8m、PVC 材质、泡沫手柄、球轴承、防缠绕功能、颜色黑/蓝以及关于减重、塑形和耐力等描述性信息均未遗漏或发生事实性错误。",
+            "rejected_reason": "回答中完全没有保留任何原始数据点，绳长2.8m、PVC材质、泡沫手柄、轴承、防缠绕功能以及黑/蓝颜色等关键信息均被替换为瑜伽垫和阻力带的参数（如TPE材质、183cm x 61cm尺寸等）。"
+          },
+          {
+            "criterion_id": "rubric_b47fa0d606894610a4735331c7829958_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "文本内容进行了实质性的语言改写。例如将 'The skipping ropes consist of' 改为 'The skipping rope consists of'，将 'Good for shedding weight fast' 重构为 'Ideal for: Shedding weight quickly'，将 'versatile action' 前的连接词调整，并未直接复制原文句子。",
+            "rejected_reason": "回答没有对原文进行语言改写，而是直接删除了原文本并生成了关于完全不同产品（瑜伽垫和阻力带）的全新文本，不存在“保持原意”的前提，属于内容替换而非改写。"
+          }
+        ],
+        "chosen_score": 0.3,
+        "rejected_score": 0.0,
+        "margin": 0.3,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_f3d8df9469c548fda7606217b85b067d"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007",
+        "criteria": [
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_1",
+            "question": "输出是否严格保留了原始的字段标签顺序及键值分隔符格式（Product:, Dimension:, Detail:），且无多余的前导或尾随空格？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_2",
+            "question": "Detail部分的项目符号列表结构、缩进层级及嵌套关系是否与原文完全一致（包括主项与子项的缩进对应）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_3",
+            "question": "尺寸数据（2.8m）、材质特性（PVC、泡沫手柄、轴承、防缠绕）、核心功效（减重、塑形、耐力等）及颜色选项（Black, Blue）是否均被准确保留且无事实性遗漏或篡改？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_4",
+            "question": "文本内容是否在保持原意的前提下进行了实质性的语言改写，避免了直接复制原文句子结构？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "本次任务处于修订阶段，需基于原始Task（重写跳绳产品描述并严格保持格式）和提供的Draft进行核验。Draft中的标准设计存在两个主要问题：一是权重分配逻辑错误，将格式和信息完整性各设为0.3和0.25，总和未达0.7且与Analysis中声称的'40%+40%'不符；二是缺少对颜色信息这一关键数据点的显式独立检查，仅笼统归入'所有原始数据点'。修订策略包括：1. 调整权重以符合总和要求并突出格式约束（作为Rewrite任务的核心前提，应赋予最高权重）；2. 细化内容检查项，确保颜色、材质、尺寸等具体参数被逐一确认；3. 修正分析描述以匹配新的权重分配逻辑。最终标准将分为：格式结构（含标签、缩进、列表层级）、关键数据完整性（分拆为尺寸/材质/功能/颜色）、语言改写质量三个维度。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007",
+        "normalized_weights": {
+          "rubric_6bb5930ff1d547bcaf4e9c58266e7007_1": 0.4,
+          "rubric_6bb5930ff1d547bcaf4e9c58266e7007_2": 0.25,
+          "rubric_6bb5930ff1d547bcaf4e9c58266e7007_3": 0.2,
+          "rubric_6bb5930ff1d547bcaf4e9c58266e7007_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出未保留原始的字段标签格式。原始要求为'Product:'、'Dimension:'等纯文本标签，而回答将其改写为加粗的'**Product:**'格式；此外，原始'Color :'中间包含空格，回答中变为'Color:'，且将逗号后的空格统一化，未严格保持原键值分隔符及空格细节。",
+            "rejected_reason": "输出将原始产品'Product: skipping rope'篡改为'Yoga Mat'和'Resistance Bands'，且添加了重复的标题结构，未保留原始的单一字段标签顺序及内容；同时部分键值分隔符格式（如 Color 后的空格）与原文不完全一致。"
+          },
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "Detail部分的列表结构发生了改变。原文中后三个功效点（减重、塑形、耐力）是作为第三项主点的子项（嵌套缩进）存在的，而回答中将它们提取出来变成了独立的第二级列表项，破坏了原文'Good for... -> - Effective...'的主从嵌套层级关系。",
+            "rejected_reason": "输出包含两个完整的产品条目（瑜伽垫和阻力带），其列表结构、缩进层级及嵌套关系是针对新内容的生成，而非对原文中'skipping rope'Detail部分的逐项保留；原文只有一个主项和两个子项，而输出每个产品下都有三个主项和两个子项，结构不一致。"
+          },
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "所有关键事实数据均被准确保留：尺寸2.8m、材质特性（PVC、泡沫手柄、轴承、防缠绕）、核心功效（减重、塑形、耐力等）以及颜色选项（Black, Blue）在内容上完整且无篡改或遗漏。",
+            "rejected_reason": "输出完全遗漏了原文的核心事实数据：尺寸从'2.8m'变为'183cm x 61cm'等，材质从'PVC'变为'TPE/乳胶'，功效描述被替换为完全不同的运动场景（瑜伽/普拉提 vs 减重/塑形），颜色也从'Black, Blue'变为其他颜色组合，存在严重的事实性篡改和遗漏。"
+          },
+          {
+            "criterion_id": "rubric_6bb5930ff1d547bcaf4e9c58266e7007_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "文本内容在保持原意的基础上进行了实质性改写，例如将'consist of'改为'consists of'，将'fast'改为'quickly'，将'Good for shedding weight fast'重构为'Ideal for: Shedding weight quickly'，避免了直接复制原文的句子结构。",
+            "rejected_reason": "任务要求是对'skipping rope'这一特定内容进行改写，但输出完全改变了产品对象和核心信息，属于重写不同主题的内容，而非在保持原意前提下的语言改写，导致原意丢失。"
+          }
+        ],
+        "chosen_score": 0.35,
+        "rejected_score": 0.0,
+        "margin": 0.35,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

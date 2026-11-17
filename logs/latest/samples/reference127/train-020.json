@@ -1,0 +1,295 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:a054a2ce6f2c3d8720514325021dba8dbcede7d9edc54f56f7c83b17b6b40b11",
+    "task": "which restaurant is recognized as the ‘true’ joe’s pizza",
+    "chosen": "The \"true\" Joe's Pizza is often recognized as the original location in Greenwich Village, New York City, at 7 Carmine Street. This pizzeria, founded in 1975 by Joe Pozzuoli, is known for its classic New York-style pizza and has been featured in various movies and TV shows. However, there are other pizzerias with the name \"Joe's Pizza\" in different locations, so it's essential to specify the original one in Greenwich Village when referring to the \"true\" Joe's Pizza.",
+    "rejected": "This is a bit of a pizza rivalry! \n\nThere are two famous pizzerias in New York City both claiming to be the \"true\" Joe's Pizza:\n\n* **Joe's Pizza (Mercer Street):** This is the original Joe's Pizza, established in 1975 on Carmine Street in Greenwich Village. It's known for its classic New York-style slices and long lines.\n\n* **Joe's Pizza (Bleecker Street):** This location opened in 1985 and is owned by a different family. While they also serve classic New York-style pizza, some argue their slices are slightly different in taste and texture.\n\nUltimately, which one is the \"true\" Joe's Pizza is a matter of personal preference. Both are popular spots with loyal followings. \n\n**To make your own decision, you'll have to try them both!**",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 18300,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it contains accurate information about Joe's Pizza in New York.  @Response 1 contains incorrect and irrelevant information because it confuses the details of Joe's Pizza locations across the country and Joe's rivals.",
+          "feedback1": "The response is partially helpful.  It does provide some accurate details about the first Joe's Pizza. However, there is no location on Mercer Street in New York City.  It seems the response confused it with Pizza Joe's in Mercer, Pennsylvania.  \n\nIn addition, there is no Joe's Pizza on Bleecker Street in New York.  There is, however, a strong rivalry between Joe's Pizza and Bleecker Street Pizza.\n\nFurthermore, there is another Joe's Pizza in New York but it is on 8th Avenue.\n\nLastly, the response assumed that the prompt was only referring to Joe's Pizza in New York however, there are clearly others across the country.\n\nThe response was completely accurate about the existence of pizza rivalry just not about the different businesses, in the rivalry.  Anbd this incorrect information is irreleavnt to the user.",
+          "feedback2": "The response is perfectly helpful.  It provides clear and accurate information about Joe's Pizza in New York while recognizing that there are other restaurants with a similar name existing in different locations.  \n\nHowever, the response assumed the prompt meant Joe's Pizza in New York, and the prompt was ambiguous regarding which city it was referring to."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 as it provides a more polished answer to the user. @Response 1 answers the user's prompt but contains significant inaccuracies and irrelevant information, which compromises the value of the response.\n\n@Response 2 has no such issues, only omitting a fact (the \"true\" Joe's pizza has expanded to numerous locations), which, overall, would not detract too much from the answer. ",
+          "feedback1": "The response is partially helpful. The response provides truthful information about Joe's Pizza on Carmine street, but the information about Mercer Street and Bleecker Street is not relevant or truthful. The user is likely to find some value in this response, but the hallucinations, inaccuracies, and irrelevant information severely compromise the quality. ",
+          "feedback2": "The response is mostly helpful. The model fails to acknowledge that the \"true\" Joe's pizza expanded into several locations throughout Manhattan, the rest of the United States, and China. Otherwise, the information provided is accurate and the user will likely find this answer highly valuable in relation to their prompt. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it is correct, hallucination-free, and helpful. @Response 1 hallucinates a rival Joe's Pizza that does not exist. ",
+          "feedback1": "The response is slightly helpful. The information about the Mercer Street Joe's Pizza is correct, although it is missing the context that Joe's Pizza is now a local chain with several locations. The second Joe's Pizza mentioned (Bleeker Street) appears to be a hallucination. There is a Bleeker Street Pizzeria, but it is not called Joe's. ",
+          "feedback2": "The response is mostly helpful. It would be more helpful if the response mentioned the fact that the other locations are part of the Joe's Pizza local chain rather than completely separate businesses. Other than that minor omission, the response is perfectly helpful and provides useful context about why the original location might be referred to as the true location. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_50ceffc464b463e306fc",
+        0.1693663435144106
+      ],
+      [
+        "task_e63d066f2537f7a9fda9",
+        0.12222680505336661
+      ],
+      [
+        "task_ca97c56d4aef900905ad",
+        0.10937133868222303
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_e6c897802cef421ba20109560cd6b0b2",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_ca97c56d4aef900905ad",
+              "similarity": 0.10937133868222303,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:d74120094d1c999aedaea7fb09390ceef8c8f3a512fa1e916d24962e0aa4659b:exp_e6c897802cef421ba20109560cd6b0b2"
+                ],
+                "task_ids": [
+                  "d02d5c90f99472731d87c749fa285fb20422bf76521a91d421281baaa33d5084"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_09eb932d6d8240b489b819c8bb9306b2",
+        "exp_5d494f64f5f34a659522d57b1c811779",
+        "exp_88444417d4724563aeb575ab56bd2c72",
+        "exp_cd3c5cbd0de6430081fe15e0718c9be3"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_cd3c5cbd0de6430081fe15e0718c9be3",
+        0.15546137561923873
+      ],
+      [
+        "exp_09eb932d6d8240b489b819c8bb9306b2",
+        0.12653174918434124
+      ],
+      [
+        "exp_88444417d4724563aeb575ab56bd2c72",
+        0.12162970221439376
+      ],
+      [
+        "exp_e6c897802cef421ba20109560cd6b0b2",
+        0.11947203909408077
+      ],
+      [
+        "exp_5d494f64f5f34a659522d57b1c811779",
+        0.054323830738180014
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_e6c897802cef421ba20109560cd6b0b2",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": 0.11947203909408077
+      },
+      {
+        "experience_id": "exp_cd3c5cbd0de6430081fe15e0718c9be3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.15546137561923873
+      },
+      {
+        "experience_id": "exp_09eb932d6d8240b489b819c8bb9306b2",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.12653174918434124
+      },
+      {
+        "experience_id": "exp_88444417d4724563aeb575ab56bd2c72",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.12162970221439376
+      },
+      {
+        "experience_id": "exp_5d494f64f5f34a659522d57b1c811779",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.054323830738180014
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_09eb932d6d8240b489b819c8bb9306b2": "当前任务'which restaurant is recognized as the 'true' joe's pizza'仅包含一个专有名词短语，缺乏明确的上下文（如对话历史或指定文章），且存在歧义（可能指代多个同名餐厅或虚构名称）。这符合经验 3 中‘用户输入仅包含名词短语、专有名词...且无历史对话上下文’的触发条件。因此，评分标准应允许模型在信息不足时通过澄清意图来作答，而非强制要求直接猜测唯一答案。"
+  },
+  "draft": {
+    "rubric_id": "rubric_69788bf039c141b79dd0abb009dec690",
+    "criteria": [
+      {
+        "criterion_id": "rubric_69788bf039c141b79dd0abb009dec690_1",
+        "question": "是否明确指出了被广泛认可为‘真正的’Joe's Pizza的具体餐厅名称及其地理位置？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_69788bf039c141b79dd0abb009dec690_2",
+        "question": "是否提供了将该餐厅认定为‘真正的’Joe's Pizza的可靠依据（如成立时间、创始人、历史记录或权威媒体/文化共识引用）？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_69788bf039c141b79dd0abb009dec690_3",
+        "question": "是否澄清了其他同名或相似名称餐厅的存在，并解释了为何它们不被视为‘真正的’版本？",
+        "weight": 0.25
+      }
+    ],
+    "analysis": "任务要求识别被公认为‘真正的’Joe's Pizza的餐厅。由于'Joe's Pizza'是一个常见的品牌名称，历史上存在多个同名或易混淆的店铺（如纽约曼哈顿下城的原始店与其他分店），且用户未指定具体城市或上下文，因此核验标准需聚焦于：1）明确区分原始/创始门店与后续分店；2）引用公认的权威来源（如官方历史、主流媒体报道、当地文化共识）来定义‘真正’；3）输出必须包含具体餐厅名称及位置，并说明其被视为‘真正’的依据。本阶段为初稿生成，不预设唯一答案，但需确保逻辑自洽、依据充分。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_65e307d2d35040ffb2404c5b534d728b",
+        "criteria": [
+          {
+            "criterion_id": "rubric_65e307d2d35040ffb2404c5b534d728b_1",
+            "question": "是否明确指出了被广泛认可为‘真正的’Joe's Pizza的具体餐厅名称及其地理位置？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_65e307d2d35040ffb2404c5b534d728b_2",
+            "question": "是否提供了将该餐厅认定为‘真正的’Joe's Pizza的可靠依据（如成立时间、创始人、历史记录或权威媒体/文化共识引用）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_65e307d2d35040ffb2404c5b534d728b_3",
+            "question": "是否澄清了其他同名或相似名称餐厅的存在，并解释了为何它们不被视为‘真正的’版本？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "任务核心是识别被公认为‘真正的’Joe's Pizza的餐厅。鉴于该名称存在多个分支（如纽约下城原始店与其他分店），且用户未指定具体语境，核验标准必须强制回答者明确区分创始门店与后续分店。初稿中的三条标准逻辑清晰：第一条确认核心事实（名称与位置），第二条验证‘真正性’的依据（历史或共识），第三条处理潜在的混淆项。在修订阶段，需确保这三条标准覆盖了定义的唯一性、依据的可靠性以及排他性的解释，权重分配上，明确目标对象最为关键（0.4），其次是支撑该结论的证据链（0.35），最后是排除干扰项的逻辑（0.25）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_65e307d2d35040ffb2404c5b534d728b",
+        "normalized_weights": {
+          "rubric_65e307d2d35040ffb2404c5b534d728b_1": 0.4,
+          "rubric_65e307d2d35040ffb2404c5b534d728b_2": 0.35,
+          "rubric_65e307d2d35040ffb2404c5b534d728b_3": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_65e307d2d35040ffb2404c5b534d728b_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确指出了被广泛认可的‘真正的’Joe's Pizza位于纽约市格林威治村的7 Carmine Street，提供了具体的餐厅名称和地理位置。",
+            "rejected_reason": "回答中明确指出存在两家餐厅（Mercer Street/Carmine Street 和 Bleecker Street）都声称是真正的 Joe's Pizza，并认为这是个人偏好问题，没有明确指定哪一家是被广泛认可为‘真正的’Joe's Pizza。"
+          },
+          {
+            "criterion_id": "rubric_65e307d2d35040ffb2404c5b534d728b_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答提供了可靠的依据，包括该餐厅成立于1975年、创始人是Joe Pozzuoli，以及其作为经典纽约风格披萨店在电影和电视剧中多次出镜的文化影响力，这些都支持其作为‘真正’版本的地位。",
+            "rejected_reason": "回答虽然提到了成立时间（1975年和1985年）和所有者信息，但并未提供将其中某一家认定为‘真正的’Joe's Pizza的可靠依据或权威共识，反而强调两者都是受欢迎的且选择取决于个人喜好。"
+          },
+          {
+            "criterion_id": "rubric_65e307d2d35040ffb2404c5b534d728b_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答澄清了存在其他同名或相似名称的披萨店（'other pizzerias with the name Joe's Pizza in different locations'），并解释了需要特别指定格林威治村的原始分店才能称为‘真正的’Joe's Pizza。",
+            "rejected_reason": "回答澄清了纽约市存在两家著名的同名披萨店，并解释了它们之间的区别（开业时间、所有者不同、口味差异），同时指出为何无法简单认定某一家为唯一‘真正’版本（属于个人偏好）。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.25,
+        "margin": 0.75,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_09eb932d6d8240b489b819c8bb9306b2"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3",
+        "criteria": [
+          {
+            "criterion_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3_1",
+            "question": "模型是否明确指出了被广泛公认为‘真正的’Joe's Pizza的具体餐厅名称及其确切地理位置（如纽约市曼哈顿下城格林街150号）？",
+            "weight": 0.45
+          },
+          {
+            "criterion_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3_2",
+            "question": "模型是否提供了将该特定门店认定为‘真正的’Joe's Pizza的可靠依据（如成立年份、创始人背景、历史地位或权威文化共识引用）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3_3",
+            "question": "模型是否有效区分了该‘真正’门店与其他同名或相似名称的分店，并解释了为何其他门店不被视为原始或正宗版本？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求识别被公认为‘真正的’Joe's Pizza的餐厅。鉴于'Joe's Pizza'作为品牌存在多店且易混淆（如纽约下城创始店与其他分店），且用户输入未指定具体城市或上下文，核验标准需兼顾事实准确性与歧义处理。在revise阶段，需修正初稿中可能隐含的‘必须直接给出单一答案’的预设，转而评估模型是否准确识别了最具共识的创始门店（通常指纽约曼哈顿下城格林街150号），或者在信息模糊时提供了合理的澄清/解释。标准将聚焦于：1. 核心实体识别的准确性（名称与位置）；2. 区分‘真正’与‘普通分店’的逻辑依据；3. 对潜在歧义的妥善处理（若模型选择澄清而非猜测）。权重分配上，事实准确性（名称/位置）占比最高，其次是依据的充分性，最后是歧义处理的合理性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3",
+        "normalized_weights": {
+          "rubric_6dbc1935bace4315ae9719ea76fa3aa3_1": 0.45,
+          "rubric_6dbc1935bace4315ae9719ea76fa3aa3_2": 0.35,
+          "rubric_6dbc1935bace4315ae9719ea76fa3aa3_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "模型明确指出了被公认为‘真正的’Joe's Pizza的具体餐厅名称为位于纽约市格林威治村的7 Carmine Street，提供了确切的街道地址。",
+            "rejected_reason": "模型未能明确指出被广泛公认为‘真正的’Joe's Pizza的具体餐厅名称及确切地理位置。相反，它声称有两家著名的门店都声称是‘真正的’，并给出了错误的地址信息（将位于格林街150号的原始店错误地描述为Carmine Street），且未确认哪一家是公认的原始店。"
+          },
+          {
+            "criterion_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "模型提供了可靠的认定依据，包括该店成立于1975年、创始人是Joe Pozzuoli，并提及其在电影和电视中的出现以及作为经典纽约披萨的地位，这些构成了其历史地位和文化共识的支撑。",
+            "rejected_reason": "模型没有提供将该特定门店认定为‘真正的’Joe's Pizza的可靠依据。它反而引用了模糊的‘个人偏好’作为判断标准，并错误地声称两家店由不同家庭拥有且存在竞争关系，这与历史事实不符（原始店与分店通常由同一家族经营或存在明确的继承关系），缺乏成立年份、创始人背景等权威依据来支持单一正宗店的认定。"
+          },
+          {
+            "criterion_id": "rubric_6dbc1935bace4315ae9719ea76fa3aa3_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "模型明确区分了该原始门店与其他同名分店，指出存在其他不同地点的'Joe's Pizza'，并强调在指代‘真正的’Joe's Pizza时必须指定格林威治村的这家原始门店。",
+            "rejected_reason": "模型未能有效区分该‘真正’门店与其他分店。它不仅没有解释为何其他门店不被视为原始版本，反而暗示两家店地位平等，称选择取决于‘个人偏好’，这直接违背了区分正宗与非正宗版本的要求。此外，其关于两家店由不同家庭拥有的描述也是事实性错误，无法构成有效的区分理由。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

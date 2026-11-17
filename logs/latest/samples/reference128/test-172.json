@@ -1,0 +1,532 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:ac1ddd8a434a7e6d6b12c32265c993abcf9690289aba48b35a73aea13d68368d",
+    "task": "Is this grammatically correct? \"Is it AGP that I want to ascend my human body and be a robot lady?\"",
+    "chosen": "The sentence is grammatically correct, but it's a bit awkward and unclear. Here's why:\n\n* **\"Is it AGP that...\"** This phrasing is a bit formal and indirect. It would be more natural to say something like \"Do I want AGP...\"\n* **\"ascend my human body\"** This phrase is unusual. \"Ascend\" usually refers to moving upwards, not transforming. A better word might be \"transcend\" or \"leave behind.\"\n* **\"be a robot lady\"** This is fine, but it might be more specific to say what kind of robot lady you want to be.\n\nHere are some possible revisions:\n\n* **\"Do I want AGP to help me transcend my human body and become a robot?\"**\n* **\"Is AGP the way for me to leave behind my human form and become a robot lady?\"**\n* **\"Do I want to use AGP to transform myself into a [specific type of robot lady]?\"**\n\n\n\nThe best revision will depend on the specific context and what you want to emphasize.",
+    "rejected": " Yes, the sentence is grammatically correct. It is a question asking if the speaker wants to upgrade their human body to become a robot lady using AGP (Assumed to be an acronym for a technology related to this context). The sentence structure is clear, and the meaning is understandable.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 11264,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it addresses that something is missing from the prompt and mentions it in the answer. @Response 2 would be better if it addressed the acronym. ",
+          "feedback1": "The response is mostly helpful. It goes over the different words that would fit the response better than ascend. However, because the prompt was vague, it was hard to determine what word would fit best. With that understanding, it suggests that the right word depends on the context of the original sentence.",
+          "feedback2": "The response is partially helpful. However, it possibly misses the user's overall goal because the prompt isn't clear. The prompt uses the acronym AGP but doesn't explain how it's related to becoming a robot. The response assumes that the sentence makes sense since it's an acronym related to becoming a robot. The sentence doesn't make sense with the acronym. The response will not improve without an explanation of the direction and acronym. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it addresses all of the mistakes in the user's given sentence. @Response 1 provides examples of how to improve the user's sentence. @Response 2 claims that the user's prompt is perfect when it needs work. ",
+          "feedback1": "The response is mostly helpful. It provides the user with ways to improve the quality of each section of their sentence, and gives possible revisions. However, the response claimed that the user's sentence was grammatically correct, but it may not be depending on the meaning of AGP. Other than that, the response is helpful. ",
+          "feedback2": "The response is not helpful. It claims that the user's sentence is grammatically correct, clear, and understandable. The user's sentence is none of those. There are ways to improve the user's sentence and the response should have stated some of these. The beginning of the user's sentence, \"Is it AGP that..\" does not make sense and should be changed to something like \"Is it AGP that should be used...\". Also the user's sentence uses an incorrect word for what they are trying to say. The user says ascend, when it should be something like transcend. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2.  It accurately responds to the prompt being grammatically correct but also awkward and unclear.  It further provides some possible revisions for a better sentence.  @Response 2 only acknowledges that the sentence is correct and nothing more.",
+          "feedback1": "The response is perfectly helpful. The user asked if the sentence was grammatically correct.  The response accurately identified that it's correct but it's awkward and unclear.  It also broke the sentence down to determine the meaning of each part of the sentence.  The response went even further and gave some possible revisions of sentences that were more clear.  The response is perfectly helpful and cannot be meaningfully improved.  ",
+          "feedback2": "The response is partially helpful.  It accurately acknowledges that the sentence is grammatically correct but does not mention the awkwardness of the sentences.  It would be beneficial to note that the sentence is unclear and hard to understand.  It would be even more helpful if some possible revisions were included in the response."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_ea0b13d21e5b101db953",
+        0.34918697092990025
+      ],
+      [
+        "task_4a986808253046dc59d3",
+        0.33208955018320735
+      ],
+      [
+        "task_c4dfba5eab304ce312ca",
+        0.3177319070270551
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.3177319070270551,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_2732b913fc5d4915b4f316fee2203a6b"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_4a986808253046dc59d3",
+              "similarity": 0.33208955018320735,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c263f721f685f8f5cc8cf2de9e31c90c4bbb39c61d96df93e7b59c1107b8284c:exp_6680c6d0e7b742c59507e0439024a78b"
+                ],
+                "task_ids": [
+                  "b9408b30540923231446aad29d9346154c7b86dbb2e71d8d27ebc8ed0a5cfbf4"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.3177319070270551,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_bdc81611df6e4abeb9fb5013182b495a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_ea0b13d21e5b101db953",
+              "similarity": 0.34918697092990025,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:cc24ec0d76092686adefa2307fe1e8df68b4e5c5dd9fd9dd3c06043507686edf:exp_bdc81611df6e4abeb9fb5013182b495a"
+                ],
+                "task_ids": [
+                  "4381e0177b5f48c319db4246cf311262a4c0781ec8a562c9a268287b7067594e"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_4a986808253046dc59d3",
+              "similarity": 0.33208955018320735,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:8391bb894c0bb58119792e5e2a21292388629f5f6d69cd689dacd5513a6cfa31:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:15e975cc2bb892e6115d5d760e7c5f308b29bcf2e4f46d54315a679c4f836fa8:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:8e33199710d5e28e9f5fc4679135a290f3351fce389496bcf88557812626a6d9:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:97fbb3b75ad7a2eb10bba31b452f07377aa38dd6298ce1850b6e9baaadf5a15c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:bf0d59e5fca4dcfe3a41706bf7659892262f5d88230ce5593da744914d9f36fa:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:0f736cfbd21a5b7b6cf90d8c897bdb64fb89f7e28f7875bd91e8524fc35e3610:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:721a24a72a75d9cb8bfa159c14e97982463808eddbe71c3baa7a3206d8161e4e:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:875d699a70e604fb001ba5564c5cba3dcd8075c4404c30361921525dfcafdd16:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:266777e90af2c196741532ee74e6bf5ca58a5f73e9b4058fd26985f15b0cafc8:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:0a59705f9b0def4f70db66446a3d3a3ae0b16f2ee5bfe2f1da0295f54c55047c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:d5875207a553017d4b0883353120f1276e778614031916530c333dbaa6e929aa:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:c263f721f685f8f5cc8cf2de9e31c90c4bbb39c61d96df93e7b59c1107b8284c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:b725df1304195d615b830d61139e8a4235f2aee805634356e911c3c595f4e235:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:66ea7b6806aadd0fe652e8b109c85ec216badaca8d8c8883ebc41474903e7490:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "2f51d7a1ac5326bed4faa559c29d1423921d55e73918970f37b4e47daf86fbbe",
+                  "2ff666f33e676f9cd6c957834f6898261f47eee03baa695d08125c7fa1fd967f",
+                  "990938cacae27bcda9a7ab49d4b8d6b12b5eefafdf252a45ba2cd9d77187245d",
+                  "6dada60f53e0279b49adc71849a02333a93e3b2dc060723da10c2bc436718b94",
+                  "2fb8530bd8a0181cf346af3aae6199a164d1a8adeb1b95d9003a35546619a902",
+                  "458e38b7d7f332de1ef3e3a7fb5a3ce362e5b0d75f5c8952940313d642d3e281",
+                  "5c016b5d107c7f94193be99e714476d37a8f53ef1ec9e4db82862ad4d01f7929",
+                  "901dfe1ac8d58e5d2d3a114ab7cc893b028a60d3ea596659d0ab184c110b92bd",
+                  "2698dc598ac247db9c127df5c335d7fccab944bf17d7588fc21aa110cd6be1f5",
+                  "769a438cf4ca4ae5e3e0c78480a74b4c4b167a2c43443492252dd975f747050f",
+                  "8245638a4718b0aff9dcb0dc41b9ee325a635ddc9f2c3113e6d562059027f51d",
+                  "b9408b30540923231446aad29d9346154c7b86dbb2e71d8d27ebc8ed0a5cfbf4",
+                  "e6034f9282cd185dd2bc3d5dba6870d3e29d937bc21c9d58260273f37aaaeb9f",
+                  "7a249f628f4b2c801a2a57985131b7447e5b386c9bb5021b054bf682dbf968be"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+          "score": -0.3333333333333333,
+          "evidence": [
+            {
+              "group_id": "task_4a986808253046dc59d3",
+              "similarity": 0.33208955018320735,
+              "statistics": {
+                "values": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:266777e90af2c196741532ee74e6bf5ca58a5f73e9b4058fd26985f15b0cafc8:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:d5875207a553017d4b0883353120f1276e778614031916530c333dbaa6e929aa:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:66ea7b6806aadd0fe652e8b109c85ec216badaca8d8c8883ebc41474903e7490:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "2698dc598ac247db9c127df5c335d7fccab944bf17d7588fc21aa110cd6be1f5",
+                  "8245638a4718b0aff9dcb0dc41b9ee325a635ddc9f2c3113e6d562059027f51d",
+                  "7a249f628f4b2c801a2a57985131b7447e5b386c9bb5021b054bf682dbf968be"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_ea0b13d21e5b101db953",
+              "similarity": 0.34918697092990025,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:cc24ec0d76092686adefa2307fe1e8df68b4e5c5dd9fd9dd3c06043507686edf:exp_c80505c0967d4b13a55b0dca34c181d9"
+                ],
+                "task_ids": [
+                  "4381e0177b5f48c319db4246cf311262a4c0781ec8a562c9a268287b7067594e"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_3f378070e2764d3287814e6279297de0",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_df593c1e5d3041588aac30fafdd53d45",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.4290393668697135
+      ],
+      [
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        0.39586915171016845
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.3894286461434091
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.3893937125668389
+      ],
+      [
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        0.3620168445390094
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.35888252840355384
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.3568296613076819
+      ],
+      [
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        0.35619372246805037
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.35268128420557354
+      ],
+      [
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        0.3510203210495174
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3568296613076819
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "historical",
+        "historical_score": -0.3333333333333333,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.4290393668697135
+      },
+      {
+        "experience_id": "exp_798b8aebf85e4622a94630e0af19534f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.39586915171016845
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3894286461434091
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3893937125668389
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_798b8aebf85e4622a94630e0af19534f": "任务输入中的代词 'it' 和 'my human body' 在缺乏上下文的情况下存在指代不明（是询问某个特定概念还是泛指？），且句子结构包含假设性情境（'ascend... and be...'），这符合经验中关于‘指代不明、信息缺失或潜在歧义’的触发条件；设计评分标准时应优先考核模型是否识别出这些歧义并请求澄清，而非强行基于不确定的前提进行回答。"
+  },
+  "draft": {
+    "rubric_id": "rubric_a7f0b2d6b02647b6a54dad3a38d2a48c",
+    "criteria": [
+      {
+        "criterion_id": "rubric_a7f0b2d6b02647b6a54dad3a38d2a48c_1",
+        "question": "该句子是否采用了正确的英语一般疑问句语序（助动词提前）？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_a7f0b2d6b02647b6a54dad3a38d2a48c_2",
+        "question": "该句子中的强调句型（It is ... that ...）结构是否完整且符合语法规则？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_a7f0b2d6b02647b6a54dad3a38d2a48c_3",
+        "question": "从句中的主语（I）与谓语动词（want, ascend, be）在人称和数上是否保持一致？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_a7f0b2d6b02647b6a54dad3a38d2a48c_4",
+        "question": "不定式短语（to ascend... and be...）的并列结构是否使用了正确的平行形式？",
+        "weight": 0.25
+      }
+    ],
+    "analysis": "任务要求判断给定英语句子在语法上是否正确。待核验对象为特定引语：'Is it AGP that I want to ascend my human body and be a robot lady?'。分析需聚焦于句法结构（倒装疑问句、强调句型 'It is...that...'）、主谓一致、代词指代及不定式短语搭配，同时需区分语法正确性与语义合理性或逻辑可行性，后者不属于语法核验范畴。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [
+        "exp_798b8aebf85e4622a94630e0af19534f"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371",
+        "criteria": [
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_1",
+            "question": "该句子是否采用了正确的英语特殊疑问句语序，即助动词 'Is' 置于主语 'it' 之前？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_2",
+            "question": "句子中的强调句型结构 'It is ... that ...' 是否完整且符合英语语法规则？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_3",
+            "question": "从句中主语 'I' 与谓语动词 'want' 在人称和数上是否保持一致？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_4",
+            "question": "不定式短语 'to ascend my human body' 与 '(to) be a robot lady' 是否构成了正确的平行结构？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "任务要求对特定英语句子进行语法正确性核验。待核验对象为引语 'Is it AGP that I want to ascend my human body and be a robot lady?'。本次修订基于 draft 标准，重点检查其是否准确覆盖了该句的核心语法特征：1. 特殊疑问句中的主谓倒装结构；2. 强调句型 'It is...that...' 的嵌套与完整性；3. 从句内部的主谓一致性及不定式并列结构的平行性。需严格区分语法形式（Syntax/Grammar）与语义逻辑（Semantics/Logic），仅关注前者。draft 中的四条标准涵盖了句法、强调结构、一致性和平行结构，均符合语法核验需求，无需增减核心维度，仅需微调表述以确保问题明确且互斥，权重分配保持均衡以覆盖各语法点。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371",
+        "normalized_weights": {
+          "rubric_87fdb1cb8a8340bf9ff33074eb439371_1": 0.25,
+          "rubric_87fdb1cb8a8340bf9ff33074eb439371_2": 0.25,
+          "rubric_87fdb1cb8a8340bf9ff33074eb439371_3": 0.25,
+          "rubric_87fdb1cb8a8340bf9ff33074eb439371_4": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确陈述该句子是语法正确的（'The sentence is grammatically correct'），这隐含确认了句子的特殊疑问句语序是正确的，即助动词 'Is' 确实置于主语 'it' 之前。",
+            "rejected_reason": "回答确认句子是语法正确的，且原句 'Is it AGP...' 确实将助动词 Is 置于主语 it 之前，符合特殊疑问句语序要求。"
+          },
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答指出原句结构为 'Is it AGP that...'，并确认其语法正确性，说明回答认可该强调句型结构在句中完整且符合英语语法规则。",
+            "rejected_reason": "回答指出句子结构清晰，原句使用了 'Is it ... that ...' 的强调句型变体（疑问形式），该结构在英语中是完整且符合语法规则的。"
+          },
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答判定句子语法正确，这意味着从句中的主语 'I' 与谓语动词 'want' 在人称和数上保持一致（均为第一人称单数）这一事实成立。",
+            "rejected_reason": "回答确认句子语法正确，原句中从句主语 I 与谓语动词 want 在人称和数上保持一致（第一人称单数），符合语法要求。"
+          },
+          {
+            "criterion_id": "rubric_87fdb1cb8a8340bf9ff33074eb439371_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答虽然认为 'ascend my human body' 用词不自然，但并未否定其语法结构的平行性，而是基于词汇选择提出修改建议，因此承认不定式短语 'to ascend...' 与 '(to) be...' 构成了正确的平行结构。",
+            "rejected_reason": "回答指出句子结构清晰，原句中不定式短语 'to ascend my human body' 与 '(to) be a robot lady' 由 and 连接，构成了正确的平行结构。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "inference"
+}

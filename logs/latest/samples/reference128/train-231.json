@@ -1,0 +1,731 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:de526ac1f4cd26928b5dd51b8b4cbeb0ad891daffbac2c531e015609ece72461",
+    "task": "are there long lines of waiting in gardaland in italy in august?",
+    "chosen": "Yes, it's very likely that you'll encounter long lines at Gardaland, Italy's most popular amusement park, during the month of August. This is because August is the peak of the summer holiday season in Italy, and many families and tourists visit the park during this time. To minimize waiting times, consider the following tips:\n\n1. Purchase tickets online in advance to avoid the ticket booth lines.\n2. Arrive early, ideally before the park opens, to be among the first visitors.\n3. Utilize the Gardaland App to check wait times for attractions and plan your day accordingly.\n4. Consider purchasing a Gardaland Express pass, which allows you to skip the lines at popular rides (for an additional fee).\n5. Visit the park on a weekday if possible, as weekends tend to be more crowded.\n6. Take advantage of the single rider lines when available, which can significantly reduce wait times if you don't mind riding alone or separated from your group.\n\nBy following these tips, you can help make your Gardaland experience more enjoyable and efficient, even during the busy month of August.",
+    "rejected": "Yes, Gardaland in Italy can be quite busy during August, especially on weekends and public holidays, due to the peak summer season. Here are a few things to consider:\n\n1. **Long Lines**: Popular attractions and shows may have long lines, sometimes up to 2-3 hours. However, Gardaland offers a \"Fast Pass\" system that allows you to skip the line for an additional fee.\n\n2. **Crowded Park**: The park can feel quite crowded, with long wait times for food, drinks, and restrooms as well.\n\n3. **Weather**: August is typically hot in Italy, so expect long lines for water rides and attractions with shade.\n\n4. **Weekdays vs Weekends**: If possible, visiting on a weekday can help avoid the longest lines and crowds.\n\n5. **Arrive Early**: The park usually opens at 10:00 AM. Arriving early can help you beat some of the crowds and get a head start on popular attractions.\n\n6. **Plan Ahead**: Use the Gardaland app to check wait times, plan your route, and make the most of your day.\n\nHere are some public holidays in Italy in August that might lead to even larger crowds:\n\n- Ferragosto (15th August)\n- Ferragosto (16th August)\n- Ferragosto (17th August)",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 22089,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. Both responses provided an accurate response to the user. Both responses provided a large amount of irrelevant content. However, @Response 1 provides incorrect information, making @Response 2 better than @Response 1. ",
+          "feedback1": "The response is slightly helpful. The model answers the prompt's question correctly, stating that Gardaland in Italy is busy during August. However, the model then goes on to provide significant amounts of irrelevant content. The tips to consider are unnecessary, as the user did not ask for this information. Additionally, the model provides factually inaccurate information about Ferragosto. It only occurs on August 15th, not on the 16th and 17th. If the response did not include the unnecessary or incorrect information, it would improve.",
+          "feedback2": "The response is partially helpful. The model answers the user's question correctly by stating that Gardaland has long wait lines in August. All of the information provided in the response is clear and easy to understand. It is factually accurate. However, it was not requested by the user so much of the information is irrelevant. It makes the response lengthier than necessary. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 1 contains false information and it is a bit long for such a specific request. @Response 2, on the other hand, is completely correct and brief. ",
+          "feedback1": "The response is mostly helpful. It addressed the prompt fully and mostly correctly. It explained when Gardaland is busy when a person should expect longer queues, and what to consider before you go there. However, it incorrectly mentioned that Italy has three public holidays to celebrate Ferragosto. Moreover, the response may be a little verbose given the user's very specific prompt. ",
+          "feedback2": "The response is perfectly helpful. It addressed the prompt fully and correctly. The prompt has a specific request and the response answered it correctly and with sufficient explanation. Moreover, the information is provided in a nice format with the use of numbered list and a clear introduction and conclusion. The user would be very satisfied with the response as it fulfills the prompt excellently. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. This is because @Response 2 is more accurate, contains no unnecessary information, and offers two additional helpful points (suggesting the user purchase a ticket in advance and user single rider lines) that do not appear in @Response 1.",
+          "feedback1": "The response is mostly helpful. It provides a direct answer to the user's request and is correct in all but two respects: first, The date of Ferragosto is listed three times instead of once, and two of those instances mention the wrong date; second, the correct term for Gardaland's expedited wait-time pass is \"Gardaland Express,\" not \"Fast Pass.\" While some of the additional information is helpful, the information that explains the factors that contribute to long wait times is unnecessary. The response could be improved by mentioning Ferragosto only once and by adding it to the numbered list instead of mentioning it in a new list.",
+          "feedback2": "The response is perfectly helpful. It gives a direct, immediate answer to the user's question. It then follows this up with several suggestions aimed at helping the user avoid long lines. Although not requested, this information is relevant and helpful. No information is repeated, and there are no factual inaccuracies. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_3c23f72128116718e4e8",
+        0.4206766689816873
+      ],
+      [
+        "task_8fb3dc4df4818468d1d0",
+        0.3118593969977006
+      ],
+      [
+        "task_9a0abf648cae819c018b",
+        0.2703344850213901
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_9a0abf648cae819c018b",
+              "similarity": 0.2703344850213901,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:612c54913ee2963d1d3d59965a00355e3658cf7a028b6d1609a386eaf25c252f:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "74a2f6bd40456a45aa5fe1707ba308cf2a9e95c4f86dd8d8a895d41515af3509"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_9a0abf648cae819c018b",
+              "similarity": 0.2703344850213901,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:612c54913ee2963d1d3d59965a00355e3658cf7a028b6d1609a386eaf25c252f:exp_9c7bbe478d3045a4930a07ab1f977095",
+                  "helpsteer3:train:ab6432ca37f4823fecbb6072438d83c459dcdc1aa0315bc737210ef8a669ac87:exp_9c7bbe478d3045a4930a07ab1f977095"
+                ],
+                "task_ids": [
+                  "74a2f6bd40456a45aa5fe1707ba308cf2a9e95c4f86dd8d8a895d41515af3509",
+                  "f826579c84a1b3526566dadbb208dbeb4172011ad32e35ec3ce0215f78363e6a"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.3373412778407276
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.26071346222214015
+      ],
+      [
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        0.256213234127178
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.24948849226969322
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.23813716766792614
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.23150608575561504
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.23086212352530983
+      ],
+      [
+        "exp_392a33af46744dbf91e8754240ac16de",
+        0.2289988291893076
+      ],
+      [
+        "exp_2adba5039571400b8862295552f46447",
+        0.22496078468719788
+      ],
+      [
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        0.22074709852917207
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3373412778407276
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26071346222214015
+      },
+      {
+        "experience_id": "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.256213234127178
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24948849226969322
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23813716766792614
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23150608575561504
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23086212352530983
+      },
+      {
+        "experience_id": "exp_392a33af46744dbf91e8754240ac16de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2289988291893076
+      },
+      {
+        "experience_id": "exp_2adba5039571400b8862295552f46447",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22496078468719788
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_9c7bbe478d3045a4930a07ab1f977095": "任务要求核实关于特定地点（Gardaland）在特定时间（八月）的具体状态（排队长度），这属于涉及现实世界地理和常识约束的具体事实建议/情况描述。经验2强调必须将‘具体建议或描述的可行性与常识正确性’作为独立否决项，严禁仅因提及地名而忽略实际状况的真伪（如该地八月是否真的排长队），这与任务核实真实场景的需求高度契合。",
+    "exp_021b1f4bcc0c43cf9acfd88584e44161": "任务是一个基于客观现实世界的事实性问题（询问意大利Gardaland公园八月的排队情况），存在公认的正确答案（即实际情况）。经验4明确指出此类任务应将‘结论的事实真实性’设为最高优先级，严禁用逻辑自洽掩盖事实错误，必须核验核心结论是否符合公认事实，这正是评估该任务回答质量的核心标准。"
+  },
+  "draft": {
+    "rubric_id": "rubric_4fddfcab5bd04d8faaca623b9d5fef08",
+    "criteria": [
+      {
+        "criterion_id": "rubric_4fddfcab5bd04d8faaca623b9d5fef08_1",
+        "question": "是否明确了'长时间排队'的具体量化标准（例如等待时间超过30分钟或60分钟）？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_4fddfcab5bd04d8faaca623b9d5fef08_2",
+        "question": "是否确认了所讨论的时间段完全覆盖意大利Gardaland公园的8月份运营期？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_4fddfcab5bd04d8faaca623b9d5fef08_3",
+        "question": "是否引用了可靠的数据源（如官方统计数据、权威旅游报告或大量用户反馈）来支持关于排队的描述？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_4fddfcab5bd04d8faaca623b9d5fef08_4",
+        "question": "是否区分了8月份内不同日期（如周末与工作日）或不同季节高峰期的排队差异，而非笼统概括？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "任务要求确认意大利Gardaland主题公园在8月份是否存在长时间排队现象。交付物为针对该事实问题的核验标准，需明确排队时长定义、时间范围（8月）、地点（Gardaland）及数据来源的可靠性。由于是draft阶段，标准仅基于任务描述生成初稿，不涉及对具体数据的判定，而是构建用于验证该陈述是否成立的逻辑框架。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_ad987a336df043e8b3fe5e52fe322419",
+        "criteria": [
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_1",
+            "question": "是否明确确认了讨论对象为意大利Gardaland主题公园且在8月份这一特定时间段？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_2",
+            "question": "是否清晰描述了排队时间的长度或性质，且该描述能合理支撑'长时间等待'的结论（不强制限定具体分钟数）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_3",
+            "question": "是否提供了支持排队情况的信息来源或依据（如游客反馈、新闻报道、官方提示等）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_4",
+            "question": "是否避免了将个别案例错误地推广为整个8月份的普遍现象，或对例外情况进行了说明？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务为修订阶段（stage: revise），需基于原始问题'意大利Gardaland公园8月是否有长队'对提供的初稿标准进行核验与优化。初稿标准存在过度具体化风险（如强制要求定义30/60分钟阈值），这不符合用户允许的不同实现方式（定性描述亦可接受）。修订重点应放在：1）放宽量化定义的强制性，允许合理的时间范围描述；2）确保核心要素（地点、时间、现象）的覆盖；3）强调数据来源的多样性而非单一权威来源；4）保留对日期差异分析的考量但作为加分项而非绝对门槛。权重分配将侧重于事实确认（地点/时间/现象）和证据支持，降低对具体数值的依赖。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_ad987a336df043e8b3fe5e52fe322419",
+        "normalized_weights": {
+          "rubric_ad987a336df043e8b3fe5e52fe322419_1": 0.3,
+          "rubric_ad987a336df043e8b3fe5e52fe322419_2": 0.3,
+          "rubric_ad987a336df043e8b3fe5e52fe322419_3": 0.25,
+          "rubric_ad987a336df043e8b3fe5e52fe322419_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确提到了Gardaland作为意大利最受欢迎的游乐园，并明确指出讨论的时间段是8月（during the month of August）。",
+            "rejected_reason": "回答开篇明确指出了讨论对象是意大利的Gardaland主题公园（'Gardaland in Italy'），并确认了时间段为8月份（'during August'）。"
+          },
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答清晰描述了排队情况，指出在8月份“非常可能遇到长队”（very likely that you'll encounter long lines），并解释了这是由于暑期高峰和游客众多导致的，合理支撑了长时间等待的结论。",
+            "rejected_reason": "回答清晰描述了排队时间的长度，指出热门景点排队时间可能长达2-3小时（'sometimes up to 2-3 hours'），并提到公园拥挤、餐饮和洗手间也有长队，这些描述充分支撑了存在长时间等待的结论。"
+          },
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅基于常识性推理（夏季假期、游客多）得出结论，未提供任何具体的信息来源或依据，如游客反馈数据、新闻报道链接、官方拥挤度提示或历史统计数据。",
+            "rejected_reason": "回答虽然提供了关于排队情况的建议和信息，但并未明确引用具体的信息来源或依据（如特定的游客反馈数据、新闻报道链接、官方发布的统计数据等），仅以一般性陈述呈现。"
+          },
+          {
+            "criterion_id": "rubric_ad987a336df043e8b3fe5e52fe322419_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答使用了",
+            "rejected_reason": "回答在描述排队情况时进行了合理的限定，明确指出高峰出现在周末和公共假期（'especially on weekends and public holidays'），并给出了工作日访问的建议，避免了将个别案例错误地推广为整个8月份的绝对普遍现象。"
+          }
+        ],
+        "chosen_score": 0.75,
+        "rejected_score": 0.75,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_9c7bbe478d3045a4930a07ab1f977095"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_346c47b1a64b4c02b9930756b338bc02",
+        "criteria": [
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_1",
+            "question": "回答是否明确确认了讨论对象为意大利Gardaland主题公园且在8月份这一特定时间段内？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_2",
+            "question": "回答是否提供了关于'长时间排队'的具体描述、合理的时间估算范围或定性依据，而非仅使用模糊词汇？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_3",
+            "question": "回答引用的数据或信息源是否具备权威性（如官方公告、主流旅游指南、近期游客真实反馈汇总），且数据时效性覆盖当前或近年8月份情况？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_4",
+            "question": "回答是否考虑了8月份内部的波动因素（如周末、节假日或特定活动日）对排队时长的影响，避免过度笼统的概括？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_5",
+            "question": "回答是否给出了明确的结论（存在或不存在长时间排队），并基于前述分析进行了逻辑自洽的阐述？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求核验意大利Gardaland公园在8月份是否存在长时间排队现象。原初稿（draft）将'具体量化标准'设为独立权重项存在逻辑缺陷，因为'长时间'是相对概念，回答中只需提供合理的时间阈值定义或描述性依据即可，不应强制要求预设特定分钟数作为通过门槛。此外，原初稿未明确区分'全年运营期'与'8月特定时间段'的概念混淆风险，且对数据源的时效性（是否针对当年或近年数据）缺乏约束。修订后的标准应聚焦于：1. 地点与时间的精准匹配；2. '长时间'定义的合理性而非固定数值；3. 数据来源的权威性与时效性；4. 对8月内部差异（如周末/工作日）的考量；5. 结论的明确性。权重分配上，提高核心事实（时间地点匹配）和证据质量（来源可靠性）的占比，降低形式化定义的权重。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_346c47b1a64b4c02b9930756b338bc02",
+        "normalized_weights": {
+          "rubric_346c47b1a64b4c02b9930756b338bc02_1": 0.25,
+          "rubric_346c47b1a64b4c02b9930756b338bc02_2": 0.2,
+          "rubric_346c47b1a64b4c02b9930756b338bc02_3": 0.3,
+          "rubric_346c47b1a64b4c02b9930756b338bc02_4": 0.15,
+          "rubric_346c47b1a64b4c02b9930756b338bc02_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答开篇明确确认了讨论对象为意大利的Gardaland主题公园（'Gardaland, Italy's most popular amusement park'），并明确指出时间段为8月份（'during the month of August'）。",
+            "rejected_reason": "回答开篇明确提及'Gardaland in Italy'（意大利的加尔达兰）并指出时间段为'August'（8月），完全符合讨论对象和时间的要求。"
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答不仅使用了'long lines'这一具体描述，还通过解释原因（夏季假期高峰、大量游客）提供了定性依据，并未仅停留在模糊词汇上。",
+            "rejected_reason": "回答提供了具体的排队时间估算，明确指出热门景点排队时间'up to 2-3 hours'（长达2-3小时），并非仅使用模糊词汇，满足了对具体描述的要求。"
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然陈述了事实性结论，但并未引用任何具体的数据源、官方公告、主流旅游指南或近期游客反馈汇总来支撑其关于排队时长的断言，缺乏明确的权威性来源说明。",
+            "rejected_reason": "回答虽然陈述了事实，但未引用任何具体的数据源、官方公告、主流旅游指南或近期游客反馈汇总来支撑其关于排队时长的说法，缺乏对信息权威性和时效性来源的说明。"
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答在第5点建议中明确提到了'Visit the park on a weekday if possible, as weekends tend to be more crowded'，考虑了周末与工作日之间的波动因素对拥挤程度的影响。",
+            "rejected_reason": "回答明确区分了'weekends and public holidays'（周末和公共假期）与'weekdays'（工作日）的情况，并特别列出了8月的特定节日（如Ferragosto），考虑了内部波动因素，避免了过度笼统。"
+          },
+          {
+            "criterion_id": "rubric_346c47b1a64b4c02b9930756b338bc02_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答给出了明确的肯定结论（'Yes, it's very likely that you'll encounter long lines'），并基于8月是意大利暑假高峰期且游客众多的逻辑进行了自洽的阐述。",
+            "rejected_reason": "回答给出了明确的结论'Yes...can be quite busy'（是的……会很忙），并基于旺季、节假日及具体等待时长等分析进行了逻辑自洽的阐述。"
+          }
+        ],
+        "chosen_score": 0.7,
+        "rejected_score": 0.7,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_021b1f4bcc0c43cf9acfd88584e44161"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_dc9db57c8e7644a186234b3dc6956b46",
+        "criteria": [
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_1",
+            "question": "回答的核心结论（即8月份存在长时间排队）是否符合当前公认的旅游事实或权威统计数据？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_2",
+            "question": "回答是否明确限定讨论范围为意大利Gardaland主题公园且在8月份这一特定时间段内？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_3",
+            "question": "回答是否引用了可靠的数据源（如官方运营数据、权威旅游报告或大量用户反馈）来支持其描述？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_4",
+            "question": "回答是否避免了将8月份的普遍现象绝对化为每一天都如此，而是合理区分了周末/工作日或高峰时段的差异？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务要求核验关于意大利Gardaland公园8月份是否存在长时间排队的陈述。修订阶段需结合经验指导，将核心结论的事实真实性作为最高优先级独立项（权重提升至0.5以上），并严格区分背景（Gardaland通常夏季拥挤）与本次具体要求（8月、长队）。初稿中缺乏对'事实结论正确性'的独立强制判定，且部分问题（如量化标准）可能属于回答内容的细节而非核验该陈述是否成立的必要前提。修订后的标准将删除对具体量化定义的依赖（因'长'是相对概念，不同来源定义不同，不应成为否定陈述的理由），转而聚焦于：1. 结论是否与公认事实一致；2. 时间地点范围是否精准匹配；3. 数据来源的权威性；4. 是否合理处理了季节性波动而非绝对化概括。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_dc9db57c8e7644a186234b3dc6956b46",
+        "normalized_weights": {
+          "rubric_dc9db57c8e7644a186234b3dc6956b46_1": 0.5,
+          "rubric_dc9db57c8e7644a186234b3dc6956b46_2": 0.2,
+          "rubric_dc9db57c8e7644a186234b3dc6956b46_3": 0.15,
+          "rubric_dc9db57c8e7644a186234b3dc6956b46_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指出8月份在Gardaland遇到长时间排队是非常可能的（very likely），并将其归因于8月是意大利夏季假期的峰值，这符合该主题公园在旅游旺季普遍存在长排队的公认事实。",
+            "rejected_reason": "回答明确指出8月份Gardaland排队时间可能长达2-3小时，且提到公园非常拥挤，这符合夏季旺季意大利主题公园的公认事实。"
+          },
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确限定了讨论对象为意大利的Gardaland主题公园，并具体针对8月份这一时间段进行了分析和建议。",
+            "rejected_reason": "回答在开头直接点名了'Gardaland in Italy'（意大利Gardaland），并多次提及'August'（8月）及该时间段的具体特征，明确限定了讨论范围。"
+          },
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然给出了合理的逻辑推断（夏季假期导致客流大），但并未引用具体的可靠数据源，如官方运营统计数据、权威旅游报告或具体的用户反馈数据来支持其关于排队时长的描述。",
+            "rejected_reason": "回答虽然提到了具体的等待时长（2-3小时）和建议措施，但并未引用任何具体的权威数据源、官方运营报告或统计数据来源来支撑其关于排队长度的描述，仅以一般性建议形式呈现。"
+          },
+          {
+            "criterion_id": "rubric_dc9db57c8e7644a186234b3dc6956b46_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答没有将8月份的拥挤情况绝对化为每一天都如此，而是通过建议“如果可能在工作日前往”以及指出“周末通常更拥挤”，合理区分了工作日和周末/高峰时段的差异。",
+            "rejected_reason": "回答明确区分了不同情况，指出周末和公共假期（如Ferragosto）会更拥挤，并建议在工作日前往以避免最长排队，避免了将现象绝对化为每一天都如此。"
+          }
+        ],
+        "chosen_score": 0.85,
+        "rejected_score": 0.85,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，三版修订后的评分标准（Rubric 2, 3, 4）在判定'数据源可靠性'（Criterion 7/11/16）时，均判定两个回答因'未引用具体官方数据或权威报告'而不得分。然而，人工偏好理由明确指出：被选中的回答（Chosen）虽然提供了建议但未引用数据源，却被认为优于被拒绝的回答（Rejected），因为后者存在事实性错误（如将Ferragosto日期列为8月15-17日）。Judge的评判逻辑错误在于：它机械地执行了'必须引用具体来源'这一标准，忽略了任务本质是核实'是否存在长队'这一常识性事实，而非要求模型提供学术级数据支撑。对于此类基于常识的事实核查任务，强制要求'引用官方统计数据'作为得分项是不合理的，这会导致所有仅凭通用知识作答的高质量回答被判低分，且无法区分'无数据引用'与'事实错误'的严重性差异。正确的核验应聚焦于结论是否符合公认常识，而非是否引用了特定来源。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_ccdcfb4695754eb09c6f2af5c869725c",
+            "method": {
+              "trigger": "当任务涉及基于常识或普遍认知的现实世界事实核查（如旅游旺季、天气状况、地理位置状态），且该事实不存在唯一确定的统计数值或官方实时数据要求时",
+              "principle": "严禁将'引用具体官方数据来源'设为独立的高权重得分项；若核心结论符合公认常识，即使缺乏具体数据引用也应视为合格，不可因缺少数据源而否定事实的正确性。",
+              "application_guide": "Generator在设计评分标准时，应将'事实准确性'（结论是否符合公认常识）作为最高优先级维度（权重>0.5），并明确说明'引用数据源'仅作为加分项或可选验证手段，而非否决项。若回答基于常识给出了正确结论，不应因未提供具体链接或报告而扣分；只有当回答包含明显违背常识的错误陈述时，才应判定为不合格。避免将'数据引用'作为判断事实真伪的唯一或主要依据。"
+            },
+            "source_task_id": "3e31330d7ab920a23b6ee31dfd66f5113a4860ca25a2a0feab10a9896fbe8573",
+            "parent_ids": [
+              "exp_021b1f4bcc0c43cf9acfd88584e44161"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_ccdcfb4695754eb09c6f2af5c869725c"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_c9470734e39e477cae436ac13c9e11d8",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_1",
+                  "question": "回答是否明确指出了地点为意大利Gardaland公园且时间段为8月份？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_2",
+                  "question": "回答是否给出了符合公认常识的结论（即8月作为欧洲夏季旅游高峰期，该公园存在显著排队现象）？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_3",
+                  "question": "回答是否对‘长时间排队’进行了合理的定性描述或基于常识的估算，而非完全回避该概念？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_4",
+                  "question": "回答是否避免了断言不存在排队或提供明显违背常识的错误信息？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "任务要求核验关于意大利Gardaland公园8月份排队情况的陈述。核心在于确认该事实是否符合普遍认知（即8月为欧洲旅游旺季，主题公园通常人流密集）。原draft标准过度强调‘具体量化标准’和‘权威数据源引用’作为硬性否决项，这违背了常识性事实核查的原则：对于此类基于普遍经验的现实问题，结论的正确性（符合常识）应优于数据源的严谨性。修订后的标准将重心调整为：首先确认是否明确指出了地点、时间及‘长时间排队’的定性描述；其次评估结论是否符合公认的旅游旺季常识；最后将数据来源作为辅助验证而非决定性因素，避免对非实时数据场景设置不切实际的门槛。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_c9470734e39e477cae436ac13c9e11d8",
+              "normalized_weights": {
+                "rubric_c9470734e39e477cae436ac13c9e11d8_1": 0.25,
+                "rubric_c9470734e39e477cae436ac13c9e11d8_2": 0.4,
+                "rubric_c9470734e39e477cae436ac13c9e11d8_3": 0.2,
+                "rubric_c9470734e39e477cae436ac13c9e11d8_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确提到了地点为'Gardaland, Italy'，并指出时间段为'during the month of August'，完全符合标准要求。",
+                  "rejected_reason": "回答开篇明确提到'Gardaland in Italy'和'during August'，准确指出了地点为意大利Gardaland公园且时间段为8月份。"
+                },
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答给出了符合常识的结论，明确指出8月是意大利夏季假期的高峰期（peak of the summer holiday season），因此很可能遇到长队，这与公认的旅游常识一致。",
+                  "rejected_reason": "回答指出August是peak summer season（夏季旅游高峰期），并说明popular attractions may have long lines，符合欧洲夏季该公园存在显著排队现象的公认常识。"
+                },
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答对排队现象进行了明确的定性描述，使用了'very likely that you'll encounter long lines'这样的表述，确认了长时间排队的存在性，并未回避该概念。",
+                  "rejected_reason": "回答对长时间排队进行了具体描述，明确指出等待时间'sometimes up to 2-3 hours'，并提及排队涉及热门景点、餐饮及洗手间等，未回避该概念。"
+                },
+                {
+                  "criterion_id": "rubric_c9470734e39e477cae436ac13c9e11d8_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答没有断言不存在排队，反而确认了排队的可能性很大，提供的信息符合逻辑且未违背常识。",
+                  "rejected_reason": "回答确认了排队的存在（Yes, ... can be quite busy... long lines），并未断言不存在排队或提供违背常识的错误信息。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 1.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "上一轮尝试（经验11）虽然正确地将'事实准确性'设为最高权重并移除了'数据源引用'的硬性门槛，但导致了新的失败：两篇回答在该标准下均获得满分（1.0），无法区分优劣。根本原因在于，该标准完全忽略了被拒绝回答中存在的**具体事实性错误**（如将Ferragosto节日日期错误地列为8月15-17日，而实际上仅在15日）。Judge在之前的判定中曾明确指出被拒绝回答的错误是主要扣分点，但在经验11的标准下，只要结论符合常识（'有长队'），具体的细节错误（节日日期）就被视为无关紧要或未被纳入考核。这导致评分标准无法捕捉到'部分正确但包含关键事实错误'与'完全正确'之间的质量差异。因此，必须引入一个独立的维度来专门核验'关键事实细节的准确性'，特别是当这些细节涉及特定时间、地点属性或常见误区时，不能仅因大方向正确就忽略局部硬伤。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_832bc89b9a6e4e8e905a63079fc2e8d9",
+            "method": {
+              "trigger": "当任务要求核实现实世界的具体事实信息（如地点状态、时间节点、事件详情），且回答中存在部分正确的大方向结论但包含具体的、可验证的事实性错误（如错误的日期、名称、数量或属性）时",
+              "principle": "评分标准必须将'关键事实细节的准确性'确立为独立的否决项或高权重扣分项；严禁仅因核心结论（如'存在排队'）符合常识而忽略回答中具体的事实性谬误（如错误的节日日期、虚构的数据），此类硬伤应直接降低评分或判定为不合格。",
+              "application_guide": "Generator在设计评分标准时，应增设'事实细节核查'维度，提问示例：'回答中提及的具体事实细节（如日期、名称、数量、属性）是否准确无误？是否存在明显的常识性错误或虚构信息？'。若回答在大方向上正确但包含关键细节错误（如将单一日期的节日描述为连续多日），即使其他维度表现良好，也应判定为未通过或大幅扣分。切勿将'逻辑自洽'或'大方向正确'作为掩盖具体事实错误的理由。"
+            },
+            "source_task_id": "3e31330d7ab920a23b6ee31dfd66f5113a4860ca25a2a0feab10a9896fbe8573",
+            "parent_ids": [
+              "exp_021b1f4bcc0c43cf9acfd88584e44161"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_832bc89b9a6e4e8e905a63079fc2e8d9"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_eb02556bdbf54075a638e7344bf1dfef",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_1",
+                  "question": "是否明确证实了Gardaland公园在8月份特定时间段内实际存在排队现象，而非仅假设或推测？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_2",
+                  "question": "是否提供了可靠的来源（如官方公告、权威旅游报告或大量用户实时反馈）来支持排队长度的描述？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_3",
+                  "question": "是否区分了8月份内不同日期（如周末与工作日）或不同区域的排队差异，而非笼统概括所有情况？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_4",
+                  "question": "是否对'长时间排队'给出了明确的量化定义（例如等待时间超过30分钟、60分钟等），以便客观评估？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_5",
+                  "question": "是否考虑了8月份可能存在的特殊事件（如节假日、特别活动）对排队长度的影响，并在分析中予以说明？",
+                  "weight": 0.05
+                }
+              ],
+              "analysis": "任务要求核验意大利Gardaland主题公园在8月份是否存在长时间排队现象。当前stage为revise，需基于draft标准进行修订。Draft中的标准主要关注定义、时间覆盖、数据源和日期区分，但缺乏对'排队是否真实存在'这一核心事实的直接确认，且未明确排除'无排队'的情况作为反例验证。此外，draft中关于'完全覆盖8月运营期'的表述略显冗余，因为8月是固定月份，重点应在于该时段内的高峰特征。经验提示强调关键事实细节准确性的重要性，因此修订后的标准需增加对'排队现象存在性'的直接核验，并强化对具体数据或观察证据的依赖，避免仅凭笼统描述判定。同时，保留对时间细分（周末/工作日）和数据可靠性的要求，但调整权重以突出核心事实。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_eb02556bdbf54075a638e7344bf1dfef",
+              "normalized_weights": {
+                "rubric_eb02556bdbf54075a638e7344bf1dfef_1": 0.35,
+                "rubric_eb02556bdbf54075a638e7344bf1dfef_2": 0.25,
+                "rubric_eb02556bdbf54075a638e7344bf1dfef_3": 0.2,
+                "rubric_eb02556bdbf54075a638e7344bf1dfef_4": 0.15,
+                "rubric_eb02556bdbf54075a638e7344bf1dfef_5": 0.05
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答仅使用了'it's very likely'（很有可能）和推测性语言来描述排队现象，并未明确证实特定时间段内实际存在的具体排队情况，缺乏事实确认。",
+                  "rejected_reason": "回答使用了'can be quite busy'（可能很繁忙）和'may have long lines'（可能有长队）等推测性语言，并未明确证实特定时间段内实际发生了排队现象，缺乏对既定事实的肯定陈述。"
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未引用任何官方公告、权威旅游报告或具体的用户实时反馈数据作为支撑排队长度的来源，仅基于一般常识进行推断。",
+                  "rejected_reason": "回答中未提供任何具体的可靠来源（如官方公告链接、权威旅游报告数据或实时用户反馈统计），仅基于一般性常识进行描述，无法支撑其关于排队长度的具体描述。"
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答虽然提到了周末比工作日拥挤的建议，但未针对8月份内不同日期的具体排队差异或公园内不同区域的排队情况进行详细区分和分析。",
+                  "rejected_reason": "回答明确区分了周末/公共假日与工作日（Weekdays vs Weekends）的情况，指出周末和节假日会更拥挤，并建议工作日前往以避免长队，体现了对不同日期差异的区分。"
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_4",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答中完全未对'长时间排队'给出任何量化定义（如具体的等待分钟数），无法据此客观评估排队时长。",
+                  "rejected_reason": "回答中对'长时间排队'给出了明确的量化定义，指出热门景点的等待时间有时可达'2-3小时'，满足了客观评估的要求。"
+                },
+                {
+                  "criterion_id": "rubric_eb02556bdbf54075a638e7344bf1dfef_5",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答仅提到8月是暑假旺季，未具体分析8月份内可能存在的特殊事件（如特定节假日或特别活动）对排队长度的具体影响。",
+                  "rejected_reason": "回答专门列出了8月份的意大利公共假日（Ferragosto，即8月15日及其前后几天），并明确说明这些特殊事件会导致人群更大，考虑了特殊事件的影响。"
+                }
+              ],
+              "chosen_score": 0.0,
+              "rejected_score": 0.4,
+              "margin": -0.4,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

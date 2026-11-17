@@ -1,0 +1,473 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:eca61f0e945a34930daad51d285de8b5205ae80928ca6c4b0ffb6d95893042a9",
+    "task": "Write a bio for twitter, also add emoji, I'm a crypto and NFT enthusiasts",
+    "chosen": " Sure! Here's a Twitter bio for you:\n\n🌐 Crypto & NFT Enthusiast 🌐\n🔍 Exploring the future of digital assets 🔍\n🚀 Passionate about blockchain innovation 🚀\n🎨 Collector of unique digital art 🎨\n💡 Always learning, always curious 💡\n\nFeel free to customize it further to better reflect your personality and interests!",
+    "rejected": "🌟 Meet Alex, a passionate crypto and NFT enthusiast! 💰💻🎨\n\nI'm a tech-savvy individual with a deep love for the world of cryptocurrencies and non-fungible tokens (NFTs). 🚀🌐\n\nWith a background in computer science and a keen interest in blockchain technology, I've been exploring the exciting possibilities of decentralized finance (DeFi) and digital art. 💡💎\n\nAs a crypto enthusiast, I'm always on the lookout for the latest trends and innovations in the industry. 📈🔍\n\nAs an NFT enthusiast, I'm fascinated by the unique and creative ways artists are using blockchain technology to sell and collect digital art. 🎨💎\n\nWhether you're a seasoned investor or just starting out, I'm here to share my knowledge and insights on the ever-evolving world of crypto and NFTs. 🤝💬\n\nJoin me on this thrilling journey as we explore the endless possibilities of decentralized finance and digital art! 🌟🚀💫",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 11533,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 provided a suggestion that is unhelpful for 99.7% of all Twitter users (exceeds character count) and has its helpfulness rating greatly impacted due to it. @Response 2's only flaw is the added pleasantries. ",
+          "feedback1": "The response is slightly helpful. While emojis are appropriately included as per request, there are many added details in this response that were not previously provided by the prompt, such as the user being called \"Alex\", or the fact that the user has a background in computer science. This directly impacts the correctness of the prompt. The helpfulness and correctness of this response are further reduced since for regular Twitter/X users, the character limit is 280 for all accounts. Some accounts can override this limit with a premium subscription. However, given the data provided, this represents about 0.2% of the entire user base and therefore is unreasonable that the response provided an 800+ character suggestion. The response helpfulness can be greatly improved if a regular user bio is provided alongside a premium bio, though this is still a sub-optimal bio considering the repetition involved (such as NFT and cryptocurrencies can be combined into one holistic blockchain overview). ",
+          "feedback2": "The response is mostly helpful. The main flaw of this response is that it included fluff, which also impacts the response's clarity and verbosity. Taking away the pleasantries, the prompt provided an example bio that aligns well with what a typical blockchain enthusiast would write. After careful consideration, the last part of the bio: \"Always learning, always curious\" should not be considered a hallucinated statement but rather enhancement due to its subjective and general nature. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 is written in the correct format for a Twitter bio and fits the overall tone while addressing the other aspects of the prompt, while @Response 1 would not be functional or appropriate for Twitter.",
+          "feedback1": "The response is slightly helpful. It covers the components from the prompt about NFTs and crypto, but is not proper for a Twitter bio. This exceeds the Twitter bio character limit by a large margin. At least 50-70% of this would have to be eliminated to fit within the character limit. It's also written more as a professional introduction for. a company rather than a Twitter bio. This might be suitable for another platform such as LinkedIn, but it would not be appropriate for Twitter. It also has contradictory use of first and third person writing. Finally, it could be more varied in its use of language. Two sentences in a row start with describing the user as an enthusiast. ",
+          "feedback2": "The response is mostly helpful. Primarily, it satisfies the prompt requirement of writing a bio for Twitter that covers being a crypto and NFT enthusiast. It includes details that would likely make sense for this person even though that information is not included in the prompt, such as digital art and block chain innovation. The formatting is proper for a Twitter bio, with short phrases as descriptions. However, this is very close to the character limit for a Twitter bio which would make it difficult for the customization that the response suggests. The main area of critique is the unnecessary introduction and conclusion for this response. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1.  @Response 1 contains hallucinations in the form of extra information the prompt doesn't mention that may be false, while @Response 2  does not. It is also far too verbose to be used as a twitter bio due to the character limit.",
+          "feedback1": "The response is not helpful.  It follows the requirements of the prompt, but it also includes hallucinations such as the fact that the response claims the user has a background in computer science and that their name is Alex. This is not mentioned in the prompt, may be inaccurate, and is irrelevant for the prompt's requirements. The output is also far too verbose and repetitive for the intended purpose, as the max length of a twitter bio is 160 characters.",
+          "feedback2": "The response is mostly helpful. It contains accurate information that satisfies the prompt's requirements.  However, the response is slightly too verbose for the 160 character limit for twitter bios, but this could be simply addressed by removing the \"Always learning, always curious\" line that is not necessary.  It also has unnecessary pleasantries."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_b530148ad4e0a97de085",
+        0.30395150602634363
+      ],
+      [
+        "task_6a61773104194b18796d",
+        0.2692492450090904
+      ],
+      [
+        "task_a5ce79b52bb56f7c4c7d",
+        0.26352405853728184
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_b530148ad4e0a97de085",
+              "similarity": 0.30395150602634363,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:941a3897820cf502a5269c83a521461a5685df766cd9408dac4f65c62543a480:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "8198c687c54d6dd35fcf1f318e0637001b64eeab9adf45c0a562cf430bc1e47e"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f589e4c6a08945d498eccbea1df77ae5"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_9f68a031aa164c769dd78ba249279604",
+        0.24735148404123514
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.24612847409520877
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.2238366642845261
+      ],
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.20310237712213
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.18892711063485856
+      ],
+      [
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        0.17386556282296337
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.1732779217244363
+      ],
+      [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        0.1687346054902853
+      ],
+      [
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        0.16217482615010476
+      ],
+      [
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        0.160316105292726
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.17386556282296337
+      },
+      {
+        "experience_id": "exp_9f68a031aa164c769dd78ba249279604",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24735148404123514
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24612847409520877
+      },
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2238366642845261
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20310237712213
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18892711063485856
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1732779217244363
+      },
+      {
+        "experience_id": "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1687346054902853
+      },
+      {
+        "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16217482615010476
+      },
+      {
+        "experience_id": "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.160316105292726
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_543c20bb090d4a35a4c1851ad1972427": "任务明确要求生成Twitter简介（简短文本）且需包含Emoji，经验1指出评分标准需明确界定有效内容与元数据/符号的边界，避免将Emoji或必要的标点误判为违规，适用于此类对格式和符号有特定要求的简短文本生成任务。",
+    "exp_4d4eca8aea6542b58eed9c5cf1f9061a": "任务指定了'crypto and NFT enthusiasts'的人设背景，经验4强调评分标准应核验回答是否体现了该人设应有的专业深度和视角（如使用行业术语），而非强制要求显式声明身份，这与通过内容风格自然流露人设的要求高度契合。"
+  },
+  "draft": {
+    "rubric_id": "rubric_ac6bdb65d93844a88e3e1ac7b34d41f0",
+    "criteria": [
+      {
+        "criterion_id": "rubric_ac6bdb65d93844a88e3e1ac7b34d41f0_1",
+        "question": "简介是否明确表达了用户是加密货币（crypto）爱好者的身份？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_ac6bdb65d93844a88e3e1ac7b34d41f0_2",
+        "question": "简介是否明确表达了用户是NFT爱好者的身份？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_ac6bdb65d93844a88e3e1ac7b34d41f0_3",
+        "question": "简介中是否至少包含一个与主题相关的表情符号？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_ac6bdb65d93844a88e3e1ac7b34d41f0_4",
+        "question": "简介的字符数是否符合Twitter个人简介的一般限制（不超过160字符）？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求为Twitter撰写个人简介，需明确包含加密货币（crypto）和NFT爱好者身份，并添加表情符号。由于是draft阶段且用户未指定长度或具体风格，标准将聚焦于核心内容覆盖、平台适配性（如长度限制）、元素完整性及语言自然度。权重分配上，内容准确性与身份表达最为关键，其次是格式合规性与表情符号的使用。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9",
+        "criteria": [
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_1",
+            "question": "简介是否明确表达了用户是加密货币（crypto）爱好者的身份？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_2",
+            "question": "简介是否明确表达了用户是NFT爱好者的身份？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_3",
+            "question": "简介中是否至少包含一个与主题相关的表情符号？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_4",
+            "question": "简介的字符数是否符合Twitter个人简介的一般限制（不超过160字符）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求为Twitter撰写包含表情符号的个人简介，明确身份为加密货币（crypto）和NFT爱好者。当前处于revise阶段，需基于draft检查并优化标准。Draft中的标准已覆盖核心内容（crypto、NFT身份）、格式限制（160字符）及表情符号要求，权重分配合理：身份表达各占35%体现其核心地位，表情符号占20%，长度合规占10%。修订后保留所有四项标准，微调表述以确保核验清晰，无遗漏或错误需修正，且未引入额外义务或限制实现方式。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9",
+        "normalized_weights": {
+          "rubric_99ffa2b212d747a68be6cb098d40a0a9_1": 0.35,
+          "rubric_99ffa2b212d747a68be6cb098d40a0a9_2": 0.35,
+          "rubric_99ffa2b212d747a68be6cb098d40a0a9_3": 0.2,
+          "rubric_99ffa2b212d747a68be6cb098d40a0a9_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "简介中明确包含'Crypto & NFT Enthusiast'以及'Passionate about blockchain innovation'，清楚表达了用户是加密货币爱好者的身份。",
+            "rejected_reason": "回答中多次明确提及'crypto enthusiast'、'cryptocurrencies'以及'DeFi'，清晰表达了用户是加密货币爱好者的身份。"
+          },
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "简介中明确包含'Crypto & NFT Enthusiast'以及'Collector of unique digital art'，清楚表达了用户是NFT爱好者的身份。",
+            "rejected_reason": "回答中多次明确提及'NFT enthusiast'、'non-fungible tokens (NFTs)'以及'digital art'，清晰表达了用户是NFT爱好者的身份。"
+          },
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "简介中包含多个表情符号，如🌐、🔍、🚀、🎨、💡，符合至少包含一个与主题相关表情符号的要求。",
+            "rejected_reason": "回答中包含大量与主题相关的表情符号，如🌟、💰、💻、🎨、🚀、🌐、💡、💎、📈、🔍、🤝、💬、💫等。"
+          },
+          {
+            "criterion_id": "rubric_99ffa2b212d747a68be6cb098d40a0a9_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "统计正文部分（不含引导语和结尾建议），字符数约为120个左右，未超过Twitter个人简介160字符的限制。",
+            "rejected_reason": "该回答的字符数远超Twitter个人简介160字符的限制。经计算，仅第一段加上换行符就已超过限制，全文包含多段长句和大量空格，总字符数约为580个以上，不符合要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.9,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_543c20bb090d4a35a4c1851ad1972427"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_4af1220e14d84e91a4d028f9c0769902",
+        "criteria": [
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_1",
+            "question": "简介是否清晰明确地表达了用户是加密货币（crypto）爱好者的身份？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_2",
+            "question": "简介是否清晰明确地表达了用户是NFT爱好者的身份？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_3",
+            "question": "简介中是否包含至少一个与加密货币或NFT主题相关的表情符号？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_4",
+            "question": "简介的总字符数是否控制在Twitter个人简介的限制范围内（160字符以内）？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_5",
+            "question": "简介是否保持了简洁、自然的口语化风格，适合社交媒体展示？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "当前任务处于修订阶段（revise），需基于原始需求（撰写Twitter简介、包含emoji、身份为crypto和NFT爱好者）及提供的初稿进行核验。初稿标准已涵盖核心身份表达、emoji要求及字符限制，但缺乏对语言风格（如简洁性、吸引力）的显式约束，且未明确区分“至少一个”与“相关”的具体执行细节。修订将保留初稿关于身份和长度的核心权重分配，优化问题表述以增强可操作性（例如明确表情符号需与主题相关），并增加一条关于文本简洁性与平台适配性的标准，以确保生成的简介符合Twitter简短互动的特性。经验引用仅作为设计思路参考，不直接转化为输出字段或强制规则。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_4af1220e14d84e91a4d028f9c0769902",
+        "normalized_weights": {
+          "rubric_4af1220e14d84e91a4d028f9c0769902_1": 0.3,
+          "rubric_4af1220e14d84e91a4d028f9c0769902_2": 0.3,
+          "rubric_4af1220e14d84e91a4d028f9c0769902_3": 0.2,
+          "rubric_4af1220e14d84e91a4d028f9c0769902_4": 0.15,
+          "rubric_4af1220e14d84e91a4d028f9c0769902_5": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中的第一行明确包含'Crypto & NFT Enthusiast'，清晰表达了用户是加密货币爱好者的身份。",
+            "rejected_reason": "回答中多次明确提到 'crypto enthusiast'、'cryptocurrencies' 以及 'blockchain technology'，清晰表达了用户是加密货币爱好者的身份。"
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中的第一行明确包含'Crypto & NFT Enthusiast'，且后续内容提及'digital art'和'collector'，清晰表达了用户是NFT爱好者的身份。",
+            "rejected_reason": "回答中多次明确提到 'NFT enthusiast'、'non-fungible tokens (NFTs)' 以及 'digital art'，清晰表达了用户是NFT爱好者的身份。"
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "简介中包含了多个与主题相关的表情符号，如🌐、🔍、🚀、🎨、💡，满足至少一个的要求。",
+            "rejected_reason": "简介中包含了多个与主题相关的表情符号，如 💰（金钱/加密）、💻（科技）、🚀（火箭/增长）、🌐（网络）、💡（想法）、💎（钻石/NFT）、📈（图表）、🔍（搜索）、🤝（合作）、💬（交流）等。"
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "该回复将生物信息分成了五行展示，加上换行符和表情符号，总字符数明显超过Twitter个人简介的160字符限制（实际约为180+字符），不符合格式要求。",
+            "rejected_reason": "该回答的总字符数远超Twitter个人简介的160字符限制。仅第一段就超过50字符，全文包含多段长句和大量换行，实际长度约为500-600字符，不符合要求。"
+          },
+          {
+            "criterion_id": "rubric_4af1220e14d84e91a4d028f9c0769902_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "尽管格式上超出限制，但语言风格保持了简洁、自然的口语化表达，使用了短句和感叹语气，适合社交媒体展示。",
+            "rejected_reason": "虽然语言风格口语化，但内容结构过于冗长，包含了自我介绍、背景介绍、具体兴趣点、对受众的呼吁等多个段落，更像是一篇博客文章或LinkedIn简介，而非适合Twitter展示的简洁个人简介。"
+          }
+        ],
+        "chosen_score": 0.85,
+        "rejected_score": 0.8,
+        "margin": 0.05,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_6a3a48455daf4af0ad92b2742c1434be",
+        "criteria": [
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_1",
+            "question": "简介内容是否自然体现了用户作为加密货币（crypto）爱好者的身份或热情？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_2",
+            "question": "简介内容是否自然体现了用户作为NFT爱好者的身份或热情？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_3",
+            "question": "简介中是否至少包含一个与加密、NFT或社交媒体主题相关的表情符号？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_4",
+            "question": "简介的总字符数是否控制在Twitter个人简介的限制范围内（不超过160字符）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求为Twitter撰写个人简介，需明确体现'crypto和NFT爱好者'身份并包含表情符号。当前stage为revise，需基于draft检查修订。Draft中的标准已覆盖核心身份表达（crypto/NFT）、平台限制（160字符）及表情符号要求。经验提示指出不应强制显式声明人设，而应关注内容是否自然流露专业度或热情；因此将原标准中隐含的‘明确表达’调整为更自然的‘体现...身份/热情’，避免机械判定。同时保留对Twitter长度限制的硬性约束，确保格式合规。权重分配上，身份识别（含两者）仍占主导，表情符号作为增强元素次之，长度限制为必要基础条件。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_6a3a48455daf4af0ad92b2742c1434be",
+        "normalized_weights": {
+          "rubric_6a3a48455daf4af0ad92b2742c1434be_1": 0.35,
+          "rubric_6a3a48455daf4af0ad92b2742c1434be_2": 0.35,
+          "rubric_6a3a48455daf4af0ad92b2742c1434be_3": 0.2,
+          "rubric_6a3a48455daf4af0ad92b2742c1434be_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "简介中明确包含'Crypto & NFT Enthusiast'以及'Passionate about blockchain innovation'等表述，自然体现了用户作为加密货币爱好者的身份和热情。",
+            "rejected_reason": "回答中多次明确提到'crypto enthusiast'、'cryptocurrencies'、'blockchain technology'和'decentralized finance (DeFi)'，自然体现了用户作为加密货币爱好者的身份。"
+          },
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "简介开头直接提及'NFT Enthusiast'，并包含'Collector of unique digital art'，自然体现了用户作为NFT爱好者的身份和热情。",
+            "rejected_reason": "回答中明确提到'NFT enthusiast'、'non-fungible tokens (NFTs)'以及关于数字艺术和区块链结合的描述，自然体现了用户作为NFT爱好者的身份。"
+          },
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "简介中使用了多个表情符号（🌐、🔍、🚀、🎨、💡），且这些符号与加密、数字资产或社交媒体主题相关。",
+            "rejected_reason": "简介中包含了大量与主题相关的表情符号，如🌟（星星）、💰（钱袋）、💻（电脑）、🎨（调色板）、🚀（火箭）、🌐（地球）、💡（灯泡）、💎（钻石）、📈（图表）、🔍（放大镜）、🤝（握手）、💬（对话气泡）等。"
+          },
+          {
+            "criterion_id": "rubric_6a3a48455daf4af0ad92b2742c1434be_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "仅计算简介正文部分（不含前后说明文字），字符数约为150个左右（含空格和换行符通常不计入Twitter显示的160字符限制，但即使计入所有可见字符也远未超标），符合Twitter个人简介不超过160字符的限制。",
+            "rejected_reason": "该回答包含多段长文本，总字符数远超Twitter个人简介160字符的限制。仅统计第一段加换行符就已接近或超过限制，全文显然严重超标。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.9,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

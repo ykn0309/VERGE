@@ -1,0 +1,757 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:7eccea31ce7a6af3d1e1c741db00a24555c21bdaf916f4d508e6260c83c70bb5",
+    "task": "(In the school literature clubroom…)\n\nMonika: “Hold on…who left this piece of paper here?”\n\nYuri: “What does it say?”\n\nMonika: “I have no clue. What do you think, Natsuki? …Natsuki? You still there?”",
+    "chosen": "Natsuki, who was sitting in a corner reading a manga, looked up at the sound of her name. She put down her book and walked over to Monika and Yuri.\n\nNatsuki: \"What's up? You found a mysterious piece of paper?\" She peered over Monika's shoulder to read the note. \"Hmm, it looks like a poem or something. But it's not in any of our handwriting...\"\n\nYuri: \"That's strange. Maybe it's from a new member who's too shy to introduce themselves?\" She suggested, adjusting her glasses.\n\nMonika: \"That's a possibility. But we should still be cautious. Here, let's all read it together.\" She unfolded the paper and read aloud:\n\n\"In a world of words, we find our peace,\nA sanctuary for the soul to release.\nYet, in this club, a secret lies,\nHidden behind the friendly guise.\"\n\nThe three girls exchanged puzzled glances. The poem seemed to hint at something mysterious within the literature club, but none of them could figure out what it meant.\n\nNatsuki: \"This is kinda creepy. Who would write something like this?\" She crossed her arms, looking uneasy.\n\nYuri: \"It does have an ominous tone to it. But it could also be a creative writing exercise or a prank.\" She tried to reassure Natsuki.\n\nMonika: \"You're right, Yuri. Let's not jump to conclusions. However, I think it's best if we keep an eye out for anything unusual. And if anyone has any information about this poem, please let us know.\" She looked at both Natsuki and Yuri, who nodded in agreement.\n\nThey decided to continue their club activities as usual, but the mysterious poem remained in the back of their minds, leaving them with a sense of unease and curiosity.",
+    "rejected": "Natsuki, who had been absentmindedly flipping through a manga, looked up with a startled yelp. \n\n\"Huh? Oh, sorry! I was just... uh... reading.\" She clutched the manga tighter, her cheeks flushing pink. \"What's up?\"\n\nHer eyes darted nervously towards the piece of paper Monika held up. \"Is that... is that for me?\" she asked, her voice barely a whisper.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 14011,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. It fulfills the explicit and implicit requirements of the prompt by developing a story from the provided text of the prompt. Both responses correctly interpret the prompt as alluding to the DDLC game, but @Response 1 is too short to be useful.",
+          "feedback1": "The response is partially helpful. It correctly ascertains that the prompt is alluding to the \"Doki Doki Literature Club\" from the insufficient description (school literature clubroom) because of the characters' names: Monika, Yuri, and Natsuki. It picks up the storyline from where the prompt left off. Although it is contextually accurate, it does not fulfill the implicit request of the prompt, which is to use the provided text as inspiration to detail a longer story. The response could be improved by developing the story.",
+          "feedback2": "The response is perfectly helpful. It correctly ascertains from the names of the characters (Monika, Yuri, and Natsuki) that the prompt meant Doki Doki Literature Club when it stated \"school literature clubroom.\" It fulfills both the explicit and implicit requirements of the prompt to use the provided text as inspiration for a longer story. The characters' conversations are appropriate to their personalities in the game. The response cannot be meaningfully improved."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 is a fully complete response. It is a good length and a believable continuation of the final prompt. @Response 1 is also a believable continuation, but is far too short.",
+          "feedback1": "The response is partially helpful. The response is able to naturally continue the conversation found in the final prompt. The response keeps the feeling of the prompt's conversation throughout the continuation. The response is complete, coherent, and easy to read, as it uses appropriate vocabulary. However, the response is extremely short, which was not specified in the prompt. The response could benefit from slightly more story.",
+          "feedback2": "The response is perfectly helpful. The response is able to naturally continue the conversation that is started in the final prompt. The response includes lines for each character that is introduced in the prompt and is a believable continuation. The response is a good length, uses appropriate vocabulary, and is both complete and coherent. Overall, the response is ideal."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. This is because @Response 2 contains more detailed information and gives a complete story and answer about the piece of paper, while @Response 1 is short and vague and gives no useful information about the piece of paper or its owner.",
+          "feedback1": "The response is mostly helpful. This is because it continues the story in a manner that is consistent with the part of the story in the prompt. However the response is too short and seems to be missing a key information. The response can be made better by creating more information that telss the reader who owned/left the priece of paper. this will show completeness .",
+          "feedback2": "The response is perfectly helpful. This is because it continues the story in a manner that is consistent with the prompt. The response is well detailed and rich in information regarding the piece of paper that was found by Monika. The response established that the paper did not belong to any of them. It gives a more complete story to the unknowns in the prompt."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_a66dadba57c9fe4ffe2f",
+        0.5353065807532329
+      ],
+      [
+        "task_2e7be4d8bcf0c2b0b177",
+        0.2812503169717369
+      ],
+      [
+        "task_d4210e66d6dfa94fd045",
+        0.2774843153343441
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2812503169717369,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+                ],
+                "task_ids": [
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2812503169717369,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_62add4a1e1684c5488f65574d8fdea4f"
+                ],
+                "task_ids": [
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2812503169717369,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:dddbb14347c393d0143938461bf33899f7a6b491fc1e68cff15aa3fe36961899:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "e8f74dfa609f2a07710e73a93f3b7847d97d1e72143c174d60f1f95e0423ae64"
+                ]
+              }
+            },
+            {
+              "group_id": "task_a66dadba57c9fe4ffe2f",
+              "similarity": 0.5353065807532329,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:363344637a741747bd18935e1ac948e1522f1e131062cf984f0040cba0c26997:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "b7190f48766ee93cf3feab605ddfc1f49fb110792d1776fb01ab06e4173681bc",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2812503169717369,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+                ],
+                "task_ids": [
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": -0.03295329102416641,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2812503169717369,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  0.0,
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:dddbb14347c393d0143938461bf33899f7a6b491fc1e68cff15aa3fe36961899:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "e8f74dfa609f2a07710e73a93f3b7847d97d1e72143c174d60f1f95e0423ae64",
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c",
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3"
+                ]
+              }
+            },
+            {
+              "group_id": "task_a66dadba57c9fe4ffe2f",
+              "similarity": 0.5353065807532329,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:f3201148058ac84223dec0bc5d39ad53c85df0e240468b34037fd97dbdf78392:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:e303c25ab9679ab0695f33a6080a8b1c7451982bf1492c624171a135ff36b22a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "220dd7480424b737727c512676e25473b2814267b0cceb8ced7aeb619a543eb5",
+                  "fb9064e660a02770028427057749702961593eb8e892369aafdcb3ef31235d90",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": -0.038562680059381356,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2812503169717369,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077"
+                ]
+              }
+            },
+            {
+              "group_id": "task_a66dadba57c9fe4ffe2f",
+              "similarity": 0.5353065807532329,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ce2407d8464ae59a5d59ef78fc4f27f2af17f5068652a3b491c6a40284f681aa:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:dff3f8baf08ddf27b7a1d3bc14e4e5b2e3e10d772fa6f34fc63866ff5b72bee9:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5bc30395fd996adcb2607c499dc9537efcde73b01e456c544720648974f6d970:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3e4a97bc7f3e7362d37066d23a40257fe5a024c36d3d8a56cc5c67ed8d74b76d:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f404e9c7da0a9193ef22085ab96e4d13b1458c8bcf0d7fe543cdb7c4748dcc63:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:cb4091585055df1e20c3277074f63914223e3bcdf6029a83f4a040a14487f7c4:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f62a3fd9452614dcee3883370ce32348e05e7edaaa519839010d2b6a8fbe8a8c:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0",
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "46e70eddeb9e8e4bf7c2643135fcf008596d20aaf799a4cfb30393bbd22ee236",
+                  "c1fe33ac6e77d26ce02020c517add4f3c7ded5a63da9e25b0049c4bad2d8b9b6",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "095a0cf8861d0a0e6bfe0fcb9516d73c00b6854129c698a52a2a31834fceb7e4",
+                  "7d1ba10a6d49b94e889f4a044728f3f980980271a6d2388c819ff8118a83139b",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "f76996307255009f70fe5dfafd5b53fc5eff84c9f139461aaae3ad634a2f0f04",
+                  "fcc454b63e6e769f8c7feb09548d7445f5eafb4b898c457d29107081c0dc5e10"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.22563801223107266
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.21611009128626468
+      ],
+      [
+        "exp_2adba5039571400b8862295552f46447",
+        0.21066202091809544
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.20981098418615562
+      ],
+      [
+        "exp_f9c63a6f153b46d8977f62d084a99e17",
+        0.20128182556658247
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.1921356979605423
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.1899731583337536
+      ],
+      [
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        0.18452078972566366
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.1844657850252238
+      ],
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.18347880133179428
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.1921356979605423
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.18347880133179428
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": -0.03295329102416641,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": -0.038562680059381356,
+        "semantic_similarity": 0.20981098418615562
+      },
+      {
+        "experience_id": "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22563801223107266
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21611009128626468
+      },
+      {
+        "experience_id": "exp_2adba5039571400b8862295552f46447",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21066202091809544
+      },
+      {
+        "experience_id": "exp_f9c63a6f153b46d8977f62d084a99e17",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20128182556658247
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b5504c36f1e1468ca470333f1c240342": "任务输入明确包含剧本格式的上下文（角色名后接冒号、括号内动作描述），属于‘任务提供的上下文包含特定的文体格式作为核心约束’的场景，因此评分标准必须严格核验回答是否保持了该剧本格式的特征，而非混同为普通小说叙述。"
+  },
+  "draft": {
+    "rubric_id": "rubric_be86f8e739074bf6aed5262f6b739632",
+    "criteria": [
+      {
+        "criterion_id": "rubric_be86f8e739074bf6aed5262f6b739632_1",
+        "question": "Monika是否表现出发现纸张后的困惑与警觉？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_be86f8e739074bf6aed5262f6b739632_2",
+        "question": "Yuri的回应是否符合其好奇且谨慎的性格特征？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_be86f8e739074bf6aed5262f6b739632_3",
+        "question": "Monika是否自然地转向Natsuki并表达对其缺席的关切？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_be86f8e739074bf6aed5262f6b739632_4",
+        "question": "整体对话是否维持了文学社教室的安静氛围与悬疑感？",
+        "weight": 0.25
+      }
+    ],
+    "analysis": "当前任务为Draft阶段，需基于提供的《DDLC》同人对话片段设计评分标准。交付物为针对该场景的初稿评分标准，对象为Monika、Yuri、Natsuki三位角色的互动逻辑与情境还原度。范围限定于对话中的角色反应（Monika发现纸张、询问内容、呼唤Natsuki）、语气是否符合原作人设、以及情境连贯性。格式限制为JSON结构，包含analysis和criteria字段，criteria需为1-8条明确的通过性问题，权重总和为1。不同实现方式允许在保持人设一致的前提下对具体措辞进行微调，只要不违背角色核心性格即可。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c",
+        "criteria": [
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_1",
+            "question": "Monika的台词是否准确体现了发现不明纸张时的困惑感与初步警觉？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_2",
+            "question": "Yuri的回应是否展现了其作为文学社成员特有的好奇心与温和谨慎的语气？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_3",
+            "question": "Monika在询问Yuri后是否自然地转向Natsuki并流露出对其突然沉默或缺席的关切？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_4",
+            "question": "整体对话节奏是否成功营造出文学社教室内的安静氛围与潜在的悬疑张力？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的《DDLC》同人对话片段修订评分标准。交付物为针对该场景的修订版评分标准，对象聚焦于Monika发现纸张后的反应、Yuri的回应以及Monika对Natsuki缺席的呼唤这三个核心互动点。范围严格限定于对话文本中体现的角色性格还原度（Monika的领导与警觉、Yuri的好奇与文雅）及情境氛围的连贯性。格式要求为JSON结构，包含analysis和criteria字段，其中criteria需为1至8条明确的通过性问题，每条权重为非负数且总和为1。修订过程中将保留原初稿中关于角色人设和情境氛围的合理判断逻辑，同时确保问题表述清晰可核验，不引入外部假设或扩大范围。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c",
+        "normalized_weights": {
+          "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_1": 0.3,
+          "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_2": 0.25,
+          "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_3": 0.25,
+          "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_4": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务提供的输入仅包含Monika发现纸张并询问Natsuki的初始三句台词，而模型回答直接跳过了这一阶段，让Natsuki立即出现并讨论纸张内容。因此，模型回答中的Monika并未在“发现不明纸张时”表现出困惑与警觉，而是出现在后续讨论环节，未能准确体现任务所要求的特定时刻的初始反应。",
+            "rejected_reason": "提供的回答中完全缺失Monika的台词，无法判断其是否体现了发现纸张时的困惑感与初步警觉。"
+          },
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务中Yuri的台词仅为简短询问“它写了什么”，旨在展现温和的好奇心。然而模型回答中Yuri不仅主动推测是“害羞的新成员”，还进行了关于诗歌含义的分析（如“阴郁的基调”、“可能是恶作剧”），这超出了任务设定中该场景下Yuri的回应范围，属于对情节的过度延伸而非单纯展现语气。",
+            "rejected_reason": "提供的回答中完全缺失Yuri的台词，无法判断其回应是否展现了好奇心与温和谨慎的语气。"
+          },
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务要求Monika在询问Yuri后转向Natsuki并流露关切，暗示Natsuki当时处于沉默或缺席状态。但模型回答中Natsuki立刻从角落走出来参与对话，完全消除了“突然沉默或缺席”的情境，导致Monika无法表现出针对该状态的关切，违背了任务设定的前提条件。",
+            "rejected_reason": "提供的回答中完全缺失Monika询问Natsuki并关切其沉默或缺席的台词，且场景描述未包含该互动过程。"
+          },
+          {
+            "criterion_id": "rubric_8c02fcb5ecf74eddbf34689ff917dd1c_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然模型回答营造了悬疑氛围，但它严重偏离了任务提供的原始对话片段。任务要求基于特定的三句台词（发现纸张、询问Yuri、呼唤Natsuki）进行判断，而模型回答重构了整个事件流程（Natsuki加入、朗读诗歌、分析含义），使得整体对话节奏不再是针对原始片段的延续或评估，而是创作了一个全新的故事片段，无法满足对原片段节奏和氛围的核验要求。",
+            "rejected_reason": "提供的回答仅描述了Natsuki的动作和反应，缺失了任务设定的对话核心（Monika与Yuri关于纸张的讨论），未能体现整体对话节奏及文学社教室内的氛围营造。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b5504c36f1e1468ca470333f1c240342"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_1",
+            "question": "Monika的台词是否准确体现了发现不明纸张时的困惑情绪与瞬间警觉？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_2",
+            "question": "Yuri的回应是否展现了其作为文学社成员特有的好奇心与谨慎态度？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_3",
+            "question": "Monika转向呼唤Natsuki的动作与语气是否自然流露出对其突然缺席的关切？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_4",
+            "question": "整体对话是否成功营造了文学社教室内的安静氛围并埋下悬疑伏笔？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的《DDLC》同人剧本片段修订评分标准。交付物为针对该特定对话场景的核验标准，对象聚焦于Monika、Yuri和Natsuki三人的角色互动逻辑及情境还原度。范围严格限定于给定的三句台词所体现的角色反应（Monika的困惑与警觉、Yuri的好奇、Monika对Natsuki缺席的关切）以及整体氛围（悬疑感）。格式上必须维持原剧本结构（角色名后接冒号、括号内动作说明）。修订重点在于确保每条标准均为明确的通过性问题，权重总和为1，并剔除初稿中可能存在的模糊表述或不符合原作人设的潜在偏差，同时保留在符合人设前提下对具体措辞微调的灵活性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3",
+        "normalized_weights": {
+          "rubric_b0c75d2fcc654e0b9e3be720763a50e3_1": 0.25,
+          "rubric_b0c75d2fcc654e0b9e3be720763a50e3_2": 0.25,
+          "rubric_b0c75d2fcc654e0b9e3be720763a50e3_3": 0.25,
+          "rubric_b0c75d2fcc654e0b9e3be720763a50e3_4": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "提供的回答中，Monika的台词被替换为对诗歌内容的讨论（'That's a possibility. But we should still be cautious...'），完全缺失了任务提示词中要求的发现纸张时的原话（'Hold on…who left this piece of paper here?' 和 'I have no clue...'）。因此无法体现发现不明纸张时的困惑情绪与瞬间警觉。",
+            "rejected_reason": "提供的回答中完全缺失Monika的台词，无法判断其是否体现了发现纸张时的困惑与警觉。"
+          },
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然Yuri在后续对话中提出了关于新成员的猜测并调整眼镜，展现了部分好奇心，但由于该角色没有回应任务中指定的情境触发点（即直接询问'What does it say?'），其回应的完整性和针对性未能准确对应任务设定的初始互动逻辑。",
+            "rejected_reason": "提供的回答中Yuri没有任何出场或对话，因此无法评估其回应是否展现了好奇心与谨慎态度。"
+          },
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务要求展现Monika转向呼唤Natsuki的动作与语气（'...Natsuki? You still there?'），但提供的回答中Natsuki是主动出现的，Monika并未发出呼唤或表现出对其突然缺席的关切，这一关键情节完全缺失。",
+            "rejected_reason": "提供的回答中Monika没有呼唤Natsuki，而是由Natsuki主动回应，且缺乏对Natsuki缺席的关切表达，因为任务要求中的呼唤动作在回复中并未发生。"
+          },
+          {
+            "criterion_id": "rubric_b0c75d2fcc654e0b9e3be720763a50e3_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "由于整体对话严重偏离了任务给定的起始剧本（缺少Monika发现纸张、询问内容以及呼唤Natsuki的关键环节），导致无法基于此构建出符合任务要求的‘安静氛围’与‘悬疑伏笔’的特定开场效果，而是变成了一段完全不同的续写故事。",
+            "rejected_reason": "由于核心人物（Monika和Yuri）的关键互动台词缺失，且场景描写侧重于Natsuki的惊慌反应而非教室内的安静氛围，未能成功营造预期的悬疑伏笔。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务要求基于特定的DDLC剧本片段（包含三句特定台词：Monika发现纸张、询问Yuri、呼唤Natsuki）进行续写或评估。Judge在判定过程中，将评分标准中的'Monika是否呼唤Natsuki'和'Yuri是否回应'等条件视为必须严格复现的'原话'或'特定动作'。然而，人工偏好理由明确指出，被选中的回答（chosen）之所以更好，是因为它'发展了故事'、'更完整'且'符合角色性格'，而非因为它机械地复述了提示词中的每一句台词。Judge的错误在于忽略了创意写作任务的本质：模型应当基于提示词的'情境触发点'（发现纸张、呼唤缺席者）进行合理的剧情推演（如Natsuki主动出现并加入讨论），而不是被强制要求输出完全相同的对话文本。当评分标准将'复现特定台词/动作'作为硬性否决项时，实际上剥夺了模型进行合理创作的空间，导致所有能推动情节发展的优质回答都被误判为失败。这揭示了评分标准设计的一个核心问题：在创意续写任务中，应区分'关键情节节点'与'具体表达形式'，前者是必须保留的情境逻辑，后者允许根据上下文自然演化。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_1925843b4c73460b9666a1102e00015b",
+            "method": {
+              "trigger": "当任务提供具体的对话或叙事片段作为创意续写的起点，且该片段包含明确的角色互动或情境触发点时",
+              "principle": "严禁将评分标准中的'还原度'维度等同于'逐字复现'或'强制复刻特定台词/动作'；应核验回答是否保留了原片段的核心情境逻辑（如人物关系、事件起因），并允许模型根据角色性格和剧情连贯性对具体表达形式进行合理的演绎与重构。",
+              "application_guide": "Generator在设计评分标准时，针对'情境还原'的提问应表述为'回答是否承接了[原片段]的关键情境（如：发现纸张、呼唤缺席者）并推动了后续情节？'，而非'回答是否包含了[原片段]中的原话？'。若回答通过合理的剧情发展（如让原本沉默的角色主动加入）解决了原片段提出的悬念，即使未完全复刻原台词，也应视为合格；仅当回答完全忽略或扭曲了核心情境逻辑（如无视纸张的存在）时，才判定为不合格。"
+            },
+            "source_task_id": "ea53c8c666fdd1ef31fbe5c9f129b56d086af47bf01baee2810a1cffd97115ae",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_1925843b4c73460b9666a1102e00015b"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_303f690ce9524c96b8d70d8c30db4b54",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_1",
+                  "question": "回答是否准确承接了'Monika发现不明纸张'这一核心情境触发点，未忽略或扭曲该事件？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_2",
+                  "question": "Monika的角色表现是否体现了从困惑到警觉再到关切Natsuki的自然情绪递进？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_3",
+                  "question": "Yuri的回应是否符合其好奇且谨慎的性格特征，未出现与其设定严重冲突的行为或语言？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_4",
+                  "question": "整体对话是否成功营造了文学社教室内的安静氛围与悬疑感，未因过度解释而破坏张力？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_5",
+                  "question": "回答是否通过合理的剧情发展（如暗示Natsuki的状态或推动寻找）有效延续了原片段的悬念，而非直接终结情境？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "当前任务处于revise阶段，需基于提供的《DDLC》同人对话片段修订评分标准。交付物为针对该场景的修订版评分标准JSON。涉及对象为Monika、Yuri和Natsuki三位角色的互动逻辑与情境还原度。范围限定于角色对突发纸张的反应、性格一致性（Monika的警觉与关切、Yuri的好奇）、以及悬疑氛围的维持。格式严格遵循JSON结构，包含analysis和criteria字段，criteria需为1-8条明确的通过性问题，权重总和为1。设计依据是：在保留原片段核心情境逻辑（发现纸张、呼唤缺席者）的前提下，允许模型根据角色性格进行合理演绎，而非强制复刻特定台词；重点核验回答是否承接了关键情境并推动了情节，同时确保语气符合原作人设。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_303f690ce9524c96b8d70d8c30db4b54",
+              "normalized_weights": {
+                "rubric_303f690ce9524c96b8d70d8c30db4b54_1": 0.25,
+                "rubric_303f690ce9524c96b8d70d8c30db4b54_2": 0.25,
+                "rubric_303f690ce9524c96b8d70d8c30db4b54_3": 0.2,
+                "rubric_303f690ce9524c96b8d70d8c30db4b54_4": 0.15,
+                "rubric_303f690ce9524c96b8d70d8c30db4b54_5": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答准确承接了 Monika 发现不明纸张的情境，通过 Natsuki 的回归和后续对纸条内容的讨论，完整保留了这一核心触发点，未忽略或扭曲该事件。",
+                  "rejected_reason": "回答准确承接了Monika发现纸张并询问Natsuki的情境，通过Natsuki的回应直接延续了对话链条，未忽略或扭曲该核心事件。"
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "Monika 的情绪递进逻辑存在断裂。原情境中她先困惑于纸张来源，随即因 Natsuki 没回应而关切其去向；但回答中 Natsuki 立即出现并解释情况，导致 Monika 跳过了‘寻找/担忧 Natsuki'的关键环节，直接转为警惕，未能体现从困惑到警觉再到关切 Natsuki 的自然情绪过渡。",
+                  "rejected_reason": "当前回答仅展示了Natsuki的反应，完全缺失了Monika后续的台词或心理描写，因此无法体现Monika从困惑到警觉再到关切Natsuki的情绪递进过程。"
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "Yuri 的回应符合其好奇且谨慎的性格特征。她推测可能是害羞的新成员，并尝试用理性分析（如创意练习或恶作剧）来安抚 Natsuki，同时配合调整眼镜等动作描写，未出现与其设定冲突的行为。",
+                  "rejected_reason": "Yuri在提供的片段中未再次发言（原片段以Monika提问结束），回答聚焦于Natsuki的反应，并未出现任何与Yuri性格设定冲突的内容。"
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_4",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "整体对话破坏了原有的悬疑张力。引入具体的神秘诗歌内容并让角色直接朗读出来，将原本模糊的悬念具象化，且结尾处明确说明“决定继续活动”、“谜题留在心底”，这种过度解释和快速平复情绪的处理削弱了文学社教室内的安静氛围与悬疑感。",
+                  "rejected_reason": "回答通过Natsuki结巴的道歉、紧握漫画书和脸颊泛红等细节描写，成功营造了紧张和悬疑的氛围，且没有过度解释剧情破坏张力。"
+                },
+                {
+                  "criterion_id": "rubric_303f690ce9524c96b8d70d8c30db4b54_5",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回答未能有效延续悬念，反而倾向于终结情境。虽然留下了不安感，但通过让角色集体阅读诗歌、给出具体猜测（新成员/恶作剧），并以“决定继续活动”作为收尾，实际上消解了原片段中关于 Natsuki 失踪状态的紧迫感和未知恐惧，过早地给出了相对封闭的解释框架。",
+                  "rejected_reason": "回答通过暗示Natsuki心虚的状态（眼神游移、声音微弱）以及她猜测纸张是否与自己有关，有效延续了悬念，而非终结情境。"
+                }
+              ],
+              "chosen_score": 0.45,
+              "rejected_score": 0.75,
+              "margin": -0.3,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "",
+      "attempts": [],
+      "error": "LLMFormatError: critic: invalid contract: parent IDs must reference provided experiences"
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

@@ -1,0 +1,721 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:a36f0e154b107f4658a21f66b2edd7821b3b234e584d7849b65c6eca68345c99",
+    "task": "(In a large field at night, the player has just completed a request for Ayumi - a Skeleton girl.)\n\nAyumi: “[player]! You got my arrows back!”\n\n[player]: “Sure did, Ayumi! How’s everything going now?”\n\nAyumi: “Much better, thank you! With my arrows returned, I feel much safer now.”\n\n[player]: “That’s great to hear!”\n\nAyumi: “It really is! I can’t express how grateful I am for your help. Those arrows are not only my weapons but also a part of me.”\n\n[player]: “I’m glad I could assist you, Ayumi. Is there anything else I can do for you?”",
+    "chosen": "Ayumi: \"Oh, you've already done so much for me, [player]. But since you're offering, there is one more thing that's been on my mind.\"\n\n[player]: \"Of course, Ayumi. What is it?\"\n\nAyumi: \"Well, I've been thinking about expanding my skills and learning some new techniques to better protect myself and my friends. I heard there's a skilled archer in the nearby town who might be able to teach me a thing or two.\"\n\n[player]: \"That sounds like a great idea! I can help you find this archer and introduce you. Would you like that?\"\n\nAyumi: \"Yes, I would appreciate that very much! I'm a bit shy when it comes to meeting new people, so having you there would make me feel more comfortable.\"\n\n[player]: \"It's a deal then. Let's head to the town together and find this skilled archer. I'm sure you'll learn a lot from them.\"\n\nAyumi: \"Thank you, [player]! I'm really looking forward to it. Let's go!\"\n\n(The player and Ayumi set off towards the town, excited for the new adventure and the opportunity for Ayumi to grow as an archer.)",
+    "rejected": "[player]: “I’m here to help, Ayumi. If you need anything else, just let me know. I’m always ready to lend a hand.”",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 11190,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 is awkwardly phrased and does not follow the prompt style.",
+          "feedback1": "The response is not helpful. It does not follow instructions. The response is awkward and has a style change. It does not follow the prompt conversation turn, it responds with the player which fails to make sense since the player was the last person in the prompt to talk. This response is too short and incomprehensible.",
+          "feedback2": "The response is perfectly helpful. It follows instructions and continues the conversation in a smooth manner. It is well written, clear, and coherent. This response follows the conversation turn and comes up with an understandable and sensible conversation. This response uses a good format that is similar to the prompt structure."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 is far too short, does not flow well from the dialogue in the prompt and does not add anything to the unfolding of the game described in the prompt. @Response 2 provides an interesting task for the user to do.",
+          "feedback1": "The response is not helpful. In the prompt, the final line of dialogue was from [player]. Therefore, for the response to continue the dialogue, Ayumi should speak first (in the response). This would be correct, but instead of this, The response just contains a single line from [player]. Moreover, this single line is badly written because it mostly just repeats what was in the last line of the prompt - The player offering to do another task for Ayumi.\nThe most reasonable assumption would be that the user wants Ayumi to ask [player] to do another task. That way, the gameplay continues in an interesting way and [player] would have something to do next. Instead, the response just finishes with the [player] reiterating their offer to help but without Ayumi replying. The response does not add anything to the prompt so it's not useful at all.",
+          "feedback2": "The response is perfectly helpful. The response provides a continuation of the dialogue from the prompt, which coherently flows from the dialogue in the prompt and is written in the same style. The dialogue in the response provides a new task for the player to undertake. This gives the player something to do next in the game, and it allows the story of the game to continue to unfold. It also allows Ayumi to continue as a character in the game. The task that the user is invited to undertake is imaginative, and not generic - accompanying Ayumi to a nearby town where she can improve her archery skills sounds like a fun and interesting task."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 naturally continued the story established by the user, incorporated the characters, and gave them a possible new adventure.",
+          "feedback1": "The response is slightly helpful. The model naturally continued the story established by the user. However, the model only provided three short sentences. To boost the user experience, the model could have provided more interaction between the characters. The model could have also asked the user how it would like to proceed with the story.",
+          "feedback2": "The response is perfectly helpful. The model naturally continued the story established by the user. The model followed the same formatting and incorporated the characters used by the user. It added a credible continuation of the story and took the characters on a new possible adventure and scene, which opens the door for the user to give more instructions."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_a31cd716914c271f863c",
+        0.4037909506517235
+      ],
+      [
+        "task_ea96e131dfd9e7ba0793",
+        0.397236335696529
+      ],
+      [
+        "task_76ecb6b9b909ee45aca3",
+        0.39199371972489316
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": 0.21428571428571427,
+          "evidence": [
+            {
+              "group_id": "task_a31cd716914c271f863c",
+              "similarity": 0.4037909506517235,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:f3201148058ac84223dec0bc5d39ad53c85df0e240468b34037fd97dbdf78392:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:e303c25ab9679ab0695f33a6080a8b1c7451982bf1492c624171a135ff36b22a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:7f980bc15cffb6eb7a929ccf13ee4bbc1999c21eaaa12a11e65e3f27462d6a99:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:9121866ad46cc2222202b95c8a56b364fa13ed5745d5a5b1db626623bcd038dd:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:1ed4981f779cd5be3065bd38a72b7230e110b8f5664e7868eeb1a467b0fc0842:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "220dd7480424b737727c512676e25473b2814267b0cceb8ced7aeb619a543eb5",
+                  "fb9064e660a02770028427057749702961593eb8e892369aafdcb3ef31235d90",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92",
+                  "00a514f4a342bfc025907cc24bda9d2b583de1d97272e7fb07fe6c3a22cd7107",
+                  "49a7d8e16443508886651f773eec41b741effdc1375c9127431e93c2a754e9b9",
+                  "903457735e38c8e1f6b376c601758d6ee444b57b057e8efca41d65da778160af"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+          "score": 0.16666666666666666,
+          "evidence": [
+            {
+              "group_id": "task_a31cd716914c271f863c",
+              "similarity": 0.4037909506517235,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:684e0dfe78ed9280eafeee5aafe874c8f89049ae928414df8ec9481d6679ee49:exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+                  "helpsteer3:train:380f9b80d19cabac1b6fda0dcd12cd4eec640f8362322c3b69516968e3c1301c:exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+                  "helpsteer3:train:983507900bfeae21146547e21e32b96984bdc6a3595eaa2dd6ee6188c73b7190:exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+                  "helpsteer3:train:d963163ce655348794d3feb43d94d2a8f0dd5adfe2fc4f22b271f350bb92217c:exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+                  "helpsteer3:train:de2b0c08f1810727ebf80e49d313c305aa86b431cd8a4a441af9c865e5c1f709:exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+                ],
+                "task_ids": [
+                  "9740ab511a59d758f984517bb6538cf4a334da93662cf9434770774abd7c5347",
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077",
+                  "697c62825e719a1abd022fc12a5437e072a38979320e9c5e2c2705d4d0fa8fb6",
+                  "6ff078fab7ac4a72570516585a41c09752380877926d45d280f32a4128a9fa95",
+                  "053e264e5022474aba5315a32a2835488f2bc997e8cd58b5e252b522e0cdbe03",
+                  "cae9757b0be688d14afd5085eb7c1c686037b4f5dcb816e2918e8a9da37663a1"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.027777777777777776,
+          "evidence": [
+            {
+              "group_id": "task_a31cd716914c271f863c",
+              "similarity": 0.4037909506517235,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ce2407d8464ae59a5d59ef78fc4f27f2af17f5068652a3b491c6a40284f681aa:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:dff3f8baf08ddf27b7a1d3bc14e4e5b2e3e10d772fa6f34fc63866ff5b72bee9:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5bc30395fd996adcb2607c499dc9537efcde73b01e456c544720648974f6d970:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:68e3b7904161d5426c5275073716d461ed8482f9400520de02df80e35aa9fff7:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:684e0dfe78ed9280eafeee5aafe874c8f89049ae928414df8ec9481d6679ee49:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3e4a97bc7f3e7362d37066d23a40257fe5a024c36d3d8a56cc5c67ed8d74b76d:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f404e9c7da0a9193ef22085ab96e4d13b1458c8bcf0d7fe543cdb7c4748dcc63:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:cb4091585055df1e20c3277074f63914223e3bcdf6029a83f4a040a14487f7c4:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f62a3fd9452614dcee3883370ce32348e05e7edaaa519839010d2b6a8fbe8a8c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7eccea31ce7a6af3d1e1c741db00a24555c21bdaf916f4d508e6260c83c70bb5:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:4451aa1ca17b94db9900f02546e333a3b7ed0ae0b592b8c5c1d13dacfbb5b7c5:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3c9673bda3e55294a61a3233c0bd7d9bfee50217d5e58ea84138cc3dd98f662f:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:380f9b80d19cabac1b6fda0dcd12cd4eec640f8362322c3b69516968e3c1301c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:37b822f2c682445debacdba30c6dfe6ce1e2d1fb6c1ef0d6a9ad4594992292ea:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:983507900bfeae21146547e21e32b96984bdc6a3595eaa2dd6ee6188c73b7190:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:eed344c842b6ea5bf9598726cf3cce1024f9959ef5687f30c6d84bd744135974:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:fca7a418a60ac3ef8ea935340272dc66811fd9d378955d39ada1ab64aa3d9eb1:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:dd856fc11209700a2983f4ea675ba5a2d3ad16c47f5dec5cf62aa91a1d48f15a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7f980bc15cffb6eb7a929ccf13ee4bbc1999c21eaaa12a11e65e3f27462d6a99:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3522a841895cf84325cc69d741c0810216cf9e250956dd95a4fec518df4e0df3:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:9121866ad46cc2222202b95c8a56b364fa13ed5745d5a5b1db626623bcd038dd:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:1ed4981f779cd5be3065bd38a72b7230e110b8f5664e7868eeb1a467b0fc0842:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:d963163ce655348794d3feb43d94d2a8f0dd5adfe2fc4f22b271f350bb92217c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:de2b0c08f1810727ebf80e49d313c305aa86b431cd8a4a441af9c865e5c1f709:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0",
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "46e70eddeb9e8e4bf7c2643135fcf008596d20aaf799a4cfb30393bbd22ee236",
+                  "c1fe33ac6e77d26ce02020c517add4f3c7ded5a63da9e25b0049c4bad2d8b9b6",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "c878e8be18cde43a6d756fc5d74f2cfd472540e2c19f716521d6464d99216806",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "9740ab511a59d758f984517bb6538cf4a334da93662cf9434770774abd7c5347",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "095a0cf8861d0a0e6bfe0fcb9516d73c00b6854129c698a52a2a31834fceb7e4",
+                  "7d1ba10a6d49b94e889f4a044728f3f980980271a6d2388c819ff8118a83139b",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077",
+                  "f76996307255009f70fe5dfafd5b53fc5eff84c9f139461aaae3ad634a2f0f04",
+                  "fcc454b63e6e769f8c7feb09548d7445f5eafb4b898c457d29107081c0dc5e10",
+                  "ea53c8c666fdd1ef31fbe5c9f129b56d086af47bf01baee2810a1cffd97115ae",
+                  "1959ceb0088fc305a9acc670c9c2a4cf2120d112df5c1a9956823b254ae747bf",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92",
+                  "0d6bb60b5b9fe51a6900098266e66cfa05a5ddd37c25d0ab0343f1342b28ec37",
+                  "697c62825e719a1abd022fc12a5437e072a38979320e9c5e2c2705d4d0fa8fb6",
+                  "e4e6f1c06734b6ebe0f0947c59829e41d17361bfdf61bd6356eec669c982e894",
+                  "6ff078fab7ac4a72570516585a41c09752380877926d45d280f32a4128a9fa95",
+                  "1425ae56301a180e7bc76d404fa90aac8a19f1e446301d1c56c2bf86a55fe688",
+                  "ebced573863f8c9b15e9f7f5a1ee4616ee0b8bffb9197cbb85b0c25c2cd96221",
+                  "0cea59c4ce7e2f10ef9b171c344c842036722a7164d28d31a9241c9d2e39a5cc",
+                  "00a514f4a342bfc025907cc24bda9d2b583de1d97272e7fb07fe6c3a22cd7107",
+                  "2a835b6f655884945648b3e2110b59b9eab9f2d6b11e0e38115e0e6049d35045",
+                  "49a7d8e16443508886651f773eec41b741effdc1375c9127431e93c2a754e9b9",
+                  "903457735e38c8e1f6b376c601758d6ee444b57b057e8efca41d65da778160af",
+                  "053e264e5022474aba5315a32a2835488f2bc997e8cd58b5e252b522e0cdbe03",
+                  "cae9757b0be688d14afd5085eb7c1c686037b4f5dcb816e2918e8a9da37663a1"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_0f69075c94084291b5f43f171d4499c3",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_ea96e131dfd9e7ba0793",
+              "similarity": 0.397236335696529,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:753e41fbd0f0355e13e6ccac29dbd6a4e1990e73e1c12f9839cfc0684f726587:exp_0f69075c94084291b5f43f171d4499c3",
+                  "helpsteer3:train:247095a0680f722c82832a7ad1a96ab75f1096aab5615a21bf9cee19ca5fff77:exp_0f69075c94084291b5f43f171d4499c3",
+                  "helpsteer3:train:2f3c8ad3347a25a52f5f15a9a66aa5e2d68d793b71bdae1bb8df0f44434cc4a2:exp_0f69075c94084291b5f43f171d4499c3"
+                ],
+                "task_ids": [
+                  "b6268f7ccb408c9c824f2928f49c68665f87be57a327cdf519f6569de74eb208",
+                  "7f1f126434ca534193665860fcc961b5efe1a97ae42524255ec55d9035a86955",
+                  "8d5eb76e627334064d64c870beef3f8e7700bae2f3669fd5dd0a9d68d1a8eaa2"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_ea96e131dfd9e7ba0793",
+              "similarity": 0.397236335696529,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:2f3c8ad3347a25a52f5f15a9a66aa5e2d68d793b71bdae1bb8df0f44434cc4a2:exp_113620ca64b541438bf3b03b2428882e"
+                ],
+                "task_ids": [
+                  "8d5eb76e627334064d64c870beef3f8e7700bae2f3669fd5dd0a9d68d1a8eaa2"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_a31cd716914c271f863c",
+              "similarity": 0.4037909506517235,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:363344637a741747bd18935e1ac948e1522f1e131062cf984f0040cba0c26997:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:eed344c842b6ea5bf9598726cf3cce1024f9959ef5687f30c6d84bd744135974:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:fca7a418a60ac3ef8ea935340272dc66811fd9d378955d39ada1ab64aa3d9eb1:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:dd856fc11209700a2983f4ea675ba5a2d3ad16c47f5dec5cf62aa91a1d48f15a:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "b7190f48766ee93cf3feab605ddfc1f49fb110792d1776fb01ab06e4173681bc",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe",
+                  "1425ae56301a180e7bc76d404fa90aac8a19f1e446301d1c56c2bf86a55fe688",
+                  "ebced573863f8c9b15e9f7f5a1ee4616ee0b8bffb9197cbb85b0c25c2cd96221",
+                  "0cea59c4ce7e2f10ef9b171c344c842036722a7164d28d31a9241c9d2e39a5cc"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.3173407895975324
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.3035937618196104
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.287311518070669
+      ],
+      [
+        "exp_a6eb77368258460eae290488ef911de2",
+        0.28636546606733226
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.2848808859433929
+      ],
+      [
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        0.2760122149913582
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.26663649973503833
+      ],
+      [
+        "exp_742973da9caa43edba8db06c92016cfa",
+        0.2513304932596224
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.24890703849658655
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.23694719520680252
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": 0.21428571428571427,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "historical",
+        "historical_score": 0.16666666666666666,
+        "semantic_similarity": 0.287311518070669
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.027777777777777776,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_0f69075c94084291b5f43f171d4499c3",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.2760122149913582
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3173407895975324
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3035937618196104
+      },
+      {
+        "experience_id": "exp_a6eb77368258460eae290488ef911de2",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28636546606733226
+      },
+      {
+        "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2848808859433929
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26663649973503833
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b5504c36f1e1468ca470333f1c240342": "任务提供的上下文（Ayumi与[player]的对话）明确采用了剧本格式，包含角色名、冒号及括号内的动作描述（如'In a large field at night...'），这符合经验3中关于'特定文体格式（如剧本）作为核心约束'的触发条件，评分标准需严格界定此类格式的视觉特征。"
+  },
+  "draft": {
+    "rubric_id": "rubric_90101504730f45258e1815f0ad572e04",
+    "criteria": [
+      {
+        "criterion_id": "rubric_90101504730f45258e1815f0ad572e04_1",
+        "question": "对话是否明确包含玩家与Ayumi两名角色的互动？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_90101504730f45258e1815f0ad572e04_2",
+        "question": "对话背景是否准确体现为夜晚的大田野且刚完成归还箭矢的任务？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_90101504730f45258e1815f0ad572e04_3",
+        "question": "Ayumi的台词是否表达了找回箭矢后的安全感提升及感激之情？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_90101504730f45258e1815f0ad572e04_4",
+        "question": "玩家的回应是否体现了协助完成请求后的友善态度并主动询问是否有其他需要？",
+        "weight": 0.25
+      }
+    ],
+    "analysis": "当前任务要求为一段游戏剧情对话生成初稿（stage: draft）。交付物是完整的对话文本，涉及两个对象：玩家（[player]）和Ayumi（骷髅女孩）。内容需严格基于提供的背景（夜晚的大田野、刚帮Ayumi找回箭矢）和给定的台词片段进行构建或确认。格式上需保持角色名称与对话内容的对应关系，体现角色性格（Ayumi的感激与依赖，玩家的友善）。由于是draft阶段，只需确保逻辑连贯、符合设定即可，无需过度修饰，但必须包含所有关键信息点。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa",
+        "criteria": [
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_1",
+            "question": "对话是否明确包含玩家与Ayumi两名角色的互动且符合游戏剧情格式？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_2",
+            "question": "对话背景是否准确体现为夜晚的大田野且刚完成归还箭矢的任务情境？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_3",
+            "question": "Ayumi的台词是否清晰表达了找回箭矢后的安全感提升及对玩家的感激之情？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_4",
+            "question": "玩家的回应是否体现了协助完成请求后的友善态度并主动询问是否有其他需要？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的原始对话文本和背景设定（夜晚大田野、刚归还箭矢给骷髅女孩Ayumi）来修订或核验评分标准。交付物为一段包含玩家与Ayumi互动的对话，必须准确反映背景情境、角色身份（骷髅女孩）、情感状态（感激、安全感提升）以及玩家的友善回应。原draft中的标准基本覆盖了核心要素，但分析部分错误地将其描述为'draft'阶段的初稿生成任务，实际上本任务是针对已有内容的修订或核验。因此，新的评分标准设计需修正这一认知偏差，确保每条标准都能精准对应Revise阶段对内容完整性、逻辑一致性和背景贴合度的要求，权重分配保持均衡以全面覆盖关键信息点。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa",
+        "normalized_weights": {
+          "rubric_61dbdcaa84854ccca246cfa79bdbcafa_1": 0.25,
+          "rubric_61dbdcaa84854ccca246cfa79bdbcafa_2": 0.25,
+          "rubric_61dbdcaa84854ccca246cfa79bdbcafa_3": 0.25,
+          "rubric_61dbdcaa84854ccca246cfa79bdbcafa_4": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复中明确包含玩家与Ayumi两名角色的对话互动，且格式符合游戏剧情（包含角色名、台词及括号内的动作/旁白描述）。",
+            "rejected_reason": "提供的回答仅包含玩家单方面的发言，缺少Ayumi的台词或回应，未能构成明确的两名角色互动，不符合游戏剧情格式要求。"
+          },
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回复内容未体现任务背景为‘夜晚的大田野’，也未提及刚完成归还箭矢的任务情境；相反，剧情直接跳转到Ayumi提出学习新技能的新请求，完全忽略了任务完成的确认环节。",
+            "rejected_reason": "回答中未提及任何关于夜晚、大田野的场景描述，也未体现刚完成归还箭矢任务的具体情境背景。"
+          },
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "Ayumi的台词主要聚焦于寻求学习新技巧的帮助，并未清晰表达找回箭矢后的安全感提升或对玩家归还箭矢行为的感激之情，这与标准要求的特定情感反馈不符。",
+            "rejected_reason": "回答中没有Ayumi的任何台词，因此无法判断其是否表达了找回箭矢后的安全感提升及对玩家的感激之情。"
+          },
+          {
+            "criterion_id": "rubric_61dbdcaa84854ccca246cfa79bdbcafa_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "玩家的回应虽然友善，但并未针对‘协助完成请求后’进行总结或主动询问是否有其他需要，而是直接响应了Ayumi提出的新请求（寻找导师），偏离了任务完成后应处的对话阶段。",
+            "rejected_reason": "虽然回答体现了协助意愿，但内容过于笼统且未针对‘刚完成归还箭矢’这一具体事件进行回应（如确认任务完成），同时缺乏对当前情境的承接，未能完整体现协助完成请求后的特定友善态度及主动询问。"
+          }
+        ],
+        "chosen_score": 0.25,
+        "rejected_score": 0.0,
+        "margin": 0.25,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b5504c36f1e1468ca470333f1c240342"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb",
+        "criteria": [
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_1",
+            "question": "对话是否完整包含了任务描述中指定的六句核心台词（或语义完全等价的内容）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_2",
+            "question": "对话背景是否明确体现为夜晚的大田野且发生在刚刚归还箭矢之后？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_3",
+            "question": "Ayumi的台词是否准确传达了找回箭矢后的安全感提升及对玩家物品的珍视（将其视为自身一部分）？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_4",
+            "question": "玩家的回应是否体现了协助完成请求后的友善态度，并在结尾主动询问是否有其他需要帮助的事项？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_5",
+            "question": "对话格式是否严格遵循剧本形式，即使用'角色名：对话内容'的结构且无多余的叙事描写段落？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务处于修订（revise）阶段，需基于提供的草稿和原始任务描述生成评分标准。交付物为一段符合特定情境的游戏剧情对话。涉及对象为玩家与Ayumi（骷髅女孩），场景设定为夜晚的大田野，背景为刚完成归还箭矢的任务。核心约束包括：必须严格包含给定的六句台词内容（或语义完全一致的变体），角色互动需体现Ayumi的感激与安全感恢复，以及玩家的友善与主动关怀。格式上需保持清晰的剧本对话结构（角色名后接冒号及引语）。修订过程需重点核查初稿是否遗漏了关键台词、是否准确还原了背景氛围、以及是否错误地添加了未授权的情节或改变了角色语气。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb",
+        "normalized_weights": {
+          "rubric_917ebaafd02b44cfaf3471c22284a9fb_1": 0.3,
+          "rubric_917ebaafd02b44cfaf3471c22284a9fb_2": 0.2,
+          "rubric_917ebaafd02b44cfaf3471c22284a9fb_3": 0.2,
+          "rubric_917ebaafd02b44cfaf3471c22284a9fb_4": 0.15,
+          "rubric_917ebaafd02b44cfaf3471c22284a9fb_5": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未包含任务描述中指定的六句核心台词（如'Ayumi: \"[player]! You got my arrows back!\"'、'[player]: \"Sure did, Ayumi! How's everything going now?\"'等），而是完全重写了对话内容，属于语义不等价的偏离。",
+            "rejected_reason": "回答仅包含一句玩家台词，未包含任务描述中指定的六句核心台词（如Ayumi的感谢、玩家确认归还等），缺失了对话主体内容。"
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然回答开头暗示了之前的帮助，但并未明确体现‘夜晚的大田野’这一特定背景设定，且对话重点已转向学习新技能，而非刚刚归还箭矢后的即时反应。",
+            "rejected_reason": "回答中完全未提及“夜晚”、“大田野”或“刚刚归还箭矢之后”等背景信息，无法体现任务设定的场景。"
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "Ayumi的台词主要表达的是想学习新技巧和保护朋友的需求，并未准确传达任务要求的‘找回箭矢后的安全感提升’以及将箭矢视为‘自身一部分’的情感表达。",
+            "rejected_reason": "回答中没有Ayumi的任何台词，因此无法传达找回箭矢后的安全感提升或将箭矢视为自身一部分的情感。"
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "玩家的回应虽友善，但未在结尾主动询问‘是否有其他需要帮助的事项’（Is there anything else I can do for you?），而是直接提议去镇上找弓箭手，改变了原定的对话走向。",
+            "rejected_reason": "虽然回答体现了协助意愿，但缺少对归还箭矢这一具体事件的回应，且作为完整对话无法满足结尾主动询问是否有其他需要帮助的事项（因缺乏前文铺垫和完整交互）。"
+          },
+          {
+            "criterion_id": "rubric_917ebaafd02b44cfaf3471c22284a9fb_5",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答末尾包含了一段括号内的叙事描写段落'(The player and Ayumi set off towards the town...)'，违反了‘无多余的叙事描写段落’的严格格式要求。",
+            "rejected_reason": "回答中的单句确实遵循了'角色名：对话内容'的剧本格式，没有多余的叙事描写段落，尽管内容严重缺失，但格式本身符合该条标准。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.15,
+        "margin": -0.15,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

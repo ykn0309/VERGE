@@ -1,0 +1,597 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:68fe9a96a32f7e6efe31eff52bc5391cf2a3837d90860df04878b5bf41ac159b",
+    "task": "Clean version of Panties",
+    "chosen": "The clean version of \"Panties\" would simply be \"Underwear.\"",
+    "rejected": "package com.github.aureliano.achmed.os.pkg;\n\nimport java.util.List;\n\nimport com.github.aureliano.achmed.command.CommandResponse;\nimport com.github.aureliano.achmed.resources.properties.PackageProperties;\nimport com.github.aureliano.achmed.resources.types.PackageType;\n\npublic class Panties implements IPackage {\n\n\tprivate PackageProperties properties;\n\t\n\tpublic Panties() {\n\t\tsuper();\n\t}\n\n\tpublic Panties(PackageProperties properties) {\n\t\tsuper();\n\t\tthis.properties = properties;\n\t}\n\n\t@Override\n\tpublic PackageProperties getProperties() {\n\t\treturn this.properties;\n\t}\n\n\t@Override\n\tpublic void setProperties(PackageProperties properties) {\n\t\tthis.properties = properties;\n\t}\n\n\t@Override\n\tpublic PackageType getType() {\n\t\treturn PackageType.RPM;\n\t}\n\n\t@Override\n\tpublic String latest() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic String install() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic String uninstall() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic boolean isInstalled() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic CommandResponse lastResponse() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n\n\t@Override\n\tpublic List<String> getPackageNames() {\n\t\tthrow new UnsupportedOperationException(\"Method not implemented yet.\");\n\t}\n}",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 21362,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 provides a suitable answer, meeting the prompt's requirements. @Response 1 completely misses the essence of the prompt and produces an entirely irrelevant answer. ",
+          "feedback1": "The response is not helpful. The answer consists of irrelevant information that has nothing to do with the prompt's requirements. It seemingly contains references or links to GitHub repositories, and there is a switch in style to plain text format in the second half of the answer. The response completely missed the essence of what the user wanted. ",
+          "feedback2": "The response is mostly helpful. It is aligned with what the user was looking for. The user seems to be requesting a cleaner or more neutral term for \"panties\" that may perhaps be used in a more formal context. \"Underwear\" is an obvious answer. However, there are other words that may be more suitable depending on context. A perfect response would offer more context-dependent alternatives. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 produced completely irrelevant information whereas @Response 2 did a better job in producing relevant information.",
+          "feedback1": "The response is not helpful.  The response is not at all related to the prompt in any way. The prompt talks about panties while the response returns a java code block which is completely irrelevant.  Althoguh the response is too vague, it doesn't do a good job in trying to understand the prompt better.",
+          "feedback2": "The response is mostly helpful. It does a much better job of analyzing the vague prompt and giving the appropriate response. Although the better response would be to give information making panties clean, the response just gives an alternative word for panties as underwear. The response can definitely use some improvement."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_8f7f4470ea842b3f61f0",
+        0.3878194345904785
+      ],
+      [
+        "task_b99b34ac9c6c8d234c2f",
+        0.35660479037832277
+      ],
+      [
+        "task_7abe15f9b9cda358572e",
+        0.34260267683352263
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+          "score": 0.25,
+          "evidence": [
+            {
+              "group_id": "task_b99b34ac9c6c8d234c2f",
+              "similarity": 0.35660479037832277,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:bbe0fab31cc3e168243a81ccff48936c1fbf504c7294eb1e2c5f7cf889cc075f:exp_748cc59b04eb4a44ad81d41d7ebe9810",
+                  "helpsteer3:train:dc34c2634bb690282a3e842f9f9b650d59831bbee17a64731ab66842bab28076:exp_748cc59b04eb4a44ad81d41d7ebe9810",
+                  "helpsteer3:train:3cb5935c041f304986b2008eaedee2c34a740532f5a3e3675cdb721b17cef17a:exp_748cc59b04eb4a44ad81d41d7ebe9810",
+                  "helpsteer3:train:2180d81ae6b71043807308b0ff044b11635880179fd4b550e0ca2b648c287703:exp_748cc59b04eb4a44ad81d41d7ebe9810"
+                ],
+                "task_ids": [
+                  "26dcb01c02d3610405a3ce5aeb3fbb334b43d7d50ae4091758fe01ac5f770f67",
+                  "954ef432dbd788bcb3466db50f15ba255c32d8d98ca96bbc8ea043e8ae721012",
+                  "ef24b7552d53a18bb51f49f750f657b06ea236e63b69b139476213bba27c5576",
+                  "0c2218b8b55a36315f412c6223f93b7b8d779bf90ca8f2b65817992951068ce4"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": 0.1111111111111111,
+          "evidence": [
+            {
+              "group_id": "task_b99b34ac9c6c8d234c2f",
+              "similarity": 0.35660479037832277,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:941a3897820cf502a5269c83a521461a5685df766cd9408dac4f65c62543a480:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:71df69059c6bf642b28b0676b69580fa9b538f93917ff9bbf85e85dfcae6b3f2:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:51c212897f6df37b214d2453806bedfd2363b6a4107ef4a19936796116fac445:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:bbe0fab31cc3e168243a81ccff48936c1fbf504c7294eb1e2c5f7cf889cc075f:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:dc34c2634bb690282a3e842f9f9b650d59831bbee17a64731ab66842bab28076:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:3cb5935c041f304986b2008eaedee2c34a740532f5a3e3675cdb721b17cef17a:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:c44ace69ce0c9b5b2e8772840e506e859a6f568b567a8da063efebad09044619:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:199d17a1bc68fba30637c41dda07bcd1eef54c8cdf038bbbac6cea50d2412efb:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:2180d81ae6b71043807308b0ff044b11635880179fd4b550e0ca2b648c287703:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "8198c687c54d6dd35fcf1f318e0637001b64eeab9adf45c0a562cf430bc1e47e",
+                  "463d2741c09aae6ed43052a80b6a961b48e23f5373607338509ed7f7ca715643",
+                  "c0cb59f1d5f202d986f92c1d82694fd4edbbd3a30c7729e99fc0f1c20a46fe57",
+                  "26dcb01c02d3610405a3ce5aeb3fbb334b43d7d50ae4091758fe01ac5f770f67",
+                  "954ef432dbd788bcb3466db50f15ba255c32d8d98ca96bbc8ea043e8ae721012",
+                  "ef24b7552d53a18bb51f49f750f657b06ea236e63b69b139476213bba27c5576",
+                  "69959a560499b7675fd38bba71e6669dc7c62228fb1a22cd6bc38814e616e842",
+                  "3d3898df52bafccf8a81dbfad1283288e6a73f4deda150ba46d85cc3d5bb6da9",
+                  "0c2218b8b55a36315f412c6223f93b7b8d779bf90ca8f2b65817992951068ce4"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_08ac6e2a72224b7aab84899205e4950f",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_8f7f4470ea842b3f61f0",
+              "similarity": 0.3878194345904785,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:2a461f6e611aa0eb4f9ebf33a93999d43a52e624e49c2b9dcb7080d58baf01a7:exp_08ac6e2a72224b7aab84899205e4950f"
+                ],
+                "task_ids": [
+                  "f4b99f3136a8287a3fd2c2218459041d60d0bd85f0717350072749716b8e454c"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_8f7f4470ea842b3f61f0",
+              "similarity": 0.3878194345904785,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:e84f94549a2bf0fb1bf496a1f9c3c7a63d041be8498d979d153e4783b6594c55:exp_f3d8df9469c548fda7606217b85b067d"
+                ],
+                "task_ids": [
+                  "8b7991354e344312c53104cece35375d45097f9bdc6084ef51cbcff6bf083869"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        0.34730932096245304
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.3038247453519251
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.28603999137534303
+      ],
+      [
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        0.2856307706902017
+      ],
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.27840241381234254
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.2776701122361418
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.27463098074087794
+      ],
+      [
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        0.2682394966465391
+      ],
+      [
+        "exp_2adba5039571400b8862295552f46447",
+        0.2657778825068849
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.265273352739877
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "historical",
+        "historical_score": 0.25,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": 0.1111111111111111,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_08ac6e2a72224b7aab84899205e4950f",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.34730932096245304
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3038247453519251
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28603999137534303
+      },
+      {
+        "experience_id": "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2856307706902017
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27840241381234254
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2776701122361418
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27463098074087794
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_748cc59b04eb4a44ad81d41d7ebe9810": "任务要求生成'Clean version of Panties'，这是一个简短的短语/标题类输出。经验1明确指出，当任务要求简短词汇或短语且未禁止解释时，评分标准应允许核心词附带必要的解释性上下文，避免将合理的引导语误判为违规，这直接适用于界定此类短文本输出的形式边界。",
+    "exp_543c20bb090d4a35a4c1851ad1972427": "任务生成的内容涉及物品名称（Panties），在输出中可能会自然包含标点符号（如引号）或作为标题的一部分。经验2强调，除非明确要求去除所有非内容字符，否则不应将通用的引用符号视为违规项，这对于制定'Clean version'这类标题生成的格式评分标准至关重要，防止因过度严格的纯文本要求而误杀正常格式。"
+  },
+  "draft": {
+    "rubric_id": "rubric_5735c2d015a14f5ba1550c80d7b17560",
+    "criteria": [
+      {
+        "criterion_id": "rubric_5735c2d015a14f5ba1550c80d7b17560_1",
+        "question": "输出内容是否为关于内裤（Panties）的清晰描述或设计草稿？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_5735c2d015a14f5ba1550c80d7b17560_2",
+        "question": "内容是否完全避免了色情、低俗或不适宜的成人暗示，保持'Clean'状态？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_5735c2d015a14f5ba1550c80d7b17560_3",
+        "question": "输出是否以完整的初稿形式呈现，包含必要的上下文信息（如材质、用途或基本款式）？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_5735c2d015a14f5ba1550c80d7b17560_4",
+        "question": "语言是否通顺且符合一般产品描述的规范？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "当前任务要求生成'Clean version of Panties'的初稿，stage为draft。交付物应为一个干净、无违规内容的关于内裤的描述或设计草案。涉及对象为内裤产品描述，数量默认为一份初稿，范围限定在基础款式描述，格式无特殊限制但需符合内容安全规范。背景中未提供具体风格或功能要求，因此允许采用通用的、安全的描述方式。评分标准将聚焦于内容的清洁度、相关性以及是否满足初稿的基本结构要求。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66",
+        "criteria": [
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_1",
+            "question": "修订后的输出是否完全避免了色情、低俗或不适宜的成人暗示，严格保持'Clean'状态？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_2",
+            "question": "输出内容是否为关于内裤（Panties）的清晰描述或设计草稿，且准确对应任务要求？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_3",
+            "question": "修订是否已补全必要的上下文信息（如材质、用途或基本款式），使内容构成完整的初稿？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_4",
+            "question": "语言表述是否通顺且符合一般产品描述的规范，无语法错误或歧义？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于draft修订评分标准。原draft的stage描述与当前任务（revise）存在逻辑冲突，需修正分析部分以反映‘根据task检查并修订初稿’的实质。交付物仍为一份关于内裤的清洁版描述或设计草稿，核心约束是内容必须‘Clean’（无色情/低俗暗示），且需包含基础产品要素（如材质、款式）。原标准中第3条强调‘完整初稿形式’在revise阶段应调整为‘是否已修正遗漏并符合初稿规范’，同时权重分配需更突出内容安全（Clean属性）和描述清晰度。修订后保留原4条标准结构，但调整question表述以适配revise场景，确保每条均为明确的通过性问题，权重总和保持1.0。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66",
+        "normalized_weights": {
+          "rubric_a15cc3f64abc4cca8bb41f89a6549b66_1": 0.4,
+          "rubric_a15cc3f64abc4cca8bb41f89a6549b66_2": 0.3,
+          "rubric_a15cc3f64abc4cca8bb41f89a6549b66_3": 0.2,
+          "rubric_a15cc3f64abc4cca8bb41f89a6549b66_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答仅将'Panties'替换为中性词'Underwear'，未包含任何色情、低俗或不适宜的成人暗示内容。",
+            "rejected_reason": "响应内容为Java代码实现，描述了一个名为Panties的类及其方法结构，未包含任何色情、低俗或成人暗示内容，完全符合Clean状态要求。"
+          },
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务要求提供关于内裤的清晰描述或设计草稿，但回答仅提供了一个简单的同义词替换（'Underwear'），并未生成任何具体的描述性内容或设计细节，未能准确对应任务对'描述或草稿'的要求。",
+            "rejected_reason": "虽然类名包含'Panties'，但输出内容是软件工程的Java类定义（涉及包管理、RPM类型等），而非关于内裤产品的清晰描述或设计草稿，未准确对应任务要求的‘产品描述’或‘设计草稿’语境。"
+          },
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中完全缺失必要的上下文信息，如材质、用途或基本款式等，无法构成完整的初稿。",
+            "rejected_reason": "内容仅提供了代码框架和空方法实现，缺失了关于内裤材质、用途或基本款式的具体文本描述信息，无法构成完整的初稿。"
+          },
+          {
+            "criterion_id": "rubric_a15cc3f64abc4cca8bb41f89a6549b66_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "句子语法正确，表述通顺，符合英语产品描述的基本规范，无歧义。",
+            "rejected_reason": "作为Java代码片段，其语法结构正确，逻辑通顺，符合编程语言规范，无语法错误或歧义。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.5,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d",
+        "criteria": [
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_1",
+            "question": "修订后的内容是否明确围绕内裤（Panties）的设计、材质或款式进行描述？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_2",
+            "question": "内容是否严格保持'Clean'状态，完全避免了色情、低俗暗示或不适宜的成人内容？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_3",
+            "question": "输出是否呈现为完整的初稿形式，包含如材质、用途或基本款式等必要的上下文信息？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_4",
+            "question": "语言表达是否通顺流畅，符合一般产品描述的规范与逻辑？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务要求生成'Clean version of Panties'的修订稿（stage: revise），需基于提供的初稿进行检查。交付物为一份关于内裤的清晰、无违规内容的描述或设计草案。涉及对象为内裤产品，数量默认为一份，范围限定在基础款式与安全描述，格式无特殊限制但必须符合内容安全规范。背景未指定具体风格，允许通用安全的描述方式。评分标准将聚焦于内容的清洁度（核心约束）、相关性（是否针对内裤）以及初稿结构的完整性。提供的经验仅作为辅助核验方法，用于理解形式与内容的边界，不改变本题事实或增加输出义务。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d",
+        "normalized_weights": {
+          "rubric_2329af759e6c46c8b7e60c27b91e0e1d_1": 0.35,
+          "rubric_2329af759e6c46c8b7e60c27b91e0e1d_2": 0.35,
+          "rubric_2329af759e6c46c8b7e60c27b91e0e1d_3": 0.2,
+          "rubric_2329af759e6c46c8b7e60c27b91e0e1d_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅将内裤替换为更宽泛的“内衣”一词，并未围绕内裤的设计、材质或款式进行任何具体描述。",
+            "rejected_reason": "回复内容是一段Java代码，定义了一个名为Panties的类及其方法实现，并未围绕内裤的设计、材质或款式进行任何文字描述。"
+          },
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答内容简短且无色情、低俗暗示或不适宜的成人内容，严格保持了'Clean'状态。",
+            "rejected_reason": "回复内容为纯技术代码，不包含任何色情、低俗暗示或不适宜的成人内容，符合Clean状态要求。"
+          },
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出仅为一个句子，未包含如材质、用途或基本款式等必要的上下文信息，不符合完整初稿形式的要求。",
+            "rejected_reason": "输出形式为编程源代码而非产品描述的初稿，缺少关于材质、用途或基本款式的必要上下文信息。"
+          },
+          {
+            "criterion_id": "rubric_2329af759e6c46c8b7e60c27b91e0e1d_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "语言表达通顺流畅，语法正确，符合一般产品描述的规范与逻辑。",
+            "rejected_reason": "虽然代码语法本身可能通顺，但作为整体回答，它不符合一般产品描述的规范与逻辑，未能完成用户要求的文本描述任务。"
+          }
+        ],
+        "chosen_score": 0.45,
+        "rejected_score": 0.35,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_543c20bb090d4a35a4c1851ad1972427"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_e703de8289774abf901e01236eef9562",
+        "criteria": [
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_1",
+            "question": "输出内容是否明确针对内裤（Panties）进行了清晰的描述或设计说明？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_2",
+            "question": "内容是否严格保持'Clean'状态，完全避免了任何色情、低俗、性暗示或不适宜的成人内容？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_3",
+            "question": "输出是否呈现为完整的初稿形式，包含了必要的上下文信息（如材质、基本款式或用途）？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_4",
+            "question": "语言表达是否通顺流畅，并符合一般产品描述的规范与专业度？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务为修订阶段（stage: revise），需对'Clean version of Panties'的初稿进行核验。交付物应是一份关于内裤的清晰描述或设计草稿，核心约束是'Clean'（干净/无色情低俗内容）。涉及对象为内裤产品描述，数量为一份，范围限定在基础款式、材质或用途的描述，格式需符合一般产品规范且无违规暗示。评分标准将重点审查内容的清洁度（避免成人暗示）、主题相关性（是否为内裤描述）、结构完整性（是否包含必要信息如材质/款式）以及语言规范性。经验提示提醒我们区分‘有效内容’与‘元数据’，但在本任务中，主要风险在于内容的安全性与清晰度，因此标准聚焦于语义层面的合规与完整。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_e703de8289774abf901e01236eef9562",
+        "normalized_weights": {
+          "rubric_e703de8289774abf901e01236eef9562_1": 0.35,
+          "rubric_e703de8289774abf901e01236eef9562_2": 0.35,
+          "rubric_e703de8289774abf901e01236eef9562_3": 0.2,
+          "rubric_e703de8289774abf901e01236eef9562_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答仅指出'Panties'的干净版本是'Underwear'，并未对内裤进行清晰的描述或提供设计说明，缺乏针对产品本身的细节阐述。",
+            "rejected_reason": "输出内容是一段Java代码，定义了一个名为Panties的类用于软件包管理操作（如安装、卸载RPM包），并未对内裤这一产品进行任何描述或设计说明。"
+          },
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "内容简短且完全正常，没有任何色情、低俗、性暗示或不适宜的成人内容，严格保持了'Clean'状态。",
+            "rejected_reason": "虽然内容未针对内裤进行描述，但作为一段纯技术代码，其中不包含任何色情、低俗、性暗示或不适宜的成人内容，形式上符合'Clean'状态的要求。"
+          },
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出仅为一句简单的词汇替换解释，未呈现为包含材质、基本款式或用途等必要上下文信息的完整初稿形式。",
+            "rejected_reason": "输出呈现为编程代码而非产品初稿，缺乏关于材质、款式或用途等必要的产品上下文信息，完全不符合任务要求的‘完整初稿形式’。"
+          },
+          {
+            "criterion_id": "rubric_e703de8289774abf901e01236eef9562_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "语言表达通顺流畅，语法正确，符合一般英语表达规范，虽然内容简单但专业度在句子层面是可接受的。",
+            "rejected_reason": "语言表达虽然是规范的Java代码语法，但并非针对产品描述的专业语言，无法体现一般产品描述的规范与专业度。"
+          }
+        ],
+        "chosen_score": 0.45,
+        "rejected_score": 0.35,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

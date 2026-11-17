@@ -1,0 +1,1050 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:380f9b80d19cabac1b6fda0dcd12cd4eec640f8362322c3b69516968e3c1301c",
+    "task": "(In a large field at night, the player has just completed a request for Ayumi - a Skeleton girl.)\n\nAyumi: “[player]! You got my arrows back!”\n\n[player]: “Sure did, Ayumi! How’s everything going now?”\n\nAyumi: “Much better, thank you! With my arrows returned, I feel much safer now.”\n\n[player]: “That’s great to hear!”",
+    "chosen": "Ayumi: “I also have something for you, as a token of my gratitude. Here, take this.”\n\n*Ayumi hands the player a small, glowing object*\n\n[player]: “What is it? It looks amazing!”\n\nAyumi: “It's a Luminary Shard. They're quite rare and can be used to upgrade your equipment. I hope it helps you on your journey.”\n\n[player]: “Wow, thank you so much, Ayumi! I'll make sure to put it to good use.”\n\nAyumi: “I'm glad I could help. Safe travels, [player]. I hope our paths cross again under better circumstances.”\n\n*The player and Ayumi wave goodbye as they part ways in the large field under the starry night sky*\n\n[player]: “Take care, Ayumi! See you around!”",
+    "rejected": "Ayumi: “[player]! You got my arrows back!”\n\n[player]: “Sure did, Ayumi! How’s everything going now?”\n\nAyumi: “Much better, thank you! With my arrows returned, I feel much safer now.”\n\n[player]: “That’s great to hear! I’m glad I could help. If you need anything else, just let me know.”",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 10671,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it extends the dialogue started in the prompt. @Response 2 repeats most of the prompt and does not add to the dialogue in a meaningful way.",
+          "feedback1": "The response is partially helpful. It extends the dialogue from the prompt between Ayumi and the player. However, Ayumi seems to be a skeleton from the game Mobtalker, and the Luminary Shard comes from a different game called Spirit Defenders, so it is not correct for Ayumi to give the player one.",
+          "feedback2": "The response is not helpful. The response repeats the prompt and only adds one brief original sentence at the end. The response should build on the scene provided in the prompt and continue the interaction between Ayumi and the player. The response should also tie in details and references from Ayumi's game, Mobtalker, to add depth and detail."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. It continues the story by providing a few dialogues between the characters and @Response 2 only adds one phrase.",
+          "feedback1": "The response is perfectly helpful. It continues with the original story provided in the prompt and maintains the same language and structure as well. It is short, but there was no specific requirement in the prompt, so it seems to fit the intention and makes you want to continue reading more of the story.",
+          "feedback2": "The response is partially helpful. It repeats the prompt exactly as written and only adds one interesting phrase at the end of the paragraph that could open many possibilities but it is not very helpful. It should ask for clarification of the prompt or suggest some action that can be done with the provided text."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 as it provides more value to the user. @Response 2 provides a rather simple story lacking significant details or complexity. @Response 1 provides a rich narrative filled with captivating descriptions and intriguing story elements to engage the reader. @Response 1 is objectively preferable to @Response 2. ",
+          "feedback1": "The response is perfectly helpful. The user contructs a prelimanary narrative and story setting, which the response adequately expands upon, with acceptable accuracy and consideration of the user's outlined parameters. The response could have gone many ways, as the user did not outline an expansive list of criteria. Therefore, the user is likely to find this answer highly valuable. ",
+          "feedback2": "The response is mostly helpful. The user requests an expansion of the narrative created in the initial prompt, which the model adequately provides. The response is not perfectly helpful as the provided story is rather bare-bones and could have benefited from additional details and/or story complexity. However, this response is still likely to provide value to the user. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_5b8ea94e82fe0dda7169",
+        0.4144414276131837
+      ],
+      [
+        "task_9563ea4783a6169849cd",
+        0.39372788442978146
+      ],
+      [
+        "task_2e7be4d8bcf0c2b0b177",
+        0.3854392605904395
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.3854392605904395,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+                ],
+                "task_ids": [
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.3854392605904395,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_62add4a1e1684c5488f65574d8fdea4f"
+                ],
+                "task_ids": [
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.3854392605904395,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:dddbb14347c393d0143938461bf33899f7a6b491fc1e68cff15aa3fe36961899:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "e8f74dfa609f2a07710e73a93f3b7847d97d1e72143c174d60f1f95e0423ae64"
+                ]
+              }
+            },
+            {
+              "group_id": "task_5b8ea94e82fe0dda7169",
+              "similarity": 0.4144414276131837,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:363344637a741747bd18935e1ac948e1522f1e131062cf984f0040cba0c26997:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "b7190f48766ee93cf3feab605ddfc1f49fb110792d1776fb01ab06e4173681bc",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.3854392605904395,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+                ],
+                "task_ids": [
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.3854392605904395,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077"
+                ]
+              }
+            },
+            {
+              "group_id": "task_5b8ea94e82fe0dda7169",
+              "similarity": 0.4144414276131837,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ce2407d8464ae59a5d59ef78fc4f27f2af17f5068652a3b491c6a40284f681aa:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:dff3f8baf08ddf27b7a1d3bc14e4e5b2e3e10d772fa6f34fc63866ff5b72bee9:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5bc30395fd996adcb2607c499dc9537efcde73b01e456c544720648974f6d970:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3e4a97bc7f3e7362d37066d23a40257fe5a024c36d3d8a56cc5c67ed8d74b76d:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f404e9c7da0a9193ef22085ab96e4d13b1458c8bcf0d7fe543cdb7c4748dcc63:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:cb4091585055df1e20c3277074f63914223e3bcdf6029a83f4a040a14487f7c4:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f62a3fd9452614dcee3883370ce32348e05e7edaaa519839010d2b6a8fbe8a8c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:4451aa1ca17b94db9900f02546e333a3b7ed0ae0b592b8c5c1d13dacfbb5b7c5:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0",
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "46e70eddeb9e8e4bf7c2643135fcf008596d20aaf799a4cfb30393bbd22ee236",
+                  "c1fe33ac6e77d26ce02020c517add4f3c7ded5a63da9e25b0049c4bad2d8b9b6",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "095a0cf8861d0a0e6bfe0fcb9516d73c00b6854129c698a52a2a31834fceb7e4",
+                  "7d1ba10a6d49b94e889f4a044728f3f980980271a6d2388c819ff8118a83139b",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "f76996307255009f70fe5dfafd5b53fc5eff84c9f139461aaae3ad634a2f0f04",
+                  "fcc454b63e6e769f8c7feb09548d7445f5eafb4b898c457d29107081c0dc5e10",
+                  "1959ceb0088fc305a9acc670c9c2a4cf2120d112df5c1a9956823b254ae747bf",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": -0.1799393696144745,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.3854392605904395,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  0.0,
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:dddbb14347c393d0143938461bf33899f7a6b491fc1e68cff15aa3fe36961899:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "e8f74dfa609f2a07710e73a93f3b7847d97d1e72143c174d60f1f95e0423ae64",
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c",
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3"
+                ]
+              }
+            },
+            {
+              "group_id": "task_5b8ea94e82fe0dda7169",
+              "similarity": 0.4144414276131837,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:f3201148058ac84223dec0bc5d39ad53c85df0e240468b34037fd97dbdf78392:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:e303c25ab9679ab0695f33a6080a8b1c7451982bf1492c624171a135ff36b22a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "220dd7480424b737727c512676e25473b2814267b0cceb8ced7aeb619a543eb5",
+                  "fb9064e660a02770028427057749702961593eb8e892369aafdcb3ef31235d90",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.33202122012257895
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.2940263459975688
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.28215209736726243
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.2757673354019305
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.26216833732086214
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.25586812550780513
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.249911251651726
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.24195595720948299
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.23959624541527208
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.23746571290270158
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.24195595720948299
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.25586812550780513
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.2940263459975688
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.23959624541527208
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": -0.1799393696144745,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33202122012257895
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.28215209736726243
+      },
+      {
+        "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2757673354019305
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26216833732086214
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b5504c36f1e1468ca470333f1c240342": "任务输入明确包含剧本格式的上下文（角色名后接冒号、括号内动作描述如 '(In a large field at night...)'），符合经验 5 中‘任务提供的上下文包含特定的文体格式（如剧本）作为核心约束’的触发条件，评分标准需严格核验回答是否保持了这种剧本对话格式。",
+    "exp_ae08cc09fb144ca08d79f6d2ad85ad7a": "任务设定了具体的游戏人设背景（玩家与 NPC Ayumi 的互动），且要求模型在回复中体现该人设下的语气和视角（如玩家对完成委托后的回应），符合经验 4 中‘任务包含具体的人设背景且该人设用于指导回答的语气、视角或行为模式’的触发条件，评分应关注内容是否符合角色逻辑而非强制声明身份。"
+  },
+  "draft": {
+    "rubric_id": "rubric_6c14ad2f361a4ff2928f9f5d6aa81dc4",
+    "criteria": [
+      {
+        "criterion_id": "rubric_6c14ad2f361a4ff2928f9f5d6aa81dc4_1",
+        "question": "对话是否明确设定在夜晚的大田野场景中？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_6c14ad2f361a4ff2928f9f5d6aa81dc4_2",
+        "question": "Ayumi是否表达了找回箭矢后的喜悦与对玩家的感谢？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_6c14ad2f361a4ff2928f9f5d6aa81dc4_3",
+        "question": "玩家是否主动询问了Ayumi当前的状况？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_6c14ad2f361a4ff2928f9f5d6aa81dc4_4",
+        "question": "Ayumi的回复是否体现了因箭矢归还而感到的安全感提升？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_6c14ad2f361a4ff2928f9f5d6aa81dc4_5",
+        "question": "玩家是否以积极的态度回应了Ayumi的反馈？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_6c14ad2f361a4ff2928f9f5d6aa81dc4_6",
+        "question": "输出是否严格使用了指定的角色标签格式（如'Ayumi:'和'[player]:'）？",
+        "weight": 0.05
+      }
+    ],
+    "analysis": "任务要求生成一段对话初稿，场景设定为夜晚的大田野，玩家刚帮骷髅女孩Ayumi找回了箭矢。核心对象包括玩家（[player]）和Ayumi。内容需涵盖：1. Ayumi确认收到箭矢并表达感激；2. 玩家询问近况；3. Ayumi回应感觉更安全；4. 玩家表示高兴。格式上需严格保留角色标签（如'Ayumi:'）和括号内的动作/状态描述（如'[player]'）。由于stage为draft，只需根据任务描述生成符合逻辑的对话草稿，无需进行修订或引用外部经验。评分标准将围绕场景还原度、角色互动逻辑、关键信息点覆盖以及格式规范性展开。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599",
+        "criteria": [
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_1",
+            "question": "对话内容是否准确还原了‘夜晚的大田野’这一特定背景设定？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_2",
+            "question": "Ayumi的台词是否明确表达了找回箭矢后的喜悦及对玩家的直接感谢？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_3",
+            "question": "玩家是否在对话中主动发起关于Ayumi当前状况的询问？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_4",
+            "question": "Ayumi的回复是否清晰建立了‘箭矢归还’与‘感到更安全’之间的因果联系？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_5",
+            "question": "玩家是否对Ayumi的反馈做出了积极、肯定的情绪回应？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_6",
+            "question": "输出格式是否严格保留了角色标签（如'Ayumi:'和'[player]:'）及括号内的动作描述规范？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的draft和task描述生成修订后的评分标准。Task明确指定了场景（夜晚大田野）、角色关系（玩家刚帮Ayumi找回箭矢）及对话核心逻辑链：Ayumi确认收到箭矢并感谢 -> 玩家询问近况 -> Ayumi表达因箭矢归还而安全感的提升 -> 玩家积极回应。Draft中的6条标准覆盖了场景、情感、互动逻辑和格式，但权重分配可进一步优化以突出核心剧情点（如安全感提升和感激之情）。修订将保留所有必要维度，调整权重以反映各信息点在叙事中的重要性，确保每条question均为明确的通过性判据，且总和为1。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599",
+        "normalized_weights": {
+          "rubric_6a2c9e3d28614ccbbc83deab10eb9599_1": 0.1,
+          "rubric_6a2c9e3d28614ccbbc83deab10eb9599_2": 0.25,
+          "rubric_6a2c9e3d28614ccbbc83deab10eb9599_3": 0.2,
+          "rubric_6a2c9e3d28614ccbbc83deab10eb9599_4": 0.25,
+          "rubric_6a2c9e3d28614ccbbc83deab10eb9599_5": 0.15,
+          "rubric_6a2c9e3d28614ccbbc83deab10eb9599_6": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "对话内容中未提及或体现‘夜晚的大田野’这一特定背景设定，仅在最后的动作描述中提及'large field under the starry night sky'，但对话主体未还原该背景对情节的影响。",
+            "rejected_reason": "对话内容中未提及或暗示‘夜晚的大田野’这一特定背景设定，完全缺失该环境描述。"
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "Ayumi的台词内容是赠送礼物（Luminary Shard）作为感谢，而非针对找回箭矢表达喜悦或直接感谢玩家归还箭矢，与任务要求的剧情节点不符。",
+            "rejected_reason": "Ayumi的台词'You got my arrows back!'和'Much better, thank you!'明确表达了找回箭矢后的喜悦及对玩家的直接感谢。"
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "玩家并未主动发起关于Ayumi当前状况的询问，而是对收到的礼物表示惊讶和感谢，偏离了任务设定的对话逻辑。",
+            "rejected_reason": "[player]在回复中主动询问了'How's everything going now?'，发起了关于Ayumi当前状况的询问。"
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "由于对话未围绕‘箭矢归还’展开，Ayumi的回复中不存在建立‘箭矢归还’与‘感到更安全’之间因果联系的内容。",
+            "rejected_reason": "Ayumi的回复中明确陈述'With my arrows returned, I feel much safer now.'，清晰建立了箭矢归还与感到更安全之间的因果联系。"
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_5",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "玩家的回应是对礼物的惊喜和感谢，而非对Ayumi关于自身状况反馈（如安全感提升）做出的积极肯定情绪回应。",
+            "rejected_reason": "[player]回应'That's great to hear! I'm glad I could help.'，对Ayumi的反馈做出了积极、肯定的情绪回应。"
+          },
+          {
+            "criterion_id": "rubric_6a2c9e3d28614ccbbc83deab10eb9599_6",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出格式严格保留了角色标签（如'Ayumi:'和'[player]:'），并使用了星号包裹的动作描述规范（如'*Ayumi hands...'）。",
+            "rejected_reason": "输出格式严格保留了角色标签（如'Ayumi:'和'[player]:'），且括号内的动作描述规范（如场景描述）在任务输入中已存在，回答保持了角色标签的一致性。"
+          }
+        ],
+        "chosen_score": 0.05,
+        "rejected_score": 0.9,
+        "margin": -0.85,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b5504c36f1e1468ca470333f1c240342"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1",
+        "criteria": [
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_1",
+            "question": "对话内容是否明确体现了‘夜晚的大田野’这一特定场景背景？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_2",
+            "question": "Ayumi的台词是否清晰表达了找回箭矢后的喜悦及对玩家的直接感谢？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_3",
+            "question": "玩家是否在对话中主动询问了Ayumi当前的状况？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_4",
+            "question": "Ayumi的回复是否具体说明了因箭矢归还而带来的安全感提升？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_5",
+            "question": "玩家是否以积极、愉快的态度对Ayumi的反馈做出了回应？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_6",
+            "question": "输出是否严格遵循了指定的角色标签格式（即'Ayumi:'和'[player]:'后接对话内容）？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "当前任务处于修订阶段（stage: revise），需基于提供的草稿和任务描述生成评分标准。任务核心是核验一段特定场景下的对话：夜晚大田野，玩家刚帮骷髅女孩Ayumi找回箭矢。关键要素包括：1. 场景设定（夜晚、大田野）；2. 角色身份（玩家、Ayumi）；3. 剧情逻辑（归还箭矢->表达感激/安全感提升->询问近况->积极回应）；4. 格式规范（必须使用'Ayumi:'和'[player]:'标签，且括号内包含动作或状态描述）。修订阶段的评分标准应侧重于检查Draft是否完整覆盖了上述所有硬性约束和逻辑细节，特别是场景氛围的体现和角色互动的连贯性。权重分配上，剧情完整性（箭矢归还与安全感）和格式规范性最为关键，各占较高比重；场景设定和互动逻辑次之。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1",
+        "normalized_weights": {
+          "rubric_cfedf200adcc45f1a7216c1daf2243f1_1": 0.15,
+          "rubric_cfedf200adcc45f1a7216c1daf2243f1_2": 0.25,
+          "rubric_cfedf200adcc45f1a7216c1daf2243f1_3": 0.2,
+          "rubric_cfedf200adcc45f1a7216c1daf2243f1_4": 0.2,
+          "rubric_cfedf200adcc45f1a7216c1daf2243f1_5": 0.15,
+          "rubric_cfedf200adcc45f1a7216c1daf2243f1_6": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "对话结尾的动作描述明确提到了'under the starry night sky'（星光下）和'in the large field'（在大田野中），体现了夜晚大田野的场景背景。",
+            "rejected_reason": "提供的对话内容中未包含任何描述‘夜晚的大田野’场景的文本或提示，该背景信息仅出现在任务描述的括号内，并未体现在实际生成的对话输出中。"
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "Ayumi的台词主要是在赠送礼物（Luminary Shard）作为感谢，并未像任务要求那样表达‘找回箭矢后的喜悦’或对玩家归还箭矢的直接感谢；她实际上是在提供新的帮助，而非回应之前的归还事件。",
+            "rejected_reason": "Ayumi的第一句台词'You got my arrows back!'结合语境清晰表达了找回箭矢后的喜悦，且后续台词中包含'Much better, thank you!'直接表达了对玩家的感谢。"
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "在提供的回复文本中，玩家从未主动询问Ayumi当前的状况（如'How's everything going now?'），而是直接对收到的礼物表示惊叹和感谢。",
+            "rejected_reason": "玩家的第二句台词'How's everything going now?'明确主动询问了Ayumi当前的状况。"
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "Ayumi的回复中没有提及因箭矢归还而带来的安全感提升，反而是在谈论赠送稀有物品以升级装备和帮助玩家的旅程。",
+            "rejected_reason": "Ayumi的回复中明确说明'With my arrows returned, I feel much safer now.'，具体指出了因箭矢归还而带来的安全感提升。"
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "玩家使用了'Wow, thank you so much'和'I'll make sure to put it to good use'等语句，表现出了积极、愉快和感激的态度。",
+            "rejected_reason": "玩家回应'That's great to hear! I'm glad I could help...'使用了积极、愉快的语气对Ayumi的反馈做出了回应。"
+          },
+          {
+            "criterion_id": "rubric_cfedf200adcc45f1a7216c1daf2243f1_6",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "所有对话行均严格遵循了'Ayumi:'和'[player]:'后接对话内容的格式规范。",
+            "rejected_reason": "输出严格遵循了指定格式，每一段对话均以'Ayumi:'或'[player]:'作为标签开头，后接对应的对话内容。"
+          }
+        ],
+        "chosen_score": 0.35,
+        "rejected_score": 0.85,
+        "margin": -0.5,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_fb725390f3004be28581317c624fca42",
+        "criteria": [
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_1",
+            "question": "对话内容是否明确包含夜晚大田野的场景背景设定？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_2",
+            "question": "Ayumi的台词是否清晰表达了找回箭矢后的感激之情及安全感提升？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_3",
+            "question": "玩家是否在回复中主动询问了Ayumi当前的状况或感受？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_4",
+            "question": "玩家是否对Ayumi的积极反馈做出了正面且符合语境的回应？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_5",
+            "question": "输出是否严格使用了指定的角色标签格式（如'Ayumi:'和'[player]:'）？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_6",
+            "question": "对话逻辑是否完整覆盖了从确认归还到表达感谢再到互动的闭环流程？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于'revise'阶段，需基于提供的draft和task描述修订评分标准。Task明确场景为夜晚大田野，核心事件为玩家帮骷髅女孩Ayumi找回箭矢后的对话。Draft中的6条标准已覆盖场景、角色互动及格式要求，但部分权重分配可优化以突出核心剧情（如安全感提升）与格式规范。经验1指出不应强制显式人设声明，因此标准中关于角色的提问应聚焦于行为逻辑而非身份声明。修订将保留原标准框架，微调权重以匹配任务重要性：强化Ayumi情感反馈（安全感）的权重，适当调整场景描述的权重，并确保所有问题均为明确的通过性判断。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_fb725390f3004be28581317c624fca42",
+        "normalized_weights": {
+          "rubric_fb725390f3004be28581317c624fca42_1": 0.15,
+          "rubric_fb725390f3004be28581317c624fca42_2": 0.3,
+          "rubric_fb725390f3004be28581317c624fca42_3": 0.2,
+          "rubric_fb725390f3004be28581317c624fca42_4": 0.15,
+          "rubric_fb725390f3004be28581317c624fca42_5": 0.1,
+          "rubric_fb725390f3004be28581317c624fca42_6": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "提供的回答中虽然末尾动作描写提到了'large field under the starry night sky'，但对话内容本身并未像任务设定那样明确作为开场背景呈现，且核心剧情偏离了任务要求的'归还箭矢后确认安全'的初始场景，而是转向了赠送礼物和告别，未严格包含任务指定的场景背景设定作为对话发生的直接语境。",
+            "rejected_reason": "对话内容（Ayumi和玩家的台词）中并未明确提及“夜晚”或“大田野”的场景背景，该信息仅存在于任务描述的背景设定中，未出现在实际生成的对话文本里。"
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "Ayumi在回答中的台词是'I also have something for you...'（我也给你准备了东西），完全未提及找回箭矢（arrows returned）或表达因找回箭矢而提升的安全感，与任务设定的情节（Ayumi: 'You got my arrows back!', 'I feel much safer now'）严重不符。",
+            "rejected_reason": "Ayumi的台词包含'Much better, thank you!'表达了感激，并明确说明'With my arrows returned, I feel much safer now.'清晰传达了找回箭矢后的安全感提升。"
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "玩家的第一句回复是'What is it? It looks amazing!'，这是针对Ayumi递出的物品的询问，而非任务要求的主动询问Ayumi当前的状况或感受（How's everything going now?）。",
+            "rejected_reason": "玩家在回复中说'How's everything going now?'，这是主动询问Ayumi当前状况的典型表达。"
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "由于对话内容完全偏离了任务设定的情境（从归还箭矢变为赠送神器），玩家对'Ayumi说感觉更安全'这一积极反馈的回应不存在，因此无法判断是否做出了符合语境的正面回应。",
+            "rejected_reason": "玩家回应'That's great to hear! I'm glad I could help. If you need anything else, just let me know.'，对Ay米的积极反馈做出了正面、温暖且符合语境的回应。"
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中所有角色发言均使用了'Ayumi:'和'[player]:'的标签格式，符合指定的格式要求。",
+            "rejected_reason": "输出严格使用了'Ayumi:'和'[player]:'作为角色标签，格式完全符合要求。"
+          },
+          {
+            "criterion_id": "rubric_fb725390f3004be28581317c624fca42_6",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "对话逻辑未覆盖任务要求的闭环流程（确认归还->表达感谢->安全感提升->互动），而是构建了一个全新的剧情线（赠送礼物->告别），缺失了任务核心设定的关键节点。",
+            "rejected_reason": "对话逻辑完整：从确认归还（You got my arrows back），到表达感谢与感受（feel much safer），再到玩家互动（glad I could help），形成了完整的闭环流程。"
+          }
+        ],
+        "chosen_score": 0.1,
+        "rejected_score": 0.85,
+        "margin": -0.75,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "在三次修订尝试中，Judge 对 Criterion 7/13/19（场景背景）的判定存在逻辑矛盾且偏离了任务核心意图。Task 明确设定场景为'夜晚的大田野'，这是对话发生的背景环境。Chosen 回答在结尾的动作描述中明确提及了'under the starry night sky'和'in the large field'，完全符合场景设定；Rejected 回答则完全缺失该描述。然而，Judge 在 Rubric 2 中认为 Chosen 未还原背景（仅因对话主体未提及），却给了 Rejected 0.9 的高分（尽管 Rejected 也缺失背景），这导致评分标准失效。更关键的是，所有三个 Rubric 都错误地将'场景背景是否被角色台词主动提及'作为硬性扣分项，而忽略了任务本质是生成一段发生在该场景下的对话，背景可以通过旁白或动作描写体现，不一定非要角色口述。这种设计导致了对正确回答（包含场景描述的 Chosen）的误判，以及对格式/剧情偏离的惩罚力度不足（因为 Judge 似乎更看重剧情逻辑而非场景一致性，但评分权重分配又让场景变得至关重要）。根本问题在于：评分标准将'场景背景的显式台词化'作为了必要条件，而实际上'场景氛围的呈现'（通过动作/旁白）才是合规的关键。这属于 Generator 遗漏了'非台词方式呈现场景'这一合理边界，错误地增加了'必须通过对话提及'的义务。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_effe52bbcf924452a834a1d5e4605bad",
+            "method": {
+              "trigger": "当任务要求生成特定场景下的对话或叙事时",
+              "principle": "不应强制要求角色台词必须重复或复述任务设定的场景背景，应允许通过旁白、动作描述或环境渲染等非台词方式来体现场景，只要整体语境符合设定即可。",
+              "application_guide": "Generator 在设计评分标准时，针对场景维度的提问应调整为：'输出是否体现了任务指定的场景氛围（如时间、地点、环境特征）？'，并明确说明该体现方式可以是角色台词、动作描写、旁白叙述或任何上下文元素，严禁规定'必须由角色口头确认'或'必须在对话第一句出现'等限制性条件。"
+            },
+            "source_task_id": "697c62825e719a1abd022fc12a5437e072a38979320e9c5e2c2705d4d0fa8fb6",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_effe52bbcf924452a834a1d5e4605bad"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_6eb46445db064a8ba8b701f1752f523e",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_1",
+                  "question": "对话内容是否完整涵盖了'Ayumi表达找回箭矢的喜悦与感谢’这一核心情节？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_2",
+                  "question": "Ayumi的回复是否明确体现了因箭矢归还而带来的安全感提升？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_3",
+                  "question": "玩家是否主动询问了Ayumi当前的状况，并以积极态度回应了她的反馈？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_4",
+                  "question": "输出是否在整体语境中体现了‘夜晚的大田野’这一场景设定（可通过旁白、动作描述或环境渲染实现，不强制要求角色口头复述）？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_5",
+                  "question": "输出是否严格使用了指定的角色标签格式（如'Ayumi:'和'[player]:'），且括号内的动作/状态描述位置正确？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "当前任务处于revise阶段，需基于提供的draft和task描述优化评分标准。Task明确设定了场景（夜晚大田野）、角色关系（玩家与骷髅女孩Ayumi）、核心事件（归还箭矢）及对话逻辑流程。Draft中的标准已覆盖大部分关键点，但存在两点不足：一是未体现'夜晚/大田野'的场景氛围可以通过旁白或动作描写体现，而非必须通过台词确认；二是未明确区分背景设定（括号内文本）与对话内容的格式要求。修订后的标准将放宽场景呈现方式的限制，强调上下文整体符合度，同时保留对关键情节节点（感谢、询问、安全感提升、积极回应）的严格核验，并强化角色标签格式的规范性。权重分配上，核心情节互动（3项共0.65）占主导，场景氛围（0.20）次之，格式规范（0.15）保底。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_6eb46445db064a8ba8b701f1752f523e",
+              "normalized_weights": {
+                "rubric_6eb46445db064a8ba8b701f1752f523e_1": 0.2,
+                "rubric_6eb46445db064a8ba8b701f1752f523e_2": 0.2,
+                "rubric_6eb46445db064a8ba8b701f1752f523e_3": 0.25,
+                "rubric_6eb46445db064a8ba8b701f1752f523e_4": 0.2,
+                "rubric_6eb46445db064a8ba8b701f1752f523e_5": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "对话内容未涵盖'Ayumi表达找回箭矢的喜悦与感谢’这一核心情节。提供的回答中，Ayumi 直接赠送了礼物作为感谢，完全缺失了关于‘找回箭矢’、‘感到更安全’或相关喜悦情绪的表述，偏离了任务设定的剧情节点。",
+                  "rejected_reason": "对话中Ayumi明确表达了找回箭矢后的喜悦（'You got my arrows back!'）和感谢（'Much better, thank you!'），完整涵盖了该核心情节。"
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "Ayumi 的回复中没有体现因箭矢归还而带来的安全感提升。她主要表达了感谢并赠送了‘发光碎片’（Luminary Shard），完全没有提及箭矢已归还或其对安全感的影响。",
+                  "rejected_reason": "Ayumi在回复中直接陈述了'With my arrows returned, I feel much safer now.'，明确体现了因箭矢归还带来的安全感提升。"
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "玩家并未主动询问 Ayumi 当前的状况。在提供的对话中，玩家直接回应了礼物并表示感谢，没有像任务要求那样先询问'How's everything going now?'或类似的关切语句。",
+                  "rejected_reason": "[player]主动询问了'How's everything going now?'并在得知情况后以'That's great to hear!'及后续帮助意愿积极回应了反馈。"
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_4",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "输出在结尾处通过旁白描述'*The player and Ayumi wave goodbye as they part ways in the large field under the starry night sky*'，明确体现了‘夜晚的大田野’这一场景设定。",
+                  "rejected_reason": "提供的回答仅包含角色对话，完全缺失任务设定中要求的‘夜晚的大田野’场景描写、旁白或环境渲染元素。"
+                },
+                {
+                  "criterion_id": "rubric_6eb46445db064a8ba8b701f1752f523e_5",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出严格使用了指定的角色标签格式（'Ayumi:'和'[player]:'），且括号内的动作/状态描述（如*Ayumi hands...*）位置正确，符合格式要求。",
+                  "rejected_reason": "输出严格使用了'Ayumi:'和'[player]:'作为角色标签，且所有动作或状态描述均正确放置在括号内。"
+                }
+              ],
+              "chosen_score": 0.35,
+              "rejected_score": 0.8,
+              "margin": -0.45,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "本次尝试（Rubric 5）虽然修正了场景描述的呈现方式（允许旁白/动作描写），但核心失败原因未解决：Judge 对 Chosen 回答的判定存在严重的事实性错误。Chosen 回答中，Ayumi 明确说了'You got my arrows back!'和'Much better, thank you!'以及'With my arrows returned, I feel much safer now.'，完全符合 Criterion 26（安全感提升）的要求。然而，Judge 在 criterion_judgments 中声称 Chosen '完全没有提及箭矢已归还或其对安全感的影响'，这显然是读错了文本或混淆了 Chosen 与 Rejected 的内容（Rejected 才是缺失这些内容的）。这种事实核查能力的缺失导致评分标准失效，因为无论标准设计得多么合理，如果 Judge 无法正确识别回答中的关键信息点，标准就无法执行。此外，Criterion 27 的判定也存在偏差，Chosen 中玩家确实询问了状况并回应了，但 Judge 认为没有，进一步证实了 Judge 未能正确匹配文本内容。因此，当前的评分标准设计经验不足以修复问题，需要引入针对'关键信息点存在性核验'的通用原则，防止因 Judge 漏看或误判导致的无效评分。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_0af5bfee6ec140dea685ab1f89f747e8",
+            "method": {
+              "trigger": "当评分标准包含对具体剧情节点、台词内容或事实细节的核验要求时",
+              "principle": "严禁依赖模糊的定性描述进行判断，必须将'关键信息点的显式存在'作为独立的通过性判据；若回答中包含任务要求的特定台词、行为或逻辑链条，即使表述方式略有不同，也应视为满足条件，禁止因 Judge 的主观遗漏或误读而否定回答。",
+              "application_guide": "Generator 在设计此类标准时，应将'是否存在[具体关键词/情节]'设为明确的布尔判据（例如：'回答中是否包含“感到更安全”或同等语义的表述？'），而非依赖整体语感判断。同时，需确保标准描述足够具体，避免使用可能被误解为'必须完全复述原文'的措辞，并提示评估者仔细核对文本证据，防止出现'明明有却说没有'的逻辑硬伤。"
+            },
+            "source_task_id": "697c62825e719a1abd022fc12a5437e072a38979320e9c5e2c2705d4d0fa8fb6",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_0af5bfee6ec140dea685ab1f89f747e8"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_36a7ba838f1a450096f41b9af8804041",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_1",
+                  "question": "对话内容是否明确提及或体现了‘夜晚’和‘大田野’这一特定场景设定？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_2",
+                  "question": "Ayumi的发言中是否明确表达了找回箭矢的事实以及对玩家的直接感谢？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_3",
+                  "question": "玩家是否在对话中主动询问了Ayumi当前的状况或近况？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_4",
+                  "question": "Ayumi的回复是否明确传达了因箭矢归还而感到‘更安全’或同等语义的安全感提升？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_5",
+                  "question": "玩家是否以积极、正面或高兴的态度对Ayumi的反馈做出了回应？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_6",
+                  "question": "输出是否严格使用了指定的角色标签格式（即'Ayumi:'和'[player]:'）来标识说话者？",
+                  "weight": 0.05
+                }
+              ],
+              "analysis": "本次任务处于修订阶段（stage: revise），需基于给定的对话草稿和任务背景设计评分标准。任务核心是验证生成的对话是否准确还原了特定场景（夜晚大田野）、角色身份（玩家与骷髅女孩Ayumi）及剧情逻辑（归还箭矢、表达感谢、确认安全感、积极回应）。原draft中的标准已覆盖主要情节，但需确保所有核验问题均转化为明确的“是否包含/体现”的布尔判据，避免模糊定性。分析将重点确认：1. 场景设定的显式提及；2. 关键台词或同义表达的完整性；3. 角色互动的逻辑链条是否闭合；4. 格式标签的规范性。权重分配上，将重点倾斜于核心剧情节点（如箭矢归还后的情感反馈）和格式规范，次要关注背景描述和通用态度。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_36a7ba838f1a450096f41b9af8804041",
+              "normalized_weights": {
+                "rubric_36a7ba838f1a450096f41b9af8804041_1": 0.15,
+                "rubric_36a7ba838f1a450096f41b9af8804041_2": 0.25,
+                "rubric_36a7ba838f1a450096f41b9af8804041_3": 0.2,
+                "rubric_36a7ba838f1a450096f41b9af8804041_4": 0.2,
+                "rubric_36a7ba838f1a450096f41b9af8804041_5": 0.15,
+                "rubric_36a7ba838f1a450096f41b9af8804041_6": 0.05
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "虽然对话末尾的动作描述提到了'large field under the starry night sky'，但对话内容本身（角色台词）并未提及或体现‘夜晚’和‘大田野’这一场景设定，且任务要求的是基于特定场景（刚完成请求、找回箭矢）的对话，而当前回答完全偏离了该场景背景。",
+                  "rejected_reason": "对话内容中未提及或体现‘夜晚’和‘大田野’这一场景设定，该信息仅出现在任务背景描述中，并未包含在角色对话里。"
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_2",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "Ayumi在回答中赠送了一个'Luminary Shard'作为感谢，完全没有提及找回箭矢的事实，也没有表达对玩家归还箭矢的直接感谢，这与任务设定的情节不符。",
+                  "rejected_reason": "Ayumi的发言明确提到'You got my arrows back!'（找回箭矢的事实）并紧接着说'Much better, thank you!'（直接感谢）。"
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_3",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "玩家没有主动询问Ayumi当前的状况或近况，而是对Ayumi送出的礼物表示好奇并询问‘那是什么？’，未执行任务要求的询问动作。",
+                  "rejected_reason": "玩家在第2句台词中主动询问了'How's everything going now?'，符合询问当前状况的要求。"
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_4",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "Ayumi的回复中未传达因箭矢归还而感到‘更安全’的信息，因为整个对话围绕的是赠送礼物而非归还箭矢的情节。",
+                  "rejected_reason": "Ayumi明确表示'With my arrows returned, I feel much safer now.'，直接传达了因箭矢归还而感到更安全。"
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_5",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "玩家对Ayumi的礼物表达了惊喜（'Wow'）和感激（'thank you so much'），并以积极正面的态度回应了Ayumi的帮助，符合该项标准。",
+                  "rejected_reason": "玩家回应'That's great to hear!'并补充'I'm glad I could help'，体现了积极、正面和高度的态度。"
+                },
+                {
+                  "criterion_id": "rubric_36a7ba838f1a450096f41b9af8804041_6",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "输出严格使用了'Ayumi:'和'[player]:'作为角色标签来标识说话者，格式符合要求。",
+                  "rejected_reason": "输出严格使用了'Ayumi:'和'[player]:'作为说话者标签，完全符合指定的格式要求。"
+                }
+              ],
+              "chosen_score": 0.2,
+              "rejected_score": 0.85,
+              "margin": -0.65,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

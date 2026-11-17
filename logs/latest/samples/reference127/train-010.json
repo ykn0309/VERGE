@@ -1,0 +1,263 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:cdcf84155f1b15ee05c5ac68d90e1d8dbf0b7d1a54709987ecf8ea89bf657572",
+    "task": "summarise this: During the earlier drafts of the film, Henry Pym’s Wife, Janet was originally set to appear as the Wasp. However, Black Widow was instead chosen to fill the role of the last Avenger as she was already previously introduced in Iron Man 2.",
+    "chosen": "In the initial stages of the film, Henry Pym's wife, Janet, was planned to feature as the Wasp. However, the role of the last Avenger was ultimately given to Black Widow, who had been previously introduced in Iron Man 2.",
+    "rejected": "In the initial versions of the film, Janet Van Dyne, played by Michelle Pfeiffer, was planned to be featured as the Wasp. However, Black Widow, portrayed by Scarlett Johansson, was ultimately included as the final Avenger, since she had already been introduced in Iron Man 2.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 12372,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it provides answers that satisfy the prompt by providing a good summary of the text given in the prompt. ",
+          "feedback1": "The response is not helpful. The response provides a summary of the text, which follows some of the prompt instructions. However, the response does not quite summarize the text correctly, as it introduces more details such as the full names of film characters and their real names, which were never stated in the prompt. The response fails to provide a useful summary of the text. ",
+          "feedback2": "The response is mostly helpful. The response provides a summarized version of the text that follows the prompt instructions and language accurately. The response provides key details and retains the style format and names of characters without including additional information. Overall, the response is concise and coherent, providing very useful information. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. It provides a summary that is accurate and complete. @Response 1 adds information that is unnecessary.",
+          "feedback1": "The response is slightly helpful. It provides a summary of the prompt. However, it includes unnecessary details, such as the actresses' full names, which may not be relevant to the user's needs. To improve accuracy and relevance, these names should be removed, ensuring that the response directly addresses what the user wants. Additionally, it does not mention the name Henry Pry, which is included in the prompt.",
+          "feedback2": "The response is perfectly helpful. It provides a summary of the prompt as requested and effectively serves as a rephrasing of the original content. The summary captures all the key information from the prompt without leaving anything out, and it does so without including any unnecessary details, ensuring clarity and completeness."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because it summarizes the original text without adding information. @Response 1 adds outside information, like the instances of \"Michelle Pfeiffer\" and \"Scarlett Johansson.\"",
+          "feedback1": "The response is not helpful. The user provides text about a Marvel film for the model to summarize. The model creates a response that is longer than the original text, and it does not correctly summarize the information. The response does not mention Henry Pym, and it includes outside information about Scarlett Johansson and Michelle Pfeiffer. ",
+          "feedback2": "The response is mostly helpful. The user provides the model with a block of text about a Marvel movie to summarize. The model technically does so, not adding any additional information and reducing word count while maintaining the meaning of the original text. However, the model could be more concise, replacing \"In the initial stages\" with \"initially\" and eliminating words such as \"however\" and \"ultimately.\""
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_eeae1c5c15c8b3758bd9",
+        0.2066219333167023
+      ],
+      [
+        "task_7a9bf6acc30d9151fb90",
+        0.1645351447305854
+      ],
+      [
+        "task_525cfa71f7871b22ff3b",
+        0.13915697423833923
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_09eb932d6d8240b489b819c8bb9306b2"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_09eb932d6d8240b489b819c8bb9306b2",
+        0.09952184373063472
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_09eb932d6d8240b489b819c8bb9306b2",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.09952184373063472
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_571fce3052e14a67951de20ae16121bd",
+    "criteria": [
+      {
+        "criterion_id": "rubric_571fce3052e14a67951de20ae16121bd_1",
+        "question": "摘要是否准确指出珍妮特·皮姆最初被设定为黄蜂女？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_571fce3052e14a67951de20ae16121bd_2",
+        "question": "摘要是否明确说明最终由黑寡妇接替了该角色？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_571fce3052e14a67951de20ae16121bd_3",
+        "question": "摘要是否包含黑寡妇被选中的原因（即她已在《钢铁侠2》中登场）？",
+        "weight": 0.4
+      }
+    ],
+    "analysis": "任务要求基于提供的英文文本生成摘要。需确认交付物为一段简练的总结，涵盖核心事实：汉克·皮姆的妻子珍妮特原定为黄蜂女，但最终黑寡妇因已在《钢铁侠2》中登场而被选为最后一位复仇者。范围限于给定文本信息，不添加外部知识；格式无特殊限制，但应保留原文关键逻辑（原计划 vs 最终选择及原因）。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_9a67171e058149f3af7e0714cbe30f4a",
+        "criteria": [
+          {
+            "criterion_id": "rubric_9a67171e058149f3af7e0714cbe30f4a_1",
+            "question": "摘要是否准确指出珍妮特·皮姆最初被设定为黄蜂女？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_9a67171e058149f3af7e0714cbe30f4a_2",
+            "question": "摘要是否明确说明最终由黑寡妇接替了该角色成为最后一位复仇者？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_9a67171e058149f3af7e0714cbe30f4a_3",
+            "question": "摘要是否包含黑寡妇被选中的原因（即她已在《钢铁侠2》中登场）？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务要求基于提供的英文文本生成摘要，需确认交付物为一段简练的总结。核心事实包括：珍妮特·皮姆（Janet）原定为黄蜂女；最终角色由黑寡妇接替；选择黑寡妇的原因是她在《钢铁侠2》中已登场。修订阶段需检查初稿是否完整覆盖这三点逻辑链条，且未引入原文本之外的信息。权重分配上，原因部分作为关键解释性信息给予较高权重，两个事实陈述点权重均等。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_9a67171e058149f3af7e0714cbe30f4a",
+        "normalized_weights": {
+          "rubric_9a67171e058149f3af7e0714cbe30f4a_1": 0.3,
+          "rubric_9a67171e058149f3af7e0714cbe30f4a_2": 0.3,
+          "rubric_9a67171e058149f3af7e0714cbe30f4a_3": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_9a67171e058149f3af7e0714cbe30f4a_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确提到'Janet, was planned to feature as the Wasp'，准确指出珍妮特最初被设定为黄蜂女。",
+            "rejected_reason": "回答明确指出在电影的初始版本中，Janet Van Dyne（珍妮特·皮姆）被计划作为黄蜂女出现。"
+          },
+          {
+            "criterion_id": "rubric_9a67171e058149f3af7e0714cbe30f4a_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中陈述'the role of the last Avenger was ultimately given to Black Widow'，明确说明黑寡妇接替了该角色成为最后一位复仇者。",
+            "rejected_reason": "回答清楚说明黑寡妇最终被包含为最后一位复仇者，接替了原本属于黄蜂女的角色位置。"
+          },
+          {
+            "criterion_id": "rubric_9a67171e058149f3af7e0714cbe30f4a_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中包含'who had been previously introduced in Iron Man 2'，解释了黑寡妇被选中的原因是她已在《钢铁侠2》中登场。",
+            "rejected_reason": "回答包含了黑寡妇被选中的原因，即她此前已在《钢铁侠2》中被介绍过。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "人工偏好理由明确指出 rejected 回答（Response 2）因添加了原文未提及的演员全名（Michelle Pfeiffer, Scarlett Johansson）和角色全名（Janet Van Dyne）而扣分，认为这是‘不必要的细节’或‘外部信息’。然而，初稿 Rubric (Rubric 1 & 2) 及其分析仅关注核心事实（谁、什么角色、原因），完全遗漏了‘不添加原文未提及信息’这一关键约束作为评分标准。这导致 Rubric 无法区分‘准确摘要’与‘包含幻觉/外部知识的摘要’，使得 Judge 在基于该 Rubric 打分时出现两分相同（1.0 vs 1.0）但人工判定差异巨大的矛盾。Selector 忽略了任务隐含的‘忠实于原文’前提，Generator 在设计标准时遗漏了对‘信息边界’的显式要求。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_e6c897802cef421ba20109560cd6b0b2",
+            "method": {
+              "trigger": "当任务要求生成摘要、复述或基于给定文本回答问题，且输入文本为封闭信息源时",
+              "principle": "评分标准必须显式包含‘信息边界合规性’维度：若模型引入原文未提供的实体属性（如演员名、具体日期、地点等）或推测性内容，应视为负面项或扣分项，无论其内容在现实世界中是否真实。",
+              "application_guide": "设计标准时需增加一条关于‘忠实度’的独立准则或作为所有事实性准则的前置条件：1. 明确定义‘原文未提及信息’的范围（如专有名词的属性扩展）；2. 规定一旦检测到此类信息，该条目直接判错或大幅降权；3. 禁止将‘内容正确性’（即外部知识正确）等同于‘任务完成度’，除非任务允许自由发挥。"
+            },
+            "source_task_id": "c845e5c7e54c3d4e499c710647a527ca34229b8410d586b5fc120fcc6cc63ff1",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_e6c897802cef421ba20109560cd6b0b2"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_52eb388696a74c2b97203db24eddbf19",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_1",
+                  "question": "摘要是否准确陈述了珍妮特·皮姆最初被设定为黄蜂女这一事实？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_2",
+                  "question": "摘要是否明确指出了最终由黑寡妇接替该角色成为最后一位复仇者？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_3",
+                  "question": "摘要是否包含了黑寡妇被选中的具体原因（即她已在《钢铁侠2》中登场）？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_4",
+                  "question": "摘要内容是否严格限于提供的文本信息，未引入原文未提及的外部实体或推测？",
+                  "weight": 0.2
+                }
+              ],
+              "analysis": "任务要求基于给定文本生成摘要，核心信息点包括：1. 珍妮特·皮姆最初被设定为黄蜂女；2. 最终角色由黑寡妇接替；3. 选择黑寡妇的原因是其在《钢铁侠2》中已登场。修订阶段需确保初稿中的评分标准能准确覆盖上述三个事实维度，且权重分配合理反映各信息点的重要性（原因解释通常作为逻辑支撑，权重可略高或持平）。同时，必须严格限制在原文范围内，不引入外部知识，这是摘要任务的基本合规性要求。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_52eb388696a74c2b97203db24eddbf19",
+              "normalized_weights": {
+                "rubric_52eb388696a74c2b97203db24eddbf19_1": 0.25,
+                "rubric_52eb388696a74c2b97203db24eddbf19_2": 0.25,
+                "rubric_52eb388696a74c2b97203db24eddbf19_3": 0.3,
+                "rubric_52eb388696a74c2b97203db24eddbf19_4": 0.2
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_1",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答中明确提到'Henry Pym's wife, Janet, was planned to feature as the Wasp'，准确陈述了珍妮特·皮姆最初被设定为黄蜂女这一事实。",
+                  "rejected_reason": "原文仅提及'Janet'（珍妮特·皮姆），未提供其姓氏'Van Dyne'，也未提及演员'Michelle Pfeiffer'。回答中添加了原文不存在的具体姓名和演员信息，不符合摘要应严格基于原文的要求，且引入了外部事实。"
+                },
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中指出'the role of the last Avenger was ultimately given to Black Widow'，明确说明了黑寡妇接替该角色成为最后一位复仇者。",
+                  "rejected_reason": "回答明确指出黑寡妇最终被选为最后一位复仇者（'ultimately included as the final Avenger'），准确陈述了原文中角色接替的核心事实。"
+                },
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中包含'who had been previously introduced in Iron Man 2'，清晰阐述了黑寡妇被选中的具体原因是她已在《钢铁侠2》中登场。",
+                  "rejected_reason": "回答明确说明了黑寡妇被选中的原因是她已在《钢铁侠2》中登场（'since she had already been introduced in Iron Man 2'），与原文提供的理由一致。"
+                },
+                {
+                  "criterion_id": "rubric_52eb388696a74c2b97203db24eddbf19_4",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答内容完全基于提供的原文信息进行改写和概括，未引入任何原文未提及的外部实体或进行推测。",
+                  "rejected_reason": "回答引入了原文未提及的外部实体信息，包括珍妮特的全名'Janet Van Dyne'以及演员'Michelle Pfeiffer'和'Scarlett Johansson'的名字。这违反了摘要内容必须严格限于提供的文本信息、不引入外部实体的要求。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 0.55,
+              "margin": 0.45,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

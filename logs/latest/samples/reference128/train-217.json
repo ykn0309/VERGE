@@ -1,0 +1,641 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:dc34c2634bb690282a3e842f9f9b650d59831bbee17a64731ab66842bab28076",
+    "task": "write a title for this paragraph",
+    "chosen": " Sure, please provide the paragraph for which you need a title.",
+    "rejected": "Based on the paragraph: \"In the heart of the city, a vibrant marketplace bustles with activity. Merchants offer a wide array of goods, from fresh produce to handmade crafts. The air is filled with the scent of spices and the sound of lively chatter. Visitors are drawn to the market's unique charm and the opportunity to experience local culture.\"\n\nTitle: \"A Symphony of Sights and Scents: The Vibrant City Marketplace Experience\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 13063,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. This is because @Response 1 asks the user for information that is necessary in order to fulfill that request, while @Response 2 makes up information in order to fulfill the request.",
+          "feedback1": "The response is perfectly helpful. The prompt asks for a title for a paragraph that has not yet been provided. Since this information is required, the model correctly provides no title, but asks the user to provide the paragraph. The response is completely succinct and free of any irrelevant content.",
+          "feedback2": "The response is not helpful. The prompt asks for a title to a paragraph that has not been provided. The response should have asked for the missing paragraph. Instead, the prompt makes up a paragraph, then assigns it a title. This is not what the user was looking for, making the response unhelpful."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 correctly addresses the ambiguity in the prompt. On the other hand,  @Response 2 provides a paragraph title without any additional details in the prompt.",
+          "feedback1": "The response is perfectly helpful. The model is correct when it addresses the ambiguity in the prompt. The response provided a straightforward answer. On one hand, the prompt asked for a title for a paragraph without providing the paragraph. The prompt is short and additional information is needed to satisfy the user's request.",
+          "feedback2": "The response is not helpful. The model is hallucinating and provides a paragraph title without additional information in the prompt. The response failed to address the ambiguity in the prompt. The response should be short and should ask where the paragraph is. In addition, it is unclear where the model found the paragraph in its response."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 is completely hallucinatory and should be revised entirely.",
+          "feedback1": "The response is mostly helpful. The model has given too short a response and should note the ambiguity of the user's prompt, but is otherwise fine. The model has agreed to the request, but has gently noted that the prompt is missing the text of the paragraph needed to perform this request. There is very little that can otherwise be written without the model hallucinating details. ",
+          "feedback2": "The response is not helpful. The model has hallucinated many details and provided text for the user without warning. The model should remark on the ambiguity of the prompt and gently redirect the user to provide the necessary text for an appropriate response. The model has provided a response that is completely irrelevant to the final prompt and is unusable in all but the format for the correct and helpful response the user is expecting. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_3a5a1b65792c42344385",
+        0.3620554126785312
+      ],
+      [
+        "task_76a181e33926fb120051",
+        0.3462160368687468
+      ],
+      [
+        "task_83144e70fbc0ecd476e6",
+        0.33695999963452405
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": 1.0,
+          "evidence": [
+            {
+              "group_id": "task_3a5a1b65792c42344385",
+              "similarity": 0.3620554126785312,
+              "statistics": {
+                "values": [
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:86768203fa894e05a54cda6d1c50ebb58efed61796afc301a0e034d29155b3e4:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "10493ed0c6b57568ea7914af48690c78f41186402327a46168f64c11f426c056"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_76a181e33926fb120051",
+              "similarity": 0.3462160368687468,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:d6257c0dcd95f0b5fa76a2ca66dd960b041fc6351a85be8a9900784db6ba53fd:exp_2732b913fc5d4915b4f316fee2203a6b"
+                ],
+                "task_ids": [
+                  "bcb15507239d8bdd259994a4443b2ecfc1849c97e8e94e3333d3217c20258cee"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_83144e70fbc0ecd476e6",
+              "similarity": 0.33695999963452405,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:941a3897820cf502a5269c83a521461a5685df766cd9408dac4f65c62543a480:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:71df69059c6bf642b28b0676b69580fa9b538f93917ff9bbf85e85dfcae6b3f2:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:51c212897f6df37b214d2453806bedfd2363b6a4107ef4a19936796116fac445:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "8198c687c54d6dd35fcf1f318e0637001b64eeab9adf45c0a562cf430bc1e47e",
+                  "463d2741c09aae6ed43052a80b6a961b48e23f5373607338509ed7f7ca715643",
+                  "c0cb59f1d5f202d986f92c1d82694fd4edbbd3a30c7729e99fc0f1c20a46fe57"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_3a5a1b65792c42344385",
+              "similarity": 0.3620554126785312,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:86768203fa894e05a54cda6d1c50ebb58efed61796afc301a0e034d29155b3e4:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "10493ed0c6b57568ea7914af48690c78f41186402327a46168f64c11f426c056"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_76a181e33926fb120051",
+              "similarity": 0.3462160368687468,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:d6257c0dcd95f0b5fa76a2ca66dd960b041fc6351a85be8a9900784db6ba53fd:exp_f3d8df9469c548fda7606217b85b067d"
+                ],
+                "task_ids": [
+                  "bcb15507239d8bdd259994a4443b2ecfc1849c97e8e94e3333d3217c20258cee"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.38559647216056836
+      ],
+      [
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        0.380400437217166
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.3784528997863341
+      ],
+      [
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        0.36641185665714804
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.3660209779253373
+      ],
+      [
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        0.3510745135284138
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.348143332866509
+      ],
+      [
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        0.33457071440863984
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.3340608051083868
+      ],
+      [
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        0.3253674010248905
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": 1.0,
+        "semantic_similarity": 0.3340608051083868
+      },
+      {
+        "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3253674010248905
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.36641185665714804
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.3510745135284138
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.38559647216056836
+      },
+      {
+        "experience_id": "exp_5419dd9533ab4b1791e6f119988d9887",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.380400437217166
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3784528997863341
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3660209779253373
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.348143332866509
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_543c20bb090d4a35a4c1851ad1972427": "当前任务要求生成'标题'（简短文本），经验3明确指出此类任务需界定有效内容与元数据/引用符号的边界，并规定输出应为单行文本且允许必要的标点符号，这直接对应标题生成的格式约束需求。",
+    "exp_748cc59b04eb4a44ad81d41d7ebe9810": "当前任务明确要求生成'a title'（简短词汇/短语），经验6专门针对此类未禁止解释性文字的任务，指导评分标准应区分核心交付物与辅助说明，避免将合理的引导语或标点误判为违规，符合本题对形式灵活性的潜在需求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_0f71c1b071044ee5971a740d7f3856e6",
+    "criteria": [
+      {
+        "criterion_id": "rubric_0f71c1b071044ee5971a740d7f3856e6_1",
+        "question": "标题是否准确概括了段落的核心主题或主要观点？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_0f71c1b071044ee5971a740d7f3856e6_2",
+        "question": "标题是否足够简洁且无冗余词汇？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_0f71c1b071044ee5971a740d7f3856e6_3",
+        "question": "标题是否与段落内容在逻辑上保持高度一致？",
+        "weight": 0.1
+      },
+      {
+        "criterion_id": "rubric_0f71c1b071044ee5971a740d7f3856e6_4",
+        "question": "输出是否仅为标题文本，不包含任何额外解释、引号或标记？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求为给定段落撰写一个标题。由于用户未提供具体段落内容，标准设计聚焦于标题的通用质量属性：简洁性、概括性、相关性（假设基于待处理段落）以及格式合规性（无多余标点或说明文字）。权重分配上，概括核心内容与保持简洁最为关键，各占0.4分；相关性与格式规范各占0.1分。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_8c7c9162bf5041d29f3f45e453743b00",
+        "criteria": [
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_1",
+            "question": "生成的标题是否准确概括了段落的核心主题或主要观点？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_2",
+            "question": "标题是否足够简洁且无冗余词汇？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_3",
+            "question": "标题是否与段落内容在逻辑上保持高度一致？",
+            "weight": 0.1
+          },
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_4",
+            "question": "输出是否仅为标题文本，不包含任何额外解释、引号或标记？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求为给定段落撰写标题，当前处于修订阶段。需核验修订后的标准是否严格聚焦于‘生成标题’这一核心交付物，排除对未提供段落内容的过度假设。标准应明确标题的概括性、简洁性、逻辑一致性以及纯文本格式要求。权重分配上，核心语义覆盖（0.4）和形式简洁（0.4）最为关键，逻辑一致性（0.1）与格式纯净度（0.1）作为辅助约束，确保总和为1且符合任务优先级。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_8c7c9162bf5041d29f3f45e453743b00",
+        "normalized_weights": {
+          "rubric_8c7c9162bf5041d29f3f45e453743b00_1": 0.4,
+          "rubric_8c7c9162bf5041d29f3f45e453743b00_2": 0.4,
+          "rubric_8c7c9162bf5041d29f3f45e453743b00_3": 0.1,
+          "rubric_8c7c9162bf5041d29f3f45e453743b00_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答未提供标题，而是请求用户提供段落内容，因此无法概括任何核心主题或主要观点。",
+            "rejected_reason": "标题'A Symphony of Sights and Scents: The Vibrant City Marketplace Experience'准确捕捉了段落中关于城市市场热闹氛围、商品多样性、气味和声音以及当地文化体验的核心主题。"
+          },
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答包含多余的对话性语句（如'Sure, please provide...'），并非简洁的标题文本。",
+            "rejected_reason": "标题中包含冒号和较长的修饰语，且使用了引号包裹，对于要求简洁的标题而言显得冗长，不符合‘无冗余词汇’的标准。"
+          },
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "由于没有生成标题，且未基于任何段落内容进行逻辑推导，无法满足与段落内容保持一致的要求。",
+            "rejected_reason": "标题中的'Symphony of Sights and Scents'与段落描述的视觉（vibrant, goods）和嗅觉（scent of spices）元素高度一致，'Vibrant City Marketplace'也直接对应段落核心内容，逻辑上保持高度一致。"
+          },
+          {
+            "criterion_id": "rubric_8c7c9162bf5041d29f3f45e453743b00_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出包含了请求用户输入段落的解释性文字，不符合'仅为标题文本，不包含任何额外解释'的要求。",
+            "rejected_reason": "输出包含了额外的解释性文字（如'Based on the paragraph:'），并且标题本身被双引号包围，违反了‘仅为标题文本，不包含任何额外解释、引号或标记’的要求。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.5,
+        "margin": -0.5,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_543c20bb090d4a35a4c1851ad1972427"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_1",
+            "question": "标题是否准确且全面地概括了段落的核心主题或主要观点？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_2",
+            "question": "标题是否足够简洁，去除了冗余词汇且不拖沓？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_3",
+            "question": "标题与段落内容在逻辑上是否保持高度一致，无夸大或偏离？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_4",
+            "question": "输出是否仅为标题文本，不包含任何解释性文字、Markdown代码块标记或无关元数据？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求为段落撰写标题，当前处于修订阶段。提供的初稿标准中，关于格式约束的条款（question 4）存在过度限制的风险，即要求‘不包含任何额外解释、引号或标记’。根据经验提示，标题作为自然语言文本，通常允许包含必要的标点符号（如问号、冒号等）以增强表达，除非任务明确禁止。若将通用的引用符号（如双引号）视为违规，可能导致对合理标题格式的误判。因此，修订重点在于修正格式约束的描述，将其调整为‘仅输出标题文本本身，不含解释性文字或Markdown代码块标记’，同时保留对概括性、简洁性和逻辑一致性的核心评估权重，确保标准既严谨又符合通用写作规范。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a",
+        "normalized_weights": {
+          "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_1": 0.4,
+          "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_2": 0.35,
+          "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_3": 0.15,
+          "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答未提供标题，而是请求用户提供段落，因此无法概括任何核心主题。",
+            "rejected_reason": "标题准确概括了段落核心，涵盖了市场活力、感官体验（视觉与嗅觉）及文化体验等关键要素。"
+          },
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答包含询问性语句而非简洁的标题文本，不符合标题应去除冗余词汇的要求。",
+            "rejected_reason": "标题包含前缀 'Based on the paragraph:'、引号内的完整段落文本以及 'Title:' 标签，导致输出内容严重冗余，不符合简洁要求。"
+          },
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "由于没有生成标题，无法判断其与段落内容的逻辑一致性，且当前内容偏离了任务目标。",
+            "rejected_reason": "由于回答中混入了原始段落内容和指令性前缀，整体输出结构混乱，未能以纯标题形式呈现，导致逻辑一致性在格式层面被破坏。"
+          },
+          {
+            "criterion_id": "rubric_b3ad7103b33d4d3080d0a2120cab8f0a_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出包含了解释性文字（'Sure, please provide...'），未仅输出标题文本。",
+            "rejected_reason": "回答包含了大量非标题文本，如 'Based on the paragraph'、完整的段落引用以及 'Title:' 标识，违反了仅输出标题文本的约束。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.4,
+        "margin": -0.4,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_1",
+            "question": "标题是否准确且全面地概括了段落的核心主题或主要观点？",
+            "weight": 0.45
+          },
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_2",
+            "question": "标题是否足够简练，去除了冗余词汇且无歧义？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_3",
+            "question": "标题与段落内容的逻辑关联度是否高度一致，未出现偏题或过度引申？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_4",
+            "question": "输出是否仅包含标题本身（允许包含常规的标题标点如引号），而不包含任何解释性文字、多选项列表或非请求的元数据？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "任务要求为给定段落撰写标题，当前处于修订阶段（stage: revise），需基于提供的初稿标准进行核验与优化。初稿标准中关于格式的要求（'不包含任何额外解释、引号或标记'）过于绝对化，忽略了用户可能接受的合理呈现方式（如带引号的标题）。根据经验指导，形式约束应区分‘核心交付物’与‘辅助说明’，避免将必要的标点符号（如引号）直接视为违规。修订后的标准应聚焦于：1. 内容是否准确概括段落核心；2. 表达是否简洁；3. 逻辑是否一致；4. 输出是否为单一标题文本（允许包含常规标点如引号，但禁止解释性文字或多选列表）。权重分配上，内容准确性与简洁性仍占主导，格式合规性调整为更合理的表述。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9",
+        "normalized_weights": {
+          "rubric_b4de9b6c5d08426098471d3e4ffa67d9_1": 0.45,
+          "rubric_b4de9b6c5d08426098471d3e4ffa67d9_2": 0.35,
+          "rubric_b4de9b6c5d08426098471d3e4ffa67d9_3": 0.15,
+          "rubric_b4de9b6c5d08426098471d3e4ffa67d9_4": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答未提供标题，而是请求用户提供段落内容，因此无法概括段落的核心主题或主要观点。",
+            "rejected_reason": "标题准确概括了段落中关于城市市场充满活力、商品丰富以及充满当地文化氛围的核心主题。"
+          },
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_2",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "由于回答中不存在标题，无法满足简练且无歧义的要求。",
+            "rejected_reason": "标题使用了修辞手法但词汇精炼，没有明显的冗余词汇或歧义，符合简练要求。"
+          },
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_3",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答未生成标题，故无法判断其与段落内容的逻辑关联度是否一致。",
+            "rejected_reason": "标题中的“ sights and scents”对应段落的视觉和嗅觉描写，“Vibrant City Marketplace Experience”直接对应段落描述的市场场景，逻辑关联高度一致且未过度引申。"
+          },
+          {
+            "criterion_id": "rubric_b4de9b6c5d08426098471d3e4ffa67d9_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然输出仅包含请求性文字而无多余解释，但任务要求是生成标题，该回答未能完成核心任务（即未输出标题本身），不符合“仅包含标题本身”的预期结果定义。",
+            "rejected_reason": "回答包含了任务请求之外的解释性文字（如'Based on the paragraph:'）以及将标题与段落内容混合展示的格式，未做到仅输出标题本身。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.95,
+        "margin": -0.95,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务要求为未提供的段落生成标题。人工偏好明确选择'请求用户提供段落'的回答，拒绝'虚构段落并生成标题'的回答，理由是后者属于幻觉且未解决输入缺失问题。然而，所有三轮修订的Rubric（2, 3, 4）均将核心评分维度设定为'标题是否准确概括了段落内容'、'逻辑一致性'等。这导致Judge在评估时，因为'请求用户提供段落'的回答没有输出标题，从而在所有内容维度上判定为不合格（得分0），而'虚构段落'的回答虽然完成了标题生成，却因幻觉被人工判定为错误。Judge的逻辑是：标准假设段落存在 -> 检查标题质量 -> 无标题即得0分。这忽略了任务的根本前提：当输入缺失时，'不生成虚构内容并请求补充'才是正确行为。现有的评分标准设计完全基于'有输入'的场景，遗漏了对'输入缺失场景下交互策略'的核验，导致无法区分'正确的澄清'与'错误的幻觉'。经验9明确指出此类情况应优先核验AI是否识别意图并引导用户，而非强制生成内容。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+            "method": {
+              "trigger": "当任务要求生成特定内容（如标题、摘要、故事）但输入数据缺失或模糊时",
+              "principle": "评分标准必须包含对'输入完整性核查'与'交互策略'的独立核验，严禁在未确认输入是否存在的情况下，将'生成完整内容'设为唯一正向条件，否则会导致'正确的澄清回答'因缺乏内容而被误判为低分。",
+              "application_guide": "Generator在设计此类评分标准时，应增设明确的'意图识别与澄清'维度。提问示例：'若输入信息缺失，回答是否首先指出了缺失项并请求用户提供？'。若回答选择了直接生成虚构内容以填补空白，即使格式完美，也应视为偏离用户意图（幻觉）。只有当输入明确存在时，才考核内容的准确性与概括性。该维度的权重应足以否决那些通过幻觉强行完成任务的回答。"
+            },
+            "source_task_id": "954ef432dbd788bcb3466db50f15ba255c32d8d98ca96bbc8ea043e8ae721012",
+            "parent_ids": [
+              "exp_f589e4c6a08945d498eccbea1df77ae5"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_e7e12dc98bbc4fa19c1cbf450bd37cff"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_f20fb872330645859e83d8faaa34cff0",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_f20fb872330645859e83d8faaa34cff0_1",
+                  "question": "当检测到段落内容缺失时，回答是否首先明确指出了输入不完整并请求用户提供具体内容？",
+                  "weight": 0.7
+                },
+                {
+                  "criterion_id": "rubric_f20fb872330645859e83d8faaa34cff0_2",
+                  "question": "若回答尝试生成标题，是否避免了基于不存在的内容进行无依据的虚构（幻觉）？",
+                  "weight": 0.3
+                }
+              ],
+              "analysis": "任务要求为段落撰写标题，但用户未提供具体段落内容。根据评分标准设计原则，当输入数据缺失时，首要核验点应为模型是否识别并指出了输入缺失（避免幻觉生成），而非直接考核生成的标题质量。若模型在未澄清的情况下生成了虚构标题，则属于严重偏离意图；若模型正确请求补充信息，则应视为符合预期。因此，修订后的标准将‘输入完整性核查与交互策略’作为核心权重，取代原草案中针对虚构内容的概括性、简洁性等指标。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_f20fb872330645859e83d8faaa34cff0",
+              "normalized_weights": {
+                "rubric_f20fb872330645859e83d8faaa34cff0_1": 0.7,
+                "rubric_f20fb872330645859e83d8faaa34cff0_2": 0.3
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_f20fb872330645859e83d8faaa34cff0_1",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答明确指出用户需要提供段落内容（'please provide the paragraph'），符合在检测到输入不完整时请求用户提供具体内容的要求。",
+                  "rejected_reason": "回答直接基于提供的段落内容生成了标题，并未检测到输入缺失或请求用户提供更多内容。"
+                },
+                {
+                  "criterion_id": "rubric_f20fb872330645859e83d8faaa34cff0_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "由于回答未尝试生成标题，而是直接请求补充信息，因此不存在基于不存在内容进行虚构或产生幻觉的情况，满足避免无依据虚构的要求。",
+                  "rejected_reason": "生成的标题完全依据段落中描述的市集、商品、气味和氛围等具体信息提炼而成，未出现无事实依据的虚构内容。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 0.3,
+              "margin": 0.7,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

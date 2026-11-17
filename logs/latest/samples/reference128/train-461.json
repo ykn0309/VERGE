@@ -1,0 +1,601 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:5ec419d6f6a530ba28c1c3a93b15474cf77449a6c0db945b0c246c004d182b9f",
+    "task": "Rewrite the following, tomorrow Sunday Sept 10 2023 the office will be open from 10:00 am - 5:00 pm come in  or call to reserve your holiday seats and to clear up your balance before the high holidays ",
+    "chosen": "Tomorrow, Sunday, September 10, 2023, the office will be open from 10:00 AM to 5:00 PM. Please come in or call to reserve your holiday seats and clear any outstanding balances before the High Holidays.",
+    "rejected": "Tomorrow, Sunday, September 10, 2023, the office will be open from 10:00 am-5:00 pm. Before the high holidays, feel free to come in or call to reserve your holiday seats and to clear up your balance.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 21804,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it is slightly sounds more professional , formal and accurate than the @Response 2. ",
+          "feedback1": "The response is mostly helpful. Reminder : Office hours for Sunday, September 10, 2023. Our office will be open tomorrow, Sunday, September 10, from 10:00 A.M. to 5:00 P.M. Please take this opportunity to Reserve your seats for the upcoming high holidays. Clear any outstanding balances before the holiday season. Feel free to visit us in person or call to make the arrangement.",
+          "feedback2": "The response is partially helpful.  Office Hours : Sunday, September 10, 2023. Our office will be open tomorrow, Sunday, September 10, from 10:00 AM to 5:00 PM. Before the high holidays, we invite you to visit or call us to : Reserve your seats for the holiday services and Clear any outstanding balances."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. The only real issue with @Response 1 is the failure to write a.m. and p.m. in the correct lower case style, while @Response 2 has a complete failure in clarity in the second sentence. ",
+          "feedback1": "The response is mostly helpful. The only reason that the response does not receive a perfect score is due to the problem with formatting. The sentence states \"10:00 AM to 5:00 PM.\" According to both the Chicago Manual of Style and AP, the correct style is a.m. and p.m. This is also consistent with the lower case used in the prompt. Since the prompt used lower case for a.m. and p.m., the response should have corrected the lower case usage as well. ",
+          "feedback2": "The response is partially helpful. There are both grammar and clarity mistakes that prevent the response from being perfect. The phrase \"High Holidays\" should be capitalized, because it is a proper noun. Additionally, the second sentence is poorly worded and could be rewritten for better clarity and understanding. \"Before teh High Holidays, feel free to call in or call to reserve your holiday seats and clear up your balance\" simply does not flow well enough. "
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. Both responses rewrite the text provided in the prompt in their own different ways. However, @Response 2 has some issues with the language and tone of the rewritten text.",
+          "feedback1": "The response is mostly helpful. The model does a great job in understanding the text written in the prompt and also the central ask of the user. It provides a response which is well rounded and contains all the aspects of the text in the prompt. Additionally, the language is also consistent with the prompt. The response does a great job in rewriting the text.",
+          "feedback2": "The response is partially helpful. Although, the model does a great job in rewriting the text as asked by the user through their prompt. However, the model fails to address the prompt complete in one major aspect. The response has some language related errors in terms of grammar and framing of the response. Additionally, rewriting has also changed the tone of the text slightly."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_bdece7360effcbcc15af",
+        0.4060878471629308
+      ],
+      [
+        "task_abe72feb29d473c1e43a",
+        0.37837034012976445
+      ],
+      [
+        "task_999af8b8bff66f75e61c",
+        0.37026834368688233
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+          "score": 0.3333333333333333,
+          "evidence": [
+            {
+              "group_id": "task_999af8b8bff66f75e61c",
+              "similarity": 0.37026834368688233,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0312e2356bf1a722171847ac3db995c1d07d9944dee5ecf1a19771af7992b46e:exp_96802d2cee6f4f17acf028194475c639",
+                  "helpsteer3:train:227eca8249d79517dcf08884928636320d1225af8b64ea9df0a7130eb1a14c98:exp_96802d2cee6f4f17acf028194475c639",
+                  "helpsteer3:train:432bbf4a067b5098cbae53c36b40154f666b9babe4b3f885482e88be6a95d4d5:exp_96802d2cee6f4f17acf028194475c639"
+                ],
+                "task_ids": [
+                  "856ee6412739bde89c33fb4d4df2e55390086d727023ac3d1eaffcc9956b6ae6",
+                  "a56e9f8565dad443232c79b118659ee821d31ac0fccbe0519f4643c9a5b0e92f",
+                  "2b4c3a2d4ef9171183a9fe7b9f8aadc70854c7e5bb4cc7f6194346365574c01b"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_2adba5039571400b8862295552f46447",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_bdece7360effcbcc15af",
+              "similarity": 0.4060878471629308,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:5a280adaed35a23573093a0e57eeb7bf8cb01a302535e7a45826a49cef02870e:exp_2adba5039571400b8862295552f46447"
+                ],
+                "task_ids": [
+                  "047dc0e18ccf3891daf0f2d321d79512a4383c66b438635fe7861925349b88e7"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_abe72feb29d473c1e43a",
+              "similarity": 0.37837034012976445,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:1bb3edb72098de6ae8af810ebb1dd79a000c43aaf20ab4461e6147511d667fcf:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "758c8bc19c086a49b43c33ea9ed1e7ef3fd471991dd0f8de7d732c32a6ee65c2"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_e371d4edc6104e45b9c816c3d30e2452",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_bdece7360effcbcc15af",
+              "similarity": 0.4060878471629308,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:5a280adaed35a23573093a0e57eeb7bf8cb01a302535e7a45826a49cef02870e:exp_e371d4edc6104e45b9c816c3d30e2452"
+                ],
+                "task_ids": [
+                  "047dc0e18ccf3891daf0f2d321d79512a4383c66b438635fe7861925349b88e7"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.3484752163490292
+      ],
+      [
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        0.27163519309608974
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.26468181154045134
+      ],
+      [
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        0.25662638354221656
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.2517303560203194
+      ],
+      [
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        0.2506168337080634
+      ],
+      [
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        0.24875756796211235
+      ],
+      [
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        0.24771347741966387
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.24183736240222845
+      ],
+      [
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        0.239908711743758
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+        "source": "historical",
+        "historical_score": 0.3333333333333333,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_2adba5039571400b8862295552f46447",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3484752163490292
+      },
+      {
+        "experience_id": "exp_798b8aebf85e4622a94630e0af19534f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27163519309608974
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26468181154045134
+      },
+      {
+        "experience_id": "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25662638354221656
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2517303560203194
+      },
+      {
+        "experience_id": "exp_aa7afd4122054230b5aecfb525ab7953",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2506168337080634
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_8a047aa502234685891ad41a1a24d090": "当前任务要求对一段包含具体日期（2023 年 9 月 10 日周日）、时间（10:00-5:00）及行动指令的文本进行重写，属于生成简短沟通内容。经验 3 明确指出此类任务需将‘幻觉信息核查’与‘指令边界合规性’设为独立否定维度，防止模型在重写时编造任务未提及的细节（如虚构具体的预约流程、错误的地点名称）或添加不必要的解释性文字，这与任务中需要严格保留原始事实（日期、时间、动作）并仅做语言润写的要求高度契合。"
+  },
+  "draft": {
+    "rubric_id": "rubric_cf512191a98043c6a1c5a3c9112e0fd7",
+    "criteria": [
+      {
+        "criterion_id": "rubric_cf512191a98043c6a1c5a3c9112e0fd7_1",
+        "question": "是否准确包含了指定的日期（2023年9月10日，周日）和营业时间（上午10:00至下午5:00）？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_cf512191a98043c6a1c5a3c9112e0fd7_2",
+        "question": "是否清晰表达了两项核心行动号召：预约假期座位以及在高节日前结清余额？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_cf512191a98043c6a1c5a3c9112e0fd7_3",
+        "question": "是否修正了原文的语法错误、拼写错误及标点缺失，使语句通顺且专业？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_cf512191a98043c6a1c5a3c9112e0fd7_4",
+        "question": "是否保留了原文关于‘高节日’（high holidays）的背景语境或将其转化为自然的表达？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求将一段包含日期、营业时间及行动号召的原始文本重写为更清晰、专业的公告。需核实的交付物包括：准确传达2023年9月10日（周日）的具体营业时间（上午10点至下午5点）、明确‘提前预约’和‘结清余额’两个核心行动项、提及‘高节日’背景，并修正原文的语法与标点错误以提升可读性。权重分配侧重于信息准确性（40%）、行动号召清晰度（30%）、语言规范性（20%）以及格式完整性（10%）。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9",
+        "criteria": [
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_1",
+            "question": "是否准确包含了指定的日期（2023年9月10日，周日）和营业时间（上午10:00至下午5:00）？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_2",
+            "question": "是否清晰表达了两项核心行动号召：预约假期座位以及在高节日前结清余额？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_3",
+            "question": "是否修正了原文的语法错误、拼写错误及标点缺失，使语句通顺且专业？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_4",
+            "question": "是否保留了原文关于‘高节日’（high holidays）的背景语境或将其转化为自然的表达？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务旨在修订一段关于办公室假日营业安排的重写草稿。核心交付物需准确传达特定日期（2023年9月10日，周日）的营业时间（10:00-17:00），并清晰包含两项行动号召：预约假期座位及在高节日前结清余额。同时，必须修正原文的语法、拼写及标点问题，确保语气专业流畅。权重分配上，信息准确性与完整性最为关键，其次是行动号召的清晰度，再次是语言规范性，最后是背景语境的恰当处理。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9",
+        "normalized_weights": {
+          "rubric_de0fefdbbd4d40f79f9906d5b23044f9_1": 0.4,
+          "rubric_de0fefdbbd4d40f79f9906d5b23044f9_2": 0.3,
+          "rubric_de0fefdbbd4d40f79f9906d5b23044f9_3": 0.2,
+          "rubric_de0fefdbbd4d40f79f9906d5b23044f9_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确包含了日期'Tomorrow, Sunday, September 10, 2023'和营业时间'from 10:00 AM to 5:00 PM'，与任务要求完全一致。",
+            "rejected_reason": "回答中明确包含了日期'Tomorrow, Sunday, September 10, 2023'和营业时间'from 10:00 am-5:00 pm'，与任务要求完全一致。"
+          },
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答清晰表达了两个核心行动号召：'reserve your holiday seats'（预约假期座位）和'clear any outstanding balances'（结清余额），并保留了'before the High Holidays'的时间背景。",
+            "rejected_reason": "回答清晰表达了两个核心行动号召：'reserve your holiday seats'（预约假期座位）和'clear up your balance'（结清余额），且通过'come in or call'提供了具体的执行方式。"
+          },
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答修正了原文的语法错误、拼写错误及标点缺失问题，将原本连在一起的句子拆分为结构清晰的两句，用词专业且语句通顺。",
+            "rejected_reason": "回答修正了原文的语法错误（如缺少标点、句子结构混乱），添加了必要的逗号和句号，使语句通顺、专业且符合英语表达习惯。"
+          },
+          {
+            "criterion_id": "rubric_de0fefdbbd4d40f79f9906d5b23044f9_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答保留了原文关于'High Holidays'的背景语境，并将其首字母大写以符合专有名词规范，自然融入了句中。",
+            "rejected_reason": "回答保留了原文关于'high holidays'的背景语境，并将其自然地融入句子结构中作为时间状语，未丢失关键信息。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_8a047aa502234685891ad41a1a24d090"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_5329765fff824e2a9a491eb97b4cb43a",
+        "criteria": [
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_1",
+            "question": "是否准确包含了指定的日期（2023年9月10日，周日）和营业时间（上午10:00至下午5:00）？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_2",
+            "question": "是否清晰表达了两项核心行动号召：预约假期座位以及在高节日前结清余额？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_3",
+            "question": "是否修正了原文的语法错误、拼写错误及标点缺失，使语句通顺且专业？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_4",
+            "question": "是否保留了原文关于‘高节日’（high holidays）的背景语境或将其转化为自然的表达？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求将一段包含日期、营业时间及行动号召的原始文本重写为更清晰、专业的公告。需核实的交付物包括：准确传达2023年9月10日（周日）的具体营业时间（上午10点至下午5点）、明确‘提前预约’和‘结清余额’两个核心行动项、提及‘高节日’背景，并修正原文的语法与标点错误以提升可读性。权重分配侧重于信息准确性（40%）、行动号召清晰度（30%）、语言规范性（20%）以及格式完整性（10%）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_5329765fff824e2a9a491eb97b4cb43a",
+        "normalized_weights": {
+          "rubric_5329765fff824e2a9a491eb97b4cb43a_1": 0.4,
+          "rubric_5329765fff824e2a9a491eb97b4cb43a_2": 0.3,
+          "rubric_5329765fff824e2a9a491eb97b4cb43a_3": 0.2,
+          "rubric_5329765fff824e2a9a491eb97b4cb43a_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确写有 'Sunday, September 10, 2023' 和 'from 10:00 AM to 5:00 PM'，准确包含了指定的日期和营业时间。",
+            "rejected_reason": "回答中明确包含了日期'Tomorrow, Sunday, September 10, 2023'以及营业时间'from 10:00 am-5:00 pm'，与任务要求完全一致。"
+          },
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答清晰表达了两个行动号召：'reserve your holiday seats'（预约假期座位）和 'clear any outstanding balances'（结清余额），与原文核心意图一致。",
+            "rejected_reason": "回答清晰地表达了两个核心行动号召：'reserve your holiday seats'（预约假期座位）和'clear up your balance'（结清余额），并保留了原文的语境逻辑。"
+          },
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "原文中的语法错误、拼写模糊及标点缺失已修正，句子结构完整，使用了正确的标点和大小写，语句通顺且专业。",
+            "rejected_reason": "回答修正了原文的语法错误（如逗号缺失、句子结构混乱）、拼写及标点问题，将长句拆分为结构清晰、通顺且专业的句子。"
+          },
+          {
+            "criterion_id": "rubric_5329765fff824e2a9a491eb97b4cb43a_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答保留了 'High Holidays' 这一特定背景语境，并将其作为专有名词首字母大写处理，表达自然且符合节日语境。",
+            "rejected_reason": "回答保留了原文关于'high holidays'的背景表述，并将其自然地融入句子结构中，未丢失关键语境信息。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务要求重写一段包含具体日期、时间及行动号召的文本。人工偏好理由明确指出，被拒绝的回答（Response 2）在 'high holidays' 的处理上存在缺陷：未将其作为专有名词首字母大写（应为 High Holidays），且句子结构混乱导致清晰度不足；而被选中的回答（Response 1）虽然将 'a.m./p.m.' 错误地写成了大写（AM/PM，而原文及标准通常为小写），但因其整体专业度和清晰度更优而被选中。然而，初稿评分标准（Rubric 2 & 3）将所有维度（包括大小写格式和逻辑清晰度）都判定为满分（1.0），导致无法区分两者的细微差异（即 Judge 未能识别出 Response 1 的大小写错误和 Response 2 的专有名词大小写错误及句式问题）。这表明评分标准缺乏对‘关键格式规范’（如专有名词大小写、时间格式标准）的独立核验机制，且权重分配过于平均，未能捕捉到人工反馈中强调的‘专业度’与‘清晰度’的具体表现（如专有名词处理）。Generator 在设计此类重写任务的标准时，必须将‘关键实体/术语的格式规范性’（如专有名词大写、时间格式统一）设为独立的扣分项，而非笼统归入‘语言规范性’，否则无法有效区分因格式细节导致的优劣差异。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+            "method": {
+              "trigger": "当任务涉及文本重写或编辑，且人工反馈明确指出了具体的格式规范差异（如专有名词大小写、时间格式、标点用法）作为区分优劣的关键依据时",
+              "principle": "评分标准必须将‘关键格式规范的执行一致性’（如专有名词大写、单位符号大小写、标点规范）从宽泛的‘语言通顺性’中剥离，设立为独立的否决性或强扣分项，防止模型因整体流畅但核心格式错误而获得高分。",
+              "application_guide": "Generator 在设计标准时，应针对输入文本中的特定实体（如节日名称、时间、地点）定义明确的格式规则（例如：'High Holidays' 必须首字母大写，'am/pm' 必须遵循目标风格指南的小写规范）。在核验问题中，不应仅问‘是否修正了语法错误’，而应具体提问：'回答是否严格遵循了目标语境下的专有名词大写规则（如 High Holidays）？'以及'时间表示法是否符合标准格式（如 am/pm vs AM/PM）？'。若回答在这些具体格式点上出现偏差，即使语句通顺，也应扣除相应分数，以此精准反映人工对‘专业性’的判断。"
+            },
+            "source_task_id": "1f49b87c32b91014d3020522aad3c17e8be416a20f258e717bd1b47284ba68d6",
+            "parent_ids": [
+              "exp_8a047aa502234685891ad41a1a24d090"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_dee831c2d67d4a0b8fe8788a46e6b37f"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_1",
+                  "question": "是否准确包含了指定的日期（2023年9月10日，周日）和营业时间（上午10:00至下午5:00），且无信息遗漏或篡改？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_2",
+                  "question": "是否清晰表达了两项核心行动号召：预约假期座位以及在高节日前结清余额？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_3",
+                  "question": "回答中的专有名词'High Holidays'是否严格遵循了首字母大写的规范格式？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_4",
+                  "question": "时间表示法是否符合标准格式（如统一使用am/pm或AM/PM，且与上下文风格一致）？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "本次任务要求对一段包含日期、营业时间及行动号召的原始文本进行重写，以使其更清晰专业。需交付的内容为修订后的公告文本。核心核查点包括：1. 关键信息（2023年9月10日周日、10:00-5:00）的准确性；2. 两项行动号召（预约座位、结清余额）的明确性；3. 语言规范性与流畅度；4. 专有名词'High Holidays'的大小写规范及时间格式标准。根据提供的经验，必须将格式规范（如节日名称大写、时间格式统一）从宽泛的语言通顺中剥离，作为独立且关键的核验项，以确保专业性。权重分配上，信息准确性最为重要（40%），其次是行动号召清晰度（30%），再次是语言规范与格式一致性（各15%）。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee",
+              "normalized_weights": {
+                "rubric_5ea4440690ec4db99c55ef34ff12f1ee_1": 0.4,
+                "rubric_5ea4440690ec4db99c55ef34ff12f1ee_2": 0.3,
+                "rubric_5ea4440690ec4db99c55ef34ff12f1ee_3": 0.15,
+                "rubric_5ea4440690ec4db99c55ef34ff12f1ee_4": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答中准确包含了日期'October 10, 2023'（注：原文为Sept，回答写为September，日期数字10和周日Sunday均正确）以及营业时间'10:00 AM to 5:00 PM'，信息完整且无篡改。",
+                  "rejected_reason": "回答中准确包含了日期'Sunday, September 10, 2023'和营业时间'from 10:00 am-5:00 pm'，未遗漏或篡改原始信息。"
+                },
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确表达了两个核心行动号召：一是'reserve your holiday seats'（预约假期座位），二是'clear any outstanding balances before the High Holidays'（在高节日前结清余额）。",
+                  "rejected_reason": "回答清晰表达了两项核心行动号召：通过'come in or call to reserve your holiday seats'表达了预约假期座位，通过'to clear up your balance'表达了结清余额。"
+                },
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_3",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答中的专有名词'High Holidays'严格遵循了首字母大写的规范格式，与原文要求一致。",
+                  "rejected_reason": "回答中将专有名词写作'high holidays'（小写h），而评分标准要求严格遵循首字母大写规范格式，即应为'High Holidays'。"
+                },
+                {
+                  "criterion_id": "rubric_5ea4440690ec4db99c55ef34ff12f1ee_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "时间表示法统一使用了'AM'和'PM'的大写形式，格式标准且上下文风格保持一致。",
+                  "rejected_reason": "回答统一使用了小写'am/pm'表示时间（10:00 am-5:00 pm），格式标准且上下文风格一致。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 0.85,
+              "margin": 0.15,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

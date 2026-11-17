@@ -1,0 +1,416 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:523e40916fcb196b590bcb32feb2708e2fb50495d4a44e0c52e92709ade7d26b",
+    "task": "how do I open a door. reply shortly.",
+    "chosen": "Press down on the handle, then pull or push the door, depending on its design. If it's a knob, turn it and then pull or push.",
+    "rejected": "To open a door, follow these simple steps:\n\n1. Approach the door: Walk towards the door you want to open.\n\n2. Identify the handle or knob: Locate the handle or knob, which is usually on the right side of the door.\n\n3. Grasp the handle or knob: Use your hand to grasp the handle or knob firmly.\n\n4. Turn the handle or knob: Apply pressure and turn the handle or knob counterclockwise (to the left) if it's a knob, or pull it down if it's a lever-style handle.\n\n5. Pull or push the door: Once the latch is released, you can either push the door open if it swings inward or pull it open if it swings outward.\n\n6. Step through the doorway: Enter the room or space, being mindful of any objects or people in the way.\n\nRemember to always close the door behind you by reversing the process.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 9387,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 is far more concise and therefore would be preferable.",
+          "feedback1": "The response is mostly helpful. The user wants a concise description of how to open a door. The response does well to format the response as a numbered, step by step list. The response may be a bit longer than what the prompt intended, however, the response is short enough to not be considered in breach of the prompt instructions.",
+          "feedback2": "The response is perfectly helpful. The prompt asks for instruction for opening a door in a concise format. The response is about as concise as possible, only covering the absolute essential steps for opening a door. The response fully satisfies the prompt and complies with all constraints and instructions given."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. Both responses are clear and free from grammatical errors, but @Response 1 fails to follow the prompt's instruction to be concise and also contains repetition. ",
+          "feedback1": "The response is partially helpful. It is clear and free from grammatical errors. The response fully addresses the prompt's request to explain how to open a door. However, the prompt asks that the explanation be short. This explanation is too verbose to satisfy this criterion. Also, the response repeats ideas multiple times. For instance, it says: \"grasp the handle or knob: use your hand to grasp the handle or knob.\"",
+          "feedback2": "The response is perfectly helpful. It is clear, concise, and free from grammatical and spelling errors. It fully addresses the prompt's instructions to explain how to open a door and to keep this explanation brief. The response manages to provide a thorough explanation without adding any unnecessary phrases or repetition. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1.\n@Response 2 provides a concise and straightforward explanation of how to open a door. On the other hand, @Response 1 is overly detailed, including unnecessary steps that go beyond what was needed, making it less suitable for the short reply asked for.",
+          "feedback1": "The response is partially helpful. As the prompt requested, it explains the process of opening a door in a clear and detailed manner, providing step-by-step instructions. However, the response does not align with the request for brevity, as it includes excessive details that go beyond what was needed. The response could be improved by being more concise and focusing only on the core action of opening the door rather than providing a detailed description of each step.",
+          "feedback2": "The response is perfectly helpful. As the prompt requested, it provides a clear and concise explanation of how to open a door, addressing the key actions without unnecessary detail. The language is straightforward and easy to follow, making the steps simple to understand. It meets the prompt's request for brevity while remaining informative."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_d3cd10bca00b774c0207",
+        0.34349774096994135
+      ],
+      [
+        "task_e304d4a89f96b32bdee5",
+        0.32767210940767033
+      ],
+      [
+        "task_09a6193f4087aee86380",
+        0.31987494176864173
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_d3cd10bca00b774c0207",
+              "similarity": 0.34349774096994135,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:7f76655ca53d8fa4f0928f92444639a3569168c38d08142ea6e0924d39865dc2:exp_748cc59b04eb4a44ad81d41d7ebe9810"
+                ],
+                "task_ids": [
+                  "ef66f8004a1dee184cacbd88e4355c93cbb1c02b0b52c0dbe17cb56975dbb28a"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_e304d4a89f96b32bdee5",
+              "similarity": 0.32767210940767033,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:158892330c74d00c5ed22f66a4463c74cadba6a366c2bfcc52e09c2fa3884287:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "60faa8caadb3230c5f0987bd2cb0064810592fcca63714b6f2b19b3356775488",
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+          "score": -0.5,
+          "evidence": [
+            {
+              "group_id": "task_e304d4a89f96b32bdee5",
+              "similarity": 0.32767210940767033,
+              "statistics": {
+                "values": [
+                  0.0,
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:158892330c74d00c5ed22f66a4463c74cadba6a366c2bfcc52e09c2fa3884287:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "60faa8caadb3230c5f0987bd2cb0064810592fcca63714b6f2b19b3356775488",
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_e304d4a89f96b32bdee5",
+              "similarity": 0.32767210940767033,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.31669650733107796
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.30648384490631353
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.305519092510108
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.29517924243969046
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.2941305173224168
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.2930071128588848
+      ],
+      [
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        0.29188297443132327
+      ],
+      [
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        0.2827121755803957
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.2802406424349155
+      ],
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.27829180694531297
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.29517924243969046
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.2941305173224168
+      },
+      {
+        "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "source": "historical",
+        "historical_score": -0.5,
+        "semantic_similarity": 0.29188297443132327
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31669650733107796
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.30648384490631353
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.305519092510108
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2930071128588848
+      },
+      {
+        "experience_id": "exp_4609692fd9c043118c81db8f6cdbecba",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2827121755803957
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2802406424349155
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_748cc59b04eb4a44ad81d41d7ebe9810": "任务明确要求'reply shortly'（简短回复），这符合经验 1 的触发条件‘生成简短词汇或短语’。该经验提供的原则指导如何界定‘核心交付物’与‘解释性文字’的边界，防止因模型在简短回答中包含必要的引导语（如‘你可以...'）而被误判为违规，这对设计针对简短指令的评分标准至关重要。"
+  },
+  "draft": {
+    "rubric_id": "rubric_c43590f4c87f43cfbe32a024638e748a",
+    "criteria": [
+      {
+        "criterion_id": "rubric_c43590f4c87f43cfbe32a024638e748a_1",
+        "question": "回复是否明确提供了打开门的具体操作步骤或方法？",
+        "weight": 0.6
+      },
+      {
+        "criterion_id": "rubric_c43590f4c87f43cfbe32a024638e748a_2",
+        "question": "回复是否保持简短，避免不必要的解释、背景介绍或冗长描述？",
+        "weight": 0.4
+      }
+    ],
+    "analysis": "任务要求提供打开门的简短回复。交付物为一段文本，需直接回答核心问题（如何开门），且必须严格遵守‘简短’的格式限制。不涉及特定门类型或背景假设，通用方法即可。权重分配上，内容正确性占主导，简洁性作为关键约束条件。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_35874c93959543a982dc85192d8084d6",
+        "criteria": [
+          {
+            "criterion_id": "rubric_35874c93959543a982dc85192d8084d6_1",
+            "question": "回复是否明确提供了打开门的通用具体操作步骤或方法？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_35874c93959543a982dc85192d8084d6_2",
+            "question": "回复是否保持简短，无不必要的背景介绍、冗长描述或额外信息？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务要求提供关于如何开门的简短回复。交付物为一段文本，核心需包含打开门的具体方法（如转动把手、推/拉等），且必须严格遵守‘简短’的约束，避免冗长解释或背景介绍。由于未指定门的类型，通用方法即可。权重分配上，内容的相关性和准确性是首要标准，简洁性作为关键格式约束同样重要，两者共同构成评分基础。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_35874c93959543a982dc85192d8084d6",
+        "normalized_weights": {
+          "rubric_35874c93959543a982dc85192d8084d6_1": 0.6,
+          "rubric_35874c93959543a982dc85192d8084d6_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_35874c93959543a982dc85192d8084d6_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复明确提供了打开门的通用具体操作步骤，包括按压把手、推拉门以及转动旋钮等针对不同门型的具体动作。",
+            "rejected_reason": "回复明确提供了打开门的通用具体操作步骤，包括接近门、识别把手、抓握、转动/下压、推拉以及通过门口等六个清晰的步骤。"
+          },
+          {
+            "criterion_id": "rubric_35874c93959543a982dc85192d8084d6_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复直接切入主题，仅包含必要的操作指令，没有背景介绍、冗长描述或额外信息，符合简短回复的要求。",
+            "rejected_reason": "任务要求简短回复（reply shortly），但该回答包含详细的分步说明、括号内的补充解释以及关于关门的额外提醒，篇幅过长且包含不必要的背景描述，不符合简短的要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.6,
+        "margin": 0.4,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_dc09406d65df496db2143ea598fc879f",
+        "criteria": [
+          {
+            "criterion_id": "rubric_dc09406d65df496db2143ea598fc879f_1",
+            "question": "回复是否明确提供了打开门的具体操作步骤或通用方法？",
+            "weight": 0.6
+          },
+          {
+            "criterion_id": "rubric_dc09406d65df496db2143ea598fc879f_2",
+            "question": "回复是否保持简短，未包含不必要的背景介绍、原理说明或冗长的描述？",
+            "weight": 0.4
+          }
+        ],
+        "analysis": "任务要求提供‘如何开门’的简短回复。交付物为一段文本，核心是提供操作步骤或方法，同时必须严格遵守‘简短’的格式约束。在修订阶段，需确保评分标准既验证内容的相关性（是否回答了如何开门），又严格验证形式的简洁性（无冗余背景、解释或冗长描述）。提供的经验提示了形式约束的边界，但在本题中‘简短’通常意味着直接给出核心步骤，避免解释性元数据，因此标准应侧重于直接性和精炼度，而非允许过多的解释性上下文。权重分配上，内容正确性（开门方法）应占主导，简洁性作为关键约束条件。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_dc09406d65df496db2143ea598fc879f",
+        "normalized_weights": {
+          "rubric_dc09406d65df496db2143ea598fc879f_1": 0.6,
+          "rubric_dc09406d65df496db2143ea598fc879f_2": 0.4
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_dc09406d65df496db2143ea598fc879f_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复明确提供了打开门的具体操作步骤，包括按压把手、旋转旋钮以及根据门的类型进行推拉的动作。",
+            "rejected_reason": "回复明确提供了从接近门、识别把手、抓握、转动到推拉开门的具体操作步骤，完全满足提供具体操作方法的要求。"
+          },
+          {
+            "criterion_id": "rubric_dc09406d65df496db2143ea598fc879f_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复直接切入主题，仅包含必要的操作指令，未包含任何背景介绍、原理说明或冗长的描述，符合简短的要求。",
+            "rejected_reason": "任务明确要求"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.6,
+        "margin": 0.4,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

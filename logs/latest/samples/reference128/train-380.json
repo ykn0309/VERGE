@@ -1,0 +1,487 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:199d17a1bc68fba30637c41dda07bcd1eef54c8cdf038bbbac6cea50d2412efb",
+    "task": "GIVE ME 12 WORDS RELATED TO THIS: TRY TO DECODE THIS:\nTHESE WORDS ARE IN GREEN: DRUM ANY SINCE SLAM TIME ASPECT\nTHESE WORDS ARE IN RED: WALL NOISE SOLID BEAUTY BROKEN HUNDRED",
+    "chosen": "Here are 12 words related to the given phrases, with the green words in green and the red words in red:\n\n1. **Rhythm** (related to DRUM)\n2. **Guilty** (related to SINCE)\n3. **Impact** (related to SLAM)\n4. **Chronology** (related to TIME)\n5. **Aspect** (already given, but related to ASPECT)\n6. **Barrier** (related to WALL)\n7. **Sound** (related to NOISE)\n8. **Sturdy** (related to SOLID)\n9. **Elegance** (related to BEAUTY)\n10. **Shattered** (related to BROKEN)\n11. **Century** (related to HUNDRED)\n12. **Decipher** (related to DECODE)",
+    "rejected": "Here are 12 words related to your code, focusing on potential themes and connections:\n\n1. **Color**\n2. **Contrast**\n3. **Sound**\n4. **Rhythm**\n5. **Structure**\n6. **Fragility**\n7. **Perception**\n8. **Abstract**\n9. **Visual**\n10. **Auditory**\n11. **Meaning**\n12. **Interpretation** \n\n\nLet me know if you'd like to explore any of these directions further!",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15874,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 contains a list whose relation to the words in the prompt is clearly outlined and easy to follow.",
+          "feedback1": "The response is partially helpful. The prompt asks for twelve words that are related to a statement which is mostly just two other sets of words. The response does give a list of twelve words although how they are related to the ones in the prompt is unclear. The response says it is focusing on themes and connections however the list of words just does not seem to be clearly related in any way to the prompt.",
+          "feedback2": "The response is mostly helpful. The response does a great job of providing a list of words that are related to those in the prompt. The response also explains which words in the list are related to which words in the prompt which is helpful in making it more clear as to HOW they are related. The response says the green words are in green and the red words are in red however there is no color change in the response. One word in the list is just the same as a word in the prompt however technically that is not not allowed."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 @Response 2 satisfies the prompt's requirements and organizes the list of words in a way that makes logical sense. It makes two small mistakes. @Response 1 has no logical order and lacks accuracy with the related words.",
+          "feedback1": "The response is slightly helpful. It does satisfy the prompt's request by giving 12 words related to the code. However, the listed words are given in the incorrect order, forcing the user to try and match them with the corresponding word. There are some words that seem to lack a match at all such as \"hundred\" and \"slam\". It lacks a logical way of presenting the words, and is inaccurate in some cases.",
+          "feedback2": "The response is mostly helpful. The related words that it chooses to correspond with the original words are accurate and are an effective thematic analysis. The words are presented in mostly the right order. The response mistakenly creates a related word for \"decode\" when this word is only in the directions and not in the included word list. It then leaves out the word \"any\" from the included word list. With the word \"aspect\", it merely says \"aspect\", not giving another related word."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because @Response 1 offers too many words that aren't valid recommendations based on the prompt. @Response 2 only contains two invalid words, making it more helpful.",
+          "feedback1": "The response is partially helpful. It understands and fulfills some parts of the prompt correctly but contains some mistakes. It refers to the text in the prompt as a \"code\" which is odd. It also seems to have interpreted the sections which explain the formatting of the text as part of the text to interpret, but those parts should not be considered. Some of the words offered, such as \"meaning\", \"abstract\" and \"interpretation\" seem to refer to the prompt itself rather than the text which the response was supposed to respond to. It is also odd to bold the entire list of words.",
+          "feedback2": "The response is mostly helpful. It provides a decent list of related words, with 10 of the 12 being good suggestions. This should be enough to mostly help the user. However, it shouldn't have provided a word related to \"decode\", since that was a word explaining the request and not part of the text to decipher. It also doesn't make sense to say that \"aspect\" is a word related to \"aspect\". The introduction sentnce is also confusing, referring to phrases when there weren't any phrases in the prompt and saying that the colors from the prompt were applied even though colors don't seem to have had any bearing on the response."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_09a6193f4087aee86380",
+        0.47235202145724087
+      ],
+      [
+        "task_b49f35a1a518fe8cc5c2",
+        0.34750497327844027
+      ],
+      [
+        "task_e02f2628e5df6dac65a2",
+        0.32059628463490175
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_e02f2628e5df6dac65a2",
+              "similarity": 0.32059628463490175,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:941a3897820cf502a5269c83a521461a5685df766cd9408dac4f65c62543a480:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:71df69059c6bf642b28b0676b69580fa9b538f93917ff9bbf85e85dfcae6b3f2:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:51c212897f6df37b214d2453806bedfd2363b6a4107ef4a19936796116fac445:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:bbe0fab31cc3e168243a81ccff48936c1fbf504c7294eb1e2c5f7cf889cc075f:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:dc34c2634bb690282a3e842f9f9b650d59831bbee17a64731ab66842bab28076:exp_543c20bb090d4a35a4c1851ad1972427",
+                  "helpsteer3:train:3cb5935c041f304986b2008eaedee2c34a740532f5a3e3675cdb721b17cef17a:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "8198c687c54d6dd35fcf1f318e0637001b64eeab9adf45c0a562cf430bc1e47e",
+                  "463d2741c09aae6ed43052a80b6a961b48e23f5373607338509ed7f7ca715643",
+                  "c0cb59f1d5f202d986f92c1d82694fd4edbbd3a30c7729e99fc0f1c20a46fe57",
+                  "26dcb01c02d3610405a3ce5aeb3fbb334b43d7d50ae4091758fe01ac5f770f67",
+                  "954ef432dbd788bcb3466db50f15ba255c32d8d98ca96bbc8ea043e8ae721012",
+                  "ef24b7552d53a18bb51f49f750f657b06ea236e63b69b139476213bba27c5576"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_e02f2628e5df6dac65a2",
+              "similarity": 0.32059628463490175,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:bbe0fab31cc3e168243a81ccff48936c1fbf504c7294eb1e2c5f7cf889cc075f:exp_748cc59b04eb4a44ad81d41d7ebe9810",
+                  "helpsteer3:train:dc34c2634bb690282a3e842f9f9b650d59831bbee17a64731ab66842bab28076:exp_748cc59b04eb4a44ad81d41d7ebe9810",
+                  "helpsteer3:train:3cb5935c041f304986b2008eaedee2c34a740532f5a3e3675cdb721b17cef17a:exp_748cc59b04eb4a44ad81d41d7ebe9810"
+                ],
+                "task_ids": [
+                  "26dcb01c02d3610405a3ce5aeb3fbb334b43d7d50ae4091758fe01ac5f770f67",
+                  "954ef432dbd788bcb3466db50f15ba255c32d8d98ca96bbc8ea043e8ae721012",
+                  "ef24b7552d53a18bb51f49f750f657b06ea236e63b69b139476213bba27c5576"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_b49f35a1a518fe8cc5c2",
+              "similarity": 0.34750497327844027,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:e84f94549a2bf0fb1bf496a1f9c3c7a63d041be8498d979d153e4783b6594c55:exp_f3d8df9469c548fda7606217b85b067d"
+                ],
+                "task_ids": [
+                  "8b7991354e344312c53104cece35375d45097f9bdc6084ef51cbcff6bf083869"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.35818741158356326
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.35742130691025753
+      ],
+      [
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        0.33336698867661396
+      ],
+      [
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        0.32550847764907676
+      ],
+      [
+        "exp_afe73f7475954af68926ebb645bd4660",
+        0.32415162968049105
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.31379474960816345
+      ],
+      [
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        0.3046435811987941
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.29997394449063564
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.2994764109259024
+      ],
+      [
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        0.2987259451856362
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.35742130691025753
+      },
+      {
+        "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.35818741158356326
+      },
+      {
+        "experience_id": "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33336698867661396
+      },
+      {
+        "experience_id": "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32550847764907676
+      },
+      {
+        "experience_id": "exp_afe73f7475954af68926ebb645bd4660",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.32415162968049105
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.31379474960816345
+      },
+      {
+        "experience_id": "exp_0f69075c94084291b5f43f171d4499c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3046435811987941
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29997394449063564
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_543c20bb090d4a35a4c1851ad1972427": "任务明确要求生成'12 WORDS'（简短文本），且输入中包含列表形式的单词和颜色标记等元数据信息；经验1指出在涉及引用、列表或特定标点时，评分标准需明确界定有效内容与元数据的边界，防止将格式符号误判为违规，这直接适用于本题对输出格式和内容边界的判定需求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_1e7e8df2632040fbae9602c780f3fe1f",
+    "criteria": [
+      {
+        "criterion_id": "rubric_1e7e8df2632040fbae9602c780f3fe1f_1",
+        "question": "输出的单词总数是否严格等于12？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_1e7e8df2632040fbae9602c780f3fe1f_2",
+        "question": "所有单词是否均源自提供的绿色组（DRUM, ANY, SINCE, SLAM, TIME, ASPECT）或红色组（WALL, NOISE, SOLID, BEAUTY, BROKEN, HUNDRED）或其直接变体？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_1e7e8df2632040fbae9602c780f3fe1f_3",
+        "question": "输出的格式是否为清晰的单词列表或逗号分隔序列，而非完整句子？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_1e7e8df2632040fbae9602c780f3fe1f_4",
+        "question": "是否避免了重复计数（即同一单词在列表中出现的次数不超过其在源文本中的出现次数，除非明确允许重复）？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求从提供的两组颜色关键词（绿色和红色）中生成12个相关词汇。由于用户未指定具体选择哪些词或如何组合，允许在两组词中自由选取或重新表述以达成数量要求，但必须确保最终输出严格为12个单词，且内容需与给定的颜色分组及解码语境保持逻辑关联。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c",
+        "criteria": [
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_1",
+            "question": "输出的单词总数是否严格等于12？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_2",
+            "question": "所有输出的单词是否均能匹配到提供的绿色组（DRUM, ANY, SINCE, SLAM, TIME, ASPECT）或红色组（WALL, NOISE, SOLID, BEAUTY, BROKEN, HUNDRED）中的词汇（忽略大小写差异）？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_3",
+            "question": "输出是否以清晰的单词列表形式呈现，而非包含解释性语句的完整段落？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_4",
+            "question": "对于源文本中仅出现一次的单词，输出列表中该单词的出现次数是否未超过1次（即未违规重复使用源文本中唯一的实例）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求从指定的绿色组（6词）和红色组（6词）共12个单词中选出或生成12个相关词汇。由于源文本恰好包含12个单词且未明确允许重复，核心约束是输出必须严格为12个单词，且这些单词必须源自给定的两组集合（允许大小写规范化）。评分标准需验证数量、来源合法性、格式规范性及去重逻辑（即不超出源文本提供的单词实例上限，除非用户隐含允许重复，但基于'解码'语境通常指代原词重组）。权重分配上，数量和来源准确性最为关键，各占40%和30%，格式与去重逻辑各占15%和15%。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c",
+        "normalized_weights": {
+          "rubric_1af6b4f062d14a73ba6c2677b7fd541c_1": 0.4,
+          "rubric_1af6b4f062d14a73ba6c2677b7fd541c_2": 0.3,
+          "rubric_1af6b4f062d14a73ba6c2677b7fd541c_3": 0.2,
+          "rubric_1af6b4f062d14a73ba6c2677b7fd541c_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确列出了从1到12的编号列表，单词总数严格为12个。",
+            "rejected_reason": "回答中明确列出了编号为1至12的单词，总数严格等于12个。"
+          },
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出中包含Rhythm、Guilty、Impact、Chronology、Barrier、Sound、Sturdy、Elegance、Shattered、Century、Decipher等词汇，这些词均未出现在提供的绿色组（DRUM, ANY, SINCE, SLAM, TIME, ASPECT）或红色组（WALL, NOISE, SOLID, BEAUTY, BROKEN, HUNDRED）中，违反了必须匹配源词汇的要求。",
+            "rejected_reason": "输出的单词（如Color, Contrast, Sound等）均未出现在提供的绿色组（DRUM, ANY, SINCE, SLAM, TIME, ASPECT）或红色组（WALL, NOISE, SOLID, BEAUTY, BROKEN, HUNDRED）中，完全不符合匹配要求。"
+          },
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出不仅包含单词列表，还包含了大量解释性语句（如'Here are 12 words related to...'）以及每个单词与源词的关联说明（如'related to DRUM'），不符合‘非包含解释性语句的完整段落’这一清晰列表形式的要求。",
+            "rejected_reason": "回答包含了开场白（'Here are 12 words related to your code...'）、加粗格式以及结尾的互动语句（'Let me know if you'd like...'），并非仅以清晰的单词列表形式呈现，而是包含了大量解释性语句和完整段落结构。"
+          },
+          {
+            "criterion_id": "rubric_1af6b4f062d14a73ba6c2677b7fd541c_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然源文本中除ASPECT外其他词均只出现一次，但Criterion 4的前提是“输出的单词是否匹配源词汇”，由于Criterion 2已判定大部分输出单词不匹配源词汇，且列表中重复使用了源文本中唯一的实例",
+            "rejected_reason": "虽然输出中没有重复使用源文本中的词汇，但由于输出的单词本身并未从源文本的绿色或红色组中提取，因此无法在“未违规重复使用源文本中唯一实例”这一逻辑框架下被视为满足条件（即未能基于源文本生成有效列表）。更直接的判断是，该列表完全不包含源文本中的任何单词，导致无法满足基于源文本内容的约束。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.4,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_543c20bb090d4a35a4c1851ad1972427"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a",
+        "criteria": [
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_1",
+            "question": "输出的有效单词总数是否严格等于12？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_2",
+            "question": "所有输出的单词是否均直接源自提供的绿色组（DRUM, ANY, SINCE, SLAM, TIME, ASPECT）或红色组（WALL, NOISE, SOLID, BEAUTY, BROKEN, HUNDRED）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_3",
+            "question": "输出格式是否为清晰的单词列表或逗号分隔序列，而非包含无关解释的完整句子？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_4",
+            "question": "是否避免了重复计数（即同一单词在列表中出现的次数不超过其在源文本中的出现次数）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求从提供的两组颜色关键词（绿色和红色）中生成12个相关词汇。由于用户未指定具体选择哪些词或如何组合，允许在两组词中自由选取或重新表述以达成数量要求，但必须确保最终输出严格为12个单词，且内容需与给定的颜色分组及解码语境保持逻辑关联。修订版标准将重点放在数量精确性、来源合规性以及格式清晰度上，移除了原草案中关于‘变体’的模糊描述，改为更严格的‘源自给定列表’，以确保核验的客观性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a",
+        "normalized_weights": {
+          "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_1": 0.4,
+          "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_2": 0.35,
+          "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_3": 0.15,
+          "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "响应中列出了12个单词，但任务要求是提取源文本中的单词，而响应包含了大量不在源文本中的单词（如Rhythm, Guilty等），导致实际有效且符合要求的单词数量不足12个。",
+            "rejected_reason": "虽然回答列出了12个条目，但任务要求是提供与解码相关的单词，而该回答生成的单词（如Color, Contrast等）并非直接来自给定的绿色或红色词组，且这些词汇本身不符合'decode these words'的语境逻辑，实际上并未完成提取源词汇的任务，导致有效输出单词数在语义上为0，不满足严格等于12个相关源词的要求。"
+          },
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出的大部分单词（如Rhythm, Guilty, Impact, Chronology, Barrier, Sound, Sturdy, Elegance, Shattered, Century, Decipher）均未直接出现在提供的绿色组或红色组中，仅'Aspect'一词符合要求。",
+            "rejected_reason": "输出的所有单词（Color, Contrast, Sound, Rhythm, Structure, Fragility, Perception, Abstract, Visual, Auditory, Meaning, Interpretation）均未直接源自提供的绿色组（DRUM, ANY, SINCE, SLAM, TIME, ASPECT）或红色组（WALL, NOISE, SOLID, BEAUTY, BROKEN, HUNDRED），完全违反了来源限制。"
+          },
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出格式包含了编号列表、加粗标记以及每个单词后的解释性说明（如'related to...'），不符合‘清晰的单词列表或逗号分隔序列，而非包含无关解释的完整句子’的要求。",
+            "rejected_reason": "输出包含了大量无关的解释性句子，如'Here are 12 words related to your code...'和'Let me know if you'd like to explore any of these directions further!'，不符合'非包含无关解释的完整句子'的格式要求。"
+          },
+          {
+            "criterion_id": "rubric_cbcba5d9e98d4bf8bcc2dcce56caea4a_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "在列出的12个单词中，没有发现同一单词重复出现的情况，因此未违反不重复计数的规则。",
+            "rejected_reason": "由于输出的单词全部不在源文本中，因此无法通过'避免重复计数'来验证其有效性；更重要的是，因为单词来源错误，该列表在逻辑上不存在'同一单词出现次数不超过源文本出现次数'的约束基础，且整体未执行正确的提取操作。"
+          }
+        ],
+        "chosen_score": 0.1,
+        "rejected_score": 0.0,
+        "margin": 0.1,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

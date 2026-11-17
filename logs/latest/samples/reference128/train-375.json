@@ -1,0 +1,611 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:c263f721f685f8f5cc8cf2de9e31c90c4bbb39c61d96df93e7b59c1107b8284c",
+    "task": "reply for this message “I’m so thrilled that you reached your significant milestone, Wishing you even more success in the future.",
+    "chosen": " Thank you so much for your kind words! I'm really glad to have reached this milestone, and your support means a lot to me. I'm looking forward to the future and hoping to achieve even more. Here's to continued success! 🎉",
+    "rejected": "I'm really glad to hear about your achievement! It's always a pleasure to see someone reach a significant milestone. Your hard work and dedication have clearly paid off. Here's to many more successes in your future endeavors. Keep up the great work!",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 14121,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 correctly interprets and fulfills the instructions of the prompt and presents an appropriate reply to the congratulatory message. @Response 2 misinterprets the prompt and paraphrases the message instead of creating a reply.",
+          "feedback1": "The response is mostly helpful. It answers the prompt and provides a gracious reply to the congratulatory message that acknowledges its kind words, expresses gratitude for its support, and conveys optimism for future achievement. The response is concise and avoids irrelevant content. The one minor issue is the use of exclamation marks in the first sentence, which exaggerates the importance of a basic acknowledgment. There is another exclamation mark used in the last sentence, but it is used appropriately to express \"continued success.\"",
+          "feedback2": "The response is not helpful. The response ignores the prompt's core instructions to create \"a reply for this message\" and instead offers a revision that paraphrases the original. The response also begins with an exaggerated emotional expression (an exclamation mark) at the end of a standard acknowledgment, which feels awkward. "
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. While both maintain professional tones, @Response 1 correctly interprets and responds to the congratulatory message, while @Response 2 mistakenly offers congratulations instead of accepting them. @Response 1's accurate context makes it significantly more appropriate and helpful.",
+          "feedback1": "The response is perfectly helpful. The message strikes an ideal balance between professionalism and warmth, demonstrating genuine appreciation for the congratulatory message while maintaining appropriate brevity. It effectively acknowledges the milestone achievement, expresses sincere gratitude for the support, and shows optimism about future goals. The tone remains engaging yet professional, and the inclusion of an emoji adds a touch of celebration without being overly casual. The response successfully creates a complete interaction that maintains relationship-building while being concise.",
+          "feedback2": "The response is slightly helpful. While it maintains a professional and encouraging tone, it fundamentally misunderstands the context of the original message. Instead of accepting congratulations, it offers them, creating an awkward miscommunication. Despite good writing quality and positive sentiment, this contextual error significantly reduces its effectiveness as a response. The message is also somewhat verbose compared to what the situation calls for."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 1 requires one minor fix, while @Response 2 is a complete miss.",
+          "feedback1": "The response is partially helpful. The model does a really great job at understanding the prompt and subsequently providing a response that is well-fitted. The response is very well written and structured. It is crisp and succinct; ideal for a reply. However, the response contains an emoticon at the end of it, which is not requested in the prompt.",
+          "feedback2": "The response is not helpful. The model fails altogether to understand the prompt and its main ask. The response that the model frames is exactly opposite of what the user asked for. The response, in a way, reframes the sentence given in the prompt. Instead, it should have provided a reply to the prompt."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_1846a02ee5b3c1150180",
+        0.3516311287684428
+      ],
+      [
+        "task_303ebe3e2dfb52ad13d5",
+        0.3482921928249559
+      ],
+      [
+        "task_d84b35edfb4ee677823d",
+        0.33813437708217586
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_303ebe3e2dfb52ad13d5",
+              "similarity": 0.3482921928249559,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:158892330c74d00c5ed22f66a4463c74cadba6a366c2bfcc52e09c2fa3884287:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:66a69c8fd1373ec8921af69292b7a6b3bd8d2eb093b3cac826c62be13ec99724:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "60faa8caadb3230c5f0987bd2cb0064810592fcca63714b6f2b19b3356775488",
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42",
+                  "3ffed720bc43b4570b2d5d7a5256df9ffbf22d60b81327e376f7782dbb1fff42"
+                ]
+              }
+            },
+            {
+              "group_id": "task_d84b35edfb4ee677823d",
+              "similarity": 0.33813437708217586,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:266777e90af2c196741532ee74e6bf5ca58a5f73e9b4058fd26985f15b0cafc8:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "2698dc598ac247db9c127df5c335d7fccab944bf17d7588fc21aa110cd6be1f5"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+          "score": -0.16913301829797428,
+          "evidence": [
+            {
+              "group_id": "task_303ebe3e2dfb52ad13d5",
+              "similarity": 0.3482921928249559,
+              "statistics": {
+                "values": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:158892330c74d00c5ed22f66a4463c74cadba6a366c2bfcc52e09c2fa3884287:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:66a69c8fd1373ec8921af69292b7a6b3bd8d2eb093b3cac826c62be13ec99724:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "60faa8caadb3230c5f0987bd2cb0064810592fcca63714b6f2b19b3356775488",
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42",
+                  "3ffed720bc43b4570b2d5d7a5256df9ffbf22d60b81327e376f7782dbb1fff42"
+                ]
+              }
+            },
+            {
+              "group_id": "task_d84b35edfb4ee677823d",
+              "similarity": 0.33813437708217586,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:8391bb894c0bb58119792e5e2a21292388629f5f6d69cd689dacd5513a6cfa31:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:15e975cc2bb892e6115d5d760e7c5f308b29bcf2e4f46d54315a679c4f836fa8:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:8e33199710d5e28e9f5fc4679135a290f3351fce389496bcf88557812626a6d9:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:97fbb3b75ad7a2eb10bba31b452f07377aa38dd6298ce1850b6e9baaadf5a15c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:bf0d59e5fca4dcfe3a41706bf7659892262f5d88230ce5593da744914d9f36fa:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:0f736cfbd21a5b7b6cf90d8c897bdb64fb89f7e28f7875bd91e8524fc35e3610:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:721a24a72a75d9cb8bfa159c14e97982463808eddbe71c3baa7a3206d8161e4e:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:875d699a70e604fb001ba5564c5cba3dcd8075c4404c30361921525dfcafdd16:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:266777e90af2c196741532ee74e6bf5ca58a5f73e9b4058fd26985f15b0cafc8:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:0a59705f9b0def4f70db66446a3d3a3ae0b16f2ee5bfe2f1da0295f54c55047c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "2f51d7a1ac5326bed4faa559c29d1423921d55e73918970f37b4e47daf86fbbe",
+                  "2ff666f33e676f9cd6c957834f6898261f47eee03baa695d08125c7fa1fd967f",
+                  "990938cacae27bcda9a7ab49d4b8d6b12b5eefafdf252a45ba2cd9d77187245d",
+                  "6dada60f53e0279b49adc71849a02333a93e3b2dc060723da10c2bc436718b94",
+                  "2fb8530bd8a0181cf346af3aae6199a164d1a8adeb1b95d9003a35546619a902",
+                  "458e38b7d7f332de1ef3e3a7fb5a3ce362e5b0d75f5c8952940313d642d3e281",
+                  "5c016b5d107c7f94193be99e714476d37a8f53ef1ec9e4db82862ad4d01f7929",
+                  "901dfe1ac8d58e5d2d3a114ab7cc893b028a60d3ea596659d0ab184c110b92bd",
+                  "2698dc598ac247db9c127df5c335d7fccab944bf17d7588fc21aa110cd6be1f5",
+                  "769a438cf4ca4ae5e3e0c78480a74b4c4b167a2c43443492252dd975f747050f"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_303ebe3e2dfb52ad13d5",
+              "similarity": 0.3482921928249559,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.266579764858551
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.263199356448627
+      ],
+      [
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        0.2533662325801488
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.2501454594564286
+      ],
+      [
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        0.24589897424600426
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.24563848720869347
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.2377912812200293
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.23336746877455847
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.2264665156381172
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.22601239132240117
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.2377912812200293
+      },
+      {
+        "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "source": "historical",
+        "historical_score": -0.16913301829797428,
+        "semantic_similarity": 0.2533662325801488
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.266579764858551
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.263199356448627
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2501454594564286
+      },
+      {
+        "experience_id": "exp_f119c00feba548d7a466b43903d7e2e1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24589897424600426
+      },
+      {
+        "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24563848720869347
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23336746877455847
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2264665156381172
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9": "当前任务明确要求生成针对特定文本（祝贺信息）的回复，经验 2 强调需区分‘内容提及’与‘交互响应’，防止模型仅复述或改写原文关键词而非构成直接回应，这符合该任务对对话指向性的核心要求。",
+    "exp_6680c6d0e7b742c59507e0439024a78b": "当前输入为无明确执行指令的陈述句/感叹句（用户表达情感），经验 6 指出评分标准应基于最合理语境（此处为祝贺意图）进行恰当回应，严禁将‘指出缺乏指令’设为得分项，同时禁止虚构事实，完全契合此类模糊情感输入的评分逻辑。"
+  },
+  "draft": {
+    "rubric_id": "rubric_51b5b721f5f348fb9b347ba5ae76afa5",
+    "criteria": [
+      {
+        "criterion_id": "rubric_51b5b721f5f348fb9b347ba5ae76afa5_1",
+        "question": "回复是否明确表达了对收到祝贺的感谢？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_51b5b721f5f348fb9b347ba5ae76afa5_2",
+        "question": "回复是否提及了对未来成功的积极回应或祝愿？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_51b5b721f5f348fb9b347ba5ae76afa5_3",
+        "question": "回复的语气是否与原文的热情和专业程度相匹配？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_51b5b721f5f348fb9b347ba5ae76afa5_4",
+        "question": "回复是否使用自然、流畅且语法正确的英文？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求针对一条祝贺用户达成重要里程碑的英文消息撰写回复。当前处于draft阶段，需生成初稿。交付物为一段英文回复文本，对象为原发信人，内容需包含对祝贺的感谢、对未来的积极回应或谦逊态度，语气应热情、专业且得体。范围限制在回复本身，不涉及额外行动或背景信息；格式无特殊限制，但需保持自然流畅的英文表达。允许的不同实现方式包括正式或非正式语气，具体取决于上下文假设，但必须保持礼貌和感激的核心基调。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5",
+        "criteria": [
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_1",
+            "question": "回复是否明确表达了对收到祝贺的感谢？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_2",
+            "question": "回复是否提及了对未来成功的积极回应或祝愿？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_3",
+            "question": "回复的语气是否与原文的热情和专业程度相匹配？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_4",
+            "question": "回复是否使用自然、流畅且语法正确的英文？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于'revise'阶段，需基于提供的初稿（draft）对回复内容进行核验与修订。原消息表达了对用户达成重要里程碑的祝贺，并祝愿未来成功。因此，修订后的回复必须包含三个核心要素：1. 明确感谢对方的祝贺；2. 回应关于未来的祝愿（表达继续努力的意愿或回祝）；3. 保持与原文相匹配的热情、专业且得体的语气。同时，作为英文回复，语法正确和表达自然流畅是基础要求。评分标准将围绕这四个维度分配权重，其中感谢和未来回应是内容核心，语气匹配体现情感共鸣，语言质量是形式保障。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5",
+        "normalized_weights": {
+          "rubric_9e2cb01141a94b2fba7f846f662d2eb5_1": 0.4,
+          "rubric_9e2cb01141a94b2fba7f846f662d2eb5_2": 0.3,
+          "rubric_9e2cb01141a94b2fba7f846f662d2eb5_3": 0.2,
+          "rubric_9e2cb01141a94b2fba7f846f662d2eb5_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复开篇明确使用了'Thank you so much for your kind words'，直接表达了对收到祝贺的感谢。",
+            "rejected_reason": "回复内容将祝贺的对象错误地指向了对方（'I'm really glad to hear about your achievement!'），而任务要求是对发件人的祝贺表示感谢，逻辑对象完全颠倒。"
+          },
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中提及'I'm looking forward to the future and hoping to achieve even more'以及'Here's to continued success'，积极回应并祝愿了未来的成功。",
+            "rejected_reason": "回复中包含了'Here's to many more successes in your future endeavors'，明确表达了对未来成功的祝愿和积极回应。"
+          },
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复使用了'glad', 'means a lot', 表情符号🎉等元素，语气热情且专业，与原文的祝福语境相匹配。",
+            "rejected_reason": "虽然语气热情，但由于回复内容错误地将对方的成就当作自己的成就来祝贺（或混淆了主客体），导致整体语境与原文‘收到祝贺’的场景不匹配，无法体现对原文祝贺的恰当回应。"
+          },
+          {
+            "criterion_id": "rubric_9e2cb01141a94b2fba7f846f662d2eb5_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复的英文表达自然流畅，语法结构正确，用词得体。",
+            "rejected_reason": "回复使用的英文自然流畅，语法结构正确，词汇使用得当。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.4,
+        "margin": 0.6,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee",
+        "criteria": [
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_1",
+            "question": "回复是否明确表达了对收到祝贺的感谢？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_2",
+            "question": "回复是否包含对未来成功的积极回应或美好祝愿，且非单纯复述原文词汇？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_3",
+            "question": "回复是否构成了对原祝贺消息的直接对话响应，而非仅是对原文内容的改写或摘要？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_4",
+            "question": "回复的语气是否与原文的热情和专业程度相匹配？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务处于revise阶段，需基于提供的draft修订评分标准。原draft的criteria结构完整，但根据经验指导原则（experience_id: 1），需强化对‘交互响应性’的核验，防止回复仅是原文关键词的简单复述或改写，而缺乏真正的对话指向性。因此，在保留原有感谢、未来祝愿、语气和语法维度的基础上，将原第3条关于语气的描述细化为包含‘直接回应’的明确提问，确保回复是针对特定祝贺消息的有效互动。权重分配上，确认核心内容（感谢与未来）占主导，交互有效性作为关键质量指标赋予较高权重，语言基础占比较低。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee",
+        "normalized_weights": {
+          "rubric_0fd43bb545cc433a94df3cfdc595b7ee_1": 0.35,
+          "rubric_0fd43bb545cc433a94df3cfdc595b7ee_2": 0.3,
+          "rubric_0fd43bb545cc433a94df3cfdc595b7ee_3": 0.25,
+          "rubric_0fd43bb545cc433a94df3cfdc595b7ee_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复开头明确使用了'Thank you so much for your kind words!'以及'your support means a lot to me'，直接且清晰地表达了对收到祝贺的感谢。",
+            "rejected_reason": "回复内容以祝贺对方成就为主（'I'm really glad to hear about your achievement'），完全未表达对收到祝贺的感谢，与任务要求的回复对象和情境不符。"
+          },
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中'I'm looking forward to the future and hoping to achieve even more'以及对'continued success'的展望，构成了对未来成功的积极回应，且使用了不同于原文的词汇（如looking forward, hope）来表达祝愿。",
+            "rejected_reason": "回复中包含了对未来的积极回应（'Here's to many more successes in your future endeavors'）和美好祝愿，且使用了不同于原文的新词汇进行表达。"
+          },
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复针对原消息中的'milestone'和'Wishing you even more success'进行了具体的对话式回应，表达了个人感受和未来计划，而非简单复述或摘要原文内容。",
+            "rejected_reason": "回复并非针对原消息中‘我’达到里程碑这一事实的直接对话响应，而是错误地假设是对方取得了成就，导致回复内容与原消息的逻辑方向完全相反，无法构成有效的直接对话。"
+          },
+          {
+            "criterion_id": "rubric_0fd43bb545cc433a94df3cfdc595b7ee_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复使用了'Thank you so much', 'really glad', 'means a lot'等热情词汇，并配以庆祝表情符号🎉，语气与原文的'thrilled'和祝福的专业热情程度高度匹配。",
+            "rejected_reason": "虽然语气本身热情，但由于回复内容张冠李戴（将对方的祝贺误认为是自己的成就并反过来祝贺对方），在语境上造成了严重的逻辑错位，未能正确匹配原文作为接收者应有的专业回应程度。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.3,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_6680c6d0e7b742c59507e0439024a78b"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_4bb448ec36d64c4f819beb76872a60d6",
+        "criteria": [
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_1",
+            "question": "回复是否明确表达了对收到祝贺的感谢？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_2",
+            "question": "回复是否包含对未来成功、成就或愿景的积极回应或祝愿？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_3",
+            "question": "回复的语气是否与原文的热情程度及专业基调相匹配？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_4",
+            "question": "回复是否使用自然、流畅且语法正确的英文？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求针对一条祝贺用户达成重要里程碑的英文消息撰写回复，当前处于revise阶段，需基于提供的初稿（draft）进行核验与修订。交付物为一段英文回复文本，对象为原发信人。内容核心必须包含对收到祝贺的感谢以及对未来成功的积极回应或祝愿。语气需匹配原文的热情与专业度，语言需自然流畅且语法正确。允许的不同实现方式包括根据具体语境调整正式或非正式的措辞，但必须保持礼貌和感激的基调。评分标准设计旨在验证修订后的回复是否完整覆盖了上述所有核心要素，权重分配上，情感表达（感谢与回应）最为关键，其次是语气的匹配度，最后是语言的准确性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_4bb448ec36d64c4f819beb76872a60d6",
+        "normalized_weights": {
+          "rubric_4bb448ec36d64c4f819beb76872a60d6_1": 0.35,
+          "rubric_4bb448ec36d64c4f819beb76872a60d6_2": 0.35,
+          "rubric_4bb448ec36d64c4f819beb76872a60d6_3": 0.2,
+          "rubric_4bb448ec36d64c4f819beb76872a60d6_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复开头明确使用了'Thank you so much for your kind words!'，直接表达了对收到祝贺的感谢。",
+            "rejected_reason": "回复内容将祝贺的对象错误地指向了对方（'I'm really glad to hear about your achievement'），而非感谢对方对自己的祝贺，因此未明确表达对收到祝贺的感谢。"
+          },
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复中包含'I'm looking forward to the future and hoping to achieve even more'以及'Here's to continued success!'，积极回应了原文关于未来成功的祝愿并表达了同样的愿景。",
+            "rejected_reason": "回复虽然包含了对未来的祝愿，但这是针对对方的祝愿（'Here's to many more successes in your future endeavors'），而非对原文中对自己未来成功的积极回应或确认，逻辑对象错位。"
+          },
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复使用了感叹号、表情符号（🎉）以及热情洋溢的措辞（如'really glad', 'means a lot'），与原文的热情程度相匹配，同时保持了得体的专业基调。",
+            "rejected_reason": "由于回复误将对方当作受祝贺者进行回应，导致语境完全偏离了原文作为“被祝贺者”应有的谦逊与感激基调，语气虽热情但与当前任务情境不匹配。"
+          },
+          {
+            "criterion_id": "rubric_4bb448ec36d64c4f819beb76872a60d6_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "整段回复语法正确，用词自然流畅，符合英语母语者的表达习惯。",
+            "rejected_reason": "回复使用的英文单词拼写正确，句子结构完整，语法规范，表达自然流畅。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.1,
+        "margin": 0.9,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

@@ -1,0 +1,823 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:0c62d778708d3d47183529a8ba800fc5a0a407ccd620a6b20aa79352891dfc21",
+    "task": "give me a response to ```Absolutely! Let's stay alert and prepared. Together we can ensure that our home stays secure. Safety first!``` to send in a discussion, VERY SHORT, CONCISE & CLEAR. ONLY RETURN THE RAW MESSAGE, DO NOT SAY \"Hey here is the message you asked\"",
+    "chosen": "\"Agreed! Let's keep safety a top priority. We're in this together.\"",
+    "rejected": "Agreed.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15573,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 creates a very short and concise response to the initial phrase. It is not robotic and captures the essence of the imagined conversation. @Response 1 is too concise and too robotic.",
+          "feedback1": "The response is partially helpful. It does create a very concise one-word response to \"Absolutely! Let's stay alert and prepared/ Together we can ensure that our home stays secure. Safety first!\" However, the word \"Agreed\" does not capture the immediacy of the prior response or relevant details such as safety.  ",
+          "feedback2": "The response is perfectly helpful. It gives a successful response to the phrase \"Absolutely! Let's stay alert and prepared. Together we can ensure that our home stays secure. Safety first!\" It is concise but still captures the immediacy and safety theme inherent in the first response. It adheres to the prompt requirements."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 returns a more human, discussion-based response than @Response 1, which only gives a single word and does not communicate emotion, enthusiasm, or willingness to engage in discussion.",
+          "feedback1": "The response is slightly helpful. Although it returns a succinct answer, it is not part of a \"discussion\" and does not add character to the communication. The response provided gives the bare minimum response to the prompt, does not respect the request for a discussion, and leaves out a human element of discussion by returning only one word.",
+          "feedback2": "The response is perfectly helpful. The response provides an affirmation to the message by giving the user a sample message that fits the context of a discussion. It  picks up on the words \"safety\" and \"together\" from the prompt and uses them to establish rapport and agreement with concision and enthusiasm."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. This is because @Response 2 includes relevant information from the prompt and better answers the prompt. ",
+          "feedback1": "The response is slightly helpful. The response is slightly helpful because it does go along with the \"absolutely\" portion of the prompt. However, it is overly short, concise, and includes an opinion when there is not context to support the statement \"agreed.\" The response does not include the general information in the prompt and is over simplified. The response would be more helpful with a short sentence of the user's content paraphrased. ",
+          "feedback2": "The response is perfectly helpful. The response is perfectly helpful because it contains accurate information, includes the information that was in the prompt, and is a short paraphrase. The response follows the users language and does not include style changes. The content in the response flows with the conversation. This response cannot be meaningfully improved. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_e99c37a162afe183ebd4",
+        0.43235663096820875
+      ],
+      [
+        "task_f9de21b5c690a06f7375",
+        0.3814325057497564
+      ],
+      [
+        "task_4a986808253046dc59d3",
+        0.3681589085863184
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_f9de21b5c690a06f7375",
+              "similarity": 0.3814325057497564,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c5da14ee8131f6779989fdcc099ffef369a8ce41960208042440fe09291e9671:exp_4c7d35b8aa5b4aee91e312c48c9c18d9"
+                ],
+                "task_ids": [
+                  "ab5b61dfb719c01ca1b4cf574fe84a271467eae44e7066bdd35ccc6df55e105e"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_4a986808253046dc59d3",
+              "similarity": 0.3681589085863184,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c263f721f685f8f5cc8cf2de9e31c90c4bbb39c61d96df93e7b59c1107b8284c:exp_6680c6d0e7b742c59507e0439024a78b"
+                ],
+                "task_ids": [
+                  "b9408b30540923231446aad29d9346154c7b86dbb2e71d8d27ebc8ed0a5cfbf4"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+          "score": -0.10382828304762433,
+          "evidence": [
+            {
+              "group_id": "task_4a986808253046dc59d3",
+              "similarity": 0.3681589085863184,
+              "statistics": {
+                "values": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:266777e90af2c196741532ee74e6bf5ca58a5f73e9b4058fd26985f15b0cafc8:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:d5875207a553017d4b0883353120f1276e778614031916530c333dbaa6e929aa:exp_8a047aa502234685891ad41a1a24d090",
+                  "helpsteer3:train:66ea7b6806aadd0fe652e8b109c85ec216badaca8d8c8883ebc41474903e7490:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "2698dc598ac247db9c127df5c335d7fccab944bf17d7588fc21aa110cd6be1f5",
+                  "8245638a4718b0aff9dcb0dc41b9ee325a635ddc9f2c3113e6d562059027f51d",
+                  "7a249f628f4b2c801a2a57985131b7447e5b386c9bb5021b054bf682dbf968be"
+                ]
+              }
+            },
+            {
+              "group_id": "task_e99c37a162afe183ebd4",
+              "similarity": 0.43235663096820875,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42"
+                ]
+              }
+            },
+            {
+              "group_id": "task_f9de21b5c690a06f7375",
+              "similarity": 0.3814325057497564,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c5da14ee8131f6779989fdcc099ffef369a8ce41960208042440fe09291e9671:exp_8a047aa502234685891ad41a1a24d090"
+                ],
+                "task_ids": [
+                  "ab5b61dfb719c01ca1b4cf574fe84a271467eae44e7066bdd35ccc6df55e105e"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+          "score": -0.540097736527148,
+          "evidence": [
+            {
+              "group_id": "task_4a986808253046dc59d3",
+              "similarity": 0.3681589085863184,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:8391bb894c0bb58119792e5e2a21292388629f5f6d69cd689dacd5513a6cfa31:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:15e975cc2bb892e6115d5d760e7c5f308b29bcf2e4f46d54315a679c4f836fa8:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:8e33199710d5e28e9f5fc4679135a290f3351fce389496bcf88557812626a6d9:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:97fbb3b75ad7a2eb10bba31b452f07377aa38dd6298ce1850b6e9baaadf5a15c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:bf0d59e5fca4dcfe3a41706bf7659892262f5d88230ce5593da744914d9f36fa:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:0f736cfbd21a5b7b6cf90d8c897bdb64fb89f7e28f7875bd91e8524fc35e3610:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:721a24a72a75d9cb8bfa159c14e97982463808eddbe71c3baa7a3206d8161e4e:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:875d699a70e604fb001ba5564c5cba3dcd8075c4404c30361921525dfcafdd16:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:266777e90af2c196741532ee74e6bf5ca58a5f73e9b4058fd26985f15b0cafc8:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:0a59705f9b0def4f70db66446a3d3a3ae0b16f2ee5bfe2f1da0295f54c55047c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:d5875207a553017d4b0883353120f1276e778614031916530c333dbaa6e929aa:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:c263f721f685f8f5cc8cf2de9e31c90c4bbb39c61d96df93e7b59c1107b8284c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:b725df1304195d615b830d61139e8a4235f2aee805634356e911c3c595f4e235:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:66ea7b6806aadd0fe652e8b109c85ec216badaca8d8c8883ebc41474903e7490:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "2f51d7a1ac5326bed4faa559c29d1423921d55e73918970f37b4e47daf86fbbe",
+                  "2ff666f33e676f9cd6c957834f6898261f47eee03baa695d08125c7fa1fd967f",
+                  "990938cacae27bcda9a7ab49d4b8d6b12b5eefafdf252a45ba2cd9d77187245d",
+                  "6dada60f53e0279b49adc71849a02333a93e3b2dc060723da10c2bc436718b94",
+                  "2fb8530bd8a0181cf346af3aae6199a164d1a8adeb1b95d9003a35546619a902",
+                  "458e38b7d7f332de1ef3e3a7fb5a3ce362e5b0d75f5c8952940313d642d3e281",
+                  "5c016b5d107c7f94193be99e714476d37a8f53ef1ec9e4db82862ad4d01f7929",
+                  "901dfe1ac8d58e5d2d3a114ab7cc893b028a60d3ea596659d0ab184c110b92bd",
+                  "2698dc598ac247db9c127df5c335d7fccab944bf17d7588fc21aa110cd6be1f5",
+                  "769a438cf4ca4ae5e3e0c78480a74b4c4b167a2c43443492252dd975f747050f",
+                  "8245638a4718b0aff9dcb0dc41b9ee325a635ddc9f2c3113e6d562059027f51d",
+                  "b9408b30540923231446aad29d9346154c7b86dbb2e71d8d27ebc8ed0a5cfbf4",
+                  "e6034f9282cd185dd2bc3d5dba6870d3e29d937bc21c9d58260273f37aaaeb9f",
+                  "7a249f628f4b2c801a2a57985131b7447e5b386c9bb5021b054bf682dbf968be"
+                ]
+              }
+            },
+            {
+              "group_id": "task_e99c37a162afe183ebd4",
+              "similarity": 0.43235663096820875,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_e99c37a162afe183ebd4",
+              "similarity": 0.43235663096820875,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c9bc1d5e4dde029b380897467cb62520646992bb90eae90e92b832865eb22e7e:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "af0b519ad8cf01b4ab33ec2853b3f214b7df09e509ae4fd0d384a7806812ce42"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_3f378070e2764d3287814e6279297de0",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        0.33734784938391305
+      ],
+      [
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        0.3236878235697169
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.3050069362672375
+      ],
+      [
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        0.3010974695665784
+      ],
+      [
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        0.2983300777822483
+      ],
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.29212426853281753
+      ],
+      [
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        0.2879153144072262
+      ],
+      [
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        0.2876347769476326
+      ],
+      [
+        "exp_96802d2cee6f4f17acf028194475c639",
+        0.28639117017326454
+      ],
+      [
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        0.28634335917159925
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "historical",
+        "historical_score": -0.10382828304762433,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "source": "historical",
+        "historical_score": -0.540097736527148,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_798b8aebf85e4622a94630e0af19534f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.33734784938391305
+      },
+      {
+        "experience_id": "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3236878235697169
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3050069362672375
+      },
+      {
+        "experience_id": "exp_18a8071710ea4928bd13396f432cf14a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3010974695665784
+      },
+      {
+        "experience_id": "exp_aa7afd4122054230b5aecfb525ab7953",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2983300777822483
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_8a047aa502234685891ad41a1a24d090": "任务明确要求生成'ONLY RETURN THE RAW MESSAGE'且'VERY SHORT, CONCISE & CLEAR'，这完全符合经验3中'针对特定对象的简短沟通内容'的触发条件；该经验强调必须将'形式纯度'（排除额外分析或背景铺垫）设为否决项，直接对应任务对输出格式的严格限制。",
+    "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9": "任务是针对一段特定的安全提示文本（'Absolutely! Let's stay alert...'）进行回复，符合经验4中'针对特定文本的回复'的触发条件；该经验指出评分标准需区分'交互响应'与单纯复述，要求回答必须具备明确的对话指向性（如承接上文语境），这正是评估此类对话回复质量的核心依据。"
+  },
+  "draft": {
+    "rubric_id": "rubric_261ec3f6459d4444ac64039552cb9ea1",
+    "criteria": [
+      {
+        "criterion_id": "rubric_261ec3f6459d4444ac64039552cb9ea1_1",
+        "question": "回复是否保持了极短的篇幅和简洁的表达？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_261ec3f6459d4444ac64039552cb9ea1_2",
+        "question": "回复内容是否清晰明确地回应了原消息关于安全与准备的语境？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_261ec3f6459d4444ac64039552cb9ea1_3",
+        "question": "输出是否仅为纯消息文本，完全没有任何引导语、前缀或后缀说明？",
+        "weight": 0.3
+      }
+    ],
+    "analysis": "任务要求生成一条用于讨论的简短、简洁且清晰的回复，针对提供的关于家庭安全的积极文本。核心约束包括：内容必须非常短小精悍（VERY SHORT），表达要直接明了（CONCISE & CLEAR），且输出必须是纯消息内容（RAW MESSAGE），严禁包含任何引导语或解释性文字（如'Hey here is the message you asked'）。评分标准将围绕这些约束进行设计，确保生成的响应符合所有格式和内容要求。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8_1",
+            "question": "回复内容是否极度简短（例如不超过15个单词），符合VERY SHORT的要求？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8_2",
+            "question": "回复表达是否直接明了，准确回应了原消息中关于保持警惕和安全的语境？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8_3",
+            "question": "输出是否为纯消息文本，完全没有任何引导语、前缀、后缀或解释性说明？",
+            "weight": 0.3
+          }
+        ],
+        "analysis": "任务要求生成一条针对特定家庭安全语境讨论的回复，核心约束为：极度简短（VERY SHORT）、简洁清晰（CONCISE & CLEAR）、仅输出纯消息文本（RAW MESSAGE）且严禁包含任何引导语或元数据。修订阶段需严格核验初稿标准是否完整覆盖了‘极短篇幅’、‘语境契合度’及‘纯文本格式’这三个关键维度，确保权重分配合理且问题表述明确可执行。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8",
+        "normalized_weights": {
+          "rubric_d30da0a4b57344a1b78e67ca3839fed8_1": 0.4,
+          "rubric_d30da0a4b57344a1b78e67ca3839fed8_2": 0.3,
+          "rubric_d30da0a4b57344a1b78e67ca3839fed8_3": 0.3
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复内容为'Agreed! Let's keep safety a top priority. We're in this together.'，共9个单词，符合不超过15个单词的极度简短要求。",
+            "rejected_reason": "回复内容仅为'Agreed.'，共1个单词，明显少于15个单词的限制，符合极度简短的要求。"
+          },
+          {
+            "criterion_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复通过'Agreed'和'keep safety a top priority'直接回应了原消息中关于保持警惕和安全的核心语境。",
+            "rejected_reason": "'Agreed.'直接表达了对原消息中关于保持警惕和安全提议的赞同，准确回应了语境且表达清晰明了。"
+          },
+          {
+            "criterion_id": "rubric_d30da0a4b57344a1b78e67ca3839fed8_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "输出仅包含纯消息文本内容，没有任何引导语、前缀（如'Here is the message'）或后缀解释。",
+            "rejected_reason": "输出仅包含纯文本消息'Agreed.'，没有任何引导语、前缀、后缀或解释性说明，完全符合格式要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_8a047aa502234685891ad41a1a24d090"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2",
+        "criteria": [
+          {
+            "criterion_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_1",
+            "question": "回复是否仅为纯消息文本，完全没有任何引导语、前缀、后缀或解释性说明？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_2",
+            "question": "回复是否保持了极短的篇幅，用词高度精炼且无冗余？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_3",
+            "question": "回复内容是否清晰明确地回应了原消息关于保持警惕、做好准备及家庭安全的语境？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "任务要求生成一条针对特定安全主题消息的极短、简洁且清晰的回复，核心约束为：1. 内容必须极度简短（VERY SHORT）；2. 表达清晰明确（CONCISE & CLEAR）；3. 输出必须是纯文本消息（RAW MESSAGE），严禁包含任何引导语、前缀或解释性文字。评分标准需严格围绕这三个维度设计，确保回复既符合语境又严格遵守格式限制。提供的经验提示了需关注‘幻觉信息’和‘形式纯度’，本标准将这两点转化为具体的核验问题：检查是否引入了输入中未提及的具体细节（幻觉），以及是否完全排除了非消息内容的说明文字（形式纯度）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2",
+        "normalized_weights": {
+          "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_1": 0.4,
+          "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_2": 0.35,
+          "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_3": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_1",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回复内容被双引号包裹（\"Agreed!...\"），这属于格式上的前缀或后缀符号，不符合‘完全没有任何引导语、前缀、后缀’的严格纯文本要求。",
+            "rejected_reason": "回复仅包含'Agreed.'，没有任何引导语、前缀、后缀或解释性说明，完全符合纯消息文本的要求。"
+          },
+          {
+            "criterion_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复仅包含一句话，用词精炼，没有冗余词汇，符合极短篇幅和高度精炼的要求。",
+            "rejected_reason": "回复仅由一个单词组成，篇幅极短，用词高度精炼且无任何冗余内容。"
+          },
+          {
+            "criterion_id": "rubric_05eeb76acfdf40fab5965bd33c2bbcd2_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中的'keep safety a top priority'直接回应了原消息关于安全的语境，'We're in this together'呼应了原消息中'Together we can ensure'的合作与准备态度。",
+            "rejected_reason": "在讨论语境中，'Agreed.'清晰明确地表达了同意对方关于保持警惕、做好准备及重视家庭安全的观点，有效回应了原消息的核心意图。"
+          }
+        ],
+        "chosen_score": 0.6,
+        "rejected_score": 1.0,
+        "margin": -0.4,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9",
+        "criteria": [
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_1",
+            "question": "输出是否仅为纯消息文本，完全没有任何引导语、前缀、后缀或解释性说明？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_2",
+            "question": "回复内容是否构成了对原消息语境（安全与准备）的直接回应，而非单纯复述或改写原文？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_3",
+            "question": "回复是否保持了极短的篇幅和高度简洁的表达风格？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_4",
+            "question": "回复的语气是否清晰明确且符合讨论场景的积极性？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "任务要求针对给定的关于家庭安全的积极文本生成一条极短、简洁且清晰的讨论回复，且必须为纯消息文本（Raw Message），严禁包含任何引导语或解释。修订阶段需重点检查初稿标准是否遗漏了‘交互有效性’这一关键维度，即回复不能仅是原文的复述或改写，而应构成有效的对话回应。同时需严格核验格式约束（无前缀后缀）和内容约束（简短清晰）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9",
+        "normalized_weights": {
+          "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_1": 0.35,
+          "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_2": 0.35,
+          "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_3": 0.15,
+          "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复内容仅为消息文本本身，未包含任何引导语、前缀（如'Here is the message'）或后缀解释，完全符合纯消息文本的要求。",
+            "rejected_reason": "回复内容仅为'Agreed.'，没有任何引导语、前缀、后缀或解释性说明，完全符合纯消息文本的要求。"
+          },
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复中的'Agreed'直接回应了原消息的肯定语气，'keep safety a top priority'和'We're in this together'紧扣原消息关于安全与共同准备的语境，属于有效回应而非单纯复述。",
+            "rejected_reason": "'Agreed.'直接回应了原消息中关于保持警惕和确保家庭安全的提议，表达了赞同态度，构成了有效的语境回应而非单纯复述。"
+          },
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复仅由一句话组成，字数极少，没有冗余词汇，完全符合极短篇幅和高度简洁的表达风格要求。",
+            "rejected_reason": "回复仅由一个单词组成，篇幅极短，表达高度简洁，符合VERY SHORT & CONCISE的要求。"
+          },
+          {
+            "criterion_id": "rubric_1b74dd6b7b9e4bc798b7665cc1cd8de9_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回复使用感叹号和积极词汇（'Agreed', 'together'），语气清晰明确，展现了讨论场景中应有的合作与积极性。",
+            "rejected_reason": "语气清晰明确，表达了积极的认同感，非常符合讨论场景中对于安全话题的积极回应风格。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "在路径2（Rubric 3）中，Judge判定'chosen'回答因包含双引号（\"Agreed!...\"）而违反‘完全没有任何引导语、前缀、后缀’的纯文本要求，导致该回答得分低于'rejected'。然而，人工偏好证据明确指出'chosen'是完美的回复，且任务仅要求'ONLY RETURN THE RAW MESSAGE'，通常指不包含'Here is the message'等元数据，而非禁止内容本身合法的标点符号（如双引号）。Rubric中的表述‘完全没有任何...后缀’过于绝对，将通用的内容引用符号误判为违规格式，属于对标准边界的错误定义。这导致评分标准无法正确区分‘格式违规’与‘合法标点’，进而引发错误的拒选结果。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_6f22e775f5794bcb9f0fe616a3712640",
+            "method": {
+              "trigger": "当任务要求输出纯文本消息或特定格式内容时",
+              "principle": "评分标准必须严格区分‘元数据/解释性文字’（如引导语、前缀后缀说明）与‘内容本身的必要标点符号’；严禁将通用的语法标点（如双引号、句号、感叹号）视为违规项，除非任务明确指令去除所有非内容字符。",
+              "application_guide": "Generator在设计此类标准时，应将格式约束条款表述为：‘输出是否仅包含消息正文，不含任何解释性引导语、元数据或额外说明？’。避免使用‘完全没有任何符号’或‘无任何前缀后缀’等模糊或绝对化词汇，应明确允许内容所需的标点符号存在。若需排除特定符号（如代码块标记），必须在触发条件中显式声明，否则默认保留作为语法结构的一部分。"
+            },
+            "source_task_id": "d5538b76981d95e473a8603b6c2c0a112e9a52436a04842555a0b02f26dc8741",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_6f22e775f5794bcb9f0fe616a3712640"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_6565c7e7f44043a984ac48a21c63bceb",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_6565c7e7f44043a984ac48a21c63bceb_1",
+                  "question": "输出是否仅为纯消息正文，完全不含任何引导语、解释性前缀、后缀或元数据说明？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_6565c7e7f44043a984ac48a21c63bceb_2",
+                  "question": "回复内容是否准确回应了原消息中关于保持警惕、共同确保家庭安全的核心语境？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_6565c7e7f44043a984ac48a21c63bceb_3",
+                  "question": "回复的篇幅是否足够简短，且表达是否直接明了，符合‘极短、简洁、清晰’的要求？",
+                  "weight": 0.25
+                }
+              ],
+              "analysis": "任务要求针对一段关于家庭安全的积极文本生成一条用于讨论的回复，核心约束为：极短篇幅（VERY SHORT）、简洁清晰（CONCISE & CLEAR）、仅返回纯消息文本（RAW MESSAGE），严禁包含任何引导语、解释或元数据。在修订阶段，需确保评分标准严格区分‘必要的标点符号’与‘违规的引导性文字’。原草案中的标准逻辑基本正确，但需优化表述以明确允许内容所需的标点存在，同时强调对‘引导语’的零容忍。权重分配上，格式纯净度（无引导语）和内容契合度（语境回应）最为关键，篇幅控制作为辅助但重要的约束。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_6565c7e7f44043a984ac48a21c63bceb",
+              "normalized_weights": {
+                "rubric_6565c7e7f44043a984ac48a21c63bceb_1": 0.4,
+                "rubric_6565c7e7f44043a984ac48a21c63bceb_2": 0.35,
+                "rubric_6565c7e7f44043a984ac48a21c63bceb_3": 0.25
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_6565c7e7f44043a984ac48a21c63bceb_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回复内容被包含在双引号内（\"Agreed!...\"），这属于格式上的元数据或标记，不符合‘完全不含任何引导语、解释性前缀、后缀或元数据说明’的纯消息正文要求。",
+                  "rejected_reason": "回复仅包含'Agreed.'，没有任何引导语、解释性前缀、后缀或元数据说明，完全符合纯消息正文的要求。"
+                },
+                {
+                  "criterion_id": "rubric_6565c7e7f44043a984ac48a21c63bceb_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回复中的'keep safety a top priority'和'We're in this together'准确回应了原消息中关于保持警惕、共同确保家庭安全的核心语境。",
+                  "rejected_reason": "'Agreed.'（同意）直接回应了原消息中关于保持警惕和确保家庭安全的积极提议，准确契合了共同确保安全的核心语境。"
+                },
+                {
+                  "criterion_id": "rubric_6565c7e7f44043a984ac48a21c63bceb_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回复仅由两句话组成，篇幅极短，表达直接明了，符合‘极短、简洁、清晰’的要求。",
+                  "rejected_reason": "回复仅有两个单词，篇幅极短，表达直接明了，完全符合‘极短、简洁、清晰’的格式要求。"
+                }
+              ],
+              "chosen_score": 0.6,
+              "rejected_score": 1.0,
+              "margin": -0.4,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "在上一轮尝试中，生成的候选经验（ID 11）虽然正确指出了‘标点符号’与‘元数据’的区别问题，但其parent_ids为空列表。根据系统约束，候选必须引用已有的旧经验编号（allowed_parent_ids: [3,4,1,2,5,6,7,8,9,10]）。本次失败的根本原因在于未能将新发现的核验逻辑（区分格式违规与合法标点）锚定到现有的相关经验上。经验ID 5（关于引用符号和元数据的边界）是本次修正最直接的父级依据，因为它直接讨论了‘引用符号’是否应被视为违规的问题。因此，新的候选必须明确引用ID 5作为基础，以解决‘无法建立关联’的验证反馈错误。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_8e68cfe1860348e1905f9a1f6c3b4de6",
+            "method": {
+              "trigger": "当任务要求输出纯文本消息或特定格式内容时",
+              "principle": "评分标准中的格式约束条款必须严格界定‘有效内容’与‘元数据/解释性文字’的边界，严禁将通用的引用符号（如双引号、Markdown代码块标记）视为违规项，除非任务明确要求‘去除所有非内容字符’。",
+              "application_guide": "Generator在设计此类标准时，应基于现有经验（如ID 5）进一步细化：提问‘回答是否包含除必要语法标点外的额外元数据（如引导语、解释性前缀后缀）？’。若回答仅包含内容本身合法的标点（如双引号包裹的句子），不应判定为违规；只有当回答包含‘Here is the message’等明显的前缀说明或无意义的重复结构时，才扣分。需明确‘纯文本’指无元数据，而非无标点。"
+            },
+            "source_task_id": "d5538b76981d95e473a8603b6c2c0a112e9a52436a04842555a0b02f26dc8741",
+            "parent_ids": [
+              "exp_543c20bb090d4a35a4c1851ad1972427"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_8e68cfe1860348e1905f9a1f6c3b4de6"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_06cb6d299f1046e29edbf8ce4635638d",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_06cb6d299f1046e29edbf8ce4635638d_1",
+                  "question": "输出是否完全由原始消息文本构成，且不包含任何引导语、前缀、后缀或解释性说明？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_06cb6d299f1046e29edbf8ce4635638d_2",
+                  "question": "回复内容是否在字数和句子结构上保持了极短的篇幅（例如不超过1-2句话）？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_06cb6d299f1046e29edbf8ce4635638d_3",
+                  "question": "回复内容是否清晰明确地回应了原消息中关于‘保持警觉’、‘做好准备’及‘安全第一’的语境？",
+                  "weight": 0.3
+                }
+              ],
+              "analysis": "任务要求针对提供的关于家庭安全的积极文本，生成一条用于讨论的回复。核心约束包括：1. 极短篇幅（VERY SHORT）；2. 表达简洁清晰（CONCISE & CLEAR）；3. 仅返回原始消息文本，严禁包含任何引导语、前缀或后缀说明（如'Here is the message'）。修订阶段需确保评分标准严格覆盖这些格式与内容要求，特别是区分‘纯文本’与‘元数据/解释性文字’的边界，避免将必要的标点符号误判为违规，同时必须剔除所有非消息内容的描述性文字。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_06cb6d299f1046e29edbf8ce4635638d",
+              "normalized_weights": {
+                "rubric_06cb6d299f1046e29edbf8ce4635638d_1": 0.4,
+                "rubric_06cb6d299f1046e29edbf8ce4635638d_2": 0.3,
+                "rubric_06cb6d299f1046e29edbf8ce4635638d_3": 0.3
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_06cb6d299f1046e29edbf8ce4635638d_1",
+                  "chosen": false,
+                  "rejected": true,
+                  "chosen_reason": "回复内容被双引号包裹（\"Agreed!...\"），这属于格式上的前后缀，不符合‘完全由原始消息文本构成且不包含任何前缀后缀’的严格定义。",
+                  "rejected_reason": "回复仅包含'Agreed.'，没有任何引导语、前缀、后缀或解释性说明，完全由原始消息文本构成。"
+                },
+                {
+                  "criterion_id": "rubric_06cb6d299f1046e29edbf8ce4635638d_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回复仅包含一句话，字数极少，符合极短篇幅的要求。",
+                  "rejected_reason": "回复仅为一个单词构成的句子，符合极短篇幅（不超过1-2句话）的要求。"
+                },
+                {
+                  "criterion_id": "rubric_06cb6d299f1046e29edbf8ce4635638d_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回复中的'keep safety a top priority'明确回应了原消息中关于安全和保持警觉的语境。",
+                  "rejected_reason": "'Agreed.'清晰明确地表达了对原消息中关于保持警觉、做好准备及安全第一观点的赞同和回应。"
+                }
+              ],
+              "chosen_score": 0.6,
+              "rejected_score": 1.0,
+              "margin": -0.4,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

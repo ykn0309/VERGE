@@ -1,0 +1,285 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:8f6d57f4b8c2c9e930eedfef46530cbce3dbb458dbe422e453d417fcab8414b8",
+    "task": "you are a 30 year old catering professional with 10 years of experience in fine dining and corporate dining settings. You have just worked a 1 month long temp job in a hospital kitchen. You are applying for a deli line cook position at another hospital. How do you highlight the unique experience you gained in the hospital kitchen as a temp worker?",
+    "chosen": "There are a few ways you could highlight your unique experience in the hospital kitchen as a temp worker when applying for a deli line cook position at another hospital:\n\n*   **Emphasize your ability to work in a fast-paced environment:** Hospital kitchens are often busy, and you can highlight your experience in working quickly and efficiently to meet the demands of patients and staff.\n*   **Highlight your experience with dietary restrictions:** In a hospital kitchen, you likely had to prepare meals that accommodated various dietary restrictions. This experience can be valuable in a deli setting, where customers may have specific dietary needs.\n*   **Discuss your teamwork skills:** Working in a hospital kitchen often requires collaboration with other kitchen staff, dietitians, and healthcare professionals. Emphasizing your ability to work well in a team can be attractive to potential employers.\n*   **Mention your adaptability:** As a temp worker, you had to quickly adapt to a new kitchen and workflow. This demonstrates your flexibility and ability to learn quickly, which are important skills in any kitchen.\n*   **Show your understanding of food safety protocols:** Hospitals have strict food safety standards, and your experience adhering to these protocols can be a strong asset.",
+    "rejected": "To highlight your recent temporary employment experience, modify your cover letter and your resume as follows.\n\nIn your cover letter, include the following verbiage: \n\n*  I was recently employed in a temporary role at a hospital kitchen. Much focus was placed on nutrition and special dietary requirements, and I worked closely with dietitians to ensure that meals were not only delicious but also met the nutritional needs of patients with various health conditions. This experience has given me the knowledge to create and adapt recipes to accommodate a wide range of dietary restrictions, which I believe will be particularly beneficial in the role of Deli Line Cook.  \n\nIn your resume, include the following information:\n\n*  Temporary Kitchen Staff - [Hospital Name], [City, State] - [Month/Year] – [Month/Year]\n*  Prepared and delivered meals according to specific dietary requirements and nutritional guidelines\n*  Collaborated with dietitians to ensure meals met the needs of patients with various health conditions\n*  Worked effectively in a fast-paced environment, prioritizing accuracy and timeliness\n*  Managed inventory and ensured efficient use of resources\n*  Maintained strict food safety and sanitation protocols",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 18022,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 2 includes bad advice to copy and paste whereas @Response 1 perfectly answers the prompt and provides helpful ways the user could highlight their previous experiences.",
+          "feedback1": "The response is perfectly helpful. The user requested help in highlighting unique experience gained as a hospital kitchen chef. The model response contains helpful, accurate information about what makes a hospital kitchen setting unique such as dealing with dietary restrictions, working with food safety, adaptability, and working in quick turnover environments.",
+          "feedback2": "The response is mostly helpful. The user wanted to know how to highlight their experience working in a hospital kitchen. The model provided a cover letter excerpt and resume template and instructed the user to use them verbatim. The information provided is accurate but not well written and telling the user to copy and past the model response is bad advice."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 gives helpful advice on how to approach the application, focusing on useful skills that can highlight the prompter's potential for the line cook position. @Response 2 highlighted hallucinated skills and mentioned cover letters and resumes, which were not requested.",
+          "feedback1": "The response is mostly helpful. It included great points that can help the prompter reinforce their application for the position of deli line cook at a hospital. It highlights important transferrable skills that are good to have in a hospital setting and a kitchen setting. The suggestions given in the response are practical and are accurately aligned with the needs from the prompt.",
+          "feedback2": "The response is partially helpful. It included generic information and lacks specific advice tailored to the prompter, emphasizing skills and responsibilities that do not belong to the prompter. The suggestions for a cover letter and resume were not asked for, however, the prompter could find this useful and helpful; which is a plus."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 adheres to both the spirit and the prompt itself. @Response 2 misunderstood the prompt and did not follow the prompt instructions correctly.",
+          "feedback1": "The response is perfectly helpful. The response highlighted unique experiences gained both as a hospital worker and as a temp worker. The response was thorough, but succinct, and kept the information relevant. The response was also well formatted, making it easy to read. Everything together helped increase the helpfulness for the user. ",
+          "feedback2": "The response is partially helpful. The model misunderstood the prompt, so the response answered it under a false premise. Instead of generic examples offering examples for the user to highlight, the response gives exact wording for a cover letter and resume. However, there is no way for the model to know exactly what experience the user has, or if a cover letter is needed. However, at least some of the response should be relevant and helpful to the user. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [],
+    "historical": {
+      "scored": [],
+      "unknown_ids": []
+    },
+    "semantic": [],
+    "candidates": [],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_4ee81e2c80cc4d0a9370497b08a4ca27",
+    "criteria": [
+      {
+        "criterion_id": "rubric_4ee81e2c80cc4d0a9370497b08a4ca27_1",
+        "question": "回答是否明确设定了申请人作为拥有10年经验的高端餐饮/企业餐饮专业人士的身份背景？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_4ee81e2c80cc4d0a9370497b08a4ca27_2",
+        "question": "回答是否具体阐述了在医院厨房期间获得的独特技能或经验（例如：大规模批量生产、严格的卫生与安全标准、过敏原管理、特殊治疗性饮食的制备）？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_4ee81e2c80cc4d0a9370497b08a4ca27_3",
+        "question": "回答是否有效地将高端餐饮的背景知识转化为适应医院快节奏和高标准环境的优势，而非仅仅描述医院工作的单调性？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_4ee81e2c80cc4d0a9370497b08a4ca27_4",
+        "question": "回答的语气和用词是否符合专业求职场景，展现出对医院饮食服务重要性的理解和职业承诺？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_4ee81e2c80cc4d0a9370497b08a4ca27_5",
+        "question": "回答是否针对“熟食线（deli line）”这一特定岗位提出了具体的能力匹配点（如切片精度、冷食安全、出餐速度）？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "该任务要求以30岁、拥有10年高端餐饮及企业餐饮经验的专业人士身份，申请医院熟食线厨师职位。核心挑战在于将1个月的医院临时工经历转化为竞争优势。评分标准需验证回答是否成功构建了‘高端/企业经验’与‘医院环境’之间的桥梁，是否具体展示了在医院获得的独特技能（如高产量、无菌操作、过敏原管理、特殊饮食需求处理），以及是否采用了符合行业规范的叙述逻辑和语气。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07",
+        "criteria": [
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_1",
+            "question": "回答是否明确确立了申请人作为拥有10年经验的高端餐饮及企业餐饮专业人士的身份背景？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_2",
+            "question": "回答是否具体阐述了在医院厨房期间获得的独特技能或经验（例如：大规模批量生产、严格的卫生与安全标准、过敏原管理、特殊治疗性饮食的制备）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_3",
+            "question": "回答是否有效地将高端餐饮的背景知识转化为适应医院快节奏和高标准环境的优势，而非仅仅描述医院工作的单调性？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_4",
+            "question": "回答是否针对“熟食线（deli line）”这一特定岗位提出了具体的能力匹配点（如切片精度、冷食安全、出餐速度）？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_5",
+            "question": "回答的语气和用词是否符合专业求职场景，展现出对医院饮食服务重要性的理解和职业承诺？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "该任务要求以拥有10年高端餐饮经验的30岁专业人士身份，申请医院熟食线厨师职位，核心策略是将1个月的医院临时工经历转化为独特的竞争优势。评分标准需重点核验：申请人是否成功构建了‘高端/企业背景’与‘医院环境’的差异化连接；是否具体列举了在医院环境中获得的独特技能（如大规模批量生产、严格卫生标准、过敏原管理、特殊治疗饮食）；是否针对'Deli Line'岗位特性（冷食安全、切片精度、出餐效率）进行了精准的能力匹配；以及整体语气是否体现了对医疗饮食服务重要性的深刻理解与职业承诺。权重分配上，突出技能转化与岗位匹配度（共55%），兼顾身份设定与专业语气（45%）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07",
+        "normalized_weights": {
+          "rubric_2ac72cc7f03c40e39f992d9a921bcc07_1": 0.2,
+          "rubric_2ac72cc7f03c40e39f992d9a921bcc07_2": 0.25,
+          "rubric_2ac72cc7f03c40e39f992d9a921bcc07_3": 0.2,
+          "rubric_2ac72cc7f03c40e39f992d9a921bcc07_4": 0.15,
+          "rubric_2ac72cc7f03c40e39f992d9a921bcc07_5": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未明确确立申请人作为拥有10年经验的高端餐饮及企业餐饮专业人士的身份背景。回答以通用建议的形式呈现，完全忽略了任务设定中'30岁、10年高端餐饮及企业餐饮经验’的具体人设，未将这一资深背景融入对医院经验的阐述中。",
+            "rejected_reason": "回答未明确确立申请人作为拥有10年经验的高端餐饮及企业餐饮专业人士的身份背景。回复仅以通用建议形式提供模板文本，完全缺失对'30岁’、'10年经验’、'fine dining（高端餐饮）’及'corporate dining（企业餐饮）’等关键背景信息的提及或融合。"
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答具体阐述了在医院厨房期间获得的独特技能，包括处理快节奏环境、适应各种饮食限制（dietary restrictions）、团队合作以及遵守严格的食品安全协议。这些点涵盖了大规模生产、过敏原管理及卫生标准等核心要素。",
+            "rejected_reason": "回答具体阐述了在医院厨房期间获得的独特经验，包括与营养师合作处理特殊饮食需求（special dietary requirements）、适应不同健康状况患者的营养需求、以及严格遵守食品安全和卫生协议。"
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未能有效将高端餐饮的背景知识转化为适应医院环境的优势。由于未提及申请人的高端餐饮背景，回答无法体现如何将高端餐饮的精细度或高标准迁移到医院场景，仅停留在描述医院工作的普遍要求上，缺乏针对性的转化论述。",
+            "rejected_reason": "回答未能有效将高端餐饮的背景知识转化为适应医院环境的优势。由于未提及申请人的高端餐饮背景，因此无法展示如何将精细餐饮技能应用于医院的快节奏和高标准环境，也未体现这种转化过程。"
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未针对“熟食线（deli line）”这一特定岗位提出具体的能力匹配点。虽然提到了饮食限制和速度，但未涉及该岗位特有的关键技能，如切片精度（slice precision）、冷食安全控制或熟食线特定的出餐流程。",
+            "rejected_reason": "回答虽提到了'Deli Line Cook'岗位名称，但未针对该特定岗位提出具体的能力匹配点。文中未涉及熟食线特有的技能要求，如切片精度（slicing precision）、冷食安全（cold food safety）或特定的出餐速度管理，内容过于通用。"
+          },
+          {
+            "criterion_id": "rubric_2ac72cc7f03c40e39f992d9a921bcc07_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答的语气和用词符合专业求职场景，展现了礼貌和职业性，并提到了对医院饮食服务重要性的理解（如满足患者需求、与医疗专业人员协作）。",
+            "rejected_reason": "回答的语气和用词符合专业求职场景，使用了'nutrition', 'dietitians', 'sanitation protocols'等专业术语，展现了对医院饮食服务重要性的理解，整体态度积极且职业化。"
+          }
+        ],
+        "chosen_score": 0.45,
+        "rejected_score": 0.45,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务明确要求回答者以'30岁、10年高端餐饮及企业餐饮经验的专业人士’身份进行申请。人工偏好明确指出Response 2（Rejected）因提供了不请求的模板且未体现人设而较差，Response 1（Chosen）虽被选为更好，但Judge在Criterion 6和8中判定两者均未满足‘明确设定申请人作为拥有10年经验的高端餐饮专业人士的身份背景’这一要求。然而，细读Response 1（Chosen），其内容（如强调快节奏、适应力、食品安全）实际上隐含了资深厨师的视角，并未像Response 2那样完全忽略人设去提供通用模板。Judge将两者都判为False，可能是因为Rubric中Criterion 6的措辞过于绝对，要求‘明确确立...身份背景’（explicitly establish identity），导致模型只需提供策略建议而未在开头声明‘作为一名有10年经验的厨师...'即被判违规。这反映了评分标准设计的一个漏洞：对于角色扮演类任务，若人设是指导回答风格而非必须显式声明的元数据，强制要求‘明确确立身份’会导致误判那些隐性符合人设的高质量回答。正确的核验关系应关注回答是否体现了该人设应有的专业深度和视角，而非仅仅检查是否有特定的身份声明语句。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+            "method": {
+              "trigger": "当任务包含具体的人设背景（如年龄、年限、特定行业经验）且该人设用于指导回答的语气、视角或专业深度时",
+              "principle": "不应将‘显式声明人设身份’作为硬性否决条件，而应核验回答内容是否体现了该人设所赋予的专业深度、独特视角或行业术语的使用，避免将隐性符合人设的优质回答误判为失败。",
+              "application_guide": "在设计评分标准时，针对人设相关维度的提问应调整为：'回答是否展现了[特定人设]应有的专业深度/视角？'或'回答中的建议是否符合[特定人设]的经验水平？'，而非'回答是否明确声明了[特定人设]身份？'。需允许回答通过内容风格自然流露人设，而非强制要求首句声明。"
+            },
+            "source_task_id": "9ee63a4821f9b0298cdc974504c01cede3ba5ac2ce4bfb29aec5d2a23d9f5be5",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_1",
+                  "question": "回答是否通过展现行业术语、战略思维或管理视角，体现了拥有10年高端餐饮经验的专业人士深度，而非仅停留在基础操作描述？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_2",
+                  "question": "回答是否具体阐述了在医院厨房期间获得的独特且可量化的技能（如大规模批量生产流程、严格的卫生安全合规、过敏原隔离管理、特殊治疗性饮食制备）？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_3",
+                  "question": "回答是否成功构建了桥梁，将高端餐饮的背景知识（如摆盘美学、服务细节、高标准执行）转化为适应医院快节奏、高安全性环境的实际优势？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_4",
+                  "question": "回答是否针对‘熟食线（deli line）’这一特定岗位提出了具体的能力匹配点（如切片精度控制、冷食安全规范、高峰期出餐速度管理）？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_5",
+                  "question": "回答的语气和用词是否符合专业求职场景，展现出对医院饮食服务社会价值的深刻理解及职业承诺？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "本次任务要求以特定人设（30岁、10年高端/企业餐饮经验）撰写申请医院熟食线厨师职位的求职策略。核心在于将短期医院临时工经历转化为竞争优势，同时体现资深背景带来的独特视角。修订重点应依据提供的经验指南：不再强制要求回答显式声明‘我是30岁专业人士’，而是核验内容是否自然流露了该资历应有的专业深度、行业术语运用及战略思维。标准需覆盖：1. 人设体现（通过专业度而非声明）；2. 医院特有技能的挖掘（如批量生产、过敏原、治疗饮食）；3. 跨界优势的转化（高端标准如何赋能医院环境）；4. 岗位针对性（熟食线具体技能）；5. 语气与职业态度。权重分配上，突出技能转化与岗位匹配的重要性。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81",
+              "normalized_weights": {
+                "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_1": 0.2,
+                "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_2": 0.3,
+                "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_3": 0.25,
+                "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_4": 0.15,
+                "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_5": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答仅停留在基础操作描述层面（如'快速工作'、'团队合作'），未体现拥有10年高端餐饮经验的专业人士应有的行业术语、战略思维或管理视角，缺乏对供应链优化、成本控制和运营效率的深度阐述。",
+                  "rejected_reason": "回答主要停留在基础操作描述（如准备餐食、维护库存），未展现行业术语、战略思维或管理视角，缺乏体现10年高端餐饮经验深度的专业洞察。"
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答虽然提及了饮食限制和食品安全，但未具体阐述可量化的独特技能，如大规模批量生产流程、严格的过敏原隔离管理细节或特殊治疗性饮食的制备标准，内容过于笼统。",
+                  "rejected_reason": "回答仅笼统提及“特殊饮食要求”和“营养指南”，未具体阐述可量化的独特技能，如大规模批量生产流程、严格的过敏原隔离管理或治疗性饮食制备细节。"
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未能成功构建桥梁将高端餐饮背景（摆盘美学、服务细节）转化为医院环境的实际优势，完全忽略了用户设定的'10年高端餐饮经验'这一关键背景，未体现从精致餐饮到机构餐饮的技能迁移逻辑。",
+                  "rejected_reason": "回答未能构建桥梁将高端餐饮背景（摆盘美学、服务细节）转化为医院环境的实际优势，完全缺失对10年高端餐饮经验的利用和转化。"
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_4",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未针对'deli line cook'这一特定岗位提出具体的能力匹配点，如切片精度控制、冷食安全规范或高峰期出餐速度管理等具体技术细节。",
+                  "rejected_reason": "回答未针对“熟食线（deli line）”岗位提出具体的能力匹配点，如切片精度控制、冷食安全规范或高峰期出餐速度管理等关键技能。"
+                },
+                {
+                  "criterion_id": "rubric_06aee7d9aa214c6cb8eeabaeb096fb81_5",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答的语气和用词符合专业求职场景，列出了相关的技能点，虽然深度不足，但整体态度展现了职业承诺和对医院饮食服务的关注。",
+                  "rejected_reason": "回答语气为通用的求职建议格式，缺乏对医院饮食服务社会价值的深刻理解及作为专业人士的职业承诺感，未体现特定角色设定。"
+                }
+              ],
+              "chosen_score": 0.1,
+              "rejected_score": 0.0,
+              "margin": 0.1,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

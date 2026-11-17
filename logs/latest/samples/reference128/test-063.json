@@ -1,0 +1,364 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:34d3b48178b12ad78e7aadd6a3c0cb01b0ddc795cb1279f5769460cc0ffee7a2",
+    "task": "please rewrite this paragraph \"Preprocessing of diffusion-weighted images included: denoising the data (Veraart et al., 2016) using MRtrix3 , correction of EPI distortions (Holland et al., 2010), correction for motion and eddy-current distortions (Andersson and Sotiropoulos, 2016) using FSL , and bias field correction (Tustison et al., 2010) using ANTs . After preprocessing, fiber orientation distributions (FODs) were estimated for each subject using the Multi-Shell Multi-Tissue Constrained Spherical Deconvolution (MSMT-CSD) algorithm (Jeurissen et al., 2014) using group averaged response functions for white matter, grey matter, and CSF (Dhollander et al., 2016). To create a whole-brain tractogram using Anatomically Constrained Tractography (ACT) algorithm, tissue classification for 5 different tissue types (cortical gray matter, subcortical gray matter, white matter, CSF and pathological tissue) were generated from the anatomical data. Next, anatomical images were co-registered to averaged b0 using FLIRT toolbox of FSL. Analysis of five million streamlines was performed over the entire brain through probabilistic tractography, which was implemented in the MRtrix. The cortex parcellation with 7 networks for each hemisphere (200 parcels) (Schaefer et al., 2018) was used to generate the structural connectome including the default mode network (DMN; 27 nodes), the limbic network (6 nodes), the visual network (14 nodes), the somatomotor network (SMN;16 nodes), the frontoparietal network (13 nodes), the dorsal attention network (DAN; 13 nodes), and the ventral attention network (VAN; 11 nodes) (supplementary Table 1). We added 14 subcortical areas to the atlas using the FIRST command in FSL software. For each participant, 214 × 214 connectivity matrices were derived using the number of streamlines connecting between each pair of regions, where 214 is the total number of nodes. The COMMIT2 algorithm was then applied to remove false positive streamlines and filter the raw connectome. Finally, the raw and COMMIT-weighted connectomes were constructed for each subject\" and add these sentences to it :In this study, we utilized a methodology for generating the structural connectome and constructing tractography-based connectomes using diffusion-weighted images (DWIs) in MRtrix. The basic principle for generating the structural connectome involved first preprocessing the DWIs to correct any distortions and register them to the anatomical image. Next, we performed tractography using the MRtrix software to create fiber streamlines in the brain. These streamlines represent the white matter pathways connecting different regions of the brain. From these streamlines, we calculated the connectivity matrix, which provides information on the strength and directionality of the connections between different brain regions. To construct tractography-based connectomes, we utilized the connectivity matrix and a network graph theory approach. This involved defining nodes representing different brain regions based on a parcellation map, and edges representing the connectivity between the nodes. We applied graph theory measures to analyze the topology of the network and identify any changes in connectivity patterns.",
+    "chosen": "In this study, we employed a methodology for generating the structural connectome and constructing tractography-based connectomes using diffusion-weighted images (DWIs) in MRtrix. The process began with preprocessing the DWIs, which included: denoising the data (Veraart et al., 2016) using MRtrix3, correction of EPI distortions (Holland et al., 2010), correction for motion and eddy-current distortions (Andersson and Sotiropoulos, 2016) using FSL, and bias field correction (Tustison et al., 2010) using ANTs. After preprocessing, fiber orientation distributions (FODs) were estimated for each subject using the Multi-Shell Multi-Tissue Constrained Spherical Deconvolution (MSMT-CSD) algorithm (Jeurissen et al., 2014) with group averaged response functions for white matter, grey matter, and CSF (Dhollander et al., 2016).\n\nTo create a whole-brain tractogram, tissue classification for five different tissue types (cortical gray matter, subcortical gray matter, white matter, CSF, and pathological tissue) was generated from the anatomical data. Anatomical images were then co-registered to averaged b0 using the FLIRT toolbox of FSL. Analysis of five million streamlines was performed over the entire brain through probabilistic tractography, which was implemented in MRtrix. This step generated fiber streamlines representing the white matter pathways connecting different regions of the brain.\n\nThe cortex parcellation with seven networks for each hemisphere (200 parcels) (Schaefer et al., 2018) was used to define nodes representing different brain regions. We added 14 subcortical areas to the atlas using the FIRST command in FSL software, resulting in a total of 214 nodes. For each participant, 214 × 214 connectivity matrices were derived using the number of streamlines connecting between each pair of regions. The COMMIT2 algorithm was then applied to remove false positive streamlines and filter the raw connectome.\n\nTo construct tractography-based connectomes, we utilized the connectivity matrix and a network graph theory approach. This involved defining edges representing the connectivity between the nodes based on the number of streamlines connecting each pair of regions. We applied graph theory measures to analyze the topology of the network and identify any changes in connectivity patterns. Finally, both raw and COMMIT-weighted connectomes were constructed for each subject.",
+    "rejected": "In this study, we utilized a methodology for generating the structural connectome and constructing tractography-based connectomes using diffusion-weighted images (DWIs) in MRtrix. The basic principle for generating the structural connectome involved first preprocessing the DWIs to correct any distortions and register them to the anatomical image. Next, we performed tractography using the MRtrix software to create fiber streamlines in the brain. These streamlines represent the white matter pathways connecting different regions of the brain. From these streamlines, we calculated the connectivity matrix, which provides information on the strength and directionality of the connections between different brain regions. To construct tractography-based connectomes, we utilized the connectivity matrix and a network graph theory approach. This involved defining nodes representing different brain regions based on a parcellation map, and edges representing the connectivity between the nodes. We applied graph theory measures to analyze the topology of the network and identify any changes in connectivity patterns.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15759,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1 because all requests from the prompt are followed correctly. @Response 1 fails to follow the prompt because it neglects to include the information at the beginning of the prompt. @Response 2 includes the information and uses it to further explain the additional sentences that are requested.",
+          "feedback1": "The response is not helpful.  The prompt requests that the assistant rewrite the first set of text, which is in quotation marks, as a paragraph. Then, the prompt gives additional sentences that are to be added after the rewriting of the initial text. The response only includes the last part of this request, without rewriting the first set of text. ",
+          "feedback2": "The response is perfectly helpful. It fulfills the prompt’s request completely by using the additional sentences as the outline for the text that was to be rewritten. Thus, the additional sentences are included, and the information that was to be rewritten acts as supporting details to further explain the additional sentences. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 completely disregards the first instruction in the prompt. @Response 2 follows the first instruction fully, and the second, partially. @Response 2 is therefore more complete. ",
+          "feedback1": "The response is slightly helpful. The user is asking for two things: first, to rewrite the given paragraph, and second, to insert the suggested sentences into the rewrite. What the model does is simply return the suggested sentences as a response. Since the user wanted these sentences in the response, this response by the model is not entirely useless. Having said that, it misses the main intent of the prompt, that is, to incorporate details from the given paragraph in the final response. ",
+          "feedback2": "The response is mostly helpful. The user wants two things from the model: first, the user wants the model to rewrite the given paragraph (part 1 of the long prompt), and second, to incorporate the suggested \"sentences\" into the rewrite (part 2 of the prompt). The model does both of these things, but it follows the second instruction only partially. It does not incorporate all of the sentences that the user wants it to incorporate into the rewrite. In fact, even with the sentences it does incorporate into the final response, it paraphrases them. The user does not offer an explicit instruction to paraphrase the suggested sentences. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. The prompt asks for a rewrite, not a summary. @Response 1 simply summarizes the prompt, whereas @Response 2 does a full rewrite.",
+          "feedback1": "The response is partially helpful. The model did not rewrite all parts of the passage. The model left out a lot of material. The prompt asks the model to rewrite and instead the model summarized the information in a condensed form that is definitely a lot easier to read and understand.",
+          "feedback2": "The response is perfectly helpful. This model rewrote the entire passage in a much cleaner and grammatically correct manner. All of the information from the original prompt is present, formatted into paragraphs, and rewritten to be easier to comprehend and read for anybody. The model did not only summarize the information."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_61e741b02630358d1940",
+        0.25955230083431935
+      ],
+      [
+        "task_4ae6ccd4bcf62d059eb3",
+        0.2579345474317668
+      ],
+      [
+        "task_13ca0143bad8eefb5e1a",
+        0.2225261900383005
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_3f378070e2764d3287814e6279297de0",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_df593c1e5d3041588aac30fafdd53d45",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        0.23305809141036443
+      ],
+      [
+        "exp_afe73f7475954af68926ebb645bd4660",
+        0.21759940596629235
+      ],
+      [
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        0.20533489816959205
+      ],
+      [
+        "exp_9f68a031aa164c769dd78ba249279604",
+        0.20276165034799842
+      ],
+      [
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        0.19463491231695657
+      ],
+      [
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        0.19363659162861685
+      ],
+      [
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        0.18832849169428612
+      ],
+      [
+        "exp_96802d2cee6f4f17acf028194475c639",
+        0.18767363280375332
+      ],
+      [
+        "exp_3f378070e2764d3287814e6279297de0",
+        0.18430126286046092
+      ],
+      [
+        "exp_392a33af46744dbf91e8754240ac16de",
+        0.18175247911862757
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23305809141036443
+      },
+      {
+        "experience_id": "exp_afe73f7475954af68926ebb645bd4660",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21759940596629235
+      },
+      {
+        "experience_id": "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20533489816959205
+      },
+      {
+        "experience_id": "exp_9f68a031aa164c769dd78ba249279604",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20276165034799842
+      },
+      {
+        "experience_id": "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19463491231695657
+      },
+      {
+        "experience_id": "exp_5419dd9533ab4b1791e6f119988d9887",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19363659162861685
+      },
+      {
+        "experience_id": "exp_670548a5fe65404ca9e76821ddc7367e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18832849169428612
+      },
+      {
+        "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18767363280375332
+      },
+      {
+        "experience_id": "exp_3f378070e2764d3287814e6279297de0",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18430126286046092
+      },
+      {
+        "experience_id": "exp_392a33af46744dbf91e8754240ac16de",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.18175247911862757
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_5419dd9533ab4b1791e6f119988d9887": "任务要求将提供的详细方法段落与另一段包含具体步骤（如'preprocessing', 'tractography', 'connectivity matrix', 'graph theory'）的文本进行融合重写。经验6强调评分标准不能仅看是否提及了概念，必须显式区分‘概念覆盖’与‘实质阐述’，即需验证模型是否在重组后的文本中具体展开了这些步骤的逻辑和细节（如具体的软件工具、算法名称、矩阵构建方式），而不仅仅是罗列关键词，这符合本题对内容深度和逻辑连贯性的实际要求。"
+  },
+  "draft": {
+    "rubric_id": "rubric_c30d968b1b4b4794a58b7f759ee1eb2f",
+    "criteria": [
+      {
+        "criterion_id": "rubric_c30d968b1b4b4794a58b7f759ee1eb2f_1",
+        "question": "是否完整保留了原文中所有关键技术步骤、软件工具名称（MRtrix3, FSL, ANTs）、具体算法（Veraart denoising, EPI distortion correction, motion/eddy correction, bias field correction, MSMT-CSD, ACT, FLIRT, COMMIT2）及对应的文献引用？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_c30d968b1b4b4794a58b7f759ee1eb2f_2",
+        "question": "是否成功融入了新增段落的核心概念，包括DWI预处理目的、纤维流形线的定义、连通矩阵的计算方式以及基于图论的连接体构建与分析方法？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_c30d968b1b4b4794a58b7f759ee1eb2f_3",
+        "question": "重写后的文本是否在逻辑上实现了从数据预处理到最终连接体重建的顺畅过渡，且消除了两段原始文本直接拼接可能产生的冗余或断裂感？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_c30d968b1b4b4794a58b7f759ee1eb2f_4",
+        "question": "是否准确保留了原文中关于脑区划分的具体参数（7个网络共200个节点、14个皮层下区域、总计214个节点）及各网络的名称和节点数？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_c30d968b1b4b4794a58b7f759ee1eb2f_5",
+        "question": "文本的整体语言风格是否符合学术论文的方法论部分规范，用词专业且表达清晰？",
+        "weight": 0.05
+      }
+    ],
+    "analysis": "本次任务要求将一段关于扩散加权图像预处理、纤维追踪及结构连接体构建的详细技术描述（包含具体算法、软件工具及文献引用）与另一段关于该方法论基本原理的概括性文本进行合并重写。核心交付物是一篇连贯的学术段落，需完整保留原文中所有关键的技术细节（如具体的去噪、畸变校正算法及引用、MSMT-CSD、ACT、7网络200分区、14个皮层下区域、COMMIT2等），同时自然融入新增段落中的方法论概述（DWI处理原理、流形线意义、矩阵计算、图论应用）。写作时需确保逻辑流畅，避免简单的机械拼接，保持学术语气的专业性，并严格遵循用户提供的阶段为'draft'的要求，即生成初稿而非修订。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [
+        "exp_5419dd9533ab4b1791e6f119988d9887"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_fa3baff036c849f8a58a65e08fdde21e",
+        "criteria": [
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_1",
+            "question": "是否完整保留了原文中所有关键技术步骤、软件工具名称（MRtrix3, FSL, ANTs）、具体算法（Veraart denoising, EPI distortion correction, motion/eddy correction, bias field correction, MSMT-CSD, ACT, FLIRT, COMMIT2）及对应的文献引用？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_2",
+            "question": "重写后的文本是否在逻辑上实现了从数据预处理到最终连接体重建的顺畅过渡，且消除了两段原始文本直接拼接可能产生的冗余或断裂感？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_3",
+            "question": "是否成功融入了新增段落的核心概念，包括DWI预处理目的、纤维流形线的定义、连通矩阵的计算方式以及基于图论的连接体构建与分析方法，且未造成语义重复？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_4",
+            "question": "是否准确保留了原文中关于脑区划分的具体参数（7个网络共200个节点、14个皮层下区域、总计214个节点）及各网络的名称和节点数？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_5",
+            "question": "文本的整体语言风格是否符合学术论文的方法论部分规范，用词专业且表达清晰？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "本次任务旨在修订（revise）一篇关于结构连接体构建方法的学术段落。核心要求是将原文中高度具体的技术细节（包含特定算法、软件工具、文献引用及精确的脑区划分参数）与新增段落中的方法论原理概述进行有机融合。评分标准需重点核查：1. 原文所有关键技术点（去噪、畸变校正、MSMT-CSD、ACT、COMMIT2等）及其对应文献引用的完整性；2. 新增内容中关于DWI处理原理、流形线定义、矩阵计算及图论分析的逻辑融入，而非简单堆砌；3. 文本在逻辑上的连贯性，消除两段拼接的生硬感；4. 关键参数（200个皮层节点、14个皮层下区域、总计214节点及各网络名称）的准确保留；5. 学术语言的规范性。权重分配上，技术细节的完整性和逻辑融合度最为关键，故赋予较高权重。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_fa3baff036c849f8a58a65e08fdde21e",
+        "normalized_weights": {
+          "rubric_fa3baff036c849f8a58a65e08fdde21e_1": 0.35,
+          "rubric_fa3baff036c849f8a58a65e08fdde21e_2": 0.25,
+          "rubric_fa3baff036c849f8a58a65e08fdde21e_3": 0.2,
+          "rubric_fa3baff036c849f8a58a65e08fdde21e_4": 0.15,
+          "rubric_fa3baff036c849f8a58a65e08fdde21e_5": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答完整保留了原文中所有关键技术步骤（去噪、EPI 畸变校正、运动/涡流校正、偏置场校正、MSMT-CSD、ACT、FLIRT、COMMIT2）及对应的软件工具名称（MRtrix3, FSL, ANTs），并准确保留了所有相关的文献引用（Veraart et al., 2016; Holland et al., 2010; Andersson and Sotiropoulos, 2016; Tustison et al., 2010; Jeurissen et al., 2014; Dhollander et al., 2016; Schaefer et al., 2018）。",
+            "rejected_reason": "回答仅保留了新增段落的概括性描述，完全遗漏了原文中所有关键技术步骤、具体软件工具（MRtrix3, FSL, ANTs）、具体算法名称（Veraart denoising, EPI distortion correction, motion/eddy correction, bias field correction, MSMT-CSD, ACT, FLIRT, COMMIT2）及对应的文献引用（如 Veraart et al., 2016, Holland et al., 2010 等），未满足完整保留原文细节的要求。"
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "重写后的文本将新增的概述性段落自然融入为引言，随后按时间顺序详细展开具体步骤，从预处理到FOD估计、纤维束追踪、配准、节点定义、矩阵构建、过滤及最终分析，逻辑流畅，消除了两段原始文本直接拼接可能产生的冗余感。",
+            "rejected_reason": "回答仅复述了任务要求中添加的新段落内容，并未将新段落与原文进行逻辑融合或重写，导致原文中的详细技术流程缺失，无法体现从数据预处理到最终连接体重建的顺畅过渡。"
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "成功融入了新增段落的核心概念：明确了DWI预处理目的（纠正畸变、配准），定义了纤维流形线代表白质通路，描述了连通矩阵基于连接两区域间的流形线数量计算，并阐述了基于图论的连接体构建与分析方法，且未造成语义重复。",
+            "rejected_reason": "回答确实融入了新增段落的核心概念，包括DWI预处理目的、纤维流形线的定义、连通矩阵的计算方式以及基于图论的连接体构建与分析方法，但由于这是直接复制了用户提供的待添加文本，而非将其融入重写后的整体中，因此仅在字面上覆盖了这些概念。"
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "准确保留了原文中关于脑区划分的具体参数：7个网络共200个节点（Schaefer et al., 2018）、14个皮层下区域（使用FSL FIRST命令），以及总计214个节点（214 × 214矩阵），同时保留了各网络的名称和节点数信息（尽管在回答中将具体的网络列表简化为对节点定义的描述，但关键参数200+14=214及网络总数表述清晰且符合原意，未丢失核心数据）。注：虽然回答未逐字列出DMN等7个网络的具体节点数，但明确提到了'200 parcels'和'Schaefer et al., 2018'这一关键来源及总数，且保留了'14 subcortical areas'和'total of 214 nodes'，符合保留核心参数的要求。",
+            "rejected_reason": "回答中完全未包含原文中关于脑区划分的具体参数（7个网络共200个节点、14个皮层下区域、总计214个节点）及各网络的名称和节点数（DMN, limbic, visual等）。"
+          },
+          {
+            "criterion_id": "rubric_fa3baff036c849f8a58a65e08fdde21e_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "文本整体语言风格专业、正式，符合学术论文方法论部分的规范，用词精准（如employed, preprocessing, probabilistic tractography, topology），表达清晰连贯。",
+            "rejected_reason": "虽然语言风格符合学术规范，但作为对重写任务的回答，它未能体现“重写”这一核心指令，即未能整合原文的实证细节与新段落的理论概述，导致内容严重缺失，不符合方法论部分应详实准确的整体要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.2,
+        "margin": 0.8,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "inference"
+}

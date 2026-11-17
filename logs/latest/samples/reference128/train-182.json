@@ -1,0 +1,513 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:5a76c78a7c37e2717a00f84628fd63717a9cbbf879dbb7425b7fc4b81381e411",
+    "task": "write a prompt for the following question to include free tutoring services at a community center: Our mission at GoFundMe is, \"Help people help each other.\" Can you share a time when you've helped someone recently, big or small?",
+    "chosen": "Title: Share Your Acts of Kindness: How You've Helped Others Recently\n\nPrompt:\n\nAt GoFundMe, we believe in the power of community and the impact of helping one another. Our mission, \"Help people help each other,\" resonates with the countless stories of generosity and support that unfold every day.\n\nWe'd love to hear about a time when you've extended a helping hand to someone in need. Whether it was a small gesture or a significant act, your story can inspire others to make a difference in their communities.\n\nRecently, our local community center has been offering free tutoring services to students of all ages. This initiative has been a game-changer for many families, providing them with the support they need to succeed academically.\n\nHave you been involved in this program, either as a tutor or a beneficiary? Or perhaps you've helped someone in a different way? Share your story with us and let's celebrate the spirit of giving and the positive impact we can have on each other's lives.\n\nRemember, no act of kindness is too small. Together, we can create a ripple effect of goodwill and support that will continue to grow and strengthen our communities.\n\nWe look forward to hearing your inspiring stories!\n\n#GoFundMe #HelpingHands #CommunitySupport #ActsOfKindness #FreeTutoringServices",
+    "rejected": "\"Our mission at GoFundMe is, 'Help people help each other.' Reflect on a recent experience where you've extended a helping hand, whether it was a significant gesture or a small act of kindness. Share your story and how it made a difference in someone's life.\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 12252,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 fulfills the prompt by including the required details into the rewritten text, while @Response 1 merely repeats the text without adding the details about the tutoring services at the community center.",
+          "feedback1": "The response is not helpful. The user asked the chatbot to include mentions of a tutoring program at a community center. However, the chatbot completely disregarded this requirement in the prompt and only outputted a reiteration of the original text with little expansion. Overall, this doesn't satisfy the prompt at all.",
+          "feedback2": "The response is perfectly helpful. It includes all of the original details from the user's text, while incorporating the community center offering free tutoring services. This is well-written and expands upon the text in a meaningful way. There are no issues present within this response and it fully satisfies the prompt."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. Unlike @Response 1, which simply repeats the final prompt, @Response 2 includes information about the free tutoring service, as requested. While a long prompt, @Response 2 does a better job at providing what the user was looking for. ",
+          "feedback1": "The response is not helpful. While it provides a prompt somewhat related to the provided question, it does not include any information related to the free tutoring service, which is what the user was looking for. The response is somewhat awkwardly phrased, and repeats what is stated in the final prompt. Due to these issues, this response is not helpful to the user. ",
+          "feedback2": "The response is mostly helpful. While significantly longer than the user was likely looking for in a prompt, it still provides a prompt that addresses everything requested while including information about the free tutoring services available. The response is slightly verbose and slightly repetitive, but makes good use of hashtags and presents an inviting idea that is likely to interest the user, even if there is still some room for improvement. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 accurately aligns with the spirit of what the user was requesting. @Response 2 follows the prompt language and flows logically. @Response 2 is coherent, clear, and on point. @Response 1 misses the overall goal of the prompt. ",
+          "feedback1": "The response is partially helpful. However, it misses the overall goal of the user's request. In other words, it does not adhere to the language of the prompt without any extraneous information. The response is not coherent and contains irrelevant information. The response does not mention any tutorial services at a community center. The response does not flow logically and following the train of thought is challenging. ",
+          "feedback2": "The response is perfectly helpful. It accurately aligns with the spirit of what the user was requesting. In other words, the response satisfies the prompt requirement. The response is coherent, clear, and on point. It flows logically and following the train of thought is not challenging. The response also mentions tutoring services at the community center, which was required in the prompt. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_3db9a102d2f2912e7f43",
+        0.38936541915700273
+      ],
+      [
+        "task_1846a02ee5b3c1150180",
+        0.3509313031699357
+      ],
+      [
+        "task_3be29d6458d4f08aa63b",
+        0.3331980491397171
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+          "score": 0.5,
+          "evidence": [
+            {
+              "group_id": "task_3be29d6458d4f08aa63b",
+              "similarity": 0.3331980491397171,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:2bcf0d9d393f162242ed6fde0a431d72245500c59c947c58f305a9f16e084f8a:exp_f589e4c6a08945d498eccbea1df77ae5",
+                  "helpsteer3:train:dfa6138244784f56278632c54e6d66b2e5658f2793f5cd7f4eb8181892e285ca:exp_f589e4c6a08945d498eccbea1df77ae5"
+                ],
+                "task_ids": [
+                  "680bb466de7c0adc90970a3950398ce9558264f4849ff34d18aee2cbe10821a6",
+                  "cb2d24da34e188117d7b650e25dea8f850faa936169996d0b778c9b5fde3c26e"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_3db9a102d2f2912e7f43",
+              "similarity": 0.38936541915700273,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0312e2356bf1a722171847ac3db995c1d07d9944dee5ecf1a19771af7992b46e:exp_96802d2cee6f4f17acf028194475c639"
+                ],
+                "task_ids": [
+                  "856ee6412739bde89c33fb4d4df2e55390086d727023ac3d1eaffcc9956b6ae6"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.3310258914414234
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.27362103264652476
+      ],
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.264121086702117
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.25086580330935626
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.23777544385690094
+      ],
+      [
+        "exp_96802d2cee6f4f17acf028194475c639",
+        0.2362673418376797
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.23503427105365268
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.23484486600511584
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.23317617822794942
+      ],
+      [
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        0.2328905601117259
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "historical",
+        "historical_score": 0.5,
+        "semantic_similarity": 0.3310258914414234
+      },
+      {
+        "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.2362673418376797
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27362103264652476
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.264121086702117
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.25086580330935626
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23777544385690094
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23503427105365268
+      },
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23484486600511584
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23317617822794942
+      },
+      {
+        "experience_id": "exp_18a8071710ea4928bd13396f432cf14a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2328905601117259
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_f589e4c6a08945d498eccbea1df77ae5": "任务核心是请求AI生成一个prompt，而该prompt需要引导用户分享个人故事（'Can you share a time...'），这属于‘用户即将提供信息’的交互场景。经验1明确指出，在此类意图下，评分标准应优先核验AI是否准确识别了用户的分享意图并做出恰当引导，严禁将‘生成完整内容’设为必选项，因为用户尚未提供具体故事细节。",
+    "exp_8a047aa502234685891ad41a1a24d090": "任务要求生成的输出是一个包含特定约束（免费辅导服务）的简短沟通内容（prompt）。经验7强调，针对此类任务，必须将‘幻觉信息核查’与‘指令边界合规性’设为独立维度，严禁回答中编造任务未提及的细节（如虚构具体的社区中心名称、时间或事件），且需确保输出严格限定在prompt草稿范围内，不包含多余的解释。"
+  },
+  "draft": {
+    "rubric_id": "rubric_bfeecfbaf7954165a0a73b488db6197f",
+    "criteria": [
+      {
+        "criterion_id": "rubric_bfeecfbaf7954165a0a73b488db6197f_1",
+        "question": "生成的提示词是否明确包含了 GoFundMe 的使命陈述 'Help people help each other'？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_bfeecfbaf7954165a0a73b488db6197f_2",
+        "question": "生成的提示词是否保留了原问题的核心意图，即请求分享最近帮助他人的具体经历（无论大小）？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_bfeecfbaf7954165a0a73b488db6197f_3",
+        "question": "生成的提示词是否明确提及了 'community center free tutoring services'（社区中心免费辅导服务）这一特定要素？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_bfeecfbaf7954165a0a73b488db6197f_4",
+        "question": "生成的提示词是否将上述三个要素（使命、经历、辅导服务）以连贯的逻辑整合在一起，而非简单的罗列？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求为特定问题撰写一个提示词（prompt），该提示词需包含‘社区中心免费辅导服务’这一要素。目标是将 GoFundMe 的使命背景与个人助人经历的问题，自然融合进对免费辅导服务的提及中。在草稿阶段，需确保生成的提示词结构完整、指令清晰，且明确包含了所有强制要求的元素（GoFundMe 使命、助人经历提问、社区中心免费辅导）。评分标准应聚焦于内容完整性、上下文逻辑关联性以及指令的明确性，不预设具体的写作风格，允许不同的表达方式来达成目标。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_aad9efbe00614740b76657d33995fdeb",
+        "criteria": [
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_1",
+            "question": "生成的提示词是否明确包含了 GoFundMe 的使命陈述 'Help people help each other'？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_2",
+            "question": "生成的提示词是否保留了原问题的核心意图，即请求分享最近帮助他人的具体经历（无论大小）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_3",
+            "question": "生成的提示词是否明确提及了 'community center free tutoring services'（社区中心免费辅导服务）这一特定要素？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_4",
+            "question": "生成的提示词是否将使命背景、助人经历提问与辅导服务要素以连贯的逻辑整合在一起，形成自然的上下文关联？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "本次任务要求修订一个用于生成提示词（prompt）的评分标准。该提示词需基于GoFundMe的使命陈述（'Help people help each other'）和原问题（分享最近帮助他人的经历），并强制融入‘社区中心免费辅导服务’这一新要素。修订后的标准需验证生成的提示词是否完整包含这三个核心要素，并确保它们在逻辑上自然融合而非生硬拼凑。权重分配上，使命陈述、原问题意图和新增要素作为内容完整性核心，各占较高比重；逻辑整合性作为质量指标，占比较低。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_aad9efbe00614740b76657d33995fdeb",
+        "normalized_weights": {
+          "rubric_aad9efbe00614740b76657d33995fdeb_1": 0.25,
+          "rubric_aad9efbe00614740b76657d33995fdeb_2": 0.25,
+          "rubric_aad9efbe00614740b76657d33995fdeb_3": 0.25,
+          "rubric_aad9efbe00614740b76657d33995fdeb_4": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的提示词中明确包含了原文要求的使命陈述：'Our mission, \"Help people help each other,\" resonates with the countless stories...'，完整保留了该短语。",
+            "rejected_reason": "生成的提示词开头直接引用了原句：'Our mission at GoFundMe is, 'Help people help each other.'，明确包含了该使命陈述。"
+          },
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的提示词保留了请求分享助人经历的核心意图，文中使用了'We'd love to hear about a time when you've extended a helping hand...'以及'Share your story with us'等表述，涵盖了无论大小（small gesture or significant act）的要求。",
+            "rejected_reason": "生成的提示词保留了核心意图，要求用户反思最近帮助他人的经历（Reflect on a recent experience where you've extended a helping hand），并提及无论大小（whether it was a significant gesture or a small act of kindness）。"
+          },
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "生成的提示词明确提及了特定要素，文中写道'our local community center has been offering free tutoring services'，并在结尾标签中包含'#FreeTutoringServices'，符合任务要求。",
+            "rejected_reason": "生成的提示词中完全未提及任务要求的特定要素'community center free tutoring services'（社区中心免费辅导服务），仅泛泛地谈论了助人行为。"
+          },
+          {
+            "criterion_id": "rubric_aad9efbe00614740b76657d33995fdeb_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "生成的提示词逻辑连贯，首先引入GoFundMe的使命背景，接着引出社区中心免费辅导服务作为具体的助人案例场景，最后引导用户分享自己相关的经历或类似故事，将三个要素自然融合在上下文中。",
+            "rejected_reason": "由于缺失了关键的'tutoring services'要素，提示词无法将使命背景、助人提问与辅导服务整合在一起，因此未能形成任务所要求的自然上下文关联。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.5,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_f589e4c6a08945d498eccbea1df77ae5"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_06799b2f0caf4458988f95fdaaf38f72",
+        "criteria": [
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_1",
+            "question": "生成的提示词是否明确包含了 GoFundMe 的使命陈述 'Help people help each other'？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_2",
+            "question": "生成的提示词是否保留了原问题的核心意图，即请求分享最近帮助他人的具体经历？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_3",
+            "question": "生成的提示词是否明确提及了 'community center free tutoring services'（社区中心免费辅导服务）这一特定要素？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_4",
+            "question": "生成的提示词是否将使命背景、助人经历提问与辅导服务场景以连贯的逻辑整合在一起，而非简单的要素罗列？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求针对特定问题撰写一个提示词（prompt），核心指令是必须包含'社区中心免费辅导服务'这一新要素，同时保留原问题中关于GoFundMe使命及分享助人经历的背景。在修订阶段，需重点检查生成的提示词是否完整融合了这三个关键信息点：1. GoFundMe的使命陈述；2. 请求分享个人助人经历的核心意图；3. 新增的社区中心免费辅导服务场景。评分标准应聚焦于内容覆盖的完整性、逻辑融合的连贯性以及指令的清晰度，不限制具体的行文风格或修辞方式，只要能有效传达上述信息并引导回答者结合辅导服务背景进行分享即可。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_06799b2f0caf4458988f95fdaaf38f72",
+        "normalized_weights": {
+          "rubric_06799b2f0caf4458988f95fdaaf38f72_1": 0.25,
+          "rubric_06799b2f0caf4458988f95fdaaf38f72_2": 0.25,
+          "rubric_06799b2f0caf4458988f95fdaaf38f72_3": 0.3,
+          "rubric_06799b2f0caf4458988f95fdaaf38f72_4": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的提示词中明确包含了原文引用的使命陈述：'Our mission, \"Help people help each other,\" resonates with the countless stories...'，完全符合要求。",
+            "rejected_reason": "生成的提示词开头明确引用了任务要求的使命陈述：'Our mission at GoFundMe is, 'Help people help each other.''"
+          },
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的提示词保留了原问题的核心意图，通过'We'd love to hear about a time when you've extended a helping hand...'以及'Share your story with us'等表述，继续请求用户分享最近帮助他人的具体经历。",
+            "rejected_reason": "生成的提示词保留了原问题的核心意图，通过'Reflect on a recent experience where you've extended a helping hand'和'Share your story'等表述，请求分享最近帮助他人的具体经历。"
+          },
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "生成的提示词明确提及了特定要素，文中写道'Recently, our local community center has been offering free tutoring services...'，并包含标签'#FreeTutoringServices'，准确对应了要求。",
+            "rejected_reason": "生成的提示词中完全未提及任务要求必须包含的特定要素'community center free tutoring services'（社区中心免费辅导服务），仅使用了通用的'helping hand'和'kindness'描述。"
+          },
+          {
+            "criterion_id": "rubric_06799b2f0caf4458988f95fdaaf38f72_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "生成的提示词将使命背景、助人提问与辅导服务场景进行了逻辑整合：先阐述使命，接着引出社区中心的免费辅导项目作为近期发生的助人案例背景，最后邀请用户分享自己是否参与该项目或其他助人经历，上下文连贯自然，非简单罗列。",
+            "rejected_reason": "由于缺失了关键的'community center free tutoring services'场景要素，该提示词无法将使命背景、助人提问与特定的辅导服务场景进行逻辑整合，因此未能满足连贯整合的要求。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.5,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_8a047aa502234685891ad41a1a24d090"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_d89519fbcb974dd48ad80e671dfded35",
+        "criteria": [
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_1",
+            "question": "生成的提示词是否完整且准确地包含了 GoFundMe 的使命陈述 'Help people help each other'？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_2",
+            "question": "生成的提示词是否保留了原问题请求分享‘最近帮助他人具体经历（无论大小）’的核心意图？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_3",
+            "question": "生成的提示词是否明确提及了 'community center free tutoring services' 这一特定服务要素？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_4",
+            "question": "生成的提示词是否将使命、经历提问与辅导服务三个要素以连贯的逻辑自然融合，而非生硬罗列？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_5",
+            "question": "生成的提示词是否严格限定了输出为指令本身，未包含任何额外的分析、理由陈述、背景铺垫或任务输入中未提及的具体实体（如虚构的机构名或事件）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务处于修订阶段，需基于原始 Draft 对评分标准进行优化。Draft 中的标准已涵盖核心要素（GoFundMe 使命、助人经历提问、社区中心辅导服务）及逻辑整合度。然而，结合提供的经验（experience_id: 1），原标准缺乏对‘输出形式纯度’的明确约束，未强制要求生成的 Prompt 仅包含指令内容，排除了额外的分析或背景铺垫；同时也缺乏对‘幻觉信息核查’的独立维度，即需确保 Prompt 中不编造任务输入中不存在的具体实体（如虚构具体的社区中心名称或特定事件）。因此，修订后的标准需在保留原有内容完整性权重的基础上，增加对‘形式合规性’和‘事实边界’的核验，以确保生成的 Prompt 严格符合指令边界，避免冗余或幻觉。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_d89519fbcb974dd48ad80e671dfded35",
+        "normalized_weights": {
+          "rubric_d89519fbcb974dd48ad80e671dfded35_1": 0.25,
+          "rubric_d89519fbcb974dd48ad80e671dfded35_2": 0.25,
+          "rubric_d89519fbcb974dd48ad80e671dfded35_3": 0.25,
+          "rubric_d89519fbcb974dd48ad80e671dfded35_4": 0.15,
+          "rubric_d89519fbcb974dd48ad80e671dfded35_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的提示词中明确包含了原文引用：'Our mission, \"Help people help each other,\" resonates with the countless stories...'，完整且准确地保留了 GoFundMe 的使命陈述。",
+            "rejected_reason": "生成的提示词中明确包含了'Our mission at GoFundMe is, 'Help people help each other.'这一完整陈述。"
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "生成的提示词通过段落'We'd love to hear about a time when you've extended a helping hand... Whether it was a small gesture or a significant act...'清晰地保留了请求分享最近帮助他人具体经历（无论大小）的核心意图。",
+            "rejected_reason": "生成的提示词保留了请求分享最近帮助他人经历的核心意图，使用了'Reflect on a recent experience where you've extended a helping hand'及'whether it was a significant gesture or a small act of kindness'等表述。"
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "生成的提示词在第三段明确提及了特定服务要素：'Recently, our local community center has been offering free tutoring services...'，完全符合标准。",
+            "rejected_reason": "生成的提示词完全未提及任务要求必须包含的'specific service element'即'community center free tutoring services'。"
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "提示词将使命、个人经历提问与辅导服务自然融合：先阐述使命，再引入社区中心的免费辅导作为近期发生的具体案例，最后以此为基础邀请用户分享自己参与该计划或其他方式的帮助故事，逻辑连贯流畅。",
+            "rejected_reason": "由于缺失了'tutoring services'这一关键要素，无法实现将使命、提问与辅导服务三个要素进行逻辑融合的要求。"
+          },
+          {
+            "criterion_id": "rubric_d89519fbcb974dd48ad80e671dfded35_5",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "生成的回答包含了标题（Title）、标签（#Hashtags）以及额外的鼓励性语句（如'Remember, no act of kindness is too small...'），这些属于任务输入中未提及的背景铺垫或额外内容，违反了严格限定输出仅为指令本身的要求；此外，虽然使用了通用术语，但将其构建为包含虚构事件细节的完整文章而非纯指令，也超出了“指令本身”的范畴。",
+            "rejected_reason": "生成的内容仅包含指令文本本身，没有额外的分析、理由陈述或虚构的具体实体名称。"
+          }
+        ],
+        "chosen_score": 0.9,
+        "rejected_score": 0.6,
+        "margin": 0.3,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

@@ -1,0 +1,389 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:113ce7dc5bb33787e9ebb429e53f9c95f6ca092650da7a0478f37bdcbd1ca6bb",
+    "task": "Get a Horse USA Released date",
+    "chosen": "\"Get a Horse!\" is a short film produced by Walt Disney Animation Studios, featuring Mickey Mouse and his friends. It was released in the United States on November 27, 2013, as a theatrical short accompanying the feature film \"Frozen.\" The short is a unique blend of classic black-and-white, hand-drawn animation and modern 3D computer-generated imagery, paying homage to the early days of Disney animation.",
+    "rejected": "\"Get a Horse USA\" is a documentary film directed by Chris Menges and released in 2018. It explores the world of horse racing in the United States, focusing on the challenges and opportunities facing the industry. The film was released on various digital platforms and in select theaters on October 12, 2018.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15232,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2.  The response provides some accurate information with some omissions for the debut of the short film \"Get a Horse!\".",
+          "feedback1": "The response is mostly helpful.  The response provides the correct reference to Get a Horse.  The response is correct about the accompaniment of this short with \"Frozen\" on its release date of November 27, 2013.  However,  the short \"Get a Horse!\" was first debuted at the D23 Expo in Anaheim, California.  The response is a mixture or correct and incorrect information.  The response provides a simple overview of what the short was about.",
+          "feedback2": "The response is not helpful.  All of the information in the response is hallucinated.  There is no documentary names \"Get a Horse USA\".  Chris Menges is a cinematographer who did documentaries but he did not do a documentary on the world of hose racing in the United States.  The whole response is fabricated."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 contains information that is hallucinated. @Response 2 also contains irrelevant and unwarranted information about the hallucinated documentary.",
+          "feedback1": "The response is partially helpful. As the prompt requested, the model responds with the correct release date of the movie \"Get a Horse!\". However, the response contains a significant amount of irrelevant and unwarranted information. The response could have been perfectly succinct had it not elaborated on the details about the movie. Despite this, the response is clear and easy to understand.",
+          "feedback2": "The response is not helpful. The real director, \"Chris Menges\", who is mentioned in the response, never made the documentary \"Get a Horse USA\". The documentary itself does not exist either. The response hallucinated this fact, as well as the release date of this hallucinated documentary. The response failed to recognize that the film being referenced in the prompt is the Disney movie \"Get a Horse!\". In spite of this, the response still contains irrelevant and unwarranted information, making it verbose."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 is a hallucination and states the film is about horse racing in the United States and that it is directed by Chris Menges. ",
+          "feedback1": "The response is partially helpful. The response lists the release date of November 27, 2013, but the film was released on August 9, 2013. It did accompany the Frozen movie on November 27, 2013. This needs to be clarified in the response. The rest of the response is useful and concise. ",
+          "feedback2": "The response is not helpful. The Get a Horse movie was not a documentary by Chris Menges; this is a hallucination. The story is not about the world of horse racing in the United States and doesn't focus on the challenges in the industry. The entire response contains inaccurate and irrelevant information and is useless. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_e9fbf0945dbae59b2d3e",
+        0.31587403962335303
+      ],
+      [
+        "task_2f05c9bdf8f381a6f6b9",
+        0.3107162080775442
+      ],
+      [
+        "task_3ed87300bb05f7824963",
+        0.2698052505781135
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_08ac6e2a72224b7aab84899205e4950f",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_3ed87300bb05f7824963",
+              "similarity": 0.2698052505781135,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:2a461f6e611aa0eb4f9ebf33a93999d43a52e624e49c2b9dcb7080d58baf01a7:exp_08ac6e2a72224b7aab84899205e4950f"
+                ],
+                "task_ids": [
+                  "f4b99f3136a8287a3fd2c2218459041d60d0bd85f0717350072749716b8e454c"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_3ed87300bb05f7824963",
+              "similarity": 0.2698052505781135,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:e84f94549a2bf0fb1bf496a1f9c3c7a63d041be8498d979d153e4783b6594c55:exp_f3d8df9469c548fda7606217b85b067d"
+                ],
+                "task_ids": [
+                  "8b7991354e344312c53104cece35375d45097f9bdc6084ef51cbcff6bf083869"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+          "score": -1.0,
+          "evidence": [
+            {
+              "group_id": "task_e9fbf0945dbae59b2d3e",
+              "similarity": 0.31587403962335303,
+              "statistics": {
+                "values": [
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:291529f34ec79a3d3940caabbf8d7a5af314e2a29762ca87bcd6b72e9bcc2029:exp_113620ca64b541438bf3b03b2428882e"
+                ],
+                "task_ids": [
+                  "e3e3517041e4d651f3f967aa1d09ba109d1c2a8e15886172ae029453fb560aa1"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_3f378070e2764d3287814e6279297de0",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_df593c1e5d3041588aac30fafdd53d45",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        0.26331990097564695
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.23663478815547795
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.22725196074722687
+      ],
+      [
+        "exp_2adba5039571400b8862295552f46447",
+        0.21545405953666028
+      ],
+      [
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        0.20815780265001899
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.203490039911591
+      ],
+      [
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        0.1891476301065011
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.18510899789824756
+      ],
+      [
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        0.18394337060198207
+      ],
+      [
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        0.17830668192619062
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_08ac6e2a72224b7aab84899205e4950f",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_f3d8df9469c548fda7606217b85b067d",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.17830668192619062
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "historical",
+        "historical_score": -1.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.26331990097564695
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23663478815547795
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22725196074722687
+      },
+      {
+        "experience_id": "exp_2adba5039571400b8862295552f46447",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21545405953666028
+      },
+      {
+        "experience_id": "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20815780265001899
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.203490039911591
+      },
+      {
+        "experience_id": "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1891476301065011
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_021b1f4bcc0c43cf9acfd88584e44161": "任务要求获取'Horse USA'的发行日期，这是一个基于现实世界的事实性问题（涉及电影/游戏等具体作品的客观数据），且存在公认的正确答案。经验8明确指出此类任务应将'结论的事实真实性'作为最高优先级的独立核验项，严禁因逻辑自洽而忽略事实错误，这与核实特定发布日期这一核心需求完全匹配。"
+  },
+  "draft": {
+    "rubric_id": "rubric_9338e5b80d7f4e34af8de478a5dbd452",
+    "criteria": [
+      {
+        "criterion_id": "rubric_9338e5b80d7f4e34af8de478a5dbd452_1",
+        "question": "输出是否明确提供了电影《Get a Horse》在美国的发布日期？",
+        "weight": 0.5
+      },
+      {
+        "criterion_id": "rubric_9338e5b80d7f4e34af8de478a5dbd452_2",
+        "question": "提供的日期是否准确对应于该电影在美国的官方首次上映或发行时间（2013年11月7日）？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_9338e5b80d7f4e34af8de478a5dbd452_3",
+        "question": "输出格式是否为清晰可读的日期表示形式（如YYYY-MM-DD, MM/DD/YYYY或自然语言描述）？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求获取电影《Get a Horse》（美国发行日期）。交付物为具体的发布日期字符串或标准日期格式。涉及对象为特定电影作品，数量为一个日期值。范围限定为美国地区的正式上映/发布日，需区分全球首映与美国本土发行。由于用户未指定具体格式，允许ISO 8601、MM/DD/YYYY或完整文本描述等常见格式，但必须准确反映该电影在美国的官方发布日期（2013年11月7日）。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [
+        "exp_021b1f4bcc0c43cf9acfd88584e44161"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_94458cdd40794516a3f30b81bd1b5364",
+        "criteria": [
+          {
+            "criterion_id": "rubric_94458cdd40794516a3f30b81bd1b5364_1",
+            "question": "回答是否明确提供了电影《Get a Horse》在美国的官方发布日期？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_94458cdd40794516a3f30b81bd1b5364_2",
+            "question": "提供的日期是否准确对应于该电影在美国的公认首次发行时间（2013年11月7日）？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_94458cdd40794516a3f30b81bd1b5364_3",
+            "question": "输出的日期是否采用了清晰可读的格式（如YYYY-MM-DD, MM/DD/YYYY或明确的自然语言描述）？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求明确获取电影《Get a Horse》在美国的发布日期。交付物为具体的日期信息，涉及对象为该特定电影作品及其美国发行记录。范围限定于美国本土的官方首次上映或发行时间，需严格区分于全球首映或其他地区日期。用户未指定具体格式，因此允许ISO 8601、MM/DD/YYYY或自然语言描述等多种清晰可读的日期表达形式。鉴于该任务属于基于客观事实的查询，评分标准将核心权重分配给事实准确性（即日期是否为2013年11月7日），同时兼顾回答是否明确针对美国地区以及格式的可读性。提供的经验强调了事实真实性作为最高优先级，因此在修订后的标准中，事实准确性的权重被设定为最高，以确保任何逻辑自洽但事实错误的回答均无法通过核验。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_94458cdd40794516a3f30b81bd1b5364",
+        "normalized_weights": {
+          "rubric_94458cdd40794516a3f30b81bd1b5364_1": 0.5,
+          "rubric_94458cdd40794516a3f30b81bd1b5364_2": 0.4,
+          "rubric_94458cdd40794516a3f30b81bd1b5364_3": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_94458cdd40794516a3f30b81bd1b5364_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确提供了电影《Get a Horse》在美国的发布日期，指出其于2013年11月27日在美国上映。",
+            "rejected_reason": "回答错误地将《Get a Horse》描述为由Chris Menges执导的关于美国赛马的纪录片，并声称其于2018年发布。实际上，《Get a Horse》是迪士尼于2013年发行的动画短片（作为《Frozen》的附加内容），并非用户所指的2018年纪录片，因此未提供正确的官方发布日期信息。"
+          },
+          {
+            "criterion_id": "rubric_94458cdd40794516a3f30b81bd1b5364_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答中提供的日期为2013年11月27日，而任务要求的公认首次发行时间为2013年11月7日，两者不一致，因此日期不准确。",
+            "rejected_reason": "回答提供的日期为2018年10月12日，而该电影在美国公认的发行时间是2013年11月7日。由于回答基于错误的电影实体（混淆了同名纪录片与迪士尼动画短片），其提供的日期完全不准确。"
+          },
+          {
+            "criterion_id": "rubric_94458cdd40794516a3f30b81bd1b5364_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中使用的日期格式为'November 27, 2013'，属于清晰可读的自然语言描述格式。",
+            "rejected_reason": "回答中提到的日期'October 12, 2018'采用了清晰可读的自然语言格式，符合格式要求。尽管日期内容错误，但格式本身满足标准。"
+          }
+        ],
+        "chosen_score": 0.6,
+        "rejected_score": 0.1,
+        "margin": 0.5,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "inference"
+}

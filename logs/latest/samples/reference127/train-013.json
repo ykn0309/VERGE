@@ -1,0 +1,390 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:cd6ad253ae74118cd9a196d1de8aa62b9f8e852a2e891db6cb40ebdf0061c03f",
+    "task": "‘I insist he stops talking’, ‘[…] stop talking’, or ‘[…] stopped talking’?",
+    "chosen": "The correct option is '[he] stop talking'. The sentence \"I insist he stops talking\" is in the imperative mood, while \"[he] stopped talking\" is in the past tense. The option \"[...] stop talking\" is the present tense and is the correct choice if you want to express a command or request for the person to stop talking in the current moment.",
+    "rejected": "The correct tense to use in this context would be the imperative, as you are giving a command. So, \"He stops talking\" would be the imperative form, but since you're addressing someone else, it should be \"He stops talking\" or \"He should stop talking.\" If you want to express that the action has been completed, you would use the past tense, but that doesn't fit the context of a command, so \"He stopped talking\" would not be appropriate in this case.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 17450,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. Both responses provided correct information based on the writing, but @Response 1 provided an answer between the options given by the user, while @Response 2 did not and had irrelevant information. ",
+          "feedback1": "The response is perfectly helpful. The response answers the user's request well and correctly. The response also correctly identifies the mood of the sentence, as an imperative mood. The model also identifies the tenses correctly, with stopped as a past tense and stop as a present tense. The model expands on the correct option, which is stop talking, and gives reasoning behind why the first option is correct. \n",
+          "feedback2": "The response is partially helpful. The response misses the overall request of the user. The user provided the model with two options, but the model disregarded the options and gave other options. The response tried to answer the user's request, but did so with a different option that was not given to the model."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because @Response 2 misses the prompt requirement and gives an incorrect answer. @Response 2 misses that the answer must begin with \"...insist\" and therefore requires the subjunctive tense (he stop).",
+          "feedback1": "The response is partially helpful. The response does provide the correct answer but has other errors. The correct answer, \"insist he stop talking\" is in the present tense, and (he stop) is in the subjunctive mood. \"He stop\" must be subjunctive because the person is expressing a wish or demand (insist). The wording of the response is confusing as it states that it is the correct choice if you want to \"express a command.\" \nThe imperative/command mood would be, \"Stop talking.\" But the response incorrectly states that \"insist he stops talking\" is the imperative mood. Insist is in the indicative mood. Using \"He stops\" here is incorrect because the person is expressing a wish or demand about his actions. The language could be understood by a high school graduate. The length is fine.",
+          "feedback2": "The response is not helpful. The response has multiple errors. The response states that the correct response would be the imperative. The imperative would be \"Stop talking.\" However, the prompt indicates that all the choices must begin with \"...insist.\" The user wants to know what follows \"...insist.\" Since \"...insist\" is expressing a wish/demand, it must be followed by the subjunctive. The subjunctive would be \"he stop.\" Therefore the correct answer is \"...insist he stop.\" The language could be understood by a high school graduate. The length is fine."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. This is because @Response 1 provides the correct answer while @Response 2 does not, even though @Response 1 contains some misinformation and fails to provide the correct reasoning. @Response 2 is also extremely confusing and nonsensical, and contains irrelevant information.",
+          "feedback1": "The response is partially helpful. It provides the correct answer to the user's query. However, there are several issues concerning accuracy and coherence: the response does not explain why \"stop\" is the correct verb form; \"stop talking\" is not in the present tense (it's tenseless), and that does not explain why the verb form is correct; \"stopped talking\" is in the past tense, but this also does not explain why it is incorect; and \"insist he stops talking\" is not in the imperative mood. The response is missing the correct explanation, which is that \"he stop talking\" is in the subjunctive mood. The response also contains inconsistent, confusing formatting in the way it uses brackets and ellipses.",
+          "feedback2": "The response is not helpful. First, it provides an incorrect answer to the user's query. It also describes the imperative as the \"correct tense,\" but the imperative is a mood, not a tense, and furthermore, \"insist he stops talking\" isn't even in the imperative mood. The response also provides confusing, inconsistent information: it states that \"He stops talking\" is the right answer, but then adds that \"since you're addressing someone else, it should be 'He stops talking' or 'He should stop talking.'\" Here it appears to amend its previous answer by giving the same answer (\"He stops talking\"). It also handles the phrase \"He stops talking\" as if it were a standalone sentence, rather than part of a larger sentence. Furthermore, neither of these two answers has anything to do with the fact that the speaker is addressing someone else. The response concludes by providing irrelevant information, offering a suggestion only to then walk that suggestion back."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_7a9bf6acc30d9151fb90",
+        0.2908473943946256
+      ],
+      [
+        "task_fd7706a3c740c67b66a4",
+        0.2493488058521573
+      ],
+      [
+        "task_eeae1c5c15c8b3758bd9",
+        0.24690216156500827
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_09eb932d6d8240b489b819c8bb9306b2",
+          "score": 1.0,
+          "evidence": [
+            {
+              "group_id": "task_fd7706a3c740c67b66a4",
+              "similarity": 0.2493488058521573,
+              "statistics": {
+                "values": [
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:63e48b1e4bf5455341e4dcbec7ff4e80400bed77605f6e1b460ac4e27dd1998a:exp_09eb932d6d8240b489b819c8bb9306b2"
+                ],
+                "task_ids": [
+                  "8ad320671d89c8c77a129ca5f6c603bc260cfa111016fe4add0ec8aeeb81092c"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_e6c897802cef421ba20109560cd6b0b2"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_09eb932d6d8240b489b819c8bb9306b2",
+        0.27845332428570463
+      ],
+      [
+        "exp_e6c897802cef421ba20109560cd6b0b2",
+        0.23103378669415
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_09eb932d6d8240b489b819c8bb9306b2",
+        "source": "historical",
+        "historical_score": 1.0,
+        "semantic_similarity": 0.27845332428570463
+      },
+      {
+        "experience_id": "exp_e6c897802cef421ba20109560cd6b0b2",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23103378669415
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_09eb932d6d8240b489b819c8bb9306b2": "当前任务核心在于判断模型在面临输入歧义（如时态/语态选择 'stops' vs 'stop' vs 'stopped'）且缺乏上下文时，是否应进行澄清或合理推断；经验 1 明确针对‘信息不足、无历史对话上下文’的场景，并指导评分标准不应强制要求单一事实假设，而是评估模型处理歧义的‘情境适应性’，这与任务中考察模型如何处理模糊指令的意图高度一致。"
+  },
+  "draft": {
+    "rubric_id": "rubric_8106b1513eb64abd9405b0fca22d6f94",
+    "criteria": [
+      {
+        "criterion_id": "rubric_8106b1513eb64abd9405b0fca22d6f94_1",
+        "question": "标准是否明确区分了'insist'表示‘坚决要求’（接虚拟语气/subjunctive）与‘坚持认为’（接陈述语气/indicative）这两种不同含义？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_8106b1513eb64abd9405b0fca22d6f94_2",
+        "question": "标准是否指出在表示‘坚持认为（事实）’的语境下，从句动词应采用陈述语气的一般现在时形式（即'stops'），且后续省略结构应保持时态一致（即使用'stop'而非'stopped'）？",
+        "weight": 0.4
+      },
+      {
+        "criterion_id": "rubric_8106b1513eb64abd9405b0fca22d6f94_3",
+        "question": "标准是否解释了为何在给定语境下使用'stopped'是不正确的（除非语境发生根本性转变，如变为过去时的转述，但原句未提供此依据）？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_8106b1513eb64abd9405b0fca22d6f94_4",
+        "question": "标准是否清晰给出了最终的推荐形式（即确认'I insist he stops talking'及其省略形式应匹配'stop'）？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "任务要求针对'I insist he stops talking'这一语境，分析并确定后续省略结构（ellipsis）中动词形式的正确性，即在'I insist he stops talking'与'[...] stop talking'或'[...] stopped talking'之间做出选择。核心在于识别主句谓语动词'insist'（表示坚持某种观点或事实时接陈述语气）对从句及后续省略结构中时态和语气的约束。需要验证输出是否准确指出了在表达‘坚持认为他正在/已经停止说话’这一既定事实的语境下，应使用原形'stop'（虚拟语气不适用此义项，此处为陈述语气的一般现在时）而非过去式'stopped'，或者澄清不同语境下的差异。由于是draft阶段，需生成初步的核验标准，确保涵盖语法一致性、语义逻辑及特定动词用法的准确性。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_5ac29ea42f86465397d1d4d980077d0c",
+        "criteria": [
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_1",
+            "question": "标准是否明确区分了'insist'表示‘坚决要求’（接虚拟语气原形）与‘坚持认为既定事实’（接陈述语气）这两种含义，并确认本题语境属于后者？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_2",
+            "question": "标准是否指出在‘坚持认为既定事实’的语境下，从句动词应遵循时态一致性原则（即主句为一般现在时'stops'，省略结构应保留一般现在时原形'stop'），而非使用过去式'stopped'？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_3",
+            "question": "标准是否清晰解释了为何在当前语境下选择'stopped'是不正确的（除非有明确的过去时转述语境，而题目未提供该依据），并排除了该选项的适用性？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_4",
+            "question": "标准是否给出了最终确定的正确形式结论，即确认'I insist he stops talking'及其省略形式应匹配'stop talking'？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本任务要求针对特定语境（'I insist he stops talking'）下的省略结构动词形式进行核验，核心在于区分'insist'表示‘坚决要求’（接虚拟语气原形）与‘坚持认为’（接陈述语气时态一致）的语义差异。修订阶段需检查初稿标准是否准确覆盖了：1. 'insist'在陈述事实时的时态约束（一般现在时'stops'）；2. 省略结构中动词形式必须与主句/从句保持一致（即使用'stop'而非过去式'stopped'）；3. 明确排除在非转述语境下使用'stopped'的合理性。初稿中关于虚拟语气的描述存在混淆风险（'stops'在此处为陈述语气而非虚拟语气），修订后的标准需修正此术语错误，确保逻辑严密且覆盖所有选项辨析。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_5ac29ea42f86465397d1d4d980077d0c",
+        "normalized_weights": {
+          "rubric_5ac29ea42f86465397d1d4d980077d0c_1": 0.35,
+          "rubric_5ac29ea42f86465397d1d4d980077d0c_2": 0.4,
+          "rubric_5ac29ea42f86465397d1d4d980077d0c_3": 0.15,
+          "rubric_5ac29ea42f86465397d1d4d980077d0c_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未区分'insist'表示‘坚决要求’（接虚拟语气）与‘坚持认为既定事实’（接陈述语气）这两种含义，反而错误地将句子定性为祈使语气（imperative mood），且未确认本题语境属于哪一种情况。",
+            "rejected_reason": "回答未区分'insist'表示‘坚决要求’与‘坚持认为既定事实’的两种含义，反而错误地将语境定性为‘命令（command）’并建议用虚拟语气原形'should stop'或错误的祈使句形式，完全偏离了标准要求的语义辨析。"
+          },
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未指出时态一致性原则的应用逻辑，也未说明在特定语境下为何应保留原形'stop'而非使用过去式'stopped'，其关于时态的解释基于错误的语气判断。",
+            "rejected_reason": "回答未提及时态一致性原则在‘坚持认为既定事实’语境下的应用，也未解释为何主句为一般现在时时应保留从句的一般现在时原形，反而混淆了时态概念，声称过去式不适用是因为语境是命令而非转述事实。"
+          },
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未能清晰解释选择'stopped'为何不正确，反而暗示'stopped'是过去时而'stop'是现在时即可作为选择依据，未排除选项的适用性逻辑。",
+            "rejected_reason": "回答虽然排除了'stopped'，但其理由是基于该词不符合‘命令’语境，而非基于题目语境属于‘坚持认为既定事实’且缺乏过去时转述依据这一逻辑，因此未能正确解释排除该选项的根本原因。"
+          },
+          {
+            "criterion_id": "rubric_5ac29ea42f86465397d1d4d980077d0c_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然回答给出了'[he] stop talking'这一结论，但其理由是基于错误的语法分析（将主句误判为祈使语气），未能正确确认'I insist he stops talking'及其省略形式匹配'stop talking'的语法机制（即虚拟语气用法）。",
+            "rejected_reason": "回答未能给出符合语法规则的正确结论，反而提出使用'He stops talking'作为祈使句或'He should stop talking'，这与题目要求的确认'I insist he stops talking'及其省略形式匹配'stop talking'的陈述语气结论不符。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_09eb932d6d8240b489b819c8bb9306b2"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab",
+        "criteria": [
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_1",
+            "question": "标准是否明确区分了'insist'表示‘坚决要求’（接虚拟语气）与‘坚持认为’（接陈述语气）这两种不同含义及其对应的从句结构？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_2",
+            "question": "标准是否准确指出在给定语境（坚持认为事实）下，主句为一般现在时且从句为陈述语气，因此后续省略结构必须保持时态一致而使用'stop'？",
+            "weight": 0.4
+          },
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_3",
+            "question": "标准是否清晰解释了为何使用'stopped'在原句语境下是不正确的（即缺乏过去时转述或语境转变的依据）？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_4",
+            "question": "标准是否给出了明确的最终推荐形式，确认'I insist he stops talking'对应的省略形式应为'[...] stop talking'？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "本次任务处于'revise'阶段，需基于提供的草稿修订评分标准。核心任务是核验模型能否准确区分'insist'在‘坚决要求’（接虚拟语气/should do/do）与‘坚持认为’（接陈述语气/does）两种语境下的语法差异，并据此判断后续省略结构中动词形式（stop vs stopped）的正确性。原句'I insist he stops talking'明确指向‘坚持认为他停止说话’这一事实陈述，因此后续省略结构应遵循时态一致性原则使用'stop'而非过去式'stopped'。修订后的标准将保留对两种语气的区分、时态一致性的强调以及对错误选项的排除逻辑，同时优化权重分配以突出语义辨析和最终结论的准确性，移除原草稿中关于'draft阶段’的不当描述，确保所有问题均为明确的通过性判定。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab",
+        "normalized_weights": {
+          "rubric_bcb8174f4f5e4301aad154cc88c11cab_1": 0.3,
+          "rubric_bcb8174f4f5e4301aad154cc88c11cab_2": 0.4,
+          "rubric_bcb8174f4f5e4301aad154cc88c11cab_3": 0.2,
+          "rubric_bcb8174f4f5e4301aad154cc88c11cab_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未区分'insist'表示‘坚决要求’（接虚拟语气）与‘坚持认为’（接陈述语气）这两种含义。相反，它错误地将原句'I insist he stops talking'归类为祈使语气（imperative mood），且未提及虚拟语气结构（should stop 或 stop）与陈述语气结构（stops）的区别。",
+            "rejected_reason": "回答未区分'insist'表示‘坚决要求’（接虚拟语气）与‘坚持认为’（接陈述语气）这两种含义，反而错误地将语境定性为祈使句，完全忽略了该词在从句中时态用法的语法区别。"
+          },
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未指出在‘坚持认为事实’的语境下应使用陈述语气。它错误地声称选择'stop'是为了表达命令或请求（command or request），这与题目中隐含的语境分析（即确认原句是陈述语气还是虚拟语气）相悖，且逻辑混乱。",
+            "rejected_reason": "回答未指出在‘坚持认为事实’的语境下应使用陈述语气且保持时态一致，而是声称此处应用祈使语气，并给出了错误的语法分析，导致无法得出正确的省略结构结论。"
+          },
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未能清晰解释为何'stopped'不正确。它仅简单对比了时态（过去时 vs 现在时），却未结合原句语境说明为何不能随意改变时态，也未指出原句并非过去时转述，因此缺乏针对性的语法依据。",
+            "rejected_reason": "回答虽然提到'He stopped talking'不合适，但理由是它不符合‘命令’语境，而非基于原句语境缺乏过去时转述依据这一核心语法逻辑进行解释，归因错误。"
+          },
+          {
+            "criterion_id": "rubric_bcb8174f4f5e4301aad154cc88c11cab_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答虽然给出了'[he] stop talking'作为正确选项，但其推导过程基于错误的语法分析（将原句误判为祈使语气，并声称'stop'用于表达当前时刻的命令）。由于前提错误，其最终推荐形式虽然在字面上可能碰巧符合某种虚拟语气的省略规则，但并未正确确认原句'I insist he stops talking'（陈述语气）对应的省略形式应为'[...] stops talking'，或者未能正确解释为何原句本身可能存在争议，导致结论依据不成立。",
+            "rejected_reason": "回答未给出明确的最终推荐形式确认'I insist he stops talking'对应的省略形式应为'[...] stop talking'，反而建议了不相关的‘He should stop talking’等表达，未能解决用户关于特定省略结构的疑问。"
+          }
+        ],
+        "chosen_score": 0.0,
+        "rejected_score": 0.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，初稿与修订后的评分标准（Rubric 2 & 3）均存在严重的‘预设错误’：它们强制要求模型区分'insist'的两种含义（坚决要求vs坚持认为），并据此判定本题语境属于后者。然而，人工偏好证据明确指出，正确答案的核心逻辑是识别'insist he stop talking'为虚拟语气（subjunctive mood），即表示‘坚决要求’。Chosen回答虽然结论正确（选stop），但其解释将原句误判为祈使语气且未提及虚拟语气；Rejected回答则完全混淆了时态和语气。Judge在评判中未能识别出Chosen回答中关于语气的描述是错误的（实际上原句'I insist he stops talking'若接'stop'应为虚拟语气，但题目给出的选项暗示原句可能是陈述语气或题目本身有陷阱，关键在于用户问的是省略结构匹配）。更关键的失败在于：评分标准的设计者（Generator）基于对题目语境的错误假设（认为题目考察的是陈述语气下的时态一致），导致生成的标准无法有效评估模型是否掌握了正确的虚拟语气规则。Judge虽然指出了模型未区分含义，但未能指出标准本身的前提（即题目必然考察陈述语气）可能本身就是对题目的误读，或者标准过于僵化地要求模型必须按某种特定路径解释，而忽略了模型可能在其他正确路径下得出正确结论。核心问题在于：评分标准设计时，不应预先设定唯一的语境解释（如‘本题必然是陈述语气’），而应允许模型根据语法事实（如虚拟语气标志）进行判断，或者标准应直接针对‘正确选项的语法依据’而非‘对原句语气的特定解读’。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_cd3c5cbd0de6430081fe15e0718c9be3",
+            "method": {
+              "trigger": "当任务涉及多义动词或歧义句式，且正确答案依赖于特定的语法结构（如虚拟语气、倒装等）而非单一语境假设时",
+              "principle": "评分标准不得预设唯一的语境解释作为前提；若正确答案基于特定语法机制（如虚拟语气），标准应聚焦于验证该机制的应用，而非强制要求模型先确认一个可能被误读的语境标签。",
+              "application_guide": "设计标准时，避免使用‘确认本题属于X语境’作为前置条件。应改为：1. 检查模型是否识别出关键语法点（如虚拟语气）并据此推导答案；2. 若模型给出正确结论但使用了不同的（甚至错误的）语境标签，只要其推导逻辑自洽且符合语法规则，不应直接判错；3. 禁止将‘对原句语气的定性’设为唯一正确路径，除非该定性是解决歧义的唯一合法方式。"
+            },
+            "source_task_id": "5df4a481ec23b1a1529932c9fbfc38ed70dc4d05375d415419e96dd1edc51df5",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_cd3c5cbd0de6430081fe15e0718c9be3"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_89011cc92e01455bb70a9d32c8d01a08",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_1",
+                  "question": "标准是否明确阐述了'insist'一词在表示‘坚持认为（陈述事实）’与‘坚决要求（虚拟语气）’时的不同语法搭配规则？",
+                  "weight": 0.4
+                },
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_2",
+                  "question": "标准是否依据主句'insist he stops talking'的陈述语气特征，正确推导出后续省略结构中动词应保持一般现在时原形（即'stop'）以维持时态一致性？",
+                  "weight": 0.3
+                },
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_3",
+                  "question": "标准是否合理解释了在未提供过去时转述语境的情况下，使用过去式'stopped'为何不符合当前句子的语法逻辑？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_4",
+                  "question": "标准是否给出了明确的最终判定，确认'I insist he stops talking'对应的省略形式应为'[...] stop talking'而非'[...] stopped talking'？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "本任务旨在修订针对英语语法辨析的评分标准，核心在于厘清动词'insist'在表示‘坚持认为（事实）’与‘坚决要求（虚拟语气）’时的用法差异，并据此判断后续省略结构（ellipsis）中动词形式应为'stop'还是'stopped'。经验提示指出，评分标准不应预设唯一的语境解释作为绝对前提，而应关注模型是否识别关键语法机制并逻辑自洽地推导答案。因此，修订后的标准需保留对两种语境的区分能力，同时确保验证逻辑聚焦于语法一致性而非强制模型先进行特定的语义定性。权重分配将侧重于核心语法规则的识别（0.4）、时态一致性的推导（0.3）、错误形式的排除逻辑（0.2）以及最终结论的清晰度（0.1）。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_89011cc92e01455bb70a9d32c8d01a08",
+              "normalized_weights": {
+                "rubric_89011cc92e01455bb70a9d32c8d01a08_1": 0.4,
+                "rubric_89011cc92e01455bb70a9d32c8d01a08_2": 0.3,
+                "rubric_89011cc92e01455bb70a9d32c8d01a08_3": 0.2,
+                "rubric_89011cc92e01455bb70a9d32c8d01a08_4": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未阐述'insist'在表示‘坚持认为’（陈述事实）与‘坚决要求’（虚拟语气）时的不同语法搭配规则，反而错误地将原句定性为祈使语气（imperative mood），完全缺失了对该词核心语法用法的解释。",
+                  "rejected_reason": "回答未阐述'insist'在表示‘坚持认为’与‘坚决要求’时的语法搭配区别，反而错误地将语境定性为命令语气并提及祈使句用法。"
+                },
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未能依据主句特征正确推导省略结构中的动词形式，其理由是基于错误的‘祈使语气’前提进行对比，而非分析'stops'这一第三人称单数形式所隐含的虚拟语气或陈述语气逻辑，导致推导过程无效。",
+                  "rejected_reason": "回答未能依据主句特征正确推导后续动词形式，其声称'He stops talking'是祈使句形式属于语法事实错误，且未体现时态一致性逻辑。"
+                },
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_3",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答没有合理解释为何使用过去式'stopped'不符合语法逻辑，而是简单地将'stopped'标记为过去时并与'stop'的现在时进行对比，未触及语境转换和时态一致性背后的深层语法规则。",
+                  "rejected_reason": "回答虽提到过去式不合适，但理由是基于“动作已完成”而非语法规则或上下文逻辑的缺失，解释缺乏合理性。"
+                },
+                {
+                  "criterion_id": "rubric_89011cc92e01455bb70a9d32c8d01a08_4",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "回答明确给出了最终判定，确认了'[he] stop talking'是正确选项，符合题目要求的结论方向。",
+                  "rejected_reason": "回答未给出明确的最终判定确认省略形式应为'stop'，反而给出了错误的语法分析（如称'He stops talking'为祈使句）。"
+                }
+              ],
+              "chosen_score": 0.1,
+              "rejected_score": 0.0,
+              "margin": 0.1,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

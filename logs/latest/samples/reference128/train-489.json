@@ -1,0 +1,532 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:650339b6a8ca84d081b23388996789a5f25a55b8137f8c3f4a6b4cdb67e14763",
+    "task": "The limitations on the ability to understand the point of view of other people is referred to as which of the following?\n1. altruism\n2. emotionality\n3. narcissism\n4. ethnocentrism\n5. egocentrism\nRespond with 1, 2, 3, 4, or 5.",
+    "chosen": "5\n\nThe limitations on the ability to understand the point of view of other people is referred to as egocentrism. This term is used to describe the tendency to perceive the world from one's own perspective and to have difficulty imagining how things look to other people. While narcissism (option 3) can also involve a lack of empathy and a focus on one's own needs, it is a more extreme and pathological form of self-centeredness. Ethnocentrism (option 4) refers to the tendency to view one's own culture as superior to others, which can also limit one's ability to understand and appreciate different perspectives. However, egocentrism is the most accurate term to describe the general limitation in understanding others' viewpoints.",
+    "rejected": "The correct answer is 5. Egocentrism. This term refers to the limitation in understanding that arises from seeing the world primarily from one's own perspective, making it difficult to fully comprehend or empathize with other people's points of view.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 15860,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 adheres to the prompt's command of only providing the numerical format for the answer. On the other hand, @Response 2 does not follow the command, and mentions \"The correct answer is 5, Egocentism.\", which hinders the quality of the response. ",
+          "feedback1": "The response is mostly helpful. The final prompt provides a question with multiple choice answers and gives the command to respond with the answer's respective numerical identifier. The response begins appropriately with the correct number as requested per the prompt; however, it goes in-depth as to why the answer is correct, and discusses what the incorrect options are, which was never requested. ",
+          "feedback2": "The response is partially helpful. The final prompt provides a question with multiple choice answers and requests the response to answer with the answer's respective numerical identifier. However, while the correct number is given, the response does not follow the prompt's command of only providing the numerical format, and includes the word with a description as to why the asnwer is correct."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 offers a more comprehensive approach to the question with more information on the other choices that may benefit the user's knowledge. @Response 2 is succinct and correct, but could offer more information.",
+          "feedback1": "The response is perfectly helpful. The response is in alignment with the spirit of what the user is looking for. It acts on the user's request accurately without any unnecessary information. The response goes above and beyond what the user's request actually was to explain how the other answers don't qualify as correct answers which is beneficial for the user's knowledge.",
+          "feedback2": "The response is mostly helpful. The response is mostly in alignment with what the user is asking for but there is still room for improvement. This response offers the most basic answer. It is succinct and offers no further explanations other than the correct answer to the prompt. The response can be improved by elaborating on why the other responses are not correct for the benefit of the user."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. The response is more accurate and concise, making it the better option for the given prompt.",
+          "feedback1": "The response is perfectly helpful. It provides the correct answer to the prompt and includes a detailed explanation of the term \"egocentrism,\" highlighting its meaning and contextual relevance. The response further strengthens its accuracy by comparing and contrasting \"egocentrism\" with related concepts such as \"narcissism\" and \"ethnocentrism,\" which adds depth and clarity. The language is professional yet accessible, and the structure is coherent, making the explanation easy to understand. Although slightly verbose, the additional context enhances its educational value. Overall, the response addresses the prompt comprehensively and leaves no gaps in understanding.\n\n",
+          "feedback2": "The response is mostly helpful. It correctly identifies \"egocentrism\" as the answer and briefly explains its meaning in the context of the prompt. The language is clear and simple, making it easy to understand. However, the response does not provide additional context or differentiation between \"egocentrism\" and other related terms, which limits its depth and educational value. While it fulfills the basic requirements of the prompt, expanding on why \"egocentrism\" is the most accurate answer and discussing other options would make it more comprehensive. The succinctness is appreciated, but the response could benefit from more detail.\n\n\n\n\n\n\n"
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_00d5bf4459364dc7ee38",
+        0.4097884811285057
+      ],
+      [
+        "task_40906ffc9f33992f2d77",
+        0.27026214581003577
+      ],
+      [
+        "task_88b9c2225f76f928a7b0",
+        0.24389150765438
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_5419dd9533ab4b1791e6f119988d9887",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_88b9c2225f76f928a7b0",
+              "similarity": 0.24389150765438,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0037374968fe7343f13dae9d707761ff0fb0b357a061674475f548f4fb5d7486:exp_5419dd9533ab4b1791e6f119988d9887",
+                  "helpsteer3:train:a74edb750182c0087c145ac1e24d2d39f5a6289b35b03a9def8feb7dd3ef96f7:exp_5419dd9533ab4b1791e6f119988d9887",
+                  "helpsteer3:train:9ffd09b5fe56e6723800a720fd5b0bd919036a23c85e8dbf934fad684a8e1d0c:exp_5419dd9533ab4b1791e6f119988d9887",
+                  "helpsteer3:train:991cfb6fb5660f21f0bea30e1dbf3464ba6845d767edb1e37d8016f2414cd44f:exp_5419dd9533ab4b1791e6f119988d9887",
+                  "helpsteer3:train:46dba48a5127abed944601fb93229bfc07a7eab997fb2a1a2e217c81937291e9:exp_5419dd9533ab4b1791e6f119988d9887"
+                ],
+                "task_ids": [
+                  "35a9b6352cb0cef8a8d04076c3f3cd28d995eec742341639ebce95d18540f7f2",
+                  "be73c078a25d80aa82024cdacc2358e750aa3d382f4a782dfa3a7dc725f2865e",
+                  "57e50d42ec56af3ff8dc0005d04a7ffd142c4f3d09c8be7a2ccad5440b8050bf",
+                  "96cd8dcb713d8fabd89c911a25692acc48c37e085dcf85dbdfa63434f10a0bc5",
+                  "6a3d083a84590ba3af7956c5dc55f3088b1bbab2fd01a1651d24a01b461b74d9"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_40906ffc9f33992f2d77",
+              "similarity": 0.27026214581003577,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f74425d114da2a13d1b5d25d007e3fee744c3c012d5827351fcc1d638c057f43:exp_c80505c0967d4b13a55b0dca34c181d9"
+                ],
+                "task_ids": [
+                  "8b3ee3f5ceead893701da037c28374d40cef8c4e26ddae0483f3bb099794b585"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_986126fba3944f72bb98f719be70e46c",
+          "score": -0.2,
+          "evidence": [
+            {
+              "group_id": "task_88b9c2225f76f928a7b0",
+              "similarity": 0.24389150765438,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0037374968fe7343f13dae9d707761ff0fb0b357a061674475f548f4fb5d7486:exp_986126fba3944f72bb98f719be70e46c",
+                  "helpsteer3:train:a74edb750182c0087c145ac1e24d2d39f5a6289b35b03a9def8feb7dd3ef96f7:exp_986126fba3944f72bb98f719be70e46c",
+                  "helpsteer3:train:9ffd09b5fe56e6723800a720fd5b0bd919036a23c85e8dbf934fad684a8e1d0c:exp_986126fba3944f72bb98f719be70e46c",
+                  "helpsteer3:train:991cfb6fb5660f21f0bea30e1dbf3464ba6845d767edb1e37d8016f2414cd44f:exp_986126fba3944f72bb98f719be70e46c",
+                  "helpsteer3:train:46dba48a5127abed944601fb93229bfc07a7eab997fb2a1a2e217c81937291e9:exp_986126fba3944f72bb98f719be70e46c"
+                ],
+                "task_ids": [
+                  "35a9b6352cb0cef8a8d04076c3f3cd28d995eec742341639ebce95d18540f7f2",
+                  "be73c078a25d80aa82024cdacc2358e750aa3d382f4a782dfa3a7dc725f2865e",
+                  "57e50d42ec56af3ff8dc0005d04a7ffd142c4f3d09c8be7a2ccad5440b8050bf",
+                  "96cd8dcb713d8fabd89c911a25692acc48c37e085dcf85dbdfa63434f10a0bc5",
+                  "6a3d083a84590ba3af7956c5dc55f3088b1bbab2fd01a1651d24a01b461b74d9"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.3422636092959266
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.3323947961388498
+      ],
+      [
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        0.2859231811646931
+      ],
+      [
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        0.2761036646905799
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.27587705000268303
+      ],
+      [
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        0.2654216483406334
+      ],
+      [
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        0.2638909383445963
+      ],
+      [
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        0.2626302585563429
+      ],
+      [
+        "exp_9f68a031aa164c769dd78ba249279604",
+        0.26227473843175075
+      ],
+      [
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        0.2581679202619575
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_5419dd9533ab4b1791e6f119988d9887",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.2761036646905799
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_986126fba3944f72bb98f719be70e46c",
+        "source": "historical",
+        "historical_score": -0.2,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3422636092959266
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3323947961388498
+      },
+      {
+        "experience_id": "exp_4609692fd9c043118c81db8f6cdbecba",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2859231811646931
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.27587705000268303
+      },
+      {
+        "experience_id": "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2654216483406334
+      },
+      {
+        "experience_id": "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2638909383445963
+      },
+      {
+        "experience_id": "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2626302585563429
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_27a5f144713d4bf8875890e529bba340",
+    "criteria": [
+      {
+        "criterion_id": "rubric_27a5f144713d4bf8875890e529bba340_1",
+        "question": "是否选择了代表‘理解他人观点能力受限’的正确概念（即 egocentrism，对应选项 5）？",
+        "weight": 0.8
+      },
+      {
+        "criterion_id": "rubric_27a5f144713d4bf8875890e529bba340_2",
+        "question": "输出是否仅包含一个数字（1, 2, 3, 4 或 5），且没有任何额外的解释、标点符号或文本？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "任务要求从五个心理学/社会学选项中选出正确描述‘理解他人观点能力受限’这一概念的术语。核心交付物为单个数字（1-5）。评分标准需验证：1. 是否选择了正确的选项（egocentrism）；2. 输出格式是否严格遵循只返回数字的要求，无额外文本。权重分配上，答案准确性最为关键，格式规范性次之。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_b38b4629f139491f89badc0695c92b59",
+        "criteria": [
+          {
+            "criterion_id": "rubric_b38b4629f139491f89badc0695c92b59_1",
+            "question": "是否选择了代表‘理解他人观点能力受限’的正确概念（即 egocentrism，对应选项 5）？",
+            "weight": 0.8
+          },
+          {
+            "criterion_id": "rubric_b38b4629f139491f89badc0695c92b59_2",
+            "question": "输出是否仅包含一个数字（1, 2, 3, 4 或 5），且没有任何额外的解释、标点符号或文本？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求识别描述‘理解他人观点能力受限’的术语，并从五个选项中选择一个。正确答案为 egocentrism（选项 5）。本次修订基于 draft 进行优化，确保标准能严格核验答案的准确性及输出格式的纯净度（仅数字），同时移除 draft 中不必要的 criterion_id 字段以符合最终 JSON 结构约束。权重分配上，答案正确性占据主导地位，格式合规性作为辅助验证。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_b38b4629f139491f89badc0695c92b59",
+        "normalized_weights": {
+          "rubric_b38b4629f139491f89badc0695c92b59_1": 0.8,
+          "rubric_b38b4629f139491f89badc0695c92b59_2": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_b38b4629f139491f89badc0695c92b59_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答选择了选项5，且后续解释中明确指出该概念为egocentrism，符合题目关于‘理解他人观点能力受限’的定义。",
+            "rejected_reason": "回答明确指出了选项 5（egocentrism）为正确答案，且对该概念的解释（从自身视角看世界导致难以理解他人观点）与题目中‘理解他人观点能力受限’的定义一致。"
+          },
+          {
+            "criterion_id": "rubric_b38b4629f139491f89badc0695c92b59_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答不仅包含数字'5'，还附加了多段英文解释文本以及空行，违反了输出仅包含一个数字且无额外解释、标点或文本的要求。",
+            "rejected_reason": "输出不仅包含数字'5'，还包含了完整的句子'The correct answer is 5. Egocentrism.'以及后续的解释性文本，违反了‘仅包含一个数字且没有任何额外的解释、标点符号或文本’的严格格式要求。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 0.8,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "任务明确要求'Respond with 1, 2, 3, 4, or 5'，这是一个严格的格式约束（仅输出数字）。初稿和修订后的Rubric（criterion_id 4）正确识别了这一点，判定两个回答都违反了该标准（因为都包含了额外文本），导致分数相同（0.8 vs 0.8），未能区分优劣。然而，人工偏好理由明确指出：Response 1 更好是因为它首先给出了数字（符合格式核心要求），尽管有解释；而 Response 2 被扣分是因为它没有'仅提供数字格式'（The correct answer is 5...）。Judge 的逻辑存在缺陷：它将'包含额外文本'作为全量否决项（即只要有多余文字就不得分），忽略了任务指令中隐含的优先级——在必须输出数字的前提下，允许一定程度的解释通常比完全偏离格式或格式混乱要好。更关键的是，Judge 未能执行'部分满足'的评估逻辑：Response 1 以数字开头，满足了最核心的提取要求；Response 2 虽然也提到了数字，但将其包裹在句子中，且未严格遵循'只回复数字'的指令。Judge 的评判标准过于僵化（Binary: 纯数字=合格，非纯数字=不合格），导致无法捕捉到'Response 1 优于 Response 2'这一细微差别（即：先给数字 vs 给句子）。这反映了评分标准设计中的一个常见问题：当任务要求特定格式时，标准不应简单地将'非完美格式'直接判为0分，而应设立梯度或明确'核心交付物（数字）'与'辅助信息'的权重关系，或者明确'仅输出数字'是绝对硬性约束（若如此，则两题皆错，但这与人工偏好矛盾，说明人工认为'给出数字'本身是及格线，额外解释是扣分项而非一票否决）。因此，需要一条经验来指导如何设计此类标准：区分'核心指令（输出数字）'与'附加指令（仅输出数字）'的违反程度，避免将'包含解释'直接等同于'完全失败'，除非任务明确禁止任何解释。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_b6503e72f6164c9897d045301767a795",
+            "method": {
+              "trigger": "当任务指令明确要求输出特定格式（如仅数字、特定代码块）且存在'核心内容'与'格式纯净度'双重约束时",
+              "principle": "评分标准严禁将'包含额外文本'直接设为零分或同等错误的条件，必须建立'核心内容合规'与'格式纯净度违规'的分级评价机制；若回答包含核心要求的正确内容（如正确的数字选项），即使格式不纯净（含解释），也应给予基础分，再根据违规程度扣减，而非直接判定为与完全错误答案同分。",
+              "application_guide": "Generator在设计标准时，应将'是否包含正确答案'设为独立的高权重正向项（如0.9），将'是否仅输出指定格式'设为独立的负向扣分项或低权重项（如0.1）。具体操作：1. 检查回答是否显式包含了任务要求的唯一标识符（如数字5）；若是，该项得分。2. 检查是否有额外文本；若有，根据额外文本对核心信息的干扰程度进行扣分，而不是直接否定整个回答。确保标准能区分'格式瑕疵但有实质正确性'的回答与'格式正确但内容错误'或'无实质内容'的回答。"
+            },
+            "source_task_id": "f1559c0eaf09b720e01c240b7e669cd2f174e7b5f2e8ce97c7211a9db0892e7a",
+            "parent_ids": []
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_b6503e72f6164c9897d045301767a795"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_574a5b6180944d58b0e8ff9328b52b4b",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_574a5b6180944d58b0e8ff9328b52b4b_1",
+                  "question": "回答是否明确选择了代表‘理解他人观点能力受限’的正确概念（即 egocentrism）对应的数字 5？",
+                  "weight": 0.9
+                },
+                {
+                  "criterion_id": "rubric_574a5b6180944d58b0e8ff9328b52b4b_2",
+                  "question": "输出是否严格仅包含一个数字字符（1-5），未包含任何解释、标点符号或额外文本？",
+                  "weight": 0.1
+                }
+              ],
+              "analysis": "任务要求从五个选项中选出描述‘理解他人观点能力受限’的术语，正确答案为5（egocentrism）。核心交付物是单个数字。评分标准需严格验证：1. 答案内容的准确性，即是否选择了代表该概念的正确选项；2. 输出格式的合规性，即是否仅包含指定的数字且无额外文本。根据经验原则，将内容正确性设为高权重（0.9），格式纯净度设为低权重（0.1），以区分‘有实质正确性但格式瑕疵’与‘完全错误’的情况。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_574a5b6180944d58b0e8ff9328b52b4b",
+              "normalized_weights": {
+                "rubric_574a5b6180944d58b0e8ff9328b52b4b_1": 0.9,
+                "rubric_574a5b6180944d58b0e8ff9328b52b4b_2": 0.1
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_574a5b6180944d58b0e8ff9328b52b4b_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答在开头明确选择了数字 5，且后续解释确认该数字对应 egocentrism，符合题目要求。",
+                  "rejected_reason": "回答中明确指出了正确选项为5（Egocentrism），并解释了该概念确实指代理解他人观点能力的受限，符合题目对正确概念的考查要求。"
+                },
+                {
+                  "criterion_id": "rubric_574a5b6180944d58b0e8ff9328b52b4b_2",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "输出不仅包含数字 5，还包含了换行符以及大量关于概念定义和与其他选项对比的英文解释文本，违反了“严格仅包含一个数字字符”的要求。",
+                  "rejected_reason": "回答不仅包含了数字'5'，还包含了完整的句子'The correct answer is 5. Egocentrism.'以及后续的解释性文本，违反了输出应严格仅包含一个数字字符且无额外文本的要求。"
+                }
+              ],
+              "chosen_score": 0.9,
+              "rejected_score": 0.9,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "上一轮尝试（experience 11）失败的原因是：虽然引入了权重区分（0.9 vs 0.1），但标准设计仍将‘格式纯净度’作为一个独立的二元判定项（criterion_id 6）。Judge 在评估时，发现两个回答都违反了‘严格仅包含一个数字’的绝对指令，因此两项都得分为 false。由于权重分配是乘积关系（内容分 * 权重 + 格式分 * 权重），且两者在格式项上都得 0 分（或极低分），导致最终总分依然相同（0.9 vs 0.9），无法体现人工偏好中 Response 1（先给数字）优于 Response 2（包裹在句子中）的差异。根本问题在于：评分标准未能将‘格式违规的程度’量化。Response 1 虽然违规，但其核心信息（数字5）位于开头且独立；Response 2 的核心信息与文本混杂。原有的标准只判断‘是否违规’，未判断‘违规程度’。此外，经验 ID 11 的 parent_ids 为空，但系统反馈要求必须引用提供的旧经验（allowed_parent_ids），这也是导致验证失败的直接原因。需要一条新经验，指导如何将‘格式违规’从二元判断转化为分级判断（如：完全缺失、位置错误、伴随解释等），并强制要求关联历史有效经验以构建逻辑链条。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_3f378070e2764d3287814e6279297de0",
+            "method": {
+              "trigger": "当任务指令要求输出特定格式（如纯数字）且模型回答均包含额外文本导致格式违规，但人工偏好显示存在优劣差异时",
+              "principle": "评分标准严禁将‘包含额外文本’设为简单的二元否决项（全错/全对）；必须将‘格式违规’拆解为基于违规严重程度的分级维度（如：核心标识符是否独立呈现、违规文本是否干扰识别），确保能区分‘主要合规但有瑕疵’与‘主要不合规’的回答。",
+              "application_guide": "Generator在设计此类标准时：1. 设立‘核心内容提取’项，只要正确识别出答案标识符即得高分。2. 设立‘格式规范性’项，不再问‘是否纯净’，而是问‘违规程度’：若核心标识符独立出现（如独占一行或位于句首）且解释在后，视为轻微违规（扣分少）；若核心标识符被嵌入长句或与其他无关文本混合，视为严重违规（扣分多）。3. 必须关联历史经验（如 experience_id 1 或 8 中关于‘实质阐述’与‘提及’的区分逻辑），证明这种分级评价是基于可复用的原则而非个案特例。"
+            },
+            "source_task_id": "f1559c0eaf09b720e01c240b7e669cd2f174e7b5f2e8ce97c7211a9db0892e7a",
+            "parent_ids": [
+              "exp_5419dd9533ab4b1791e6f119988d9887"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_3f378070e2764d3287814e6279297de0"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_714305b0cf4d4be7b97c9ffed3669cf1",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_714305b0cf4d4be7b97c9ffed3669cf1_1",
+                  "question": "回答是否正确识别并选择了代表‘理解他人观点能力受限’概念的选项编号 5（egocentrism）？",
+                  "weight": 0.7
+                },
+                {
+                  "criterion_id": "rubric_714305b0cf4d4be7b97c9ffed3669cf1_2",
+                  "question": "回答中的目标数字（5）是否作为核心标识符独立呈现（如独占一行或位于句首且未被长句嵌入），从而未造成识别干扰？",
+                  "weight": 0.3
+                }
+              ],
+              "analysis": "任务要求从五个选项中选出正确描述‘理解他人观点能力受限’（即 egocentrism）的术语，并严格仅输出对应的数字（1-5）。在修订阶段，需确保评分标准既验证答案的心理学准确性（选项5），又根据提供的经验原则优化格式核验逻辑。原草案将格式违规视为简单的二元判定（0.2权重），依据经验指导，应将其调整为基于违规严重程度的分级维度：核心标识符是否独立呈现、是否被干扰。因此，修订后的标准将‘答案准确性’设为首要权重（0.7），将‘格式规范性’细化为对核心标识符清晰度和独立性的检查（0.3），以区分‘主要合规但有瑕疵’与‘主要不合规’的情况，同时严格遵守只返回数字的指令要求。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_714305b0cf4d4be7b97c9ffed3669cf1",
+              "normalized_weights": {
+                "rubric_714305b0cf4d4be7b97c9ffed3669cf1_1": 0.7,
+                "rubric_714305b0cf4d4be7b97c9ffed3669cf1_2": 0.3
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_714305b0cf4d4be7b97c9ffed3669cf1_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答明确选择了选项编号5，并在后续解释中确认该选项（egocentrism）是描述‘理解他人观点能力受限’的准确术语，完全符合题目要求。",
+                  "rejected_reason": "回答明确指出了正确选项编号为 5，并确认该选项代表 egocentrism，符合题目中关于‘理解他人观点能力受限’的定义。"
+                },
+                {
+                  "criterion_id": "rubric_714305b0cf4d4be7b97c9ffed3669cf1_2",
+                  "chosen": true,
+                  "rejected": false,
+                  "chosen_reason": "目标数字'5'在回答的第一行独立呈现，独占一行且未被任何长句嵌入或修饰，清晰醒目，未造成识别干扰。",
+                  "rejected_reason": "目标数字 5 出现在句子 'The correct answer is 5.' 的中间部分，作为陈述句的一个成分被嵌入，并未独立独占一行或位于句首且未被长句干扰地呈现。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 0.7,
+              "margin": 0.3,
+              "success": true
+            },
+            "error": null
+          },
+          "admitted": true,
+          "reason": "source_correct"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

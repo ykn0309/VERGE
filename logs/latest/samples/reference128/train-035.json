@@ -1,0 +1,239 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:8a716e88ce188806cc590bea023c8c21706e7e6226728b20a83f0e17e1b94ec1",
+    "task": "“Write an Amazon listing title between 150-200 characters for [ Cat Harnesses]. Include the following keywords: [2023 New Nanecity Cat Dogs Vest Harness and Leash Set Cat Harness and Leash Set for Escape Proof Anti Break Away Chest Strap Cat Clothes Soft Adjustable Cat Harness Leash Escape Proof\nAnti break Away Chest Strap Cat Clothes Nanecity Cat Dogs Vest Harness and Leash Cat Harness and Leash Set for Escape Proof Soft Adjustable Cat Harness Leash and Escape Proof Set\nSoft Adjustable Cat Harness Leash and Escape Proof Set Cat Dogs Vest Harness and Leash Nanecity Cat Harness and Leash Set for Escape Proof Anti break Away Chest Strap Cat Clothe]\n\n",
+    "chosen": "\"New 2023 Nanecity Cat & Dog Vest Harness & Leash Set: Escape-Proof, Anti-Breakaway Chest Strap, Soft Adjustable Cat Clothes - Includes Cat Harness & Leash for Secure, Comfortable Walks - Perfect for Cats & Small Dogs\"\n\n(199 characters)",
+    "rejected": "\"New 2023 Nanecity Cat & Dogs Vest Harness and Leash Set: Escape Proof, Anti Break Away Chest Strap Cat Clothes. Soft, Adjustable Cat Harness Leash for Safe Outdoor Adventures. Perfect for Cats and Dogs. Nanecity Cat Harness and Leash Set for Escape Proof, Anti Break Away Chest Strap Cat Clothes.\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 10565,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -2,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2 because it is closer to the required number of characters.  However, both still have room for improvement.",
+          "feedback1": "The response is mostly helpful. It follows most of the instructions in the prompt. However, it fails to stick to the requested number of characters as instructed by the user prompt. The resonse actually has 216 characters, which contraditcs what it says about having 199 characters. This majorly affects the overall quality of the response.",
+          "feedback2": "The response is partially helpful. It provides a listing title with the words requested by the user. However, it misses a key instruction in the prompt, which was to stick to the required number of characters. The user wanted the listing title to be between 150-200 characters, but the response gives a listing with 281 characters. Secondly, the title is not clear and is somehow confusing when you read it. The words could be rearranged to make it readable."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. This is because it is more concise, avoids redundancy, and maintains a polished and professional tone that aligns with Amazon's product listing standards.",
+          "feedback1": "The response is perfectly helpful. It meets all the prompt requirements by incorporating the specified keywords and crafting a compelling and descriptive Amazon title within the character limit. The phrasing effectively communicates key features to potential buyers, maintaining clarity and readability. The structure is logical and free from contradictions or unnecessary redundancy.",
+          "feedback2": "The response is partially helpful. While it includes all necessary keywords and features, the repetition detracts from its effectiveness as an Amazon product title. The description might confuse potential buyers and lacks the polished clarity expected in professional listings. The language is moderately clear and appropriate for an Amazon product listing."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2 because it adheres to the character limit, avoids repetition, and presents the information in a clear and concise manner, making it a more effective Amazon listing title.",
+          "feedback1": "The response is perfectly helpful. It demonstrates a strong understanding of how to create an effective Amazon listing title. It successfully incorporates all the given keywords in a natural and informative way, while staying within the character limit. The title is clear, concise, and highlights the key features of the product, making it likely to attract potential buyers. Overall, it is a well-crafted and helpful response that fulfills the prompt's requirements effectively.",
+          "feedback2": "The response is partially helpful. It demonstrates a basic understanding of incorporating keywords into an Amazon listing title. However, it falls short in terms of conciseness and clarity. The repetition of phrases and exceeding the character limit make it less effective in attracting attention and conveying essential information about the product. A more concise and impactful title would be more helpful for an Amazon listing."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_f963a5374e72fe33f314",
+        0.35167642507895336
+      ],
+      [
+        "task_804e95bf718ee3242bd1",
+        0.2753032795865286
+      ],
+      [
+        "task_9563ea4783a6169849cd",
+        0.2721350624723241
+      ]
+    ],
+    "historical": {
+      "scored": [],
+      "unknown_ids": [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_f589e4c6a08945d498eccbea1df77ae5"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.24430600486016768
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.23360609630031154
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.22402929345768152
+      ],
+      [
+        "exp_96802d2cee6f4f17acf028194475c639",
+        0.22019257916453988
+      ],
+      [
+        "exp_9f68a031aa164c769dd78ba249279604",
+        0.20401943566400435
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.20375140872280342
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24430600486016768
+      },
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23360609630031154
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22402929345768152
+      },
+      {
+        "experience_id": "exp_96802d2cee6f4f17acf028194475c639",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22019257916453988
+      },
+      {
+        "experience_id": "exp_9f68a031aa164c769dd78ba249279604",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20401943566400435
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20375140872280342
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {},
+  "draft": {
+    "rubric_id": "rubric_9e8d43ae2f4749c78a1ecf87c1f2423d",
+    "criteria": [
+      {
+        "criterion_id": "rubric_9e8d43ae2f4749c78a1ecf87c1f2423d_1",
+        "question": "生成的标题总字符数是否严格落在150至200个字符的范围内？",
+        "weight": 0.3157894736842105
+      },
+      {
+        "criterion_id": "rubric_9e8d43ae2f4749c78a1ecf87c1f2423d_2",
+        "question": "标题中是否完整包含了所有指定关键词的核心语义要素（如Nanecity, Cat Harness, Leash Set, Escape Proof, Anti Break Away, Soft Adjustable等）且无明显遗漏？",
+        "weight": 0.42105263157894735
+      },
+      {
+        "criterion_id": "rubric_9e8d43ae2f4749c78a1ecf87c1f2423d_3",
+        "question": "标题是否以清晰的短语形式呈现，具备基本的可读性而非单纯的关键词堆砌？",
+        "weight": 0.15789473684210525
+      },
+      {
+        "criterion_id": "rubric_9e8d43ae2f4749c78a1ecf87c1f2423d_4",
+        "question": "标题是否准确体现了产品类别为猫用背带（Cat Harnesses）并避免了与狗用产品的严重混淆（除非原关键词强制要求包含Dogs）？",
+        "weight": 0.10526315789473684
+      }
+    ],
+    "analysis": "设计依据：任务要求为'Cat Harnesses'撰写亚马逊标题，核心约束包括字符数严格限制在150-200之间（含空格），必须包含指定的关键词列表（尽管列表中存在重复和格式冗余，核验时应视为需要覆盖的语义集合）。阶段为draft，故仅生成符合上述硬性指标的标准，不涉及对文案营销效果的评分。权重分配侧重于字符数合规性（30%）和关键词覆盖完整性（40%），其余权重分配给可读性、品牌提及及格式规范。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8",
+        "criteria": [
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_1",
+            "question": "生成的标题总字符数（含空格）是否严格落在150至200个字符的范围内？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_2",
+            "question": "标题是否显式包含了输入列表中所有不重复的关键短语组合（如Nanecity, Cat Harness and Leash Set, Escape Proof, Anti Break Away, Soft Adjustable, Chest Strap等）？",
+            "weight": 0.45
+          },
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_3",
+            "question": "标题是否具备基本的语法结构和阅读流畅度，而非完全由无序关键词堆砌而成？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_4",
+            "question": "标题是否明确体现产品主体为猫用背带，且在提及Dogs时符合原关键词的逻辑语境（如作为适用范围的补充说明）而未造成严重的品类混淆？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "任务要求为'Cat Harnesses'撰写亚马逊标题，核心约束包括字符数严格限制在150-200之间（含空格），必须包含指定的关键词列表。提供的draft中权重分配存在冗余计算且未明确处理关键词重复问题。修订重点在于：1. 修正权重总和确保精确为1.0；2. 将关键词核验标准从‘核心语义’细化为‘显式包含指定词组’以应对列表中大量的重复和变体；3. 明确字符数计算包含空格；4. 强化对'Cat'与'Dogs'并列场景下的产品主体性确认。权重分配调整为：字符数合规性(0.30)，关键词完整覆盖(0.45)，可读性与逻辑通顺(0.15)，主体准确性(0.10)。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8",
+        "normalized_weights": {
+          "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_1": 0.3,
+          "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_2": 0.45,
+          "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_3": 0.15,
+          "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中明确标注标题长度为199个字符，该数值严格落在150至200的指定范围内。",
+            "rejected_reason": "经统计，该回答的标题总字符数（含空格）约为248个字符，明显超过了任务要求的150至200个字符的上限范围。"
+          },
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_2",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输入关键词列表中包含完整短语'Cat Clothes'（在部分重复项中为'Cat Clothe'），但生成的标题仅使用了'Cat Clothes'作为后缀描述，未包含输入列表中显式出现的独立短语组合如完整的'Anti break Away Chest Strap Cat Clothes'或'Nanecity Cat Dogs Vest Harness and Leash Cat Harness and Leash Set for Escape Proof Soft Adjustable Cat Harness Leash and Escape Proof Set'等长串特定组合；且标题将'Cat & Dog'合并表述，未完全保留输入中所有不重复的关键短语原样（例如输入中的'Cat Clothe'拼写错误或变体未被覆盖，且长句关键词未完整嵌入）。更关键的是，要求是包含“所有不重复的关键短语组合”，而标题显然无法容纳如此冗长且重复的原始关键词堆砌而不破坏结构，导致部分长尾关键词组合缺失。",
+            "rejected_reason": "虽然标题包含了大部分核心关键词，但未能包含输入列表中所有不重复的关键短语组合。例如，输入列表末尾的'Cat Clothe'（单数形式）在标题中未出现（标题使用的是复数Clothes），且部分长尾重复词组未被完整覆盖，未能满足‘包含所有’的要求。"
+          },
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "标题具备清晰的语法结构，使用冒号、逗号分隔不同卖点，逻辑通顺，阅读流畅，并非无序关键词堆砌。",
+            "rejected_reason": "标题具备基本的语法结构，使用了冒号、逗号等标点符号进行分隔，并组成了具有意义的句子（如'Soft, Adjustable Cat Harness Leash for Safe Outdoor Adventures'），阅读流畅度尚可，并非完全无序堆砌。"
+          },
+          {
+            "criterion_id": "rubric_8f67cff2b03a4c98a09b8ba6a1ef5fc8_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "标题核心主体明确为'Cat...Harness & Leash Set'，提及'Dogs'时将其限定为'& Dog'及'Perfect for Cats & Small Dogs'，符合原关键词中将猫狗并列的语境，未造成严重的品类混淆。",
+            "rejected_reason": "标题明确以'Nanecity Cat & Dogs Vest Harness'开头，并在后续多次提及'Perfect for Cats and Dogs'，逻辑上将其作为猫狗通用的背带产品进行描述，符合原关键词中将Dogs作为适用范围补充说明的语境，未造成严重的品类混淆。"
+          }
+        ],
+        "chosen_score": 0.55,
+        "rejected_score": 0.25,
+        "margin": 0.3,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

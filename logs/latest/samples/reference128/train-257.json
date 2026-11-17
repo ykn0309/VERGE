@@ -1,0 +1,945 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:3c9673bda3e55294a61a3233c0bd7d9bfee50217d5e58ea84138cc3dd98f662f",
+    "task": "(In the clubroom…)\n\nMonika: “Wait…where’s Yuri?”\n\nNatsuki: “I don’t know, Monika. MC, Sayori, have you seen her?”\n\nMC: “No, I haven’t seen Yuri since we arrived. Sayori, have you?”\n\nSayori: “I haven’t seen her either. Maybe she’s running late or something.”\n\nMonika: “Hmm, that’s not like her. She’s usually the first one to arrive. I hope she’s okay.”\n\nNatsuki: “Should we text her or something? Just to make sure she’s alright?”\n\n(Just then, Yuri bursts into the clubroom.)",
+    "chosen": "Yuri: *panting* \"I'm so sorry I'm late! I had a bit of an issue on my way here.\"\n\nMonika: \"Yuri! We were just about to text you. Are you okay? What happened?\"\n\nYuri: *catches her breath* \"Yes, I'm fine now, thank you. I was just caught up in a conversation with the school librarian about some new books that arrived. I lost track of time.\"\n\nSayori: \"Oh, that's a relief! We were worried about you.\"\n\nMC: \"Yeah, it's not like you to be late, Yuri.\"\n\nNatsuki: \"Well, as long as you're okay. But you should be more careful next time. We don't want to start the club meeting without you.\"\n\nYuri: *smiles* \"Of course, Natsuki. I'll make sure to be more mindful of the time. Thank you all for your concern.\"\n\nMonika: \"Alright, now that we're all here, let's get started with today's club activities!\"",
+    "rejected": "Yuri stumbles through the door, her face flushed and hair slightly disheveled. She clutches a thick book to her chest, her eyes wide and unfocused.\n\n\"S-sorry I'm late,\" she stammers, her voice barely above a whisper. \"I... I got caught up in something.\"\n\nShe avoids everyone's gaze, her fingers tightening around the book. A faint scent of lavender and something metallic hangs in the air around her.\n\nMonika steps forward, concern etched on her face. \"Yuri, are you alright? You look... shaken.\"\n\nYuri flinches at Monika's touch, pulling the book closer to her body. \"I'm fine,\" she mumbles, her voice strained. \"Just... a bit overwhelmed.\"\n\nNatsuki frowns, her eyes narrowed. \"Overwhelmed by what? You were gone for ages!\"\n\nYuri bites her lip, her gaze darting around the room. \"It's nothing,\" she insists, but her voice lacks conviction. \"Can we just... start the meeting?\"",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 8483,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1 because it follows the prompt language and is easy to follow. ",
+          "feedback1": "The response is partially helpful. It manages to create a realistic continuation of the story that draws from the characters and tone of Doki Doki Literature Club. The mystery of what Yuri has been doing and the metallic scent give the ominous and scary undertones that characterize this psychological horror. \nHowever, the response fails significantly by failing to continue the language of the prompt, which is set out like a script. ",
+          "feedback2": "The response is mostly helpful. It follows the script style of the prompt and continues the story section provided. It is coherent and readable. However, it misses the tone of its source text, Doki Doki Literature Club, which is a psychological horror. While the model cannot provide explicit content, this section of the story could benefit from some slight hints toward the mysterious. "
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 provides accurate follow-up for the prompt with good structure. But @Response 1 lacks clarity, and its structure does not align with the prompt.",
+          "feedback1": "The response is partially helpful. The response provides a continuation for the prompt. The response conveys the emotions and intensity of the scene. However, the structure of the response is different from the prompt, which reduces satisfaction. The response can be improved by including the reactions of Sayori and MC.",
+          "feedback2": "The response is perfectly helpful. The response correctly follows the prompt and provides an accurate output. The response includes the reactions of all the characters and the punctuation is perfect. The response gives more clarity by explaining why Yuri was late. The response provides a continuous flow for the conversation that aligns with the prompt."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 does not match the conversation style in the prompt and completely deviates from it. @Response 2 matches the conversation style but misses a key component by not putting Yuri's expressions in brackets.",
+          "feedback1": "The response is slightly helpful. The prompt consists of a conversation between characters in the video game Doki Doki Literature Club. The response does not continue with the conversation in the same style as it was written in the prompt. The response deviates and creates its own style which does not match. The response includes the characters identified in the prompt.",
+          "feedback2": "The response is mostly helpful. The prompt consists of a conversation between characters in the video game Doki Doki Literature Club. The conversation is written in a specific style where each character's speech is directly after their name and other forms of expressions are in brackets. The response matches the conversation style of the prompt to some degree but misses a key component. The following words in the response should be in brackets: \"Painting,\" \"Catches her breath,\" and \"smiles.\""
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_5b8ea94e82fe0dda7169",
+        0.5732476413787246
+      ],
+      [
+        "task_d01a4beba26cc24cf225",
+        0.29687214093071423
+      ],
+      [
+        "task_2e7be4d8bcf0c2b0b177",
+        0.2843763135936993
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2843763135936993,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+                ],
+                "task_ids": [
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2843763135936993,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_62add4a1e1684c5488f65574d8fdea4f"
+                ],
+                "task_ids": [
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2843763135936993,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:dddbb14347c393d0143938461bf33899f7a6b491fc1e68cff15aa3fe36961899:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "e8f74dfa609f2a07710e73a93f3b7847d97d1e72143c174d60f1f95e0423ae64"
+                ]
+              }
+            },
+            {
+              "group_id": "task_5b8ea94e82fe0dda7169",
+              "similarity": 0.5732476413787246,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:363344637a741747bd18935e1ac948e1522f1e131062cf984f0040cba0c26997:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "b7190f48766ee93cf3feab605ddfc1f49fb110792d1776fb01ab06e4173681bc",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2843763135936993,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+                ],
+                "task_ids": [
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077"
+                ]
+              }
+            },
+            {
+              "group_id": "task_d01a4beba26cc24cf225",
+              "similarity": 0.29687214093071423,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:cea19dc608735d00faded1f13817181d939d13bb3cde35a95f89c03c183ffc49:exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+                  "helpsteer3:train:684e0dfe78ed9280eafeee5aafe874c8f89049ae928414df8ec9481d6679ee49:exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+                ],
+                "task_ids": [
+                  "188dbaa81fad104f3e6cbe434e73e488cf67f97c3c06f6c36d30f3dac4557770",
+                  "9740ab511a59d758f984517bb6538cf4a334da93662cf9434770774abd7c5347"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2843763135936993,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:419b69b577d8e1504b5c238b645d2fd4152e82a789ce4a5afbc3977ef17d6e9a:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "135c5c6413f545b5d9b43c3af75bd2cdd078ee79bdcf8033de19b3135ceb7077"
+                ]
+              }
+            },
+            {
+              "group_id": "task_5b8ea94e82fe0dda7169",
+              "similarity": 0.5732476413787246,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ce2407d8464ae59a5d59ef78fc4f27f2af17f5068652a3b491c6a40284f681aa:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:dff3f8baf08ddf27b7a1d3bc14e4e5b2e3e10d772fa6f34fc63866ff5b72bee9:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5bc30395fd996adcb2607c499dc9537efcde73b01e456c544720648974f6d970:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3e4a97bc7f3e7362d37066d23a40257fe5a024c36d3d8a56cc5c67ed8d74b76d:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f404e9c7da0a9193ef22085ab96e4d13b1458c8bcf0d7fe543cdb7c4748dcc63:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:cb4091585055df1e20c3277074f63914223e3bcdf6029a83f4a040a14487f7c4:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f62a3fd9452614dcee3883370ce32348e05e7edaaa519839010d2b6a8fbe8a8c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:4451aa1ca17b94db9900f02546e333a3b7ed0ae0b592b8c5c1d13dacfbb5b7c5:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0",
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "46e70eddeb9e8e4bf7c2643135fcf008596d20aaf799a4cfb30393bbd22ee236",
+                  "c1fe33ac6e77d26ce02020c517add4f3c7ded5a63da9e25b0049c4bad2d8b9b6",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "095a0cf8861d0a0e6bfe0fcb9516d73c00b6854129c698a52a2a31834fceb7e4",
+                  "7d1ba10a6d49b94e889f4a044728f3f980980271a6d2388c819ff8118a83139b",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "f76996307255009f70fe5dfafd5b53fc5eff84c9f139461aaae3ad634a2f0f04",
+                  "fcc454b63e6e769f8c7feb09548d7445f5eafb4b898c457d29107081c0dc5e10",
+                  "1959ceb0088fc305a9acc670c9c2a4cf2120d112df5c1a9956823b254ae747bf",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92"
+                ]
+              }
+            },
+            {
+              "group_id": "task_d01a4beba26cc24cf225",
+              "similarity": 0.29687214093071423,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:cea19dc608735d00faded1f13817181d939d13bb3cde35a95f89c03c183ffc49:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:684e0dfe78ed9280eafeee5aafe874c8f89049ae928414df8ec9481d6679ee49:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "188dbaa81fad104f3e6cbe434e73e488cf67f97c3c06f6c36d30f3dac4557770",
+                  "9740ab511a59d758f984517bb6538cf4a334da93662cf9434770774abd7c5347"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": -0.038762843597312836,
+          "evidence": [
+            {
+              "group_id": "task_2e7be4d8bcf0c2b0b177",
+              "similarity": 0.2843763135936993,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  0.0,
+                  -1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:dddbb14347c393d0143938461bf33899f7a6b491fc1e68cff15aa3fe36961899:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "e8f74dfa609f2a07710e73a93f3b7847d97d1e72143c174d60f1f95e0423ae64",
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c",
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3"
+                ]
+              }
+            },
+            {
+              "group_id": "task_5b8ea94e82fe0dda7169",
+              "similarity": 0.5732476413787246,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:f3201148058ac84223dec0bc5d39ad53c85df0e240468b34037fd97dbdf78392:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:e303c25ab9679ab0695f33a6080a8b1c7451982bf1492c624171a135ff36b22a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "220dd7480424b737727c512676e25473b2814267b0cceb8ced7aeb619a543eb5",
+                  "fb9064e660a02770028427057749702961593eb8e892369aafdcb3ef31235d90",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.21693530982618467
+      ],
+      [
+        "exp_2adba5039571400b8862295552f46447",
+        0.19294918465817887
+      ],
+      [
+        "exp_f9c63a6f153b46d8977f62d084a99e17",
+        0.1780954421166781
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.1750613430861261
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.16409816376920983
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.15974309849357332
+      ],
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.1594352792869657
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.1576180474097507
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.15651583001862582
+      ],
+      [
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        0.15155080062857487
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.15974309849357332
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": -0.038762843597312836,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21693530982618467
+      },
+      {
+        "experience_id": "exp_2adba5039571400b8862295552f46447",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.19294918465817887
+      },
+      {
+        "experience_id": "exp_f9c63a6f153b46d8977f62d084a99e17",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1780954421166781
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1750613430861261
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b5504c36f1e1468ca470333f1c240342": "任务输入明确包含剧本格式（角色名后接冒号、括号内动作描述如 '(In the clubroom…)'），属于基于特定文体格式作为核心约束的场景，经验5专门指导如何针对此类剧本/对话格式制定评分标准，要求严格界定格式特征并排除非目标文体，与当前任务需求完全匹配。"
+  },
+  "draft": {
+    "rubric_id": "rubric_93e7f5e13f10436987007c7e49f231d0",
+    "criteria": [
+      {
+        "criterion_id": "rubric_93e7f5e13f10436987007c7e49f231d0_1",
+        "question": "是否延续了Yuri突然闯入俱乐部室的场景并描述了她的状态或反应？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_93e7f5e13f10436987007c7e49f231d0_2",
+        "question": "是否保持了各角色（Monika, Natsuki, MC, Sayori）符合原作设定的性格特征和说话语气？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_93e7f5e13f10436987007c7e49f231d0_3",
+        "question": "是否使用了正确的剧本格式（角色名后跟冒号，动作描写置于括号内）？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_93e7f5e13f10436987007c7e49f231d0_4",
+        "question": "剧情发展是否逻辑连贯，自然承接了前文众人对Yuri失踪的担忧？",
+        "weight": 0.15
+      },
+      {
+        "criterion_id": "rubric_93e7f5e13f10436987007c7e49f231d0_5",
+        "question": "内容是否仅作为初稿呈现，未强行设定结局或过度展开无关支线？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "当前任务为Draft阶段，需基于提供的《Doki Doki Literature Club》风格剧本片段生成初稿。交付物应包含延续前文对话逻辑的后续剧情，保持角色性格一致性（Monika的担忧、Natsuki的直率、MC的沉默/配合、Sayori的天真），并处理Yuri突然闯入的场景。范围限制在续写该特定场景，格式需符合剧本对话规范（角色名+冒号+台词，括号内动作提示）。不强制指定具体情节走向，允许合理的创意发挥，但必须承接'Yuri bursts into the clubroom'这一触发事件。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea",
+        "criteria": [
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_1",
+            "question": "剧情是否自然承接了众人对Yuri失踪的担忧，并描述了Yuri突然闯入时的具体状态或第一反应？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_2",
+            "question": "Monika、Natsuki、MC和Sayori的台词与反应是否符合其原作设定的性格特征（如Monika的掌控/担忧、Natsuki的直率、Sayori的天真）？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_3",
+            "question": "输出内容是否严格遵循剧本格式，即角色名后紧跟冒号，且动作或情境描写准确置于括号内？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_4",
+            "question": "对话逻辑是否连贯，是否合理回应了前文中关于'Yuri去哪了'及'希望她没事'的铺垫？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_5",
+            "question": "内容是否仅作为场景续写，未强行设定最终结局或引入与前文无关的过度支线情节？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的《Doki Doki Literature Club》剧本片段续写Yuri闯入俱乐部室后的场景。交付物应包含对Yuri状态的描述、其他角色的即时反应以及符合原作性格的对话。范围严格限制在接续'Yuri bursts into the clubroom'这一事件，不得强行结束剧情或偏离核心冲突。格式必须遵循剧本规范（角色名后跟冒号，动作描写在括号内）。权重分配侧重于剧情逻辑连贯性（承接前文担忧）和角色性格还原度，其次是格式规范和场景描写的完整性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea",
+        "normalized_weights": {
+          "rubric_1580f729ab64440da22e3d5bbd7c08ea_1": 0.3,
+          "rubric_1580f729ab64440da22e3d5bbd7c08ea_2": 0.25,
+          "rubric_1580f729ab64440da22e3d5bbd7c08ea_3": 0.2,
+          "rubric_1580f729ab64440da22e3d5bbd7c08ea_4": 0.15,
+          "rubric_1580f729ab64440da22e3d5bbd7c08ea_5": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "剧情自然承接了前文众人的担忧，Yuri的出场描写了她的喘息状态（*panting*）和第一反应（道歉并解释迟到原因），符合突然闯入的情境。",
+            "rejected_reason": "回答描述了Yuri踉跄进门、面色潮红、头发凌乱、眼神涣散的具体状态，并直接回应了众人之前的担忧，符合剧情自然承接的要求。"
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "Monika表现出关心与掌控局面的倾向，Natsuki直率地指出问题但表达关心，Sayori天真地表达 relief，MC温和地提醒，所有台词均符合原作角色性格设定。",
+            "rejected_reason": "Monika表现出关切和主动询问（符合掌控/担忧特质），Natsuki表现出直率和不解的质问（符合直率特质），Yuri的回避和结巴符合其原作性格，整体反应合理。"
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "输出未严格遵循剧本格式要求，动作或情境描写未准确置于括号内，而是使用了星号（如*panting*）包裹在对话行中，不符合“动作置于括号内”的规范。",
+            "rejected_reason": "回答未严格遵循剧本格式，大量使用了小说式的叙述性描写（如'Yuri stumbles through the door...', 'She avoids everyone's gaze...'），而非将动作或情境描写准确置于括号内，且角色名后并未总是紧跟冒号引出对话。"
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "对话逻辑连贯，Yuri解释了去向，众人回应了之前的担忧（如Sayori说'we were worried'，Natsuki确认她没事），合理回应了前文铺垫。",
+            "rejected_reason": "对话逻辑连贯，Yuri的迟到解释和众人的追问直接回应了前文中关于'Yuri去哪了'及'希望她没事'的铺垫，情节推进合理。"
+          },
+          {
+            "criterion_id": "rubric_1580f729ab64440da22e3d5bbd7c08ea_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "内容仅作为场景续写，以开始社团活动结束，未强行设定最终结局或引入与前文无关的过度支线情节。",
+            "rejected_reason": "内容仅作为场景续写，停留在Yuri试图开始会议的当下，未强行设定最终结局或引入与前文无关的过度支线情节。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 0.8,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b5504c36f1e1468ca470333f1c240342"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_215b8b5a7f604d298c69e80e87110492",
+        "criteria": [
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_1",
+            "question": "是否准确延续了'Yuri突然闯入俱乐部室'的动作场景，并描述了其进入时的状态、表情或第一反应？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_2",
+            "question": "各角色（Monika, Natsuki, MC, Sayori, Yuri）的台词与反应是否符合原作设定的性格特征及说话语气？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_3",
+            "question": "是否严格使用了正确的剧本格式（角色名后接冒号，动作/神态描写置于括号内，无小说式旁白叙述）？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_4",
+            "question": "剧情发展是否逻辑自洽，自然回应了前文中众人关于Yuri失踪的担忧与讨论？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_5",
+            "question": "内容是否仅作为场景续写，未强行设定最终结局或过度展开与当前情境无关的支线情节？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的《Doki Doki Literature Club》风格剧本片段（包含角色对话及Yuri即将闯入的提示）对初稿进行核验。交付物应是一段延续剧情的剧本内容，核心要求包括：1. 必须承接'Yuri bursts into the clubroom'这一动作并展开后续互动；2. 严格保持原作角色的性格特征与说话语气（Monika的冷静担忧、Natsuki的直率、Sayori的天真、MC的沉默或简短回应、Yuri的紧张或异常）；3. 遵循标准剧本格式（角色名后跟冒号，动作描写置于括号内）；4. 剧情逻辑需自然连贯，回应前文众人对Yuri失踪的担忧；5. 内容范围应限制在场景续写，避免强行终结故事或引入无关支线。评分标准将围绕上述关键点设计，权重分配侧重剧情逻辑与角色一致性，其次为格式规范。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_215b8b5a7f604d298c69e80e87110492",
+        "normalized_weights": {
+          "rubric_215b8b5a7f604d298c69e80e87110492_1": 0.25,
+          "rubric_215b8b5a7f604d298c69e80e87110492_2": 0.25,
+          "rubric_215b8b5a7f604d298c69e80e87110492_3": 0.2,
+          "rubric_215b8b5a7f604d298c69e80e87110492_4": 0.15,
+          "rubric_215b8b5a7f604d298c69e80e87110492_5": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答准确延续了Yuri闯入的场景，描述了其喘息（*panting*）、恢复呼吸（*catches her breath*）以及微笑（*smiles*）的状态和第一反应，符合'突然闯入'后的生理表现。",
+            "rejected_reason": "回答准确延续了Yuri闯入的场景，详细描述了其踉跄进入（stumbles through）、脸色潮红（face flushed）、头发凌乱（hair slightly disheveled）、眼神涣散（eyes wide and unfocused）以及紧握书本的状态和第一反应。"
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "各角色台词符合原作设定：Monika展现关怀与领导力，Natsuki语气略带严厉但关心，Sayori表达宽慰，MC温和回应，Yuri则表现出礼貌、解释原因并感谢大家，整体语气贴合原作性格。",
+            "rejected_reason": "Yuri的结巴、回避眼神和紧张符合原作中她害羞且容易受惊的性格；Monika表现出担忧和关怀；Natsuki表现出不耐烦和直接质问的语气，均符合角色设定。"
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_3",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "回答未严格使用剧本格式。动作/神态描写使用了斜体（如 *panting*）而非括号（应为 (panting)），且部分描述混入了小说式叙述风格，不符合“动作/神态描写置于括号内”的硬性要求。",
+            "rejected_reason": "回答未严格使用剧本格式。开头和中间段落使用了小说式的旁白描写（如'Yuri stumbles...', 'A faint scent of lavender...'），且动作描写未统一置于括号内，而是以陈述句形式出现，不符合'无小说式旁白叙述'的要求。"
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "剧情逻辑自洽，Yuri解释了迟到原因（与图书管理员交谈），直接回应了前文中众人关于她失踪的担忧，并得到了大家的谅解，自然衔接了对话。",
+            "rejected_reason": "剧情逻辑自洽，Yuri的出现直接回应了前文众人对她失踪的担忧，Monika和Natsuki的反应紧扣前文的对话内容，询问她是否安好及去向。"
+          },
+          {
+            "criterion_id": "rubric_215b8b5a7f604d298c69e80e87110492_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "内容仅作为场景续写，停留在准备开始社团活动阶段，未强行设定最终结局或展开无关支线，符合情境范围。",
+            "rejected_reason": "内容仅停留在场景续写阶段，以Yuri请求开始会议结束，没有强行设定最终结局或展开与当前情境无关的支线情节。"
+          }
+        ],
+        "chosen_score": 0.8,
+        "rejected_score": 0.8,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [
+    {
+      "round_number": 1,
+      "analysis": "分析显示，Judge 在判定格式一致性（Criterion 8/13）时存在严重的‘读错’和‘误判’。尽管两个回答都使用了星号（*panting*）包裹动作而非括号，这属于对剧本格式理解的偏差或模型生成的不一致，但 Judge 将‘未使用括号’直接判定为‘不符合剧本格式’并以此作为主要扣分项（导致两方同分），却忽略了任务上下文中并未强制要求必须使用括号这一事实（Prompt 中使用了 `(In the clubroom…)` 这种括号，但也可能是通用描述）。更关键的错误在于：Judge 认为 rejected 回答因为包含小说式旁白（如'Yuri stumbles through the door...'）而格式不符，这是正确的；但对于 chosen 回答，Judge 同样判定其格式不符（因为用了星号），却未能区分‘纯小说叙述’与‘剧本对话混合风格’的严重程度差异。实际上，chosen 回答虽然用了星号，但其主体仍是角色名+台词的结构，逻辑连贯且承接了前文；rejected 回答则完全打破了剧本结构，变成了第三人称小说。Judge 未能识别出‘文体结构破坏’比‘标点符号形式差异’更严重，导致两方得分相同（0.8 vs 0.8），无法体现 chosen 在保持对话流和角色互动上的优势。评分标准应明确区分‘格式规范性’（是否保留剧本骨架）与‘格式细节’（括号还是星号），避免将非核心的符号差异等同于文体错误，从而掩盖了真正的质量差异（即是否保持了剧本对话的核心结构）。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_6b8a5209025f464ea41cc5b2f9c865b4",
+            "method": {
+              "trigger": "当任务要求续写特定文体（如剧本、诗歌、代码）且上下文已确立该文体框架时",
+              "principle": "评分标准中的格式核验必须严格区分‘核心结构违规’（如改变文体、移除角色对话标签）与‘形式细节偏差’（如动作标记使用星号而非括号），严禁将次要的形式差异等同于核心文体失败，以免掩盖回答在叙事逻辑和交互性上的真实优劣。",
+              "application_guide": "Generator 在设计评分标准时，应将格式维度拆解为：1. ‘结构合规性’（是否保留了目标文体的核心骨架，如剧本中的‘角色名：台词’结构）；2. ‘细节规范性’（动作描写的具体符号选择）。若回答破坏了核心结构（如变成纯小说旁白），应直接判定不合格或低分；若仅存在细节偏差（如用星号代替括号），应视为轻微扣分项或不影响整体合格性，重点考察其是否维持了对话逻辑和角色互动的流畅度。避免笼统地要求‘完全符合某种格式’而忽略了对文体本质的维护。"
+            },
+            "source_task_id": "0d6bb60b5b9fe51a6900098266e66cfa05a5ddd37c25d0ab0343f1342b28ec37",
+            "parent_ids": [
+              "exp_b5504c36f1e1468ca470333f1c240342"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_6b8a5209025f464ea41cc5b2f9c865b4"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_8e6de47b0f46474aa922012a3019b52d",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_1",
+                  "question": "是否完整延续了'Yuri bursts into the clubroom'的场景并描述了她的状态或反应？",
+                  "weight": 0.35
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_2",
+                  "question": "是否保持了Monika、Natsuki、MC、Sayori各角色符合原作设定的性格特征和说话语气？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_3",
+                  "question": "是否使用了正确的剧本格式（角色名后跟冒号，动作描写置于括号内）？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_4",
+                  "question": "剧情发展是否逻辑连贯，自然承接了前文众人对Yuri失踪的担忧？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_5",
+                  "question": "内容是否聚焦于当前场景续写，未强行设定结局或过度展开无关支线？",
+                  "weight": 0.05
+                }
+              ],
+              "analysis": "当前任务处于revise阶段，需基于提供的《Doki Doki Literature Club》风格剧本片段（stage为draft时生成初稿的语境下）对draft进行核验与修订。交付物应包含延续'Yuri突然闯入俱乐部室’这一触发事件的后续剧情。核心要求包括：1. 剧情逻辑必须自然承接前文众人对Yuri失踪的担忧；2. 严格保持Monika、Natsuki、MC、Sayori的原作性格特征与说话语气；3. 格式必须符合剧本规范（角色名+冒号+台词，动作描写在括号内）。评分标准将重点考察场景延续性、角色一致性、格式合规性及逻辑连贯性，允许合理的创意发挥但不偏离核心设定。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_8e6de47b0f46474aa922012a3019b52d",
+              "normalized_weights": {
+                "rubric_8e6de47b0f46474aa922012a3019b52d_1": 0.35,
+                "rubric_8e6de47b0f46474aa922012a3019b52d_2": 0.25,
+                "rubric_8e6de47b0f46474aa922012a3019b52d_3": 0.2,
+                "rubric_8e6de47b0f46474aa922012a3019b52d_4": 0.15,
+                "rubric_8e6de47b0f46474aa922012a3019b52d_5": 0.05
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_1",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "回答以'Yuri: *panting*'开头，直接延续了'Yuri bursts into the clubroom'的动作，并描述了她的状态（气喘吁吁、解释迟到原因）及后续反应。",
+                  "rejected_reason": "回答完整延续了Yuri冲入房间的场景，并详细描写了她踉跄进入、面色潮红、头发凌乱、紧握书本、眼神涣散以及回避目光等状态和反应。"
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "Monika表现出组长般的关切与组织力；Natsuki语气直率且略带责备但关心同伴；Sayori展现开朗宽慰的特质；MC作为倾听者给予确认；Yuri则保持礼貌、温和且略显拘谨的性格，均符合原作设定。",
+                  "rejected_reason": "Monika表现出关切和作为部长的引导性；Natsuki表现出急躁和直接质问的性格；Yuri表现出紧张、结巴和回避的特质；所有角色的对话语气和行为均符合原作设定。"
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "所有对话行均严格遵循'角色名：台词'的格式，动作描写或状态描述均正确使用星号包裹置于括号外或句首/句中，整体剧本格式规范统一。",
+                  "rejected_reason": "回答严格遵循了剧本格式，角色名后紧跟冒号引出对话，动作描写和场景说明置于括号内或独立成段描述动作，与提供的任务输入格式一致。"
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "剧情自然承接了前文众人对Yuri失踪的担忧，通过解释是去图书馆看书而迟到，合理解释了缺席原因，并回应了大家的关心，逻辑连贯。",
+                  "rejected_reason": "剧情逻辑连贯，自然承接了前文众人对Yuri失踪的担忧，通过Yuri的迟到解释、众人的追问以及她试图掩饰的态度，推动了情节发展。"
+                },
+                {
+                  "criterion_id": "rubric_8e6de47b0f46474aa922012a3019b52d_5",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "内容聚焦于俱乐部室内重逢场景，仅处理了Yuri迟到的解释和会议开始的过渡，未强行推进到具体活动细节或设定结局，也未展开无关支线。",
+                  "rejected_reason": "内容聚焦于当前续写场景，仅描述了Yuri刚进门的即时反应和众人的初步互动，没有强行设定结局（如揭示具体发生了什么）或展开无关支线。"
+                }
+              ],
+              "chosen_score": 1.0,
+              "rejected_score": 1.0,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    },
+    {
+      "round_number": 2,
+      "analysis": "上一轮经验（ID 11）被判定为无效（incorrect），核心原因在于 Judge 对 Criterion 18（格式规范）的判读出现了严重的事实错误和逻辑矛盾。Judge 在理由中声称：'chosen'回答使用了星号包裹动作，因此是'严格遵循'且'正确'的；同时声称'rejected'回答将动作置于括号内或独立成段也是'严格遵循'。这与任务上下文中明确要求的'动作描写置于括号内'（如 Prompt 中的 `(In the clubroom…)`）相悖。事实上，'chosen'回答使用星号（*panting*）而非括号，恰恰是格式违规（或者至少是不符合上下文示例的变体），而 Judge 却将其视为合规并给了满分，导致两个回答在该维度上均被判为完美（true），从而掩盖了'rejected'回答因大量使用小说旁白而破坏剧本结构的真正缺陷。这种‘读错’事实（把非括号当括号/把星号当合规）导致评分标准无法区分两者的优劣，造成平局。这表明当前的评分标准设计未能有效执行‘核对具体文本特征’的要求，且未能在标准中明确界定‘括号’与‘星号’的互斥性，导致形式审查失效。",
+      "attempts": [
+        {
+          "experience": {
+            "experience_id": "exp_b9bee3fa94154f03ab2b231e8ffa7d2e",
+            "method": {
+              "trigger": "当任务要求生成特定格式（如剧本、代码）且上下文提供了明确的格式示例时",
+              "principle": "评分标准中的格式核验必须基于上下文提供的具体视觉特征（如括号 vs 星号）进行精确比对，严禁将非目标符号（如星号）误判为目标符号（如括号），或忽略‘无小说式旁白’等关键约束，防止因事实核查失败导致所有回答得分虚高。",
+              "application_guide": "Generator 在设计格式维度的提问时，应显式列出上下文中的具体字符特征（例如：'动作描写是否使用了圆括号 ( ) 包裹？'），并明确禁止其他符号（如星号 * 或斜体）。若上下文示例为括号，则答案中出现星号应直接判定为不合规；若答案包含大段非对话的叙述性旁白（如 'Yuri stumbles...'），应判定为破坏文体结构。需确保标准能识别出‘符号错误’与‘文体错误’的具体差异，避免笼统描述导致 Judge 产生幻觉或误判。"
+            },
+            "source_task_id": "0d6bb60b5b9fe51a6900098266e66cfa05a5ddd37c25d0ab0343f1342b28ec37",
+            "parent_ids": [
+              "exp_b5504c36f1e1468ca470333f1c240342"
+            ]
+          },
+          "path": {
+            "provided_experience_ids": [
+              "exp_b9bee3fa94154f03ab2b231e8ffa7d2e"
+            ],
+            "rubric": {
+              "rubric_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2",
+              "criteria": [
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_1",
+                  "question": "是否严格使用了剧本格式规范，即角色名后紧跟冒号，且所有动作描写或状态描述均置于圆括号内？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_2",
+                  "question": "剧情是否直接延续了'Yuri bursts into the clubroom'的场景，并描述了其闯入时的具体状态或周围角色的即时反应？",
+                  "weight": 0.25
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_3",
+                  "question": "各角色（Monika, Natsuki, MC, Sayori）的台词和反应是否符合原作设定的人设特征（如Monika的关切主导、Natsuki的直接、Sayori的天真等）？",
+                  "weight": 0.2
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_4",
+                  "question": "对话内容是否逻辑连贯地承接了前文众人对Yuri失踪的担忧，并提供了合理的场景过渡或情节推进？",
+                  "weight": 0.15
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_5",
+                  "question": "内容是否仅作为场景续写的初稿，未强行终结剧情冲突或引入与前文无关的过度支线？",
+                  "weight": 0.15
+                }
+              ],
+              "analysis": "当前任务处于revise阶段，需基于提供的《Doki Doki Literature Club》剧本片段续写Yuri突然闯入俱乐部室的场景。交付物必须延续前文众人寻找Yuri的焦虑氛围，并自然承接'Yuri bursts into the clubroom'这一动作。核心约束包括：1. 严格遵循提供的剧本格式（角色名+冒号+台词，动作描写用圆括号）；2. 保持原作角色性格（Monika的担忧与掌控欲、Natsuki的直率、Sayori的天真、MC的被动/观察视角）；3. 剧情逻辑需连贯，解释或回应前文的失踪担忧。评分标准将重点核验格式规范性、角色一致性、剧情衔接度以及是否仅作为初稿呈现而未过度展开结局。"
+            },
+            "judgment": {
+              "rubric_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2",
+              "normalized_weights": {
+                "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_1": 0.25,
+                "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_2": 0.25,
+                "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_3": 0.2,
+                "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_4": 0.15,
+                "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_5": 0.15
+              },
+              "criterion_judgments": [
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_1",
+                  "chosen": false,
+                  "rejected": false,
+                  "chosen_reason": "回答未严格遵循剧本格式规范。虽然角色名后使用了冒号，但动作描写（如 *panting*、*catches her breath*）未置于圆括号内，而是以星号包裹的斜体形式直接出现在台词前或句中，不符合题目要求的“所有动作描写或状态描述均置于圆括号内”的标准。",
+                  "rejected_reason": "回答未严格使用剧本格式规范。角色名后未紧跟冒号（如 'Monika steps forward' 是叙述句而非台词标识），且动作描写和状态描述直接以段落形式呈现，未置于圆括号内。"
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_2",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "剧情紧接输入结尾的'Yuri bursts into the clubroom'，描述了Yuri气喘吁吁地进入并道歉的状态，同时展现了Monika、Sayori等人对其平安归来的即时反应和关切询问。",
+                  "rejected_reason": "剧情直接延续了Yuri闯入的场景，详细描述了其具体状态（脸红、头发凌乱、紧握书本、眼神涣散）以及周围角色的即时反应（Monika上前关切、Natsuki皱眉质问）。"
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_3",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "角色表现符合原作设定：Monika表现出主导性和对成员的关切；Natsuki说话直接且带有轻微责备但关心成员安全；Sayori表现出天真和如释重负的情感；MC作为倾听者回应了担忧；Yuri解释了迟到原因并表达感谢。",
+                  "rejected_reason": "各角色表现符合原作设定：Monika表现出主导的关切，Natsuki展现出直接和不耐烦的态度，Yuri体现了紧张和回避的特质，Sayori虽未发言但整体氛围符合前文设定的担忧情绪。"
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_4",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "对话逻辑连贯，Yuri的解释（与图书管理员交谈导致时间失控）合理承接了前文众人对她失踪的担忧，并自然过渡到重新开始的会议环节。",
+                  "rejected_reason": "对话逻辑连贯地承接了前文众人对Yuri失踪的担忧，通过Yuri的支吾和众人的追问自然推进情节，并尝试将场景过渡到会议开始。"
+                },
+                {
+                  "criterion_id": "rubric_0bd2bdb766394c9dadfc4e59e23aaef2_5",
+                  "chosen": true,
+                  "rejected": true,
+                  "chosen_reason": "内容仅作为场景续写的初稿，解决了当前的缺席冲突但未强行终结整个故事线，也未引入与前文无关的过度支线，保持了场景的开放性。",
+                  "rejected_reason": "内容作为场景续写初稿，仅停留在Yuri解释迟到原因并试图开始会议的阶段，未强行终结所有冲突（如Yuri仍未完全坦白），也未引入与前文无关的过度支线。"
+                }
+              ],
+              "chosen_score": 0.75,
+              "rejected_score": 0.75,
+              "margin": 0.0,
+              "success": false
+            },
+            "error": null
+          },
+          "admitted": false,
+          "reason": "incorrect"
+        }
+      ],
+      "error": null
+    }
+  ],
+  "error": null,
+  "mode": "train"
+}

@@ -1,0 +1,566 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:266777e90af2c196741532ee74e6bf5ca58a5f73e9b4058fd26985f15b0cafc8",
+    "task": "What to say on call to representative on how the parcel never came and I want a refund ",
+    "chosen": "The following lines can be used in a telephone conversation with a service representative at the company you are calling. They can be adjusted based on the nature and flow of the conversation. Keep important information such as order and tracking numbers nearby:\n\nMy name is [Your Name], and I recently made a purchase from your company. Unfortunately, the parcel never arrived, and I have been unable to locate it.\n\nThe order number for the purchase is [insert order number].\n\nThe tracking number for the package is [insert tracking number].\n\nI have checked with the courier service, and they have no record of the package being delivered to my address. \n\nSince I haven't received what I ordered, I would like to request a refund for the purchase. \n\nDo you need any additional information or documentation to facilitate the refund?\n\nI appreciate your assistance in resolving this matter.\n\nThank you for your time and attention.",
+    "rejected": "Hello,\n\nI hope you're having a good day. My name is [Your Name], and I recently made a purchase from your company. Unfortunately, the parcel I was expecting never arrived, and I have been unable to locate it.\n\nI have checked with the courier service, and they have no record of the package being delivered to my address. I have also checked with my neighbors, but no one has received a package on my behalf.\n\nAs a result, I am unable to use the product I ordered, and I would like to request a refund for the purchase. I understand that there may be a process to follow, and I am willing to provide any necessary information or documentation to facilitate the refund.\n\nI appreciate your assistance in resolving this matter, and I look forward to hearing back from you soon.\n\nThank you for your time and attention.\n\nBest regards,\n\n[Your Name]",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 23385,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": -3,
+      "chosen_response": 1,
+      "individual_preference": [
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. This is because @Response 1 is fully instruction-following and is grounded in truth. @Response 2 has issues with instruction-following, truthfulness, and missing important information.",
+          "feedback1": "The response is mostly helpful. This is because the response is instruction-following and is grounded in truth. The model provided a great response that includes all of the necessary aspects one would need in order to request a refund for a non-delivered parcel. The only thing that could be improved would be for the model to have more clearly organized the response.",
+          "feedback2": "The response is not helpful. This is because the response is not instruction-following and is not grounded in truth. The model should have included information such as making sure to have important details like tracking numbers and payment info readily available. Also, the response is formatted as an email, when the prompt requests help with a phone call."
+        },
+        {
+          "score": -2,
+          "reasoning": "@Response 1 is better than @Response 2. @Response 1 aligns better with the prompt than @Response 2. @Response 1 provides the phone script required by the prompt. In contrast, @Response 2 provides an email script. @Response 1 refers to the importance of order number. In contrast, @Response 2 ignores it.",
+          "feedback1": "The response is partially helpful. The response mostly aligns with the prompt's instructions. The response provides a helpful script for the user to use while contacting the company. However, it misaligns with the prompt by adding irrelevant details that the user has not provided. For example, \"X checked with the courier service; they have no record of the package being delivered.\" The user has not stated this; thus, such addition might be misleading in case it is not the correct scenario. It is helpful to direct the user to keep the order handy. However, adding \"the tracking number\" in the conversation is irrelevant. Especially, most companies require only the order number to get the details of the order and it is their responsibility to check the status of the delivery directly with their courier. \nAlso, asking if the representative needs any additional information or documentation is irrelevant. It is out of context. As a result,  The response is redundant and in the longer side.",
+          "feedback2": "The response is slightly helpful. The response deviates from the prompt's instructions to provide a script of a phone call. Instead, the response inaccurately provides an email script.  The phrases \"Best regards\", \"Look forward to hearing back from x soon\" is suitable for an email, not a phone call. \n\nThe response also has extraneous information that the user has not provided it, which makes it misleading. For example, \"checking with the courier and checking with the neighbour\". There is a possibility that these scenarios are not correct. \nAlso, \"unable to use the product\" is awkward and unnecessary addition. It is clear that if the product was not delivered, then the user won't be able to use it.\n\nIt would have been helpful, if the response mentioned for the user that order number is nesscary when making the phone call. \nThe first 2-3 lines are the only helpful part in the response."
+        },
+        {
+          "score": -3,
+          "reasoning": "@Response 1 is much better than @Response 2. @Response 2 writes a letter when the user wanted lines to use on a phone call, so @Response 1 is better.",
+          "feedback1": "The response is perfectly helpful. The prompt asked for some language to use when calling about a package that was not delivered. This response fulfills the request capably, giving a script to use on the phone call. All of the options are appropriate and straightforward, and would be helpful to the user.",
+          "feedback2": "The response is partially helpful. The prompt asks for a script to use when calling about a package that was never delivered. This response misses the part about the user calling and instead writes an email/letter. Despite the unexpected format, this is an appropriate letter and would get the message across."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_95a8e07c7570572a671b",
+        0.34925279036945067
+      ],
+      [
+        "task_4c5d9b6358b88df1e61c",
+        0.34199536237051076
+      ],
+      [
+        "task_d4210e66d6dfa94fd045",
+        0.3375165373601175
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_4c5d9b6358b88df1e61c",
+              "similarity": 0.34199536237051076,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f88cb2174594841b739538bcb3599c995067b5d57042ff158334fa8413be6d83:exp_543c20bb090d4a35a4c1851ad1972427"
+                ],
+                "task_ids": [
+                  "992630eb45274916a951b12a5eaa1b398c40eef8714ecd41d51262a2d09ec8ed"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_4c5d9b6358b88df1e61c",
+              "similarity": 0.34199536237051076,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f88cb2174594841b739538bcb3599c995067b5d57042ff158334fa8413be6d83:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "992630eb45274916a951b12a5eaa1b398c40eef8714ecd41d51262a2d09ec8ed"
+                ]
+              }
+            },
+            {
+              "group_id": "task_95a8e07c7570572a671b",
+              "similarity": 0.34925279036945067,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:8391bb894c0bb58119792e5e2a21292388629f5f6d69cd689dacd5513a6cfa31:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:15e975cc2bb892e6115d5d760e7c5f308b29bcf2e4f46d54315a679c4f836fa8:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:8e33199710d5e28e9f5fc4679135a290f3351fce389496bcf88557812626a6d9:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:97fbb3b75ad7a2eb10bba31b452f07377aa38dd6298ce1850b6e9baaadf5a15c:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:bf0d59e5fca4dcfe3a41706bf7659892262f5d88230ce5593da744914d9f36fa:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:0f736cfbd21a5b7b6cf90d8c897bdb64fb89f7e28f7875bd91e8524fc35e3610:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:721a24a72a75d9cb8bfa159c14e97982463808eddbe71c3baa7a3206d8161e4e:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+                  "helpsteer3:train:875d699a70e604fb001ba5564c5cba3dcd8075c4404c30361921525dfcafdd16:exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+                ],
+                "task_ids": [
+                  "2f51d7a1ac5326bed4faa559c29d1423921d55e73918970f37b4e47daf86fbbe",
+                  "2ff666f33e676f9cd6c957834f6898261f47eee03baa695d08125c7fa1fd967f",
+                  "990938cacae27bcda9a7ab49d4b8d6b12b5eefafdf252a45ba2cd9d77187245d",
+                  "6dada60f53e0279b49adc71849a02333a93e3b2dc060723da10c2bc436718b94",
+                  "2fb8530bd8a0181cf346af3aae6199a164d1a8adeb1b95d9003a35546619a902",
+                  "458e38b7d7f332de1ef3e3a7fb5a3ce362e5b0d75f5c8952940313d642d3e281",
+                  "5c016b5d107c7f94193be99e714476d37a8f53ef1ec9e4db82862ad4d01f7929",
+                  "901dfe1ac8d58e5d2d3a114ab7cc893b028a60d3ea596659d0ab184c110b92bd"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        0.38525228380353793
+      ],
+      [
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        0.3773284511615803
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.3293032784082216
+      ],
+      [
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        0.3138130725727193
+      ],
+      [
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        0.3134695217567536
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.29877578739324784
+      ],
+      [
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        0.2954039433116723
+      ],
+      [
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        0.2913521176645681
+      ],
+      [
+        "exp_f9c63a6f153b46d8977f62d084a99e17",
+        0.2861215773553953
+      ],
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.2823058048911813
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_543c20bb090d4a35a4c1851ad1972427",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.38525228380353793
+      },
+      {
+        "experience_id": "exp_e081015d1dd049aeb44763c6e3d90414",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3773284511615803
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3293032784082216
+      },
+      {
+        "experience_id": "exp_f119c00feba548d7a466b43903d7e2e1",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3138130725727193
+      },
+      {
+        "experience_id": "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.3134695217567536
+      },
+      {
+        "experience_id": "exp_8a047aa502234685891ad41a1a24d090",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29877578739324784
+      },
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2954039433116723
+      },
+      {
+        "experience_id": "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2913521176645681
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9": "任务明确要求生成‘打电话给代表’的回复内容，属于针对特定对象（客服代表）和特定情境（包裹未达、要求退款）的互动沟通。经验2强调需区分‘复述主题’与‘交互响应’，即评分时应验证生成的话术是否构成了对客服的直接回应（如明确提出诉求、陈述事实），而非仅仅重复‘包裹没到’这一背景信息，这符合本任务对话生成的核心需求。",
+    "exp_8a047aa502234685891ad41a1a24d090": "任务要求生成具体的沟通草稿（电话台词），属于针对特定对象的简短沟通内容。经验8指出必须将‘幻觉信息核查’设为否定维度，严禁回答中编造任务未提及的细节（如虚构订单号、具体日期或物流单号）。由于用户输入仅提供了‘包裹未到’和‘要退款’两个核心事实，任何在生成话术中自行添加的具体虚假信息都应被判定为不合格，这与经验8的原则高度契合。"
+  },
+  "draft": {
+    "rubric_id": "rubric_8d3190238a7547b3860495e9ff0c5874",
+    "criteria": [
+      {
+        "criterion_id": "rubric_8d3190238a7547b3860495e9ff0c5874_1",
+        "question": "是否明确陈述了包裹未实际收到的事实？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_8d3190238a7547b3860495e9ff0c5874_2",
+        "question": "是否清晰表达了申请全额退款的诉求？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_8d3190238a7547b3860495e9ff0c5874_3",
+        "question": "是否包含引导用户提供或确认关键信息（如订单号、收货地址）的提示或占位符？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_8d3190238a7547b3860495e9ff0c5874_4",
+        "question": "整体语气是否礼貌、专业且坚定，适合电话沟通场景？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "该任务要求生成一段用于致电客服代表时的沟通草稿，核心情境是包裹未送达且用户希望退款。作为draft阶段，需确保内容涵盖必要的沟通要素：清晰陈述事实（未收到包裹）、表达诉求（退款）、提供必要信息（订单号等占位符）以及保持礼貌专业的语气。标准设计将围绕这些核心要素的完整性、语气的恰当性以及信息的可操作点进行分配权重。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd",
+        "criteria": [
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_1",
+            "question": "是否清晰陈述了包裹未实际收到的事实及尝试联系/查询的情况？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_2",
+            "question": "是否明确表达了申请全额退款的诉求？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_3",
+            "question": "是否主动提供了关键验证信息（如订单号、收货地址）或预留了填写这些信息的占位符？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_4",
+            "question": "是否提出了具体的下一步行动请求（如要求核实物流状态、安排退款流程或回电）？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_5",
+            "question": "整体语气是否礼貌、专业且坚定，适合电话沟通场景？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需对提供的draft进行核验与修订。原标准已涵盖核心要素（事实陈述、退款诉求、信息占位符、语气），但作为电话沟通脚本，应增加‘明确请求对方采取具体行动’的维度，以确保沟通闭环；同时需确认是否包含时间预期或后续步骤的提及。此外，原标准中关于‘引导用户提供信息’的表述在用户致电场景下应调整为‘提供自身关键信息’，因为是由用户向客服提供订单号等数据。修订后的标准将修正这一视角偏差，并强化行动导向，权重重新分配以反映电话沟通中‘促成解决’的重要性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd",
+        "normalized_weights": {
+          "rubric_f9a553e9206e40d1b73d0a49869acdfd_1": 0.25,
+          "rubric_f9a553e9206e40d1b73d0a49869acdfd_2": 0.2,
+          "rubric_f9a553e9206e40d1b73d0a49869acdfd_3": 0.25,
+          "rubric_f9a553e9206e40d1b73d0a49869acdfd_4": 0.15,
+          "rubric_f9a553e9206e40d1b73d0a49869acdfd_5": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中明确陈述了'parcel never arrived'（包裹未到达）的事实，并说明了'I have been unable to locate it'以及'I have checked with the courier service'（已联系快递公司查询但无记录），清晰表达了未收到货及尝试查询的情况。",
+            "rejected_reason": "回答中明确陈述了包裹未实际收到（'the parcel I was expecting never arrived'）的事实，并描述了已尝试联系快递查询（'checked with the courier service'）以及询问邻居的情况。"
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中直接使用了'I would like to request a refund for the purchase'（我想要申请购买退款）的表述，明确表达了全额退款的诉求。",
+            "rejected_reason": "回答中直接表达了申请全额退款的诉求（'I would like to request a refund for the purchase'）。"
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中主动预留了填写关键验证信息的占位符，包括'[insert order number]'（订单号）和'[insert tracking number]'（追踪号），符合提供或预留信息的要求。",
+            "rejected_reason": "回答中使用了占位符 '[Your Name]' 代表用户身份，并主动表示愿意提供所需信息或文件（'willing to provide any necessary information or documentation'），虽未显式列出订单号占位符，但符合预留填写信息的意图和场景需求。"
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答中提出了具体的下一步行动请求，通过问句'Do you need any additional information or documentation to facilitate the refund?'询问是否需要额外信息以推进退款流程，隐含了要求对方核实并安排后续步骤的意图。",
+            "rejected_reason": "回答中仅表达了期待回复（'look forward to hearing back from you soon'），但未明确提出具体的下一步行动请求，如要求核实物流状态、安排退款流程或回电等具体指令。"
+          },
+          {
+            "criterion_id": "rubric_f9a553e9206e40d1b73d0a49869acdfd_5",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "整体语气礼貌且专业，使用了'My name is...'、'Unfortunately'、'I appreciate your assistance'等得体表达，既坚定陈述了问题又保持了电话沟通所需的职业素养。",
+            "rejected_reason": "整体语气礼貌（'Hope you're having a good day', 'Thank you for your time'）、专业且坚定，适合书面沟通场景，但作为电话沟通脚本略显正式和书面化，不过仍符合基本礼貌和专业标准。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.85,
+        "margin": 0.15,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca",
+        "criteria": [
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_1",
+            "question": "话术是否清晰且明确地陈述了包裹未实际送达的事实（包括提及预计送达日期已过或物流状态停滞）？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_2",
+            "question": "话术是否直接、无歧义地表达了要求全额退款的最终诉求？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_3",
+            "question": "话术中是否包含明确的占位符或提示，引导用户在通话时提供具体的订单号、收货地址等关键验证信息？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_4",
+            "question": "整体语气是否兼顾礼貌尊重与坚定有力，符合电话沟通中维护权益且不激化矛盾的专业场景？",
+            "weight": 0.15
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_5",
+            "question": "话术结构是否具备对话交互性，包含对客服可能询问的预判或引导后续处理步骤（如‘请帮我查询’或‘请问退款流程是...’）的内容？",
+            "weight": 0.05
+          }
+        ],
+        "analysis": "本任务旨在修订一份用于致电客服代表说明包裹未送达并申请退款的沟通话术。作为revise阶段，需基于draft中的四个维度（事实陈述、退款诉求、信息占位符、语气风格）进行核验与优化。重点在于确保话术不仅包含必要信息点，还需具备电话沟通的交互性：即明确引导用户填入具体订单细节，避免空泛陈述；同时确认语气在保持礼貌的同时足够坚定以推动问题解决。修订过程将检查原标准是否遗漏了‘时间线陈述’（如预计送达日已过）这一关键事实要素，以及‘互动响应’的有效性（话术是否预设了客服可能的回应并引导下一步），而非仅仅罗列关键词。权重分配将侧重于核心诉求的清晰度与事实陈述的完整性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca",
+        "normalized_weights": {
+          "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_1": 0.35,
+          "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_2": 0.25,
+          "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_3": 0.2,
+          "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_4": 0.15,
+          "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_5": 0.05
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "话术明确陈述了包裹未送达的事实（'the parcel never arrived'），并提及已联系快递公司确认无投递记录，隐含了物流状态停滞或无法追踪的情况。",
+            "rejected_reason": "话术未明确陈述预计送达日期已过或物流状态停滞，仅泛泛提及包裹未到达及无法定位，缺乏对时间线或具体物流状态的描述。"
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "话术中直接使用了 'I would like to request a refund for the purchase' 这一表述，清晰且无歧义地表达了要求全额退款的诉求。",
+            "rejected_reason": "话术中明确表达了'I would like to request a refund for the purchase'（我要求退还购买款项），直接且无歧义地提出了全额退款诉求。"
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "话术中包含了明确的占位符 '[insert order number]' 和 '[insert tracking number]'，并在开头提示用户准备好订单号和追踪号等关键信息。",
+            "rejected_reason": "话术仅在开头和结尾包含[Your Name]占位符，未包含引导用户提供订单号、收货地址等关键验证信息的占位符或提示语句。"
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "整体语气专业且礼貌，既坚定提出了问题（'Unfortunately... unable to locate it'）和诉求，又使用了 'I appreciate your assistance' 和 'Thank you for your time' 等表达来维护良好的沟通氛围。",
+            "rejected_reason": "整体语气礼貌尊重（如使用I hope you're having a good day, I appreciate your assistance），同时坚定表达了退款意愿，符合专业沟通场景。"
+          },
+          {
+            "criterion_id": "rubric_8c9cc9dd9a3b4b6a85ffd7eb38d2c4ca_5",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "话术结构具备交互性，包含了对客服的询问 'Do you need any additional information or documentation to facilitate the refund?'，引导了后续处理步骤。",
+            "rejected_reason": "话术结构为单向陈述的邮件格式，缺乏对话交互性，未包含预判客服询问或引导后续处理步骤的具体内容（如‘请帮我查询’或‘请问退款流程是...’）。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.4,
+        "margin": 0.6,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_8a047aa502234685891ad41a1a24d090"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460",
+        "criteria": [
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_1",
+            "question": "是否明确且准确地陈述了‘包裹未实际送达’这一核心事实，且未编造任务输入中不存在的物流细节？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_2",
+            "question": "是否清晰、直接地表达了申请全额退款的具体诉求？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_3",
+            "question": "是否包含必要的信息占位符或提示（如订单号、收货地址、购买日期），以引导用户在通话时提供关键数据？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_4",
+            "question": "整体语气是否兼顾礼貌、专业与坚定，符合电话沟通中寻求解决问题的语境？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "本次任务要求修订一份用于致电客服代表沟通包裹未送达及申请退款的草稿。核心交付物是电话沟通话术，涉及对象为用户与客服代表。关键要素包括：明确陈述‘包裹未收到’的事实、清晰提出‘退款’诉求、预留或引导提供订单号等关键信息占位符、以及保持礼貌专业的语气。修订阶段需检查初稿是否遗漏必要信息（如具体订单细节的提示）、事实陈述是否准确无虚构、语气是否符合电话沟通场景。经验提示中关于‘幻觉信息核查’和‘形式纯度’的原则在此处体现为：严禁在话术中编造具体的订单号、日期或物流状态（除非作为占位符），且输出应仅为话术本身，不包含额外的分析或解释。权重分配将侧重于事实陈述的准确性（30%）、诉求表达的清晰度（25%）、必要信息的完整性（25%）以及语气的适宜性（20%）。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460",
+        "normalized_weights": {
+          "rubric_42b4a6587cdf4a32b4ae13d8722ff460_1": 0.3,
+          "rubric_42b4a6587cdf4a32b4ae13d8722ff460_2": 0.25,
+          "rubric_42b4a6587cdf4a32b4ae13d8722ff460_3": 0.25,
+          "rubric_42b4a6587cdf4a32b4ae13d8722ff460_4": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答明确陈述了'parcel never arrived'（包裹未送达）和'unable to locate it'（无法找到包裹）这一核心事实，且未编造具体的物流状态细节（如具体延误天数或特定异常代码），仅说明与快递公司确认无交付记录，符合任务输入范围。",
+            "rejected_reason": "任务输入仅说明‘包裹未送达’，未提及用户已联系快递公司或邻居核实。回答中编造了‘已检查快递无记录’和‘询问邻居’等具体物流细节，违反了不编造任务输入中不存在事实的要求。"
+          },
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答中直接使用了'I would like to request a refund for the purchase'（我想申请退款）这一清晰、直接的表述，准确表达了用户寻求全额退款的诉求。",
+            "rejected_reason": "回答中明确使用了'I would like to request a refund for the purchase'这一表述，清晰且直接地表达了申请全额退款的具体诉求。"
+          },
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答包含了明确的占位符提示，如'[Your Name]'、'[insert order number]'、'[insert tracking number]'，并在开头提示用户准备好订单号和追踪号等关键信息，有效引导用户在通话时提供必要数据。",
+            "rejected_reason": "回答中虽然包含了'[Your Name]'这一占位符，但缺失了任务标准要求的订单号、收货地址、购买日期等关键数据占位符或提示，无法有效引导用户在通话时提供这些核心信息。"
+          },
+          {
+            "criterion_id": "rubric_42b4a6587cdf4a32b4ae13d8722ff460_4",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "整体语气礼貌（使用'My name is...'、'I appreciate your assistance'）、专业（结构清晰、逻辑连贯）且坚定（明确表达问题并请求退款），完全符合电话沟通中寻求解决问题的语境。",
+            "rejected_reason": "整体语气使用了'Hope you're having a good day'、'I appreciate your assistance'等礼貌用语，同时坚定提出退款要求并愿意配合流程，符合电话沟通中寻求解决问题的专业语境。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.45,
+        "margin": 0.55,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

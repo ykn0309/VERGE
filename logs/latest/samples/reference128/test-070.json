@@ -1,0 +1,369 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:50a24f6a10c2e0595e2ad78c153077ad5bc430cd0e4d100e20aded5d6da3f593",
+    "task": "what genre is blitzkrieg bop and recommend another similar song",
+    "chosen": "\"Blitzkrieg Bop\" is a song by the American punk rock band Ramones, and it falls under the genre of punk rock. The song is known for its fast tempo, simple yet catchy guitar riffs, and energetic vocals. Here's a similar song that you might enjoy:\n\nSong: \"Sheena Is a Punk Rocker\"\nArtist: Ramones\n\n\"Sheena Is a Punk Rocker\" is another classic punk rock song by the Ramones. It has a similar fast-paced rhythm, straightforward chord progression, and anthemic chorus. The song's theme revolves around a girl named Sheena who embodies the punk rock spirit. It's an excellent representation of the Ramones' signature sound and style.",
+    "rejected": "\"Blitzkrieg Bop\" by The Ramones is a classic punk rock song. It's characterized by its fast tempo, simple yet catchy guitar riffs, and the band's signature \"Hey Ho, Let's Go\" chant. If you enjoy \"Blitzkrieg Bop\" and are looking for similar songs, I'd recommend checking out the following:\n\n1. **The Ramones - \"I Wanna Be Sedated\"**: This is another iconic song by The Ramones, showcasing their signature punk rock sound with a slightly slower tempo than \"Blitzkrieg Bop\".\n\n2. **The Clash - \"London Calling\"**: This song is a great example of punk rock with a touch of reggae influence. It's a bit more complex musically than \"Blitzkrieg Bop\", but it captures a similar raw energy.\n\n3. **Sex Pistols - \"God Save the Queen\"**: This song is a classic punk anthem with a fast tempo and provocative lyrics, much like \"Blitzkrieg Bop\".\n\n4. **The Buzzcocks - \"Ever Fallen in Love (With Someone You Shouldn't've)\"**: This song is a bit more melodic than \"Blitzkrieg Bop\", but it still captures that punk spirit with its fast pace and catchy guitar riffs.\n\n5. **The Damned - \"Neat Neat Neat\"**: This song is a great example of punk rock with a bit of a gothic influence. It's fast, catchy, and full of attitude.\n\n6. **The Misfits - \"Hybrid Moments\"**: This song is a classic example of horror punk, with a fast tempo and lyrics that are equal parts catchy and creepy.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 18631,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 adheres to the prompt requirement of only one song, and @Response 1 lists 6, so there ends up being a lot of irrelevant information that the prompt did not ask for.",
+          "feedback1": "The response is partially helpful. It is clear and coherent, and the songs it suggests are well-chosen, especially \"Wanna Be Sedated\" and \"God Save the Queen.\" However, the prompt only asked for one similar song, and the response did not follow those instructions and meet that requirement. This response listed 6, so it ended up with a lot of irrelevant information and a length that was too verbose. All of the points are factually accurate, and the language is easy to understand.",
+          "feedback2": "The response is perfectly helpful. The response adheres to the prompt requirement to list only one additional song that is like \"Blitzkrieg Bop,\" and the response's selection of \"Sheena is a Punk Rocker\" is both factually accurate and subjectively smart. The response was rather short, but still addressed all the asks, and used very easy-to-understand language."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 listed multiple songs. Their main similarity to \"Blitzkrieg Bop\" was their presence in the punk genre. @Response 2 listed one song as requested, and the song is from the same band and has a similar tempo and anthemic qualities.",
+          "feedback1": "The response is partially helpful. While it accurately  places \"Blitzkrieg Bop\" in the 'punk' genre, it lists more than one song, which is misaligned with the prompt. All of the songs listed were in a sub-genre of punk, but only the Sex Pistols song \"God Save the Queen,\" which has a similar tempo and provocative lyrics, needed to be listed. ",
+          "feedback2": "The response is perfectly helpful. The response accurately lists the song \"Blitzkrieg Bop\" as a punk song by punk rock band Ramones. It also gives a great recommendation of a similar song being \"Sheena Is a Punk Rocker\" by the same band, which share a similar fast-paced tempo and anthemic moments in the chorus. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 follows the instruction completely; it correctly identifies the genre and recommends another similar song. Although @Response 1 also correctly identifies the genre, it recommends 6 other songs instead of 1 as per the prompt's request.",
+          "feedback1": "The response is partially helpful. It fulfills the prompt's request and correctly states that the song \"Blitzkrieg Bop\" is a punk rock song, and also suggests similar songs in the same genre. However, the prompt only requests one similar song, and the response suggests 6 other songs which makes it too verbose. Moreover, the last suggestion \"Hybrid Moments\" by The Misfits, although it is also a punk rock song, has a horror tone and is not similar to the tone of \"Blitzkrieg Bop\". The response should suggest another pop rock song with a similar tone or meaning instead of \"Hybrid Moments\".",
+          "feedback2": "The response is perfectly helpful. It fulfills the prompt's requests and correctly identifies that the song \"Blitzkrieg Bop\" falls under the genre of punk rock. The response also accurately suggests an additional similar song \"Sheena Is a Punk Rocker\", which has a very similar sound and style to \"Blitzkrieg Bop\". "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_c4dfba5eab304ce312ca",
+        0.37567020011995533
+      ],
+      [
+        "task_30f854b89c27e9b59b24",
+        0.2873283579979583
+      ],
+      [
+        "task_09a6193f4087aee86380",
+        0.2826268464124917
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.37567020011995533,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_2732b913fc5d4915b4f316fee2203a6b"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_c4dfba5eab304ce312ca",
+              "similarity": 0.37567020011995533,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0eac15523b47f095a86483ff2198c79600b0d0847d47e73a011fc96e5f0e7403:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "241abd29ed168309c06247a1fef20061029d762524424099d33dfa77f13dcb73"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_3f378070e2764d3287814e6279297de0",
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_798b8aebf85e4622a94630e0af19534f",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_dee831c2d67d4a0b8fe8788a46e6b37f",
+        "exp_df593c1e5d3041588aac30fafdd53d45",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        0.29094159710915923
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.2734885594263905
+      ],
+      [
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        0.24965484399628937
+      ],
+      [
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        0.24622264576542421
+      ],
+      [
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        0.24409079297885283
+      ],
+      [
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        0.23853661346962973
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.23583640437189227
+      ],
+      [
+        "exp_d975429d39354605acac8666b506be5d",
+        0.23363001099471914
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.23323378261170924
+      ],
+      [
+        "exp_742973da9caa43edba8db06c92016cfa",
+        0.23301410233061887
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.23323378261170924
+      },
+      {
+        "experience_id": "exp_66ef29a8e11c4652bed5e9a49fe27b77",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.29094159710915923
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2734885594263905
+      },
+      {
+        "experience_id": "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24965484399628937
+      },
+      {
+        "experience_id": "exp_6680c6d0e7b742c59507e0439024a78b",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24622264576542421
+      },
+      {
+        "experience_id": "exp_0f69075c94084291b5f43f171d4499c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.24409079297885283
+      },
+      {
+        "experience_id": "exp_18a8071710ea4928bd13396f432cf14a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23853661346962973
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23583640437189227
+      },
+      {
+        "experience_id": "exp_d975429d39354605acac8666b506be5d",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.23363001099471914
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_2732b913fc5d4915b4f316fee2203a6b": "任务明确要求推荐一首‘similar song'，这属于生成列表型内容（即使长度为一），其核心价值在于推荐的歌曲必须在风格、氛围或流派上与《Blitzkrieg Bop》具有实质性的相似度和多样性，而非机械重复。经验 1 强调评分标准需显式包含对‘内容多样性’与‘避免机械重复’的核验，严禁仅关注格式而忽略内容独特性，这直接适用于确保推荐的歌曲是真正符合‘类似’定义的优质选项，而非随意填充或循环使用同一首歌。"
+  },
+  "draft": {
+    "rubric_id": "rubric_0578e35b1a1647d0adb4f88f593e48c5",
+    "criteria": [
+      {
+        "criterion_id": "rubric_0578e35b1a1647d0adb4f88f593e48c5_1",
+        "question": "是否明确指出了《Blitzkrieg Bop》的音乐流派（如朋克、流行朋克等）？",
+        "weight": 0.5
+      },
+      {
+        "criterion_id": "rubric_0578e35b1a1647d0adb4f88f593e48c5_2",
+        "question": "是否推荐了一首具体的歌曲名称？",
+        "weight": 0.3
+      },
+      {
+        "criterion_id": "rubric_0578e35b1a1647d0adb4f88f593e48c5_3",
+        "question": "推荐的歌曲在音乐流派或风格特征上与《Blitzkrieg Bop》具有合理的相似性？",
+        "weight": 0.2
+      }
+    ],
+    "analysis": "任务要求明确识别歌曲《Blitzkrieg Bop》的音乐流派，并推荐一首风格相似的其他歌曲。评分标准需核验两个核心要素：一是流派判断的准确性（该曲为朋克/流行朋克），二是推荐歌曲的相关性（需同属朋克或流行朋克且具备相似听感）。权重分配上，准确识别流派是基础，故赋予较高权重；推荐歌曲的匹配度同样关键，赋予次高权重。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [
+        "exp_2732b913fc5d4915b4f316fee2203a6b"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_ff554927f59241529a7f2bb66e2b929f",
+        "criteria": [
+          {
+            "criterion_id": "rubric_ff554927f59241529a7f2bb66e2b929f_1",
+            "question": "回答是否明确指出了《Blitzkrieg Bop》的具体音乐流派（例如朋克、流行朋克等）？",
+            "weight": 0.5
+          },
+          {
+            "criterion_id": "rubric_ff554927f59241529a7f2bb66e2b929f_2",
+            "question": "回答是否推荐了一首具体的歌曲名称？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_ff554927f59241529a7f2bb66e2b929f_3",
+            "question": "推荐的歌曲在音乐流派或风格特征上与《Blitzkrieg Bop》是否具有合理的相似性？",
+            "weight": 0.2
+          }
+        ],
+        "analysis": "任务要求包含两个核心动作：识别《Blitzkrieg Bop》的音乐流派以及推荐一首风格相似的歌曲。修订后的评分标准需严格核验这两个要素的完整性与逻辑关联。首先，必须确认回答明确指出了该曲的具体流派（如朋克、流行朋克等），这是后续推荐的基础；其次，需验证是否提供了一首具体的歌曲名称作为推荐；最后，也是关键的一点，推荐的歌曲必须在流派或核心听感特征上与《Blitzkrieg Bop》具有合理的相似性，不能是毫无关联的曲目。权重分配上，流派识别作为事实基础赋予最高权重，推荐歌曲的存在性与匹配度共同构成剩余权重，确保回答既准确又相关。提供的经验涉及列表多样性，但本题仅要求推荐“一首”歌曲，不涉及列表生成的多样性问题，故不适用该经验，标准设计聚焦于单一推荐的准确性与相关性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_ff554927f59241529a7f2bb66e2b929f",
+        "normalized_weights": {
+          "rubric_ff554927f59241529a7f2bb66e2b929f_1": 0.5,
+          "rubric_ff554927f59241529a7f2bb66e2b929f_2": 0.3,
+          "rubric_ff554927f59241529a7f2bb66e2b929f_3": 0.2
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_ff554927f59241529a7f2bb66e2b929f_1",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确指出《Blitzkrieg Bop》属于朋克摇滚（punk rock）流派，具体陈述为'falls under the genre of punk rock'。",
+            "rejected_reason": "回答在开头明确指出了《Blitzkrieg Bop》的音乐流派为'punk rock'（朋克摇滚），完全符合标准中要求明确指出具体音乐流派的要求。"
+          },
+          {
+            "criterion_id": "rubric_ff554927f59241529a7f2bb66e2b929f_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答推荐了一首具体的歌曲，明确列出歌名为'Sheena Is a Punk Rocker'。",
+            "rejected_reason": "回答推荐了多首具体的歌曲，包括The Ramones的\"I Wanna Be Sedated\"、The Clash的\"London Calling\"等，每一项都包含了明确的歌曲名称和演唱者，满足推荐具体歌曲的要求。"
+          },
+          {
+            "criterion_id": "rubric_ff554927f59241529a7f2bb66e2b929f_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "推荐的歌曲《Sheena Is a Punk Rocker》与原曲《Blitzkrieg Bop》同为Ramones乐队作品，且回答中说明两者都具有快节奏、简单的和弦进行和标志性的朋克风格，具有合理的相似性。",
+            "rejected_reason": "回答推荐的六首歌曲均为朋克摇滚或相关风格（如horror punk）的经典作品，且回答中详细阐述了它们与《Blitzkrieg Bop》在节奏、吉他 riff、能量感等方面的相似性，逻辑合理，符合风格特征相似的标准。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 1.0,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "inference"
+}

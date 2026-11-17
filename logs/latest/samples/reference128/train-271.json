@@ -1,0 +1,682 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:983507900bfeae21146547e21e32b96984bdc6a3595eaa2dd6ee6188c73b7190",
+    "task": "(In the school literature clubroom…)\n\nMonika: “There we go! Everything’s all set up for today’s meeting.”\n\nSayori: “Thanks for getting everything ready, Monika! I’m excited to discuss the new book we’re reading.”\n\nNatsuki: “Yeah, me too. I’ve already got a bunch of notes and thoughts on it.”\n\nMonika: “I’m glad to see you two so enthusiastic. What about you, Yuri? …Yuri? Where is she?”\n\nSayori: “She’s actually at the hospital right now. She sent me a text yesterday, saying that she was going in for her 7-month",
+    "chosen": " check-up.\"\n\nMonika: \"Oh, that's right! I remember her mentioning that. I hope everything goes well. We'll have to fill her in on our discussion later.\"\n\nNatsuki: \"Yeah, I hope she's okay. But for now, let's get started! What did everyone think of the book so far?\"\n\nSayori: \"I really liked it! The characters are so interesting, and the story is already getting so intense.\"\n\nMonika: \"I agree. The author's use of imagery is beautiful. It reminds me a bit of Yuri's writing style, actually.\"\n\nNatsuki: \"Yeah, speaking of that, I wanted to talk about the symbolism in the first chapter. I think there's a lot more going on than what's on the surface.\"\n\n(The three of them continue their discussion, taking notes and sharing their thoughts. Meanwhile, Sayori's phone buzzes with a message from Yuri.)\n\nSayori: \"Hold on, guys. It's Yuri. She says... 'Check-up went well. Doctor says everything is fine. Found out the baby's gender! It's a girl!'\"\n\nMonika: \"Aww, that's wonderful news! We should do something special for her when she gets back.\"\n\nNatsuki: \"Yeah, like a mini baby shower or something! We could get her some cute baby books to read.\"\n\nSayori: \"That's a great idea! Let's plan it for our next meeting. For now, let's keep discussing the book so we can fill her in later.\"\n\n(The three of them smile and continue their literature club meeting, looking forward to celebrating Yuri's good news with her soon.)",
+    "rejected": "It seems like Yuri is currently at the hospital for her 7-month check-up. It's important for her to take care of her health and attend regular check-ups. The literature club meeting can continue without her, and the members can discuss the new book as planned. They can also share their thoughts and notes with Yuri once she returns from the hospital.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 10647,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 3,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 2 follows the prompt's implicit instruction and continues the story of the women in the book club. Whereas @Response 1 ignores the implicit request of the user and does not continue the story, making the response quite unhelpful.",
+          "feedback1": "The response is slightly helpful. This is because the response does not fully follow the prompt instructions as it does not carry on the text exactly where the prompt ends. The response is also very short and it does not carry on the book discussion. This is a failing on the completeness dimension, which makes the response less helpful. Also the response should state which character is speaking to avoid confusion.",
+          "feedback2": "The response is perfectly helpful. This is because the response follows the prompt's implicit instruction and carries on the story of the women in the book club who are discussing the current book without Yuri, as she is at a 7 month pregnancy check-up appointment. The response also includes Yuri in the story which shows good chat history awareness from the AI, making it more helpful to the user."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 fails to recognize that the dialogue is to continue, so it provides a summary response. @Response 2 makes sense, as it continues the dialogue in the prompt.",
+          "feedback1": "The response is not helpful. The prompt is a dialogue of individuals having a conversation. Rather than continuing the dialogue and clarifying the conversation, the model summarizes the situation by stating what the individuals in the scenario can do in a character's absence. The response does not address the ambiguity of the prompt.",
+          "feedback2": "The response is perfectly helpful. The final prompt shows a dialogue between individuals discussing a missing member not being present. That information suggests that the dialogue should continue. The model provides clarity as it continues the dialogue about a book club discussion and ends with good news from the missing member."
+        },
+        {
+          "score": 3,
+          "reasoning": "@Response 2 is much better than @Response 1. @Response 1 fails to provide a continuation of the story provided by the user prompt.",
+          "feedback1": "The response is slightly helpful. The response attempts to fulfil the user prompt requests and constraints by providing guidance on how to continue with the literature club while Yuri is away at the hospital for their 7-month check-up. The response fails to provide a continuation, script-style response to the user, based on the user prompt story.",
+          "feedback2": "The response is perfectly helpful. The response fully satisfies the user prompt requests and constraints by providing a continuation of the user story. The response flows seamlessly into its story, from the previous, user provided, story, utilizing relevant details and character names, such as Yuri and her 7 month pregnancy."
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_fdcc155e2002a475d062",
+        0.5604987290182463
+      ],
+      [
+        "task_e1ffaa65f0c63fad99f0",
+        0.3437049768691299
+      ],
+      [
+        "task_4961200c18893c20d0cd",
+        0.31559962060755054
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": 0.2727272727272727,
+          "evidence": [
+            {
+              "group_id": "task_fdcc155e2002a475d062",
+              "similarity": 0.5604987290182463,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:f3201148058ac84223dec0bc5d39ad53c85df0e240468b34037fd97dbdf78392:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:e303c25ab9679ab0695f33a6080a8b1c7451982bf1492c624171a135ff36b22a:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "220dd7480424b737727c512676e25473b2814267b0cceb8ced7aeb619a543eb5",
+                  "fb9064e660a02770028427057749702961593eb8e892369aafdcb3ef31235d90",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+          "score": 0.04751487063026099,
+          "evidence": [
+            {
+              "group_id": "task_e1ffaa65f0c63fad99f0",
+              "similarity": 0.3437049768691299,
+              "statistics": {
+                "values": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:51d2368748b12800eff66bcd9466ce281a1f9a12c50c2154b1a93bed25403e54:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:45716ed011ef3bdf4fbba7a0d20e4dfea2813841f94f812874a8f8df230cae13:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:692ab259869b3b1b18af2b7e9c778b94a18733fbdb56d50b4f49295c7c83433a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:53a56c61bdfcf4ffa529cca7f3e00da66052c0d0afedf28437c8ce11d3317c6d:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:075c4475458cf47248e30779e44692e4632be9306643ab146533b3ea03f3623a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:963367d8f4f4abbd9cce748977a05913974f55c31101af629846a59579e061da:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7eccea31ce7a6af3d1e1c741db00a24555c21bdaf916f4d508e6260c83c70bb5:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3c9673bda3e55294a61a3233c0bd7d9bfee50217d5e58ea84138cc3dd98f662f:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "f94fda069ab75064b58cac07e953fe4d6cabf731c382272840cc1f8b9344538d",
+                  "2f2ab458dc144b3f63ab001c9579cc0e215df2dd4bf22b0f44a629b1ca20a508",
+                  "aa600b3bd6e9131a4c282152f446910a4a4d27a6213171a2accbec816a155667",
+                  "cc259d34a47d6840dafe9dd7af90239ef7a4da042dd895303248a39f65693275",
+                  "2bd7fca3250fea5609431f1340fc162aa48d8245dfdbfe46dad23dcc62530d28",
+                  "7df66741a70c5555a674ff7505472bd2da9d8ced0ff481b764408cf6d26391ee",
+                  "ea53c8c666fdd1ef31fbe5c9f129b56d086af47bf01baee2810a1cffd97115ae",
+                  "0d6bb60b5b9fe51a6900098266e66cfa05a5ddd37c25d0ab0343f1342b28ec37"
+                ]
+              }
+            },
+            {
+              "group_id": "task_fdcc155e2002a475d062",
+              "similarity": 0.5604987290182463,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  -1.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ce2407d8464ae59a5d59ef78fc4f27f2af17f5068652a3b491c6a40284f681aa:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f5710a0e90a12d09c917e477443551621d5cb7c4d0dc7b0c02ad27eb2df2098a:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:c84ca6d0033c177bcda3129164f95ada794df0a30e2488ebd97c46853ec54eb1:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:dff3f8baf08ddf27b7a1d3bc14e4e5b2e3e10d772fa6f34fc63866ff5b72bee9:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5bc30395fd996adcb2607c499dc9537efcde73b01e456c544720648974f6d970:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:64a8411ba1d873897202f58671d03efeb6878ca5dd546c94b2a970f86d9de451:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:7236ff331885a02bb4d7b43d6d2849fd2021cf0b676df63e6740e6fbcd2ee0d8:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:84d5c2dee93f9c90ca07ab0532f530800a1c0bd413c14bff47683717e62c2b5c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:68e3b7904161d5426c5275073716d461ed8482f9400520de02df80e35aa9fff7:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:6f0671061a05c6e8cc37303d66e9f88e2974c1ee9ffce20b205659a4cd7b369f:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:14015a4094c8760d083ce0bf79267dd7a01c4496b9b7cb7037e1230eb716a38b:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:3e4a97bc7f3e7362d37066d23a40257fe5a024c36d3d8a56cc5c67ed8d74b76d:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f404e9c7da0a9193ef22085ab96e4d13b1458c8bcf0d7fe543cdb7c4748dcc63:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:19d142ed58ae892f4a0963cf8b5437a57dcefd7960a566a5b4077d5ec5c2a043:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:cb4091585055df1e20c3277074f63914223e3bcdf6029a83f4a040a14487f7c4:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:f62a3fd9452614dcee3883370ce32348e05e7edaaa519839010d2b6a8fbe8a8c:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:4451aa1ca17b94db9900f02546e333a3b7ed0ae0b592b8c5c1d13dacfbb5b7c5:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:5d20b62c486d4bd08699663f819bf22ea5eeb3be1e1f303e2206b2127b353903:exp_b5504c36f1e1468ca470333f1c240342",
+                  "helpsteer3:train:380f9b80d19cabac1b6fda0dcd12cd4eec640f8362322c3b69516968e3c1301c:exp_b5504c36f1e1468ca470333f1c240342"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "2056191776367d55c9ed02aa7442100451c7109d8f0c118cf57cffb13e39fda0",
+                  "6efcd79547ca9fd46e3a42062b5e0834f3be41ace363cdeb1c304e9633ee372e",
+                  "4d3d1771cb652a871251682fd77fd9b99d5d58da97f146c502da5d3fac600c67",
+                  "46e70eddeb9e8e4bf7c2643135fcf008596d20aaf799a4cfb30393bbd22ee236",
+                  "c1fe33ac6e77d26ce02020c517add4f3c7ded5a63da9e25b0049c4bad2d8b9b6",
+                  "8282599c717bbd3b72d1f3342baaaa2be2d05cd799ba0ff35e2952cdcbeb580a",
+                  "04c72b54253031b3876d81c80b68fb2b383a2a62d934da49c64137f9ab60083d",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe",
+                  "3d5fa220a079808b1d96e07d112a5cb85433ac6a870ab243f5d357ac145fff12",
+                  "c878e8be18cde43a6d756fc5d74f2cfd472540e2c19f716521d6464d99216806",
+                  "8d46148ec64f00ea22b5b8370c8e6230658f3b8f3f95b39e81fb26827ce17eba",
+                  "7b22569ae116643d225f35ba9c464a2e3a2b98bddfb83184c1082cfa78a42aa6",
+                  "095a0cf8861d0a0e6bfe0fcb9516d73c00b6854129c698a52a2a31834fceb7e4",
+                  "7d1ba10a6d49b94e889f4a044728f3f980980271a6d2388c819ff8118a83139b",
+                  "0dcef9166f38290b6b3ad64bce81c1aa7d341d73f53abe1c0566a969c96fef21",
+                  "f76996307255009f70fe5dfafd5b53fc5eff84c9f139461aaae3ad634a2f0f04",
+                  "fcc454b63e6e769f8c7feb09548d7445f5eafb4b898c457d29107081c0dc5e10",
+                  "1959ceb0088fc305a9acc670c9c2a4cf2120d112df5c1a9956823b254ae747bf",
+                  "b69b7fdfec1b6d8077e3aaa4384e1acc08518eb79cd91608aaa73b0f19597e92",
+                  "697c62825e719a1abd022fc12a5437e072a38979320e9c5e2c2705d4d0fa8fb6"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_fdcc155e2002a475d062",
+              "similarity": 0.5604987290182463,
+              "statistics": {
+                "values": [
+                  -1.0,
+                  1.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:823339c17ccdd4c080d4a4bb943ed318c24a926bded5febde9b3d50302f8f308:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:363344637a741747bd18935e1ac948e1522f1e131062cf984f0040cba0c26997:exp_8fef665fedf143edb5e00eea3758d1c3",
+                  "helpsteer3:train:ee98a2dd8d25b070e99ef3b8e99211989fe553866f205b5a0d2bf809fea4e292:exp_8fef665fedf143edb5e00eea3758d1c3"
+                ],
+                "task_ids": [
+                  "7771cefb702c51728a6657f365df056c137b6f0bf23c90305413601e8a072345",
+                  "b7190f48766ee93cf3feab605ddfc1f49fb110792d1776fb01ab06e4173681bc",
+                  "fef99637a06215d30ee5556fce549e8fd355328afa93482a9392e516adf305fe"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_fdcc155e2002a475d062",
+              "similarity": 0.5604987290182463,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:380f9b80d19cabac1b6fda0dcd12cd4eec640f8362322c3b69516968e3c1301c:exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+                ],
+                "task_ids": [
+                  "697c62825e719a1abd022fc12a5437e072a38979320e9c5e2c2705d4d0fa8fb6"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_113620ca64b541438bf3b03b2428882e",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.2258199312097161
+      ],
+      [
+        "exp_2adba5039571400b8862295552f46447",
+        0.2191902738345029
+      ],
+      [
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        0.1939327765880171
+      ],
+      [
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        0.1917399561601366
+      ],
+      [
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        0.17610619732435911
+      ],
+      [
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        0.1741523106377535
+      ],
+      [
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        0.16898570405285201
+      ],
+      [
+        "exp_96802d2cee6f4f17acf028194475c639",
+        0.16374493704730594
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.16304802473673194
+      ],
+      [
+        "exp_8a047aa502234685891ad41a1a24d090",
+        0.15808129046289443
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": 0.2727272727272727,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_b5504c36f1e1468ca470333f1c240342",
+        "source": "historical",
+        "historical_score": 0.04751487063026099,
+        "semantic_similarity": 0.1939327765880171
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2258199312097161
+      },
+      {
+        "experience_id": "exp_2adba5039571400b8862295552f46447",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.2191902738345029
+      },
+      {
+        "experience_id": "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1917399561601366
+      },
+      {
+        "experience_id": "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17610619732435911
+      },
+      {
+        "experience_id": "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1741523106377535
+      },
+      {
+        "experience_id": "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.16898570405285201
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_b5504c36f1e1468ca470333f1c240342": "任务输入明确使用了剧本格式（角色名后接冒号、括号内动作描述如'In the school literature clubroom…'），这是核心约束条件，评分标准必须严格核验回答是否保持了这种特定的剧本文体特征，而非混同为普通小说叙述。",
+    "exp_ae08cc09fb144ca08d79f6d2ad85ad7a": "任务设定了具体的角色人设背景（《心跳文学部》中的Monika、Sayori、Natsuki、Yuri），且上下文通过对话展现了各自的性格和当前状态（如Yuri在医院的特殊情境），评分标准需核验回答是否实质性地体现了这些角色的行为逻辑、语气和视角，而不仅仅是泛泛的叙事。"
+  },
+  "draft": {
+    "rubric_id": "rubric_fec923bf0234402493b292bafa4535a4",
+    "criteria": [
+      {
+        "criterion_id": "rubric_fec923bf0234402493b292bafa4535a4_1",
+        "question": "内容是否自然承接了Yuri在7个月孕周住院的既定情境？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_fec923bf0234402493b292bafa4535a4_2",
+        "question": "Monika、Sayori和Natsuki的台词是否符合其各自在原作中的性格特征与说话方式？",
+        "weight": 0.35
+      },
+      {
+        "criterion_id": "rubric_fec923bf0234402493b292bafa4535a4_3",
+        "question": "生成的文本是否保持了文学社活动室场景的氛围及对话的连贯性？",
+        "weight": 0.2
+      },
+      {
+        "criterion_id": "rubric_fec923bf0234402493b292bafa4535a4_4",
+        "question": "输出是否为纯文本形式的故事续写，未包含无关的元数据或格式错误？",
+        "weight": 0.1
+      }
+    ],
+    "analysis": "当前任务处于draft阶段，要求基于提供的《Doki Doki Literature Club!》片段续写故事。交付物应为一段符合角色性格（Monika的引导性、Sayori的活泼、Natsuki的直率）且情节连贯的对话或叙述，需承接Yuri因怀孕7个月住院的情节。由于是初稿生成，不强制要求完美结局，但必须保持语气一致并逻辑自洽。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e",
+        "criteria": [
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_1",
+            "question": "续写内容是否自然且逻辑自洽地承接了Yuri因怀孕7个月住院这一既定情境？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_2",
+            "question": "Monika、Sayori和Natsuki的台词风格与语气是否准确还原了原作中的各自性格特征？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_3",
+            "question": "生成的文本是否完整保持了文学社活动室的场景氛围及上下文的对话连贯性？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_4",
+            "question": "输出是否为纯文本形式的故事续写，未包含无关的元数据、注释或格式错误？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的《Doki Doki Literature Club!》片段续写故事。交付物为一段自然承接Yuri因怀孕7个月住院情境的对话或叙述，需严格符合角色性格（Monika的成熟引导、Sayori的活泼关切、Natsuki的直率）、保持文学社活动室场景氛围及对话连贯性，并输出纯文本格式。修订标准将重点核验情节逻辑的自洽性、角色语气的还原度以及格式的纯净度，确保续写内容不偏离既定设定且无元数据干扰。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e",
+        "normalized_weights": {
+          "rubric_e90d4f7500f3442aa4f017c831dfee9e_1": 0.35,
+          "rubric_e90d4f7500f3442aa4f017c831dfee9e_2": 0.35,
+          "rubric_e90d4f7500f3442aa4f017c831dfee9e_3": 0.2,
+          "rubric_e90d4f7500f3442aa4f017c831dfee9e_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "续写内容紧接上文Yuri因怀孕7个月住院的语境，通过Sayori转达的短信确认了产检顺利并得知胎儿性别为女孩，逻辑上自然承接了前文设定的情境，且后续角色反应（如提议办婴儿派对）符合该情境下的合理发展。",
+            "rejected_reason": "回答未以故事续写的形式承接情境，而是直接跳转为旁白式的总结陈述，没有描写角色对Yuri住院的反应或互动，未能自然展开剧情。"
+          },
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "Monika展现了作为社长的组织力和对成员的关怀；Sayori表现出天真、兴奋和分享欲强的特点；Natsuki则体现了务实（提议具体活动）和对文学讨论的关注。三人的台词风格和语气基本还原了原作中的性格特征。",
+            "rejected_reason": "回答中没有出现Monika、Sayori或Natsuki的对话，无法体现原作中各自独特的性格特征和语气风格（如Sayori的活泼、Natsuki的傲娇等），仅由叙述者代劳。"
+          },
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "文本保持了文学社活动室的场景设定，对话流畅连贯，从讨论书籍自然过渡到收到Yuri的消息，再回到继续开会并展望未来庆祝，场景氛围和上下文衔接完整。",
+            "rejected_reason": "回答缺乏文学社活动室的场景氛围描写，也没有延续上下文的对话连贯性，直接中断了对话流并给出了概括性的建议，破坏了沉浸感。"
+          },
+          {
+            "criterion_id": "rubric_e90d4f7500f3442aa4f017c831dfee9e_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "输出文本开头存在明显的格式错误，以' check-up.'直接开始，这显然是上一轮对话被截断的部分（即用户提供的输入末尾），导致生成的续写部分包含了非原创的残留文本，不符合“纯文本形式的故事续写”且未包含无关片段的要求。",
+            "rejected_reason": "输出内容为纯文本形式的段落，没有包含无关的元数据、注释、代码块标记或格式错误，符合纯文本要求。"
+          }
+        ],
+        "chosen_score": 0.9,
+        "rejected_score": 0.1,
+        "margin": 0.8,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_b5504c36f1e1468ca470333f1c240342"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_09a75d1838f34c018c05fa147c7859e5",
+        "criteria": [
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_1",
+            "question": "生成的文本是否自然承接了Yuri在7个月孕周住院这一既定情境，并逻辑自洽地回应了前文悬念？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_2",
+            "question": "Monika、Sayori和Natsuki的台词风格、语气及用词是否严格符合其在原作中的核心性格特征？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_3",
+            "question": "输出文本是否完整保留了剧本格式特征（如'角色名：对话'的结构及括号内的动作/状态描写），未混入纯小说叙述或非目标文体？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_4",
+            "question": "场景氛围是否保持了文学社活动室的环境设定，且对话流转具有自然的连贯性？",
+            "weight": 0.1
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的《Doki Doki Literature Club!》剧本片段续写故事。交付物为一段符合角色性格（Monika的引导性、Sayori的活泼、Natsuki的直率）且情节连贯的对话或叙述，需承接Yuri因怀孕7个月住院的情节。原draft中的评分标准已较为全面，但需修正分析中关于stage的描述错误（原分析误写为draft阶段），并优化问题表述以确保其作为明确的通过性问题（Yes/No）。经验1提示格式一致性至关重要，因此将第4条标准细化为对剧本特定格式（角色名+冒号+对话）的严格核验，排除非剧本形式的混用。权重分配保持合理，重点考察情境承接与角色还原。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_09a75d1838f34c018c05fa147c7859e5",
+        "normalized_weights": {
+          "rubric_09a75d1838f34c018c05fa147c7859e5_1": 0.35,
+          "rubric_09a75d1838f34c018c05fa147c7859e5_2": 0.35,
+          "rubric_09a75d1838f34c018c05fa147c7859e5_3": 0.2,
+          "rubric_09a75d1838f34c018c05fa147c7859e5_4": 0.1
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回复文本以'check-up.'开头，直接补全了用户输入中截断的'saying that she was going in for her 7-month'，逻辑上完整承接了Yuri住院产检的情境。随后通过Sayori转述消息确认检查顺利及胎儿性别，自然回应了前文关于Yuri去向的悬念，且情节发展自洽。",
+            "rejected_reason": "回答未承接前文悬念，而是直接跳出角色情境，以旁观者口吻陈述事实（'It's important for her to take care...'），未模拟任何角色对Yuri缺席的反应或对话延续。"
+          },
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "角色台词风格符合原作设定：Monika表现出关心与组织力（提议填鸭讨论、安排庆祝）；Sayori情绪高昂且充满善意（听到好消息后的兴奋、提议派对）；Natsuki虽然嘴上说'for now let's get started'但依然关注细节并主动提出具体建议（迷你婴儿派对、送书），体现了其直率且热心的一面，未出现严重OOC。",
+            "rejected_reason": "回答中没有任何Monika、Sayori或Natsuki的台词，完全缺失了原作角色的性格特征、语气和用词表现。"
+          },
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "输出严格保留了剧本格式，所有对话均以'角色名：对话'的形式呈现，括号内的动作描写（如'(The three of them continue their discussion...)'和'Sayori's phone buzzes...'）清晰标注了场景状态，没有混入小说式的第三人称叙述段落。",
+            "rejected_reason": "输出文本完全不符合剧本格式，既没有'角色名：对话'的结构，也没有括号内的动作描写，而是变成了纯叙述性段落。"
+          },
+          {
+            "criterion_id": "rubric_09a75d1838f34c018c05fa147c7859e5_4",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "场景始终锁定在文学社活动室，对话从讨论书籍自然过渡到关心Yuri的近况，再回到社团活动安排，流转顺畅。氛围温馨且符合社团聚会的特点，环境设定未发生偏离。",
+            "rejected_reason": "场景氛围未被保留，文本脱离了文学社活动室的设定，没有展现成员间的互动流转，仅是对剧情的概括性描述。"
+          }
+        ],
+        "chosen_score": 1.0,
+        "rejected_score": 0.0,
+        "margin": 1.0,
+        "success": true
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_dc3ca879557f4e06be66ac382c2636b3",
+        "criteria": [
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_1",
+            "question": "生成的续写内容是否自然承接了Yuri在7个月孕周住院的既定情境，未出现逻辑矛盾？",
+            "weight": 0.35
+          },
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_2",
+            "question": "Monika、Sayori和Natsuki的台词风格、语气及互动方式是否与其原作角色性格特征高度一致？",
+            "weight": 0.3
+          },
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_3",
+            "question": "文学社活动室的场景氛围与对话的连贯性是否得到保持，无突兀的情节跳跃？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_4",
+            "question": "输出是否为纯文本形式的故事续写，未包含无关的元数据、代码块或格式错误？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的《Doki Doki Literature Club!》片段（Yuri因7个月孕周住院）续写故事。交付物为符合角色性格（Monika的引导、Sayori的活泼、Natsuki的直率）且情节连贯的对话或叙述。修订重点在于检查初稿标准是否准确覆盖了人设还原度、情境承接逻辑及格式要求。原draft中关于'纯文本'和'人设'的权重分配合理，但需确保问题表述更聚焦于'实质体现'而非形式声明，并明确排除对结局完整性的强制要求。经验1提示不应将显式身份声明作为否决条件，因此评分标准应调整为关注内容逻辑与人设特征的契合度。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_dc3ca879557f4e06be66ac382c2636b3",
+        "normalized_weights": {
+          "rubric_dc3ca879557f4e06be66ac382c2636b3_1": 0.35,
+          "rubric_dc3ca879557f4e06be66ac382c2636b3_2": 0.3,
+          "rubric_dc3ca879557f4e06be66ac382c2636b3_3": 0.2,
+          "rubric_dc3ca879557f4e06be66ac382c2636b3_4": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_1",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答开头直接补全了用户输入中断的句子（'7-month check-up'），逻辑上自然承接了Yuri因怀孕住院的既定情境，且后续剧情中Yuri确认检查顺利并得知是女孩，未出现逻辑矛盾。",
+            "rejected_reason": "回答未以故事续写的形式承接情境，而是直接跳出角色视角进行旁白总结，且将'7个月住院'这一既定前提（暗示病情严重）弱化为普通的'检查'，未能延续原对话中关于Yuri具体处境的戏剧张力，存在逻辑衔接上的断裂。"
+          },
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "Monika展现了作为社长的关怀与组织能力；Sayori表现出活泼、乐观及分享喜悦的特质；Natsuki则体现了对文学的见解以及对他人的关心，三人的台词风格和互动方式均符合原作《Doki Doki Literature Club》中的角色设定。",
+            "rejected_reason": "回答完全缺失了Monika、Sayori和Natsuki的台词，仅由叙述者概括了情况，导致角色的性格特征、语气及互动方式无法体现，严重偏离了角色扮演类续写的要求。"
+          },
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_3",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "场景始终保持在文学社活动室，对话从讨论书籍自然过渡到收到Yuri的消息，再到提议庆祝，情节推进连贯流畅，没有突兀的跳跃或氛围破坏。",
+            "rejected_reason": "场景氛围从具体的文学社活动室对话瞬间跳跃到抽象的健康建议总结，缺乏情节发展的连贯性，没有保持原有场景的沉浸感。"
+          },
+          {
+            "criterion_id": "rubric_dc3ca879557f4e06be66ac382c2636b3_4",
+            "chosen": false,
+            "rejected": true,
+            "chosen_reason": "回答在开头部分包含了无意义的单词 'check-up.' 且该词前带有空格和换行，导致首句不完整（缺少主语或上下文衔接），不符合纯文本故事续写的规范，存在格式错误。",
+            "rejected_reason": "输出内容为纯文本段落，未包含代码块、JSON元数据或其他格式错误，符合纯文本形式的要求。"
+          }
+        ],
+        "chosen_score": 0.85,
+        "rejected_score": 0.15,
+        "margin": 0.7,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

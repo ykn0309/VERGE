@@ -1,0 +1,564 @@
+{
+  "sample": {
+    "sample_id": "helpsteer3:train:18f5106f1490f2bb31ac759d8d6301e5dd0c5b4e177d9f156d8b4bd827ff3a7c",
+    "task": "(In the city of Drakenburg...)\n\n[player]: \"Augh...my head...where am I? And why are all the inhabitants here...mythical creatures? I think I can see some vines coming from the...church. Maybe I'll investigate that area.\"",
+    "chosen": "As you slowly regain your senses, you find yourself lying on a cobblestone street in the heart of Drakenburg. The city is unlike anything you've ever seen before. Majestic dragons soar through the sky, while unicorns graze peacefully in the meadows. The air is filled with the scent of magic and adventure.\n\nYou notice that the inhabitants of Drakenburg are not human, but rather a diverse array of mythical creatures. Elves, dwarves, and even a few centaurs go about their daily lives, seemingly unfazed by your presence.\n\nYour curiosity piqued, you decide to follow the trail of vines that seem to be emanating from the nearby church. As you approach the ancient structure, you notice that the vines are not just ordinary plants, but rather enchanted flora that glow with a soft, ethereal light.\n\nUpon entering the church, you find yourself in awe of the intricate carvings and stained glass windows depicting scenes from the city's rich history. The vines continue to weave their way through the church, leading you to a hidden chamber beneath the altar.\n\nInside the chamber, you discover a magical artifact - a staff adorned with precious gems and runes. As you reach out to touch it, a surge of energy courses through your body, and you realize that you have been chosen to protect Drakenburg from an impending threat.\n\nWith newfound purpose, you set out to explore the city and uncover the secrets that lie within its enchanted walls. Along the way, you will forge alliances with the mythical inhabitants, learn the art of magic, and ultimately face the darkness that threatens to consume Drakenburg.\n\nYour journey has just begun, and the fate of this magical city rests in your hands.",
+    "rejected": "It appears you've found yourself in a rather peculiar situation. Drakenburg is known for its unique inhabitants, a mix of mythical creatures and humans. The vines you see coming from the church could be a clue to understanding this place better.\n\nAs you approach the church, you notice the vines are not ordinary. They seem to shimmer with an ethereal glow, and they're not damaging the church structure but rather, they seem to be a part of it. The creatures around you seem to be going about their daily routines, oblivious to the unusual sight.\n\nYou could try interacting with the creatures for more information or examine the vines more closely. Be cautious, though. You're in a new environment, and it's best to tread carefully.",
+    "metadata": {
+      "source": "nvidia/HelpSteer3",
+      "source_config": "preference",
+      "source_split": "train",
+      "source_index": 17659,
+      "revision": "f6d145777bcbde96137596340fab89793acd1031",
+      "domain": "general",
+      "language": "english",
+      "overall_preference": 2,
+      "chosen_response": 2,
+      "individual_preference": [
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 continued the story from the prompt. @Response 1 misunderstood the request of the prompt.",
+          "feedback1": "The response is not helpful. It did not continue the story from where the prompt stopped. Instead of providing the rest of the story, the response misunderstood the prompt and went on to advise the player in the prompt who is only a character in the story. This made the response irrelevant to the prompt.",
+          "feedback2": "The response is partially helpful. It continued the story from where the prompt stopped. However, there were some style changes in the prompt. The response was written in the second-person point of view, while the prompt was written in the third-person point of view. The response did not continue the story in dialogue form as in the prompt. The response only mentioned some mythical creatures but did not actively include any in writing the story."
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. It provides a much more detailed continuation of the vague scene presented in the prompt, ensuring that the little snippets of information from the prompt are included too. ",
+          "feedback1": "The response is mostly helpful. It gives a good idea of the setting that the player has found themselves in. However, the response is a bit too formal compared to the style that is in the prompt. The response should tone down the formal nature of the text rather than speak so formally. ",
+          "feedback2": "The response is perfectly helpful. It sets the scene by following on well from the prompt, ensuring to include all of the information provided in the prompt to make it accurate. The detailed response ensures that the scene is set well, and the story setting is continued in a way that makes sense from the first part in the prompt. "
+        },
+        {
+          "score": 2,
+          "reasoning": "@Response 2 is better than @Response 1. @Response 2 provides more details and vivid descriptions, while also engaging with the requirements of the prompt and the overall sense of conflict in the story. ",
+          "feedback1": "The response is mostly helpful. The response provides clear and creative explanations of the prompt's requirements. The response also sets the stage for further exploration while also still following the prompt's asks and sticking to the mysterious tone. The response would have been more helpful if it had a stronger hook and the descriptions were more detailed and vivid, adding more mystery overall. ",
+          "feedback2": "The response is perfectly helpful. The response is very helpful and engaging for the reader. The response is very immersive and provides vivid descriptions of setting, sense of conflict, and more. The response has many well thought out elements that add to the depth of the story and encourage further writing and exploration. "
+        }
+      ]
+    }
+  },
+  "retrieval": {
+    "task_groups": [
+      [
+        "task_9e923408c791cc8f28f3",
+        0.393475499395531
+      ],
+      [
+        "task_217d78b0f49ec0136905",
+        0.3342535122244409
+      ],
+      [
+        "task_ea96e131dfd9e7ba0793",
+        0.3334483412595277
+      ]
+    ],
+    "historical": {
+      "scored": [
+        {
+          "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+          "score": 0.5,
+          "evidence": [
+            {
+              "group_id": "task_217d78b0f49ec0136905",
+              "similarity": 0.3342535122244409,
+              "statistics": {
+                "values": [
+                  0.0,
+                  1.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+                  "helpsteer3:train:568e12ee0b71e9169c6efa8de9864c289e18c9120fe5fe4a7d66cb4a470276de:exp_4d4eca8aea6542b58eed9c5cf1f9061a"
+                ],
+                "task_ids": [
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c",
+                  "085aa59d44b6918b59bda1464b42c65acc50f73a7131037cff34a90ad13a32e9"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_0f69075c94084291b5f43f171d4499c3",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_217d78b0f49ec0136905",
+              "similarity": 0.3342535122244409,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:f3ce0c0634fa532482482cb72ce60c6e7d2b83e0bd8ad9b9d6eed39c114ac3d2:exp_0f69075c94084291b5f43f171d4499c3"
+                ],
+                "task_ids": [
+                  "0da6321ac99b7f2fb9ffb2390b68e5a18e0658c378e62123a839bd9f598c2776"
+                ]
+              }
+            },
+            {
+              "group_id": "task_ea96e131dfd9e7ba0793",
+              "similarity": 0.3334483412595277,
+              "statistics": {
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:753e41fbd0f0355e13e6ccac29dbd6a4e1990e73e1c12f9839cfc0684f726587:exp_0f69075c94084291b5f43f171d4499c3",
+                  "helpsteer3:train:247095a0680f722c82832a7ad1a96ab75f1096aab5615a21bf9cee19ca5fff77:exp_0f69075c94084291b5f43f171d4499c3",
+                  "helpsteer3:train:2f3c8ad3347a25a52f5f15a9a66aa5e2d68d793b71bdae1bb8df0f44434cc4a2:exp_0f69075c94084291b5f43f171d4499c3"
+                ],
+                "task_ids": [
+                  "b6268f7ccb408c9c824f2928f49c68665f87be57a327cdf519f6569de74eb208",
+                  "7f1f126434ca534193665860fcc961b5efe1a97ae42524255ec55d9035a86955",
+                  "8d5eb76e627334064d64c870beef3f8e7700bae2f3669fd5dd0a9d68d1a8eaa2"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_ea96e131dfd9e7ba0793",
+              "similarity": 0.3334483412595277,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:2f3c8ad3347a25a52f5f15a9a66aa5e2d68d793b71bdae1bb8df0f44434cc4a2:exp_113620ca64b541438bf3b03b2428882e"
+                ],
+                "task_ids": [
+                  "8d5eb76e627334064d64c870beef3f8e7700bae2f3669fd5dd0a9d68d1a8eaa2"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+          "score": 0.0,
+          "evidence": [
+            {
+              "group_id": "task_217d78b0f49ec0136905",
+              "similarity": 0.3342535122244409,
+              "statistics": {
+                "values": [
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_62add4a1e1684c5488f65574d8fdea4f"
+                ],
+                "task_ids": [
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+          "score": -0.2,
+          "evidence": [
+            {
+              "group_id": "task_217d78b0f49ec0136905",
+              "similarity": 0.3342535122244409,
+              "statistics": {
+                "values": [
+                  0.0,
+                  -1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "record_ids": [
+                  "helpsteer3:train:c39dd4bd49863e5d10577cb622bab39a71231efa97ea82a3ae7182aba2f733fd:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:0ba36901af0f9c218a04d2e1917c85e61102ad0350d31b8a784d547178e44047:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:568e12ee0b71e9169c6efa8de9864c289e18c9120fe5fe4a7d66cb4a470276de:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:f3ce0c0634fa532482482cb72ce60c6e7d2b83e0bd8ad9b9d6eed39c114ac3d2:exp_406f5d7cadfb46e4adf075b38dce2e3b",
+                  "helpsteer3:train:e2c147188ba2e94593cf8c460285eb1fa180c0e024542890e84a463df8a7b5c7:exp_406f5d7cadfb46e4adf075b38dce2e3b"
+                ],
+                "task_ids": [
+                  "628c11d6c943114d24221a0682aa6ce254350b31e7a266038fc7c5c6b35b886c",
+                  "206d9ce6aa5035e84a51f68526e27770574f46856a3e4d841195e67ed9886ea3",
+                  "085aa59d44b6918b59bda1464b42c65acc50f73a7131037cff34a90ad13a32e9",
+                  "0da6321ac99b7f2fb9ffb2390b68e5a18e0658c378e62123a839bd9f598c2776",
+                  "dee94865562111cb1c354dc974b8701641824482baf61323e969a3d964c0c928"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "unknown_ids": [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        "exp_021b1f4bcc0c43cf9acfd88584e44161",
+        "exp_022c8c3f683f46e7a9a7a6eedfed3ca2",
+        "exp_033d89f2e7d64a4c814c638516c4a533",
+        "exp_08ac6e2a72224b7aab84899205e4950f",
+        "exp_18a8071710ea4928bd13396f432cf14a",
+        "exp_20ddd25449724f81929a3446375a64f1",
+        "exp_2732b913fc5d4915b4f316fee2203a6b",
+        "exp_2adba5039571400b8862295552f46447",
+        "exp_2ddc45f943ef4f8e8de2de89bcc202e9",
+        "exp_2ffcc4dfc2a347f09e6dd38754f24c23",
+        "exp_392a33af46744dbf91e8754240ac16de",
+        "exp_42ff0411dd264c3cbb29f7da9cf35801",
+        "exp_4609692fd9c043118c81db8f6cdbecba",
+        "exp_4c7d35b8aa5b4aee91e312c48c9c18d9",
+        "exp_539b197b848543669215c3ae88caa7b8",
+        "exp_5419dd9533ab4b1791e6f119988d9887",
+        "exp_543c20bb090d4a35a4c1851ad1972427",
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "exp_6680c6d0e7b742c59507e0439024a78b",
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        "exp_72a6ad8c253c431ba5b67b2467978186",
+        "exp_742973da9caa43edba8db06c92016cfa",
+        "exp_748cc59b04eb4a44ad81d41d7ebe9810",
+        "exp_7679dd3a314c4d079de1cf4c22ddc0b3",
+        "exp_76a17f0a42e54d08b45ee97bfab46a5c",
+        "exp_7ba7b54d585e4f90929b9f74a008c67c",
+        "exp_866c2d4d56734fadb2bfe3fa02431508",
+        "exp_8a047aa502234685891ad41a1a24d090",
+        "exp_8ae72f81f9e445048a2e9c1d2f7d3b61",
+        "exp_8db4dea74d2c4f10aef13638da533d7f",
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "exp_9534f962e03e497dbf7a64fb49cc1ac8",
+        "exp_96802d2cee6f4f17acf028194475c639",
+        "exp_986126fba3944f72bb98f719be70e46c",
+        "exp_9c7bbe478d3045a4930a07ab1f977095",
+        "exp_9f68a031aa164c769dd78ba249279604",
+        "exp_a6eb77368258460eae290488ef911de2",
+        "exp_aa7afd4122054230b5aecfb525ab7953",
+        "exp_ae08cc09fb144ca08d79f6d2ad85ad7a",
+        "exp_afe73f7475954af68926ebb645bd4660",
+        "exp_b17187ab4876403fa9eaa67f2698dadf",
+        "exp_b5504c36f1e1468ca470333f1c240342",
+        "exp_bc0f0e067c274c258c91b89bd31a37d8",
+        "exp_bdc81611df6e4abeb9fb5013182b495a",
+        "exp_c80505c0967d4b13a55b0dca34c181d9",
+        "exp_cbc1d9c51bac4ecd81a0b345ee40c2e9",
+        "exp_d975429d39354605acac8666b506be5d",
+        "exp_e036fac8cbdd420a93f57abf690846c4",
+        "exp_e081015d1dd049aeb44763c6e3d90414",
+        "exp_e371d4edc6104e45b9c816c3d30e2452",
+        "exp_e6b54ffd3b0a4c3daa1c2dbea50ad3b8",
+        "exp_e7e12dc98bbc4fa19c1cbf450bd37cff",
+        "exp_ed63415f2846405284d1b993aa19e4e8",
+        "exp_ee325045ab0c4fceb79b27b4c020f2a1",
+        "exp_f119c00feba548d7a466b43903d7e2e1",
+        "exp_f3d8df9469c548fda7606217b85b067d",
+        "exp_f589e4c6a08945d498eccbea1df77ae5",
+        "exp_f9c63a6f153b46d8977f62d084a99e17"
+      ]
+    },
+    "semantic": [
+      [
+        "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        0.22114844224681734
+      ],
+      [
+        "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        0.21410903835303072
+      ],
+      [
+        "exp_670548a5fe65404ca9e76821ddc7367e",
+        0.21011889484697044
+      ],
+      [
+        "exp_539b197b848543669215c3ae88caa7b8",
+        0.20659963576138898
+      ],
+      [
+        "exp_62add4a1e1684c5488f65574d8fdea4f",
+        0.19658392206721986
+      ],
+      [
+        "exp_0f69075c94084291b5f43f171d4499c3",
+        0.19347025896548442
+      ],
+      [
+        "exp_113620ca64b541438bf3b03b2428882e",
+        0.18048268864550637
+      ],
+      [
+        "exp_8fef665fedf143edb5e00eea3758d1c3",
+        0.17562146786620694
+      ],
+      [
+        "exp_742973da9caa43edba8db06c92016cfa",
+        0.1700149512636953
+      ],
+      [
+        "exp_00c17ea2e79148b8a9b991e79eb788fa",
+        0.16579953012369714
+      ]
+    ],
+    "candidates": [
+      {
+        "experience_id": "exp_4d4eca8aea6542b58eed9c5cf1f9061a",
+        "source": "historical",
+        "historical_score": 0.5,
+        "semantic_similarity": null
+      },
+      {
+        "experience_id": "exp_0f69075c94084291b5f43f171d4499c3",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.19347025896548442
+      },
+      {
+        "experience_id": "exp_113620ca64b541438bf3b03b2428882e",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.18048268864550637
+      },
+      {
+        "experience_id": "exp_62add4a1e1684c5488f65574d8fdea4f",
+        "source": "historical",
+        "historical_score": 0.0,
+        "semantic_similarity": 0.19658392206721986
+      },
+      {
+        "experience_id": "exp_406f5d7cadfb46e4adf075b38dce2e3b",
+        "source": "historical",
+        "historical_score": -0.2,
+        "semantic_similarity": 0.21410903835303072
+      },
+      {
+        "experience_id": "exp_6196bea5aa2e40dda18bcc1caba6144e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.22114844224681734
+      },
+      {
+        "experience_id": "exp_670548a5fe65404ca9e76821ddc7367e",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.21011889484697044
+      },
+      {
+        "experience_id": "exp_539b197b848543669215c3ae88caa7b8",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.20659963576138898
+      },
+      {
+        "experience_id": "exp_8fef665fedf143edb5e00eea3758d1c3",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.17562146786620694
+      },
+      {
+        "experience_id": "exp_742973da9caa43edba8db06c92016cfa",
+        "source": "semantic",
+        "historical_score": null,
+        "semantic_similarity": 0.1700149512636953
+      }
+    ],
+    "quota": {
+      "historical": 6,
+      "semantic": 4
+    }
+  },
+  "selection_reasons": {
+    "exp_539b197b848543669215c3ae88caa7b8": "当前任务明确设定了虚构世界背景（Drakenburg城、神话生物）并包含角色对话与剧情推进（玩家醒来、发现藤蔓、决定调查教堂），属于典型的基于特定虚构情境的续写或角色扮演任务。经验8强调评分标准需严格区分‘合理场景填充’与‘违背既定人物关系/剧情走向’，并指出若回答偏离输入设定的对话对象或关键剧情节点应判定为不合格，这与本任务需要确保模型生成的后续内容符合‘神话生物城市’及‘玩家调查教堂’这一初始剧情逻辑的要求高度契合。"
+  },
+  "draft": {
+    "rubric_id": "rubric_51083984a81046f4bded7d38ee46fe77",
+    "criteria": [
+      {
+        "criterion_id": "rubric_51083984a81046f4bded7d38ee46fe77_1",
+        "question": "是否描述了主角在Drakenburg苏醒时的身体感受（如头痛）和空间困惑？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_51083984a81046f4bded7d38ee46fe77_2",
+        "question": "是否明确提及了周围居民是神话生物这一设定？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_51083984a81046f4bded7d38ee46fe77_3",
+        "question": "是否包含了从教堂区域观察到藤蔓的具体细节？",
+        "weight": 0.25
+      },
+      {
+        "criterion_id": "rubric_51083984a81046f4bded7d38ee46fe77_4",
+        "question": "是否表达了主角计划前往教堂调查的明确行动意图？",
+        "weight": 0.25
+      }
+    ],
+    "analysis": "任务要求为给定的RPG文本片段（stage: draft）生成内容。交付物需包含对Drakenburg城市环境的描述、主角苏醒后的困惑状态、对神话生物居民的观察，以及基于教堂藤蔓线索的行动意图。内容需保持第一人称或第三人称叙述的连贯性，符合奇幻冒险的基调，且无需包含具体代码或特定格式限制，仅需呈现故事文本。"
+  },
+  "paths": [
+    {
+      "provided_experience_ids": [],
+      "rubric": {
+        "rubric_id": "rubric_5e9774ef952f46438c65be887f8b884b",
+        "criteria": [
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_1",
+            "question": "文本是否清晰描述了主角苏醒时的身体感受（如头痛）及空间位置上的困惑？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_2",
+            "question": "文本是否明确提及并呈现了周围居民为神话生物这一设定？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_3",
+            "question": "文本是否包含从教堂区域观察到藤蔓生长的具体视觉细节？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_4",
+            "question": "文本是否表达了主角决定前往教堂进行调查的明确行动意图？",
+            "weight": 0.25
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的draft和task要求生成评分标准。Task核心是评估一段RPG文本片段（主角在Drakenburg苏醒后的感知与行动意图）。交付物为对这段文本的核验标准。涉及对象包括：主角的身体状态、环境认知（神话居民）、具体线索（教堂藤蔓）及行动决策。范围严格限定于用户提供的对话/旁白内容所涵盖的要素。格式上，标准需转化为明确的‘通过问题’，权重总和为1。Draft中的四条标准已覆盖所有关键信息点，修订阶段需确认其逻辑完整性与表述清晰度，无需增减新维度，仅需优化提问方式以确保可核验性。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_5e9774ef952f46438c65be887f8b884b",
+        "normalized_weights": {
+          "rubric_5e9774ef952f46438c65be887f8b884b_1": 0.25,
+          "rubric_5e9774ef952f46438c65be887f8b884b_2": 0.25,
+          "rubric_5e9774ef952f46438c65be887f8b884b_3": 0.25,
+          "rubric_5e9774ef952f46438c65be887f8b884b_4": 0.25
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "文本仅描述了主角‘慢慢恢复意识’（slowly regain your senses）和躺在鹅卵石街道上，并未像任务要求那样清晰描述苏醒时的具体身体感受（如头痛）以及空间位置上的困惑（如‘我在哪’）。",
+            "rejected_reason": "提供的回答以旁观者视角描述主角处境，完全未包含主角苏醒时的身体感受（如头痛）或空间位置困惑的具体描写，这些内容仅存在于任务输入的玩家台词中而非当前回答文本。"
+          },
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_2",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "文本明确提及并呈现了周围居民为神话生物的设定，具体列举了精灵、矮人、半人马等，并指出他们不是人类。",
+            "rejected_reason": "回答明确提及Drakenburg的居民是'mythical creatures and humans'的混合体，并描述了周围生物正在照常进行日常活动，清晰呈现了神话生物的设定。"
+          },
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "文本包含了从教堂区域观察到藤蔓生长的具体视觉细节，描述了藤蔓 emanating from the nearby church 且具有发光、带有魔法属性的特征。",
+            "rejected_reason": "回答不仅确认了从教堂看到的藤蔓，还补充了具体的视觉细节，描述藤蔓闪烁着'ethereal glow'（空灵的光芒）且似乎与教堂结构融为一体。"
+          },
+          {
+            "criterion_id": "rubric_5e9774ef952f46438c65be887f8b884b_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然文本表达了跟随藤蔓前往教堂的意图，但任务中的原始语境是主角在醒来后‘思考’是否要去调查，而该回答直接叙述了主角已经决定跟随并进入教堂的过程，且完全缺失了原文本中‘头痛’和‘困惑’这一关键的心理/生理状态铺垫，导致行动意图的呈现方式与任务要求的‘表达决定进行调查’的语境不完全匹配（特别是忽略了前文设定的困惑前提）。更严格来说，它跳过了‘决定’的心理过程，直接进入了‘执行’阶段，未完整体现任务中隐含的从困惑到决定的逻辑链条。",
+            "rejected_reason": "回答仅向用户提供了建议选项（如尝试互动或仔细观察），并未以叙事形式表达主角已经决定前往教堂进行调查的明确行动意图，该意图属于任务输入中的玩家台词。"
+          }
+        ],
+        "chosen_score": 0.5,
+        "rejected_score": 0.5,
+        "margin": 0.0,
+        "success": false
+      },
+      "error": null
+    },
+    {
+      "provided_experience_ids": [
+        "exp_539b197b848543669215c3ae88caa7b8"
+      ],
+      "rubric": {
+        "rubric_id": "rubric_25026836fd5a40539212c83a2dd3dc05",
+        "criteria": [
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_1",
+            "question": "主角苏醒时的身体感受（如头痛）与空间困惑是否通过具体感官描写呈现，且符合奇幻冒险的基调？",
+            "weight": 0.25
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_2",
+            "question": "周围居民被描述为神话生物的细节是否清晰，且与Drakenburg的城市设定逻辑自洽？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_3",
+            "question": "教堂区域的藤蔓线索是否作为视觉焦点被明确提及，并构成后续调查行动的合理诱因？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_4",
+            "question": "主角从观察环境到决定前往教堂的行动意图转变过程是否自然流畅，有无突兀的逻辑跳跃？",
+            "weight": 0.2
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_5",
+            "question": "整体叙述是否保持第一人称或第三人称视角的一致性，且语言风格符合RPG文本的沉浸式体验要求？",
+            "weight": 0.15
+          }
+        ],
+        "analysis": "当前任务处于revise阶段，需基于提供的draft和task输入（Drakenburg场景的RPG文本片段）修订评分标准。原draft标准仅关注文本是否包含特定情节元素（头痛、神话生物、藤蔓、行动意图），未充分覆盖'stage: revise'要求的逻辑自洽性检查（如前提核实：主角为何在Drakenburg苏醒？）。经验提示强调需区分'合理场景填充'与'核心设定篡改'，但本任务为原创续写片段，无既定原作，故重点应转向内部逻辑一致性（如：从苏醒到观察再到决策的因果链条是否自然）。修订后的标准将强化对叙事连贯性和环境细节真实性的核验，同时保留原draft中针对关键情节元素的检查，权重分配上提升逻辑流（0.3）和环境沉浸感（0.25）的比重，降低单一事实罗列的权重。"
+      },
+      "judgment": {
+        "rubric_id": "rubric_25026836fd5a40539212c83a2dd3dc05",
+        "normalized_weights": {
+          "rubric_25026836fd5a40539212c83a2dd3dc05_1": 0.25,
+          "rubric_25026836fd5a40539212c83a2dd3dc05_2": 0.2,
+          "rubric_25026836fd5a40539212c83a2dd3dc05_3": 0.2,
+          "rubric_25026836fd5a40539212c83a2dd3dc05_4": 0.2,
+          "rubric_25026836fd5a40539212c83a2dd3dc05_5": 0.15
+        },
+        "criterion_judgments": [
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_1",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "原文中主角明确表达了身体感受（'Augh...my head...'）和空间困惑（'where am I?'），但回答仅描述了苏醒后的状态（'slowly regain your senses'），完全缺失了头痛的具体描写和关于‘我在哪’的困惑表达，未通过具体感官细节呈现题目要求的苏醒体验。",
+            "rejected_reason": "回答未呈现主角苏醒时的身体感受（如头痛）或空间困惑，而是直接以旁白形式陈述玩家已处于该情境，完全缺失了用户输入中'Augh...my head...'等具体感官描写。"
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_2",
+            "chosen": true,
+            "rejected": false,
+            "chosen_reason": "回答清晰描述了居民为神话生物（如Elves, dwarves, centaurs），且将其置于Drakenburg城市背景下，逻辑自洽地构建了奇幻城市的设定。",
+            "rejected_reason": "回答仅笼统提及居民是神话生物与人类的混合体，并未像标准要求的‘清晰细节’那样描述具体的生物特征或形态，缺乏视觉上的具体刻画。"
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_3",
+            "chosen": true,
+            "rejected": true,
+            "chosen_reason": "回答明确提及教堂区域的藤蔓线索（'trail of vines that seem to be emanating from the nearby church'），并将其描述为发光的神秘植物，构成了后续调查行动的合理诱因。",
+            "rejected_reason": "回答明确描述了教堂藤蔓具有‘闪烁的超自然光芒’且‘非普通’，将其作为视觉焦点进行了详细描写，并暗示其作为理解该地线索的重要性。"
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_4",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "任务要求是主角从观察环境到决定前往教堂的过程，而回答直接跳过了‘发现藤蔓并产生好奇’的观察阶段，直接陈述‘决定跟随藤蔓’，且随后迅速推进到进入教堂内部、发现神器及获得使命等剧情，完全超出了任务文本中‘可能去调查’的初始意图范围，存在严重的逻辑跳跃和内容越界。",
+            "rejected_reason": "回答未能展现主角从观察环境到决定前往教堂的行动意图转变过程，因为叙述者直接跳到了‘当你接近教堂时’的状态，省略了决策和移动的逻辑推导环节。"
+          },
+          {
+            "criterion_id": "rubric_25026836fd5a40539212c83a2dd3dc05_5",
+            "chosen": false,
+            "rejected": false,
+            "chosen_reason": "虽然使用了第二人称（'As you...', 'You notice...'）保持了视角一致，但该回答严重偏离了任务设定的‘第一人称独白/内心活动’风格（原文为'Augh...my head...'），将原本简短的环境观察扩展成了完整的冒险故事结局，不符合RPG文本中针对特定情境片段进行沉浸式回应的要求，破坏了原有的叙事基调。",
+            "rejected_reason": "回答采用了第二人称（'You notice', 'You could try'）而非第一人称或第三人称视角进行沉浸式叙述，这种指导性的口吻破坏了RPG文本应有的角色代入感和叙事一致性。"
+          }
+        ],
+        "chosen_score": 0.4,
+        "rejected_score": 0.2,
+        "margin": 0.2,
+        "success": true
+      },
+      "error": null
+    }
+  ],
+  "critic_rounds": [],
+  "error": null,
+  "mode": "train"
+}

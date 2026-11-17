@@ -108,47 +108,57 @@ class OnlineClustering:
         counts = Counter(self._membership[(other, oid)] for oid in refs)
         return {g: n / len(refs) for g, n in counts.items()} if refs else {}
 
+    def _reference_similarity(self, left, right, left_profile, right_profile):
+        """Equal weights for exact provision overlap and category distribution."""
+        a, b = self._references[left], self._references[right]
+        if not a or not b:
+            return 0.0
+        instance = len(a & b) / len(a | b)
+        keys = left_profile.keys() | right_profile.keys()
+        group = sum(
+            min(left_profile.get(g, 0), right_profile.get(g, 0)) for g in keys
+        ) / sum(max(left_profile.get(g, 0), right_profile.get(g, 0)) for g in keys)
+        return 0.5 * instance + 0.5 * group
+
+    def _pair_similarity(self, kind, left, right, profiles, text):
+        reference = self._reference_similarity(
+            left, right, profiles[left], profiles[right]
+        )
+        if kind == "experience":
+            return reference
+        m = min(len(self._references[left]), len(self._references[right]))
+        weight = self.reference_weight * m / (m + 1)
+        return (1 - weight) * text + weight * reference
+
     def similarity(self, kind, left, right):
         a, b = (kind, left), (kind, right)
-        text = float(
-            np.clip(np.dot(self._items[a].vector, self._items[b].vector), 0, 1)
+        profiles = {key: self._profile(key) for key in (a, b)}
+        text = (
+            float(np.clip(np.dot(self._items[a].vector, self._items[b].vector), 0, 1))
+            if kind == "task"
+            else 0.0
         )
-        pa, pb = self._profile(a), self._profile(b)
-        if not pa or not pb:
-            return text
-        keys = pa.keys() | pb.keys()
-        overlap = sum(min(pa.get(g, 0), pb.get(g, 0)) for g in keys) / sum(
-            max(pa.get(g, 0), pb.get(g, 0)) for g in keys
-        )
-        m = min(len(self._references[a]), len(self._references[b]))
-        weight = self.reference_weight * m / (m + 1)
-        return (1 - weight) * text + weight * overlap
+        return self._pair_similarity(kind, a, b, profiles, text)
 
     def _matrix(self, kind, *, text_only=False):
+        if text_only and kind != "task":
+            raise ValueError("experience clustering does not use text initialization")
         ids = sorted(self.assignments(kind))
         if not ids:
             return ids, np.zeros((0, 0))
-        vectors = np.array([self._items[(kind, oid)].vector for oid in ids])
-        matrix = np.clip(vectors @ vectors.T, 0, 1)
+        if kind == "task":
+            vectors = np.array([self._items[(kind, oid)].vector for oid in ids])
+            matrix = np.clip(vectors @ vectors.T, 0, 1)
+        else:
+            matrix = np.zeros((len(ids), len(ids)))
         if not text_only:
-            profiles = [self._profile((kind, oid)) for oid in ids]
-            counts = [len(self._references[(kind, oid)]) for oid in ids]
-            for i, pa in enumerate(profiles):
-                if not pa:
-                    continue
+            keys = [(kind, oid) for oid in ids]
+            profiles = {key: self._profile(key) for key in keys}
+            for i, left in enumerate(keys):
                 for j in range(i):
-                    pb = profiles[j]
-                    if not pb:
-                        continue
-                    keys = pa.keys() | pb.keys()
-                    overlap = sum(min(pa.get(g, 0), pb.get(g, 0)) for g in keys) / sum(
-                        max(pa.get(g, 0), pb.get(g, 0)) for g in keys
+                    matrix[i, j] = matrix[j, i] = self._pair_similarity(
+                        kind, left, keys[j], profiles, matrix[i, j]
                     )
-                    m = min(counts[i], counts[j])
-                    weight = self.reference_weight * m / (m + 1)
-                    matrix[i, j] = matrix[j, i] = (1 - weight) * matrix[
-                        i, j
-                    ] + weight * overlap
         np.fill_diagonal(matrix, 0)
         return ids, matrix
 
@@ -226,6 +236,10 @@ class OnlineClustering:
         for key in new:
             self._references[key] = set()
             self._membership[key] = key[0] + "_new_" + key[1]
+        # Canonicalize singleton IDs before half-round version checks.
+        for kind in KINDS:
+            ids = sorted(self.assignments(kind))
+            self._publish(kind, ids, self._partition(kind, ids))
         count = 0
         for t, e in sorted(edges):
             if e not in self._references[("task", t)]:
@@ -233,8 +247,9 @@ class OnlineClustering:
                 self._references[("experience", e)].add(t)
                 count += 1
         initializations = []
-        # New objects are text-initialized without reassigning old objects.
-        for kind in KINDS:
+        # Only tasks have text initialization. Unreferenced experiences remain
+        # isolated until independent downstream provision supplies graph edges.
+        for kind in ("task",):
             ids, matrix = self._matrix(kind, text_only=True)
             movable = [i for i, oid in enumerate(ids) if (kind, oid) in new]
             if movable:
@@ -329,6 +344,7 @@ class OnlineClustering:
 
     def to_dict(self):
         return {
+            "similarity_protocol": "instance-and-group-equal-v1",
             "parameters": {
                 "reference_weight": self.reference_weight,
                 "task_threshold": self.thresholds["task"],
@@ -350,6 +366,7 @@ class OnlineClustering:
     @classmethod
     def from_dict(cls, data):
         if set(data) != {
+            "similarity_protocol",
             "parameters",
             "items",
             "citations",
@@ -357,6 +374,8 @@ class OnlineClustering:
             "last_update",
         }:
             raise ValueError("invalid cluster snapshot fields")
+        if data["similarity_protocol"] != "instance-and-group-equal-v1":
+            raise ValueError("incompatible clustering similarity protocol")
         state = cls(**data["parameters"])
         for raw in data["items"]:
             item = ClusterItem(**raw)

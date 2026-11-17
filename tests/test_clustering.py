@@ -56,7 +56,7 @@ def test_category_profile_normalizes_counts_and_uses_raw_support():
     # No shared task ID; identical task group profiles nevertheless overlap fully.
     assert not c.references("experience", "a") & c.references("experience", "b")
     assert len(c.groups("task")) == 1
-    assert c.similarity("experience", "a", "b") == pytest.approx(0.5 * 2 / 3)
+    assert c.similarity("experience", "a", "b") == pytest.approx(0.5)
     assert c._profile(("experience", "a")) == c._profile(("experience", "b"))
 
 
@@ -114,3 +114,57 @@ def test_random_fixed_matrix_search_never_publishes_illegal_or_worse_than_single
     assert sorted(x for c in result.groups for x in c) == list(range(15))
     assert result.quality >= search.quality(singles) - 1e-12
     assert result.groups == search.run([tuple(range(15))]).groups
+
+
+def test_unreferenced_experiences_are_singletons_but_still_semantically_retrievable():
+    c = OnlineClustering()
+    c.update(
+        [
+            ClusterItem("a", "experience", "same", (1, 0)),
+            ClusterItem("b", "experience", "same", (1, 0)),
+        ]
+    )
+    assert len(c.groups("experience")) == 2
+    assert c.similarity("experience", "a", "b") == 0
+    assert c.query_experiences((1, 0), limit=2) == [("a", 1), ("b", 1)]
+    assert not c.last_update.initializations
+    c.update([ClusterItem("t", "task", "task", (1, 0))], [("t", "a"), ("t", "b")])
+    assert c.similarity("experience", "a", "b") == 1
+    assert len(c.groups("experience")) == 1
+
+
+def test_task_reference_exact_and_category_overlap_have_equal_weights():
+    c = OnlineClustering()
+    c.update(
+        [
+            ClusterItem("a", "experience", "a", (1, 0)),
+            ClusterItem("b", "experience", "b", (0, 1)),
+            ClusterItem("x", "task", "x", (1, 0)),
+            ClusterItem("y", "task", "y", (0, 1)),
+        ],
+        [("x", "a"), ("y", "b")],
+    )
+    c._membership[("experience", "b")] = c._membership[("experience", "a")]
+    # Different concrete experiences, same category: .5 reference, .25 outer weight.
+    assert c.similarity("task", "x", "y") == pytest.approx(0.125)
+    ids, matrix = c._matrix("task")
+    assert matrix[ids.index("x"), ids.index("y")] == pytest.approx(0.125)
+
+
+def test_experience_similarity_is_independent_of_its_text_vector():
+    def build(vector):
+        c = OnlineClustering()
+        c.update(
+            [
+                ClusterItem("a", "experience", "a", (1, 0)),
+                ClusterItem("b", "experience", "b", vector),
+                ClusterItem("x", "task", "x", (1, 0)),
+                ClusterItem("y", "task", "y", (1, 0)),
+            ],
+            [("x", "a"), ("x", "b"), ("y", "a")],
+        )
+        return c
+
+    a, b = build((1, 0)), build((0, 1))
+    assert a.similarity("experience", "a", "b") == b.similarity("experience", "a", "b")
+    assert a.groups("experience") == b.groups("experience")
